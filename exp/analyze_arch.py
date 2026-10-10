@@ -42,6 +42,30 @@ def eligible(row, config):
               number(row["delta_psnr"]) >= -.1)))
 
 
+def failure_reason(row, archive):
+    if row["status"] in {"pass", "provisional", "csim_pass", "impl_complete", "cosim_complete", "analysis_complete"}:
+        return ""
+    if row["status"] == "infeasible":
+        from run_exp import CAPACITY, LIMIT
+        excess = [f"{key}={row[key]} exceeds {CAPACITY[key]*LIMIT[key]:g}"
+                  for key in CAPACITY if number(row.get(key)) is not None and
+                  number(row[key]) > CAPACITY[key]*LIMIT[key]]
+        return "; ".join(excess)
+    diagnostics = []
+    for name in ("csim.log.txt", "csynth.log.txt", "impl.log.txt", "cosim.log.txt"):
+        path = archive / name
+        if not path.is_file():
+            continue
+        lines = path.read_text(errors="replace").splitlines()
+        if any("ap_fixed_base.h" in line and "error:" in line for line in lines) and any(
+                "expanded from macro 'F2'" in line or "expanded from macro 'F3'" in line for line in lines):
+            diagnostics.append("F2/F3 size macros collide with AMD ap_fixed header identifiers; independent header-order retries preserve the failed source")
+        messages = [line.strip() for line in lines if
+                    re.search(r"ERROR:|error:|EXP_TIMEOUT|deadlock detected", line, re.IGNORECASE)]
+        diagnostics.extend(messages[:2])
+    return "; ".join(dict.fromkeys(diagnostics)) or row["notes"]
+
+
 def module_for(modules, layer):
     preferred = ("conv1_stream", "conv1_tiles", "wino_engine", "engine1") if layer == 1 else (
         ("conv2_stream", "engine2") if layer == 2 else ("conv3_stream", "engine3"))
@@ -116,6 +140,7 @@ def main():
         config = json.loads(path.read_text())
         derived = {**row, "scope": scope(config,row), "operation": config.get("operation", ""),
                    "eligible_provisional": eligible(row,config),
+                   "failure_reason": failure_reason(row,archive),
                    "ddr_bytes_per_frame": config.get("ddr_bytes_per_frame", ""),
                    "feature_recompute_ratio": config.get("feature_recompute_ratio", ""),
                    "cache_bits": config.get("cache_bits", ""),
@@ -191,6 +216,8 @@ def main():
             human += markdown_table(loops,["module","loop","IterationLatency","PipelineDepth","actual_ii","target_ii","ii_ok"])
         if config.get("errors"):
             human += "\nObserved errors: "+"; ".join(config["errors"])+"\n"
+        if derived["failure_reason"]:
+            human += "\nArchived failure evidence: "+derived["failure_reason"]+"\n"
         if config.get("primitive_probe"):
             probe = config["primitive_probe"]
             human += "\nRouted DSP48E2 inspection (dsp_primitives.csv):\n\n"+markdown_table([probe],[
@@ -206,7 +233,7 @@ def main():
         start = text.index("## 6. Interpretation / 解读\n\n")+len("## 6. Interpretation / 解读\n\n")
         end = text.index("\n## 7. Conclusion",start)
         md_path.write_text(text[:start]+human.rstrip()+"\n"+text[end:])
-    extra = ["scope","operation","eligible_provisional","ddr_bytes_per_frame","feature_recompute_ratio","cache_bits",
+    extra = ["scope","operation","eligible_provisional","failure_reason","ddr_bytes_per_frame","feature_recompute_ratio","cache_bits",
              "inferred_image_read_bursts","inferred_image_write_bursts","ddr_theoretical_lower_bound_ms","ddr_50pct_lower_bound_ms"]
     write_csv(ROOT / "experiments/architecture_data.csv",structures,list(rows[0])+extra)
     write_csv(ROOT / "experiments/estimate_actual.csv",estimates,["id","series","scope","metric","estimate","actual","deviation_pct","over20pct","status","md_path"])

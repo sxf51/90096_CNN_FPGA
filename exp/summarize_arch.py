@@ -106,7 +106,7 @@ def main():
         relevant = [record for record in verification if record["parent"] in selected_ids]
         text += "\nRouted timing closes for "+str(sum(str(record.get("timing_met")).lower() == "true" for record in relevant))+" selected implementation runs; "+str(sum(record.get("rtl_status") == "Pass" and record["status"] == "cosim_complete" for record in relevant))+" selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.\n"
     failed = [row for row in arch if row["status"] not in {"pass","provisional","csim_pass","impl_complete","cosim_complete","analysis_complete"}]
-    text += "\n## Failed Directions\n\n"+markdown_table(linked(failed),["id","series","status","notes"])
+    text += "\n## Failed Directions\n\n"+markdown_table(linked(failed),["id","series","status","failure_reason","notes"])
     text += "\n## Pending Human Decisions\n\n"
     text += "- Supply the missing comic pair before complete14-image precision acceptance. All13 supplied pairs remain mandatory.\n"
     text += "- DDR sequential layers need explicit scratch pointers or an approved wrapper; global m_axi did not export ports in S01.\n"

@@ -32,12 +32,13 @@ Measured direction result: none of its completed frame points satisfies all reso
 | [P07](P07_exact10_residual_pair/P07.md) | PE | 1 | 62.0 | 0.000248 | 1.0 | 0.0 | 0.0 | 454.0 | 453.0 | True | unknown | True | pass |
 | [P10](P10_exact10_packing_T16/P10.md) | frame | 16 | 3039083.0 | 12.156332 | 254.0 | 168.0 | 0.0 | 101488.0 | 80563.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [P11](P11_exact10_packing_T8/P11.md) | frame | 8 | 1894302.0 | 7.577208 | 505.0 | 168.0 | 0.0 | 165606.0 | 106599.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [P12](P12_exact10_packing_T4/P12.md) | frame | 4 | 1355582.0 | 5.422328 | 1007.0 | 168.0 | 0.0 | 292053.0 | 159828.0 | True | 1.661846957728205e-05 | True | infeasible |
 
 ## W Direction
 
 G2=2G makes the F2 inverse exactly divisible by4 before the ordinary layer cast. W01/W03 confirm one DSP per transformed product at10/16-bit operands. The layer and network designs retain complete transform precision, split9x9 into nine3x3 pieces, generate128x128 tiles and reorder two rows into raster streams. Equivalent offline tensors are archived; runtime transforms preserve the fixed incoming-weight contract. Header-order compilation failures and independent retries remain visible.
 
-Completed PE/layer evidence is listed below; it does not establish a resource-feasible frame design.
+Measured direction result: [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) is its fastest provisional resource-feasible point at 7.548204ms, with 326.0 DSP and 79158.0 LUT. RTL and routing must be assessed separately.
 
 | id | scope | T_target | latency_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | bit_exact | border_mse | ii_ok | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -45,6 +46,12 @@ Completed PE/layer evidence is listed below; it does not establish a resource-fe
 | [W02](W02_direct_f2_control/W02.md) | PE | 1 | 38.0 | 0.000152 | 36.0 | 0.0 | 0.0 | 503.0 | 1025.0 | True | unknown | True | pass |
 | [W03](W03_integer_f2_16bit/W03.md) | PE | 1 | 37.0 | 0.000148 | 16.0 | 0.0 | 0.0 | 2155.0 | 1932.0 | True | unknown | True | pass |
 | [W07](W07_winograd_conv1_T16_header_retry/W07.md) | layer | 16 | 5721420.0 | 22.88568 | 145.0 | 99.0 | 0.0 | 30872.0 | 25564.0 | True | 4.121844856441791e-06 | True | provisional |
+| [W04](W04_winograd_conv1_T16/W04.md) | layer | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [W05](W05_winograd_network_T16/W05.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [W06](W06_winograd_network_T8/W06.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) | frame | 16 | 1887051.0 | 7.548204 | 326.0 | 241.0 | 0.0 | 79158.0 | 76052.0 | True | 1.661846957728205e-05 | True | provisional |
+| [W11](W11_fixed_tiles_T8_allcontinuous_4ns/W11.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
+| [W12](W12_fixed_tiles_T16_allcontinuous_4ns/W12.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
 
 ## G Direction
 
@@ -71,6 +78,7 @@ Measured direction result: [S02](S02_whole_dataflow_control/S02.md) is its faste
 | [S03](S03_tile_fusion_B8/S03.md) | frame | 32 | 22803545.0 | 228.03545 | 296.0 | 18.0 | 0.0 | 113576.0 | 73880.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [S04](S04_tile_fusion_B16/S04.md) | frame | 32 | 16753977.0 | 167.53977 | 296.0 | 18.0 | 0.0 | 114061.0 | 73901.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [S05](S05_tile_fusion_B32/S05.md) | frame | 32 | 14166377.0 | 141.66377 | 296.0 | 18.0 | 0.0 | 120033.0 | 74038.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [S06](S06_tile_fusion_B64/S06.md) | frame | 32 | 12981873.0 | 129.81873 | 296.0 | 18.0 | 0.0 | 136162.0 | 74127.0 | True | 1.661846957728205e-05 | True | infeasible |
 
 ## C Direction
 
@@ -83,15 +91,19 @@ Completed PE/layer evidence is listed below; it does not establish a resource-fe
 | [C01](C01_wino_packing_T4_all/C01.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [C02](C02_wino_packing_T4_conv3/C02.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [C03](C03_wino_packing_T8_all/C03.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [C08](C08_wino_conv2w8_continuous_T8/C08.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | fail |
 
 ## F Direction
 
 Storage controls map shallow wide FIFOs to LUTRAM and Conv3 line banks to20 URAM. Continuous engines separate window generation, flatten pixel/fold iterations, shift fixed channel registers and register balanced fabric reductions. Old padding versus online read/emit padding isolates finite-FIFO row serialization. Clock/T controls test actual II, resource and timing limits; final RTL and routed measurements are separate from HLS estimates.
 
-Completed PE/layer evidence is listed below; it does not establish a resource-feasible frame design.
+Measured direction result: [F01](F01_fifo_lutram_control/F01.md) is its fastest provisional resource-feasible point at 8.058712ms, with 505.0 DSP and 56081.0 LUT. RTL and routing must be assessed separately.
 
 | id | scope | T_target | latency_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | bit_exact | border_mse | ii_ok | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F01](F01_fifo_lutram_control/F01.md) | frame | 16 | 2014678.0 | 8.058712 | 505.0 | 96.0 | 0.0 | 56081.0 | 62800.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F02](F02_uram_line_control/F02.md) | frame | 16 | 2014678.0 | 8.058712 | 505.0 | 132.0 | 20.0 | 56007.0 | 62948.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F03](F03_continuous_T16_oldpad_4ns/F03.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
 
 ## All Architectures
 
@@ -99,9 +111,13 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 
 | id | series | design | T_target | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [P12](P12_exact10_packing_T4/P12.md) | P | designs/packing_network | 4 | 5.422328 | 1007.0 | 168.0 | 292053.0 | 159828.0 | -0.0695141811880653 | infeasible |
 | [E043](E043_scan_clock_T16_E043/E043.md) | unknown | designs/dataflow_int | 16 | 6.93923049 | 505.0 | 168.0 | 55325.0 | 67025.0 | -0.0695141811880653 | provisional |
+| [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) | W | designs/winograd_continuous | 16 | 7.548204 | 326.0 | 241.0 | 79158.0 | 76052.0 | -0.0695141811880653 | provisional |
 | [P11](P11_exact10_packing_T8/P11.md) | P | designs/packing_network | 8 | 7.577208 | 505.0 | 168.0 | 165606.0 | 106599.0 | -0.0695141811880653 | infeasible |
 | [E042](E042_scan_clock_T16_E042/E042.md) | unknown | designs/dataflow_int | 16 | 8.058712 | 505.0 | 168.0 | 56007.0 | 62948.0 | -0.0695141811880653 | provisional |
+| [F01](F01_fifo_lutram_control/F01.md) | F | designs/fifo_lutram_control | 16 | 8.058712 | 505.0 | 96.0 | 56081.0 | 62800.0 | -0.0695141811880653 | provisional |
+| [F02](F02_uram_line_control/F02.md) | F | designs/uram_line_control | 16 | 8.058712 | 505.0 | 132.0 | 56007.0 | 62948.0 | -0.0695141811880653 | provisional |
 | [E041](E041_scan_clock_T16_E041/E041.md) | unknown | designs/dataflow_int | 16 | 9.7275 | 505.0 | 168.0 | 55553.0 | 59959.0 | -0.0695141811880653 | provisional |
 | [E056](E056_mixed_T4_feasibility/E056.md) | unknown | designs/dataflow_mix | 4 | 10.46292 | 1160.0 | 168.0 | 237025.0 | 120073.0 | -0.0695141811880653 | infeasible |
 | [P10](P10_exact10_packing_T16/P10.md) | P | designs/packing_network | 16 | 12.156332 | 254.0 | 168.0 | 101488.0 | 80563.0 | -0.0695141811880653 | infeasible |
@@ -126,6 +142,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [E036](E036_scan_split_T16_E036/E036.md) | unknown | designs/dataflow_int | 16 | 78.94023 | 565.0 | 168.0 | 79846.0 | 76416.0 | -0.0695141811880653 | provisional |
 | [E033](E033_dataflow_fixed_T32_single/E033.md) | unknown | designs/dataflow_v1 | 32 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | infeasible |
 | [E031](E031_dataflow_fixed_T32/E031.md) | unknown | designs/dataflow_v1 | 32 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | infeasible |
+| [S06](S06_tile_fusion_B64/S06.md) | S | designs/tile_fusion | 32 | 129.81873 | 296.0 | 18.0 | 136162.0 | 74127.0 | -0.0695141811880653 | infeasible |
 | [S05](S05_tile_fusion_B32/S05.md) | S | designs/tile_fusion | 32 | 141.66377 | 296.0 | 18.0 | 120033.0 | 74038.0 | -0.0695141811880653 | infeasible |
 | [S01](S01_ddr_global_probe/S01.md) | S | designs/ddr_global_probe | 32 | 167.30473 | 254.0 | 11286.0 | 48121.0 | 49034.0 | -0.0695141811880653 | invalid_config |
 | [S04](S04_tile_fusion_B16/S04.md) | S | designs/tile_fusion | 32 | 167.53977 | 296.0 | 18.0 | 114061.0 | 73901.0 | -0.0695141811880653 | infeasible |
@@ -141,6 +158,12 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [C01](C01_wino_packing_T4_all/C01.md) | C | designs/combination_network | 4 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [C02](C02_wino_packing_T4_conv3/C02.md) | C | designs/combination_network | 4 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [C03](C03_wino_packing_T8_all/C03.md) | C | designs/combination_network | 8 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [W05](W05_winograd_network_T16/W05.md) | W | designs/winograd_network | 16 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [W06](W06_winograd_network_T8/W06.md) | W | designs/winograd_network | 8 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [W11](W11_fixed_tiles_T8_allcontinuous_4ns/W11.md) | W | designs/winograd_continuous | 8 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
+| [C08](C08_wino_conv2w8_continuous_T8/C08.md) | C | designs/winograd_mixed_packing | 8 | unknown | unknown | unknown | unknown | unknown | -0.07589037644656216 | fail |
+| [W12](W12_fixed_tiles_T16_allcontinuous_4ns/W12.md) | W | designs/winograd_continuous | 16 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
+| [F03](F03_continuous_T16_oldpad_4ns/F03.md) | F | designs/continuous_direct | 16 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
 
 ## Estimates And Actuals
 
@@ -172,6 +195,19 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [S04](S04_tile_fusion_B16/S04.md) | frame | 254.0 | 296.0 | 16.535433070866134 | 8843233.0 | 16753977.0 | 89.45533833610399 | infeasible |
 | [W07](W07_winograd_conv1_T16_header_retry/W07.md) | layer | 144.0 | 145.0 | 0.694444444444442 | 1431256.0 | 5721420.0 | 299.7481931953473 | provisional |
 | [S05](S05_tile_fusion_B32/S05.md) | frame | 254.0 | 296.0 | 16.535433070866134 | 7521249.0 | 14166377.0 | 88.3513895099072 | infeasible |
+| [P12](P12_exact10_packing_T4/P12.md) | frame | 1007.0 | 1007.0 | 0.0 | 1350500.0 | 1355582.0 | 0.3763050721954819 | infeasible |
+| [W04](W04_winograd_conv1_T16/W04.md) | layer | 144.0 | unknown | unknown | 1431256.0 | unknown | unknown | fail |
+| [W05](W05_winograd_network_T16/W05.md) | frame | 325.0 | unknown | unknown | 1431256.0 | unknown | unknown | fail |
+| [W06](W06_winograd_network_T8/W06.md) | frame | 647.0 | unknown | unknown | 906968.0 | unknown | unknown | fail |
+| [S06](S06_tile_fusion_B64/S06.md) | frame | 254.0 | 296.0 | 16.535433070866134 | 6916321.0 | 12981873.0 | 87.69911055313946 | infeasible |
+| [F01](F01_fifo_lutram_control/F01.md) | frame | 505.0 | 505.0 | 0.0 | 2014678.0 | 2014678.0 | 0.0 | provisional |
+| [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) | frame | 325.0 | 326.0 | 0.3076923076922977 | 2100000.0 | 1887051.0 | -10.140428571428572 | provisional |
+| [F02](F02_uram_line_control/F02.md) | frame | 505.0 | 505.0 | 0.0 | 2014678.0 | 2014678.0 | 0.0 | provisional |
+| [W11](W11_fixed_tiles_T8_allcontinuous_4ns/W11.md) | frame | 647.0 | unknown | unknown | 620200.0 | unknown | unknown | fail |
+| [C08](C08_wino_conv2w8_continuous_T8/C08.md) | frame | 519.0 | unknown | unknown | 620200.0 | unknown | unknown | fail |
+| [W12](W12_fixed_tiles_T16_allcontinuous_4ns/W12.md) | frame | 325.0 | unknown | unknown | 1140400.0 | unknown | unknown | fail |
+| [P08](P08_builtin_mapping_implementation/P08.md) | PE | 1.0 | 1.0 | 0.0 | 63.0 | unknown | unknown | impl_complete |
+| [F03](F03_continuous_T16_oldpad_4ns/F03.md) | frame | 505.0 | unknown | unknown | 1140400.0 | unknown | unknown | fail |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -182,13 +218,13 @@ Largest percentage deviations (a zero paper denominator has no percentage):
 | [S03](S03_tile_fusion_B8/S03.md) | latency_cycles | 11935713.0 | 22803545.0 | 91.05306067597303 | infeasible |
 | [S04](S04_tile_fusion_B16/S04.md) | latency_cycles | 8843233.0 | 16753977.0 | 89.45533833610399 | infeasible |
 | [S05](S05_tile_fusion_B32/S05.md) | latency_cycles | 7521249.0 | 14166377.0 | 88.3513895099072 | infeasible |
+| [S06](S06_tile_fusion_B64/S06.md) | latency_cycles | 6916321.0 | 12981873.0 | 87.69911055313946 | infeasible |
 | [W02](W02_direct_f2_control/W02.md) | LUT | 1100.0 | 503.0 | -54.27272727272727 | pass |
+| [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) | LUT | 55000.0 | 79158.0 | 43.92363636363636 | provisional |
 | [W03](W03_integer_f2_16bit/W03.md) | LUT | 1500.0 | 2155.0 | 43.66666666666668 | pass |
 | [P02](P02_signed8_direct_control/P02.md) | LUT | 100.0 | 57.0 | -43.00000000000001 | pass |
 | [P10](P10_exact10_packing_T16/P10.md) | latency_cycles | 2130800.0 | 3039083.0 | 42.62638445654214 | infeasible |
 | [P05](P05_signed8_builtin_preadder/P05.md) | LUT | 220.0 | 127.0 | -42.27272727272727 | pass |
-| [P10](P10_exact10_packing_T16/P10.md) | LUT | 72240.0 | 101488.0 | 40.48726467331119 | infeasible |
-| [W07](W07_winograd_conv1_T16_header_retry/W07.md) | LUT | 22000.0 | 30872.0 | 40.32727272727272 | provisional |
 
 Cause analysis is in each linked interpretation: ignored external scratch ports allocate full on-chip maps; dynamic tiled memory banks add address/multiplexer logic; packing residual/borrow stages increase both LUT and per-pixel pipeline drain; wider Winograd inverse arithmetic and raster FIFOs exceed pure-product budgets; explicit register reductions change timing and FF.
 
@@ -199,20 +235,30 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | id | scope | parent | operation | status | impl_DSP | impl_BRAM36 | impl_LUT | impl_FF | impl_URAM | impl_WNS_ns | timing_met | rtl_status | rtl_latency_max | rtl_interval_max | cycle_deviation_pct |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [E070](E070_first_feasible_implementation/E070.md) | frame | E039 | impl | impl_complete | 270.0 | 31.0 | 20454.0 | 33844.0 | 0.0 | -1.277 | False | unknown | unknown | unknown | unknown |
+| [P08](P08_builtin_mapping_implementation/P08.md) | PE | P05 | impl | impl_complete | 1.0 | 0.0 | 21.0 | 41.0 | 0.0 | 2.805 | True | unknown | unknown | unknown | unknown |
 
 ## Failed Directions
 
-| id | series | status | notes |
-| --- | --- | --- | --- |
-| [S01](S01_ddr_global_probe/S01.md) | S | invalid_config | ; Required external DDR AXI bundles not generated: scratch1, scratch2 |
-| [P10](P10_exact10_packing_T16/P10.md) | P | infeasible | unknown |
-| [C01](C01_wino_packing_T4_all/C01.md) | C | fail | ; C simulation not accepted (exit=1); synthesis not eligible |
-| [C02](C02_wino_packing_T4_conv3/C02.md) | C | fail | ; C simulation not accepted (exit=1); synthesis not eligible |
-| [C03](C03_wino_packing_T8_all/C03.md) | C | fail | ; C simulation not accepted (exit=1); synthesis not eligible |
-| [S03](S03_tile_fusion_B8/S03.md) | S | infeasible | unknown |
-| [P11](P11_exact10_packing_T8/P11.md) | P | infeasible | unknown |
-| [S04](S04_tile_fusion_B16/S04.md) | S | infeasible | unknown |
-| [S05](S05_tile_fusion_B32/S05.md) | S | infeasible | unknown |
+| id | series | status | failure_reason | notes |
+| --- | --- | --- | --- | --- |
+| [S01](S01_ddr_global_probe/S01.md) | S | invalid_config | ; Required external DDR AXI bundles not generated: scratch1, scratch2 | ; Required external DDR AXI bundles not generated: scratch1, scratch2 |
+| [P10](P10_exact10_packing_T16/P10.md) | P | infeasible | LUT=101488.0 exceeds 81984 | unknown |
+| [C01](C01_wino_packing_T4_all/C01.md) | C | fail | F2/F3 size macros collide with AMD ap_fixed header identifiers; independent header-order retries preserve the failed source; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:125:7: error: expected identifier; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:570:77: error: expected ';' at end of declaration | ; C simulation not accepted (exit=1); synthesis not eligible |
+| [C02](C02_wino_packing_T4_conv3/C02.md) | C | fail | F2/F3 size macros collide with AMD ap_fixed header identifiers; independent header-order retries preserve the failed source; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:125:7: error: expected identifier; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:570:77: error: expected ';' at end of declaration | ; C simulation not accepted (exit=1); synthesis not eligible |
+| [C03](C03_wino_packing_T8_all/C03.md) | C | fail | F2/F3 size macros collide with AMD ap_fixed header identifiers; independent header-order retries preserve the failed source; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:125:7: error: expected identifier; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:570:77: error: expected ';' at end of declaration | ; C simulation not accepted (exit=1); synthesis not eligible |
+| [S03](S03_tile_fusion_B8/S03.md) | S | infeasible | LUT=113576.0 exceeds 81984 | unknown |
+| [P11](P11_exact10_packing_T8/P11.md) | P | infeasible | LUT=165606.0 exceeds 81984 | unknown |
+| [S04](S04_tile_fusion_B16/S04.md) | S | infeasible | LUT=114061.0 exceeds 81984 | unknown |
+| [S05](S05_tile_fusion_B32/S05.md) | S | infeasible | LUT=120033.0 exceeds 81984 | unknown |
+| [P12](P12_exact10_packing_T4/P12.md) | P | infeasible | LUT=292053.0 exceeds 81984 | unknown |
+| [W04](W04_winograd_conv1_T16/W04.md) | W | fail | F2/F3 size macros collide with AMD ap_fixed header identifiers; independent header-order retries preserve the failed source; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:125:7: error: expected identifier; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:570:77: error: expected ';' at end of declaration | ; C simulation not accepted (exit=1); synthesis not eligible |
+| [W05](W05_winograd_network_T16/W05.md) | W | fail | F2/F3 size macros collide with AMD ap_fixed header identifiers; independent header-order retries preserve the failed source; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:125:7: error: expected identifier; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:570:77: error: expected ';' at end of declaration | ; C simulation not accepted (exit=1); synthesis not eligible |
+| [W06](W06_winograd_network_T8/W06.md) | W | fail | F2/F3 size macros collide with AMD ap_fixed header identifiers; independent header-order retries preserve the failed source; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:125:7: error: expected identifier; /home/lipuze/amdfpga/2026.1/Vitis/include/etc/ap_fixed_base.h:570:77: error: expected ';' at end of declaration | ; C simulation not accepted (exit=1); synthesis not eligible |
+| [S06](S06_tile_fusion_B64/S06.md) | S | infeasible | LUT=136162.0 exceeds 81984 | unknown |
+| [W11](W11_fixed_tiles_T8_allcontinuous_4ns/W11.md) | W | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (W11/source/srcnn.cpp:488:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
+| [C08](C08_wino_conv2w8_continuous_T8/C08.md) | C | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (C08/source/srcnn.cpp:462:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
+| [W12](W12_fixed_tiles_T16_allcontinuous_4ns/W12.md) | W | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (W12/source/srcnn.cpp:488:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
+| [F03](F03_continuous_T16_oldpad_4ns/F03.md) | F | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (F03/source/srcnn.cpp:312:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
 
 ## Pending Human Decisions
 
@@ -240,4 +286,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-10T22:56:47+00:00.
+Generated from archived evidence at 2026-10-10T23:16:39+00:00.
