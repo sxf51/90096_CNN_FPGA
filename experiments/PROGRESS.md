@@ -1,43 +1,21 @@
 # Current progress
 
-Baseline: `1f025dc`; branch: `exp/overnight-1011`; protected checksum manifest: `checksums.txt`.
+First-phase execution complete on `exp/overnight-1011`; full Set14 acceptance remains pending because comic is absent. Read SUMMARY.md, LOG.md and phase1_completion.json.
 
-## Stage status
+## Completed First Phase
 
-- Stage 0: E000 completed; csim accepted, synthesis infeasible due to 11,064 BRAM18K; runner and checksums validated.
-- Stage 1: complete on all 13 supplied images (missing comic still blocks full Set14 acceptance). E010 scan; E017 real-ap_fixed boundaries/int carrier; E015/E019/E013 full actual-ap_fixed representatives all match numpy. E016 redundant w8 verification completed. E014 timeout and compile failures retained. E062 layer scan finds Conv2-only weight8 passes (-0.075890 dB); E065 all-image real-ap_fixed boundaries and E066 full all-ap_fixed butterfly verify it. E049 exhausts all 23-bit cast states (25,165,824 cases). Uniform w8 and genuinely eight-bit activation inputs still fail quality.
-- Stage 2: complete. All valid compiler-only studies are infeasible (full-frame BRAM). E023/E024/E025 invalidated because unsupported directive config was skipped; E028/E029/E032 are valid retries. See STAGE2.md.
-- Stage 3: complete. E030 float and E033 fixed T32 pass butterfly bit identity and borders. E033 synthesis: 123.540 ms, 9 DSP, 168 BRAM18K, 136868 LUT (infeasible), 149111 FF, 31.822 ns. Legacy E031 completed with identical synthesis. Inner folds reach II=1; spatial scheduling and row padding add overhead. See STAGE3.md and streaming_analysis.csv.
-- Stage 4: all coordinate rounds completed. E043 is fastest resource-feasible on supplied data: T16, target3.33/estimated3.239 ns, 2083853 cycles, 6.93923049 ms, DSP505, BRAM18K168, LUT55325, FF67025. E059 T8 exceeds the LUT cap (85147, 72.70%). E036 tap-split reaches Conv1 II=6 and 78.94023 ms. Register E064 exceeds LUT (88306); BRAM E067 exceeds memory (670 BRAM18K). Sessions 16904 and 28449 completed. Single synthesis lock; queue wait 24h and actual synthesis timeout 60min.
-- Stage 5: E051-E055 microbenchmarks and exact integer scatter E060 completed. E060 is bit exact: 37.70206 ms, DSP254, BRAM18K137, LUT39135, FF24841; gather E057 is 29.83024 ms/168 BRAM18K. Signed16 multiplication maps to one DSP at10/4 ns. E053 fabric signed8 operator costs62 LUT (119 complete kernel). E052's zero-cycle combinational synthesis is valid and its parser classification is corrected; 60 of64 constant multipliers use DSP. Session74435 is now synthesizing E050, followed by E056 mixed T4.
-- Stage 6: E070 implementation of E039 completed: routed DSP270, BRAM36=31, LUT20454, FF33844, WNS=-1.277 ns at target10 ns (timing not closed). Worst routed Conv1 path is an eight-stage unregistered DSP-ALU reduction, 11.109 ns. Finalizer session 90189 waits for required queues, then runs E069 all-supplied-image validation and E099 plots/summary/checksum commit. All eight runner/parser tests pass. Stage 6 final closure remains pending.
+Stages 0-6 executed; failed/infeasible/timeout records retained. All 46 protected files match local and remote SHA256. User README/.gitignore/documentation edits remain outside task commits. No push or board operation.
 
-## Next action
+Best supplied-image candidate: E043. Full candidate validation is E069 when a feasible candidate exists. Implementation is E070 when a provisional candidate qualified. Actual implementation and HLS estimates are distinct.
 
-Finish E050 and E056 in session74435, then let finalizer90189 validate E043 on all supplied images and close phase one with E099. Do not restart completed IDs or switch branches while these processes run. Two-frame cosimulation enables dataflow profiling and retains deadlock detection; it remains pending for final architecture candidates. Archive internal port inventories as structured excerpts; full remote raw reports remain intact. All jobs use unique workspace/exp_runs directories. No destructive workspace reset, no push, no protected-file edit.
+## Next Action
 
-## Recovery
+Create `exp/explore-arch` from the completed first-phase branch. Phase two has not started. Read SUMMARY.md before proceeding. Preserve all first-phase designs; new designs get new directories and S/G/P/W/C/F IDs. Extend results.csv with series and write paper estimates before implementing each new idea. Start packing and Winograd microbenchmarks, then G, S, integration, combinations and free exploration.
 
-Read LOG.md, results.csv and this file first. Inspect running remote jobs before starting another synthesis. Never overwrite an existing run; new attempts get new experiment IDs. Commit after each experiment; validate staged paths and sizes first. Full Set14 acceptance and Windows reproduction are unresolved, explicitly recorded in LOG.md.
+## Environment And Recovery
 
-## Queued second phase
+SSH host xiaoxin-ubuntu, remote root /home/lipuze/amdprojects/90096_CNN_FPGA, Linux Vitis 2026.1 settings /home/lipuze/amdfpga/2026.1/Vitis/settings64.sh. One synthesis/implementation/cosim at a time under the shared memory lock. Each synthesis timeout 60 minutes, issue tuning limit 45 minutes, final cosim timeout six hours. All raw HLS workspaces are immutable under workspace/exp_runs/. Never run script.py. Verify no first-phase subprocess remains before switching branch.
 
-After all first-phase stages, create `exp/explore-arch` from `exp/overnight-1011`. Read this file and SUMMARY.md first. User authorized S/G/P/W/C/F architecture exploration, including packing and Winograd, with estimates written before implementation, 45-minute issue limit, and final implementation/cosim for eligible best candidates. Preserve first-phase designs. See latest user task for full scope; no questions in unattended mode.
+## Numeric References
 
-Exploration priorities from measured evidence: exact ten-bit coefficient packing via signed-low8 plus a small residual; mixed Conv2-weight8 using E065/E066; G2 integer Winograd with exact divide-by-four; continuous pixel schedules instead of inner-loop fill/drain; explicitly registered fabric reductions to test the E070 timing bottleneck; shallow wide FIFOs in LUTRAM. These are unimplemented hypotheses. Full Set14 coverage is still blocked by missing comic.
-
-### Handoff hypotheses (not implemented or synthesized)
-
-- Packing: split a generic signed10 coefficient into signed-low8 plus 256 times a residual in [-2,2], implement the residual with add/subtract/shift logic, and retain the original fraction9. At gap18, generic signed10 input should unpack every product; nonnegative raw activations in [0,511] permit two terms; true signed INT8 permits seven. Correct the high field when the signed low18 field is negative. Probe the DSP builtin separately because its SDK header rejects __PRESYNTHESIS__; ordinary DSP-bound multiplication is a fallback, with actual pre-adder mapping to be inspected.
-- Conv3 packing: two adjacent nonnegative activation values share a coefficient. Pack ((a-256)<<18)+b in signed27, multiply by signed-low8, undo the borrow and add 256*coefficient to the high result; restore the coefficient residual exactly. A 5x6 window, padded260x259 stream and discarded neighbor column255 cover the odd image width.
-- Winograd: use the G2/BT/AT matrices in SOURCES.md, full transform precision and exact divide-by-four before any layer cast. Nine prior rows and a 10x10 window over padded264x264 input produce 128x128 tiles; discard output row/column255. Two raster-row FIFOs of depth512 are a conservative alternative to stream_of_blocks double buffering; include their wide-memory cost and finite-FIFO ordering in estimates. Runtime integer weight transforms preserve the incoming float-weight signature; archive the equivalent offline transforms and measure load overhead.
-- Continuous direct schedule: separate line/window generation from the matrix engines, flatten pixel and fold iterations, and explicitly register a balanced fabric reduction. Window streams are wide and shallow; estimate LUTRAM/register cost before adding them. This targets the measured Conv1 spatial-loop fill/drain and E070 DSP cascade path.
-- Scatter edge kernels: nine source classes (top/interior/bottom times left/interior/right) merge taps exactly, retaining fraction9 and a wider coefficient. For output offset dy, interior ky=2-dy, top merges ky<=2-dy and bottom ky>=2-dy; analogous x. Use five 32-bit row banks plus a 5x5 register window, prime columns0/1 and flush two final rows/columns. Compare to explicit-pad scatter at identical precision/T/clock.
-- DDR scratch: the fixed eight-argument srcnn contract has no scratch parameters. Probe global m_axi support and preserve any synthesis rejection; never silently append arguments or write outside the supplied arrays. Tile fusion must replicate Conv2 features at real image edges, rather than convolving at virtual feature centers. A BxB output tile needs (B+12)x(B+12) input and (B+4)x(B+4) feature areas. DS987 gives 19.2 GB/s theoretical DDR bandwidth; the requested 50% scenario is 9.6 GB/s and is not a board measurement.
-
-After branch creation, add series to local and remote CSV schemas, widen the run/commit ID guards, and support immutable preplanned EXXX.md archives so paper estimates are committed before design implementation. Scope PE/layer/frame experiments separately in derived CSV files so microkernel latency cannot enter the network Pareto ranking. Final cosimulation should use two butterfly frames with Set14 disabled to keep the RTL workload bounded, while full supplied-image precision is validated separately.
-
-
-## Coordinate controller
-
-2026-10-10T21:02:16+00:00: All coordinate rounds completed; pending optional queues, candidate Set14 validation and first-phase finalization.
+E019/E017 establish uniform w10a10; E049 exhausts raw boundary casts. E065/E066 establish mixed Conv2-weight8 with ten-bit activations: delta PSNR -0.075890 dB on 13 images, butterfly bit identity. E062 demonstrates true eight-bit activations and Conv1/Conv3 weight8 do not pass. Conv3 quantized w10 coefficients fit signed8 without changing their fractional scale, enabling exact packing exploration. See SOURCES.md for WP486, DDR bandwidth and Winograd references.

@@ -571,7 +571,7 @@
   "purpose": "Exact 32-bit partial-sum scatter with explicit padding. Ideal DSP 162/64/25=251; Conv3 partial cache 5*255*32=40800 bits (~5 BRAM18K with row banks), plus pad3 row cache 255*32*10 bits. Nominal frame floor 2080800 cycles, scatter processes 67081 rather than 65025 pixels (3.16% work overhead).",
   "quality_provenance": {
     "image_count": 13,
-    "method": "Same quantization and butterfly bit identity; quality measured by reference",
+    "method": "Identical quantization points and full butterfly bit identity to E019/E017",
     "path": "experiments/E017_apfixed_boundary_w10a10/metrics.json"
   },
   "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
@@ -590,7 +590,7 @@
   "storage": "lutram",
   "time": "2026-10-10T21:02:22+00:00",
   "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 08:02:24 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
-  "unroll": "Cout/Cout/tap",
+  "unroll": "Cout/Cout/Cin",
   "validation": {
     "bit_exact": true,
     "border_mse": 1.661846957728205e-05,

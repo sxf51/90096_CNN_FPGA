@@ -569,6 +569,11 @@
   ],
   "precision": "w10a10acc23",
   "purpose": "Compare gather with channel-reduced scatter using 5x255x32-bit partial sums and a 5x5 register window. The register window should avoid five simultaneous read-modify-write accesses per physical BRAM bank. Ideal Conv3 budget 25 DSP at T32; padding adds 3.16% Conv3 input work.",
+  "quality_provenance": {
+    "image_count": 13,
+    "method": "Identical quantization points and full butterfly bit identity to E019/E017",
+    "path": "experiments/E017_apfixed_boundary_w10a10/metrics.json"
+  },
   "quick": true,
   "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
   "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
@@ -583,7 +588,7 @@
   "storage": "register",
   "time": "2026-10-10T21:07:58+00:00",
   "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 08:08:00 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
-  "unroll": "Cout/Cout/tap",
+  "unroll": "Cout/Cout/Cin",
   "validation": {
     "bit_exact": true,
     "border_mse": 1.661846957728205e-05,
