@@ -1,0 +1,18 @@
+{
+  "id": "E049",
+  "name": "integer_boundary_exhaustive",
+  "stage": 4,
+  "design": "designs/dataflow_int",
+  "fixed": true,
+  "defines": {"EXP_W_BITS": 10, "EXP_A_BITS": 10, "EXP_T": 32},
+  "precision": "boundary_w10a10",
+  "clock": 10,
+  "csim_only": true,
+  "tb_files": ["exp/tb/integer_numeric.cpp"],
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "purpose": "Exhaust every 23-bit signed accumulator pattern for all three layer-boundary casts: 25165824 cases. Prove nearest-even rounding and AP_SAT including negative half ties and both saturation limits.",
+  "changes": "Independent testbench under exp/tb comparing the E048 integer primitive to real AMD ap_fixed. No original testbench or threshold changes.",
+  "interpretation": "This verifies cast semantics over the entire representable accumulator domain; E048 independently verifies complete spatial and stream arithmetic on butterfly. It does not establish network hardware feasibility.",
+  "conclusion": "Use exact raw-integer boundary logic only if all cases match.",
+  "notes": "primitive validation only; no network latency or PSNR claimed"
+}
