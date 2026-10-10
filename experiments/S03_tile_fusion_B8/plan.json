@@ -1,0 +1,67 @@
+{
+  "config_sha256": "fece8c909dac6214aee05eebd2061875d33de10a3610bad81bc25b381651b546",
+  "configuration": {
+    "T": 32,
+    "cache_bits": 50080,
+    "changes": "Independent tile engine, no DATAFLOW between tiles/layers. Same exact fixed-point arithmetic and original float-array interface; on-chip input and feature2 caches use spatial banks.",
+    "clock": 10,
+    "conclusion": "Select the best block only from measured feasible exact variants; tile recomputation trades line buffers for sequential work.",
+    "ddr_bandwidth_GB_s": [
+      19.2,
+      9.6
+    ],
+    "ddr_bytes_per_frame": 1931016,
+    "ddr_lower_bound_ms": [
+      0.10057375,
+      0.2011475
+    ],
+    "defines": {
+      "EXP_A_BITS": 10,
+      "EXP_BLOCK": 8,
+      "EXP_FRAMES": 2,
+      "EXP_STORAGE": 1,
+      "EXP_T": 32,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/tile_fusion",
+    "estimates": {
+      "BRAM18K": 0,
+      "Conv1_DSP": 162,
+      "Conv2_DSP": 64,
+      "Conv3_DSP": 25,
+      "DSP": 254,
+      "T": 96,
+      "URAM": 0,
+      "basis": "Sequential T32 Conv1 and Conv2 for every scheduled halo feature, then T32 Conv3 for65025 valid outputs. Input cyclic9x9 and feature2 cyclic5x5/channel banks use LUTRAM; no full feature1 array. Count ceil255/B partial tiles and their complete halo; bandwidth times remain lower bounds.",
+      "latency_cycles": 11935713
+    },
+    "feature_recompute_ratio": 2.267681660899654,
+    "fixed": true,
+    "id": "S03",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "input_repetition_ratio": 6.299115724721261,
+    "input_values_read": 409600,
+    "interpretation": "Compare measured per-tile scheduling overhead, cache LUT use, halo recomputation and requested versus inferred burst lengths. DDR stalls are outside csynth's accurate model.",
+    "name": "tile_fusion_B8",
+    "precision": "w10a10acc23",
+    "purpose": "Explore B=8 output-tile fusion. Cache(B+12)^2 input values and(B+4)^2 Conv2 features, fusing Conv1/Conv2 per feature center. Clamp each feature center to the true image before selecting its9x9 input patch, preserving replicate at Conv3. Partial edge blocks still schedule complete feature halos; unused output cells are skipped.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "requested_burst_words": 256,
+    "scheduled_feature_centers": 147456,
+    "scope": "frame",
+    "series": "S",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_s",
+    "storage": "lutram",
+    "unroll": "Cout/Cout/tap"
+  },
+  "created_at": "2026-10-10T22:01:08+00:00",
+  "created_from_commit": "bb6d02d92bcd581c2e6287d2efe924a1418f0f0d",
+  "purpose_section": "Explore B=8 output-tile fusion. Cache(B+12)^2 input values and(B+4)^2 Conv2 features, fusing Conv1/Conv2 per feature center. Clamp each feature center to the true image before selecting its9x9 input patch, preserving replicate at Conv3. Partial edge blocks still schedule complete feature halos; unused output cells are skipped.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 254 |\n| Conv1_DSP | 162 |\n| Conv2_DSP | 64 |\n| Conv3_DSP | 25 |\n| BRAM18K | 0 |\n| URAM | 0 |\n| T | 96 |\n| latency_cycles | 11935713 |\n| basis | Sequential T32 Conv1 and Conv2 for every scheduled halo feature, then T32 Conv3 for65025 valid outputs. Input cyclic9x9 and feature2 cyclic5x5/channel banks use LUTRAM; no full feature1 array. Count ceil255/B partial tiles and their complete halo; bandwidth times remain lower bounds. |\n\nPlanned at 2026-10-10T22:01:08+00:00; estimates are hypotheses, not tool measurements."
+}
