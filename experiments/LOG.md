@@ -87,6 +87,8 @@
 
 - 2026-10-10T19:35:05+00:00: E048: dataflow_integer_T32; status=infeasible; latency_ms_est=29.13855; 
 
+- 2026-10-10T19:37:05+00:00: E039: scan_storage_T32_E039; status=provisional; latency_ms_est=29.83024; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T19:08 UTC: Row-buffer padding has separate read-row and write-row phases. C synthesis does not execute finite-FIFO backpressure, so the reported maximum-component dataflow latency may underestimate the real schedule when pad3 serializes row production and consumption. Verify with the authorized RTL cosimulation; phase-two online padding is a proposed measured control, not a claimed speedup.
