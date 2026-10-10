@@ -1,0 +1,58 @@
+================================================================
+== Design Size Report
+================================================================
+
+* Total Instructions per Compilation Phase
++---------------+----------------------------+--------------+----------------------------------------------------------------------------------------+
+| Phase         | Step                       | Instructions | Description                                                                            |
++---------------+----------------------------+--------------+----------------------------------------------------------------------------------------+
+| Compile/Link  |                            |  9,639       | After all functions are compiled and linked into a single design                       |
+|               |                            |              |                                                                                        |
+| Unroll/Inline |                            |              | After user unroll and inline pragmas are applied                                       |
+|               | (1) unroll                 | 23,348       | user unroll pragmas are applied                                                        |
+|               | (2) simplification         | 12,236       | simplification of applied user unroll pragmas                                          |
+|               | (3) inline                 | 11,701       | user inline pragmas are applied                                                        |
+|               | (4) simplification         | 11,584       | simplification of applied user inline pragmas                                          |
+|               |                            |              |                                                                                        |
+| Array/Struct  |                            |              | After user array partition and struct aggregate/disaggregate pragmas are applied       |
+|               | (1) array partition        | 37,812       | user array partition pragmas are applied                                               |
+|               | (2) simplification         | 36,897       | simplification of applied user array partition & struct aggregate/disaggregate pragmas |
+|               | (3) aggregate/disaggregate | 36,903       | user struct aggregate/disaggregate pragmas are applied                                 |
+|               | (4) array reshape          | 38,947       | apply array reshape pragmas                                                            |
+|               | (5) access patterns        | 40,787       | array access pattern optmizations                                                      |
+|               |                            |              |                                                                                        |
+| Performance   |                            |              | After transformations are applied to meet performance pragma targets                   |
+|               | (1) loop simplification    | 40,712       | loop and instruction simplification                                                    |
+|               | (2) parallelization        | 38,845       | loops are unrolled or pipelined to meet performance targets                            |
+|               | (3) array partition        | 40,954       | arrays are partitioned to meet performance targets                                     |
+|               | (4) simplification         | 38,970       | simplification of design after performance transformations                             |
+|               |                            |              |                                                                                        |
+| HW Transforms |                            |              | After hardware transfomations                                                          |
+|               | (1) lowering               | 38,759       | initial conversion to HW specific instructions                                         |
+|               | (2) optimizations          | 39,561       | high level synthesis optimizations                                                     |
++---------------+----------------------------+--------------+----------------------------------------------------------------------------------------+
+
+* Instructions per Function for each Compilation Phase
++-------------------------------------+---------------+--------------+---------------+--------------+-------------+---------------+
+| Function                            | Location      | Compile/Link | Unroll/Inline | Array/Struct | Performance | HW Transforms |
++-------------------------------------+---------------+--------------+---------------+--------------+-------------+---------------+
+| + srcnn                             | srcnn.cpp:250 | 9,639        | 11,584        | 40,787       | 38,970      | 39,561        |
+|  + dataflow_region                  | srcnn.cpp:230 | 5,067        | 10,581        | 23,003       | 21,188      | 21,731        |
+|     read_input                      | srcnn.cpp:8   |   761        |    165        |    165       |    165      |    177        |
+|     replicate_pad<ap_fixed<10, 2... | srcnn.cpp:16  |    83        |     43        |     43       |     42      |     58        |
+|   + conv12                          | srcnn.cpp:158 | 2,853        |  7,217        | 15,577       | 15,319      | 15,441        |
+|      conv1_stream                   | srcnn.cpp:36  | 1,470        |  5,052        | 10,863       | 10,637      | 10,726        |
+|      conv2_stream                   | srcnn.cpp:110 | 1,372        |  2,159        |  4,708       |  4,676      |  4,707        |
+|     replicate_pad<numeric::pixel... | srcnn.cpp:16  |    83        |    233        |    649       |    775      |    811        |
+|     conv3_stream                    | srcnn.cpp:167 | 1,088        |  2,832        |  6,478       |  4,796      |  5,141        |
+|     write_output                    | srcnn.cpp:223 |   152        |     69        |     69       |     69      |     79        |
++-------------------------------------+---------------+--------------+---------------+--------------+-------------+---------------+
+
+* Design Size Message Settings
++---------------------------------------------+--------+------------------------------------------------------------------+
+| Message Setting                             | Value  | Description                                                      |
++---------------------------------------------+--------+------------------------------------------------------------------+
+| config_compile -design_size_maximum_warning | 100000 | Show a warning when total design instructions exceeds this value |
++---------------------------------------------+--------+------------------------------------------------------------------+
+
+
