@@ -54,7 +54,9 @@ def main():
     while True:
         rows = measured()
         t_rows = [r for r in rows if r["id"] in {"E057", "E058", "E059"}]
-        accepted = [r for r in t_rows if r["status"] in {"pass", "provisional"}]
+        accepted = [r for r in rows if str(r["stage"]) == "4" and
+                    r["design"].startswith("designs/dataflow") and
+                    r["status"] in {"pass", "provisional"}]
         if accepted and implementation is None:
             parent = choose(accepted)
             config = {"id": "E070", "name": "first_feasible_implementation", "stage": 6,

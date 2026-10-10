@@ -27,4 +27,4 @@ After all first-phase stages, create `exp/explore-arch` from `exp/overnight-1011
 
 ## Coordinate controller
 
-2026-10-10T18:57:08+00:00: Waiting for E057/E058/E059 banked T scans; synthesis is serialized by the memory lock.
+2026-10-10T19:38:06+00:00: Started background implementation of E039 as E070; no timing result inferred.
