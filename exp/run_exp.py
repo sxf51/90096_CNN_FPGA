@@ -43,12 +43,17 @@ def check_protected():
 
 
 @contextmanager
-def lock(path):
+def lock(path, wait_timeout=0):
     path.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        fd = os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-    except FileExistsError:
-        raise RuntimeError(f"Run lock exists: {path}; inspect its PID before recovery")
+    started = time.monotonic()
+    while True:
+        try:
+            fd = os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            break
+        except FileExistsError:
+            if time.monotonic() - started >= wait_timeout:
+                raise RuntimeError(f"Run lock exists: {path}; inspect its PID before recovery")
+            time.sleep(2)
     try:
         os.write(fd, f"{os.getpid()} {utc()}\n".encode())
         os.close(fd)
@@ -121,9 +126,6 @@ def parse_xml(path):
     }
     for key, query in specs.items():
         metrics[key] = number(root.findtext(query))
-    # Older reports omit URAM when no UltraRAM is used; do not infer other values.
-    if metrics["URAM"] is None and root.find(".//AreaEstimates/Resources") is not None:
-        metrics["URAM"] = 0
     loops = []
     for node in root.findall(".//SummaryOfLoopLatency/*"):
         item = {child.tag: child.text for child in node}
@@ -157,15 +159,19 @@ def generate_config(config, work):
     defines = dict(config.get("defines", {}))
     defines.update(EXP_FIXED=int(config.get("fixed", False)), EXP_SET14=int(config.get("set14", False)),
                    EXP_REFERENCE=int(bool(config.get("reference"))), EXP_NUMPY_REFERENCE=int(bool(config.get("numpy_reference"))))
+    defines["EXP_QUICK"] = int(config.get("quick", False))
     flags = "-std=c++14 -ffp-contract=off " + " ".join(f"-D{k}={v}" for k, v in defines.items())
-    flags += " -I" + snapshot.as_posix() + " -I" + (ROOT / "src").as_posix()
+    includes = (snapshot.as_posix(), (ROOT / "src").as_posix())
+    if any(re.search(r"\s", path) for path in includes):
+        raise RuntimeError("Vitis 2026.1 rewrites quoted absolute -I paths incorrectly; use a whitespace-free checkout")
+    flags += " " + " ".join("-I" + path for path in includes)
     lines = ["part=xck26-sfvc784-2LV-c", "[hls]", "flow_target=vivado",
              f"clock={config['clock']}ns", "package.output.format=ip_catalog",
              "syn.top=" + config.get("top", "srcnn"), "csim.O=true", "syn.cflags=" + flags, "tb.cflags=" + flags]
     for path in sorted(snapshot.glob("*.cpp")):
         lines.append("syn.file=" + path.as_posix())
-    for name in ("exp/tb/validate.cpp", "exp/tb/golden.cpp", "test/tb_conv1.cpp", "test/tb_srcnn.cpp", "test/util.cpp",
-                 "src/weights", "test/set5", "test/set14"):
+    for name in config.get("tb_files", ("exp/tb/validate.cpp", "exp/tb/golden.cpp", "test/tb_conv1.cpp", "test/tb_srcnn.cpp", "test/util.cpp",
+                                       "src/weights", "test/set5", "test/set14")):
         lines.append("tb.file=" + (ROOT / name).as_posix())
     if config.get("reference"):
         reference = ROOT / config["reference"]
@@ -231,7 +237,8 @@ def run(config):
         raise RuntimeError("Experiment already exists; use a new ID: " + exp_id)
     work.mkdir(parents=True)
     archive.mkdir(parents=True)
-    config.setdefault("source_commit", subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip())
+    if "source_commit" not in config:
+        config["source_commit"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     config.update(time=utc(), os=platform.platform(), cpu_count=os.cpu_count())
     settings = Path(config.get("settings", os.environ.get("VITIS_SETTINGS", "")))
     row = dict.fromkeys(FIELDS, "")
@@ -270,10 +277,25 @@ def run(config):
                 row["csim_pass"] = False
                 row["status"] = "timeout" if code == 124 else "fail"
                 raise RuntimeError(f"C simulation not accepted (exit={code}); synthesis not eligible")
+            if config.get("quality_reference"):
+                reference_row = json.loads((ROOT / config["quality_reference"]).read_text())
+                if (not validation.get("bit_exact") or not config.get("reference") or
+                        reference_row["precision_w_a_acc"] != row["precision_w_a_acc"] or
+                        reference_row.get("csim_pass") is not True or
+                        number(reference_row.get("delta_psnr")) is None):
+                    raise RuntimeError("Invalid precision provenance or failed exact comparison")
+                for key in ("set14_psnr", "delta_psnr"):
+                    row[key] = reference_row[key]
+                config["quality_provenance"] = {"path": config["quality_reference"],
+                    "method": "Same quantization and butterfly bit identity; quality measured by reference",
+                    "image_count": 13}
+                if number(row["delta_psnr"]) < -0.1:
+                    row["status"] = "precision_fail"
+                    raise RuntimeError("Inherited precision point fails the unchanged 0.1 dB gate")
             if config.get("csim_only"):
                 row["status"] = "csim_pass"
             else:
-                with lock(ROOT / "workspace/exp_runs/.synthesis.lock"):
+                with lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=3600):
                     code, seconds = invoke(["v++", "-c", "--mode", "hls", "--config", str(cfg), "--work_dir", str(work)],
                                            settings, ROOT, work / "csynth.console.log", min(config.get("synth_timeout", 3600), 3600))
                 row["synth_minutes"] = seconds / 60
@@ -308,7 +330,8 @@ def run(config):
                     row["latency_ms_est"] = metrics["latency_cycles"] * max(config["clock"], metrics["clock_est_ns"]) / 1e6
                 targets = config.get("ii_targets", {})
                 for loop in loops:
-                    loop["target_ii"] = next((v for k, v in targets.items() if k in loop["loop"]), None)
+                    loop["target_ii"] = next((v for k, v in targets.items() if k in loop["loop"]),
+                                             1 if loop["actual_ii"] is not None else None)
                     if loop["actual_ii"] is not None:
                         loop["ii_ok"] = None if loop["target_ii"] is None else loop["actual_ii"] <= loop["target_ii"]
                 compared = [loop for loop in loops if loop.get("target_ii") is not None]
@@ -327,6 +350,8 @@ def run(config):
         config["errors"] = errors
         config["parsed_loops"] = loops
         config["parsed_modules"] = modules
+        if (work / "source").exists():
+            shutil.copytree(work / "source", archive / "source", dirs_exist_ok=True)
         write_json(archive / "config.json", config)
         write_json(archive / "metrics.json", row)
         archive_logs(work, archive)

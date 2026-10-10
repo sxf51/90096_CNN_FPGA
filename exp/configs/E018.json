@@ -1,0 +1,12 @@
+{
+  "id": "E018", "name": "apfixed_w16a16_single", "stage": 1,
+  "design": "designs/fixed_ref", "clock": 10, "fixed": true,
+  "set14": false, "quick": true, "csim_only": true,
+  "precision": "w16a16acc35", "defines": {"EXP_W_BITS": 16, "EXP_A_BITS": 16},
+  "numpy_reference": "exp/numeric_reference/w16a16/numpy_reference",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh", "csim_timeout": 2700,
+  "purpose": "Cross-check complete actual-ap_fixed w16a16 butterfly arithmetic after the full-image E014 attempt. The 13-image quality sweep is E010; this experiment verifies its quantization semantics.",
+  "changes": "Same fixed_ref source and all-ap_fixed MACs as E014; one inference with mandatory full-output bit identity to numpy.",
+  "interpretation": "Preserves every butterfly pixel and border check. Original float tests are already independently retained; arithmetic identity and precision acceptance are reported separately.",
+  "conclusion": "Use this representative together with E012 and E013 to establish fake-quant credibility. Complete standard Set14 still needs comic."
+}

@@ -1,0 +1,13 @@
+{
+  "id": "E031", "name": "dataflow_fixed_T32", "stage": 3,
+  "design": "designs/dataflow_v1", "clock": 10, "T": 32, "fixed": true,
+  "precision": "w10a10acc23", "storage": "register", "unroll": "Cout/Cout/tap",
+  "defines": {"EXP_T": 32, "EXP_STORAGE": 0, "EXP_W_BITS": 10, "EXP_A_BITS": 10},
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "ii_targets": {"c1_fold": 1, "c2_fold": 1, "c3_fold": 1},
+  "purpose": "Synthesize first streaming fixed architecture at T=32 after exact butterfly agreement with the actual-ap_fixed-boundary reference. Ideal multiplication budget 162+64+25=251 DSP, compute floor 2,080,800 frame cycles plus weight load, padding and pipeline overhead; these are predictions, not measured results.",
+  "changes": "Same streaming source as float E030; internal AP_RND_CONV/AP_SAT w10a10 with 23-bit full-product accumulators and on-chip runtime parameter load.",
+  "interpretation": "Read all loop II and dataflow warnings. T is fold schedule, not a promise of end-to-end pixel II: pipeline fill/drain, line updates and pad-row stalls must be measured. E017 verifies all actual quantization points; the separately running full ap_fixed E012 will independently confirm the arithmetic reference.",
+  "conclusion": "Compare achieved resources, latency and II before scanning T. Missing Set14 comic means precision acceptance is provisional."
+}

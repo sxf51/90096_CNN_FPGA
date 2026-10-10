@@ -2,12 +2,12 @@
 """Commit only this task's paths after checking protected files and file sizes."""
 import subprocess
 import sys
-from run_exp import ROOT, check_protected
+from run_exp import ROOT, check_protected, lock
 
 OWNED = ("exp/", "designs/", "experiments/", "docs/0002-overnight-experiments.md")
 
 
-def main():
+def commit():
     if len(sys.argv) < 2 or not sys.argv[1].startswith("E"):
         raise SystemExit("Usage: python3 exp/commit_exp.py E000 [message]")
     branch = subprocess.check_output(["git", "branch", "--show-current"], cwd=ROOT, text=True).strip()
@@ -40,4 +40,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    with lock(ROOT / "workspace/exp_runs/.commit.lock", wait_timeout=120):
+        commit()

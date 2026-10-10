@@ -1,0 +1,24 @@
+{
+  "changes": "Standalone PE microbenchmark, not a complete SRCNN design. 64 sample operands; explicit bit-exact integer checker.",
+  "clock": 4,
+  "conclusion": "Record operator mapping evidence and compare to network DSP/LUT budgets.",
+  "defines": {
+    "EXP_MUL_WIDTH": 16
+  },
+  "design": "designs/micro_multiplier",
+  "id": "E054",
+  "ii_targets": {
+    "samples": 1
+  },
+  "interpretation": "Pending actual mapping, loop II and resource report. Whole-kernel latency does not describe a network frame.",
+  "name": "mul16_default_4ns",
+  "notes": "microbenchmark only; exclude latency from network Pareto; constants are explicit representative integers",
+  "precision": "i16_i16_i32",
+  "purpose": "Check whether the signed 16x16 one-DSP mapping survives a 4 ns target.",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 5,
+  "tb_files": [
+    "exp/tb/micro_multiplier.cpp"
+  ],
+  "top": "benchmark"
+}

@@ -21,6 +21,9 @@
 #ifndef EXP_NUMPY_REFERENCE
 #define EXP_NUMPY_REFERENCE 0
 #endif
+#ifndef EXP_QUICK
+#define EXP_QUICK 0
+#endif
 
 int tb_conv1();
 int tb_srcnn();
@@ -86,14 +89,20 @@ int main() {
         read_exact("weights/conv3_weights_3x_flp.bin", &w3[0][0][0][0], N2 * F3 * F3);
         read_exact("weights/conv3_biases_3x_flp.bin", b3, N3);
         // Preserve both original testbench outputs; their zero return is not the gate.
-        tb_conv1();
-        tb_srcnn();
+        if (!EXP_QUICK || !EXP_FIXED) {
+            tb_conv1();
+            tb_srcnn();
+        }
         read_image("set5/butterfly_3x_LR_u8.bin");
-        conv1(image, w1, b1, first);
-        golden_conv1(image, w1, b1, first_ref);
-        const bool conv1_exact = std::memcmp(first, first_ref, sizeof(first)) == 0;
-        read_exact("set5/butterfly_3x_CONV1_flp.bin", &first_ref[0][0][0], N1 * H * W);
-        const double conv1_mse = mse(&first[0][0][0], &first_ref[0][0][0], N1 * H * W);
+        bool conv1_exact = false;
+        double conv1_mse = 0;
+        if (!EXP_QUICK || !EXP_FIXED) {
+            conv1(image, w1, b1, first);
+            golden_conv1(image, w1, b1, first_ref);
+            conv1_exact = std::memcmp(first, first_ref, sizeof(first)) == 0;
+            read_exact("set5/butterfly_3x_CONV1_flp.bin", &first_ref[0][0][0], N1 * H * W);
+            conv1_mse = mse(&first[0][0][0], &first_ref[0][0][0], N1 * H * W);
+        }
         infer(false);
         save("butterfly_output.bin", &output[0][0][0], H * W);
         infer(true);
@@ -155,7 +164,9 @@ int main() {
                             (!EXP_SET14 || model_psnr - golden_psnr >= -0.1))
                                     : (float_exact && conv1_exact);
         std::cout << std::setprecision(17) << "EXP_METRICS {\"csim_pass\":" << (pass ? "true" : "false")
-                  << ",\"conv1_mse\":" << conv1_mse << ",\"conv1_exact\":" << (conv1_exact ? "true" : "false")
+                  << ",\"conv1_mse\":";
+        if (EXP_QUICK && EXP_FIXED) std::cout << "null"; else std::cout << conv1_mse;
+        std::cout << ",\"conv1_exact\":" << (conv1_exact ? "true" : "false")
                   << ",\"butterfly_mse\":" << butterfly_mse << ",\"border_mse\":" << border_mse
                   << ",\"float_exact\":" << (float_exact ? "true" : "false")
                   << ",\"bit_exact\":" << (bit_exact ? "true" : "false")

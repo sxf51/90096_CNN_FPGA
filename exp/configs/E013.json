@@ -5,7 +5,8 @@
   "design": "designs/fixed_ref",
   "clock": 10,
   "fixed": true,
-  "set14": true,
+  "set14": false,
+  "quick": true,
   "csim_only": true,
   "precision": "w8a8acc19",
   "defines": {
@@ -15,8 +16,8 @@
   "numpy_reference": "exp/numeric_reference/w8a8/numpy_reference",
   "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
   "csim_timeout": 2700,
-  "purpose": "Verify fake-quant predictions with actual AMD ap_fixed on butterfly and every supplied Set14 pair.",
+  "purpose": "Verify w8a8 actual AMD ap_fixed arithmetic against numpy on butterfly even though the 13-image quality scan fails the 0.1 dB gate by 5.18 dB.",
   "changes": "Independent fixed reference retains golden external float signature; internal weights/biases and activations use AP_RND_CONV/AP_SAT. Exact product-fraction accumulators.",
-  "interpretation": "Pending real ap_fixed output and bit comparison with numpy.",
+  "interpretation": "Passing arithmetic identity is distinct from passing image quality. The complete all-ap_fixed butterfly output must match numpy; the 13-image scan remains the precision evidence and w8a8 is ineligible for whole-network selection.",
   "conclusion": "Save actual ap_fixed butterfly output for subsequent architecture bit-exact checks."
 }
