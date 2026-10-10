@@ -1,0 +1,24 @@
+{
+  "changes": "Independent all-ap_fixed fixed_ref copy with only Conv2 weight/bias and accumulator widths changed to 8/21. Boundary quantization unchanged.",
+  "clock": 10,
+  "conclusion": "Save mixed-precision provenance for phase-two Conv2 weight-only packing; complete Set14 still lacks comic.",
+  "csim_only": true,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/fixed_ref_mixed",
+  "fixed": true,
+  "id": "E066",
+  "interpretation": "Bit comparison to independently predicted numpy output is mandatory for all 13 images. Full product fractions make integer-carrier sums identical to no-overflow ap_fixed arithmetic.",
+  "name": "full_apfixed_mixed_butterfly",
+  "numpy_reference": "exp/numeric_reference/mixed_conv2w8/numpy_reference",
+  "precision": "w10_8_10a10acc23_21_23",
+  "purpose": "Verify the complete all-ap_fixed mixed network on butterfly, independently of native convolution carriers; use E065's separately measured 13-image PSNR only after exact matching.",
+  "quality_reference": "experiments/E065_apfixed_mixed_conv2w8/metrics.json",
+  "quick": true,
+  "reference": "exp/numeric_reference/mixed_conv2w8/numpy_reference/butterfly_output.bin",
+  "set14": false,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 1
+}
