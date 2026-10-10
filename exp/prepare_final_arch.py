@@ -30,7 +30,12 @@ def main():
         config = json.loads((ROOT / "experiments" / row["md_path"]).with_name("config.json").read_text())
         if eligible(row,config) and number(row["latency_ms_est"]) is not None:
             accepted.append(row)
-    accepted.sort(key=lambda row:number(row["latency_ms_est"]))
+    def rank(row):
+        config = json.loads((ROOT / "exp/configs" / (row["id"]+".json")).read_text())
+        flags = config.get("defines", {})
+        online = flags.get("EXP_ONLINE_PAD",flags.get("EXP_ALL_CONTINUOUS",0))
+        return (number(row["latency_ms_est"]),not bool(online),number(row["LUT"]),number(row["BRAM18K"]))
+    accepted.sort(key=rank)
     selected = accepted[:args.count]
     if len(selected) < 2:
         raise RuntimeError("Fewer than two accepted frame points")
@@ -76,7 +81,7 @@ def main():
             subprocess.run([sys.executable,str(ROOT / "exp/commit_exp.py"),config["id"],"plan_"+config["name"]],cwd=ROOT,check=True)
             todo.append(config["id"])
     write_json(ROOT / "experiments/final_selection.json",{
-        "selection_method":"Globally lowest latency_ms_est accepted frame points from both phases; validation operations/PE/layer kernels excluded",
+        "selection_method":"Globally lowest latency_ms_est accepted frame points from both phases; exact ties prefer online padding, then lower LUT/BRAM. Validation operations/PE/layer kernels excluded",
         "selected":[{key:row[key] for key in ("id","design","T_target","clock_target_ns","latency_ms_est","DSP","LUT","md_path")} for row in selected],
         "queue":todo,"missing_comic":True})
     print("Final queue:"," ".join(todo))
