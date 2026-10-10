@@ -11,6 +11,8 @@ analysis = []
 for row in rows:
     if not row["design"].startswith(("designs/dataflow", "designs/scatter")):
         continue
+    if not row["T_target"]:
+        continue
     archive = ROOT / "experiments" / Path(row["md_path"]).parent
     config = json.loads((archive / "config.json").read_text())
     modules = {p["module"]: p for p in config.get("parsed_modules", [])}
