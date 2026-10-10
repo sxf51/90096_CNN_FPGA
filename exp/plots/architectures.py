@@ -95,7 +95,12 @@ for metric,unit,name in (("DSP","DSP48E2 (count)","estimate_actual_dsp.png"),
         ax.set_yscale("log")
     ax.set(title=f"Paper estimates vs measured {metric}",xlabel="Paper estimate: "+unit,ylabel="Parsed actual: "+unit)
     ax.grid(alpha=.2)
-    ax.legend(fontsize=8)
+    handles,legend_labels = ax.get_legend_handles_labels()
+    handles += [Line2D([0],[0],marker="o",color=COLORS[series],linestyle="",label=series+" series")
+                for series in sorted({row["series"] for row in points})]
+    handles += [Line2D([0],[0],marker=marker,color="#444444",linestyle="",label=label)
+                for marker,label in (("s","PE"),("^","Layer"),("o","Frame"))]
+    ax.legend(handles=handles,fontsize=7,ncol=2)
     fig.canvas.draw()
     adjust_text(texts,ax=ax,iter_lim=250,arrowprops={"arrowstyle":"-","color":"#888888","lw":.4})
     save(fig,name)
