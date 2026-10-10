@@ -9,7 +9,7 @@ import subprocess
 import sys
 from pathlib import Path
 from prepare_final_arch import REQUIRED
-from run_exp import ROOT, append_log, check_protected, lock, utc, write_json
+from run_exp import ROOT, append_log, check_protected, lock, number, plan_digest, utc, write_json
 
 
 def audit_checksums():
@@ -25,6 +25,45 @@ def audit_checksums():
         if not record["pass"]:
             raise RuntimeError("Protected checksum mismatch: "+name)
         records.append(record)
+    return records
+
+
+def audit_archives(rows):
+    records = []
+    for row in rows:
+        if not row["series"]:
+            continue
+        archive = ROOT / "experiments" / Path(row["md_path"]).parent
+        config = json.loads((archive / "config.json").read_text())
+        plan = json.loads((archive / "plan.json").read_text())
+        if plan_digest(plan["configuration"]) != plan["config_sha256"]:
+            raise RuntimeError("Plan fingerprint mismatch: "+row["id"])
+        text = (ROOT / "experiments" / row["md_path"]).read_text()
+        purpose = text.split("## 1. Purpose and hypothesis / 目的与假设\n\n",1)[1].split("\n\n## 2.",1)[0]
+        if purpose != plan["purpose_section"]:
+            raise RuntimeError("Paper estimates changed after planning: "+row["id"])
+        metrics = json.loads((archive / "metrics.json").read_text())
+        for key,value in metrics.items():
+            measured,listed = number(value),number(row.get(key))
+            equal = measured == listed if measured is not None else str(value) == str(row.get(key))
+            if not equal:
+                raise RuntimeError("CSV/archive mismatch: "+row["id"]+" "+key)
+        source_hashes = config.get("source_sha256", {})
+        if config.get("operation"):
+            parent = ROOT / "experiments" / config["parent_metrics"]["md_path"].split("/")[0]
+            source_hashes = config["parent_config"].get("source_sha256", {})
+            source_folder = parent / "source"
+        else:
+            source_folder = archive / "source"
+        for name,digest in source_hashes.items():
+            if hashlib.sha256((source_folder / name).read_bytes()).hexdigest() != digest:
+                raise RuntimeError("Archived source hash mismatch: "+row["id"]+" "+name)
+        if not config.get("operation") and number(row.get("latency_cycles")) is not None:
+            expected = number(row["latency_cycles"])*max(number(row["clock_target_ns"]),number(row["clock_est_ns"]))/1e6
+            if abs(expected-number(row["latency_ms_est"])) > 1e-9:
+                raise RuntimeError("Latency formula mismatch: "+row["id"])
+        records.append({"id":row["id"],"plan_unchanged":True,"csv_matches_archive":True,
+                        "archived_source_files_checked":len(source_hashes)})
     return records
 
 
@@ -57,6 +96,7 @@ def main():
     remote = json.loads(subprocess.check_output(["ssh","-F",str(ssh_config),"-o","BatchMode=yes",host,command],text=True))
     checks = [{"location":location,**record} for location,records in (("local",audit_checksums()),("remote",remote))
               for record in records]
+    archives = audit_archives(rows)
     large = [str(path.relative_to(ROOT)) for folder in ("exp", "designs", "experiments")
              for path in (ROOT / folder).rglob("*") if path.is_file() and path.stat().st_size>50_000_000]
     if large:
@@ -67,6 +107,7 @@ def main():
     subprocess.run(["git","check-ignore","-q","AGENTS.md"],cwd=ROOT,check=True)
     write_json(ROOT / "experiments/architecture_audit.json",{
         "time":utc(),"branch":branch,"full_set14":False,"checks":checks,
+        "architecture_archives":archives,
         "required_exploration_records":len(REQUIRED),"final_verification_records":len(selection["queue"]),
         "completed_records":len(rows),"files_above50MB":large,"tracked_rules":tracked_rules,
         "board_validation":False,"pushed":False})

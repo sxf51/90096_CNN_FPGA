@@ -133,6 +133,10 @@ def run_verification(config):
             raise RuntimeError("Missing routed timing/resource evidence; packaging is not implementation")
         if operation == "cosim" and observed.get("rtl_status") != "Pass":
             raise RuntimeError("No passing RTL cosimulation report")
+        if operation == "cosim" and any(observed.get(key) is None for key in
+                ("rtl_latency_min", "rtl_latency_max", "rtl_interval_min", "rtl_interval_max")):
+            row["status"] = "report_incomplete"
+            raise RuntimeError("Missing numeric RTL latency/interval evidence for two transactions")
         row["status"] = operation + "_complete"
         if operation == "impl":
             observed["timing_met"] = observed["impl_WNS_ns"] >= 0
