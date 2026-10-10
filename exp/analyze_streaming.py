@@ -65,6 +65,29 @@ for row in rows:
         narrative += "Complete register weight partitions also create large variable-index sparse muxes. Saturating every partial addition prevents associative reduction; Conv3's recurrence can satisfy II=1 by lengthening the combinational clock path. These effects explain the deviation from the one-DSP-per-MAC paper model.\n"
     else:
         narrative += "\nCompare to E033 to separate saturation semantics, product binding, banking and clock effects. Accumulator mode changes retain full fractions and rely on the trained-weight absolute-sum bounds; bit identity is required.\n"
+    if row["id"] in {"E041", "E042", "E043"}:
+        control = next(r for r in rows if r["id"] == "E058")
+        narrative += (f"\nThe clock-only control E058 takes {control['latency_cycles']} cycles at target "
+                      f"{control['clock_target_ns']} ns, or {control['latency_ms_est']} ms. This run takes "
+                      f"{measured:g} cycles at target {row['clock_target_ns']} ns and estimated "
+                      f"{row['clock_est_ns']} ns, or {row['latency_ms_est']} ms. More pipeline stages "
+                      "increase cycles while the shorter clock improves the specified latency estimate. "
+                      "This is a csynth clock sweep; E070's routed timing failure demonstrates why these "
+                      "estimates must be checked by implementation before claiming timing closure.\n")
+    if row["id"] == "E060":
+        control = next(r for r in rows if r["id"] == "E057")
+        scatter = modules.get("conv3_stream", {})
+        pad = modules.get("replicate_pad_pixel2_2_s", {})
+        narrative += (f"\nAgainst gather E057, scatter changes frame latency from "
+                      f"{control['latency_ms_est']} to {row['latency_ms_est']} ms, BRAM18K from "
+                      f"{control['BRAM18K']} to {row['BRAM18K']}, LUT from {control['LUT']} to "
+                      f"{row['LUT']} and FF from {control['FF']} to {row['FF']}. Conv3 itself uses "
+                      f"{scatter.get('BRAM18K')} BRAM18K for five 32-bit partial-sum rows, while the "
+                      f"explicit 32-channel padding row still costs {pad.get('BRAM18K')} BRAM18K. "
+                      "The register window removes same-column BRAM read/modify/write hazards, but "
+                      "scatter visits every padded source pixel and adds register-update/control work. "
+                      "Butterfly and border identity pass; boundary-kernel scatter in phase two can "
+                      "test eliminating that remaining padding row.\n")
     log = (archive / "csynth.log.txt").read_text(errors="replace")
     warnings = [line for line in log.splitlines() if "[HLS 200-1449]" in line or "[HLS 200-880]" in line]
     if warnings:
