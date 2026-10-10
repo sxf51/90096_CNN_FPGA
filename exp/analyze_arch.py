@@ -54,7 +54,7 @@ def module_for(modules, layer):
 
 def main():
     rows = list(csv.DictReader((ROOT / "experiments/results.csv").open(newline="")))
-    structures, estimates, composition, bursts = [], [], [], []
+    structures, estimates, composition, bursts, conv3 = [], [], [], [], []
     for row in rows:
         archive = ROOT / "experiments" / Path(row["md_path"]).parent
         path = archive / "config.json"
@@ -105,6 +105,14 @@ def main():
             comparisons.append(item)
             estimates.append(item)
         modules = config.get("parsed_modules", [])
+        if row["id"] in {"G01","G02","G03"}:
+            kernel = module_for(modules,3)
+            padding = next((module for module in modules if module["module"] == "replicate_pad_pixel2_2_s"),None)
+            if kernel:
+                conv3.append({"id":row["id"],"variant":{"G01":"gather","G02":"scatter_pad","G03":"scatter_edge"}[row["id"]],
+                              **{"kernel_"+key:kernel.get(key) for key in ("DSP","BRAM18K","LUT","FF","latency_cycles")},
+                              **{"padding_"+key:padding.get(key) if padding else 0 for key in ("DSP","BRAM18K","LUT","FF")},
+                              "border_mse":row["border_mse"],"bit_exact":row["bit_exact"],"ii_ok":row["ii_ok"]})
         if derived["scope"] == "frame" and not config.get("operation") and modules:
             parts = [module_for(modules,layer) for layer in (1,2,3)]
             if all(part is not None for part in parts):
@@ -152,6 +160,8 @@ def main():
     write_csv(ROOT / "experiments/estimate_actual.csv",estimates,["id","series","scope","metric","estimate","actual","deviation_pct","over20pct","status","md_path"])
     write_csv(ROOT / "experiments/dsp_composition.csv",composition,["id","series","Conv1_DSP","Conv2_DSP","Conv3_DSP","other_DSP","total_DSP","status"])
     write_csv(ROOT / "experiments/bursts.csv",bursts,["id","direction","bundle","inferred_words","word_bits","loop","note"])
+    write_csv(ROOT / "experiments/conv3_comparison.csv",conv3,["id","variant","kernel_DSP","kernel_BRAM18K","kernel_LUT","kernel_FF","kernel_latency_cycles",
+                                                           "padding_DSP","padding_BRAM18K","padding_LUT","padding_FF","border_mse","bit_exact","ii_ok"])
     print("Analyzed",len(structures),"runs;",len(estimates),"estimate comparisons")
 
 

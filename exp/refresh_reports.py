@@ -12,6 +12,8 @@ def main():
     parser.add_argument("id")
     parser.add_argument("--classify-complete", action="store_true",
                         help="Correct report_incomplete only when archived C simulation and all metrics pass")
+    parser.add_argument("--fill-measurements", action="store_true",
+                        help="Fill parsed measurements while preserving an invalid/failing status")
     args = parser.parse_args()
     archive = next((ROOT / "experiments").glob(args.id + "_*"))
     config = json.loads((archive / "config.json").read_text())
@@ -23,17 +25,26 @@ def main():
     if not reports:
         raise RuntimeError("No archived synthesis report")
     parsed, _ = parse_xml(reports[-1])
-    if args.classify_complete:
-        if metrics.get("csim_pass") is not True or metrics["status"] != "report_incomplete":
-            raise RuntimeError("Classification correction requires an accepted simulation and an incomplete report")
-        if any(parsed.get(key) is None for key in (*CAPACITY, "latency_cycles", "clock_est_ns")):
-            raise RuntimeError("Report is still incomplete")
-        metrics.update(parsed)
-        metrics["latency_ms_est"] = parsed["latency_cycles"] * max(config["clock"], parsed["clock_est_ns"]) / 1e6
-        feasible = all(parsed[key] <= CAPACITY[key] * LIMIT[key] for key in CAPACITY)
-        metrics["status"] = "pass" if feasible else "infeasible"
-        if feasible and config.get("fixed") and config.get("validation", {}).get("image_count", 0) < 14:
-            metrics["status"] = "provisional"
+    if args.classify_complete or args.fill_measurements:
+        if args.fill_measurements:
+            metrics.update({key:value for key,value in parsed.items() if value is not None})
+            for key,cap in CAPACITY.items():
+                if key != "URAM" and parsed.get(key) is not None:
+                    pct_key = "BRAM_pct" if key == "BRAM18K" else key+"_pct"
+                    metrics[pct_key] = 100*parsed[key]/cap
+            if parsed.get("latency_cycles") is not None and parsed.get("clock_est_ns") is not None:
+                metrics["latency_ms_est"] = parsed["latency_cycles"]*max(config["clock"],parsed["clock_est_ns"])/1e6
+        if args.classify_complete:
+            if metrics.get("csim_pass") is not True or metrics["status"] != "report_incomplete":
+                raise RuntimeError("Classification correction requires an accepted simulation and an incomplete report")
+            if any(parsed.get(key) is None for key in (*CAPACITY, "latency_cycles", "clock_est_ns")):
+                raise RuntimeError("Report is still incomplete")
+            metrics.update(parsed)
+            metrics["latency_ms_est"] = parsed["latency_cycles"] * max(config["clock"], parsed["clock_est_ns"]) / 1e6
+            feasible = all(parsed[key] <= CAPACITY[key] * LIMIT[key] for key in CAPACITY)
+            metrics["status"] = "pass" if feasible else "infeasible"
+            if feasible and config.get("fixed") and config.get("validation", {}).get("image_count", 0) < 14:
+                metrics["status"] = "provisional"
         with lock(ROOT / "workspace/exp_runs/.results.lock", wait_timeout=120):
             results = ROOT / "experiments/results.csv"
             rows = list(csv.DictReader(results.open(newline="")))
@@ -41,7 +52,8 @@ def main():
                 writer = csv.DictWriter(out, fieldnames=FIELDS)
                 writer.writeheader()
                 writer.writerows(metrics if row["id"] == args.id else row for row in rows)
-            append_log(args.id + ": corrected zero-cycle combinational report classification from archived XML; no rerun or resource-limit change")
+            append_log(args.id + (": filled archived report measurements without changing experiment validity" if args.fill_measurements else
+                                  ": corrected zero-cycle combinational report classification from archived XML; no rerun or resource-limit change"))
         write_json(archive / "metrics.json", metrics)
     loops, modules = [], []
     for xml in sorted(reports[-1].parent.glob("*_csynth.xml")):
