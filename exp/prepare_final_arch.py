@@ -13,7 +13,7 @@ from run_exp import ROOT, number, write_json
 REQUIRED = ([f"G{i:02}" for i in range(1,4)] + [f"S{i:02}" for i in range(1,7)] +
             [f"P{i:02}" for i in range(1,9)] + ["P10","P11","P12"] +
             [f"W{i:02}" for i in range(1,10)] + [f"C{i:02}" for i in range(1,7)] +
-            [f"F{i:02}" for i in range(1,8)])
+            [f"F{i:02}" for i in range(1,8)] + ["W10","W11","W12","W13","C07"])
 
 
 def main():
