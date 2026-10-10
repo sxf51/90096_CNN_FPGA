@@ -1,0 +1,50 @@
+{
+  "changes": "Independent fixed reference retains golden external float signature; internal weights/biases and activations use AP_RND_CONV/AP_SAT. Exact product-fraction accumulators.",
+  "clock": 10,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_A_BITS=8 -DEXP_W_BITS=8 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=1 -DEXP_QUICK=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E013/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "Save actual ap_fixed butterfly output for subsequent architecture bit-exact checks.",
+  "cpu_count": 12,
+  "csim_only": true,
+  "csim_timeout": 2700,
+  "defines": {
+    "EXP_A_BITS": 8,
+    "EXP_W_BITS": 8
+  },
+  "design": "designs/fixed_ref",
+  "errors": [],
+  "fixed": true,
+  "id": "E013",
+  "interpretation": "Passing arithmetic identity is distinct from passing image quality. The complete all-ap_fixed butterfly output must match numpy; the 13-image scan remains the precision evidence and w8a8 is ineligible for whole-network selection.",
+  "name": "apfixed_w8a8",
+  "numpy_reference": "exp/numeric_reference/w8a8/numpy_reference",
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [],
+  "parsed_modules": [],
+  "precision": "w8a8acc19",
+  "purpose": "Verify w8a8 actual AMD ap_fixed arithmetic against numpy on butterfly even though the 13-image quality scan fails the 0.1 dB gate by 5.18 dB.",
+  "quick": true,
+  "set14": false,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "688168ce38d521d78f4db262d66d842c12a1b4af",
+  "source_sha256": {
+    "srcnn.cpp": "8ab816760d4d8dfd22588607b3c53e3c5fb4a61af7f98717b2ab19ba5c8a4377",
+    "srcnn.h": "b0607a9c5aa51fad40f53e5f72514f1d28fc5f3051c430213d1a3bbc51982a9b",
+    "types.h": "9973ff8889d238c227fe038b0697161d54521e732779a9ad03a14bbbe3e57315"
+  },
+  "stage": 1,
+  "time": "2026-10-10T17:30:47+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 04:31:00 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "validation": {
+    "bit_exact": true,
+    "border_mse": 0.0016186038119685043,
+    "butterfly_mse": 0.002759333288601273,
+    "conv1_exact": false,
+    "conv1_mse": null,
+    "csim_pass": true,
+    "delta_psnr": null,
+    "float_exact": false,
+    "golden_psnr": null,
+    "image_count": 0,
+    "set14_psnr": null
+  }
+}
