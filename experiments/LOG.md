@@ -197,6 +197,8 @@
 
 - 2026-10-10T22:35:16+00:00: S05: tile_fusion_B32; status=infeasible; latency_ms_est=141.66377; 
 
+- 2026-10-10T22:52:31+00:00: P12: exact10_packing_T4; status=infeasible; latency_ms_est=5.422328; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T22:20 UTC: S01's global m_axi pragmas did not export scratch1/scratch2. The two float feature arrays became11286 BRAM18K; the run is invalid_config and cannot count as DDR architecture evidence. A full sequential DDR implementation needs two explicit scratch pointer arguments or an approved wrapper/memory contract. Keep the frozen srcnn signature now; compare tile/dataflow hardware and separately archive the50,491,916-byte DDR payload model at19.2/9.6GB/s.
