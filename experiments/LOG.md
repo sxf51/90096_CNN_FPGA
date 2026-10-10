@@ -81,6 +81,8 @@
 
 - 2026-10-10T18:58:25+00:00: E066: full_apfixed_mixed_butterfly; status=csim_pass; latency_ms_est=unknown; 
 
+- 2026-10-10T19:01:02+00:00: E045: scan_T_T8_E035_retry; status=infeasible; latency_ms_est=280.01056732; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T18:47 UTC: E046 passed C simulation and exact comparison but its older runner exhausted a 60-minute synthesis-lock wait while other runs held the single memory-budget slot. No synthesis was launched, so no hardware result is claimed. E063 retries with the new independent 24-hour queue wait; each actual synthesis still has a 60-minute process-tree timeout.
