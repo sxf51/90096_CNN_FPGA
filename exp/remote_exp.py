@@ -8,7 +8,7 @@ import shlex
 import subprocess
 import sys
 import time
-from run_exp import ROOT, FIELDS, append_log, check_protected, lock, write_json
+from run_exp import ROOT, FIELDS, append_log, check_protected, check_plan, ensure_results_schema, lock, write_json
 
 
 def main():
@@ -21,6 +21,8 @@ def main():
     check_protected()
     config = json.loads(args.config.read_text())
     exp_id = config["id"]
+    if not exp_id.startswith("E"):
+        check_plan(config, ROOT / "experiments" / (exp_id + "_" + config["name"]))
     if exp_id.startswith("E") and config["stage"] == 5:
         expected = {"E036", "E037", "E038", "E039", "E040", "E041", "E042", "E043",
                     "E045", "E048", "E057", "E058", "E059", "E063", "E064", "E067"}
@@ -47,6 +49,11 @@ def main():
     for folder in ("exp", "designs"):
         if (ROOT / folder).exists():
             subprocess.run(rsync + [str(ROOT / folder), args.host + ":" + args.remote_root + "/"], check=True)
+    if not exp_id.startswith("E"):
+        plan_folder = ROOT / "experiments" / (exp_id + "_" + config["name"])
+        subprocess.run(rsync + [str(plan_folder), args.host + ":" + args.remote_root + "/experiments/"], check=True)
+        manifest = ROOT / "experiments/phase1_design_checksums.txt"
+        subprocess.run(rsync + [str(manifest), args.host + ":" + args.remote_root + "/experiments/"], check=True)
     subprocess.run(["scp", "-F", str(args.ssh_config), str(transfer),
                     args.host + ":" + args.remote_root + "/exp/configs/" + exp_id + ".json"], check=True)
     command = "cd " + shlex.quote(args.remote_root) + "\npython3 exp/run_exp.py --config " + shlex.quote("exp/configs/" + exp_id + ".json")
@@ -58,6 +65,7 @@ def main():
     metrics = json.loads((archive / "metrics.json").read_text())
     results = ROOT / "experiments/results.csv"
     with lock(ROOT / "workspace/exp_runs/.results.lock", wait_timeout=120):
+        ensure_results_schema(results)
         rows = list(csv.DictReader(results.open(newline=""))) if results.exists() else []
         if any(row["id"] == exp_id for row in rows):
             raise RuntimeError("Duplicate experiment row")

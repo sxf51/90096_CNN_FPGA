@@ -21,7 +21,9 @@ from datetime import datetime, timezone
 from compact_archive import compact
 
 ROOT = Path(__file__).resolve().parents[1]
-FIELDS = "id,time,stage,design,precision_w_a_acc,T_target,unroll_split,weight_storage,clock_target_ns,clock_est_ns,latency_cycles,interval_cycles,latency_ms_est,DSP,DSP_pct,BRAM18K,BRAM_pct,URAM,LUT,LUT_pct,FF,FF_pct,csim_pass,butterfly_mse,border_mse,bit_exact,set14_psnr,delta_psnr,ii_ok,synth_minutes,status,git_commit,md_path,notes".split(",")
+FIELDS = "id,time,stage,series,design,precision_w_a_acc,T_target,unroll_split,weight_storage,clock_target_ns,clock_est_ns,latency_cycles,interval_cycles,latency_ms_est,DSP,DSP_pct,BRAM18K,BRAM_pct,URAM,LUT,LUT_pct,FF,FF_pct,csim_pass,butterfly_mse,border_mse,bit_exact,set14_psnr,delta_psnr,ii_ok,synth_minutes,status,git_commit,md_path,notes".split(",")
+ARCH_ID = r"[SGPWCF]\d{2,}"
+EXPERIMENT_ID = r"(?:E\d{3,}|" + ARCH_ID + ")"
 CAPACITY = {"DSP": 1248, "BRAM18K": 288, "URAM": 64, "LUT": 117120, "FF": 234240}
 LIMIT = {"DSP": 1, "BRAM18K": 1, "URAM": 1, "LUT": .7, "FF": .7}
 
@@ -35,12 +37,68 @@ def write_json(path, data):
 
 
 def check_protected():
-    manifest = ROOT / "experiments/checksums.txt"
-    for line in manifest.read_text().splitlines():
-        digest, name = line.split("  ", 1)
-        path = ROOT / name
-        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
-            raise RuntimeError("Protected input checksum mismatch: " + name)
+    manifests = [ROOT / "experiments/checksums.txt"]
+    architecture_manifest = ROOT / "experiments/phase1_design_checksums.txt"
+    if architecture_manifest.exists():
+        manifests.append(architecture_manifest)
+    for manifest in manifests:
+        for line in manifest.read_text().splitlines():
+            digest, name = line.split("  ", 1)
+            path = ROOT / name
+            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+                raise RuntimeError("Protected input checksum mismatch: " + name)
+
+
+def ensure_results_schema(path):
+    if not path.exists():
+        return
+    with path.open(newline="") as source:
+        reader = csv.DictReader(source)
+        header, rows = reader.fieldnames, list(reader)
+    if header == FIELDS:
+        return
+    if header != [field for field in FIELDS if field != "series"]:
+        raise RuntimeError("Unexpected results schema; refusing a lossy migration")
+    temporary = path.with_suffix(".csv.migrating")
+    with temporary.open("w", newline="") as out:
+        writer = csv.DictWriter(out, fieldnames=FIELDS)
+        writer.writeheader()
+        writer.writerows({**row, "series": ""} for row in rows)
+    temporary.replace(path)
+
+
+def plan_digest(config):
+    runtime = {"source_commit", "plan_sha256", "planned_at"}
+    stable = {key: value for key, value in config.items() if key not in runtime}
+    return hashlib.sha256(json.dumps(stable, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def check_plan(config, archive):
+    plan_path = archive / "plan.json"
+    if not plan_path.is_file() or (archive / "metrics.json").exists():
+        raise RuntimeError("Archive is not an unused pre-implementation plan: " + str(archive))
+    plan = json.loads(plan_path.read_text())
+    if plan["config_sha256"] != plan_digest(config):
+        raise RuntimeError("Configuration changed after planning; allocate a new experiment ID")
+    text = (archive / (config["id"] + ".md")).read_text()
+    purpose = text.split("## 1. Purpose and hypothesis / 目的与假设\n\n", 1)[1].split("\n\n## 2.", 1)[0]
+    if purpose != plan["purpose_section"]:
+        raise RuntimeError("Planned purpose/estimates changed; allocate a new experiment ID")
+    return plan
+
+
+def prepare_run_directory(config, work, archive):
+    if work.exists():
+        raise RuntimeError("Experiment workspace already exists; use a new ID: " + config["id"])
+    if re.fullmatch(ARCH_ID, config["id"]):
+        plan = check_plan(config, archive)
+    else:
+        plan = None
+        if archive.exists():
+            raise RuntimeError("Experiment archive already exists; use a new ID: " + config["id"])
+        archive.mkdir(parents=True)
+    work.mkdir(parents=True)
+    return plan
 
 
 @contextmanager
@@ -233,20 +291,18 @@ def run(config):
         return run_verification(config)
     check_protected()
     exp_id, name = config["id"], config["name"]
-    if not re.fullmatch(r"E\d{3,}", exp_id) or not re.fullmatch(r"[a-zA-Z0-9_]+", name):
+    if not re.fullmatch(EXPERIMENT_ID, exp_id) or not re.fullmatch(r"[a-zA-Z0-9_]+", name):
         raise ValueError("Unsafe experiment ID or name")
     work = ROOT / "workspace/exp_runs" / exp_id
     archive = ROOT / "experiments" / f"{exp_id}_{name}"
-    if work.exists() or archive.exists():
-        raise RuntimeError("Experiment already exists; use a new ID: " + exp_id)
-    work.mkdir(parents=True)
-    archive.mkdir(parents=True)
+    plan = prepare_run_directory(config, work, archive)
     if "source_commit" not in config:
         config["source_commit"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     config.update(time=utc(), os=platform.platform(), cpu_count=os.cpu_count())
     settings = Path(config.get("settings", os.environ.get("VITIS_SETTINGS", "")))
     row = dict.fromkeys(FIELDS, "")
-    row.update(id=exp_id, time=config["time"], stage=config["stage"], design=config["design"],
+    row.update(id=exp_id, time=config["time"], stage=config["stage"],
+               series=config.get("series", exp_id[0] if re.fullmatch(ARCH_ID, exp_id) else ""), design=config["design"],
                precision_w_a_acc=config.get("precision", "float32"), T_target=config.get("T", ""),
                unroll_split=config.get("unroll", ""), weight_storage=config.get("storage", "default"),
                clock_target_ns=config["clock"], git_commit=config["source_commit"],
@@ -326,6 +382,12 @@ def run(config):
                             loops.append(loop)
                 shutil.copytree(reports[-1].parent, archive / "reports",
                                 ignore=shutil.ignore_patterns("*.json", "*.adb", "*.log"))
+                interface_report = (archive / "csynth.rpt").read_text()
+                missing = [bundle for bundle in config.get("required_axi_bundles", [])
+                           if "m_axi_" + bundle + "_" not in interface_report]
+                if missing:
+                    row["status"] = "invalid_config"
+                    raise RuntimeError("Required external DDR AXI bundles not generated: " + ", ".join(missing))
                 for key, cap in CAPACITY.items():
                     if metrics.get(key) is not None and key != "URAM":
                         pct_key = "BRAM_pct" if key == "BRAM18K" else key + "_pct"
@@ -379,7 +441,8 @@ def run(config):
         cfg_table = markdown_table([{"parameter": k, "value": v} for k, v in config.items()
                                    if k not in {"parsed_loops", "parsed_modules", "validation"}], ["parameter", "value"])
         result_table = markdown_table([{"metric": k, "value": row[k]} for k in FIELDS], ["metric", "value"])
-        md = f"# {exp_id}: {name}\n\n## 1. Purpose and hypothesis / 目的与假设\n\n{config.get('purpose', 'See stage plan.')}\n\n"
+        purpose = plan["purpose_section"] if plan else config.get("purpose", "See stage plan.")
+        md = f"# {exp_id}: {name}\n\n## 1. Purpose and hypothesis / 目的与假设\n\n{purpose}\n\n"
         md += f"## 2. Changes / 改动\n\n{config.get('changes', 'Independent source/config snapshot.')} Source commit: `{config['source_commit']}`.\n\n"
         md += "## 3. Configuration / 配置\n\n<!-- AUTO: configuration -->\n\n" + cfg_table
         md += f"\n## 4. Reproduction / 复现\n\n```sh\n{command}\n```\n\nUse a new ID for reruns; existing run directories are immutable. Settings path is recorded in config.json.\n\n"
@@ -394,6 +457,7 @@ def run(config):
         (archive / (exp_id + ".md")).write_text(md, encoding="utf-8")
         results = ROOT / "experiments/results.csv"
         with lock(ROOT / "workspace/exp_runs/.results.lock"):
+            ensure_results_schema(results)
             header = not results.exists()
             with results.open("a", newline="") as out:
                 writer = csv.DictWriter(out, fieldnames=FIELDS)

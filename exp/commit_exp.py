@@ -2,17 +2,19 @@
 """Commit only this task's paths after checking protected files and file sizes."""
 import subprocess
 import sys
-from run_exp import ROOT, check_protected, lock
+import re
+from run_exp import ROOT, ARCH_ID, EXPERIMENT_ID, check_protected, lock
 from compact_archive import compact
 
-OWNED = ("exp/", "designs/", "experiments/", "docs/0002-overnight-experiments.md")
+OWNED = ("exp/", "designs/", "experiments/", "docs/0002-overnight-experiments.md", "docs/0003-architecture-exploration.md")
 
 
 def commit():
-    if len(sys.argv) < 2 or not sys.argv[1].startswith("E"):
-        raise SystemExit("Usage: python3 exp/commit_exp.py E000 [message]")
+    if len(sys.argv) < 2 or not re.fullmatch(EXPERIMENT_ID, sys.argv[1]):
+        raise SystemExit("Usage: python3 exp/commit_exp.py E000|S01|G01|P01|W01|C01|F01 [message]")
     branch = subprocess.check_output(["git", "branch", "--show-current"], cwd=ROOT, text=True).strip()
-    if branch != "exp/overnight-1011":
+    expected = "exp/explore-arch" if re.fullmatch(ARCH_ID, sys.argv[1]) else "exp/overnight-1011"
+    if branch != expected:
         raise SystemExit("Wrong branch")
     check_protected()
     for archive in (ROOT / "experiments").glob(sys.argv[1] + "_*"):

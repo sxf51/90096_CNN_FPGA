@@ -45,3 +45,7 @@ no CPU-only alternate convolution is used. Butterfly must match E019 bit for bit
 before any synthesis, and selected final candidates must run every supplied image.
 This control also measures whether simpler boundary logic reduces LUT overhead.
 
+The authorized follow-on architecture phase is documented in
+[architecture exploration](0003-architecture-exploration.md), with its own
+branch, pre-implementation estimates and frozen first-phase designs.
+

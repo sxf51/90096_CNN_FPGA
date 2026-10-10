@@ -1,21 +1,17 @@
 # Current progress
 
-First-phase execution complete on `exp/overnight-1011`; full Set14 acceptance remains pending because comic is absent. Read SUMMARY.md, LOG.md and phase1_completion.json.
+Branch: `exp/explore-arch`, from completed `exp/overnight-1011` at `2fa7249eaecdfdc360d8d452fcbf52171c35abd2`.
 
-## Completed First Phase
+## Completed
 
-Stages 0-6 executed; failed/infeasible/timeout records retained. All 46 protected files match local and remote SHA256. User README/.gitignore/documentation edits remain outside task commits. No push or board operation.
+First phase stages0-6 closed in E099. E043 is fastest resource-feasible supplied-image candidate:6.93923049ms, DSP505, BRAM18K168, LUT55325. E069 matches every output bit on all13 supplied images. Missing comic prevents complete Set14 acceptance. E070 routed implementation of E039 fails timing with WNS-1.277ns. See SUMMARY.md and PHASE2_HANDOFF.md.
 
-Best supplied-image candidate: E043. Full candidate validation is E069 when a feasible candidate exists. Implementation is E070 when a provisional candidate qualified. Actual implementation and HLS estimates are distinct.
+Architecture infrastructure supports series, immutable preplanned archives and additional first-phase design checksums. Original46-file SHA256 manifest remains unchanged. User README/.gitignore/docs-index edits remain outside task commits.
 
 ## Next Action
 
-Create `exp/explore-arch` from the completed first-phase branch. Phase two has not started. Read SUMMARY.md before proceeding. Preserve all first-phase designs; new designs get new directories and S/G/P/W/C/F IDs. Extend results.csv with series and write paper estimates before implementing each new idea. Start packing and Winograd microbenchmarks, then G, S, integration, combinations and free exploration.
+Plan and commit P/W microbenchmarks before implementation. Then execute G three-way Conv3 comparison, S dataflow/DDR/tile comparison, full P/W, C combinations and F scheduling/memory/timing ideas. Record estimates vs actuals and explain deviations over20%. Final best2-3 provisional candidates receive full supplied-image validation, implementation and two-frame cosim.
 
-## Environment And Recovery
+## Recovery
 
-SSH host xiaoxin-ubuntu, remote root /home/lipuze/amdprojects/90096_CNN_FPGA, Linux Vitis 2026.1 settings /home/lipuze/amdfpga/2026.1/Vitis/settings64.sh. One synthesis/implementation/cosim at a time under the shared memory lock. Each synthesis timeout 60 minutes, issue tuning limit 45 minutes, final cosim timeout six hours. All raw HLS workspaces are immutable under workspace/exp_runs/. Never run script.py. Verify no first-phase subprocess remains before switching branch.
-
-## Numeric References
-
-E019/E017 establish uniform w10a10; E049 exhausts raw boundary casts. E065/E066 establish mixed Conv2-weight8 with ten-bit activations: delta PSNR -0.075890 dB on 13 images, butterfly bit identity. E062 demonstrates true eight-bit activations and Conv1/Conv3 weight8 do not pass. Conv3 quantized w10 coefficients fit signed8 without changing their fractional scale, enabling exact packing exploration. See SOURCES.md for WP486, DDR bandwidth and Winograd references.
+Read PROGRESS.md, ARCH_SUMMARY.md when present, LOG.md and arch_state.json. Remote host xiaoxin-ubuntu; root /home/lipuze/amdprojects/90096_CNN_FPGA; Vitis2026.1 settings /home/lipuze/amdfpga/2026.1/Vitis/settings64.sh. Serialize hardware jobs with .synthesis.lock;60-minute csynth,45-minute issue limit,6-hour cosim. Keep Windows reproduction and missing comic in pending decisions. Never run script.py, overwrite an existing run, modify protected originals or first-phase designs, push, or claim board validation.

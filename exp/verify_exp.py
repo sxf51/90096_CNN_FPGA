@@ -10,7 +10,8 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 from run_exp import (ROOT, FIELDS, archive_logs, append_log, check_protected,
-                     invoke, lock, markdown_table, number, utc, write_json)
+                     ensure_results_schema, invoke, lock, markdown_table, number,
+                     prepare_run_directory, utc, write_json)
 from compact_archive import compact
 
 
@@ -80,11 +81,10 @@ def run_verification(config):
         raise RuntimeError("Verification parent is not numerically and resource accepted")
     work = ROOT / "workspace/exp_runs" / exp_id
     archive = ROOT / "experiments" / (exp_id + "_" + name)
-    if work.exists() or archive.exists():
-        raise RuntimeError("Verification ID already exists")
+    plan = prepare_run_directory(config, work, archive)
     source_work = ROOT / "workspace/exp_runs" / parent_row["id"]
-    shutil.copytree(source_work, work, ignore=shutil.ignore_patterns("*.console.log", "*.zip", "*.wdb", ".run.lock"))
-    archive.mkdir(parents=True)
+    shutil.copytree(source_work, work, dirs_exist_ok=True,
+                    ignore=shutil.ignore_patterns("*.console.log", "*.zip", "*.wdb", ".run.lock"))
     cfg = work / "hls_config.cfg"
     cfg_text = cfg.read_text().replace(str(source_work), str(work))
     if operation == "cosim":
@@ -103,6 +103,7 @@ def run_verification(config):
             raise RuntimeError("Frozen parent source mismatch: " + filename)
     row = {k: parent_row.get(k, "") for k in FIELDS}
     row.update(id=exp_id, time=config["time"], stage=config.get("stage", 6),
+               series=config.get("series", exp_id[0] if not exp_id.startswith("E") else ""),
                md_path=archive.name + "/" + exp_id + ".md", git_commit=config["source_commit"],
                status="fail", notes=f"{operation} of {parent_row['id']}; HLS estimates inherited, real measurements in data.csv")
     observed, detail, errors = {}, [], []
@@ -162,7 +163,7 @@ def run_verification(config):
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(path, dest)
         md = f"# {exp_id}: {name}\n\n## 1. Purpose and hypothesis / 目的与假设\n\n"
-        md += config.get("purpose", f"Validate {parent_row['id']} with {operation} using frozen source.") + "\n\n"
+        md += (plan["purpose_section"] if plan else config.get("purpose", f"Validate {parent_row['id']} with {operation} using frozen source.")) + "\n\n"
         md += f"## 2. Changes / 改动\n\nIndependent workspace copy of `{parent_row['id']}`, source commit `{parent_row['git_commit']}`. Cosimulation requests two complete frames to check state reset and transaction interval.\n\n"
         md += "## 3. Configuration / 配置\n\n" + markdown_table([{"parameter": k, "value": v} for k, v in config.items() if k not in {"parent_config", "parent_metrics"}], ["parameter", "value"])
         md += f"\n## 4. Reproduction / 复现\n\n```sh\npython3 exp/run_exp.py --config exp/configs/{exp_id}.json\n```\n\nFrozen parent workspace must exist; no parent directory is overwritten.\n\n"
@@ -175,6 +176,7 @@ def run_verification(config):
         (archive / (exp_id + ".md")).write_text(md)
         results = ROOT / "experiments/results.csv"
         with lock(ROOT / "workspace/exp_runs/.results.lock"):
+            ensure_results_schema(results)
             with results.open("a", newline="") as out:
                 csv.DictWriter(out, fieldnames=FIELDS).writerow(row)
             append_log(f"{exp_id}: {operation} of {parent_row['id']}; status={row['status']}; " + "; ".join(errors))
