@@ -115,7 +115,11 @@
 
 - 2026-10-10T20:53:02+00:00: E067: storage_2_T16; status=infeasible; latency_ms_est=18.7632; 
 
+- 2026-10-10T20:56:17+00:00: E041: scan_clock_T16_E041; status=provisional; latency_ms_est=9.7275; 
+
 ## Pending Human Decisions / 待人工决策
+
+- Recovery reference: [PHASE2_HANDOFF.md](PHASE2_HANDOFF.md) preserves unimplemented architecture hypotheses derived from E058/E070/E071 across the first-phase finalizer. Phase two must still be executed on the new branch with estimates archived before implementation.
 
 - 2026-10-10T19:08 UTC: Row-buffer padding has separate read-row and write-row phases. C synthesis does not execute finite-FIFO backpressure, so the reported maximum-component dataflow latency may underestimate the real schedule when pad3 serializes row production and consumption. Verify with the authorized RTL cosimulation; phase-two online padding is a proposed measured control, not a claimed speedup.
 
