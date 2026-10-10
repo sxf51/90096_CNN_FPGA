@@ -13,7 +13,7 @@ def main():
                for i, shape in enumerate(((64, 1, 9, 9), (32, 64, 1, 1), (1, 32, 5, 5)))]
     biases = [load(ROOT / f"src/weights/conv{i + 1}_biases_3x_flp.bin", "<f4", (n,))
               for i, n in enumerate((64, 32, 1))]
-    for exp_id, wb, ab in (("E011", 16, 16), ("E012", 10, 10), ("E013", 8, 8)):
+    for exp_id, wb, ab in (("E014", 16, 16), ("E012", 10, 10), ("E013", 8, 8)):
         folder = ROOT / "exp/numeric_reference" / f"w{wb}a{ab}" / "numpy_reference"
         folder.mkdir(parents=True, exist_ok=True)
         for path in sorted((ROOT / "test/set14").glob("*_LR_u8.bin")) + [ROOT / "test/set5/butterfly_3x_LR_u8.bin"]:
@@ -33,7 +33,7 @@ def main():
                   "conclusion": "Save actual ap_fixed butterfly output for subsequent architecture bit-exact checks."}
         (ROOT / f"exp/configs/{exp_id}.json").write_text(json.dumps(config, indent=2) + "\n")
         print(exp_id, folder, flush=True)
-    cfg = json.loads((ROOT / "exp/configs/E011.json").read_text())
+    cfg = json.loads((ROOT / "exp/configs/E014.json").read_text())
     cfg.update(id="E027", name="auto_fixed16", stage=2, csim_only=False, set14=False,
                purpose="Isolate type-change benefit without streaming architectural changes; retain full intermediate feature maps.")
     (ROOT / "exp/configs/E027.json").write_text(json.dumps(cfg, indent=2) + "\n")

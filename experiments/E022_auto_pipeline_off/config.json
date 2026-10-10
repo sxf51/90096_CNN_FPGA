@@ -1,0 +1,97 @@
+{
+  "changes": "Golden copy with stable loop labels only; all experiment directives are configuration-controlled.",
+  "clock": 10,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_FIXED=0 -DEXP_SET14=0 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=0 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E022/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "Compare compiler-only scheduling with original baseline and streaming architecture.",
+  "cpu_count": 12,
+  "design": "designs/golden_auto",
+  "errors": [],
+  "id": "E022",
+  "interpretation": "Pending measured II, dependency, port and resource reports.",
+  "name": "auto_pipeline_off",
+  "options": {
+    "syn.compile.pipeline_loops": 0
+  },
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [
+    {
+      "AbsoluteTimeLatency": "27841432320",
+      "InstanceList": "\n",
+      "IterationLatency": "43502238",
+      "Latency": "2784143232",
+      "PerformancePragma": "-",
+      "Slack": "7.30",
+      "TripCount": "64",
+      "actual_ii": null,
+      "g_02_y": "\n",
+      "isPerfectNested": "0",
+      "loop": "g_01_oc",
+      "target_ii": null
+    },
+    {
+      "AbsoluteTimeLatency": "12047996160",
+      "InstanceList": "\n",
+      "IterationLatency": "37649988",
+      "Latency": "1204799616",
+      "PerformancePragma": "-",
+      "Slack": "7.30",
+      "TripCount": "32",
+      "actual_ii": null,
+      "g_02_y": "\n",
+      "isPerfectNested": "0",
+      "loop": "g_01_oc",
+      "target_ii": null
+    },
+    {
+      "AbsoluteTimeLatency": "4932801600",
+      "InstanceList": "\n",
+      "IterationLatency": "1934432",
+      "Latency": "493280160",
+      "PerformancePragma": "-",
+      "Slack": "7.30",
+      "TripCount": "255",
+      "actual_ii": null,
+      "g_09_x": "\n",
+      "isPerfectNested": "1",
+      "loop": "g_08_y",
+      "target_ii": null
+    }
+  ],
+  "parsed_modules": [
+    {
+      "BRAM18K": 11064.0,
+      "DSP": 5.0,
+      "FF": 1267.0,
+      "LUT": 2217.0,
+      "URAM": 0.0,
+      "clock_est_ns": 7.016,
+      "interval_cycles": 4482223012.0,
+      "latency_cycles": 4482223011.0,
+      "module": "srcnn"
+    }
+  ],
+  "purpose": "Compare no automatic pipelining to default scheduling.",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "7c7c1a1888f171530bf36fd618e7ae936f42071b",
+  "source_sha256": {
+    "conv1.cpp": "405bed71a56b663cb8729cd9c32dad2ecea6827c3e51fac044692ee8b886e689",
+    "srcnn.cpp": "44403340503f2a4c42e7d179ff9a237c5bd96aa9576f9fa8523c7eaa286f55bf",
+    "srcnn.h": "6cc46158775e3b665f6db7bef9ab022fc795312feb7570e94d82e1b430afaf33"
+  },
+  "stage": 2,
+  "time": "2026-10-10T16:44:12+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 03:44:14 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "validation": {
+    "bit_exact": true,
+    "border_mse": 2.1182492395563412e-14,
+    "butterfly_mse": 3.1660971422452726e-14,
+    "conv1_exact": true,
+    "conv1_mse": 3.462543650707288e-15,
+    "csim_pass": true,
+    "delta_psnr": null,
+    "float_exact": true,
+    "golden_psnr": null,
+    "image_count": 0,
+    "set14_psnr": null
+  }
+}

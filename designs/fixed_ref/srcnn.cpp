@@ -1,5 +1,5 @@
-#include "srcnn.h"
 #include "types.h"
+#include "srcnn.h"
 using namespace numeric;
 
 static void first_layer(input in[N0][H][W], weight weights[N1][N0][F1][F1],

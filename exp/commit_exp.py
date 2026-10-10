@@ -29,6 +29,9 @@ def main():
             raise SystemExit("File exceeds 50 MB; manual decision required: " + p)
     if paths:
         subprocess.run(["git", "add", "--", *paths], cwd=ROOT, check=True)
+    if not subprocess.check_output(["git", "diff", "--cached", "--name-only"], cwd=ROOT).strip():
+        print("No task changes to commit")
+        return
     # Vendor reports/logs retain original whitespace; CSV uses standard CRLF.
     subprocess.run(["git", "diff", "--cached", "--check", "--", "exp/", "designs/",
                     ":(exclude)designs/golden_auto/"], cwd=ROOT, check=True)
