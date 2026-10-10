@@ -27,4 +27,4 @@ After all first-phase stages, create `exp/explore-arch` from `exp/overnight-1011
 
 ## Coordinate controller
 
-2026-10-10T20:14:50+00:00: T round completed; select E058 with measured status provisional.
+2026-10-10T20:20:59+00:00: Running E036; preceding completed measurements remain archived.
