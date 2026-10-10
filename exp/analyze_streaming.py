@@ -2,7 +2,8 @@
 """Report measured streaming bottlenecks and MAC-budget deviations."""
 import csv
 import json
-from run_exp import ROOT, FIELDS, markdown_table, number, write_json
+from pathlib import Path
+from run_exp import ROOT, FIELDS, lock, markdown_table, number, write_json
 
 results = ROOT / "experiments/results.csv"
 rows = list(csv.DictReader(results.open(newline="")))
@@ -68,11 +69,23 @@ for row in rows:
     text = path.read_text()
     start, end = text.index("## 6."), text.index("## 7.")
     text = text[:start] + "## 6. Interpretation / 解读\n\n" + narrative + "\n" + text[end:]
+    start, end = text.index("## 3."), text.index("## 4.")
+    table = markdown_table([{"parameter": k, "value": v} for k, v in config.items()
+                            if k not in {"parsed_loops", "parsed_modules", "validation"}], ["parameter", "value"])
+    text = text[:start] + "## 3. Configuration / 配置\n\n<!-- AUTO -->\n\n" + table + "\n" + text[end:]
+    start, end = text.index("## 5."), text.index("## 6.")
+    table = markdown_table([{"metric": k, "value": metrics.get(k)} for k in FIELDS], ["metric", "value"])
+    table += "\n### Pipeline loops\n\n" + markdown_table(config.get("parsed_loops", []), ["module", "loop", "target_ii", "actual_ii", "ii_ok"])
+    table += "\n### Module resources\n\n" + markdown_table(config.get("parsed_modules", []), ["module", "DSP", "BRAM18K", "URAM", "LUT", "FF"])
+    text = text[:start] + "## 5. Results / 结果\n\n<!-- AUTO -->\n\n" + table + "\n" + text[end:]
     path.write_text(text)
-with results.open("w", newline="") as out:
-    writer = csv.DictWriter(out, fieldnames=FIELDS)
-    writer.writeheader()
-    writer.writerows(rows)
+with lock(ROOT / "workspace/exp_runs/.results.lock", wait_timeout=120):
+    current = list(csv.DictReader(results.open(newline="")))
+    updated = {row["id"]: row for row in rows}
+    with results.open("w", newline="") as out:
+        writer = csv.DictWriter(out, fieldnames=FIELDS)
+        writer.writeheader()
+        writer.writerows(updated.get(row["id"], row) for row in current)
 if analysis:
     with (ROOT / "experiments/streaming_analysis.csv").open("w", newline="") as out:
         writer = csv.DictWriter(out, fieldnames=list(analysis[0]))

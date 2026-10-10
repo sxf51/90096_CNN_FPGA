@@ -7,7 +7,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import sys
-from run_exp import ROOT, FIELDS, append_log, check_protected, write_json
+from run_exp import ROOT, FIELDS, append_log, check_protected, lock, write_json
 
 
 def main():
@@ -40,16 +40,17 @@ def main():
     archive = ROOT / "experiments" / folder
     metrics = json.loads((archive / "metrics.json").read_text())
     results = ROOT / "experiments/results.csv"
-    rows = list(csv.DictReader(results.open(newline=""))) if results.exists() else []
-    if any(row["id"] == exp_id for row in rows):
-        raise RuntimeError("Duplicate experiment row")
-    with results.open("a", newline="") as out:
-        writer = csv.DictWriter(out, fieldnames=FIELDS)
-        if not rows:
-            writer.writeheader()
-        writer.writerow(metrics)
-    append_log(f"{exp_id}: {config['name']}; status={metrics['status']}; "
-               f"latency_ms_est={metrics['latency_ms_est'] or 'unknown'}; {metrics['notes']}")
+    with lock(ROOT / "workspace/exp_runs/.results.lock", wait_timeout=120):
+        rows = list(csv.DictReader(results.open(newline=""))) if results.exists() else []
+        if any(row["id"] == exp_id for row in rows):
+            raise RuntimeError("Duplicate experiment row")
+        with results.open("a", newline="") as out:
+            writer = csv.DictWriter(out, fieldnames=FIELDS)
+            if not rows:
+                writer.writeheader()
+            writer.writerow(metrics)
+        append_log(f"{exp_id}: {config['name']}; status={metrics['status']}; "
+                   f"latency_ms_est={metrics['latency_ms_est'] or 'unknown'}; {metrics['notes']}")
     check_protected()
     subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"), exp_id, config["name"]], cwd=ROOT, check=True)
     return result.returncode
