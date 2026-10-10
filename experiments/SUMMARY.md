@@ -1,12 +1,12 @@
 # SRCNN on K26: overnight experiments
 
-The unchanged float baseline is functionally correct but infeasible (11064.0 BRAM18K; 19601.139 ms). Uniform w10a10 loses 0.069514 dB on all 13 supplied Set14 pairs; w8a8 loses 5.179955 dB. The fastest resource-feasible supplied-image candidate is [E058](E058_integer_lutram_T16/E058.md) at 18.763200 ms; missing comic prevents complete Set14 acceptance.
+The unchanged float baseline is functionally correct but infeasible (11064.0 BRAM18K; 19601.139 ms). Uniform w10a10 loses 0.069514 dB on all 13 supplied Set14 pairs; w8a8 loses 5.179955 dB. The fastest resource-feasible supplied-image candidate is [E043](E043_scan_clock_T16_E043/E043.md) at 6.939230 ms; missing comic prevents complete Set14 acceptance.
 
 ## Current best
 
 | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | ii_ok | status | id |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1876320.0 | 1876321.0 | 18.7632 | 505.0 | 168.0 | 55212.0 | 57723.0 | -0.0695141811880653 | True | provisional | [E058](E058_integer_lutram_T16/E058.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 3.33 | 3.239 | 2083853.0 | 2083854.0 | 6.93923049 | 505.0 | 168.0 | 55325.0 | 67025.0 | -0.0695141811880653 | True | provisional | [E043](E043_scan_clock_T16_E043/E043.md) |
 
 Implementation results are separate from HLS estimates; see verification experiments below. All performance is tool-estimated or explicitly labeled RTL/implementation evidence. No board validation was run.
 
@@ -28,13 +28,22 @@ AXI float-array signature remains unchanged; weights/biases load once before DAT
 
 | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | ii_ok | status | id |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| designs/dataflow_int | w10a10acc23 | 16 | 3.33 | 3.239 | 2083853.0 | 2083854.0 | 6.93923049 | 505.0 | 168.0 | 55325.0 | 67025.0 | -0.0695141811880653 | True | provisional | [E043](E043_scan_clock_T16_E043/E043.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 4 | 3.239 | 2014678.0 | 2014679.0 | 8.058712 | 505.0 | 168.0 | 56007.0 | 62948.0 | -0.0695141811880653 | True | provisional | [E042](E042_scan_clock_T16_E042/E042.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 5 | 3.65 | 1945500.0 | 1945501.0 | 9.7275 | 505.0 | 168.0 | 55553.0 | 59959.0 | -0.0695141811880653 | True | provisional | [E041](E041_scan_clock_T16_E041/E041.md) |
+| designs/dataflow_int | w10a10acc23 | 8 | 10 | 7.3 | 1322968.0 | 1322969.0 | 13.22968 | 1007.0 | 168.0 | 85147.0 | 88822.0 | -0.0695141811880653 | True | infeasible | [E059](E059_integer_lutram_T8/E059.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1807151.0 | 1807152.0 | 18.07151 | 505.0 | 168.0 | 88306.0 | 138588.0 | -0.0695141811880653 | True | infeasible | [E064](E064_storage_0_T16/E064.md) |
 | designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1876320.0 | 1876321.0 | 18.7632 | 505.0 | 168.0 | 55212.0 | 57723.0 | -0.0695141811880653 | True | provisional | [E058](E058_integer_lutram_T16/E058.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1876320.0 | 1876321.0 | 18.7632 | 505.0 | 168.0 | 60050.0 | 56509.0 | -0.0695141811880653 | True | provisional | [E037](E037_scan_split_T16_E037/E037.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1876320.0 | 1876321.0 | 18.7632 | 505.0 | 670.0 | 53706.0 | 47716.0 | -0.0695141811880653 | True | infeasible | [E067](E067_storage_2_T16/E067.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 2155352.0 | 2155353.0 | 21.55352 | 519.0 | 168.0 | 64526.0 | 57346.0 | -0.0695141811880653 | True | provisional | [E038](E038_scan_split_T16_E038/E038.md) |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 251.0 | 168.0 | 89341.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E047](E047_dataflow_dsp_T32/E047.md) |
 | designs/dataflow_wrap | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 148.0 | 168.0 | 95727.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E063](E063_dataflow_wrap_T32_retry/E063.md) |
 | designs/dataflow_int | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 254.0 | 168.0 | 89304.0 | 132635.0 | -0.0695141811880653 | True | infeasible | [E048](E048_dataflow_integer_T32/E048.md) |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 168.0 | 44530.0 | 46123.0 | -0.0695141811880653 | True | provisional | [E039](E039_scan_storage_T32_E039/E039.md) |
 | designs/dataflow_int | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 254.0 | 168.0 | 44493.0 | 46328.0 | -0.0695141811880653 | True | provisional | [E057](E057_integer_lutram_T32/E057.md) |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 419.0 | 43275.0 | 41136.0 | -0.0695141811880653 | True | infeasible | [E040](E040_scan_storage_T32_E040/E040.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 7894023.0 | 7894024.0 | 78.94023 | 565.0 | 168.0 | 79846.0 | 76416.0 | -0.0695141811880653 | False | provisional | [E036](E036_scan_split_T16_E036/E036.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E033](E033_dataflow_fixed_T32_single/E033.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E031](E031_dataflow_fixed_T32/E031.md) |
 | designs/dataflow_v1 | w10a10acc23 | 16 | 10 | 63.218 | 2775517.0 | 2775518.0 | 175.462633706 | 18.0 | 168.0 | 167715.0 | 135714.0 | -0.0695141811880653 | True | infeasible | [E044](E044_scan_T_T16_E034_retry/E044.md) |
@@ -73,7 +82,15 @@ Placement/routing completed but the target clock did not close. The reports conc
 
 | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | ii_ok | status | id |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| designs/dataflow_int | w10a10acc23 | 16 | 3.33 | 3.239 | 2083853.0 | 2083854.0 | 6.93923049 | 505.0 | 168.0 | 55325.0 | 67025.0 | -0.0695141811880653 | True | provisional | [E043](E043_scan_clock_T16_E043/E043.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 4 | 3.239 | 2014678.0 | 2014679.0 | 8.058712 | 505.0 | 168.0 | 56007.0 | 62948.0 | -0.0695141811880653 | True | provisional | [E042](E042_scan_clock_T16_E042/E042.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 5 | 3.65 | 1945500.0 | 1945501.0 | 9.7275 | 505.0 | 168.0 | 55553.0 | 59959.0 | -0.0695141811880653 | True | provisional | [E041](E041_scan_clock_T16_E041/E041.md) |
+| designs/dataflow_int | w10a10acc23 | 8 | 10 | 7.3 | 1322968.0 | 1322969.0 | 13.22968 | 1007.0 | 168.0 | 85147.0 | 88822.0 | -0.0695141811880653 | True | infeasible | [E059](E059_integer_lutram_T8/E059.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1807151.0 | 1807152.0 | 18.07151 | 505.0 | 168.0 | 88306.0 | 138588.0 | -0.0695141811880653 | True | infeasible | [E064](E064_storage_0_T16/E064.md) |
 | designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1876320.0 | 1876321.0 | 18.7632 | 505.0 | 168.0 | 55212.0 | 57723.0 | -0.0695141811880653 | True | provisional | [E058](E058_integer_lutram_T16/E058.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1876320.0 | 1876321.0 | 18.7632 | 505.0 | 168.0 | 60050.0 | 56509.0 | -0.0695141811880653 | True | provisional | [E037](E037_scan_split_T16_E037/E037.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1876320.0 | 1876321.0 | 18.7632 | 505.0 | 670.0 | 53706.0 | 47716.0 | -0.0695141811880653 | True | infeasible | [E067](E067_storage_2_T16/E067.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 2155352.0 | 2155353.0 | 21.55352 | 519.0 | 168.0 | 64526.0 | 57346.0 | -0.0695141811880653 | True | provisional | [E038](E038_scan_split_T16_E038/E038.md) |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 251.0 | 168.0 | 89341.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E047](E047_dataflow_dsp_T32/E047.md) |
 | designs/dataflow_wrap | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 148.0 | 168.0 | 95727.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E063](E063_dataflow_wrap_T32_retry/E063.md) |
 | designs/dataflow_int | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 254.0 | 168.0 | 89304.0 | 132635.0 | -0.0695141811880653 | True | infeasible | [E048](E048_dataflow_integer_T32/E048.md) |
@@ -81,6 +98,7 @@ Placement/routing completed but the target clock did not close. The reports conc
 | designs/dataflow_int | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 254.0 | 168.0 | 44493.0 | 46328.0 | -0.0695141811880653 | True | provisional | [E057](E057_integer_lutram_T32/E057.md) |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 168.0 | 44530.0 | 46123.0 | -0.0695141811880653 | True | impl_complete | [E070](E070_first_feasible_implementation/E070.md) |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 419.0 | 43275.0 | 41136.0 | -0.0695141811880653 | True | infeasible | [E040](E040_scan_storage_T32_E040/E040.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 7894023.0 | 7894024.0 | 78.94023 | 565.0 | 168.0 | 79846.0 | 76416.0 | -0.0695141811880653 | False | provisional | [E036](E036_scan_split_T16_E036/E036.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E033](E033_dataflow_fixed_T32_single/E033.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E031](E031_dataflow_fixed_T32/E031.md) |
 | designs/dataflow_v1 | w10a10acc23 | 16 | 10 | 63.218 | 2775517.0 | 2775518.0 | 175.462633706 | 18.0 | 168.0 | 167715.0 | 135714.0 | -0.0695141811880653 | True | infeasible | [E044](E044_scan_T_T16_E034_retry/E044.md) |
@@ -150,4 +168,4 @@ Missing comic input/GT pair blocks full 14-image acceptance. Windows Vitis envir
 
 Execute the authorized second phase on exp/explore-arch after phase-one completion. Prioritize packing/Winograd PE mapping, gather/scatter borders, memory banking and a loop schedule with continuous pixel throughput; compare all variants to the measured exact streaming baseline. Implement and RTL-cosim the best feasible provisional candidates while reporting the missing full-Set14 evidence.
 
-Generated from results.csv and archived reference evidence at 2026-10-10T20:12:15+00:00.
+Generated from results.csv and archived reference evidence at 2026-10-10T21:02:16+00:00.
