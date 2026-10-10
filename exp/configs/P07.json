@@ -1,0 +1,43 @@
+{
+  "T": 1,
+  "changes": "Independent PE kernel; 56 input triples per call. Exact direct-product checker, exhaustive signed8 triples, extremal homogeneous groups, and deterministic random wider data.",
+  "clock": 4,
+  "conclusion": "Use only numerically exact and measured primitives in full-network integration.",
+  "defines": {
+    "EXP_C_BITS": 10,
+    "EXP_GROUP": 1,
+    "EXP_NONNEG": 0,
+    "EXP_OPERAND_BITS": 10,
+    "EXP_PACK_MODE": 1
+  },
+  "design": "designs/packing_pe",
+  "estimates": {
+    "BRAM18K": 0,
+    "DSP": 1,
+    "LUT": 500,
+    "T": 1,
+    "URAM": 0,
+    "basis": "56 terms plus <=8 pipeline cycles; array interfaces need no internal frame memory. DSP estimates count one 27x18 multiplier per packed pair, two for direct control; LUT budget includes repair, control and possible fabric accumulation. Frame projection assumes1004 such PEs and excludes buffering/DDR.",
+    "frame_projection_DSP": 1004,
+    "frame_projection_T": 4,
+    "frame_projection_cycles": 260100,
+    "latency_cycles": 64
+  },
+  "id": "P07",
+  "ii_targets": {
+    "pack_terms": 1
+  },
+  "interpretation": "Compare measured DSP/operator LUT, achieved II and pipeline depth with the paper estimate. Inspect pre-adder mapping separately; a DSP count alone is insufficient.",
+  "name": "exact10_residual_pair",
+  "notes": "PE only; kernel latency is excluded from network rankings",
+  "precision": "raw10_raw10_exact_pair",
+  "purpose": "Preserve generic signed10 coefficients as signed-low8 plus256*residual[-2,2]. Pack low coefficients, unpack each signed10-input product, and restore residuals using shifts/adds. This keeps the passing w10a10 precision despite failing uniform INT8 quality.",
+  "scope": "PE",
+  "series": "P",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_pe",
+  "tb_files": [
+    "exp/tb/packing.cpp"
+  ],
+  "top": "packing_pe"
+}
