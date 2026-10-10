@@ -27,4 +27,4 @@ After all first-phase stages, create `exp/explore-arch` from `exp/overnight-1011
 
 ## Coordinate controller
 
-2026-10-10T20:20:59+00:00: Running E036; preceding completed measurements remain archived.
+2026-10-10T20:25:36+00:00: Running E037; preceding completed measurements remain archived.
