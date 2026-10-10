@@ -131,7 +131,7 @@ def deviation_explanation(row, config, comparisons):
 
 def main():
     rows = list(csv.DictReader((ROOT / "experiments/results.csv").open(newline="")))
-    structures, estimates, composition, bursts, conv3 = [], [], [], [], []
+    structures, estimates, composition, bursts, conv3, warnings = [], [], [], [], [], []
     for row in rows:
         archive = ROOT / "experiments" / Path(row["md_path"]).parent
         path = archive / "config.json"
@@ -146,8 +146,15 @@ def main():
                    "cache_bits": config.get("cache_bits", ""),
                    "inferred_image_read_bursts": "", "inferred_image_write_bursts": ""}
         logs = archive / "csynth.log.txt"
+        dataflow_warnings = []
         if logs.is_file():
-            observed = re.findall(r"burst (reads|writes) of length (\d+) and bit width (\d+) in loop '([^']+)'[^\n]*?on bundle '([^']+)'",logs.read_text())
+            log_text = logs.read_text()
+            dataflow_warnings = list(dict.fromkeys(line.strip() for line in log_text.splitlines() if
+                "WARNING: [HLS " in line and re.search(r"dataflow|FIFO|deadlock", line, re.IGNORECASE)))
+            warnings.extend({"id":row["id"],"series":row["series"] or "E","warning":message,
+                             "source":"csynth.log.txt","md_path":row["md_path"]}
+                            for message in dataflow_warnings)
+            observed = re.findall(r"burst (reads|writes) of length (\d+) and bit width (\d+) in loop '([^']+)'[^\n]*?on bundle '([^']+)'",log_text)
             for direction, count, bits, loop, bundle in observed:
                 bursts.append({"id": row["id"], "direction": direction, "bundle": bundle,
                                "inferred_words": count, "word_bits": bits, "loop": loop,
@@ -155,6 +162,7 @@ def main():
             for direction, key in (("reads","inferred_image_read_bursts"),("writes","inferred_image_write_bursts")):
                 counts = sorted({int(count) for kind,count,_,_,bundle in observed if kind == direction and bundle in {"image_in","image_out"}})
                 derived[key] = "/".join(map(str,counts)) if counts else "none reported"
+        derived["dataflow_warning_count"] = len(dataflow_warnings)
         bandwidth = config.get("ddr_lower_bound_ms", [])
         derived["ddr_theoretical_lower_bound_ms"] = bandwidth[0] if bandwidth else ""
         derived["ddr_50pct_lower_bound_ms"] = bandwidth[1] if bandwidth else ""
@@ -218,6 +226,10 @@ def main():
             human += "\nObserved errors: "+"; ".join(config["errors"])+"\n"
         if derived["failure_reason"]:
             human += "\nArchived failure evidence: "+derived["failure_reason"]+"\n"
+        if dataflow_warnings:
+            human += "\nDATAFLOW scheduling warnings parsed from csynth.log.txt:\n\n"
+            human += markdown_table([{"warning":message} for message in dataflow_warnings],["warning"])
+            human += "\nCaller inputs are read-only weights loaded before DATAFLOW; their start synchronization may limit overlap. C simulation uses unbounded software streams, so only finite-FIFO RTL profiling can establish the resulting throughput and absence of deadlock.\n"
         if config.get("primitive_probe"):
             probe = config["primitive_probe"]
             human += "\nRouted DSP48E2 inspection (dsp_primitives.csv):\n\n"+markdown_table([probe],[
@@ -233,7 +245,7 @@ def main():
         start = text.index("## 6. Interpretation / 解读\n\n")+len("## 6. Interpretation / 解读\n\n")
         end = text.index("\n## 7. Conclusion",start)
         md_path.write_text(text[:start]+human.rstrip()+"\n"+text[end:])
-    extra = ["scope","operation","eligible_provisional","failure_reason","ddr_bytes_per_frame","feature_recompute_ratio","cache_bits",
+    extra = ["scope","operation","eligible_provisional","failure_reason","dataflow_warning_count","ddr_bytes_per_frame","feature_recompute_ratio","cache_bits",
              "inferred_image_read_bursts","inferred_image_write_bursts","ddr_theoretical_lower_bound_ms","ddr_50pct_lower_bound_ms"]
     write_csv(ROOT / "experiments/architecture_data.csv",structures,list(rows[0])+extra)
     write_csv(ROOT / "experiments/estimate_actual.csv",estimates,["id","series","scope","metric","estimate","actual","deviation_pct","over20pct","status","md_path"])
@@ -241,6 +253,7 @@ def main():
     write_csv(ROOT / "experiments/bursts.csv",bursts,["id","direction","bundle","inferred_words","word_bits","loop","note"])
     write_csv(ROOT / "experiments/conv3_comparison.csv",conv3,["id","variant","kernel_DSP","kernel_BRAM18K","kernel_LUT","kernel_FF","kernel_latency_cycles",
                                                            "padding_DSP","padding_BRAM18K","padding_LUT","padding_FF","border_mse","bit_exact","ii_ok"])
+    write_csv(ROOT / "experiments/dataflow_warnings.csv",warnings,["id","series","warning","source","md_path"])
     print("Analyzed",len(structures),"runs;",len(estimates),"estimate comparisons")
 
 

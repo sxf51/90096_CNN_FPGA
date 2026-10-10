@@ -91,6 +91,9 @@ def main():
         verification.append({**row, "parent":config.get("verify_parent"), **config.get("verification",{})})
     text += "\n## Implementation And Cosim\n\nHLS estimates are inherited only for provenance. Routed WNS/resources and two-frame RTL cycles are parsed independently; none is a board measurement.\n\n"
     text += markdown_table(linked(verification),["id","scope","parent","operation","status","impl_DSP","impl_BRAM36","impl_LUT","impl_FF","impl_URAM","impl_WNS_ns","timing_met","rtl_status","rtl_latency_max","rtl_interval_max","cycle_deviation_pct"])
+    warning_points = [row for row in arch if number(row.get("dataflow_warning_count")) and not row["operation"]]
+    text += "\nDATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.\n\n"
+    text += markdown_table(linked(warning_points),["id","dataflow_warning_count","status"])
     selection_path = ROOT / "experiments/final_selection.json"
     if selection_path.is_file():
         selection = json.loads(selection_path.read_text())
