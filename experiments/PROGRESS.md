@@ -14,7 +14,11 @@ P01-P07/W01-W03 have completed strict C simulation and synthesis. P01 maps two p
 
 G01-G03 completed two-frame exact comparisons. Gather is29.83024ms/168 BRAM18K; padded scatter37.70206ms/137; merged-edge scatter44.13926ms/87. S01 global scratch probe passed C simulation but is invalid: neither scratch AXI bundle exists, and11286 BRAM18K shows the arrays remained on chip. S02-S06/P08 queue28264 is active. Full exact P10-P12 and W04-W06 plans and independent designs have been committed; queue33156 is active. G queue6482 may need its final output drained, but its hardware work is complete.
 
-Next: inspect numeric/synthesis failures without overwriting runs; preplan/implement C combinations and F continuous registered reductions, FIFO memory and online padding controls. Record estimates vs actuals and explain deviations over20%. Final best2-3 provisional frame candidates receive all supplied-image validation, routed implementation and two-frame cosim.
+P10 passed two-frame exact comparison and halves T16 DSP to254, but101488 LUT is infeasible and latency is12.156332ms. S03 B8 tile fusion passes exactly but113576 LUT is infeasible; larger blocks remain in queue. All S/P/W/C/F initial designs and pre-implementation plans now exist. F01-F07 queue46328 is active; it covers shallow-FIFO LUTRAM,20-URAM line banks, continuous registered reductions, old/online padding and T16/T8 at4/3.33ns.
+
+C01-C03 failed before synthesis because srcnn.h included AMD ap_fixed after the network F2/F3 macros. W04-W06 are retained attempted controls in queue33156. Independent corrected winograd_network_r1 and combination_network_r1 designs use W07-W09/C04-C06, queue33716. C initial queue14065 is complete and drained. Report-derived architecture_data.csv, estimate_actual.csv, dsp_composition.csv and bursts.csv plus five initial architecture plots exist. Re-run exp/analyze_arch.py and plots after all results arrive.
+
+Next: inspect corrected W layer/full-network correctness and F continuous-II/resource results. P08 implementation needs DSP48E2 attribute inspection through exp/inspect_dsp.tcl. Archive equivalent offline G2 weights. Select best2-3 provisional frame points from both phases for all supplied-image validation, routed implementation and two-frame6-hour cosim. Add concrete deviations/causes and finalize ARCH_SUMMARY.md, SUMMARY backlink, both checksum audits and commits. Never overwrite a completed run/design or stop while required queues remain active.
 
 ## Recovery
 

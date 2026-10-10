@@ -89,6 +89,13 @@ def main():
             actual = number(row.get(key))
             if config.get("operation") == "impl" and key in {"DSP", "URAM", "LUT"}:
                 actual = number(config.get("verification",{}).get("impl_"+key))
+            if config.get("operation") == "impl" and key == "BRAM18K":
+                bram36 = number(config.get("verification",{}).get("impl_BRAM36"))
+                actual = 2*bram36 if bram36 is not None else None
+            if config.get("operation") == "impl" and key == "latency_cycles":
+                actual = None
+            if config.get("operation") == "cosim" and key == "latency_cycles":
+                actual = number(config.get("verification",{}).get("rtl_latency_max"))
             deviation = 100*(actual/paper-1) if actual is not None and paper else None
             item = {"id":row["id"], "series":row["series"], "scope":derived["scope"],
                     "metric":key, "estimate":paper, "actual":actual, "deviation_pct":deviation,

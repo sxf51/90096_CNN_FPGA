@@ -1,3 +1,5 @@
+Architecture exploration: [ARCH_SUMMARY.md](ARCH_SUMMARY.md).
+
 # SRCNN on K26: overnight experiments
 
 The unchanged float baseline is functionally correct but infeasible (11064.0 BRAM18K; 19601.139 ms). Uniform w10a10 loses 0.069514 dB on all 13 supplied Set14 pairs; w8a8 loses 5.179955 dB. The fastest resource-feasible supplied-image candidate is [E043](E043_scan_clock_T16_E043/E043.md) at 6.939230 ms; missing comic prevents complete Set14 acceptance.
