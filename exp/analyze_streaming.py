@@ -57,7 +57,7 @@ for row in rows:
         narrative += f"\nConv1 fold module latency is {fold.get('latency_cycles')} cycles, with interval {fold.get('interval_cycles')}. "
         narrative += f"Its containing spatial engine takes {point['C1_cycles']} cycles; Conv2 takes {point['C2_cycles']} cycles. "
         narrative += "Inner-loop II=1 alone does not establish T cycles per pixel: pipeline fill/drain and unpipelined spatial control add frame overhead.\n"
-    if "wrap" not in row["design"] and "dsp" not in row["design"]:
+    if row["design"] in {"designs/dataflow_v1", "designs/scatter_v1"}:
         narrative += "\nThe baseline report lists narrow `mul_10s_10s_20_1_1` fabric products at 62 LUT and zero DSP each, with a few fused DSP MACs. "
         narrative += "Complete register weight partitions also create large variable-index sparse muxes. Saturating every partial addition prevents associative reduction; Conv3's recurrence can satisfy II=1 by lengthening the combinational clock path. These effects explain the deviation from the one-DSP-per-MAC paper model.\n"
     else:

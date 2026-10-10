@@ -25,6 +25,8 @@ AXI float-array signature remains unchanged; weights/biases load once before DAT
 | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | ii_ok | status | id |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 251.0 | 168.0 | 89341.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E047](E047_dataflow_dsp_T32/E047.md) |
+| designs/dataflow_wrap | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 148.0 | 168.0 | 95727.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E063](E063_dataflow_wrap_T32_retry/E063.md) |
+| designs/dataflow_int | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 254.0 | 168.0 | 89304.0 | 132635.0 | -0.0695141811880653 | True | infeasible | [E048](E048_dataflow_integer_T32/E048.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E033](E033_dataflow_fixed_T32_single/E033.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E031](E031_dataflow_fixed_T32/E031.md) |
 | designs/dataflow_v1 | w10a10acc23 | 16 | 10 | 63.218 | 2775517.0 | 2775518.0 | 175.462633706 | 18.0 | 168.0 | 167715.0 | 135714.0 | -0.0695141811880653 | True | infeasible | [E044](E044_scan_T_T16_E034_retry/E044.md) |
@@ -43,6 +45,8 @@ No implementation or C/RTL cosimulation result yet. Finite-FIFO deadlock freedom
 | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | ii_ok | status | id |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 251.0 | 168.0 | 89341.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E047](E047_dataflow_dsp_T32/E047.md) |
+| designs/dataflow_wrap | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 148.0 | 168.0 | 95727.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E063](E063_dataflow_wrap_T32_retry/E063.md) |
+| designs/dataflow_int | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 254.0 | 168.0 | 89304.0 | 132635.0 | -0.0695141811880653 | True | infeasible | [E048](E048_dataflow_integer_T32/E048.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E033](E033_dataflow_fixed_T32_single/E033.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E031](E031_dataflow_fixed_T32/E031.md) |
 | designs/dataflow_v1 | w10a10acc23 | 16 | 10 | 63.218 | 2775517.0 | 2775518.0 | 175.462633706 | 18.0 | 168.0 | 167715.0 | 135714.0 | -0.0695141811880653 | True | infeasible | [E044](E044_scan_T_T16_E034_retry/E044.md) |
@@ -111,4 +115,4 @@ Missing comic input/GT pair blocks full 14-image acceptance. Windows Vitis envir
 
 Execute the authorized second phase on exp/explore-arch after phase-one completion. Prioritize packing/Winograd PE mapping, gather/scatter borders, memory banking and a loop schedule with continuous pixel throughput; compare all variants to the measured exact streaming baseline. Implement and RTL-cosim the best feasible provisional candidates while reporting the missing full-Set14 evidence.
 
-Generated from results.csv and archived reference evidence at 2026-10-10T19:06:50+00:00.
+Generated from results.csv and archived reference evidence at 2026-10-10T19:36:46+00:00.
