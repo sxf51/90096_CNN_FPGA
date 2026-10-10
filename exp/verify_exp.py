@@ -31,6 +31,10 @@ def parse_verification(work, operation):
     for path in sorted(work.rglob("*.rpt")):
         if "report" not in path.parts and "reports" not in path.parts:
             continue
+        if operation == "impl" and ("impl" not in path.parts or "synth" in path.stem):
+            continue
+        if operation == "cosim" and "sim" not in path.parts:
+            continue
         text = path.read_text(errors="replace")
         for line in text.splitlines():
             fields = [p.strip() for p in line.split("|")[1:-1]]
@@ -48,6 +52,7 @@ def parse_verification(work, operation):
                 value = number(fields[1])
                 if key and value is not None:
                     observed[key] = value
+                    observed["impl_resource_report"] = str(path.relative_to(work))
         if operation == "impl":
             lines = text.splitlines()
             for index, line in enumerate(lines):
@@ -57,6 +62,7 @@ def parse_verification(work, operation):
                         if values and number(values[0]) is not None:
                             observed["impl_WNS_ns"] = number(values[0])
                             observed["impl_TNS_ns"] = number(values[1]) if len(values) > 1 else None
+                            observed["impl_timing_report"] = str(path.relative_to(work))
                             break
     detail.extend({"file": "parsed_rpt", "metric": key, "value": value} for key, value in observed.items())
     return observed, detail
