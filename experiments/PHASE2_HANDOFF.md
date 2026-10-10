@@ -27,6 +27,11 @@ needs its own pre-implementation estimate in the corresponding experiment file.
   flatten pixel/fold iterations, and explicitly register a balanced fabric
   reduction. Wide shallow window streams need LUTRAM/register estimates. This
   targets measured Conv1 fill/drain and the E070 DSP cascade critical path.
+- Online padding: cache the first row, emit its radius+1 copies, then read and
+  emit each interior row concurrently while caching the latest row for the
+  bottom repeats. Replicate the first/last pixel horizontally. This removes
+  the existing full-row read/write serialization; validate finite-FIFO timing
+  with two-frame cosim. Keep a measured control with the old padding schedule.
 - Scatter boundary kernels: nine source classes (top/interior/bottom times
   left/interior/right), exact merged taps, fraction9 and wider coefficients.
   For output offset dy, interior ky=2-dy, top merges ky<=2-dy and bottom merges
