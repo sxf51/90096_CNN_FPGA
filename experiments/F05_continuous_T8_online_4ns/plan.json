@@ -1,0 +1,53 @@
+{
+  "config_sha256": "b75f7e6053c85dd512c65056c970df04239b561d195c07b7af3efc790c593f69",
+  "configuration": {
+    "T": 8,
+    "changes": "New continuous source, wide two-entry LUTRAM window FIFOs, unchanged input/output/weight contract and layer quantization points. Padding mode is an explicit compile-time control.",
+    "clock": 4,
+    "conclusion": "Select feasible exact candidates and validate two-frame RTL latency/deadlock before attributing an end-to-end speedup.",
+    "defines": {
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 8,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/continuous_direct",
+    "estimates": {
+      "BRAM18K": 96,
+      "Conv1_DSP": 648,
+      "Conv2_DSP": 256,
+      "Conv3_DSP": 100,
+      "DSP": 1007,
+      "LUT": 100000,
+      "T": 8,
+      "URAM": 0,
+      "basis": "Onefold/cycle,65025*T plus input/pad startup, weight load and drain allowance100000 cycles. All502 or1004 products bind to DSP; balanced23-bit additions have explicit fabric latency1. Keep line/pad memory, replace tiny wide BRAM FIFOs with LUTRAM. HLS maximum-component estimates may miss old-pad finite-FIFO row serialization.",
+      "latency_cycles": 620200
+    },
+    "fixed": true,
+    "id": "F05",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Compare continuous engine II and whole-frame cycles against ideal65025*T. Report registered reduction cost, stream warnings and actual RTL backpressure; HLS II alone is insufficient.",
+    "name": "continuous_T8_online_4ns",
+    "precision": "w10a10acc23",
+    "purpose": "Separate window production from convolution engines, flatten pixel/fold loops into oneII1 loop and shift fixed channel registers each fold. Register balanced fabric reductions to break E070's eight-DSP unregistered adder path. Online padding caches the first row and reads/emits subsequent rows together, avoiding pad3's serialized row phases.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_f",
+    "storage": "lutram",
+    "unroll": "Cout/Cout/tap"
+  },
+  "created_at": "2026-10-10T22:10:32+00:00",
+  "created_from_commit": "cdc24c826a42e2bdb7e7e287d9dd83cc87db7426",
+  "purpose_section": "Separate window production from convolution engines, flatten pixel/fold loops into oneII1 loop and shift fixed channel registers each fold. Register balanced fabric reductions to break E070's eight-DSP unregistered adder path. Online padding caches the first row and reads/emits subsequent rows together, avoiding pad3's serialized row phases.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 1007 |\n| Conv1_DSP | 648 |\n| Conv2_DSP | 256 |\n| Conv3_DSP | 100 |\n| BRAM18K | 96 |\n| URAM | 0 |\n| LUT | 100000 |\n| T | 8 |\n| latency_cycles | 620200 |\n| basis | Onefold/cycle,65025*T plus input/pad startup, weight load and drain allowance100000 cycles. All502 or1004 products bind to DSP; balanced23-bit additions have explicit fabric latency1. Keep line/pad memory, replace tiny wide BRAM FIFOs with LUTRAM. HLS maximum-component estimates may miss old-pad finite-FIFO row serialization. |\n\nPlanned at 2026-10-10T22:10:32+00:00; estimates are hypotheses, not tool measurements."
+}
