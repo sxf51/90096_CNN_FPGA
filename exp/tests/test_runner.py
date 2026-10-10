@@ -140,6 +140,7 @@ class RunnerTests(unittest.TestCase):
                 return 0, .01
             with patch.object(run_exp, "ROOT", root), patch.object(plan_arch, "ROOT", root), \
                     patch.object(plan_arch.subprocess, "check_output", return_value="fixture"), \
+                    patch.object(run_exp.platform, "platform", return_value="fixture"), \
                     patch.object(run_exp, "invoke", fake_invoke), contextlib.redirect_stdout(io.StringIO()):
                 archive = plan_arch.plan(config)
                 before = json.loads((archive / "plan.json").read_text())["purpose_section"]

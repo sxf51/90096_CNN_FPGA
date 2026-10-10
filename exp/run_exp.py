@@ -382,7 +382,8 @@ def run(config):
                             loops.append(loop)
                 shutil.copytree(reports[-1].parent, archive / "reports",
                                 ignore=shutil.ignore_patterns("*.json", "*.adb", "*.log"))
-                interface_report = (archive / "csynth.rpt").read_text()
+                interface_report = ((archive / "csynth.rpt").read_text()
+                                    if config.get("required_axi_bundles") else "")
                 missing = [bundle for bundle in config.get("required_axi_bundles", [])
                            if "m_axi_" + bundle + "_" not in interface_report]
                 if missing:
