@@ -187,6 +187,8 @@
 
 - 2026-10-10T22:18:05+00:00: C01-C03: compile failure from F2/F3 dimension macro collision with AMD ap_fixed identifiers. W04-W06 share the same header; retain their attempted runs. W07-W09/C04-C06 use independent source copies with SDK headers included first; no protected test/source changed.
 
+- 2026-10-10T22:25:04+00:00: P11: exact10_packing_T8; status=infeasible; latency_ms_est=7.577208; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T22:20 UTC: S01's global m_axi pragmas did not export scratch1/scratch2. The two float feature arrays became11286 BRAM18K; the run is invalid_config and cannot count as DDR architecture evidence. A full sequential DDR implementation needs two explicit scratch pointer arguments or an approved wrapper/memory contract. Keep the frozen srcnn signature now; compare tile/dataflow hardware and separately archive the50,491,916-byte DDR payload model at19.2/9.6GB/s.

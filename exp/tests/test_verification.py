@@ -44,6 +44,21 @@ class VerificationTests(unittest.TestCase):
             self.assertNotIn("impl_DSP", values)
             self.assertNotIn("impl_WNS_ns", values)
 
+    def test_two_transaction_rtl_cycles_are_separate_from_csynth(self):
+        with tempfile.TemporaryDirectory() as temp:
+            work = Path(temp)
+            synthesis = work / "hls/syn/report"
+            simulation = work / "hls/sim/report"
+            synthesis.mkdir(parents=True)
+            simulation.mkdir(parents=True)
+            (synthesis / "srcnn_csynth.rpt").write_text("| Verilog | Pass | 1 | 1 | 1 | 1 | 1 | 1 |\n")
+            (simulation / "srcnn_cosim.rpt").write_text(
+                "| Verilog | Pass | 2083800 | 2083900 | 2084000 | 2083901 | 2084001 | 2084101 |\n")
+            values, _ = parse_verification(work,"cosim")
+            self.assertEqual(values["rtl_status"],"Pass")
+            self.assertEqual(values["rtl_latency_max"],2084000)
+            self.assertEqual(values["rtl_interval_max"],2084101)
+
 
 if __name__ == "__main__":
     unittest.main()
