@@ -93,6 +93,8 @@
 
 - 2026-10-10T19:45:53+00:00: E071: archived exact coefficient ranges and phase-two paper budgets; no synthesis claim
 
+- 2026-10-10T20:05:22+00:00: E070: first_feasible_implementation; status=impl_complete; latency_ms_est=29.83024; impl of E039; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T19:08 UTC: Row-buffer padding has separate read-row and write-row phases. C synthesis does not execute finite-FIFO backpressure, so the reported maximum-component dataflow latency may underestimate the real schedule when pad3 serializes row production and consumption. Verify with the authorized RTL cosimulation; phase-two online padding is a proposed measured control, not a claimed speedup.

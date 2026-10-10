@@ -1,0 +1,966 @@
+================================================================
+== Vivado RTL Synthesis Results
+================================================================
++ General Information:
+    * Date:            Sun Oct 11 07:05:21 AEDT 2026
+    * Version:         2026.1 (Build 6493734 on Jun 16 2026)
+    * Project:         E070
+    * Solution:        hls (Vivado IP Flow Target)
+    * Product family:  zynquplus
+    * Target device:   xck26-sfvc784-2LV-c
+
+
+================================================================
+== Run Constraints & Options
+================================================================
++ Design Constraints & Options:
+    * RTL Synthesis target clock:  10 ns
+    * C-Synthesis target clock:    10 ns
+    * C-Synthesis uncertainty:     27%
+
++ RTL Synthesis Options:
+    * config_export -vivado_synth_strategy:     default
+    * config_export -vivado_synth_design_args:  -directive sdx_optimization_effort_high
+
++ Reporting Options:
+    * config_export -vivado_report_level:      2
+    * config_export -vivado_max_timing_paths:  10
+
+
+================================================================
+== RTL Synthesis Resource Summary
+================================================================
+LUT:              21525
+FF:               33600
+DSP:              270
+BRAM:             62
+URAM:             0
+SRL:              313
+
+
+================================================================
+== RTL Synthesis Timing Summary
+================================================================
+* Timing was NOT met
++----------------+-------------+
+| Timing         | Period (ns) |
++----------------+-------------+
+| Target         | 10.000      |
+| Post-Synthesis | 10.795      |
++----------------+-------------+
+
+
+================================================================
+== RTL Synthesis Resources
+================================================================
++-----------------------------------------------------------------------------------+-----+----+-----+------+------+-----+--------+------+---------+----------+--------+
+| Name                                                                              | LUT | FF | DSP | BRAM | URAM | SRL | Pragma | Impl | Latency | Variable | Source |
++-----------------------------------------------------------------------------------+-----+----+-----+------+------+-----+--------+------+---------+----------+--------+
+| inst                                                                              |     |    |     |      |      | 313 |        |      |         |          |        |
+|   (inst)                                                                          |     |    |     |      |      |     |        |      |         |          |        |
+|   control_s_axi_U                                                                 |     |    |     |      |      |     |        |      |         |          |        |
+|   fpext_32ns_64_2_no_dsp_1_U3017                                                  |     |    |     |      |      |     |        |      |         |          |        |
+|     (fpext_32ns_64_2_no_dsp_1_U3017)                                              |     |    |     |      |      |     |        |      |         |          |        |
+|   grp_dataflow_region_fu_3145                                                     |     |    |     |      |      | 24  |        |      |         |          |        |
+|     conv12_U0                                                                     |     |    |     |      |      | 2   |        |      |         |          |        |
+|       conv1_stream_U0                                                             |     |    |     |      |      | 1   |        |      |         |          |        |
+|         (conv1_stream_U0)                                                         |     |    |     |      |      |     |        |      |         |          |        |
+|         conv1_stream_stream_stream_ap_fixed_81_ap_fixed_10_1_4_0_0_line_1_U       |     |    |     |      |      |     |        |      |         |          |        |
+|         conv1_stream_stream_stream_ap_fixed_81_ap_fixed_10_1_4_0_0_line_2_U       |     |    |     |      |      |     |        |      |         |          |        |
+|         conv1_stream_stream_stream_ap_fixed_81_ap_fixed_10_1_4_0_0_line_3_U       |     |    |     |      |      |     |        |      |         |          |        |
+|         conv1_stream_stream_stream_ap_fixed_81_ap_fixed_10_1_4_0_0_line_4_U       |     |    |     |      |      |     |        |      |         |          |        |
+|         conv1_stream_stream_stream_ap_fixed_81_ap_fixed_10_1_4_0_0_line_5_U       |     |    |     |      |      |     |        |      |         |          |        |
+|         conv1_stream_stream_stream_ap_fixed_81_ap_fixed_10_1_4_0_0_line_6_U       |     |    |     |      |      |     |        |      |         |          |        |
+|         conv1_stream_stream_stream_ap_fixed_81_ap_fixed_10_1_4_0_0_line_7_U       |     |    |     |      |      |     |        |      |         |          |        |
+|         conv1_stream_stream_stream_ap_fixed_81_ap_fixed_10_1_4_0_0_line_U         |     |    |     |      |      |     |        |      |         |          |        |
+|         grp_conv1_stream_Pipeline_c1_fold_fu_1394                                 |     |    |     |      |      | 1   |        |      |         |          |        |
+|           (grp_conv1_stream_Pipeline_c1_fold_fu_1394)                             |     |    |     |      |      | 1   |        |      |         |          |        |
+|           flow_control_loop_pipe_sequential_init_U                                |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_18s_20_4_1_U485                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_18s_20_4_1_U488                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U486                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U487                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U489                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U490                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U493                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U494                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U495                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U496                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U497                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U498                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U499                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U500                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U501                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U502                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U503                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U506                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U507                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U508                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U509                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U510                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U511                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U512                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U513                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U514                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U515                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U516                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U517                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U518                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U519                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U521                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U523                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U525                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U526                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U527                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U529                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U531                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U533                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U534                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U536                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U539                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U540                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U541                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U543                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U545                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U546                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U547                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U549                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U550                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U551                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U553                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U555                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U557                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U558                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U559                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U561                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U563                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U565                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U566                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U568                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U571                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U572                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U573                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U575                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U577                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U578                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_20s_21_4_1_U579                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U492                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U505                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U520                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U522                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U524                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U528                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U530                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U532                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U535                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U537                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U538                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U542                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U544                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U552                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U554                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U556                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U560                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U562                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U564                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U567                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U569                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U570                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U574                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_21_4_1_U576                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_22_4_1_U491                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_21s_22_4_1_U504                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_22s_23_4_1_U548                                      |     |    |     |      |      |     |        |      |         |          |        |
+|           mac_muladd_10s_10s_22s_23_4_1_U580                                      |     |    |     |      |      |     |        |      |         |          |        |
+|       conv2_stream_U0                                                             |     |    |     |      |      | 1   |        |      |         |          |        |
+|         (conv2_stream_U0)                                                         |     |    |     |      |      | 1   |        |      |         |          |        |
+|         mac_muladd_10s_10s_18s_20_4_1_U1218                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1219                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1220                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1221                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1222                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1223                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1224                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1225                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1228                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1229                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1231                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1232                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1234                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1235                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1236                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1237                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1238                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1239                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1240                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1241                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1242                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1243                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1245                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1246                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1247                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1249                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1251                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1252                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1253                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1227                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1230                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1233                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1244                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1248                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1250                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_22_4_1_U1226                                       |     |    |     |      |      |     |        |      |         |          |        |
+|       features_U                                                                  |     |    |     |      |      |     |        |      |         |          |        |
+|     conv3_stream_U0                                                               |     |    |     |      |      | 1   |        |      |         |          |        |
+|       (conv3_stream_U0)                                                           |     |    |     |      |      |     |        |      |         |          |        |
+|       conv3_stream_stream_stream_ap_fixed_25_ap_fixed_10_1_4_0_0_line_1_U         |     |    |     |      |      |     |        |      |         |          |        |
+|       conv3_stream_stream_stream_ap_fixed_25_ap_fixed_10_1_4_0_0_line_2_U         |     |    |     |      |      |     |        |      |         |          |        |
+|       conv3_stream_stream_stream_ap_fixed_25_ap_fixed_10_1_4_0_0_line_3_U         |     |    |     |      |      |     |        |      |         |          |        |
+|       conv3_stream_stream_stream_ap_fixed_25_ap_fixed_10_1_4_0_0_line_U           |     |    |     |      |      |     |        |      |         |          |        |
+|       grp_conv3_stream_Pipeline_c3_fold_fu_4366                                   |     |    |     |      |      | 1   |        |      |         |          |        |
+|         (grp_conv3_stream_Pipeline_c3_fold_fu_4366)                               |     |    |     |      |      | 1   |        |      |         |          |        |
+|         flow_control_loop_pipe_sequential_init_U                                  |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1780                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1781                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1782                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1783                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1784                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1785                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1786                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1794                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_20s_21_4_1_U1795                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1787                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1788                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1789                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1790                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1791                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1792                                       |     |    |     |      |      |     |        |      |         |          |        |
+|         mac_muladd_10s_10s_21s_21_4_1_U1793                                       |     |    |     |      |      |     |        |      |         |          |        |
+|     features2_U                                                                   |     |    |     |      |      |     |        |      |         |          |        |
+|     padded1_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|     padded3_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|     raw_U                                                                         |     |    |     |      |      |     |        |      |         |          |        |
+|       (raw_U)                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|     read_input_U0                                                                 |     |    |     |      |      |     |        |      |         |          |        |
+|       (read_input_U0)                                                             |     |    |     |      |      |     |        |      |         |          |        |
+|       flow_control_loop_pipe_U                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       fpext_32ns_64_2_no_dsp_1_U399                                               |     |    |     |      |      |     |        |      |         |          |        |
+|         (fpext_32ns_64_2_no_dsp_1_U399)                                           |     |    |     |      |      |     |        |      |         |          |        |
+|     replicate_pad_ap_fixed_10_2_4_0_0_4_U0                                        |     |    |     |      |      |     |        |      |         |          |        |
+|       (replicate_pad_ap_fixed_10_2_4_0_0_4_U0)                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       grp_replicate_pad_ap_fixed_10_2_4_0_0_4_Pipeline_pad_read_row_fu_75         |     |    |     |      |      |     |        |      |         |          |        |
+|         flow_control_loop_pipe_sequential_init_U                                  |     |    |     |      |      |     |        |      |         |          |        |
+|       grp_replicate_pad_ap_fixed_10_2_4_0_0_4_Pipeline_pad_write_row_fu_82        |     |    |     |      |      |     |        |      |         |          |        |
+|         flow_control_loop_pipe_sequential_init_U                                  |     |    |     |      |      |     |        |      |         |          |        |
+|       row_U                                                                       |     |    |     |      |      |     |        |      |         |          |        |
+|     replicate_pad_pixel2_2_U0                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|       (replicate_pad_pixel2_2_U0)                                                 |     |    |     |      |      |     |        |      |         |          |        |
+|       grp_replicate_pad_pixel2_2_Pipeline_pad_read_row_fu_193                     |     |    |     |      |      |     |        |      |         |          |        |
+|         flow_control_loop_pipe_sequential_init_U                                  |     |    |     |      |      |     |        |      |         |          |        |
+|       grp_replicate_pad_pixel2_2_Pipeline_pad_write_row_fu_231                    |     |    |     |      |      |     |        |      |         |          |        |
+|         flow_control_loop_pipe_sequential_init_U                                  |     |    |     |      |      |     |        |      |         |          |        |
+|       row_10_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_11_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_12_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_13_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_14_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_15_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_16_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_17_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_18_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_19_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_1_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|       row_20_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_21_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_22_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_23_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_24_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_25_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_26_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_27_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_28_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_29_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_2_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|       row_30_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_31_U                                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|       row_3_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|       row_4_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|       row_5_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|       row_6_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|       row_7_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|       row_8_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|       row_9_U                                                                     |     |    |     |      |      |     |        |      |         |          |        |
+|       row_U                                                                       |     |    |     |      |      |     |        |      |         |          |        |
+|     result_U                                                                      |     |    |     |      |      | 10  |        |      |         |          |        |
+|     start_for_replicate_pad_ap_fixed_10_2_4_0_0_4_U0_U                            |     |    |     |      |      |     |        |      |         |          |        |
+|     start_for_replicate_pad_pixel2_2_U0_U                                         |     |    |     |      |      |     |        |      |         |          |        |
+|     start_for_write_output_U0_U                                                   |     |    |     |      |      |     |        |      |         |          |        |
+|     write_output_U0                                                               |     |    |     |      |      | 1   |        |      |         |          |        |
+|       (write_output_U0)                                                           |     |    |     |      |      | 1   |        |      |         |          |        |
+|       flow_control_loop_pipe_U                                                    |     |    |     |      |      |     |        |      |         |          |        |
+|   grp_srcnn_Pipeline_VITIS_LOOP_321_1_fu_2939                                     |     |    |     |      |      | 1   |        |      |         |          |        |
+|     (grp_srcnn_Pipeline_VITIS_LOOP_321_1_fu_2939)                                 |     |    |     |      |      | 1   |        |      |         |          |        |
+|     flow_control_loop_pipe_sequential_init_U                                      |     |    |     |      |      |     |        |      |         |          |        |
+|   grp_srcnn_Pipeline_VITIS_LOOP_322_2_fu_3074                                     |     |    |     |      |      | 2   |        |      |         |          |        |
+|     (grp_srcnn_Pipeline_VITIS_LOOP_322_2_fu_3074)                                 |     |    |     |      |      | 2   |        |      |         |          |        |
+|     flow_control_loop_pipe_sequential_init_U                                      |     |    |     |      |      |     |        |      |         |          |        |
+|   grp_srcnn_Pipeline_load1_fu_2415                                                |     |    |     |      |      | 9   |        |      |         |          |        |
+|     (grp_srcnn_Pipeline_load1_fu_2415)                                            |     |    |     |      |      | 9   |        |      |         |          |        |
+|     flow_control_loop_pipe_sequential_init_U                                      |     |    |     |      |      |     |        |      |         |          |        |
+|     mul_7ns_10ns_15_1_1_U3                                                        |     |    |     |      |      |     |        |      |         |          |        |
+|     mul_7ns_9ns_15_1_1_U2                                                         |     |    |     |      |      |     |        |      |         |          |        |
+|   grp_srcnn_Pipeline_load2_fu_2747                                                |     |    |     |      |      | 12  |        |      |         |          |        |
+|     (grp_srcnn_Pipeline_load2_fu_2747)                                            |     |    |     |      |      | 12  |        |      |         |          |        |
+|     flow_control_loop_pipe_sequential_init_U                                      |     |    |     |      |      |     |        |      |         |          |        |
+|   grp_srcnn_Pipeline_load3_fu_2882                                                |     |    |     |      |      | 11  |        |      |         |          |        |
+|     (grp_srcnn_Pipeline_load3_fu_2882)                                            |     |    |     |      |      | 11  |        |      |         |          |        |
+|     flow_control_loop_pipe_sequential_init_U                                      |     |    |     |      |      |     |        |      |         |          |        |
+|     mul_6ns_8ns_12_1_1_U252                                                       |     |    |     |      |      |     |        |      |         |          |        |
+|   image_in_m_axi_U                                                                |     |    |     |      |      | 63  |        |      |         |          |        |
+|   image_out_m_axi_U                                                               |     |    |     |      |      | 126 |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_0_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_10_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_11_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_12_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_13_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_14_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_15_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_16_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_17_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_18_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_19_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_1_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_20_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_21_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_22_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_23_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_24_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_25_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_26_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_27_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_28_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_29_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_2_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_30_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_31_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_32_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_33_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_34_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_35_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_36_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_37_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_38_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_39_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_3_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_40_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_41_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_42_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_43_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_44_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_45_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_46_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_47_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_48_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_49_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_4_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_50_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_51_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_52_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_53_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_54_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_55_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_56_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_57_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_58_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_59_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_5_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_60_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_61_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_62_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_63_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_64_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_65_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_66_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_67_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_68_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_69_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_6_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_70_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_71_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_72_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_73_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_74_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_75_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_76_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_77_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_78_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_79_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_7_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_80_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_8_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_0_9_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_0_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_10_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_11_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_12_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_13_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_14_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_15_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_16_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_17_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_18_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_19_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_1_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_20_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_21_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_22_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_23_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_24_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_25_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_26_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_27_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_28_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_29_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_2_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_30_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_31_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_32_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_33_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_34_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_35_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_36_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_37_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_38_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_39_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_3_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_40_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_41_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_42_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_43_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_44_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_45_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_46_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_47_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_48_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_49_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_4_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_50_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_51_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_52_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_53_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_54_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_55_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_56_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_57_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_58_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_59_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_5_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_60_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_61_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_62_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_63_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_64_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_65_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_66_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_67_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_68_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_69_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_6_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_70_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_71_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_72_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_73_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_74_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_75_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_76_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_77_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_78_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_79_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_7_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_80_U |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_8_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1_1_9_U  |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_10_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_11_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_12_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_13_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_14_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_15_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_16_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_17_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_18_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_19_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_20_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_21_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_22_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_23_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_24_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_25_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_26_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_27_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_28_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_29_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_30_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_31_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_32_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_33_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_34_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_35_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_36_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_37_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_38_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_39_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_40_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_41_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_42_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_43_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_44_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_45_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_46_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_47_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_48_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_49_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_50_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_51_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_52_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_53_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_54_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_55_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_56_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_57_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_58_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_59_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_60_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_61_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_62_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2_63_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_10_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_11_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_12_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_13_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_14_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_15_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_16_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_17_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_18_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_19_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_20_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_21_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_22_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_23_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_24_U   |     |    |     |      |      |     |        |      |         |          |        |
+|   parameters_m_axi_U                                                              |     |    |     |      |      | 65  |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_10_U                       |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_11_U                       |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_12_U                       |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_13_U                       |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_14_U                       |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_15_U                       |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_16_U                       |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_17_U                       |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_18_U                       |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_19_U                       |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_1_U                        |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_2_U                        |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_3_U                        |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_4_U                        |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_5_U                        |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_6_U                        |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_7_U                        |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_8_U                        |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_9_U                        |     |    |     |      |      |     |        |      |         |          |        |
+|   srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_U                          |     |    |     |      |      |     |        |      |         |          |        |
++-----------------------------------------------------------------------------------+-----+----+-----+------+------+-----+--------+------+---------+----------+--------+
+
+
+================================================================
+== RTL Synthesis Fail Fast
+================================================================
++-----------------------------------------------------------+-----------+--------+--------+
+| Criteria                                                  | Guideline | Actual | Status |
++-----------------------------------------------------------+-----------+--------+--------+
+| LUT                                                       | 70%       | 18.38% | OK     |
+| FD                                                        | 50%       | 14.34% | OK     |
+| LUTRAM+SRL                                                | 25%       | 7.62%  | OK     |
+| CARRY8                                                    | 25%       | 2.96%  | OK     |
+| MUXF7                                                     | 15%       | 2.70%  | OK     |
+| DSP                                                       | 80%       | 21.63% | OK     |
+| RAMB/FIFO                                                 | 80%       | 21.53% | OK     |
+| URAM                                                      | 80%       | 0.00%  | OK     |
+| DSP+RAMB+URAM (Avg)                                       | 70%       | 21.58% | OK     |
+| BUFGCE* + BUFGCTRL                                        | 24        | 0      | OK     |
+| DONT_TOUCH (cells/nets)                                   | 0         | 6      | REVIEW |
+| MARK_DEBUG (nets)                                         | 0         | 0      | OK     |
+| Control Sets                                              | 2196      | 780    | OK     |
+| Average Fanout for modules > 100k cells                   | 4         | 1.33   | OK     |
+| Max Average Fanout for modules > 100k cells               | 4         | 0      | OK     |
+| Non-FD high fanout nets > 10k loads                       | 0         | 0      | OK     |
++-----------------------------------------------------------+-----------+--------+--------+
+| TIMING-6 (No common primary clock between related clocks) | 0         | 0      | OK     |
+| TIMING-7 (No common node between related clocks)          | 0         | 0      | OK     |
+| TIMING-8 (No common period between related clocks)        | 0         | 0      | OK     |
+| TIMING-14 (LUT on the clock tree)                         | 0         | 0      | OK     |
+| TIMING-35 (No common node in paths with the same clock)   | 0         | 0      | OK     |
++-----------------------------------------------------------+-----------+--------+--------+
+| Number of paths above max LUT budgeting (0.391ns)         | 0         | 0      | OK     |
+| Number of paths above max Net budgeting (0.263ns)         | 0         | 100    | REVIEW |
++-----------------------------------------------------------+-----------+--------+--------+
+
+
+================================================================
+== RTL Synthesis Timing Paths
+================================================================
+* Timing was NOT met
++--------+----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+--------------+------------+----------------------+---------------------+---------------------+
+| Path   |                SLACK | STARTPOINT PIN                                                                                                                                                                                                 | ENDPOINT PIN                                                                                                                | LOGIC LEVELS | MAX FANOUT |       DATAPATH DELAY |      DATAPATH LOGIC |        DATAPATH NET |
+|        |                      |                                                                                                                                                                                                                |                                                                                                                             |              |            |                      |               DELAY |               DELAY |
++--------+----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+--------------+------------+----------------------+---------------------+---------------------+
+| Path1  | -0.79535490274429321 | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST/CLK | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[0]/R |           25 |         33 | 10.59399986267089844 | 8.82999992370605469 | 1.76400017738342285 |
+| Path2  | -0.79535490274429321 | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST/CLK | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[1]/R |           25 |         33 | 10.59399986267089844 | 8.82999992370605469 | 1.76400017738342285 |
+| Path3  | -0.79535490274429321 | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST/CLK | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[2]/R |           25 |         33 | 10.59399986267089844 | 8.82999992370605469 | 1.76400017738342285 |
+| Path4  | -0.79535490274429321 | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST/CLK | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[3]/R |           25 |         33 | 10.59399986267089844 | 8.82999992370605469 | 1.76400017738342285 |
+| Path5  | -0.79535490274429321 | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST/CLK | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[4]/R |           25 |         33 | 10.59399986267089844 | 8.82999992370605469 | 1.76400017738342285 |
+| Path6  | -0.79535490274429321 | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST/CLK | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[5]/R |           25 |         33 | 10.59399986267089844 | 8.82999992370605469 | 1.76400017738342285 |
+| Path7  | -0.79535490274429321 | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST/CLK | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[6]/R |           25 |         33 | 10.59399986267089844 | 8.82999992370605469 | 1.76400017738342285 |
+| Path8  | -0.79535490274429321 | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST/CLK | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[7]/R |           25 |         33 | 10.59399986267089844 | 8.82999992370605469 | 1.76400017738342285 |
+| Path9  | -0.79535490274429321 | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST/CLK | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[8]/R |           25 |         33 | 10.59399986267089844 | 8.82999992370605469 | 1.76400017738342285 |
+| Path10 | -0.79535490274429321 | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U570/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST/CLK | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_101_fu_1380_reg[0]/R |           25 |         33 | 10.59399986267089844 | 8.82999992370605469 | 1.76400017738342285 |
++--------+----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+--------------+------------+----------------------+---------------------+---------------------+
+
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path1 Cells                                                                                                                                                                                                | Primitive Type         |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_28                                                                                  | CLB.LUT.LUT2           |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_3                                                                                                               | CLB.CARRY.CARRY8       |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_2                                                                                                               | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_1                                                                                   | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_A_B_DATA_INST                                                                     | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_ALU_INST                                                                          | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_OUTPUT_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480[9]_i_16                                                                                 | CLB.LUT.LUT2           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_3                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_2                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376[8]_i_1                                                                                  | CLB.LUT.LUT4           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[0]                                                                                  | REGISTER.SDR.FDRE      |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path2 Cells                                                                                                                                                                                                | Primitive Type         |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_28                                                                                  | CLB.LUT.LUT2           |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_3                                                                                                               | CLB.CARRY.CARRY8       |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_2                                                                                                               | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_1                                                                                   | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_A_B_DATA_INST                                                                     | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_ALU_INST                                                                          | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_OUTPUT_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480[9]_i_16                                                                                 | CLB.LUT.LUT2           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_3                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_2                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376[8]_i_1                                                                                  | CLB.LUT.LUT4           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[1]                                                                                  | REGISTER.SDR.FDRE      |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path3 Cells                                                                                                                                                                                                | Primitive Type         |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_28                                                                                  | CLB.LUT.LUT2           |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_3                                                                                                               | CLB.CARRY.CARRY8       |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_2                                                                                                               | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_1                                                                                   | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_A_B_DATA_INST                                                                     | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_ALU_INST                                                                          | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_OUTPUT_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480[9]_i_16                                                                                 | CLB.LUT.LUT2           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_3                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_2                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376[8]_i_1                                                                                  | CLB.LUT.LUT4           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[2]                                                                                  | REGISTER.SDR.FDRE      |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path4 Cells                                                                                                                                                                                                | Primitive Type         |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_28                                                                                  | CLB.LUT.LUT2           |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_3                                                                                                               | CLB.CARRY.CARRY8       |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_2                                                                                                               | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_1                                                                                   | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_A_B_DATA_INST                                                                     | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_ALU_INST                                                                          | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_OUTPUT_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480[9]_i_16                                                                                 | CLB.LUT.LUT2           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_3                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_2                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376[8]_i_1                                                                                  | CLB.LUT.LUT4           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[3]                                                                                  | REGISTER.SDR.FDRE      |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path5 Cells                                                                                                                                                                                                | Primitive Type         |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_28                                                                                  | CLB.LUT.LUT2           |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_3                                                                                                               | CLB.CARRY.CARRY8       |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_2                                                                                                               | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_1                                                                                   | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_A_B_DATA_INST                                                                     | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_ALU_INST                                                                          | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_OUTPUT_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480[9]_i_16                                                                                 | CLB.LUT.LUT2           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_3                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_2                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376[8]_i_1                                                                                  | CLB.LUT.LUT4           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[4]                                                                                  | REGISTER.SDR.FDRE      |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path6 Cells                                                                                                                                                                                                | Primitive Type         |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_28                                                                                  | CLB.LUT.LUT2           |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_3                                                                                                               | CLB.CARRY.CARRY8       |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_2                                                                                                               | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_1                                                                                   | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_A_B_DATA_INST                                                                     | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_ALU_INST                                                                          | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_OUTPUT_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480[9]_i_16                                                                                 | CLB.LUT.LUT2           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_3                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_2                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376[8]_i_1                                                                                  | CLB.LUT.LUT4           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[5]                                                                                  | REGISTER.SDR.FDRE      |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path7 Cells                                                                                                                                                                                                | Primitive Type         |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_28                                                                                  | CLB.LUT.LUT2           |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_3                                                                                                               | CLB.CARRY.CARRY8       |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_2                                                                                                               | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_1                                                                                   | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_A_B_DATA_INST                                                                     | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_ALU_INST                                                                          | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_OUTPUT_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480[9]_i_16                                                                                 | CLB.LUT.LUT2           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_3                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_2                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376[8]_i_1                                                                                  | CLB.LUT.LUT4           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[6]                                                                                  | REGISTER.SDR.FDRE      |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path8 Cells                                                                                                                                                                                                | Primitive Type         |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_28                                                                                  | CLB.LUT.LUT2           |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_3                                                                                                               | CLB.CARRY.CARRY8       |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_2                                                                                                               | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_1                                                                                   | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_A_B_DATA_INST                                                                     | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_ALU_INST                                                                          | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_OUTPUT_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480[9]_i_16                                                                                 | CLB.LUT.LUT2           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_3                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_2                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376[8]_i_1                                                                                  | CLB.LUT.LUT4           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[7]                                                                                  | REGISTER.SDR.FDRE      |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path9 Cells                                                                                                                                                                                                | Primitive Type         |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U538/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_28                                                                                  | CLB.LUT.LUT2           |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_3                                                                                                               | CLB.CARRY.CARRY8       |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_2                                                                                                               | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2_i_1                                                                                   | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_A_B_DATA_INST                                                                     | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_ALU_INST                                                                          | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2/DSP_OUTPUT_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__0/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__1/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__2/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__3/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__4/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__5/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_fu_7323_p2__6/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480[9]_i_16                                                                                 | CLB.LUT.LUT2           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_3                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_126_fu_1480_reg[9]_i_2                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376[8]_i_1                                                                                  | CLB.LUT.LUT4           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_100_fu_1376_reg[8]                                                                                  | REGISTER.SDR.FDRE      |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path10 Cells                                                                                                                                                                                               | Primitive Type         |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/mac_muladd_10s_10s_21s_21_4_1_U570/srcnn_mac_muladd_10s_10s_21s_21_4_1_DSP48_0_U/p_reg_reg/DSP_OUTPUT_INST | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2_i_28                                                                               | CLB.LUT.LUT2           |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2_i_3                                                                                                            | CLB.CARRY.CARRY8       |
+    | conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2_i_2                                                                                                            | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2_i_1                                                                                | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2/DSP_A_B_DATA_INST                                                                  | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2/DSP_ALU_INST                                                                       | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2/DSP_OUTPUT_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__0/DSP_ALU_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__0/DSP_OUTPUT_INST                                                                 | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__1/DSP_ALU_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__1/DSP_OUTPUT_INST                                                                 | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__2/DSP_ALU_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__2/DSP_OUTPUT_INST                                                                 | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__3/DSP_ALU_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__3/DSP_OUTPUT_INST                                                                 | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__4/DSP_ALU_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__4/DSP_OUTPUT_INST                                                                 | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__5/DSP_ALU_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__5/DSP_OUTPUT_INST                                                                 | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__6/DSP_ALU_INST                                                                    | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/add_ln105_81_fu_8019_p2__6/DSP_OUTPUT_INST                                                                 | ARITHMETIC.DSP.DSP48E2 |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_127_fu_1484[9]_i_17                                                                                 | CLB.LUT.LUT2           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_127_fu_1484_reg[9]_i_4                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_127_fu_1484_reg[9]_i_3                                                                              | CLB.CARRY.CARRY8       |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_101_fu_1380[8]_i_1                                                                                  | CLB.LUT.LUT4           |
+    | grp_dataflow_region_fu_3145/conv12_U0/conv1_stream_U0/grp_conv1_stream_Pipeline_c1_fold_fu_1394/result_101_fu_1380_reg[0]                                                                                  | REGISTER.SDR.FDRE      |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+
+================================================================
+== RTL Synthesis Vivado Reports
+================================================================
++--------------------------+--------------------------------------------------------------+
+| Report Type              | Report Location                                              |
++--------------------------+--------------------------------------------------------------+
+| design_analysis          | impl/verilog/report/srcnn_design_analysis_synth.rpt          |
+| failfast                 | impl/verilog/report/srcnn_failfast_synth.rpt                 |
+| power                    | impl/verilog/report/srcnn_power_synth.rpt                    |
+| timing                   | impl/verilog/report/srcnn_timing_synth.rpt                   |
+| timing_paths             | impl/verilog/report/srcnn_timing_paths_synth.rpt             |
+| utilization              | impl/verilog/report/srcnn_utilization_synth.rpt              |
+| utilization_hierarchical | impl/verilog/report/srcnn_utilization_hierarchical_synth.rpt |
++--------------------------+--------------------------------------------------------------+
+
+
