@@ -1,0 +1,23 @@
+{
+  "changes": "Independent fixed reference retains golden external float signature; internal weights/biases and activations use AP_RND_CONV/AP_SAT. Exact product-fraction accumulators. Retry of E013 with corrected runner flag serialization.",
+  "clock": 10,
+  "conclusion": "Save actual ap_fixed butterfly output for subsequent architecture bit-exact checks.",
+  "csim_only": true,
+  "csim_timeout": 2700,
+  "defines": {
+    "EXP_A_BITS": 8,
+    "EXP_W_BITS": 8
+  },
+  "design": "designs/fixed_ref",
+  "fixed": true,
+  "id": "E016",
+  "interpretation": "Passing arithmetic identity is distinct from passing image quality. The complete all-ap_fixed butterfly output must match numpy; the 13-image scan remains the precision evidence and w8a8 is ineligible for whole-network selection.",
+  "name": "apfixed_w8a8_retry",
+  "numpy_reference": "exp/numeric_reference/w8a8/numpy_reference",
+  "precision": "w8a8acc19",
+  "purpose": "Verify w8a8 actual AMD ap_fixed arithmetic against numpy on butterfly even though the 13-image quality scan fails the 0.1 dB gate by 5.18 dB.",
+  "quick": true,
+  "set14": false,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 1
+}

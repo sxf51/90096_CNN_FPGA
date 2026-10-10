@@ -1,0 +1,23 @@
+{
+  "changes": "Independent fixed reference retains golden external float signature; internal weights/biases and activations use AP_RND_CONV/AP_SAT. Exact product-fraction accumulators. Retry of E012 with corrected runner flag serialization.",
+  "clock": 10,
+  "conclusion": "Save actual ap_fixed butterfly output for subsequent architecture bit-exact checks.",
+  "csim_only": true,
+  "csim_timeout": 2700,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/fixed_ref",
+  "fixed": true,
+  "id": "E019",
+  "interpretation": "One complete butterfly output must match numpy bit for bit. This arithmetic cross-check complements the 13-image E017 quality measurement and does not substitute for the missing comic pair. Avoid repeating original fixed test calls and the slow 13-image all-ap_fixed path after E014 reached the 45-minute issue limit.",
+  "name": "apfixed_w10a10_retry",
+  "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+  "precision": "w10a10acc23",
+  "purpose": "Verify the w10a10 precision representative using full actual AMD ap_fixed arithmetic on butterfly. All 13 supplied Set14 pairs were independently checked by E017 against numpy; this run isolates arithmetic implementation identity.",
+  "quick": true,
+  "set14": false,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 1
+}
