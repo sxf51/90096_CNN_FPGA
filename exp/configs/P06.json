@@ -1,0 +1,43 @@
+{
+  "T": 1,
+  "changes": "Independent PE kernel; 56 input triples per call. Exact direct-product checker, exhaustive signed8 triples, extremal homogeneous groups, and deterministic random wider data.",
+  "clock": 4,
+  "conclusion": "Use only numerically exact and measured primitives in full-network integration.",
+  "defines": {
+    "EXP_C_BITS": 10,
+    "EXP_GROUP": 2,
+    "EXP_NONNEG": 1,
+    "EXP_OPERAND_BITS": 8,
+    "EXP_PACK_MODE": 1
+  },
+  "design": "designs/packing_pe",
+  "estimates": {
+    "BRAM18K": 0,
+    "DSP": 1,
+    "LUT": 320,
+    "T": 1,
+    "URAM": 0,
+    "basis": "56 terms plus <=8 pipeline cycles; array interfaces need no internal frame memory. DSP estimates count one 27x18 multiplier per packed pair, two for direct control; LUT budget includes repair, control and possible fabric accumulation. Frame projection assumes1004 such PEs and excludes buffering/DDR.",
+    "frame_projection_DSP": 1004,
+    "frame_projection_T": 4,
+    "frame_projection_cycles": 260100,
+    "latency_cycles": 64
+  },
+  "id": "P06",
+  "ii_targets": {
+    "pack_terms": 1
+  },
+  "interpretation": "Compare measured DSP/operator LUT, achieved II and pipeline depth with the paper estimate. Inspect pre-adder mapping separately; a DSP count alone is insufficient.",
+  "name": "nonnegative10_group2",
+  "notes": "PE only; kernel latency is excluded from network rankings",
+  "precision": "raw8_raw10_exact_pair",
+  "purpose": "Share nonnegative raw10 activations0..511 between signed8 weights, decode every two terms. The signed18 low field bound is2*128*511=130816; seven-term INT8 accumulation is invalid here.",
+  "scope": "PE",
+  "series": "P",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_pe",
+  "tb_files": [
+    "exp/tb/packing.cpp"
+  ],
+  "top": "packing_pe"
+}
