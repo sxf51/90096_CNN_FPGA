@@ -99,6 +99,8 @@
 
 - 2026-10-10T20:07:09+00:00: E070: reparsed archived final verification reports; synthesis reports excluded; {"impl_DSP": 270.0, "impl_resource_report": "hls/impl/verilog/report/srcnn_utilization_routed.rpt", "impl_WNS_ns": -1.277, "impl_TNS_ns": -1206.071, "impl_timing_report": "hls/impl/verilog/report/srcnn_timing_routed.rpt", "impl_LUT": 20454.0, "impl_FF": 33844.0, "impl_BRAM36": 31.0, "impl_URAM": 0.0, "timing_met": false, "impl_clock_ns_est": 11.277}
 
+- 2026-10-10T20:07:36+00:00: E040: scan_storage_T32_E040; status=infeasible; latency_ms_est=29.83024; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T19:08 UTC: Row-buffer padding has separate read-row and write-row phases. C synthesis does not execute finite-FIFO backpressure, so the reported maximum-component dataflow latency may underestimate the real schedule when pad3 serializes row production and consumption. Verify with the authorized RTL cosimulation; phase-two online padding is a proposed measured control, not a claimed speedup.
