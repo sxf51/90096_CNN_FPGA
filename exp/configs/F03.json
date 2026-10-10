@@ -1,0 +1,47 @@
+{
+  "T": 16,
+  "changes": "New continuous source, wide two-entry LUTRAM window FIFOs, unchanged input/output/weight contract and layer quantization points. Padding mode is an explicit compile-time control.",
+  "clock": 4,
+  "conclusion": "Select feasible exact candidates and validate two-frame RTL latency/deadlock before attributing an end-to-end speedup.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 0,
+    "EXP_STORAGE": 1,
+    "EXP_T": 16,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/continuous_direct",
+  "estimates": {
+    "BRAM18K": 96,
+    "Conv1_DSP": 324,
+    "Conv2_DSP": 128,
+    "Conv3_DSP": 50,
+    "DSP": 505,
+    "LUT": 58000,
+    "T": 16,
+    "URAM": 0,
+    "basis": "Onefold/cycle,65025*T plus input/pad startup, weight load and drain allowance100000 cycles. All502 or1004 products bind to DSP; balanced23-bit additions have explicit fabric latency1. Keep line/pad memory, replace tiny wide BRAM FIFOs with LUTRAM. HLS maximum-component estimates may miss old-pad finite-FIFO row serialization.",
+    "latency_cycles": 1140400
+  },
+  "fixed": true,
+  "id": "F03",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare continuous engine II and whole-frame cycles against ideal65025*T. Report registered reduction cost, stream warnings and actual RTL backpressure; HLS II alone is insufficient.",
+  "name": "continuous_T16_oldpad_4ns",
+  "precision": "w10a10acc23",
+  "purpose": "Separate window production from convolution engines, flatten pixel/fold loops into oneII1 loop and shift fixed channel registers each fold. Register balanced fabric reductions to break E070's eight-DSP unregistered adder path. Retain original row-read/row-write padding to isolate the continuous schedule; finite-FIFO stalls may dominate RTL cycles.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "scope": "frame",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_f",
+  "storage": "lutram",
+  "unroll": "Cout/Cout/tap"
+}
