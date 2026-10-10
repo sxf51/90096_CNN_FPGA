@@ -209,6 +209,8 @@
 
 - 2026-10-10T22:59:22+00:00: F01: fifo_lutram_control; status=provisional; latency_ms_est=8.058712; 
 
+- 2026-10-10T23:03:00+00:00: W10: fixed_tiles_T16_c1only_4ns; status=provisional; latency_ms_est=7.548204; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T22:20 UTC: S01's global m_axi pragmas did not export scratch1/scratch2. The two float feature arrays became11286 BRAM18K; the run is invalid_config and cannot count as DDR architecture evidence. A full sequential DDR implementation needs two explicit scratch pointer arguments or an approved wrapper/memory contract. Keep the frozen srcnn signature now; compare tile/dataflow hardware and separately archive the50,491,916-byte DDR payload model at19.2/9.6GB/s.
