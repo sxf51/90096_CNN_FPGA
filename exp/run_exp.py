@@ -382,13 +382,6 @@ def run(config):
                             loops.append(loop)
                 shutil.copytree(reports[-1].parent, archive / "reports",
                                 ignore=shutil.ignore_patterns("*.json", "*.adb", "*.log"))
-                interface_report = ((archive / "csynth.rpt").read_text()
-                                    if config.get("required_axi_bundles") else "")
-                missing = [bundle for bundle in config.get("required_axi_bundles", [])
-                           if "m_axi_" + bundle + "_" not in interface_report]
-                if missing:
-                    row["status"] = "invalid_config"
-                    raise RuntimeError("Required external DDR AXI bundles not generated: " + ", ".join(missing))
                 for key, cap in CAPACITY.items():
                     if metrics.get(key) is not None and key != "URAM":
                         pct_key = "BRAM_pct" if key == "BRAM18K" else key + "_pct"
@@ -412,6 +405,13 @@ def run(config):
                     row["status"] = "provisional"
                 if row["ii_ok"] is False:
                     row["notes"] += "; requested II missed"
+                interface_report = ((archive / "csynth.rpt").read_text()
+                                    if config.get("required_axi_bundles") else "")
+                missing = [bundle for bundle in config.get("required_axi_bundles", [])
+                           if "m_axi_" + bundle + "_" not in interface_report]
+                if missing:
+                    row["status"] = "invalid_config"
+                    raise RuntimeError("Required external DDR AXI bundles not generated: " + ", ".join(missing))
     except Exception as exc:
         errors.append(str(exc))
         row["notes"] += "; " + str(exc)
