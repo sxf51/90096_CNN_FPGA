@@ -229,7 +229,13 @@
 
 - 2026-10-10T23:18:50+00:00: C09: wino_conv2w8_continuous_T4; status=fail; latency_ms_est=unknown; ; Synthesis failed (exit=1)
 
+- 2026-10-10T23:19:34+00:00: F08: resumed queued architecture exploration; P08 primitive inspection is complete (one DSP48E2, AMULTSEL=AD, ADREG=1). Archived failures now include concrete compiler diagnostics and unchanged resource-cap violations. DATAFLOW scheduling warnings are derived into dataflow_warnings.csv and experiment interpretations; final two-frame RTL runs remain mandatory.
+
+- 2026-10-10T23:19:34+00:00: F08-F12/W14-W16/C10-C11: independent retries split the Conv3 window into two4000-bit streams after W11 measured HLS214-256,8000 bits exceeding4096. Both sides carry65025 packets per frame; quantization points, weights and arithmetic remain identical. Original F03-F07/W11-W13/C08-C09 failures stay archived. The corrected queue is waiting for the serialized hardware slot.
+
 ## Pending Human Decisions / 待人工决策
+
+- 2026-10-10T23:19:34+00:00: Winograd's requested offline weight transform conflicts with accepting arbitrary original float weight arrays at the frozen srcnn signature. Keep the internal runtime load/transform stage, include its measured cycles/resources and archive the equivalent pretrained G2 tensor. Removing runtime transformation requires an approved transformed-weight contract or a specialized constant-weight wrapper; no such interface change is made in this unattended run.
 
 - 2026-10-10T22:20 UTC: S01's global m_axi pragmas did not export scratch1/scratch2. The two float feature arrays became11286 BRAM18K; the run is invalid_config and cannot count as DDR architecture evidence. A full sequential DDR implementation needs two explicit scratch pointer arguments or an approved wrapper/memory contract. Keep the frozen srcnn signature now; compare tile/dataflow hardware and separately archive the50,491,916-byte DDR payload model at19.2/9.6GB/s.
 
