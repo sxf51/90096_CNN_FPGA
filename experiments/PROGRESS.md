@@ -10,7 +10,7 @@ Architecture infrastructure supports series, immutable preplanned archives and a
 
 ## Next Action
 
-Plan and commit P/W microbenchmarks before implementation. Then execute G three-way Conv3 comparison, S dataflow/DDR/tile comparison, full P/W, C combinations and F scheduling/memory/timing ideas. Record estimates vs actuals and explain deviations over20%. Final best2-3 provisional candidates receive full supplied-image validation, implementation and two-frame cosim.
+P01-P07/W01-W03 estimates were committed before source implementation. Packing queue48817 and Winograd queue14118 are running; hardware is serialized, C simulations may overlap. P01 exhausts all16777216 signed8 triples plus homogeneous extrema; W01 checks524288 exact inverse outputs. Both C simulations pass; synthesis mapping remains pending. G01-G03 are being preplanned at common T32/10ns. Then execute S dataflow/DDR/tile comparison, full P/W, C combinations and F scheduling/memory/timing ideas. Record estimates vs actuals and explain deviations over20%. Final best2-3 provisional candidates receive full supplied-image validation, implementation and two-frame cosim.
 
 ## Recovery
 
