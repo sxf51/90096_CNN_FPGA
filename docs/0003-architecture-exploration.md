@@ -49,6 +49,10 @@ Explain estimate deviations over20 percent using scheduling/resource evidence.
   requested9.6GB/s scenario, and HLS timings remain lower bounds.
 - Software streams do not prove finite-FIFO progress. Retain deadlock detection
   in RTL cosimulation, with a six-hour process-tree timeout.
+- Wide held-window dynamic selectors and explicitly registered reductions can
+  dominate LUT/FF after II1 is reached. F13-F15 test channel rotation and
+  reduction latency using the measured F08 module costs; retain any LUT/FF
+  infeasibility or increased estimated clock instead of changing the gates.
 
 Synthesis is serialized for the15GiB remote host, with60-minute per-run timeout
 and45-minute issue-tuning limit. Generated HDL/cache/binaries remain outside

@@ -59,7 +59,10 @@ adjust_text(labels,ax=ax,iter_lim=350,arrowprops={"arrowstyle":"-","color":"#888
 save(fig,"architecture_pareto.png")
 
 compositions = read("dsp_composition.csv")
-representatives = {"G01","G02","G03","S05","P10","W08","W14","W15","W16","C04","C05","C06","C07","C10","C11","F09","F10","F11","F12","E043"}
+representatives = {"G01","G02","G03","S05","P10","W08","W14","W15","W16","C04","C05","C06","C07","C10","C11","F09","F10","F11","F12","F13","F14","F15","E043"}
+ranked = sorted((row for row in rows if row["eligible_provisional"] == "True" and
+                 num(row,"latency_ms_est") is not None),key=lambda row:num(row,"latency_ms_est"))
+representatives.update(row["id"] for row in ranked[:3])
 parts = [row for row in compositions if row["id"] in representatives]
 fig,ax = plt.subplots(figsize=(max(10,len(parts)*.8),6),constrained_layout=True)
 x,bottom = np.arange(len(parts)),np.zeros(len(parts))
