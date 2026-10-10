@@ -1,0 +1,31 @@
+{
+  "T": 32,
+  "changes": "Independent dataflow_v1 copy; only accumulator overflow/rounding modes change to AP_WRAP/AP_TRN. Input, weight, bias and layer-output casts retain AP_RND_CONV/AP_SAT. Products have full fractional precision. Retry of E046: Separate synthesis queue wait from the unchanged 60-minute process timeout.",
+  "clock": 10,
+  "conclusion": "Compare clock, fold II and LUT with E033; retain exact butterfly gate.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_STORAGE": 0,
+    "EXP_T": 32,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/dataflow_wrap",
+  "fixed": true,
+  "id": "E063",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "No discarded accumulator fraction exists, and analytical bounds prevent overflow, so the arithmetic must match the AP_SAT reference bit for bit. This bound is specific to the protected trained parameters; replacing weights requires range revalidation. HLS may balance additions once saturating partial-sum semantics are removed.",
+  "name": "dataflow_wrap_T32_retry",
+  "precision": "w10a10acc23",
+  "purpose": "Remove redundant saturation logic from exact fractional accumulators. The E010 analytical absolute-sum bounds fit integer bits 6/6/7 for the protected trained weights and every representable activation. Ideal budget 251 DSP, 2,080,800 compute cycles, unchanged buffers.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 4,
+  "storage": "register",
+  "unroll": "Cout/Cout/tap"
+}

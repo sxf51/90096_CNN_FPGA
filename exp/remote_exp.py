@@ -20,6 +20,8 @@ def main():
     check_protected()
     config = json.loads(args.config.read_text())
     exp_id = config["id"]
+    subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"), exp_id,
+                    "prepare_" + config["name"]], cwd=ROOT, check=True)
     config["source_commit"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     scratch = ROOT / "workspace/exp_runs/_transfer"
     scratch.mkdir(parents=True, exist_ok=True)
