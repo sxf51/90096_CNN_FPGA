@@ -173,6 +173,8 @@
 
 - 2026-10-10T22:07:39+00:00: G03: scatter_edge_kernels; status=provisional; latency_ms_est=44.13926; 
 
+- 2026-10-10T22:09:50+00:00: S02: whole_dataflow_control; status=provisional; latency_ms_est=29.83024; 
+
 ## Pending Human Decisions / 待人工决策
 
 - Recovery reference: [PHASE2_HANDOFF.md](PHASE2_HANDOFF.md) preserves unimplemented architecture hypotheses derived from E058/E070/E071 across the first-phase finalizer. Phase two must still be executed on the new branch with estimates archived before implementation.
