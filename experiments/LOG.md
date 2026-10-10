@@ -171,6 +171,8 @@
 
 - 2026-10-10T22:06:17+00:00: S01: ddr_global_probe; status=invalid_config; latency_ms_est=unknown; ; Required external DDR AXI bundles not generated: scratch1, scratch2
 
+- 2026-10-10T22:07:39+00:00: G03: scatter_edge_kernels; status=provisional; latency_ms_est=44.13926; 
+
 ## Pending Human Decisions / 待人工决策
 
 - Recovery reference: [PHASE2_HANDOFF.md](PHASE2_HANDOFF.md) preserves unimplemented architecture hypotheses derived from E058/E070/E071 across the first-phase finalizer. Phase two must still be executed on the new branch with estimates archived before implementation.

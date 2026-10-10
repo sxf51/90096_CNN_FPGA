@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'conv3_stream_Pipeline_VITIS_LOOP_209_1'
+================================================================
+* Date:           Sun Oct 11 09:07:18 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        G03
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  1.527 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval |      Pipeline     |
+    |   min   |   max   |    min    |    max    | min | max |        Type       |
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+    |        7|        7|  70.000 ns|  70.000 ns|    0|    0|  loop pipeline stp|
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                    |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |      Loop Name     |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- VITIS_LOOP_209_1  |        5|        5|         1|          1|        N/A|     5|       yes|
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      20|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|      27|    -|
+|Register         |        -|     -|       5|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|       5|      47|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +---------------------+----------+----+---+----+------------+------------+
+    |    Variable Name    | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +---------------------+----------+----+---+----+------------+------------+
+    |add_ln209_fu_96_p2   |         +|   0|  0|  10|           3|           1|
+    |icmp_ln209_fu_90_p2  |      icmp|   0|  0|  10|           3|           3|
+    +---------------------+----------+----+---+----+------------+------------+
+    |Total                |          |   0|  0|  20|           6|           4|
+    +---------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +----------------------+----+-----------+-----+-----------+
+    |         Name         | LUT| Input Size| Bits| Total Bits|
+    +----------------------+----+-----------+-----+-----------+
+    |ap_done_int           |   9|          2|    1|          2|
+    |ap_sig_allocacmp_r_2  |   9|          2|    3|          6|
+    |r_fu_78               |   9|          2|    3|          6|
+    +----------------------+----+-----------+-----+-----------+
+    |Total                 |  27|          6|    7|         14|
+    +----------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-------------+---+----+-----+-----------+
+    |     Name    | FF| LUT| Bits| Const Bits|
+    +-------------+---+----+-----+-----------+
+    |ap_CS_fsm    |  1|   0|    1|          0|
+    |ap_done_reg  |  1|   0|    1|          0|
+    |r_fu_78      |  3|   0|    3|          0|
+    +-------------+---+----+-----+-----------+
+    |Total        |  5|   0|    5|          0|
+    +-------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++----------------------+-----+-----+------------+----------------------------------------+--------------+
+|       RTL Ports      | Dir | Bits|  Protocol  |              Source Object             |    C Type    |
++----------------------+-----+-----+------------+----------------------------------------+--------------+
+|ap_clk                |   in|    1|  ap_ctrl_hs|  conv3_stream_Pipeline_VITIS_LOOP_209_1|  return value|
+|ap_rst                |   in|    1|  ap_ctrl_hs|  conv3_stream_Pipeline_VITIS_LOOP_209_1|  return value|
+|ap_start              |   in|    1|  ap_ctrl_hs|  conv3_stream_Pipeline_VITIS_LOOP_209_1|  return value|
+|ap_done               |  out|    1|  ap_ctrl_hs|  conv3_stream_Pipeline_VITIS_LOOP_209_1|  return value|
+|ap_idle               |  out|    1|  ap_ctrl_hs|  conv3_stream_Pipeline_VITIS_LOOP_209_1|  return value|
+|ap_ready              |  out|    1|  ap_ctrl_hs|  conv3_stream_Pipeline_VITIS_LOOP_209_1|  return value|
+|window_49_out         |  out|   32|      ap_vld|                           window_49_out|       pointer|
+|window_49_out_ap_vld  |  out|    1|      ap_vld|                           window_49_out|       pointer|
+|window_48_out         |  out|   32|      ap_vld|                           window_48_out|       pointer|
+|window_48_out_ap_vld  |  out|    1|      ap_vld|                           window_48_out|       pointer|
+|window_47_out         |  out|   32|      ap_vld|                           window_47_out|       pointer|
+|window_47_out_ap_vld  |  out|    1|      ap_vld|                           window_47_out|       pointer|
+|window_46_out         |  out|   32|      ap_vld|                           window_46_out|       pointer|
+|window_46_out_ap_vld  |  out|    1|      ap_vld|                           window_46_out|       pointer|
+|window_45_out         |  out|   32|      ap_vld|                           window_45_out|       pointer|
+|window_45_out_ap_vld  |  out|    1|      ap_vld|                           window_45_out|       pointer|
+|window_44_out         |  out|   32|      ap_vld|                           window_44_out|       pointer|
+|window_44_out_ap_vld  |  out|    1|      ap_vld|                           window_44_out|       pointer|
+|window_43_out         |  out|   32|      ap_vld|                           window_43_out|       pointer|
+|window_43_out_ap_vld  |  out|    1|      ap_vld|                           window_43_out|       pointer|
+|window_42_out         |  out|   32|      ap_vld|                           window_42_out|       pointer|
+|window_42_out_ap_vld  |  out|    1|      ap_vld|                           window_42_out|       pointer|
+|window_41_out         |  out|   32|      ap_vld|                           window_41_out|       pointer|
+|window_41_out_ap_vld  |  out|    1|      ap_vld|                           window_41_out|       pointer|
+|window_40_out         |  out|   32|      ap_vld|                           window_40_out|       pointer|
+|window_40_out_ap_vld  |  out|    1|      ap_vld|                           window_40_out|       pointer|
+|window_39_out         |  out|   32|      ap_vld|                           window_39_out|       pointer|
+|window_39_out_ap_vld  |  out|    1|      ap_vld|                           window_39_out|       pointer|
+|window_38_out         |  out|   32|      ap_vld|                           window_38_out|       pointer|
+|window_38_out_ap_vld  |  out|    1|      ap_vld|                           window_38_out|       pointer|
+|window_37_out         |  out|   32|      ap_vld|                           window_37_out|       pointer|
+|window_37_out_ap_vld  |  out|    1|      ap_vld|                           window_37_out|       pointer|
+|window_36_out         |  out|   32|      ap_vld|                           window_36_out|       pointer|
+|window_36_out_ap_vld  |  out|    1|      ap_vld|                           window_36_out|       pointer|
+|window_35_out         |  out|   32|      ap_vld|                           window_35_out|       pointer|
+|window_35_out_ap_vld  |  out|    1|      ap_vld|                           window_35_out|       pointer|
+|window_34_out         |  out|   32|      ap_vld|                           window_34_out|       pointer|
+|window_34_out_ap_vld  |  out|    1|      ap_vld|                           window_34_out|       pointer|
+|window_33_out         |  out|   32|      ap_vld|                           window_33_out|       pointer|
+|window_33_out_ap_vld  |  out|    1|      ap_vld|                           window_33_out|       pointer|
+|window_32_out         |  out|   32|      ap_vld|                           window_32_out|       pointer|
+|window_32_out_ap_vld  |  out|    1|      ap_vld|                           window_32_out|       pointer|
+|window_31_out         |  out|   32|      ap_vld|                           window_31_out|       pointer|
+|window_31_out_ap_vld  |  out|    1|      ap_vld|                           window_31_out|       pointer|
+|window_30_out         |  out|   32|      ap_vld|                           window_30_out|       pointer|
+|window_30_out_ap_vld  |  out|    1|      ap_vld|                           window_30_out|       pointer|
+|window_29_out         |  out|   32|      ap_vld|                           window_29_out|       pointer|
+|window_29_out_ap_vld  |  out|    1|      ap_vld|                           window_29_out|       pointer|
+|window_28_out         |  out|   32|      ap_vld|                           window_28_out|       pointer|
+|window_28_out_ap_vld  |  out|    1|      ap_vld|                           window_28_out|       pointer|
+|window_27_out         |  out|   32|      ap_vld|                           window_27_out|       pointer|
+|window_27_out_ap_vld  |  out|    1|      ap_vld|                           window_27_out|       pointer|
+|window_26_out         |  out|   32|      ap_vld|                           window_26_out|       pointer|
+|window_26_out_ap_vld  |  out|    1|      ap_vld|                           window_26_out|       pointer|
+|window_25_out         |  out|   32|      ap_vld|                           window_25_out|       pointer|
+|window_25_out_ap_vld  |  out|    1|      ap_vld|                           window_25_out|       pointer|
++----------------------+-----+-----+------------+----------------------------------------+--------------+
+
