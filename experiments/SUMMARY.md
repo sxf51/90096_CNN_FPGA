@@ -16,5 +16,9 @@ INT8 packing is ineligible for the uniform network: even w8a16 loses 4.97 dB. La
 
 See [STAGE2.md](STAGE2.md). Every compiler-only control is infeasible because full feature maps exceed BRAM capacity. Correct inner-loop pipeline reaches II=1 but a 26.707 ns clock estimate; outer pixel pipeline reaches 3,811 ms while retaining 11,114 BRAM18K. Configuration-only scheduling cannot resolve full-frame storage.
 
+## Stage 3
+
+See [STAGE3.md](STAGE3.md) and [E033](E033_dataflow_fixed_T32_single/E033.md). Streaming reduces BRAM18K from 11,064 to 168. Correctness and requested fold II=1 pass, but 136,868 LUT exceeds the 81,984 cap. Default 10-bit products mostly map to fabric: Conv1 report lists 62 LUT and no DSP per `mul_10s_10s_20_1_1` instance; only selected fused MACs use DSP. Conv3 serial saturating sum sets the 31.822 ns estimate. T16 gives 63.218 ns and 175.463 ms, showing that II=1 is insufficient when effective clock worsens.
+
 See [LOG.md](LOG.md), [PROGRESS.md](PROGRESS.md), and [checksums.txt](checksums.txt). Supplied Set14 has 13 image pairs; complete 14-image acceptance remains pending.
 

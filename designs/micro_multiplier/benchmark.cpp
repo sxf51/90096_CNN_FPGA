@@ -3,6 +3,10 @@
 static const int coefficient[16] = {143, -271, 937, -1567, 329, -127, 641, -883,
                                     1973, -457, 769, -1223, 53, -991, 1499, -613};
 void benchmark(Operand a[SAMPLE_COUNT], Operand b[SAMPLE_COUNT], Result out[SAMPLE_COUNT]) {
+#if EXP_CONSTANT
+#pragma HLS ARRAY_PARTITION variable=a complete
+#pragma HLS ARRAY_PARTITION variable=out complete
+#endif
     samples: for (int i = 0; i < SAMPLE_COUNT; ++i) {
 #if EXP_CONSTANT
 #pragma HLS UNROLL
