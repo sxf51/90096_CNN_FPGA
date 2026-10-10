@@ -18,6 +18,9 @@
 #ifndef EXP_REFERENCE
 #define EXP_REFERENCE 0
 #endif
+#ifndef EXP_NUMPY_REFERENCE
+#define EXP_NUMPY_REFERENCE 0
+#endif
 
 int tb_conv1();
 int tb_srcnn();
@@ -100,6 +103,10 @@ int main() {
             read_exact("fixed_reference.bin", &reference[0][0][0], H * W);
             bit_exact = std::memcmp(output, reference, sizeof(output)) == 0;
         }
+        if (EXP_NUMPY_REFERENCE) {
+            read_exact("numpy_reference/butterfly_output.bin", &reference[0][0][0], H * W);
+            bit_exact = std::memcmp(output, reference, sizeof(output)) == 0;
+        }
         read_exact("set5/butterfly_3x_GR_flp.bin", &reference[0][0][0], H * W);
         const double butterfly_mse = mse(&output[0][0][0], &reference[0][0][0], H * W);
         const double border_mse = mse(&output[0][0][0], &reference[0][0][0], H * W, true);
@@ -116,6 +123,12 @@ int main() {
                 read_image(prefix + "LR_u8.bin");
                 infer(false);
                 infer(true);
+                if (EXP_NUMPY_REFERENCE) {
+                    std::vector<float> numpy_output(H * W);
+                    read_exact(std::string("numpy_reference/") + name + "_output.bin", numpy_output.data(), H * W);
+                    if (std::memcmp(output, numpy_output.data(), sizeof(output)))
+                        throw std::runtime_error(std::string("ap_fixed vs numpy mismatch: ") + name);
+                }
                 if (!EXP_FIXED && std::memcmp(output, reference, sizeof(output)))
                     throw std::runtime_error(std::string("Float mismatch on ") + name);
                 std::vector<unsigned char> gt(H * W);
@@ -138,7 +151,7 @@ int main() {
             model_psnr /= count;
             golden_psnr /= count;
         }
-        const bool pass = EXP_FIXED ? ((!EXP_REFERENCE || bit_exact) &&
+        const bool pass = EXP_FIXED ? ((!(EXP_REFERENCE || EXP_NUMPY_REFERENCE) || bit_exact) &&
                             (!EXP_SET14 || model_psnr - golden_psnr >= -0.1))
                                     : (float_exact && conv1_exact);
         std::cout << std::setprecision(17) << "EXP_METRICS {\"csim_pass\":" << (pass ? "true" : "false")

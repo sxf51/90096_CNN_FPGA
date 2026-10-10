@@ -156,7 +156,7 @@ def generate_config(config, work):
     shutil.copytree(source, snapshot, ignore=shutil.ignore_patterns("weights", "__pycache__"))
     defines = dict(config.get("defines", {}))
     defines.update(EXP_FIXED=int(config.get("fixed", False)), EXP_SET14=int(config.get("set14", False)),
-                   EXP_REFERENCE=int(bool(config.get("reference"))))
+                   EXP_REFERENCE=int(bool(config.get("reference"))), EXP_NUMPY_REFERENCE=int(bool(config.get("numpy_reference"))))
     flags = "-std=c++14 -ffp-contract=off " + " ".join(f"-D{k}={v}" for k, v in defines.items())
     flags += " -I" + snapshot.as_posix() + " -I" + (ROOT / "src").as_posix()
     lines = ["part=xck26-sfvc784-2LV-c", "[hls]", "flow_target=vivado",
@@ -171,6 +171,9 @@ def generate_config(config, work):
         reference = ROOT / config["reference"]
         shutil.copyfile(reference, work / "fixed_reference.bin")
         lines.append("tb.file=" + (work / "fixed_reference.bin").as_posix())
+    if config.get("numpy_reference"):
+        shutil.copytree(ROOT / config["numpy_reference"], work / "numpy_reference")
+        lines.append("tb.file=" + (work / "numpy_reference").as_posix())
     directives = config.get("directives", [])
     if directives:
         tcl = work / "directives.tcl"
