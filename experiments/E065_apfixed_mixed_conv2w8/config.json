@@ -1,0 +1,48 @@
+{
+  "changes": "Independent fixed_ref_raw copy; Conv2 uses ap_fixed<8,1> and its exact 21-bit accumulator. Conv1/Conv3 remain ten-bit; all activations remain ten-bit.",
+  "clock": 10,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_A_BITS=10 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=1 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=1 -DEXP_QUICK=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E065/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "Save mixed-precision provenance for phase-two Conv2 weight-only packing; complete Set14 still lacks comic.",
+  "cpu_count": 12,
+  "csim_only": true,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/fixed_ref_mixed_raw",
+  "errors": [],
+  "fixed": true,
+  "id": "E065",
+  "interpretation": "Bit comparison to independently predicted numpy output is mandatory for all 13 images. Full product fractions make integer-carrier sums identical to no-overflow ap_fixed arithmetic.",
+  "name": "apfixed_mixed_conv2w8",
+  "numpy_reference": "exp/numeric_reference/mixed_conv2w8/numpy_reference",
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [],
+  "parsed_modules": [],
+  "precision": "w10_8_10a10acc23_21_23",
+  "purpose": "Confirm E062 Conv2-only eight-bit weights/biases on every supplied image using real ap_fixed input, parameter and layer-boundary casts with exact integer convolution.",
+  "quick": true,
+  "set14": true,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "04f613aecc98bb42d5023604146a03112d205523",
+  "source_sha256": {
+    "srcnn.cpp": "b85049ba522294e934d8fe02ba3660eeac47febb54ab56e2a37269a7aeceaff6",
+    "srcnn.h": "bdf1905372b40e299ed9254530d209dcd7b660741f1fe9f71ea7ae98594c5fb3"
+  },
+  "stage": 1,
+  "time": "2026-10-10T18:52:26+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 05:52:28 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "validation": {
+    "bit_exact": true,
+    "border_mse": 1.405191888267716e-05,
+    "butterfly_mse": 1.770653995278335e-05,
+    "conv1_exact": false,
+    "conv1_mse": null,
+    "csim_pass": true,
+    "delta_psnr": -0.07589037644656216,
+    "float_exact": false,
+    "golden_psnr": 29.158457575257653,
+    "image_count": 13,
+    "set14_psnr": 29.08256719881109
+  }
+}

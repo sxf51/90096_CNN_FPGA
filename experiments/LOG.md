@@ -77,6 +77,8 @@
 
 - 2026-10-10T18:42:02+00:00: E062: completed layer-specific INT8 eligibility study on 13 supplied pairs
 
+- 2026-10-10T18:55:10+00:00: E065: apfixed_mixed_conv2w8; status=csim_pass; latency_ms_est=unknown; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T18:47 UTC: E046 passed C simulation and exact comparison but its older runner exhausted a 60-minute synthesis-lock wait while other runs held the single memory-budget slot. No synthesis was launched, so no hardware result is claimed. E063 retries with the new independent 24-hour queue wait; each actual synthesis still has a 60-minute process-tree timeout.
