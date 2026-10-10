@@ -3,6 +3,7 @@
 import subprocess
 import sys
 from run_exp import ROOT, check_protected, lock
+from compact_archive import compact
 
 OWNED = ("exp/", "designs/", "experiments/", "docs/0002-overnight-experiments.md")
 
@@ -14,6 +15,8 @@ def commit():
     if branch != "exp/overnight-1011":
         raise SystemExit("Wrong branch")
     check_protected()
+    for archive in (ROOT / "experiments").glob(sys.argv[1] + "_*"):
+        compact(archive)
     subprocess.run(["git", "status", "--short", "--branch"], cwd=ROOT, check=True)
     staged = subprocess.check_output(["git", "diff", "--cached", "--name-only", "-z"], cwd=ROOT).decode().split("\0")
     if any(p and not p.startswith(OWNED) for p in staged):

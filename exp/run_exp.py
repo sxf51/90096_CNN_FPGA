@@ -18,6 +18,7 @@ import time
 import xml.etree.ElementTree as ET
 from contextlib import contextmanager
 from datetime import datetime, timezone
+from compact_archive import compact
 
 ROOT = Path(__file__).resolve().parents[1]
 FIELDS = "id,time,stage,design,precision_w_a_acc,T_target,unroll_split,weight_storage,clock_target_ns,clock_est_ns,latency_cycles,interval_cycles,latency_ms_est,DSP,DSP_pct,BRAM18K,BRAM_pct,URAM,LUT,LUT_pct,FF,FF_pct,csim_pass,butterfly_mse,border_mse,bit_exact,set14_psnr,delta_psnr,ii_ok,synth_minutes,status,git_commit,md_path,notes".split(",")
@@ -227,6 +228,9 @@ def archive_logs(work, archive):
 
 
 def run(config):
+    if config.get("operation") in {"impl", "cosim"}:
+        from verify_exp import run_verification
+        return run_verification(config)
     check_protected()
     exp_id, name = config["id"], config["name"]
     if not re.fullmatch(r"E\d{3,}", exp_id) or not re.fullmatch(r"[a-zA-Z0-9_]+", name):
@@ -355,6 +359,7 @@ def run(config):
         write_json(archive / "config.json", config)
         write_json(archive / "metrics.json", row)
         archive_logs(work, archive)
+        compact(archive)
         # Reports and model output can be located beneath csim/build, version-dependent.
         for filename in ("quality.csv", "butterfly_output.bin"):
             paths = [p for p in work.rglob(filename)

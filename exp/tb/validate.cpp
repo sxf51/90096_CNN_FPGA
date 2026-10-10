@@ -24,6 +24,9 @@
 #ifndef EXP_QUICK
 #define EXP_QUICK 0
 #endif
+#ifndef EXP_FRAMES
+#define EXP_FRAMES 1
+#endif
 
 int tb_conv1();
 int tb_srcnn();
@@ -115,6 +118,11 @@ int main() {
         if (EXP_NUMPY_REFERENCE) {
             read_exact("numpy_reference/butterfly_output.bin", &reference[0][0][0], H * W);
             bit_exact = std::memcmp(output, reference, sizeof(output)) == 0;
+        }
+        for (int frame = 1; frame < EXP_FRAMES; ++frame) {
+            infer(false);
+            if (std::memcmp(output, reference, sizeof(output)))
+                throw std::runtime_error("Repeated frame differs from arithmetic reference");
         }
         read_exact("set5/butterfly_3x_GR_flp.bin", &reference[0][0][0], H * W);
         const double butterfly_mse = mse(&output[0][0][0], &reference[0][0][0], H * W);

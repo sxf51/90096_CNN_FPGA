@@ -9,8 +9,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("round", choices=("T", "split", "storage", "clock"))
     parser.add_argument("--T", type=int, default=32)
+    parser.add_argument("--base", default="exp/configs/E033.json")
     args = parser.parse_args()
-    base = json.loads((ROOT / "exp/configs/E033.json").read_text())
+    base = json.loads((ROOT / args.base).read_text())
     cases = {
         "T": [("E034", {"EXP_T": 16}), ("E035", {"EXP_T": 8})],
         "split": [("E036", {"EXP_C1_SPLIT": 1}), ("E037", {"EXP_C2_SPLIT": 1}),
