@@ -20,6 +20,18 @@ def linked(rows):
     return [{**row,"id":"["+row["id"]+"]("+row["md_path"]+")"} for row in rows]
 
 
+def measured_direction(points):
+    frames = [row for row in points if row["scope"] == "frame" and number(row["latency_ms_est"]) is not None]
+    accepted = sorted([row for row in frames if row["eligible_provisional"] == "True"],
+                      key=lambda row:number(row["latency_ms_est"]))
+    if accepted:
+        best = accepted[0]
+        return "Measured direction result: ["+best["id"]+"]("+best["md_path"]+") is its fastest provisional resource-feasible point at "+best["latency_ms_est"]+"ms, with "+best["DSP"]+" DSP and "+best["LUT"]+" LUT. RTL and routing must be assessed separately.\n\n"
+    if frames:
+        return "Measured direction result: none of its completed frame points satisfies all resource/precision gates. Their estimated latency cannot establish a feasible speedup.\n\n"
+    return "Completed PE/layer evidence is listed below; it does not establish a resource-feasible frame design.\n\n"
+
+
 def main():
     rows = list(csv.DictReader((ROOT / "experiments/architecture_data.csv").open(newline="")))
     arch = [row for row in rows if row["series"]]
@@ -35,9 +47,23 @@ def main():
         text += "## Current Best\n\n"+markdown_table(linked([best]),[
             "id","design","precision_w_a_acc","T_target","clock_target_ns","clock_est_ns","latency_cycles",
             "interval_cycles","latency_ms_est","DSP","BRAM18K","URAM","LUT","FF","delta_psnr","status"])
+        baseline = next((row for row in rows if row["id"] == "E043"),None)
+        if baseline and number(best["latency_ms_est"]):
+            ratio = number(baseline["latency_ms_est"])/number(best["latency_ms_est"])
+            text += "\nHLS-estimate improvement over first-phase E043: "+str(round(ratio,4))+"x. This ratio is not a measured board speedup.\n"
+        related = []
+        for row in rows:
+            path = ROOT / "experiments" / Path(row["md_path"]).parent / "config.json"
+            config = json.loads(path.read_text())
+            if config.get("verify_parent") == best["id"]:
+                related.append({**row,**config.get("verification",{})})
+        text += "\nActual verification of the current HLS winner:\n\n"+markdown_table(linked(related),[
+            "id","operation","status","impl_WNS_ns","timing_met","impl_DSP","impl_LUT","impl_FF",
+            "impl_BRAM36","impl_URAM","rtl_status","rtl_latency_max","rtl_interval_max","cycle_deviation_pct"])
     for series in ("P","W","G","S","C","F"):
         points = [row for row in arch if row["series"] == series and not row["operation"]]
         text += "\n## "+series+" Direction\n\n"+DESCRIPTIONS[series]+"\n\n"
+        text += measured_direction(points)
         text += markdown_table(linked(points),["id","scope","T_target","latency_cycles","latency_ms_est",
                                                "DSP","BRAM18K","URAM","LUT","FF","bit_exact","border_mse","ii_ok","status"])
     text += "\n## All Architectures\n\nFrame records only, ordered by HLS-estimated latency. Microkernels and validation operations are excluded; infeasible/failed results remain visible.\n\n"
@@ -65,6 +91,20 @@ def main():
         verification.append({**row, "parent":config.get("verify_parent"), **config.get("verification",{})})
     text += "\n## Implementation And Cosim\n\nHLS estimates are inherited only for provenance. Routed WNS/resources and two-frame RTL cycles are parsed independently; none is a board measurement.\n\n"
     text += markdown_table(linked(verification),["id","scope","parent","operation","status","impl_DSP","impl_BRAM36","impl_LUT","impl_FF","impl_URAM","impl_WNS_ns","timing_met","rtl_status","rtl_latency_max","rtl_interval_max","cycle_deviation_pct"])
+    selection_path = ROOT / "experiments/final_selection.json"
+    if selection_path.is_file():
+        selection = json.loads(selection_path.read_text())
+        selected_ids = {point["id"] for point in selection["selected"]}
+        validation = []
+        for row in rows:
+            if row["id"] not in selection["queue"] or row["operation"]:
+                continue
+            config = json.loads((ROOT / "experiments" / Path(row["md_path"]).parent / "config.json").read_text())
+            validation.append({**row,**config.get("validation",{})})
+        text += "\nSelected candidates were ranked globally across both phases before validation. Mandatory full-supplied-image C simulation:\n\n"
+        text += markdown_table(linked(validation),["id","design","image_count","csim_pass","bit_exact","set14_psnr","delta_psnr","border_mse","status"])
+        relevant = [record for record in verification if record["parent"] in selected_ids]
+        text += "\nRouted timing closes for "+str(sum(str(record.get("timing_met")).lower() == "true" for record in relevant))+" selected implementation runs; "+str(sum(record.get("rtl_status") == "Pass" and record["status"] == "cosim_complete" for record in relevant))+" selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.\n"
     failed = [row for row in arch if row["status"] not in {"pass","provisional","csim_pass","impl_complete","cosim_complete","analysis_complete"}]
     text += "\n## Failed Directions\n\n"+markdown_table(linked(failed),["id","series","status","notes"])
     text += "\n## Pending Human Decisions\n\n"
@@ -74,6 +114,11 @@ def main():
     text += "- Windows settings-batch execution and board integration remain unverified. The existing Linux Vitis2026.1 SSH installation was used.\n"
     text += "- Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).\n"
     text += "\n## Next Steps\n\nUse the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. Complete the missing image and board/AXI system measurements before claiming deployable performance.\n"
+    audit = ROOT / "experiments/architecture_audit.json"
+    if audit.is_file():
+        audit_data = json.loads(audit.read_text())
+        text += "\n## Integrity Audit\n\nFinal local/remote original and first-phase source checksum audit: [architecture_audit.json](architecture_audit.json).\n\n"
+        text += markdown_table(audit_data["checks"],["location","manifest","checked_files","pass"])
     text += "\n## Figures\n\n"
     for name,label in (("architecture_pareto","Latency vs DSP by series"),("architecture_dsp_layers","DSP composition"),
                        ("estimate_actual_dsp","DSP estimates vs actual"),("estimate_actual_cycles","Cycle estimates vs actual"),
