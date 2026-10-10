@@ -177,6 +177,8 @@
 
 - 2026-10-10T22:13:31+00:00: P10: exact10_packing_T16; status=infeasible; latency_ms_est=12.156332; 
 
+- 2026-10-10T22:14:22+00:00: C01: wino_packing_T4_all; status=fail; latency_ms_est=unknown; ; C simulation not accepted (exit=1); synthesis not eligible
+
 ## Pending Human Decisions / 待人工决策
 
 - Recovery reference: [PHASE2_HANDOFF.md](PHASE2_HANDOFF.md) preserves unimplemented architecture hypotheses derived from E058/E070/E071 across the first-phase finalizer. Phase two must still be executed on the new branch with estimates archived before implementation.
