@@ -1,0 +1,29 @@
+{
+  "config_sha256": "dbc5da8a91130235201a0a472d47a2981fe213a2ae2cf0ff1b681f31ad229d00",
+  "configuration": {
+    "clock": 4,
+    "design": "designs/packing_pe",
+    "estimates": {
+      "BRAM18K": 0,
+      "DSP": 1,
+      "T": 1,
+      "URAM": 0,
+      "basis": "P05 HLS evidence: one explicitly requested DSP48E2 pre-adder primitive; routed result and attributes need independent verification.",
+      "latency_cycles": 63
+    },
+    "id": "P08",
+    "name": "builtin_mapping_implementation",
+    "notes": "PE implementation only; no network frame ranking",
+    "operation": "impl",
+    "purpose": "Inspect routed DSP48E2 primitive attributes for the passing pre-adder builtin. One HLS DSP does not establish pre-adder use; check PREADDINSEL,AMULTSEL,INMODE and pipeline registers from the implementation checkpoint.",
+    "scope": "PE",
+    "series": "P",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_verify",
+    "timeout": 10800,
+    "verify_parent": "P05"
+  },
+  "created_at": "2026-10-10T22:01:09+00:00",
+  "created_from_commit": "1272a63ef7e398c185c283a5825fbf6abe88d6da",
+  "purpose_section": "Inspect routed DSP48E2 primitive attributes for the passing pre-adder builtin. One HLS DSP does not establish pre-adder use; check PREADDINSEL,AMULTSEL,INMODE and pipeline registers from the implementation checkpoint.\n\nPre-implementation paper estimates (scope: PE):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 1 |\n| BRAM18K | 0 |\n| URAM | 0 |\n| T | 1 |\n| latency_cycles | 63 |\n| basis | P05 HLS evidence: one explicitly requested DSP48E2 pre-adder primitive; routed result and attributes need independent verification. |\n\nPlanned at 2026-10-10T22:01:09+00:00; estimates are hypotheses, not tool measurements."
+}

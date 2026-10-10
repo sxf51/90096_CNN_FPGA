@@ -1,0 +1,23 @@
+{
+  "clock": 4,
+  "design": "designs/packing_pe",
+  "estimates": {
+    "BRAM18K": 0,
+    "DSP": 1,
+    "T": 1,
+    "URAM": 0,
+    "basis": "P05 HLS evidence: one explicitly requested DSP48E2 pre-adder primitive; routed result and attributes need independent verification.",
+    "latency_cycles": 63
+  },
+  "id": "P08",
+  "name": "builtin_mapping_implementation",
+  "notes": "PE implementation only; no network frame ranking",
+  "operation": "impl",
+  "purpose": "Inspect routed DSP48E2 primitive attributes for the passing pre-adder builtin. One HLS DSP does not establish pre-adder use; check PREADDINSEL,AMULTSEL,INMODE and pipeline registers from the implementation checkpoint.",
+  "scope": "PE",
+  "series": "P",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_verify",
+  "timeout": 10800,
+  "verify_parent": "P05"
+}
