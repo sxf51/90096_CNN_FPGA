@@ -27,4 +27,4 @@ After all first-phase stages, create `exp/explore-arch` from `exp/overnight-1011
 
 ## Coordinate controller
 
-2026-10-10T19:38:06+00:00: Started background implementation of E039 as E070; no timing result inferred.
+2026-10-10T20:14:50+00:00: T round completed; select E058 with measured status provisional.

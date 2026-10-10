@@ -6,7 +6,8 @@ from pathlib import Path
 from run_exp import ROOT, FIELDS, lock, markdown_table, number, write_json
 
 results = ROOT / "experiments/results.csv"
-rows = list(csv.DictReader(results.open(newline="")))
+with lock(ROOT / "workspace/exp_runs/.results.lock", wait_timeout=120):
+    rows = list(csv.DictReader(results.open(newline="")))
 analysis = []
 for row in rows:
     if not row["design"].startswith(("designs/dataflow", "designs/scatter")):
@@ -15,6 +16,8 @@ for row in rows:
         continue
     archive = ROOT / "experiments" / Path(row["md_path"]).parent
     config = json.loads((archive / "config.json").read_text())
+    if config.get("operation") in {"impl", "cosim"}:
+        continue
     modules = {p["module"]: p for p in config.get("parsed_modules", [])}
     defines = config.get("defines", {})
     splits = ["tap" if defines.get("EXP_C1_SPLIT") else "Cout",

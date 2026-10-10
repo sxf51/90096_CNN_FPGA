@@ -30,6 +30,9 @@ def update(message):
 
 
 def execute(exp_id):
+    if any(row["id"] == exp_id for row in measured()):
+        update("Preserving completed " + exp_id + "; no immutable workspace rerun.")
+        return
     update("Running "+exp_id+"; preceding completed measurements remain archived.")
     subprocess.run([sys.executable, str(ROOT/"exp/remote_exp.py"), str(ROOT/f"exp/configs/{exp_id}.json")], cwd=ROOT)
 
@@ -44,12 +47,16 @@ def prepare_storage(base, exp_id, storage):
               "changes": "Same exact selected integer design and unroll split; only weight storage changes."}
     path = ROOT/f"exp/configs/{exp_id}.json"
     if path.exists():
-        raise RuntimeError("Existing coordinate config")
+        previous = json.loads(path.read_text())
+        if any(previous.get(k) != config.get(k) for k in ("design", "T", "defines", "clock")):
+            raise RuntimeError("Existing storage configuration differs; allocate a new ID")
+        return
     write_json(path, config)
 
 
 def main():
     implementation = None
+    implementation_started = (ROOT / "exp/configs/E070.json").exists()
     update("Waiting for E057/E058/E059 banked T scans; synthesis is serialized by the memory lock.")
     while True:
         rows = measured()
@@ -57,7 +64,7 @@ def main():
         accepted = [r for r in rows if str(r["stage"]) == "4" and
                     r["design"].startswith("designs/dataflow") and
                     r["status"] in {"pass", "provisional"}]
-        if accepted and implementation is None:
+        if accepted and not implementation_started:
             parent = choose(accepted)
             config = {"id": "E070", "name": "first_feasible_implementation", "stage": 6,
                       "operation": "impl", "verify_parent": parent["id"], "clock": float(parent["clock_target_ns"]),
@@ -67,6 +74,7 @@ def main():
                                  "Missing comic keeps full-Set14 acceptance provisional."}
             write_json(ROOT/"exp/configs/E070.json", config)
             implementation = subprocess.Popen([sys.executable, str(ROOT/"exp/remote_exp.py"), str(ROOT/"exp/configs/E070.json")], cwd=ROOT)
+            implementation_started = True
             update("Started background implementation of "+parent["id"]+" as E070; no timing result inferred.")
         if len(t_rows) == 3:
             break
@@ -75,7 +83,7 @@ def main():
     update("T round completed; select "+best["id"]+" with measured status "+best["status"]+".")
     subprocess.run([sys.executable, str(ROOT/"exp/analyze_streaming.py")], check=True)
     subprocess.run([str(ROOT/"workspace/exp_runs/_tools/venv/bin/python"), str(ROOT/"exp/plots/overview.py")], check=True)
-    subprocess.run([sys.executable, str(ROOT/"exp/prepare_scan.py"), "split", "--T", best["T_target"], "--base", f"exp/configs/{best['id']}.json"], check=True)
+    subprocess.run([sys.executable, str(ROOT/"exp/prepare_scan.py"), "split", "--resume", "--T", best["T_target"], "--base", f"exp/configs/{best['id']}.json"], check=True)
     for exp_id in ("E036", "E037", "E038"):
         execute(exp_id)
     candidates = [r for r in measured() if r["id"] in {best["id"], "E036", "E037", "E038"}]
@@ -90,7 +98,7 @@ def main():
     update("Storage round completed; clock round uses "+best["id"]+".")
     subprocess.run([sys.executable, str(ROOT/"exp/analyze_streaming.py")], check=True)
     subprocess.run([str(ROOT/"workspace/exp_runs/_tools/venv/bin/python"), str(ROOT/"exp/plots/overview.py")], check=True)
-    subprocess.run([sys.executable, str(ROOT/"exp/prepare_scan.py"), "clock", "--T", best["T_target"], "--base", f"exp/configs/{best['id']}.json"], check=True)
+    subprocess.run([sys.executable, str(ROOT/"exp/prepare_scan.py"), "clock", "--resume", "--T", best["T_target"], "--base", f"exp/configs/{best['id']}.json"], check=True)
     for exp_id in ("E041", "E042", "E043"):
         execute(exp_id)
     required = {"E039", "E040", "E045", "E048", "E063"}

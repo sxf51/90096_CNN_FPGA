@@ -10,6 +10,7 @@ def main():
     parser.add_argument("round", choices=("T", "split", "storage", "clock"))
     parser.add_argument("--T", type=int, default=32)
     parser.add_argument("--base", default="exp/configs/E033.json")
+    parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
     base = json.loads((ROOT / args.base).read_text())
     cases = {
@@ -21,7 +22,7 @@ def main():
     }
     for exp_id, changes in cases[args.round]:
         path = ROOT / f"exp/configs/{exp_id}.json"
-        if path.exists():
+        if path.exists() and not args.resume:
             raise RuntimeError("Refuse to overwrite " + str(path))
         defines = {**base["defines"], "EXP_T": args.T,
                    **{k: v for k, v in changes.items() if k != "clock"}}
@@ -45,7 +46,12 @@ def main():
                                     "would contradict the unchanged external parameter contract.",
                   "conclusion": "Choose the next coordinate only from measured feasible candidates; "
                                 "quality provenance is E017, with 13-image coverage explicitly provisional."}
-        write_json(path, config)
+        if path.exists():
+            previous = json.loads(path.read_text())
+            if any(previous.get(k) != config.get(k) for k in ("design", "T", "defines", "clock")):
+                raise RuntimeError("Existing coordinate configuration differs; allocate a new ID")
+        else:
+            write_json(path, config)
         print(exp_id)
 
 
