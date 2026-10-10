@@ -1,0 +1,75 @@
+{
+  "a_bits": 12,
+  "accumulator": "full product precision, exact bias alignment, analytical worst-case bound",
+  "accumulators": [
+    {
+      "acc_f": 21,
+      "acc_i": 6,
+      "acc_w": 27,
+      "observed_raw_max": 3377490.0,
+      "saturations": 0
+    },
+    {
+      "acc_f": 21,
+      "acc_i": 6,
+      "acc_w": 27,
+      "observed_raw_max": 6364243.0,
+      "saturations": 0
+    },
+    {
+      "acc_f": 20,
+      "acc_i": 7,
+      "acc_w": 27,
+      "observed_raw_max": 1095219.0,
+      "saturations": 0
+    }
+  ],
+  "activation_integer_bits": [
+    2,
+    2,
+    3,
+    2
+  ],
+  "activation_widths": [
+    16,
+    12,
+    10,
+    8
+  ],
+  "bias_integer_bits": [
+    1,
+    1,
+    1
+  ],
+  "compile_command": [
+    "clang++",
+    "-O3",
+    "-std=c++14",
+    "-ffp-contract=off",
+    "-shared",
+    "-fPIC",
+    "/Users/lipuze/School/Hardware/remote/90096_CNN_FPGA/exp/model/golden_bridge.cpp",
+    "-o",
+    "/Users/lipuze/School/Hardware/remote/90096_CNN_FPGA/workspace/exp_runs/E010/golden.dylib"
+  ],
+  "id": "E010",
+  "image_count": 13,
+  "numpy_version": "2.5.3",
+  "overflow": "AP_SAT",
+  "psnr": "normalized float, no clipping or cropping",
+  "rounding": "AP_RND_CONV (ties to even)",
+  "source_commit": "1f025dccb9e5fb187213ff4aea10887e617ab078",
+  "stage": 1,
+  "w_bits": 12,
+  "weight_integer_bits": [
+    1,
+    1,
+    1
+  ],
+  "weight_widths": [
+    16,
+    12,
+    10,
+    8
+  ]
+}
