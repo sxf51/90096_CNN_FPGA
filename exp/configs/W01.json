@@ -1,0 +1,40 @@
+{
+  "T": 1,
+  "changes": "Independent 32-tile PE kernel. Weights transformed before each call in testbench; input/output transforms use fabric adds/subtracts. Direct integer2x2 outputs are checked exhaustively for each deterministic random tile, including extrema.",
+  "clock": 4,
+  "conclusion": "Use only numerically exact and measured primitives in full-network integration.",
+  "defines": {
+    "EXP_BITS": 10,
+    "EXP_DIRECT": 0
+  },
+  "design": "designs/winograd_pe",
+  "estimates": {
+    "BRAM18K": 0,
+    "DSP": 16,
+    "LUT": 1500,
+    "T": 1,
+    "URAM": 0,
+    "basis": "32 tiles plus12 pipeline cycles. F2 uses16 products per tile versus36 direct; all transforms are add/subtract/constant shifts in fabric. Nine subkernels and64 channels give2304 products/pixel;128x128 tiles account for the odd255 image edge.",
+    "frame_projection_Conv1_DSP": 288,
+    "frame_projection_T": 8,
+    "frame_projection_cycles": 524288,
+    "latency_cycles": 44
+  },
+  "id": "W01",
+  "ii_targets": {
+    "wino_tiles": 1
+  },
+  "interpretation": "Compare measured DSP/operator LUT, achieved II and pipeline depth with the paper estimate. Inspect pre-adder mapping separately; a DSP count alone is insufficient.",
+  "name": "integer_f2_10bit",
+  "notes": "PE only; kernel latency is excluded from network rankings",
+  "precision": "raw10/v12/G2w14/acc34",
+  "purpose": "Compare exact integer F(2x2,3x3) and direct correlation. G2 is2G, so inverse outputs must divide by4 exactly before any quantization. At10 input/weight bits, transformed operands are12x14, within the27x18 DSP48E2 limits; expect one DSP per product.",
+  "scope": "PE",
+  "series": "W",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_pe",
+  "tb_files": [
+    "exp/tb/winograd.cpp"
+  ],
+  "top": "winograd_pe"
+}
