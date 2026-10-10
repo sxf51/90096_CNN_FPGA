@@ -31,7 +31,7 @@ def parse_verification(work, operation):
     for path in sorted(work.rglob("*.rpt")):
         if "report" not in path.parts and "reports" not in path.parts:
             continue
-        if operation == "impl" and ("impl" not in path.parts or "synth" in path.stem):
+        if operation == "impl" and ("impl" not in path.parts or "routed" not in path.stem):
             continue
         if operation == "cosim" and "sim" not in path.parts:
             continue

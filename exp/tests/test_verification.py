@@ -16,13 +16,13 @@ class VerificationTests(unittest.TestCase):
             report.mkdir(parents=True)
             (report / "srcnn_utilization_synth.rpt").write_text("| DSPs | 999 |\n| CLB LUTs | 99999 |\n")
             (report / "srcnn_timing_synth.rpt").write_text("WNS(ns) TNS(ns)\n----- -----\n9.999 0\n")
-            (report / "srcnn_utilization_impl.rpt").write_text("| DSPs | 251 |\n| CLB LUTs | 41000 |\n")
-            (report / "srcnn_timing_impl.rpt").write_text("WNS(ns) TNS(ns)\n----- -----\n-0.321 -12.3\n")
+            (report / "srcnn_utilization_routed.rpt").write_text("| DSPs | 251 |\n| CLB LUTs | 41000 |\n")
+            (report / "srcnn_timing_routed.rpt").write_text("WNS(ns) TNS(ns)\n----- -----\n-0.321 -12.3\n")
             values, _ = parse_verification(work, "impl")
             self.assertEqual(values["impl_DSP"], 251)
             self.assertEqual(values["impl_LUT"], 41000)
             self.assertEqual(values["impl_WNS_ns"], -.321)
-            self.assertTrue(values["impl_timing_report"].endswith("_impl.rpt"))
+            self.assertTrue(values["impl_timing_report"].endswith("_routed.rpt"))
 
     def test_synthesis_alone_has_no_implementation_evidence(self):
         with tempfile.TemporaryDirectory() as temp:
