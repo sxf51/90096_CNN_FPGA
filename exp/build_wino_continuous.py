@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the preplanned fixed-tripcount Winograd designs without overwrites."""
 import shutil
-from build_arch_f import C2, C3, PAD, REDUCE, fifo_storage
+from build_arch_f import C2, C3, PAD, REDUCE
 from run_exp import ROOT, check_protected
 
 

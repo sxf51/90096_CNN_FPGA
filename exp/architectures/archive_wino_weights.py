@@ -26,7 +26,8 @@ def main():
     for path in sorted((ROOT / "experiments").glob("[WC]*_*/config.json")):
         archive = path.parent
         config = json.loads(path.read_text())
-        if "winograd_network" not in config.get("design","") and "combination_network" not in config.get("design",""):
+        if not any(name in config.get("design", "") for name in
+                   ("winograd_network", "winograd_continuous", "combination_network", "combination_continuous")):
             continue
         if config.get("errors"):
             continue

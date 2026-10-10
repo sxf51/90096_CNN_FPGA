@@ -43,13 +43,64 @@ def eligible(row, config):
 
 
 def module_for(modules, layer):
-    preferred = ("conv1_stream", "conv1_tiles", "engine1") if layer == 1 else (
+    preferred = ("conv1_stream", "conv1_tiles", "wino_engine", "engine1") if layer == 1 else (
         ("conv2_stream", "engine2") if layer == 2 else ("conv3_stream", "engine3"))
+    preferred += (f"tile_region_Pipeline_tile_c{layer}_fold",)
     for name in preferred:
         found = [module for module in modules if module["module"] == name]
         if found:
             return found[0]
     return None
+
+
+def dsp_composition(row, config):
+    if scope(config,row) != "frame" or config.get("operation"):
+        return None
+    parts = [module_for(config.get("parsed_modules", []),layer) for layer in (1,2,3)]
+    counts = [number(part.get("DSP")) if part else None for part in parts]
+    total = number(row.get("DSP"))
+    if total is None or any(count is None for count in counts):
+        return None
+    remainder = total-sum(counts)
+    if remainder < 0:
+        raise RuntimeError("Overlapping module DSP accounting: "+row["id"])
+    return {"id":row["id"], "series":row["series"] or "E",
+            "Conv1_DSP":counts[0], "Conv2_DSP":counts[1], "Conv3_DSP":counts[2],
+            "other_DSP":remainder, "total_DSP":total, "status":row["status"]}
+
+
+def deviation_explanation(row, config, comparisons):
+    deviations = [item for item in comparisons if item["over20pct"]]
+    if not deviations:
+        return ""
+    modules = config.get("parsed_modules", [])
+    loops = config.get("parsed_loops", [])
+    folded = [loop for loop in loops if "fold" in loop.get("loop", "")]
+    lines = []
+    design = config.get("design", "")
+    if config.get("operation") == "cosim":
+        lines.append("RTL includes finite FIFO backpressure and AXI handshake stalls. The parent HLS report is a static component-bound estimate; compare the two recorded transactions and interval before attributing the difference to arithmetic II.")
+    elif config.get("operation") == "impl":
+        lines.append("Routed resource counts use the optimized physical netlist, while the frozen estimate is HLS operator/memory accounting. The routed timing and utilization reports are the evidence for this mapping difference, and do not measure frame cycles.")
+    elif row["id"] == "S01":
+        lines.append("The paper model assumed external scratch buffers. Neither required scratch AXI bundle was generated, so the report allocates both full feature arrays on chip. This is an invalid DDR configuration, which explains the memory-budget failure.")
+    elif "tile_fusion" in design:
+        lines.append("The paper projection counted MAC lanes and cache bits, but omitted dynamic clamped spatial-bank selection and address logic. The tile pipeline reports isolate the MAC counts; the top's remaining DSP count includes address/control arithmetic. Conv1/Conv2 folds restart for every scheduled halo feature, then Conv3 runs sequentially. Even at II1, each restart pays the reported iteration depth; the scheduled halo ratio is shown in the DDR/cache table. These observed costs explain the LUT and cycle excess, rather than an unexplained multiplier-count increase.")
+    elif "packing_network" in design or "combination" in design:
+        lines.append("Packing preserves ten-bit precision by restoring signed-low8 coefficient residuals and correcting negative borrowing. Its one-DSP pair therefore still needs wider fabric arithmetic, selection and pipeline stages. The nested fold loops restart at every pixel/tile, charging their full iteration latency in addition to T; pure-MAC budgets omitted that drain cost. The reported layer LUTs and loop depths below quantify the excess. Uniform INT8 cannot remove this logic without failing the unchanged precision gate.")
+    if "winograd" in design or "combination" in design:
+        bound = next((module for module in modules if module["module"] == "conv1_tiles"),None)
+        if bound:
+            lines.append("The nested Conv1 tile producer reports "+str(bound.get("latency_cycles"))+" cycles. Its264x264 scan contains a conditional4*T fold, and the maximum bound charges that branch at every scanned coordinate; only128x128=16384 coordinates actually produce tiles. Consequently the reported worst-case bound is inflated, even with the requested fold II. W10-W13/C07 isolate this by replacing the nested branch with a fixed16384*(4*T) MAC loop. This is report-bound tightening until RTL cycles confirm an actual throughput change.")
+        else:
+            lines.append("Winograd budgets count2304 MACs per output but also need34-bit inverse additions,144 transformed values per window, a four-pixel output packet and two512-deep640-bit raster FIFOs. Continuous schedules eliminate tile restarts but retain this storage and transform logic; the layer/module table identifies whether the direct Conv2/Conv3 engine now sets the cycle bound.")
+    elif "continuous_direct" in design or "fifo_lutram" in design or "uram_line" in design:
+        lines.append("The paper cache estimate used stored-bit capacity, whereas channel/row banking and shallow-wide FIFO mapping consume whole memory primitives. Explicit LUTRAM and URAM bindings change that granularity. Registered reductions add pipeline FF and address/window FIFOs while continuous loops remove per-pixel drain; compare the memory counts and folded iteration depths to the storage controls. HLS maximum-component cycles still exclude finite-FIFO stalls, especially with old row-serialized padding.")
+    elif scope(config,row) == "PE":
+        lines.append("PE LUT estimates were planning allowances, not bit-level netlists. Direct control avoids transform/borrow logic; wider Winograd operands increase transform/inverse fabric width; exact10 packing adds residual repair. The measured DSP count and loop II must be evaluated independently of unused LUT margin.")
+    if folded:
+        lines.append("Observed fold depth/II: "+"; ".join(loop["loop"]+" depth="+str(loop.get("IterationLatency",loop.get("PipelineDepth")))+", II="+str(loop.get("actual_ii")) for loop in folded)+".")
+    return "\n\nExplicit explanation of deviations above20%:\n\n"+"\n\n".join(lines)+"\n"
 
 
 def main():
@@ -81,6 +132,9 @@ def main():
         derived["ddr_theoretical_lower_bound_ms"] = bandwidth[0] if bandwidth else ""
         derived["ddr_50pct_lower_bound_ms"] = bandwidth[1] if bandwidth else ""
         structures.append(derived)
+        layer_counts = dsp_composition(row,config)
+        if layer_counts:
+            composition.append(layer_counts)
         if not row["series"]:
             continue
         comparisons = []
@@ -113,17 +167,6 @@ def main():
                               **{"kernel_"+key:kernel.get(key) for key in ("DSP","BRAM18K","LUT","FF","latency_cycles")},
                               **{"padding_"+key:padding.get(key) if padding else 0 for key in ("DSP","BRAM18K","LUT","FF")},
                               "border_mse":row["border_mse"],"bit_exact":row["bit_exact"],"ii_ok":row["ii_ok"]})
-        if derived["scope"] == "frame" and not config.get("operation") and modules:
-            parts = [module_for(modules,layer) for layer in (1,2,3)]
-            if all(part is not None for part in parts):
-                counts = [number(part.get("DSP")) for part in parts]
-                if all(count is not None for count in counts):
-                    remainder = number(row["DSP"])-sum(counts)
-                    if remainder < 0:
-                        raise RuntimeError("Overlapping module DSP accounting: "+row["id"])
-                    composition.append({"id":row["id"], "series":row["series"],
-                                        "Conv1_DSP":counts[0], "Conv2_DSP":counts[1], "Conv3_DSP":counts[2],
-                                        "other_DSP":remainder, "total_DSP":row["DSP"], "status":row["status"]})
         report_rows = []
         for layer in (1,2,3):
             part = module_for(modules,layer)
@@ -137,6 +180,7 @@ def main():
         human = config.get("interpretation", "")+"\n\n"+SERIES_NOTES.get(row["series"], "")
         human += "\n\nEstimate audit (parsed values; zero estimates have no percentage denominator):\n\n"
         human += markdown_table(comparisons,["metric","estimate","actual","deviation_pct","over20pct"])
+        human += deviation_explanation(row,config,comparisons)
         if report_rows:
             human += "\nWhole layer evidence from csynth XML (child pipeline reports are not added again):\n\n"
             human += markdown_table(report_rows,["module","latency_cycles","DSP","BRAM18K","LUT","FF"])

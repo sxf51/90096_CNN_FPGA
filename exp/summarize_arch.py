@@ -77,7 +77,8 @@ def main():
     text += "\n## Figures\n\n"
     for name,label in (("architecture_pareto","Latency vs DSP by series"),("architecture_dsp_layers","DSP composition"),
                        ("estimate_actual_dsp","DSP estimates vs actual"),("estimate_actual_cycles","Cycle estimates vs actual"),
-                       ("conv3_resources","Conv3 resource comparison")):
+                       ("conv3_resources","Conv3 resource comparison"),
+                       ("conv3_core_resources","Conv3 core and pad resource comparison")):
         text += "!["+label+"](figs/"+name+".png)\n\n"
     text += "Generated from archived evidence at "+utc()+".\n"
     (ROOT / "experiments/ARCH_SUMMARY.md").write_text(text)
