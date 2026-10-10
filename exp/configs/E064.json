@@ -1,0 +1,31 @@
+{
+  "T": 16,
+  "changes": "Same exact selected integer design and unroll split; only weight storage changes.",
+  "clock": 10,
+  "conclusion": "Use only after strict E019/E017 butterfly comparison; retain provisional 13-image precision.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_STORAGE": 0,
+    "EXP_T": 16,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/dataflow_int",
+  "fixed": true,
+  "id": "E064",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare bit identity, inferred resource mapping and timing with E047. CPU arithmetic and synthesized arithmetic share the exact same convolution, padding and cast code.",
+  "name": "storage_0_T16",
+  "precision": "w10a10acc23",
+  "purpose": "Measure weight storage control at selected T=16 with ideal DSP 502 and frame compute floor 1040400 cycles. BRAM banking may waste capacity through many shallow memories; record actual resource excess.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 4,
+  "storage": "register",
+  "unroll": "Cout/Cout/tap"
+}
