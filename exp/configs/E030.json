@@ -1,0 +1,11 @@
+{
+  "id": "E030", "name": "dataflow_float", "stage": 3,
+  "design": "designs/dataflow_v1", "clock": 10, "T": 32,
+  "storage": "register", "unroll": "Cout/Cout/tap", "csim_only": true,
+  "defines": {"EXP_T": 32, "EXP_STORAGE": 0},
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "purpose": "Prove float replicate-padding streaming flow matches untouched golden before fixed-point synthesis.",
+  "changes": "read_input -> pad1 -> nested conv12 (separate overlapping Conv1/Conv2 engines) -> pad3 -> gather Conv3 -> write_output. Runtime weights load into on-chip arrays before the DATAFLOW region; external signature unchanged.",
+  "interpretation": "Token counts per frame: raw 65025, padded1 69169, Conv2 65025, padded3 67081, output 65025. Conv1 line buffer is 8x263 and Conv3 line buffer is 4x259x32 because padding is explicit. AXI float arrays use sequential bursts up to 256 elements plus AXI-Lite pointer/control registers.",
+  "conclusion": "After float validation, apply w10a10 and compare against actual ap_fixed butterfly reference before T=32 synthesis."
+}
