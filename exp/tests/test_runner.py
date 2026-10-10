@@ -83,6 +83,20 @@ class RunnerTests(unittest.TestCase):
             self.assertIn(" -I" + str(work / "source"), text)
             self.assertNotIn(' -I"', text)
 
+    def test_source_testbench_object_collision_is_rejected_before_tool_run(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            config = self.fixture(root)
+            (root / "tb").mkdir()
+            (root / "tb/design.cpp").write_text("int main() { return 0; }\n")
+            config["tb_files"] = ["tb/design.cpp"]
+            work = root / "work"
+            work.mkdir()
+            with patch.object(run_exp,"ROOT",root):
+                with self.assertRaisesRegex(RuntimeError,"HLS object basename collision: design"):
+                    run_exp.generate_config(config,work)
+            self.assertFalse((work / "hls_config.cfg").exists())
+
     def test_combinational_zero_latency_is_complete(self):
         actual = run_exp.ROOT / "experiments/E052_mul16_constant_unroll/csynth.xml"
         self.assertEqual(run_exp.parse_xml(actual)[0]["latency_cycles"], 0)
