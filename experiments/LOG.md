@@ -239,6 +239,8 @@
 
 - 2026-10-10T23:38:28+00:00: F13-F15: paper plans committed before independent continuous_rotate_v1 generation. F08 engine3 reports7013 mux LUT/13268 totalLUT; rotate25x32 held channels to expose fixed input taps, compare T16/T8 with registered reductions and T8 latency0 fabric reductions. F13's two-frame simulation is bit-exact. Both T8 resource feasibility and latency0 clock behavior are unproven; final selection waits for all three measured records.
 
+- 2026-10-10T23:46:08+00:00: F16: ieee_decode_bit_exact; status=fail; latency_ms_est=unknown; PE only; conversion-probe cycles are excluded from network rankings; C simulation not accepted (exit=1); synthesis not eligible
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T23:19:34+00:00: Winograd's requested offline weight transform conflicts with accepting arbitrary original float weight arrays at the frozen srcnn signature. Keep the internal runtime load/transform stage, include its measured cycles/resources and archive the equivalent pretrained G2 tensor. Removing runtime transformation requires an approved transformed-weight contract or a specialized constant-weight wrapper; no such interface change is made in this unattended run.
