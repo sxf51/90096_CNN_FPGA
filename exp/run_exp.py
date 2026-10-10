@@ -299,7 +299,7 @@ def run(config):
             if config.get("csim_only"):
                 row["status"] = "csim_pass"
             else:
-                with lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=3600):
+                with lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=86400):
                     code, seconds = invoke(["v++", "-c", "--mode", "hls", "--config", str(cfg), "--work_dir", str(work)],
                                            settings, ROOT, work / "csynth.console.log", min(config.get("synth_timeout", 3600), 3600))
                 row["synth_minutes"] = seconds / 60

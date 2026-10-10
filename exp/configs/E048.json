@@ -1,0 +1,31 @@
+{
+  "T": 32,
+  "changes": "Independent E047 copy. Actual ap_fixed input/parameter casts; explicit raw-integer full products, bias scale, nearest-even layer rounding and saturation. CPU uses matching native signed carriers under the proven no-overflow bounds; synthesis uses ap_int.",
+  "clock": 10,
+  "conclusion": "Use only after strict E019/E017 butterfly comparison; retain provisional 13-image precision.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_STORAGE": 0,
+    "EXP_T": 32,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/dataflow_int",
+  "fixed": true,
+  "id": "E048",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare bit identity, inferred resource mapping and timing with E047. CPU arithmetic and synthesized arithmetic share the exact same convolution, padding and cast code.",
+  "name": "dataflow_integer_T32",
+  "precision": "w10a10acc23",
+  "purpose": "Measure explicit integer carriers with unchanged full-product fractions. Paper MAC budget 162/64/25 = 251 DSP; buffer footprint as E047 (168 BRAM18K); compute floor 2080800 cycles. Simpler nearest-even boundary logic should reduce LUT and simulation time.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 4,
+  "storage": "register",
+  "unroll": "Cout/Cout/tap"
+}

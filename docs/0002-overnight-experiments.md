@@ -33,3 +33,15 @@ Preserve protected SHA256 hashes and user edits. Float output is compared direct
 
 Reports, plots and reproduction instructions live in [experiments](../experiments/SUMMARY.md); [experiment progress](../experiments/PROGRESS.md) is the recovery entry point.
 
+## Integer-carrier control
+
+The independently copied `dataflow_int` design retains the streaming topology and
+float external signature. AMD ap_fixed performs input/parameter quantization;
+full-width integer products and bounded sums retain every fractional bit.
+Layer casts explicitly implement signed floor, nearest-even rounding and
+saturation. Native signed 32-bit C-simulation carriers and synthesized ap_int
+carriers are equivalent under the archived trained-parameter absolute-sum bounds;
+no CPU-only alternate convolution is used. Butterfly must match E019 bit for bit
+before any synthesis, and selected final candidates must run every supplied image.
+This control also measures whether simpler boundary logic reduces LUT overhead.
+

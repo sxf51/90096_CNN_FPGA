@@ -38,7 +38,7 @@ def main():
                   "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
                   "purpose": f"Coordinate scan {args.round}; ideal MAC budget {ideal:g} DSP, "
                              f"compute floor {65025*t} cycles before load/padding/control overhead.",
-                  "changes": f"Independent dataflow_v1 snapshot, changes {changes}; "
+                  "changes": f"Independent snapshot of {base['design']}, changes {changes}; "
                              "same exact quantization boundaries and butterfly reference as E033.",
                   "interpretation": "Compare measured loops and resources with E033 and this coordinate's "
                                     "control. Runtime-loaded weights require writable storage; rom binding "
