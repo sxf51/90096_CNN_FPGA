@@ -6,6 +6,7 @@ import math
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from adjustText import adjust_text
 from matplotlib.lines import Line2D
 import numpy as np
 
@@ -23,21 +24,31 @@ def numeric(row, key):
         return None
 
 
-network = [r for r in rows if r["design"] != "numpy_precision_scan" and
+network = [r for r in rows if r["id"].startswith("E") and r["design"] != "numpy_precision_scan" and
            not "micro" in r["design"] and numeric(r, "latency_ms_est") is not None and
            r["status"] in {"pass", "provisional", "infeasible"}]
-fig, ax = plt.subplots(figsize=(10, 6), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(12, 8), constrained_layout=True)
 colors = {"pass": "#187c59", "provisional": "#217eb0", "infeasible": "#b8463e"}
+grouped = {}
 for row in network:
     x, y = numeric(row, "DSP"), numeric(row, "latency_ms_est")
     ax.scatter(x, y, color=colors.get(row["status"], "#666666"), marker="x" if row["status"] == "infeasible" else "o")
-    ax.annotate(row["id"] + " T=" + (row["T_target"] or "auto") + " " + row["precision_w_a_acc"],
-                (x, y), xytext=(5, 6), textcoords="offset points", fontsize=7)
+    grouped.setdefault((x, y), []).append(row)
+labels = []
+for (x, y), points in grouped.items():
+    row = points[0]
+    precision = row["precision_w_a_acc"].replace("acc23", "").replace("float32", "fp32")
+    labels.append(ax.text(x, y, ",".join(p["id"] for p in points) + "\nT=" +
+                          (row["T_target"] or "auto") + " " + precision, fontsize=8))
 ax.set(title="SRCNN HLS estimates: latency vs DSP", xlabel="DSP48E2 (count)", ylabel="Estimated frame latency (ms)")
 ax.set_yscale("log")
 ax.axvline(1248, color="#555555", linestyle="--", linewidth=1)
 ax.grid(alpha=.2)
 ax.legend(handles=[Line2D([0], [0], marker="o", color=c, linestyle="", label=s) for s, c in colors.items()], loc="best")
+ax.margins(x=.08, y=.12)
+fig.canvas.draw()
+adjust_text(labels, ax=ax, expand=(1.12, 1.2), time_lim=2,
+            arrowprops={"arrowstyle": "-", "color": "#777777", "lw": .5})
 fig.savefig(FIGS / "pareto.png", dpi=180)
 plt.close(fig)
 
