@@ -1,0 +1,53 @@
+{
+  "config_sha256": "fa272f598075a937444a3d7693a22db1e661ad08408f61cf56cababc9557c245",
+  "configuration": {
+    "T": 16,
+    "changes": "New independent Winograd source based on the passing r1 layer. Shallow1728-bit transformed-window and2560-bit tile FIFOs use LUTRAM. Exact34-bit inverse arithmetic and all layer casts are retained.",
+    "clock": 4,
+    "conclusion": "Rank only exact resource-feasible frame results; retain both nested and continuous evidence.",
+    "defines": {
+      "EXP_ALL_CONTINUOUS": 1,
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_STORAGE": 1,
+      "EXP_T": 16,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/winograd_continuous",
+    "estimates": {
+      "BRAM18K": 155,
+      "Conv1_DSP": 144,
+      "Conv2_DSP": 128,
+      "Conv3_DSP": 50,
+      "DSP": 325,
+      "LUT": 55000,
+      "T": 16,
+      "URAM": 0,
+      "basis": "W07 proves exact layer outputs,144 MAC DSP and82 worst-case cycles per scanned location, with raster reorder65027 cycles. Fixed engine iterations represent16384 actual tiles; extra511 positions are discarded. Keep72 row-FIFO BRAM18K; continuous mode removes72 shallow-FIFO BRAM and packs the pad row to save14 more. LUT budget adds4288 wide shallow FIFO bits and the continuous Conv3 window FIFO.",
+      "latency_cycles": 1140400
+    },
+    "fixed": true,
+    "id": "W12",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Compare fixed-tripcount MAC latency against W07's conservative branch bound. Separate actual throughput improvement from report-bound tightening, and require final finite-FIFO RTL cycles for the selected points.",
+    "name": "fixed_tiles_T16_allcontinuous_4ns",
+    "precision": "w10a10acc23",
+    "purpose": "W07 reports5715601 Conv1 cycles because the conditional nested264x264 scan takes its82-cycle tile branch at every position in the worst-case bound, even though only16384 tiles exist. Separate transformed-window production from a fixed16384*(4*T)II1 MAC loop; emit four-pixel blocks through a separate raster-row distributor. Use continuous direct Conv2/Conv3 and online padding as well, so their nested drains cannot dominate.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "scope": "frame",
+    "series": "W",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_w",
+    "storage": "lutram",
+    "unroll": "G2 F2 nine subkernels/Cout/Cin"
+  },
+  "created_at": "2026-10-10T22:36:19+00:00",
+  "created_from_commit": "7912da162b8f87efce42708d1376d17050df0f0c",
+  "purpose_section": "W07 reports5715601 Conv1 cycles because the conditional nested264x264 scan takes its82-cycle tile branch at every position in the worst-case bound, even though only16384 tiles exist. Separate transformed-window production from a fixed16384*(4*T)II1 MAC loop; emit four-pixel blocks through a separate raster-row distributor. Use continuous direct Conv2/Conv3 and online padding as well, so their nested drains cannot dominate.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 325 |\n| Conv1_DSP | 144 |\n| Conv2_DSP | 128 |\n| Conv3_DSP | 50 |\n| BRAM18K | 155 |\n| URAM | 0 |\n| LUT | 55000 |\n| T | 16 |\n| latency_cycles | 1140400 |\n| basis | W07 proves exact layer outputs,144 MAC DSP and82 worst-case cycles per scanned location, with raster reorder65027 cycles. Fixed engine iterations represent16384 actual tiles; extra511 positions are discarded. Keep72 row-FIFO BRAM18K; continuous mode removes72 shallow-FIFO BRAM and packs the pad row to save14 more. LUT budget adds4288 wide shallow FIFO bits and the continuous Conv3 window FIFO. |\n\nPlanned at 2026-10-10T22:36:19+00:00; estimates are hypotheses, not tool measurements."
+}
