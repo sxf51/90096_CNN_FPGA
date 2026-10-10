@@ -1,0 +1,66 @@
+COMMAND ["vitis-run", "--mode", "hls", "--csim", "--config", "/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/hls_config.cfg", "--work_dir", "/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066"]
+
+****** vitis-run v2026.1 (64-bit)
+  **** SW Build 6497934 on 2026-06-16-10:22:25
+  **** Start of session at: Sun Oct 11 05:55:16 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+  **** HLS Build v2026.1 6493734
+INFO: [HLS 200-2005] Using work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066 
+INFO: [HLS 200-2006] Changing directory to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs
+INFO: [HLS 200-2176] Writing Vitis IDE component file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/vitis-comp.json
+INFO: [HLS 200-10] Creating and opening component '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066'.
+INFO: [HLS 200-2174] Applying component config ini file E066/hls_config.cfg
+INFO: [HLS 200-1465] Applying config ini 'syn.file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/source/srcnn.cpp' from E066/hls_config.cfg(10)
+INFO: [HLS 200-10] Adding design file '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/source/srcnn.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'syn.cflags=-std=c++14 -ffp-contract=off -DEXP_A_BITS=10 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=1 -DEXP_NUMPY_REFERENCE=1 -DEXP_QUICK=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src' from E066/hls_config.cfg(8)
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/validate.cpp' from E066/hls_config.cfg(11)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/validate.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/golden.cpp' from E066/hls_config.cfg(12)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/golden.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_conv1.cpp' from E066/hls_config.cfg(13)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_conv1.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_srcnn.cpp' from E066/hls_config.cfg(14)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_srcnn.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/util.cpp' from E066/hls_config.cfg(15)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/util.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/src/weights' from E066/hls_config.cfg(16)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/src/weights' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/set5' from E066/hls_config.cfg(17)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/set5' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/set14' from E066/hls_config.cfg(18)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/set14' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/fixed_reference.bin' from E066/hls_config.cfg(19)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/fixed_reference.bin' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/numpy_reference' from E066/hls_config.cfg(20)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/numpy_reference' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.cflags=-std=c++14 -ffp-contract=off -DEXP_A_BITS=10 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=1 -DEXP_NUMPY_REFERENCE=1 -DEXP_QUICK=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src' from E066/hls_config.cfg(9)
+INFO: [HLS 200-1465] Applying config ini 'syn.top=srcnn' from E066/hls_config.cfg(6)
+INFO: [HLS 200-1465] Applying config ini 'flow_target=vivado' from E066/hls_config.cfg(3)
+INFO: [HLS 200-1505] Using flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=200-1505.html
+WARNING: [HLS 200-2149] The 'flow_target' option is deprecated and will be removed in a future release. For 'vivado' value you may simply remove the option for equivalent behavior.
+INFO: [HLS 200-1465] Applying config ini 'part=xck26-sfvc784-2LV-c' from E066/hls_config.cfg(1)
+INFO: [HLS 200-1611] Setting target device to 'xck26-sfvc784-2LV-c'
+INFO: [HLS 200-1465] Applying config ini 'clock=10ns' from E066/hls_config.cfg(4)
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1465] Applying config ini 'csim.O=true' from E066/hls_config.cfg(7)
+INFO: [HLS 200-1907] Replacing 'config_csim -O=1' with 'config_sim -O=1' in current solution file
+INFO: [HLS 200-1465] Applying config ini 'package.output.format=ip_catalog' from E066/hls_config.cfg(5)
+INFO: [HLS 200-2176] Writing Vitis IDE component file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E066/vitis-comp.json
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [HLS 200-2191] C-Simulation will use clang-16 as the compiler
+INFO: [HLS 200-2036] Building optimized C Simulation binaries
+   Compiling ../../../../../../test/util.cpp in release mode
+   Compiling ../../../../../../test/tb_srcnn.cpp in release mode
+   Compiling ../../../../../../test/tb_conv1.cpp in release mode
+   Compiling ../../../../../../exp/tb/golden.cpp in release mode
+   Compiling ../../../../../../exp/tb/validate.cpp in release mode
+   Compiling ../../../source/srcnn.cpp in release mode
+   Generating csim.exe
+EXP_METRICS {"csim_pass":true,"conv1_mse":null,"conv1_exact":false,"butterfly_mse":1.7706539952783351e-05,"border_mse":1.405191888267716e-05,"float_exact":false,"bit_exact":true,"image_count":0,"set14_psnr":null,"golden_psnr":null,"delta_psnr":null}
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-112] Total CPU user time: 183.5 seconds. Total CPU system time: 1.03 seconds. Total elapsed time: 184.44 seconds; peak allocated memory: 249.656 MB.
+INFO: [vitis-run 60-791] Total elapsed time: 0h 3m 8s

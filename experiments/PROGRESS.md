@@ -24,3 +24,7 @@ Read LOG.md, results.csv and this file first. Inspect running remote jobs before
 
 After all first-phase stages, create `exp/explore-arch` from `exp/overnight-1011`. Read this file and SUMMARY.md first. User authorized S/G/P/W/C/F architecture exploration, including packing and Winograd, with estimates written before implementation, 45-minute issue limit, and final implementation/cosim for eligible best candidates. Preserve first-phase designs. See latest user task for full scope; no questions in unattended mode.
 
+
+## Coordinate controller
+
+2026-10-10T18:57:08+00:00: Waiting for E057/E058/E059 banked T scans; synthesis is serialized by the memory lock.
