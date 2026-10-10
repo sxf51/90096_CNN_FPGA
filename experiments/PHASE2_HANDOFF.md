@@ -108,6 +108,11 @@ These are still proposals, not second-phase results.
   need15 bits for generic signed10 inputs and preserve fraction9. The
   merged kernel is9*32*25*15=108000 bits, much larger than the original
  8000-bit Conv3 weights; include LUTRAM banking and load overhead.
+  On source row0, explicitly zero every valid incoming partial-sum column,
+  including output rows0/1 as well as the newest row2. They have no previous
+  source-row contributions; do not read uninitialized row banks. On later
+  source rows only the newest row is born zero. Enable EXP_FRAMES=2 for new
+  frame C simulations to check persistent state before the final RTL runs.
 - F continuous: split window production from matrix filtering. Flatten
   pixels/folds into a single H*W*T loop with II1, consume a new window or
   pixel only on step0, and emit on stepT-1. Shift a fixed channel register
