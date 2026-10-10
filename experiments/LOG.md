@@ -233,6 +233,8 @@
 
 - 2026-10-10T23:19:34+00:00: F08-F12/W14-W16/C10-C11: independent retries split the Conv3 window into two4000-bit streams after W11 measured HLS214-256,8000 bits exceeding4096. Both sides carry65025 packets per frame; quantization points, weights and arithmetic remain identical. Original F03-F07/W11-W13/C08-C09 failures stay archived. The corrected queue is waiting for the serialized hardware slot.
 
+- 2026-10-10T23:24:30+00:00: W09: winograd_network_T8_header_retry; status=infeasible; latency_ms_est=13.974316; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T23:19:34+00:00: Winograd's requested offline weight transform conflicts with accepting arbitrary original float weight arrays at the frozen srcnn signature. Keep the internal runtime load/transform stage, include its measured cycles/resources and archive the equivalent pretrained G2 tensor. Removing runtime transformation requires an approved transformed-weight contract or a specialized constant-weight wrapper; no such interface change is made in this unattended run.
