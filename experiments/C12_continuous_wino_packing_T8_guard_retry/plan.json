@@ -1,0 +1,55 @@
+{
+  "config_sha256": "2a027f30e1651ece3355c6921f75e9072b39751c097dcf0703de4aae2f6cfd31",
+  "configuration": {
+    "T": 8,
+    "changes": "Independent C07 copy with one opening conditional directive before packed conv2_stream. Preserve C07's failed source and diagnostics; no arithmetic, stream, weight or precision change.",
+    "clock": 4,
+    "conclusion": "Do not accept a faster report if LUT/FF/DSP caps fail.",
+    "defines": {
+      "EXP_ALL_CONTINUOUS": 0,
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_PACK_C2": 1,
+      "EXP_ROW_LUTRAM": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 8,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/combination_continuous_r1",
+    "estimates": {
+      "BRAM18K": 169,
+      "Conv1_DSP": 288,
+      "Conv2_DSP": 128,
+      "Conv3_DSP": 50,
+      "DSP": 469,
+      "LUT": 105000,
+      "T": 8,
+      "URAM": 0,
+      "basis": "P11 already shows exact10 residuals cause165606 full-network LUT atT8, so105000 LUT for two packed layers plus Winograd is an explicit infeasibility hypothesis. Fixed16384 tile engine removes W07's fourfold branch-bound inflation; remaining nested packed Conv3 controls the2.1M cycle estimate.",
+      "latency_cycles": 2100000
+    },
+    "fixed": true,
+    "id": "C12",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Measure report-bound improvement separately from resource feasibility; preserve exact10 residual and signed borrowing semantics.",
+    "name": "continuous_wino_packing_T8_guard_retry",
+    "precision": "w10a10acc23",
+    "purpose": "C07 failed preprocessing because the packed Conv2 branch lacks its opening #if EXP_PACK_C2. Restore the matching guard in an independent source copy, preserving both branches and every numerical expression. The unchanged paper estimates remain deliberately above the LUT cap. Replace the combination's inflated conditional Conv1 schedule with fixed-tile Winograd, retaining exact10 packed Conv2/Conv3 and LUTRAM row FIFOs. This isolates how much its previous worst-case cycle bound hides, without assuming residual fabric cost disappears.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "scope": "frame",
+    "series": "C",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_c",
+    "storage": "lutram",
+    "unroll": "integer Winograd/paired Cout/adjacent pixels"
+  },
+  "created_at": "2026-10-10T23:56:14+00:00",
+  "created_from_commit": "6246dfc86843e554031ce42269a14c50311752a7",
+  "purpose_section": "C07 failed preprocessing because the packed Conv2 branch lacks its opening #if EXP_PACK_C2. Restore the matching guard in an independent source copy, preserving both branches and every numerical expression. The unchanged paper estimates remain deliberately above the LUT cap. Replace the combination's inflated conditional Conv1 schedule with fixed-tile Winograd, retaining exact10 packed Conv2/Conv3 and LUTRAM row FIFOs. This isolates how much its previous worst-case cycle bound hides, without assuming residual fabric cost disappears.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| BRAM18K | 169 |\n| Conv1_DSP | 288 |\n| Conv2_DSP | 128 |\n| Conv3_DSP | 50 |\n| DSP | 469 |\n| LUT | 105000 |\n| T | 8 |\n| URAM | 0 |\n| basis | P11 already shows exact10 residuals cause165606 full-network LUT atT8, so105000 LUT for two packed layers plus Winograd is an explicit infeasibility hypothesis. Fixed16384 tile engine removes W07's fourfold branch-bound inflation; remaining nested packed Conv3 controls the2.1M cycle estimate. |\n| latency_cycles | 2100000 |\n\nPlanned at 2026-10-10T23:56:14+00:00; estimates are hypotheses, not tool measurements."
+}
