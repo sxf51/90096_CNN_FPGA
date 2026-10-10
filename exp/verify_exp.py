@@ -83,6 +83,9 @@ def run_verification(config):
     cfg_text = cfg.read_text().replace(str(source_work), str(work))
     if operation == "cosim":
         cfg_text = cfg_text.replace("tb.cflags=", "tb.cflags=-DEXP_FRAMES=2 ")
+        cfg_text += "cosim.rtl=verilog\ncosim.trace_level=none\ncosim.enable_dataflow_profiling=true\n"
+    else:
+        cfg_text += "vivado.flow=impl\n"
     cfg.write_text(cfg_text)
     shutil.copyfile(cfg, archive / "hls_config.cfg")
     config.update(time=utc(), parent_config=parent_config, parent_metrics=parent_row,
