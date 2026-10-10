@@ -135,6 +135,8 @@
 
 - 2026-10-10T21:12:32+00:00: E052: corrected zero-cycle combinational report classification from archived XML; no rerun or resource-limit change
 
+- 2026-10-10T21:27:31+00:00: E050: scatter_T32; status=infeasible; latency_ms_est=38.82221; 
+
 ## Pending Human Decisions / 待人工决策
 
 - Recovery reference: [PHASE2_HANDOFF.md](PHASE2_HANDOFF.md) preserves unimplemented architecture hypotheses derived from E058/E070/E071 across the first-phase finalizer. Phase two must still be executed on the new branch with estimates archived before implementation.
