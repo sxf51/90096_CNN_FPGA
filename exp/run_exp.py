@@ -214,6 +214,13 @@ def generate_config(config, work):
     source = ROOT / config["design"]
     if not source.is_dir():
         raise RuntimeError("Design not found: " + str(source))
+    tb_files = config.get("tb_files", ("exp/tb/validate.cpp", "exp/tb/golden.cpp", "test/tb_conv1.cpp", "test/tb_srcnn.cpp", "test/util.cpp",
+                                        "src/weights", "test/set5", "test/set14"))
+    translation_units = list(source.glob("*.cpp")) + [ROOT / name for name in tb_files
+        if Path(name).suffix.lower() in {".c", ".cc", ".cpp", ".cxx"}]
+    basenames = [path.stem.lower() for path in translation_units]
+    if len(set(basenames)) != len(basenames):
+        raise RuntimeError("HLS object basename collision: "+", ".join(sorted({name for name in basenames if basenames.count(name)>1})))
     shutil.copytree(source, snapshot, ignore=shutil.ignore_patterns("weights", "__pycache__"))
     defines = dict(config.get("defines", {}))
     defines.update(EXP_FIXED=int(config.get("fixed", False)), EXP_SET14=int(config.get("set14", False)),
@@ -229,8 +236,7 @@ def generate_config(config, work):
              "syn.top=" + config.get("top", "srcnn"), "csim.O=true", "syn.cflags=" + flags, "tb.cflags=" + flags]
     for path in sorted(snapshot.glob("*.cpp")):
         lines.append("syn.file=" + path.as_posix())
-    for name in config.get("tb_files", ("exp/tb/validate.cpp", "exp/tb/golden.cpp", "test/tb_conv1.cpp", "test/tb_srcnn.cpp", "test/util.cpp",
-                                       "src/weights", "test/set5", "test/set14")):
+    for name in tb_files:
         lines.append("tb.file=" + (ROOT / name).as_posix())
     if config.get("reference"):
         reference = ROOT / config["reference"]
