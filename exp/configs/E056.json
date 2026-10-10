@@ -1,11 +1,11 @@
 {
   "T": 4,
-  "changes": "Independent dataflow_dsp copy, T=4; first half of unrolled Conv1 output lanes bind to DSP, second half to fabric. Conv2 stays DSP and Conv3 uses fabric. All casts and no-overflow accumulators match E019/E017.",
+  "changes": "Independent dataflow_dsp copy, T=4; first half of unrolled Conv1 output lanes bind to DSP, second half to fabric. Conv2 stays DSP and Conv3 uses fabric. Banked LUTRAM follows measured E039 storage evidence. All casts and no-overflow accumulators match E019/E017.",
   "clock": 10,
   "conclusion": "If infeasible, retain measured resource excess for second-phase hybrid budgets.",
   "defines": {
     "EXP_A_BITS": 10,
-    "EXP_STORAGE": 0,
+    "EXP_STORAGE": 1,
     "EXP_T": 4,
     "EXP_W_BITS": 10
   },
@@ -26,6 +26,6 @@
   "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
   "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
   "stage": 5,
-  "storage": "register",
+  "storage": "lutram",
   "unroll": "Cout/Cout/tap"
 }
