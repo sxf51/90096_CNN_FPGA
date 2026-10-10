@@ -178,7 +178,24 @@ def generate_config(config, work):
     if directives:
         tcl = work / "directives.tcl"
         tcl.write_text("\n".join(directives) + "\n")
-        lines.append("syn.directive=" + tcl.as_posix())
+        for command in directives:
+            tokens = shlex.split(command)
+            kind, rest = tokens[0], tokens[1:]
+            if kind == "set_directive_pipeline":
+                ii = rest[rest.index("-II") + 1] if "-II" in rest else "1"
+                lines.append("syn.directive.pipeline=location=" + rest[-1] + " II=" + ii)
+            elif kind == "set_directive_array_partition":
+                options = {}
+                for flag in ("-type", "-factor", "-dim"):
+                    if flag in rest:
+                        options[flag[1:]] = rest[rest.index(flag) + 1]
+                location, variable = rest[-2:]
+                lines.append("syn.directive.array_partition=location=" + location + " variable=" + variable + " " +
+                             " ".join(f"{k}={v}" for k, v in options.items()))
+            else:
+                raise ValueError("Unsupported directive; use structured directive_entries: " + kind)
+    for key, value in config.get("directive_entries", []):
+        lines.append(key + "=" + value)
     for key, value in config.get("options", {}).items():
         lines.append(f"{key}={value}")
     cfg = work / "hls_config.cfg"
@@ -245,6 +262,10 @@ def run(config):
                     break
             row.update({k: v for k, v in validation.items() if k in row and v is not None})
             config["validation"] = validation
+            unknown = re.findall(r"Skipping unknown config[^\n]+", (work / "csim.console.log").read_text(errors="replace"))
+            if unknown:
+                row["status"] = "invalid_config"
+                raise RuntimeError("Tool skipped configuration: " + "; ".join(unknown))
             if code != 0 or not validation.get("csim_pass"):
                 row["csim_pass"] = False
                 row["status"] = "timeout" if code == 124 else "fail"
