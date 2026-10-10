@@ -63,11 +63,20 @@ optional = [r for r in rows if str(r["stage"]) == "5"]
 if optional:
     text += markdown_table([table_row(r) for r in optional], list(table_row(optional[0]))) + "\n"
 text += "Multiplier kernels report their own cycle counts, never a network-frame latency. T4 mixed fabric/DSP feasibility and scatter preserve strict arithmetic checks; infeasible reports remain visible. "
+text += "[E071](E071_architecture_prerequisite_ranges/E071.md) archives exact raw coefficient ranges, G2 transform bounds and independently checked paper budgets; nonnegative nine-bit activations permit only two terms in a signed18 low field. "
 text += "Packing prerequisites: uniform INT8 quality fails; exact integer decomposition or confirmed Conv2 weight-only quantization is required. Direct T8 paper DSP split is 648/256/100=1004; Winograd Conv1 T4 plus direct Conv2 and packed Conv3 is 576/512/100=1188 before other overhead. These budgets are unmeasured phase-two hypotheses.\n\n"
 text += "## Verification\n\n"
 verification = [r for r in rows if str(r["stage"]) == "6" and r["id"] != "E099"]
 if verification:
     text += markdown_table([table_row(r) for r in verification], list(table_row(verification[0]))) + "\n"
+    for row in verification:
+        archive = ROOT / "experiments" / Path(row["md_path"]).parent
+        if (archive / "verification.json").exists():
+            observed = json.loads((archive / "verification.json").read_text())
+            text += "\nActual verification of " + row["id"] + ":\n\n"
+            text += markdown_table([{"metric": k, "value": v} for k, v in observed.items()], ["metric", "value"])
+            if observed.get("timing_met") is False:
+                text += "\nPlacement/routing completed but the target clock did not close. The reports concern out-of-context internal timing; AXI system and board timing remain unverified.\n"
 else:
     text += "No implementation or C/RTL cosimulation result yet. Finite-FIFO deadlock freedom cannot be inferred from unbounded software streams.\n\n"
 text += "## All Experiments\n\n"

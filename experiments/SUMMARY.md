@@ -1,14 +1,14 @@
 # SRCNN on K26: overnight experiments
 
-The unchanged float baseline is functionally correct but infeasible (11064.0 BRAM18K; 19601.139 ms). Uniform w10a10 loses 0.069514 dB on all 13 supplied Set14 pairs; w8a8 loses 5.179955 dB. The fastest resource-feasible supplied-image candidate is [E039](E039_scan_storage_T32_E039/E039.md) at 29.830240 ms; missing comic prevents complete Set14 acceptance.
+The unchanged float baseline is functionally correct but infeasible (11064.0 BRAM18K; 19601.139 ms). Uniform w10a10 loses 0.069514 dB on all 13 supplied Set14 pairs; w8a8 loses 5.179955 dB. The fastest resource-feasible supplied-image candidate is [E058](E058_integer_lutram_T16/E058.md) at 18.763200 ms; missing comic prevents complete Set14 acceptance.
 
 ## Current best
 
 | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | ii_ok | status | id |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 168.0 | 44530.0 | 46123.0 | -0.0695141811880653 | True | provisional | [E039](E039_scan_storage_T32_E039/E039.md) |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1876320.0 | 1876321.0 | 18.7632 | 505.0 | 168.0 | 55212.0 | 57723.0 | -0.0695141811880653 | True | provisional | [E058](E058_integer_lutram_T16/E058.md) |
 
-No completed Vivado implementation result has been recorded. All performance is tool-estimated or explicitly labeled RTL/implementation evidence. No board validation was run.
+Implementation results are separate from HLS estimates; see verification experiments below. All performance is tool-estimated or explicitly labeled RTL/implementation evidence. No board validation was run.
 
 ## Precision
 
@@ -28,10 +28,13 @@ AXI float-array signature remains unchanged; weights/biases load once before DAT
 
 | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | ii_ok | status | id |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1876320.0 | 1876321.0 | 18.7632 | 505.0 | 168.0 | 55212.0 | 57723.0 | -0.0695141811880653 | True | provisional | [E058](E058_integer_lutram_T16/E058.md) |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 251.0 | 168.0 | 89341.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E047](E047_dataflow_dsp_T32/E047.md) |
 | designs/dataflow_wrap | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 148.0 | 168.0 | 95727.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E063](E063_dataflow_wrap_T32_retry/E063.md) |
 | designs/dataflow_int | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 254.0 | 168.0 | 89304.0 | 132635.0 | -0.0695141811880653 | True | infeasible | [E048](E048_dataflow_integer_T32/E048.md) |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 168.0 | 44530.0 | 46123.0 | -0.0695141811880653 | True | provisional | [E039](E039_scan_storage_T32_E039/E039.md) |
+| designs/dataflow_int | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 254.0 | 168.0 | 44493.0 | 46328.0 | -0.0695141811880653 | True | provisional | [E057](E057_integer_lutram_T32/E057.md) |
+| designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 419.0 | 43275.0 | 41136.0 | -0.0695141811880653 | True | infeasible | [E040](E040_scan_storage_T32_E040/E040.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E033](E033_dataflow_fixed_T32_single/E033.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E031](E031_dataflow_fixed_T32/E031.md) |
 | designs/dataflow_v1 | w10a10acc23 | 16 | 10 | 63.218 | 2775517.0 | 2775518.0 | 175.462633706 | 18.0 | 168.0 | 167715.0 | 135714.0 | -0.0695141811880653 | True | infeasible | [E044](E044_scan_T_T16_E034_retry/E044.md) |
@@ -39,20 +42,45 @@ AXI float-array signature remains unchanged; weights/biases load once before DAT
 
 ## Optional Experiments
 
-Multiplier kernels report their own cycle counts, never a network-frame latency. T4 mixed fabric/DSP feasibility and scatter preserve strict arithmetic checks; infeasible reports remain visible. Packing prerequisites: uniform INT8 quality fails; exact integer decomposition or confirmed Conv2 weight-only quantization is required. Direct T8 paper DSP split is 648/256/100=1004; Winograd Conv1 T4 plus direct Conv2 and packed Conv3 is 576/512/100=1188 before other overhead. These budgets are unmeasured phase-two hypotheses.
+Multiplier kernels report their own cycle counts, never a network-frame latency. T4 mixed fabric/DSP feasibility and scatter preserve strict arithmetic checks; infeasible reports remain visible. [E071](E071_architecture_prerequisite_ranges/E071.md) archives exact raw coefficient ranges, G2 transform bounds and independently checked paper budgets; nonnegative nine-bit activations permit only two terms in a signed18 low field. Packing prerequisites: uniform INT8 quality fails; exact integer decomposition or confirmed Conv2 weight-only quantization is required. Direct T8 paper DSP split is 648/256/100=1004; Winograd Conv1 T4 plus direct Conv2 and packed Conv3 is 576/512/100=1188 before other overhead. These budgets are unmeasured phase-two hypotheses.
 
 ## Verification
 
-No implementation or C/RTL cosimulation result yet. Finite-FIFO deadlock freedom cannot be inferred from unbounded software streams.
+| design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | ii_ok | status | id |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| parameter_range_analysis | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | analysis_complete | [E071](E071_architecture_prerequisite_ranges/E071.md) |
+| designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 168.0 | 44530.0 | 46123.0 | -0.0695141811880653 | True | impl_complete | [E070](E070_first_feasible_implementation/E070.md) |
 
+
+Actual verification of E070:
+
+| metric | value |
+| --- | --- |
+| impl_BRAM36 | 31.0 |
+| impl_DSP | 270.0 |
+| impl_FF | 33844.0 |
+| impl_LUT | 20454.0 |
+| impl_TNS_ns | -1206.071 |
+| impl_URAM | 0.0 |
+| impl_WNS_ns | -1.277 |
+| impl_clock_ns_est | 11.277 |
+| impl_resource_report | hls/impl/verilog/report/srcnn_utilization_routed.rpt |
+| impl_timing_report | hls/impl/verilog/report/srcnn_timing_routed.rpt |
+| timing_met | False |
+
+Placement/routing completed but the target clock did not close. The reports concern out-of-context internal timing; AXI system and board timing remain unverified.
 ## All Experiments
 
 | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | ii_ok | status | id |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| designs/dataflow_int | w10a10acc23 | 16 | 10 | 7.3 | 1876320.0 | 1876321.0 | 18.7632 | 505.0 | 168.0 | 55212.0 | 57723.0 | -0.0695141811880653 | True | provisional | [E058](E058_integer_lutram_T16/E058.md) |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 251.0 | 168.0 | 89341.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E047](E047_dataflow_dsp_T32/E047.md) |
 | designs/dataflow_wrap | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 148.0 | 168.0 | 95727.0 | 132430.0 | -0.0695141811880653 | True | infeasible | [E063](E063_dataflow_wrap_T32_retry/E063.md) |
 | designs/dataflow_int | w10a10acc23 | 32 | 10 | 7.3 | 2913855.0 | 2913856.0 | 29.13855 | 254.0 | 168.0 | 89304.0 | 132635.0 | -0.0695141811880653 | True | infeasible | [E048](E048_dataflow_integer_T32/E048.md) |
 | designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 168.0 | 44530.0 | 46123.0 | -0.0695141811880653 | True | provisional | [E039](E039_scan_storage_T32_E039/E039.md) |
+| designs/dataflow_int | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 254.0 | 168.0 | 44493.0 | 46328.0 | -0.0695141811880653 | True | provisional | [E057](E057_integer_lutram_T32/E057.md) |
+| designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 168.0 | 44530.0 | 46123.0 | -0.0695141811880653 | True | impl_complete | [E070](E070_first_feasible_implementation/E070.md) |
+| designs/dataflow_dsp | w10a10acc23 | 32 | 10 | 7.3 | 2983024.0 | 2983025.0 | 29.83024 | 251.0 | 419.0 | 43275.0 | 41136.0 | -0.0695141811880653 | True | infeasible | [E040](E040_scan_storage_T32_E040/E040.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E033](E033_dataflow_fixed_T32_single/E033.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E031](E031_dataflow_fixed_T32/E031.md) |
 | designs/dataflow_v1 | w10a10acc23 | 16 | 10 | 63.218 | 2775517.0 | 2775518.0 | 175.462633706 | 18.0 | 168.0 | 167715.0 | 135714.0 | -0.0695141811880653 | True | infeasible | [E044](E044_scan_T_T16_E034_retry/E044.md) |
@@ -87,6 +115,7 @@ No implementation or C/RTL cosimulation result yet. Finite-FIFO deadlock freedom
 | numpy_layer_precision_scan | mixed layer scan | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | analysis_complete | [E062](E062_layer_int8_scan/E062.md) |
 | designs/fixed_ref_mixed_raw | w10_8_10a10acc23_21_23 | unknown | 10 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | -0.07589037644656216 | unknown | csim_pass | [E065](E065_apfixed_mixed_conv2w8/E065.md) |
 | designs/fixed_ref_mixed | w10_8_10a10acc23_21_23 | unknown | 10 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | -0.07589037644656216 | unknown | csim_pass | [E066](E066_full_apfixed_mixed_butterfly/E066.md) |
+| parameter_range_analysis | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | analysis_complete | [E071](E071_architecture_prerequisite_ranges/E071.md) |
 
 ## Failed And Timed-Out Runs
 
@@ -121,4 +150,4 @@ Missing comic input/GT pair blocks full 14-image acceptance. Windows Vitis envir
 
 Execute the authorized second phase on exp/explore-arch after phase-one completion. Prioritize packing/Winograd PE mapping, gather/scatter borders, memory banking and a loop schedule with continuous pixel throughput; compare all variants to the measured exact streaming baseline. Implement and RTL-cosim the best feasible provisional candidates while reporting the missing full-Set14 evidence.
 
-Generated from results.csv and archived reference evidence at 2026-10-10T19:38:30+00:00.
+Generated from results.csv and archived reference evidence at 2026-10-10T20:12:15+00:00.

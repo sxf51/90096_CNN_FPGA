@@ -13,6 +13,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 FIGS = ROOT / "experiments/figs"
 FIGS.mkdir(parents=True, exist_ok=True)
+np.random.seed(1011)
 rows = list(csv.DictReader((ROOT / "experiments/results.csv").open(newline="")))
 
 
@@ -47,7 +48,7 @@ ax.grid(alpha=.2)
 ax.legend(handles=[Line2D([0], [0], marker="o", color=c, linestyle="", label=s) for s, c in colors.items()], loc="best")
 ax.margins(x=.08, y=.12)
 fig.canvas.draw()
-adjust_text(labels, ax=ax, expand=(1.12, 1.2), time_lim=2,
+adjust_text(labels, ax=ax, expand=(1.12, 1.2), iter_lim=350,
             arrowprops={"arrowstyle": "-", "color": "#777777", "lw": .5})
 fig.savefig(FIGS / "pareto.png", dpi=180)
 plt.close(fig)
