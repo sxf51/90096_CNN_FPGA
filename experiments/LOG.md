@@ -183,6 +183,8 @@
 
 - 2026-10-10T22:14:51+00:00: C03: wino_packing_T8_all; status=fail; latency_ms_est=unknown; ; C simulation not accepted (exit=1); synthesis not eligible
 
+- 2026-10-10T22:18:01+00:00: S03: tile_fusion_B8; status=infeasible; latency_ms_est=228.03545; 
+
 ## Pending Human Decisions / 待人工决策
 
 - Recovery reference: [PHASE2_HANDOFF.md](PHASE2_HANDOFF.md) preserves unimplemented architecture hypotheses derived from E058/E070/E071 across the first-phase finalizer. Phase two must still be executed on the new branch with estimates archived before implementation.
