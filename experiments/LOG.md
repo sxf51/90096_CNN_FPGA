@@ -253,6 +253,8 @@
 
 - 2026-10-10T23:50:51+00:00: W13: fixed_tiles_T8_allcontinuous_3p33ns; status=fail; latency_ms_est=unknown; ; Synthesis failed (exit=1)
 
+- 2026-10-10T23:51:12+00:00: C07: continuous_wino_packing_T8; status=fail; latency_ms_est=unknown; ; C simulation not accepted (exit=1); synthesis not eligible
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T23:19:34+00:00: Winograd's requested offline weight transform conflicts with accepting arbitrary original float weight arrays at the frozen srcnn signature. Keep the internal runtime load/transform stage, include its measured cycles/resources and archive the equivalent pretrained G2 tensor. Removing runtime transformation requires an approved transformed-weight contract or a specialized constant-weight wrapper; no such interface change is made in this unattended run.
