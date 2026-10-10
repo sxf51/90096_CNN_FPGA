@@ -116,6 +116,7 @@ Measured direction result: [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md)
 | [F18](F18_ieee_decode_bit_exact_sdk_retry/F18.md) | PE | 1 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [F19](F19_ieee_decode_legacy_control_sdk_retry/F19.md) | PE | 1 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [F04](F04_continuous_T16_online_4ns/F04.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
+| [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | frame | 16 | 1048687.0 | 4.194748 | 505.0 | 73.0 | 0.0 | 68903.0 | 106661.0 | True | 1.661846957728205e-05 | True | provisional |
 
 ## All Architectures
 
@@ -124,6 +125,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | id | series | design | T_target | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md) | F | designs/continuous_direct_r2 | 16 | 4.194708 | 505.0 | 96.0 | 69362.0 | 106171.0 | -0.0695141811880653 | provisional |
+| [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | F | designs/continuous_rotate_v1 | 16 | 4.194748 | 505.0 | 73.0 | 68903.0 | 106661.0 | -0.0695141811880653 | provisional |
 | [P12](P12_exact10_packing_T4/P12.md) | P | designs/packing_network | 4 | 5.422328 | 1007.0 | 168.0 | 292053.0 | 159828.0 | -0.0695141811880653 | infeasible |
 | [E043](E043_scan_clock_T16_E043/E043.md) | unknown | designs/dataflow_int | 16 | 6.93923049 | 505.0 | 168.0 | 55325.0 | 67025.0 | -0.0695141811880653 | provisional |
 | [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) | W | designs/winograd_continuous | 16 | 7.548204 | 326.0 | 241.0 | 79158.0 | 76052.0 | -0.0695141811880653 | provisional |
@@ -240,6 +242,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F04](F04_continuous_T16_online_4ns/F04.md) | frame | 505.0 | unknown | unknown | 1140400.0 | unknown | unknown | fail |
 | [W13](W13_fixed_tiles_T8_allcontinuous_3p33ns/W13.md) | frame | 647.0 | unknown | unknown | 620200.0 | unknown | unknown | fail |
 | [C07](C07_continuous_wino_packing_T8/C07.md) | frame | 469.0 | unknown | unknown | 2100000.0 | unknown | unknown | fail |
+| [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | frame | 505.0 | 505.0 | 0.0 | 1140400.0 | 1048687.0 | -8.04217818309365 | provisional |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -289,6 +292,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | 3 | infeasible |
 | [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md) | 5 | provisional |
 | [C04](C04_wino_packing_T4_all_header_retry/C04.md) | 3 | infeasible |
+| [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | 5 | provisional |
 
 ## Failed Directions
 
@@ -349,4 +353,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-10T23:57:13+00:00.
+Generated from archived evidence at 2026-10-10T23:59:03+00:00.
