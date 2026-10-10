@@ -1,0 +1,508 @@
+
+
+================================================================
+== Synthesis Summary Report of 'benchmark'
+================================================================
++ General Information: 
+    * Date:           Sun Oct 11 08:05:28 2026
+    * Version:        2026.1 (Build 6493734 on Jun 16 2026)
+    * Project:        E052
+    * Solution:       hls (Vivado IP Flow Target)
+    * Product family: zynquplus
+    * Target device:  xck26-sfvc784-2LV-c
+    
+
+* Performance & Resource Estimates: 
++-------------+------+---------------+----------+---------+------+----------+---------+-------+------+------+---------+---+-----------+-----+
+|   Modules   | Issue|               | Iteration|         | Trip |          |     Latency     |      |      |         |   |           |     |
+|   & Loops   | Type | Violation Type|  Latency | Interval| Count| Pipelined| (cycles)|  (ns) | Slack| BRAM |   DSP   | FF|    LUT    | URAM|
++-------------+------+---------------+----------+---------+------+----------+---------+-------+------+------+---------+---+-----------+-----+
+|+ benchmark  |     -|              -|         -|        1|     -|        no|        0|  0.000|  4.92|     -|  60 (4%)|  -|  424 (~0%)|    -|
++-------------+------+---------------+----------+---------+------+----------+---------+-------+------+------+---------+---+-----------+-----+
+    Name Prefix: '+' for module, 'o' for loop, '*' for dataflow
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AP_MEMORY
++------------+-----------+----------+
+| Port       | Direction | Bitwidth |
++------------+-----------+----------+
+| b_address0 | out       | 6        |
+| b_address1 | out       | 6        |
+| b_d0       | out       | 16       |
+| b_d1       | out       | 16       |
+| b_q0       | in        | 16       |
+| b_q1       | in        | 16       |
++------------+-----------+----------+
+
+* Other Ports
++--------+---------+-----------+----------+
+| Port   | Mode    | Direction | Bitwidth |
++--------+---------+-----------+----------+
+| a_0    | ap_none | in        | 16       |
+| a_1    | ap_none | in        | 16       |
+| a_10   | ap_none | in        | 16       |
+| a_11   | ap_none | in        | 16       |
+| a_12   | ap_none | in        | 16       |
+| a_13   | ap_none | in        | 16       |
+| a_14   | ap_none | in        | 16       |
+| a_15   | ap_none | in        | 16       |
+| a_16   | ap_none | in        | 16       |
+| a_17   | ap_none | in        | 16       |
+| a_18   | ap_none | in        | 16       |
+| a_19   | ap_none | in        | 16       |
+| a_2    | ap_none | in        | 16       |
+| a_20   | ap_none | in        | 16       |
+| a_21   | ap_none | in        | 16       |
+| a_22   | ap_none | in        | 16       |
+| a_23   | ap_none | in        | 16       |
+| a_24   | ap_none | in        | 16       |
+| a_25   | ap_none | in        | 16       |
+| a_26   | ap_none | in        | 16       |
+| a_27   | ap_none | in        | 16       |
+| a_28   | ap_none | in        | 16       |
+| a_29   | ap_none | in        | 16       |
+| a_3    | ap_none | in        | 16       |
+| a_30   | ap_none | in        | 16       |
+| a_31   | ap_none | in        | 16       |
+| a_32   | ap_none | in        | 16       |
+| a_33   | ap_none | in        | 16       |
+| a_34   | ap_none | in        | 16       |
+| a_35   | ap_none | in        | 16       |
+| a_36   | ap_none | in        | 16       |
+| a_37   | ap_none | in        | 16       |
+| a_38   | ap_none | in        | 16       |
+| a_39   | ap_none | in        | 16       |
+| a_4    | ap_none | in        | 16       |
+| a_40   | ap_none | in        | 16       |
+| a_41   | ap_none | in        | 16       |
+| a_42   | ap_none | in        | 16       |
+| a_43   | ap_none | in        | 16       |
+| a_44   | ap_none | in        | 16       |
+| a_45   | ap_none | in        | 16       |
+| a_46   | ap_none | in        | 16       |
+| a_47   | ap_none | in        | 16       |
+| a_48   | ap_none | in        | 16       |
+| a_49   | ap_none | in        | 16       |
+| a_5    | ap_none | in        | 16       |
+| a_50   | ap_none | in        | 16       |
+| a_51   | ap_none | in        | 16       |
+| a_52   | ap_none | in        | 16       |
+| a_53   | ap_none | in        | 16       |
+| a_54   | ap_none | in        | 16       |
+| a_55   | ap_none | in        | 16       |
+| a_56   | ap_none | in        | 16       |
+| a_57   | ap_none | in        | 16       |
+| a_58   | ap_none | in        | 16       |
+| a_59   | ap_none | in        | 16       |
+| a_6    | ap_none | in        | 16       |
+| a_60   | ap_none | in        | 16       |
+| a_61   | ap_none | in        | 16       |
+| a_62   | ap_none | in        | 16       |
+| a_63   | ap_none | in        | 16       |
+| a_7    | ap_none | in        | 16       |
+| a_8    | ap_none | in        | 16       |
+| a_9    | ap_none | in        | 16       |
+| out_0  | ap_vld  | out       | 32       |
+| out_1  | ap_vld  | out       | 32       |
+| out_10 | ap_vld  | out       | 32       |
+| out_11 | ap_vld  | out       | 32       |
+| out_12 | ap_vld  | out       | 32       |
+| out_13 | ap_vld  | out       | 32       |
+| out_14 | ap_vld  | out       | 32       |
+| out_15 | ap_vld  | out       | 32       |
+| out_16 | ap_vld  | out       | 32       |
+| out_17 | ap_vld  | out       | 32       |
+| out_18 | ap_vld  | out       | 32       |
+| out_19 | ap_vld  | out       | 32       |
+| out_2  | ap_vld  | out       | 32       |
+| out_20 | ap_vld  | out       | 32       |
+| out_21 | ap_vld  | out       | 32       |
+| out_22 | ap_vld  | out       | 32       |
+| out_23 | ap_vld  | out       | 32       |
+| out_24 | ap_vld  | out       | 32       |
+| out_25 | ap_vld  | out       | 32       |
+| out_26 | ap_vld  | out       | 32       |
+| out_27 | ap_vld  | out       | 32       |
+| out_28 | ap_vld  | out       | 32       |
+| out_29 | ap_vld  | out       | 32       |
+| out_3  | ap_vld  | out       | 32       |
+| out_30 | ap_vld  | out       | 32       |
+| out_31 | ap_vld  | out       | 32       |
+| out_32 | ap_vld  | out       | 32       |
+| out_33 | ap_vld  | out       | 32       |
+| out_34 | ap_vld  | out       | 32       |
+| out_35 | ap_vld  | out       | 32       |
+| out_36 | ap_vld  | out       | 32       |
+| out_37 | ap_vld  | out       | 32       |
+| out_38 | ap_vld  | out       | 32       |
+| out_39 | ap_vld  | out       | 32       |
+| out_4  | ap_vld  | out       | 32       |
+| out_40 | ap_vld  | out       | 32       |
+| out_41 | ap_vld  | out       | 32       |
+| out_42 | ap_vld  | out       | 32       |
+| out_43 | ap_vld  | out       | 32       |
+| out_44 | ap_vld  | out       | 32       |
+| out_45 | ap_vld  | out       | 32       |
+| out_46 | ap_vld  | out       | 32       |
+| out_47 | ap_vld  | out       | 32       |
+| out_48 | ap_vld  | out       | 32       |
+| out_49 | ap_vld  | out       | 32       |
+| out_5  | ap_vld  | out       | 32       |
+| out_50 | ap_vld  | out       | 32       |
+| out_51 | ap_vld  | out       | 32       |
+| out_52 | ap_vld  | out       | 32       |
+| out_53 | ap_vld  | out       | 32       |
+| out_54 | ap_vld  | out       | 32       |
+| out_55 | ap_vld  | out       | 32       |
+| out_56 | ap_vld  | out       | 32       |
+| out_57 | ap_vld  | out       | 32       |
+| out_58 | ap_vld  | out       | 32       |
+| out_59 | ap_vld  | out       | 32       |
+| out_6  | ap_vld  | out       | 32       |
+| out_60 | ap_vld  | out       | 32       |
+| out_61 | ap_vld  | out       | 32       |
+| out_62 | ap_vld  | out       | 32       |
+| out_63 | ap_vld  | out       | 32       |
+| out_7  | ap_vld  | out       | 32       |
+| out_8  | ap_vld  | out       | 32       |
+| out_9  | ap_vld  | out       | 32       |
++--------+---------+-----------+----------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------------------------------+
+| Interface | Type       | Ports                             |
++-----------+------------+-----------------------------------+
+| ap_rst    | reset      | ap_rst                            |
+| ap_ctrl   | ap_ctrl_hs | ap_done ap_idle ap_ready ap_start |
++-----------+------------+-----------------------------------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+-------------+
+| Argument | Direction | Datatype    |
++----------+-----------+-------------+
+| a        | in        | ap_int<16>* |
+| b        | unused    | ap_int<16>* |
+| out      | out       | ap_int<32>* |
++----------+-----------+-------------+
+
+* SW-to-HW Mapping
++----------+---------------+---------+----------+
+| Argument | HW Interface  | HW Type | HW Usage |
++----------+---------------+---------+----------+
+| a        | a_0           | port    |          |
+| a        | a_1           | port    |          |
+| a        | a_2           | port    |          |
+| a        | a_3           | port    |          |
+| a        | a_4           | port    |          |
+| a        | a_5           | port    |          |
+| a        | a_6           | port    |          |
+| a        | a_7           | port    |          |
+| a        | a_8           | port    |          |
+| a        | a_9           | port    |          |
+| a        | a_10          | port    |          |
+| a        | a_11          | port    |          |
+| a        | a_12          | port    |          |
+| a        | a_13          | port    |          |
+| a        | a_14          | port    |          |
+| a        | a_15          | port    |          |
+| a        | a_16          | port    |          |
+| a        | a_17          | port    |          |
+| a        | a_18          | port    |          |
+| a        | a_19          | port    |          |
+| a        | a_20          | port    |          |
+| a        | a_21          | port    |          |
+| a        | a_22          | port    |          |
+| a        | a_23          | port    |          |
+| a        | a_24          | port    |          |
+| a        | a_25          | port    |          |
+| a        | a_26          | port    |          |
+| a        | a_27          | port    |          |
+| a        | a_28          | port    |          |
+| a        | a_29          | port    |          |
+| a        | a_30          | port    |          |
+| a        | a_31          | port    |          |
+| a        | a_32          | port    |          |
+| a        | a_33          | port    |          |
+| a        | a_34          | port    |          |
+| a        | a_35          | port    |          |
+| a        | a_36          | port    |          |
+| a        | a_37          | port    |          |
+| a        | a_38          | port    |          |
+| a        | a_39          | port    |          |
+| a        | a_40          | port    |          |
+| a        | a_41          | port    |          |
+| a        | a_42          | port    |          |
+| a        | a_43          | port    |          |
+| a        | a_44          | port    |          |
+| a        | a_45          | port    |          |
+| a        | a_46          | port    |          |
+| a        | a_47          | port    |          |
+| a        | a_48          | port    |          |
+| a        | a_49          | port    |          |
+| a        | a_50          | port    |          |
+| a        | a_51          | port    |          |
+| a        | a_52          | port    |          |
+| a        | a_53          | port    |          |
+| a        | a_54          | port    |          |
+| a        | a_55          | port    |          |
+| a        | a_56          | port    |          |
+| a        | a_57          | port    |          |
+| a        | a_58          | port    |          |
+| a        | a_59          | port    |          |
+| a        | a_60          | port    |          |
+| a        | a_61          | port    |          |
+| a        | a_62          | port    |          |
+| a        | a_63          | port    |          |
+| b        | b_address0    | port    | offset   |
+| b        | b_ce0         | port    |          |
+| b        | b_we0         | port    |          |
+| b        | b_d0          | port    |          |
+| b        | b_q0          | port    |          |
+| b        | b_address1    | port    | offset   |
+| b        | b_ce1         | port    |          |
+| b        | b_we1         | port    |          |
+| b        | b_d1          | port    |          |
+| b        | b_q1          | port    |          |
+| out      | out_0         | port    |          |
+| out      | out_0_ap_vld  | port    |          |
+| out      | out_1         | port    |          |
+| out      | out_1_ap_vld  | port    |          |
+| out      | out_2         | port    |          |
+| out      | out_2_ap_vld  | port    |          |
+| out      | out_3         | port    |          |
+| out      | out_3_ap_vld  | port    |          |
+| out      | out_4         | port    |          |
+| out      | out_4_ap_vld  | port    |          |
+| out      | out_5         | port    |          |
+| out      | out_5_ap_vld  | port    |          |
+| out      | out_6         | port    |          |
+| out      | out_6_ap_vld  | port    |          |
+| out      | out_7         | port    |          |
+| out      | out_7_ap_vld  | port    |          |
+| out      | out_8         | port    |          |
+| out      | out_8_ap_vld  | port    |          |
+| out      | out_9         | port    |          |
+| out      | out_9_ap_vld  | port    |          |
+| out      | out_10        | port    |          |
+| out      | out_10_ap_vld | port    |          |
+| out      | out_11        | port    |          |
+| out      | out_11_ap_vld | port    |          |
+| out      | out_12        | port    |          |
+| out      | out_12_ap_vld | port    |          |
+| out      | out_13        | port    |          |
+| out      | out_13_ap_vld | port    |          |
+| out      | out_14        | port    |          |
+| out      | out_14_ap_vld | port    |          |
+| out      | out_15        | port    |          |
+| out      | out_15_ap_vld | port    |          |
+| out      | out_16        | port    |          |
+| out      | out_16_ap_vld | port    |          |
+| out      | out_17        | port    |          |
+| out      | out_17_ap_vld | port    |          |
+| out      | out_18        | port    |          |
+| out      | out_18_ap_vld | port    |          |
+| out      | out_19        | port    |          |
+| out      | out_19_ap_vld | port    |          |
+| out      | out_20        | port    |          |
+| out      | out_20_ap_vld | port    |          |
+| out      | out_21        | port    |          |
+| out      | out_21_ap_vld | port    |          |
+| out      | out_22        | port    |          |
+| out      | out_22_ap_vld | port    |          |
+| out      | out_23        | port    |          |
+| out      | out_23_ap_vld | port    |          |
+| out      | out_24        | port    |          |
+| out      | out_24_ap_vld | port    |          |
+| out      | out_25        | port    |          |
+| out      | out_25_ap_vld | port    |          |
+| out      | out_26        | port    |          |
+| out      | out_26_ap_vld | port    |          |
+| out      | out_27        | port    |          |
+| out      | out_27_ap_vld | port    |          |
+| out      | out_28        | port    |          |
+| out      | out_28_ap_vld | port    |          |
+| out      | out_29        | port    |          |
+| out      | out_29_ap_vld | port    |          |
+| out      | out_30        | port    |          |
+| out      | out_30_ap_vld | port    |          |
+| out      | out_31        | port    |          |
+| out      | out_31_ap_vld | port    |          |
+| out      | out_32        | port    |          |
+| out      | out_32_ap_vld | port    |          |
+| out      | out_33        | port    |          |
+| out      | out_33_ap_vld | port    |          |
+| out      | out_34        | port    |          |
+| out      | out_34_ap_vld | port    |          |
+| out      | out_35        | port    |          |
+| out      | out_35_ap_vld | port    |          |
+| out      | out_36        | port    |          |
+| out      | out_36_ap_vld | port    |          |
+| out      | out_37        | port    |          |
+| out      | out_37_ap_vld | port    |          |
+| out      | out_38        | port    |          |
+| out      | out_38_ap_vld | port    |          |
+| out      | out_39        | port    |          |
+| out      | out_39_ap_vld | port    |          |
+| out      | out_40        | port    |          |
+| out      | out_40_ap_vld | port    |          |
+| out      | out_41        | port    |          |
+| out      | out_41_ap_vld | port    |          |
+| out      | out_42        | port    |          |
+| out      | out_42_ap_vld | port    |          |
+| out      | out_43        | port    |          |
+| out      | out_43_ap_vld | port    |          |
+| out      | out_44        | port    |          |
+| out      | out_44_ap_vld | port    |          |
+| out      | out_45        | port    |          |
+| out      | out_45_ap_vld | port    |          |
+| out      | out_46        | port    |          |
+| out      | out_46_ap_vld | port    |          |
+| out      | out_47        | port    |          |
+| out      | out_47_ap_vld | port    |          |
+| out      | out_48        | port    |          |
+| out      | out_48_ap_vld | port    |          |
+| out      | out_49        | port    |          |
+| out      | out_49_ap_vld | port    |          |
+| out      | out_50        | port    |          |
+| out      | out_50_ap_vld | port    |          |
+| out      | out_51        | port    |          |
+| out      | out_51_ap_vld | port    |          |
+| out      | out_52        | port    |          |
+| out      | out_52_ap_vld | port    |          |
+| out      | out_53        | port    |          |
+| out      | out_53_ap_vld | port    |          |
+| out      | out_54        | port    |          |
+| out      | out_54_ap_vld | port    |          |
+| out      | out_55        | port    |          |
+| out      | out_55_ap_vld | port    |          |
+| out      | out_56        | port    |          |
+| out      | out_56_ap_vld | port    |          |
+| out      | out_57        | port    |          |
+| out      | out_57_ap_vld | port    |          |
+| out      | out_58        | port    |          |
+| out      | out_58_ap_vld | port    |          |
+| out      | out_59        | port    |          |
+| out      | out_59_ap_vld | port    |          |
+| out      | out_60        | port    |          |
+| out      | out_60_ap_vld | port    |          |
+| out      | out_61        | port    |          |
+| out      | out_61_ap_vld | port    |          |
+| out      | out_62        | port    |          |
+| out      | out_62_ap_vld | port    |          |
+| out      | out_63        | port    |          |
+| out      | out_63_ap_vld | port    |          |
++----------+---------------+---------+----------+
+
+
+================================================================
+== Bind Op Report
+================================================================
++---------------------------+-----+--------+-------------+-----+--------+---------+
+| Name                      | DSP | Pragma | Variable    | Op  | Impl   | Latency |
++---------------------------+-----+--------+-------------+-----+--------+---------+
+| + benchmark               | 60  |        |             |     |        |         |
+|   mul_16s_9ns_25_1_1_U1   | 1   |        | product     | mul | auto   | 0       |
+|   mul_16s_10s_26_1_1_U2   | 1   |        | product_64  | mul | auto   | 0       |
+|   mul_16s_11ns_27_1_1_U3  | 1   |        | product_65  | mul | auto   | 0       |
+|   mul_16s_12s_28_1_1_U4   | 1   |        | product_66  | mul | auto   | 0       |
+|   mul_16s_10ns_26_1_1_U5  | 1   |        | product_67  | mul | auto   | 0       |
+|   product_68_fu_1237_p2   |     |        | product_68  | sub | fabric | 0       |
+|   mul_16s_11ns_27_1_1_U6  | 1   |        | product_69  | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U7   | 1   |        | product_70  | mul | auto   | 0       |
+|   mul_16s_12ns_28_1_1_U8  | 1   |        | product_71  | mul | auto   | 0       |
+|   mul_16s_10s_26_1_1_U9   | 1   |        | product_72  | mul | auto   | 0       |
+|   mul_16s_11ns_27_1_1_U10 | 1   |        | product_73  | mul | auto   | 0       |
+|   mul_16s_12s_28_1_1_U11  | 1   |        | product_74  | mul | auto   | 0       |
+|   mul_16s_7ns_23_1_1_U12  | 1   |        | product_75  | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U13  | 1   |        | product_76  | mul | auto   | 0       |
+|   mul_16s_12ns_28_1_1_U14 | 1   |        | product_77  | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U15  | 1   |        | product_78  | mul | auto   | 0       |
+|   mul_16s_9ns_25_1_1_U16  | 1   |        | product_79  | mul | auto   | 0       |
+|   mul_16s_10s_26_1_1_U17  | 1   |        | product_80  | mul | auto   | 0       |
+|   mul_16s_11ns_27_1_1_U18 | 1   |        | product_81  | mul | auto   | 0       |
+|   mul_16s_12s_28_1_1_U19  | 1   |        | product_82  | mul | auto   | 0       |
+|   mul_16s_10ns_26_1_1_U20 | 1   |        | product_83  | mul | auto   | 0       |
+|   product_84_fu_1489_p2   |     |        | product_84  | sub | fabric | 0       |
+|   mul_16s_11ns_27_1_1_U21 | 1   |        | product_85  | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U22  | 1   |        | product_86  | mul | auto   | 0       |
+|   mul_16s_12ns_28_1_1_U23 | 1   |        | product_87  | mul | auto   | 0       |
+|   mul_16s_10s_26_1_1_U24  | 1   |        | product_88  | mul | auto   | 0       |
+|   mul_16s_11ns_27_1_1_U25 | 1   |        | product_89  | mul | auto   | 0       |
+|   mul_16s_12s_28_1_1_U26  | 1   |        | product_90  | mul | auto   | 0       |
+|   mul_16s_7ns_23_1_1_U27  | 1   |        | product_91  | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U28  | 1   |        | product_92  | mul | auto   | 0       |
+|   mul_16s_12ns_28_1_1_U29 | 1   |        | product_93  | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U30  | 1   |        | product_94  | mul | auto   | 0       |
+|   mul_16s_9ns_25_1_1_U31  | 1   |        | product_95  | mul | auto   | 0       |
+|   mul_16s_10s_26_1_1_U32  | 1   |        | product_96  | mul | auto   | 0       |
+|   mul_16s_11ns_27_1_1_U33 | 1   |        | product_97  | mul | auto   | 0       |
+|   mul_16s_12s_28_1_1_U34  | 1   |        | product_98  | mul | auto   | 0       |
+|   mul_16s_10ns_26_1_1_U35 | 1   |        | product_99  | mul | auto   | 0       |
+|   product_100_fu_1741_p2  |     |        | product_100 | sub | fabric | 0       |
+|   mul_16s_11ns_27_1_1_U36 | 1   |        | product_101 | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U37  | 1   |        | product_102 | mul | auto   | 0       |
+|   mul_16s_12ns_28_1_1_U38 | 1   |        | product_103 | mul | auto   | 0       |
+|   mul_16s_10s_26_1_1_U39  | 1   |        | product_104 | mul | auto   | 0       |
+|   mul_16s_11ns_27_1_1_U40 | 1   |        | product_105 | mul | auto   | 0       |
+|   mul_16s_12s_28_1_1_U41  | 1   |        | product_106 | mul | auto   | 0       |
+|   mul_16s_7ns_23_1_1_U42  | 1   |        | product_107 | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U43  | 1   |        | product_108 | mul | auto   | 0       |
+|   mul_16s_12ns_28_1_1_U44 | 1   |        | product_109 | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U45  | 1   |        | product_110 | mul | auto   | 0       |
+|   mul_16s_9ns_25_1_1_U46  | 1   |        | product_111 | mul | auto   | 0       |
+|   mul_16s_10s_26_1_1_U47  | 1   |        | product_112 | mul | auto   | 0       |
+|   mul_16s_11ns_27_1_1_U48 | 1   |        | product_113 | mul | auto   | 0       |
+|   mul_16s_12s_28_1_1_U49  | 1   |        | product_114 | mul | auto   | 0       |
+|   mul_16s_10ns_26_1_1_U50 | 1   |        | product_115 | mul | auto   | 0       |
+|   product_116_fu_1993_p2  |     |        | product_116 | sub | fabric | 0       |
+|   mul_16s_11ns_27_1_1_U51 | 1   |        | product_117 | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U52  | 1   |        | product_118 | mul | auto   | 0       |
+|   mul_16s_12ns_28_1_1_U53 | 1   |        | product_119 | mul | auto   | 0       |
+|   mul_16s_10s_26_1_1_U54  | 1   |        | product_120 | mul | auto   | 0       |
+|   mul_16s_11ns_27_1_1_U55 | 1   |        | product_121 | mul | auto   | 0       |
+|   mul_16s_12s_28_1_1_U56  | 1   |        | product_122 | mul | auto   | 0       |
+|   mul_16s_7ns_23_1_1_U57  | 1   |        | product_123 | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U58  | 1   |        | product_124 | mul | auto   | 0       |
+|   mul_16s_12ns_28_1_1_U59 | 1   |        | product_125 | mul | auto   | 0       |
+|   mul_16s_11s_27_1_1_U60  | 1   |        | product_63  | mul | auto   | 0       |
++---------------------------+-----+--------+-------------+-----+--------+---------+
+
+
+================================================================
+== Storage Report
+================================================================
+  No bind storage info in design
+
+================================================================
+== Pragma Report
+================================================================
+* Ignored Pragmas
++-----------------+-----------------------+--------------------------------------------+-----------------+
+| Type            | Options               | Location                                   | Messages        |
++-----------------+-----------------------+--------------------------------------------+-----------------+
+| ARRAY_PARTITION | variable=a complete   | in benchmark (E052/source/benchmark.cpp:7) | Not implemented |
+| ARRAY_PARTITION | variable=out complete | in benchmark (E052/source/benchmark.cpp:8) | Not implemented |
++-----------------+-----------------------+--------------------------------------------+-----------------+
+
+* Implemented Pragmas
++--------+---------+---------------------------------------------+
+| Type   | Options | Location                                    |
++--------+---------+---------------------------------------------+
+| UNROLL |         | in benchmark (E052/source/benchmark.cpp:12) |
++--------+---------+---------------------------------------------+
+
+* Valid Pragma Syntax
++--------+---------+---------------------------------------------+
+| Type   | Options | Location                                    |
++--------+---------+---------------------------------------------+
+| UNROLL |         | in benchmark (E052/source/benchmark.cpp:12) |
++--------+---------+---------------------------------------------+
+
+
