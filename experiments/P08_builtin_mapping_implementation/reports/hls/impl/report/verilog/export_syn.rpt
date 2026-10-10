@@ -1,0 +1,175 @@
+================================================================
+== Vivado RTL Synthesis Results
+================================================================
++ General Information:
+    * Date:            Sun Oct 11 10:13:11 AEDT 2026
+    * Version:         2026.1 (Build 6493734 on Jun 16 2026)
+    * Project:         P08
+    * Solution:        hls (Vivado IP Flow Target)
+    * Product family:  zynquplus
+    * Target device:   xck26-sfvc784-2LV-c
+
+
+================================================================
+== Run Constraints & Options
+================================================================
++ Design Constraints & Options:
+    * RTL Synthesis target clock:  4 ns
+    * C-Synthesis target clock:    4 ns
+    * C-Synthesis uncertainty:     27%
+
++ RTL Synthesis Options:
+    * config_export -vivado_synth_strategy:     default
+    * config_export -vivado_synth_design_args:  -directive sdx_optimization_effort_high
+
++ Reporting Options:
+    * config_export -vivado_report_level:      2
+    * config_export -vivado_max_timing_paths:  10
+
+
+================================================================
+== RTL Synthesis Resource Summary
+================================================================
+LUT:              21
+FF:               41
+DSP:              1
+BRAM:             0
+URAM:             0
+SRL:              7
+
+
+================================================================
+== RTL Synthesis Timing Summary
+================================================================
+* Timing was met
++----------------+-------------+
+| Timing         | Period (ns) |
++----------------+-------------+
+| Target         | 4.000       |
+| Post-Synthesis | 1.524       |
++----------------+-------------+
+
+
+================================================================
+== RTL Synthesis Resources
+================================================================
++--------------------------------------------------------------+-----+----+-----+------+------+-----+--------+------+---------+----------+--------+
+| Name                                                         | LUT | FF | DSP | BRAM | URAM | SRL | Pragma | Impl | Latency | Variable | Source |
++--------------------------------------------------------------+-----+----+-----+------+------+-----+--------+------+---------+----------+--------+
+| inst                                                         |     |    |     |      |      |     |        |      |         |          |        |
+|   dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1 |     |    |     |      |      |     |        |      |         |          |        |
+|   flow_control_loop_pipe_U                                   |     |    |     |      |      |     |        |      |         |          |        |
++--------------------------------------------------------------+-----+----+-----+------+------+-----+--------+------+---------+----------+--------+
+
+
+================================================================
+== RTL Synthesis Fail Fast
+================================================================
++-----------------------------------------------------------+-----------+--------+--------+
+| Criteria                                                  | Guideline | Actual | Status |
++-----------------------------------------------------------+-----------+--------+--------+
+| LUT                                                       | 70%       | 0.02%  | OK     |
+| FD                                                        | 50%       | 0.02%  | OK     |
+| LUTRAM+SRL                                                | 25%       | 0.01%  | OK     |
+| CARRY8                                                    | 25%       | 0.03%  | OK     |
+| MUXF7                                                     | 15%       | 0.00%  | OK     |
+| DSP                                                       | 80%       | 0.08%  | OK     |
+| RAMB/FIFO                                                 | 80%       | 0.00%  | OK     |
+| URAM                                                      | 80%       | 0.00%  | OK     |
+| DSP+RAMB+URAM (Avg)                                       | 70%       | 0.08%  | OK     |
+| BUFGCE* + BUFGCTRL                                        | 24        | 0      | OK     |
+| DONT_TOUCH (cells/nets)                                   | 0         | 0      | OK     |
+| MARK_DEBUG (nets)                                         | 0         | 0      | OK     |
+| Control Sets                                              | 2196      | 5      | OK     |
+| Average Fanout for modules > 100k cells                   | 4         | 0.66   | OK     |
+| Max Average Fanout for modules > 100k cells               | 4         | 0      | OK     |
+| Non-FD high fanout nets > 10k loads                       | 0         | 0      | OK     |
++-----------------------------------------------------------+-----------+--------+--------+
+| TIMING-6 (No common primary clock between related clocks) | 0         | 0      | OK     |
+| TIMING-7 (No common node between related clocks)          | 0         | 0      | OK     |
+| TIMING-8 (No common period between related clocks)        | 0         | 0      | OK     |
+| TIMING-14 (LUT on the clock tree)                         | 0         | 0      | OK     |
+| TIMING-35 (No common node in paths with the same clock)   | 0         | 0      | OK     |
++-----------------------------------------------------------+-----------+--------+--------+
+| Number of paths above max LUT budgeting (0.391ns)         | 0         | 0      | OK     |
+| Number of paths above max Net budgeting (0.263ns)         | 0         | 0      | OK     |
++-----------------------------------------------------------+-----------+--------+--------+
+
+
+================================================================
+== RTL Synthesis Timing Paths
+================================================================
+* Timing was met
++-------+-------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+------------+----------------+----------------+--------------+
+| Path  | SLACK | STARTPOINT PIN                                                                                                                                                              | ENDPOINT PIN                                                                                                                                                                | LOGIC LEVELS | MAX FANOUT | DATAPATH DELAY | DATAPATH LOGIC | DATAPATH NET |
+|       |       |                                                                                                                                                                             |                                                                                                                                                                             |              |            |                |          DELAY |        DELAY |
++-------+-------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+------------+----------------+----------------+--------------+
+| Path1 | 2.805 | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_A_B_DATA_INST/CLK | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_M_DATA_INST/V[0]  |            2 |          1 |          1.139 |          1.139 |        0.000 |
+| Path2 | 2.805 | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_A_B_DATA_INST/CLK | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_M_DATA_INST/V[10] |            2 |          1 |          1.139 |          1.139 |        0.000 |
+| Path3 | 2.805 | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_A_B_DATA_INST/CLK | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_M_DATA_INST/V[11] |            2 |          1 |          1.139 |          1.139 |        0.000 |
+| Path4 | 2.805 | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_A_B_DATA_INST/CLK | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_M_DATA_INST/V[12] |            2 |          1 |          1.139 |          1.139 |        0.000 |
+| Path5 | 2.805 | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_A_B_DATA_INST/CLK | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_M_DATA_INST/V[13] |            2 |          1 |          1.139 |          1.139 |        0.000 |
++-------+-------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+------------+----------------+----------------+--------------+
+
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path1 Cells                                                                                                                                                                | Primitive Type         |
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_A_B_DATA_INST    | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_PREADD_DATA_INST | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_MULTIPLIER_INST  | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_M_DATA_INST      | ARITHMETIC.DSP.DSP48E2 |
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path2 Cells                                                                                                                                                                | Primitive Type         |
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_A_B_DATA_INST    | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_PREADD_DATA_INST | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_MULTIPLIER_INST  | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_M_DATA_INST      | ARITHMETIC.DSP.DSP48E2 |
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path3 Cells                                                                                                                                                                | Primitive Type         |
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_A_B_DATA_INST    | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_PREADD_DATA_INST | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_MULTIPLIER_INST  | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_M_DATA_INST      | ARITHMETIC.DSP.DSP48E2 |
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path4 Cells                                                                                                                                                                | Primitive Type         |
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_A_B_DATA_INST    | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_PREADD_DATA_INST | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_MULTIPLIER_INST  | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_M_DATA_INST      | ARITHMETIC.DSP.DSP48E2 |
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | Path5 Cells                                                                                                                                                                | Primitive Type         |
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_A_B_DATA_INST    | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_PREADD_DATA_INST | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_MULTIPLIER_INST  | ARITHMETIC.DSP.DSP48E2 |
+    | dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_U1/packing_pe_dsp_3_367_1ns_32ns_64ns_27s_27s_18s_48ns_1ns_48ns_1_6_1_DSP_Builtin_U/p_reg_reg/DSP_M_DATA_INST      | ARITHMETIC.DSP.DSP48E2 |
+    +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+
+
+
+================================================================
+== RTL Synthesis Vivado Reports
+================================================================
++--------------------------+-------------------------------------------------------------------+
+| Report Type              | Report Location                                                   |
++--------------------------+-------------------------------------------------------------------+
+| design_analysis          | impl/verilog/report/packing_pe_design_analysis_synth.rpt          |
+| failfast                 | impl/verilog/report/packing_pe_failfast_synth.rpt                 |
+| power                    | impl/verilog/report/packing_pe_power_synth.rpt                    |
+| timing                   | impl/verilog/report/packing_pe_timing_synth.rpt                   |
+| timing_paths             | impl/verilog/report/packing_pe_timing_paths_synth.rpt             |
+| utilization              | impl/verilog/report/packing_pe_utilization_synth.rpt              |
+| utilization_hierarchical | impl/verilog/report/packing_pe_utilization_hierarchical_synth.rpt |
++--------------------------+-------------------------------------------------------------------+
+
+
