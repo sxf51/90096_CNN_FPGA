@@ -1,0 +1,37 @@
+{
+  "T": 1,
+  "changes": "Independent ieee_decode_pe_r1 source. Global fp_struct<float>, explicit widened signed magnitude and an explicit zero-exponent branch. Preserve F16/F17 attempted sources and diagnostics.",
+  "clock": 3.33,
+  "conclusion": "Use measured conversion evidence to decide whether a faster-clock full-network follow-up is justified.",
+  "defines": {
+    "EXP_LEGACY_DECODE": 1
+  },
+  "design": "designs/ieee_decode_pe_r1",
+  "estimates": {
+    "BRAM18K": 0,
+    "DSP": 3,
+    "FF": 550,
+    "LUT": 550,
+    "T": 1,
+    "URAM": 0,
+    "basis": "1024 independent words withII1 and<=21 pipeline cycles. Legacy resource allowance uses the measured F08 write module; direct IEEE construction uses a10-bit sign/magnitude, highest-set-bit selector and bounded significand shift. These are PE counts only and cannot rank as frame latency.",
+    "latency_cycles": 1045
+  },
+  "id": "F19",
+  "ii_targets": {
+    "decode_words": 1
+  },
+  "interpretation": "Compare exact float bits,II1,DSP and converter clock. A zero-DSP claim requires the actual report. Only integrate a passing exact microkernel into a new full-network design.",
+  "name": "ieee_decode_legacy_control_sdk_retry",
+  "notes": "PE only; conversion-probe cycles are excluded from network rankings",
+  "precision": "raw10_frac8_float32_exact",
+  "purpose": "F16 fails compilation: this installed utils/x_hls_utils.h exposes fp_struct globally, and unary-minus ap_int<11> returns ap_int<12>, making a conditional with ap_int<11> ambiguous. Use the actual SDK symbol and explicit sign/magnitude branches. This is a source-typing fix with the same paper estimates and exact arithmetic. F08 write_output reports3DSP,534LUT,547FF and3.239ns estimated clock for float(raw10)/256. Every raw10 value is exactly representable in binary32. Exhaust all1024 raw values across three orderings, including zero,-512,511 and negative fractions, comparing binary float bits to ordinary division. Use ordinary conversion/division as the isolated control.",
+  "scope": "PE",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_pe",
+  "tb_files": [
+    "exp/tb/ieee_decode.cpp"
+  ],
+  "top": "ieee_decode_pe"
+}
