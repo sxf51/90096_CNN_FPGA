@@ -223,6 +223,8 @@
 
 - 2026-10-10T23:14:05+00:00: P08: routed primitive inspection; {"completed": true, "DSP48E2_cells": 1, "pre_adder_used": true, "error": null}
 
+- 2026-10-10T23:14:12+00:00: F03: continuous_T16_oldpad_4ns; status=fail; latency_ms_est=unknown; ; Synthesis failed (exit=1)
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T22:20 UTC: S01's global m_axi pragmas did not export scratch1/scratch2. The two float feature arrays became11286 BRAM18K; the run is invalid_config and cannot count as DDR architecture evidence. A full sequential DDR implementation needs two explicit scratch pointer arguments or an approved wrapper/memory contract. Keep the frozen srcnn signature now; compare tile/dataflow hardware and separately archive the50,491,916-byte DDR payload model at19.2/9.6GB/s.
