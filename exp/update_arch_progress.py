@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""Refresh recovery state from completed evidence, never from expected results."""
+import csv
+import json
+from analyze_arch import eligible
+from prepare_final_arch import REQUIRED
+from run_exp import ROOT, check_protected, lock, number, utc, write_json
+
+
+def main():
+    check_protected()
+    with lock(ROOT / "workspace/exp_runs/.results.lock", wait_timeout=120):
+        rows = list(csv.DictReader((ROOT / "experiments/results.csv").open(newline="")))
+    ids = {row["id"] for row in rows}
+    pending = sorted(set(REQUIRED)-ids)
+    accepted = []
+    for row in rows:
+        path = ROOT / "experiments" / row["md_path"].split("/")[0] / "config.json"
+        if path.is_file() and eligible(row,json.loads(path.read_text())) and number(row["latency_ms_est"]) is not None:
+            accepted.append(row)
+    accepted.sort(key=lambda row:number(row["latency_ms_est"]))
+    selection_path = ROOT / "experiments/final_selection.json"
+    selection = json.loads(selection_path.read_text()) if selection_path.is_file() else {}
+    final_pending = [exp_id for exp_id in selection.get("queue", []) if exp_id not in ids]
+    arch = [row for row in rows if row["series"]]
+    state = {"branch":"exp/explore-arch","first_phase_head":"2fa7249eaecdfdc360d8d452fcbf52171c35abd2",
+             "frozen_design_files":45,"full_set14":False,"hardware_parallelism":1,"time":utc(),
+             "completed_architecture_ids":[row["id"] for row in arch],"pending_exploration_ids":pending,
+             "pending_final_verification_ids":final_pending,"selected":selection.get("selected", []),
+             "best_provisional":accepted[0] if accepted else None,
+             "next":"Finish existing queues, inspect P08 DSP attributes, then final verification and closure."}
+    write_json(ROOT / "experiments/arch_state.json",state)
+    text = "# Current progress\n\nUpdated "+state["time"]+" from archived measurements.\n\n"
+    text += "Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.\n\n"
+    text += "## Completed\n\nFirst phase stages0-6 closed in E099. Missing comic prevents complete Set14 acceptance; every supplied-image candidate is provisional. No board validation has run.\n\n"
+    text += str(len(arch))+" architecture records completed: "+", ".join(row["id"] for row in arch)+".\n\n"
+    if accepted:
+        best = accepted[0]
+        text += "Fastest resource-feasible exact frame estimate: ["+best["id"]+"]("+best["md_path"]+"); "+best["latency_ms_est"]+"ms, T="+best["T_target"]+", DSP="+best["DSP"]+", BRAM18K="+best["BRAM18K"]+", LUT="+best["LUT"]+", deltaPSNR="+best["delta_psnr"]+"dB. HLS estimates are distinct from route/RTL results.\n\n"
+    text += "## Outstanding\n\nExploration: "+(", ".join(pending) or "all required runs archived")+".\n\n"
+    text += "Final verification: "+(", ".join(final_pending) if selection else "awaiting global candidate selection")+".\n\n"
+    text += "P08 needs actual DSP48E2 pre-adder/register inspection. W10-W13/C07 split transformed-window generation from a fixed16384*(4*T) MAC loop to remove W07's conditional264x264 bound inflation. C08/C09 use independently verified Conv2-only8-bit weights, retain ten-bit activations, and omit coefficient residual repair. All new designs are independent; source and paper plans are committed before runs. Re-run CSV analyses, equivalent offline-weight archives and all plots after all evidence arrives. Finalize ARCH_SUMMARY.md, both checksum audits and final F99 commit.\n\n"
+    text += "## Recovery\n\nRead ARCH_SUMMARY.md, LOG.md, PHASE2_HANDOFF.md and arch_state.json. Check active local exec sessions and remote processes before resuming pending IDs; completed and active workspaces cannot be overwritten. SSH uses `ssh -F ../ssh-config -o BatchMode=yes xiaoxin-ubuntu`; remote root `/home/lipuze/amdprojects/90096_CNN_FPGA`; Vitis settings `/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh`. Hardware jobs serialize through `.synthesis.lock` for15GiB RAM;60-minute csynth/45-minute issue tuning/six-hour cosim. Local plotting interpreter `workspace/exp_runs/_tools/venv/bin/python`. Never run script.py, modify protected data/designs, push, or substitute predicted results for actual evidence.\n"
+    (ROOT / "experiments/PROGRESS.md").write_text(text)
+    print("Progress:",len(arch),"completed;",len(pending),"exploration and",len(final_pending),"final jobs pending")
+
+
+if __name__ == "__main__":
+    main()

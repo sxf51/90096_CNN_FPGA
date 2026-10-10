@@ -77,6 +77,8 @@ def main():
         append_log(f"{exp_id}: {config['name']}; status={metrics['status']}; "
                    f"latency_ms_est={metrics['latency_ms_est'] or 'unknown'}; {metrics['notes']}")
     check_protected()
+    if config.get("series"):
+        subprocess.run([sys.executable,str(ROOT / "exp/update_arch_progress.py")],cwd=ROOT,check=True)
     subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"), exp_id, config["name"]], cwd=ROOT, check=True)
     return result.returncode
 
