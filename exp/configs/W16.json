@@ -1,0 +1,47 @@
+{
+  "T": 8,
+  "changes": "New independent source based on W13. Replace the single oversized window stream with two synchronized channel halves. Each uses a two-entry LUTRAM FIFO; compute retains the complete window and chooses the correct half for each input channel. All first-phase and attempted sources stay frozen.",
+  "clock": 3.33,
+  "conclusion": "Rank only exact resource-feasible frame results; retain both nested and continuous evidence.",
+  "defines": {
+    "EXP_ALL_CONTINUOUS": 1,
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_STORAGE": 1,
+    "EXP_T": 8,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/winograd_continuous_r2",
+  "estimates": {
+    "BRAM18K": 155,
+    "Conv1_DSP": 288,
+    "Conv2_DSP": 256,
+    "Conv3_DSP": 100,
+    "DSP": 647,
+    "LUT": 72100,
+    "T": 8,
+    "URAM": 0,
+    "basis": "W07 proves exact layer outputs,144 MAC DSP and82 worst-case cycles per scanned location, with raster reorder65027 cycles. Fixed engine iterations represent16384 actual tiles; extra511 positions are discarded. Keep72 row-FIFO BRAM18K; continuous mode removes72 shallow-FIFO BRAM and packs the pad row to save14 more. LUT budget adds4288 wide shallow FIFO bits and the continuous Conv3 window FIFO. Two4000-bit channels keep the same8000 stored payload bits per window and two-entry depths; reserve100 additional control LUT for the second FIFO. Arithmetic DSP,T and cycle estimates stay identical. Aggregation legality is required before any resource/speed claim.",
+    "latency_cycles": 620200
+  },
+  "fixed": true,
+  "id": "W16",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare the frozen estimates with parsed hardware reports. This is a representation fix for the compiler's4096-bit aggregate limit, not a precision relaxation. Check both stream counts and achievedII; final selected points still require full-supplied-image verification and finite-FIFO RTL cosimulation.",
+  "name": "fixed_tiles_T8_allcontinuous_3p33ns_split4000",
+  "precision": "w10a10acc23",
+  "purpose": "W11 C simulation passes exactly but synthesis rejects the8000-bit aggregated Conv3 stream with HLS214-256: maximum4096 bits. Preserve the continuous schedule and represent one800-element window as two25x16-channel4000-bit packets, each below the measured limit. Both streams produce/consume65025 packets per frame; no quantization or MAC change. W07 reports5715601 Conv1 cycles because the conditional nested264x264 scan takes its82-cycle tile branch at every position in the worst-case bound, even though only16384 tiles exist. Separate transformed-window production from a fixed16384*(4*T)II1 MAC loop; emit four-pixel blocks through a separate raster-row distributor. Use continuous direct Conv2/Conv3 and online padding as well, so their nested drains cannot dominate.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "scope": "frame",
+  "series": "W",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_w",
+  "storage": "lutram",
+  "unroll": "G2 F2 nine subkernels/Cout/Cin"
+}
