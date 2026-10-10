@@ -1,0 +1,47 @@
+{
+  "changes": "Independent integer-carrier reference. Original all-ap_fixed E014/E012/E013 remain independent and unchanged. Accumulator fractional points and cast modes are identical; int64 carries exact raw sums whose analytical bound is below the 23-bit reference accumulator range.",
+  "clock": 10,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_A_BITS=10 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=1 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E017/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "Use only as an independently identified cross-reference until the all-ap_fixed representative completes.",
+  "cpu_count": 12,
+  "csim_only": true,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/fixed_ref_raw",
+  "errors": [],
+  "fixed": true,
+  "id": "E017",
+  "interpretation": "This experiment verifies actual ap_fixed quantization at every defined quantization point. It does not replace the separately running all-ap_fixed arithmetic experiments. Input, weights and biases convert through actual AMD ap_fixed; full-product integer sums have no rounding between MACs.",
+  "name": "apfixed_boundary_w10a10",
+  "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [],
+  "parsed_modules": [],
+  "precision": "w10a10acc23",
+  "purpose": "Cross-check full-image numpy predictions using actual ap_fixed loading and layer-boundary rounding/saturation with exact integer accumulation.",
+  "set14": true,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "bece7ccf647c9625fd6661c974f7f017ee8a8aef",
+  "source_sha256": {
+    "srcnn.cpp": "4df27cd23261f26141916ed8fcf078a8aa6f8749f657ea931f3041b3b2542b62",
+    "srcnn.h": "bdf1905372b40e299ed9254530d209dcd7b660741f1fe9f71ea7ae98594c5fb3"
+  },
+  "stage": 1,
+  "time": "2026-10-10T16:56:42+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 03:56:44 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "validation": {
+    "bit_exact": true,
+    "border_mse": 1.661846957728205e-05,
+    "butterfly_mse": 1.8197758558556394e-05,
+    "conv1_exact": false,
+    "conv1_mse": 5.1543119034341396e-06,
+    "csim_pass": true,
+    "delta_psnr": -0.0695141811880653,
+    "float_exact": false,
+    "golden_psnr": 29.158457575257653,
+    "image_count": 13,
+    "set14_psnr": 29.088943394069588
+  }
+}
