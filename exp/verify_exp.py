@@ -109,15 +109,25 @@ def run_verification(config):
         if code:
             row["status"] = "timeout" if code == 124 else "fail"
             raise RuntimeError(f"{operation} failed (exit={code})")
+        if operation == "impl" and any(observed.get(k) is None for k in
+                ("impl_WNS_ns", "impl_DSP", "impl_LUT", "impl_FF")):
+            row["status"] = "report_incomplete"
+            raise RuntimeError("Missing routed timing/resource evidence; packaging is not implementation")
         if operation == "cosim" and observed.get("rtl_status") != "Pass":
             raise RuntimeError("No passing RTL cosimulation report")
         row["status"] = operation + "_complete"
+        if operation == "impl":
+            observed["timing_met"] = observed["impl_WNS_ns"] >= 0
+            observed["impl_clock_ns_est"] = float(config["clock"]) - observed["impl_WNS_ns"]
         if operation == "cosim":
             actual = observed.get("rtl_latency_max")
             estimate = number(parent_row.get("latency_cycles"))
             if actual is not None and estimate:
                 observed["cycle_deviation_pct"] = 100 * (actual / estimate - 1)
         config["verification"] = observed
+        detail.extend({"file": "derived", "metric": key, "value": value}
+                      for key, value in observed.items()
+                      if key in {"cycle_deviation_pct", "timing_met", "impl_clock_ns_est"})
     except Exception as exc:
         errors.append(str(exc))
         row["notes"] += "; " + str(exc)
@@ -133,7 +143,12 @@ def run_verification(config):
             writer.writeheader()
             writer.writerows(detail)
         for path in work.rglob("*.rpt"):
-            if "report" in path.parts and ("impl" in path.parts or "sim" in path.parts):
+            if ("report" in path.parts or "reports" in path.parts) and ("impl" in path.parts or "sim" in path.parts):
+                dest = archive / "reports" / path.relative_to(work)
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(path, dest)
+        for path in work.rglob("*.xml"):
+            if ("report" in path.parts or "reports" in path.parts) and ("impl" in path.parts or "sim" in path.parts):
                 dest = archive / "reports" / path.relative_to(work)
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(path, dest)
