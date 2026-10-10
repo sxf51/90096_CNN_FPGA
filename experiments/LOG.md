@@ -247,6 +247,8 @@
 
 - 2026-10-10T23:48:09+00:00: F19: ieee_decode_legacy_control_sdk_retry; status=fail; latency_ms_est=unknown; PE only; conversion-probe cycles are excluded from network rankings; C simulation not accepted (exit=1); synthesis not eligible
 
+- 2026-10-10T23:48:44+00:00: C04: wino_packing_T4_all_header_retry; status=infeasible; latency_ms_est=9.513772; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T23:19:34+00:00: Winograd's requested offline weight transform conflicts with accepting arbitrary original float weight arrays at the frozen srcnn signature. Keep the internal runtime load/transform stage, include its measured cycles/resources and archive the equivalent pretrained G2 tensor. Removing runtime transformation requires an approved transformed-weight contract or a specialized constant-weight wrapper; no such interface change is made in this unattended run.
