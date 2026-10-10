@@ -151,6 +151,8 @@
 
 - 2026-10-10T21:55:11+00:00: W01: integer_f2_10bit; status=pass; latency_ms_est=0.000144; PE only; kernel latency is excluded from network rankings
 
+- 2026-10-10T21:55:43+00:00: P03: signed8_group7; status=pass; latency_ms_est=0.000248; PE only; kernel latency is excluded from network rankings
+
 ## Pending Human Decisions / 待人工决策
 
 - Recovery reference: [PHASE2_HANDOFF.md](PHASE2_HANDOFF.md) preserves unimplemented architecture hypotheses derived from E058/E070/E071 across the first-phase finalizer. Phase two must still be executed on the new branch with estimates archived before implementation.
