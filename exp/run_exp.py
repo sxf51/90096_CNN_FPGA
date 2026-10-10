@@ -311,7 +311,8 @@ def run(config):
         archive_logs(work, archive)
         # Reports and model output can be located beneath csim/build, version-dependent.
         for filename in ("quality.csv", "butterfly_output.bin"):
-            paths = list(work.rglob(filename))
+            paths = [p for p in work.rglob(filename)
+                     if p.parent.name == "build" and "csim" in p.parts]
             if paths:
                 shutil.copyfile(paths[-1], archive / filename)
         detail = [{"kind": "loop", **p} for p in loops] + [{"kind": "module", **p} for p in modules]
