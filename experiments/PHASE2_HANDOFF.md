@@ -135,6 +135,13 @@ These are still proposals, not second-phase results.
   per fold to respect the limited channel-bank ports. Sequential layer
   execution per block removes dataflow overlap, and halo work must be
   counted separately from input traffic. B64 feature1 alone may exhaust BRAM.
+  A preferable first tile implementation can fuse Conv1 then Conv2 per feature
+  pixel, retaining only a64-channel register vector and the full feature2
+  cache. This eliminates feature1 BRAM entirely. Use spatial5x5/channel-C3_IC
+  LUTRAM banks for feature2. For a clamped feature center cy, the input-cache
+  9x9 patch begins at cy-tile_origin+2; interior centers simplify that index
+  to the feature-grid row. Fixed-size partial edge blocks may compute unused
+  cells; count scheduled feature centers and input reads, not only valid outputs.
 - S DDR: probe global m_axi first; enforce the presence of the requested
   scratch AXI bundles in the generated interface before calling any result
   DDR. If rejected/ignored, retain the failure and a bandwidth-only model,
