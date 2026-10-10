@@ -7,6 +7,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import sys
+import time
 from run_exp import ROOT, FIELDS, append_log, check_protected, lock, write_json
 
 
@@ -20,6 +21,20 @@ def main():
     check_protected()
     config = json.loads(args.config.read_text())
     exp_id = config["id"]
+    if exp_id.startswith("E") and config["stage"] == 5:
+        expected = {"E036", "E037", "E038", "E039", "E040", "E041", "E042", "E043",
+                    "E045", "E048", "E057", "E058", "E059", "E063", "E064", "E067"}
+        while True:
+            with lock(ROOT / "workspace/exp_runs/.results.lock", wait_timeout=120):
+                completed = {row["id"] for row in csv.DictReader((ROOT / "experiments/results.csv").open(newline=""))}
+            if expected <= completed:
+                break
+            time.sleep(5)
+        if exp_id in {"E051", "E052", "E053", "E054", "E055"}:
+            while "E060" not in completed:
+                time.sleep(5)
+                with lock(ROOT / "workspace/exp_runs/.results.lock", wait_timeout=120):
+                    completed = {row["id"] for row in csv.DictReader((ROOT / "experiments/results.csv").open(newline=""))}
     subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"), exp_id,
                     "prepare_" + config["name"]], cwd=ROOT, check=True)
     config["source_commit"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()

@@ -8,7 +8,7 @@ No qualifying fastest design. The smallest estimated latency of an infeasible de
 
 ## Precision
 
-[E010](E010_precision_scan/E010.md) profiles every supplied image and establishes nearest-even AP_RND_CONV, AP_SAT, full product fractions and bounded accumulators. [E015](E015_apfixed_w16a16_single_retry/E015.md), [E019](E019_apfixed_w10a10_retry/E019.md) and [E013](E013_apfixed_w8a8/E013.md) use real AMD ap_fixed and match numpy butterfly outputs bit for bit. [E017](E017_apfixed_boundary_w10a10/E017.md) confirms real-ap_fixed boundaries and exact integer convolution on every supplied image. [E049](E049_integer_boundary_exhaustive/E049.md) exhausts 25,165,824 signed accumulator/cast cases. [E062](E062_layer_int8_scan/E062.md) finds Conv2-only 8-bit weights pass fake quantization (-0.075890 dB with other layers at w10a10); genuine INT8 activation inputs and Conv1/Conv3 INT8 weights fail. Mixed precision needs actual-ap_fixed confirmation.
+[E010](E010_precision_scan/E010.md) profiles every supplied image and establishes nearest-even AP_RND_CONV, AP_SAT, full product fractions and bounded accumulators. [E015](E015_apfixed_w16a16_single_retry/E015.md), [E019](E019_apfixed_w10a10_retry/E019.md) and [E013](E013_apfixed_w8a8/E013.md) use real AMD ap_fixed and match numpy butterfly outputs bit for bit. [E017](E017_apfixed_boundary_w10a10/E017.md) confirms real-ap_fixed boundaries and exact integer convolution on every supplied image. [E049](E049_integer_boundary_exhaustive/E049.md) exhausts 25,165,824 signed accumulator/cast cases. [E062](E062_layer_int8_scan/E062.md) finds Conv2-only 8-bit weights pass (-0.075890 dB with other layers at w10a10); genuine INT8 activation inputs and Conv1/Conv3 INT8 weights fail. [E065](E065_apfixed_mixed_conv2w8/E065.md) confirms real-ap_fixed boundaries on all 13 images; [E066](E066_full_apfixed_mixed_butterfly/E066.md) confirms the complete all-ap_fixed mixed network bit for bit on butterfly.
 
 Metric: normalized float MSE PSNR, no clipping/cropping, against the same unchanged float golden; the original uint8 conversion metric is retained in test logs. Supplied-image acceptance is provisional because comic is absent.
 
@@ -18,7 +18,7 @@ See [STAGE2.md](STAGE2.md). Whole feature maps require 11,064 BRAM18K at baselin
 
 ## Streaming And Scans
 
-See [STAGE3.md](STAGE3.md) and streaming_analysis.csv for per-layer numbers. E030 float and E033 fixed T32 pass all butterfly pixels and six-pixel borders. E033 uses 168 BRAM18K but 136,868 LUT, and its 31.822 ns critical path gives 123.540 ms. E044 T16 worsens to 63.218 ns; removing redundant accumulator saturation and explicitly binding multipliers separates arithmetic semantics from fabric mapping. E047 maps exactly 251 scheduled products to DSPs and reaches 29.13855 ms, but 89,341 LUT exceeds the 81,984 cap. Banked memories and integer boundary primitives are measured follow-ups, not presumed improvements.
+See [STAGE3.md](STAGE3.md) and streaming_analysis.csv for per-layer numbers. E030 float and E033 fixed T32 pass all butterfly pixels and six-pixel borders. E033 uses 168 BRAM18K but 136,868 LUT, and its 31.822 ns critical path gives 123.540 ms. E044 T16 worsens to 63.218 ns and E045 T8 reaches 126.008 ns / 266,266 LUT; removing redundant accumulator saturation and explicitly binding multipliers separates arithmetic semantics from fabric mapping. E047 maps exactly 251 scheduled products to DSPs and reaches 29.13855 ms, but 89,341 LUT exceeds the 81,984 cap. Banked memories and integer boundary primitives are measured follow-ups, not presumed improvements.
 
 AXI float-array signature remains unchanged; weights/biases load once before DATAFLOW, intermediate maps stay on chip, and requested sequential bursts are up to 256 words. Inner II=1 does not imply T frame throughput: pixel-loop fill/drain and pad-row transactions add measured overhead.
 
@@ -28,6 +28,7 @@ AXI float-array signature remains unchanged; weights/biases load once before DAT
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E033](E033_dataflow_fixed_T32_single/E033.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E031](E031_dataflow_fixed_T32/E031.md) |
 | designs/dataflow_v1 | w10a10acc23 | 16 | 10 | 63.218 | 2775517.0 | 2775518.0 | 175.462633706 | 18.0 | 168.0 | 167715.0 | 135714.0 | -0.0695141811880653 | True | infeasible | [E044](E044_scan_T_T16_E034_retry/E044.md) |
+| designs/dataflow_v1 | w10a10acc23 | 8 | 10 | 126.008 | 2222165.0 | 2222166.0 | 280.01056732 | 36.0 | 168.0 | 266266.0 | 142153.0 | -0.0695141811880653 | True | infeasible | [E045](E045_scan_T_T8_E035_retry/E045.md) |
 
 ## Optional Experiments
 
@@ -45,6 +46,7 @@ No implementation or C/RTL cosimulation result yet. Finite-FIFO deadlock freedom
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E033](E033_dataflow_fixed_T32_single/E033.md) |
 | designs/dataflow_v1 | w10a10acc23 | 32 | 10 | 31.822 | 3882221.0 | 3882222.0 | 123.540036662 | 9.0 | 168.0 | 136868.0 | 149111.0 | -0.0695141811880653 | True | infeasible | [E031](E031_dataflow_fixed_T32/E031.md) |
 | designs/dataflow_v1 | w10a10acc23 | 16 | 10 | 63.218 | 2775517.0 | 2775518.0 | 175.462633706 | 18.0 | 168.0 | 167715.0 | 135714.0 | -0.0695141811880653 | True | infeasible | [E044](E044_scan_T_T16_E034_retry/E044.md) |
+| designs/dataflow_v1 | w10a10acc23 | 8 | 10 | 126.008 | 2222165.0 | 2222166.0 | 280.01056732 | 36.0 | 168.0 | 266266.0 | 142153.0 | -0.0695141811880653 | True | infeasible | [E045](E045_scan_T_T8_E035_retry/E045.md) |
 | designs/golden_auto | float32 | unknown | 10 | 7.624 | 381121723.0 | 381121724.0 | 3811.21723 | 320.0 | 11114.0 | 80812.0 | 123203.0 | unknown | False | infeasible | [E029](E029_auto_pixel_pipeline_validcfg/E029.md) |
 | designs/fixed_ref | w16a16acc35 | unknown | 10 | 7.177 | 391256088.0 | 391256089.0 | 3912.56088 | 66.0 | 5822.0 | 137322.0 | 8096.0 | unknown | unknown | infeasible | [E027](E027_auto_fixed16/E027.md) |
 | designs/golden_auto | float32 | unknown | 10 | 26.707 | 455695454.0 | 455695455.0 | 12170.258489978001 | 12.0 | 11064.0 | 9914.0 | 8948.0 | unknown | True | infeasible | [E028](E028_auto_inner_pipeline_validcfg/E028.md) |
@@ -73,6 +75,8 @@ No implementation or C/RTL cosimulation result yet. Finite-FIFO deadlock freedom
 | designs/dataflow_int | boundary_w10a10 | unknown | 10 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass | [E049](E049_integer_boundary_exhaustive/E049.md) |
 | designs/dataflow_wrap | w10a10acc23 | 32 | 10 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | unknown | fail | [E046](E046_dataflow_wrap_T32/E046.md) |
 | numpy_layer_precision_scan | mixed layer scan | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | analysis_complete | [E062](E062_layer_int8_scan/E062.md) |
+| designs/fixed_ref_mixed_raw | w10_8_10a10acc23_21_23 | unknown | 10 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | -0.07589037644656216 | unknown | csim_pass | [E065](E065_apfixed_mixed_conv2w8/E065.md) |
+| designs/fixed_ref_mixed | w10_8_10a10acc23_21_23 | unknown | 10 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | -0.07589037644656216 | unknown | csim_pass | [E066](E066_full_apfixed_mixed_butterfly/E066.md) |
 
 ## Failed And Timed-Out Runs
 
@@ -107,4 +111,4 @@ Missing comic input/GT pair blocks full 14-image acceptance. Windows Vitis envir
 
 Execute the authorized second phase on exp/explore-arch after phase-one completion. Prioritize packing/Winograd PE mapping, gather/scatter borders, memory banking and a loop schedule with continuous pixel throughput; compare all variants to the measured exact streaming baseline. Implement and RTL-cosim the best feasible provisional candidates while reporting the missing full-Set14 evidence.
 
-Generated from results.csv and archived reference evidence at 2026-10-10T18:45:30+00:00.
+Generated from results.csv and archived reference evidence at 2026-10-10T19:06:50+00:00.

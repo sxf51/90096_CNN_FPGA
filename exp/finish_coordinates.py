@@ -91,6 +91,9 @@ def main():
     subprocess.run([sys.executable, str(ROOT/"exp/prepare_scan.py"), "clock", "--T", best["T_target"], "--base", f"exp/configs/{best['id']}.json"], check=True)
     for exp_id in ("E041", "E042", "E043"):
         execute(exp_id)
+    required = {"E039", "E040", "E045", "E048", "E063"}
+    while not required <= {r["id"] for r in measured()}:
+        time.sleep(5)
     update("All coordinate rounds completed; pending optional queues, candidate Set14 validation and first-phase finalization.")
     if implementation is not None:
         implementation.wait()

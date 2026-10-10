@@ -40,3 +40,13 @@ layer-boundary quantization. Splitting a 9x9 kernel into nine 3x3 subkernels
 requires nine 4x4 transformed products per 2x2 output tile: `9*16*64/4=2304`
 multiplications per output pixel. Transforms, buffering, rounding and raster
 reordering are additional costs and require separate measurements.
+
+The inspected Vitis 2026.1 SDK provides `hls_dsp_builtins.h`,
+`hls::dsp48e2::add_mul_add<flags>(d,a,b,c)` and the registered accumulator
+class in `etc/dsp_functions.h`. They explicitly expose the pre-adder and
+DSP48E2 rather than relying only on compiler pattern matching. Their presence
+does not establish synthesizability in this unified flow: the header has an
+`__PRESYNTHESIS__` unsupported guard, so a microbenchmark must test it.
+The SDK also provides `hls_streamofblocks.h` with `write_lock` / `read_lock`
+RAII ownership for raster-row reorder buffers. These SDK headers are used
+from the installed toolchain and are not copied into tracked source.

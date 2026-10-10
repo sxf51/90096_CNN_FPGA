@@ -25,7 +25,7 @@ def numeric(row, key):
 
 network = [r for r in rows if r["design"] != "numpy_precision_scan" and
            not "micro" in r["design"] and numeric(r, "latency_ms_est") is not None and
-           r["status"] not in {"invalid_config", "fail", "timeout"}]
+           r["status"] in {"pass", "provisional", "infeasible"}]
 fig, ax = plt.subplots(figsize=(10, 6), constrained_layout=True)
 colors = {"pass": "#187c59", "provisional": "#217eb0", "infeasible": "#b8463e"}
 for row in network:

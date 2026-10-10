@@ -20,7 +20,7 @@ def table_row(row):
 
 rows = list(csv.DictReader((ROOT / "experiments/results.csv").open(newline="")))
 rows = [r for r in rows if r["id"].startswith("E")]
-network = [r for r in rows if is_network(r) and number(r["latency_ms_est"]) is not None and r["status"] not in {"fail", "invalid_config", "timeout"}]
+network = [r for r in rows if is_network(r) and number(r["latency_ms_est"]) is not None and r["status"] in {"pass", "provisional", "infeasible"}]
 network.sort(key=lambda r: float(r["latency_ms_est"]))
 accepted = [r for r in network if r["status"] in {"pass", "provisional"} and r["csim_pass"] == "True" and
             (r["precision_w_a_acc"] == "float32" or number(r["delta_psnr"]) is not None and float(r["delta_psnr"]) >= -.1)]
@@ -45,14 +45,14 @@ text += "## Precision\n\n[E010](E010_precision_scan/E010.md) profiles every supp
 text += "[E015](E015_apfixed_w16a16_single_retry/E015.md), [E019](E019_apfixed_w10a10_retry/E019.md) and [E013](E013_apfixed_w8a8/E013.md) use real AMD ap_fixed and match numpy butterfly outputs bit for bit. "
 text += "[E017](E017_apfixed_boundary_w10a10/E017.md) confirms real-ap_fixed boundaries and exact integer convolution on every supplied image. "
 text += "[E049](E049_integer_boundary_exhaustive/E049.md) exhausts 25,165,824 signed accumulator/cast cases. "
-text += "[E062](E062_layer_int8_scan/E062.md) finds Conv2-only 8-bit weights pass fake quantization (-0.075890 dB with other layers at w10a10); genuine INT8 activation inputs and Conv1/Conv3 INT8 weights fail. Mixed precision needs actual-ap_fixed confirmation.\n\n"
+text += "[E062](E062_layer_int8_scan/E062.md) finds Conv2-only 8-bit weights pass (-0.075890 dB with other layers at w10a10); genuine INT8 activation inputs and Conv1/Conv3 INT8 weights fail. [E065](E065_apfixed_mixed_conv2w8/E065.md) confirms real-ap_fixed boundaries on all 13 images; [E066](E066_full_apfixed_mixed_butterfly/E066.md) confirms the complete all-ap_fixed mixed network bit for bit on butterfly.\n\n"
 text += "Metric: normalized float MSE PSNR, no clipping/cropping, against the same unchanged float golden; the original uint8 conversion metric is retained in test logs. Supplied-image acceptance is provisional because comic is absent.\n\n"
 text += "## Compiler Controls\n\nSee [STAGE2.md](STAGE2.md). Whole feature maps require 11,064 BRAM18K at baseline, so all valid structure-preserving controls are infeasible. "
 text += "The valid innermost pipeline reaches II=1 but 26.707 ns estimated clock; outer pixel pipeline reaches 3,811.217 ms with 11,114 BRAM18K. "
 text += "Floating-point loop-carried addition, memory ports and automatically unrolled inner loops remain limiting. E023/E024/E025 used unsupported directives and were invalidated; E028/E029/E032 are the valid replacements.\n\n"
 text += "## Streaming And Scans\n\nSee [STAGE3.md](STAGE3.md) and streaming_analysis.csv for per-layer numbers. "
 text += "E030 float and E033 fixed T32 pass all butterfly pixels and six-pixel borders. E033 uses 168 BRAM18K but 136,868 LUT, and its 31.822 ns critical path gives 123.540 ms. "
-text += "E044 T16 worsens to 63.218 ns; removing redundant accumulator saturation and explicitly binding multipliers separates arithmetic semantics from fabric mapping. "
+text += "E044 T16 worsens to 63.218 ns and E045 T8 reaches 126.008 ns / 266,266 LUT; removing redundant accumulator saturation and explicitly binding multipliers separates arithmetic semantics from fabric mapping. "
 text += "E047 maps exactly 251 scheduled products to DSPs and reaches 29.13855 ms, but 89,341 LUT exceeds the 81,984 cap. Banked memories and integer boundary primitives are measured follow-ups, not presumed improvements.\n\n"
 text += "AXI float-array signature remains unchanged; weights/biases load once before DATAFLOW, intermediate maps stay on chip, and requested sequential bursts are up to 256 words. Inner II=1 does not imply T frame throughput: pixel-loop fill/drain and pad-row transactions add measured overhead.\n\n"
 stream = [table_row(r) for r in network if r["design"].startswith(("designs/dataflow", "designs/scatter"))]
