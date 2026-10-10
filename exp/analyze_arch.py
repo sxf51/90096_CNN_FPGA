@@ -189,6 +189,12 @@ def main():
             human += markdown_table(loops,["module","loop","IterationLatency","PipelineDepth","actual_ii","target_ii","ii_ok"])
         if config.get("errors"):
             human += "\nObserved errors: "+"; ".join(config["errors"])+"\n"
+        if config.get("primitive_probe"):
+            probe = config["primitive_probe"]
+            human += "\nRouted DSP48E2 inspection (dsp_primitives.csv):\n\n"+markdown_table([probe],[
+                "completed","DSP48E2_cells","pre_adder_used","error"])
+            cells = [{"cell":cell,**properties} for cell,properties in probe.get("cells",{}).items()]
+            human += "\n"+markdown_table(cells,["cell","AMULTSEL","PREADDINSEL","AREG","BREG","DREG","ADREG","MREG","PREG","INMODEREG"])
         if row["id"] == "S01":
             human += "\nThe global arrays remained on chip because scratch1/scratch2 AXI bundles were absent. Consequently the reported memory/cycles describe an invalid on-chip probe, not an implemented DDR design. The zero external-memory BRAM assumption failed because the interface pragma was ignored. Changing the frozen top signature needs human decision.\n"
         if config.get("ddr_bytes_per_frame"):
