@@ -4,6 +4,7 @@ import contextlib
 import hashlib
 import io
 import json
+import shutil
 from pathlib import Path
 import tempfile
 import unittest
@@ -79,6 +80,31 @@ class RunnerTests(unittest.TestCase):
             self.assertIn("syn.directive.array_partition=location=srcnn variable=weights", text)
             self.assertIn(" -I" + str(work / "source"), text)
             self.assertNotIn(' -I"', text)
+
+    def test_combinational_zero_latency_is_complete(self):
+        actual = run_exp.ROOT / "experiments/E052_mul16_constant_unroll/csynth.xml"
+        self.assertEqual(run_exp.parse_xml(actual)[0]["latency_cycles"], 0)
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            config = self.fixture(root)
+            def fake_invoke(args, settings, cwd, logfile, timeout):
+                if args[0] == "v++":
+                    work = Path(args[args.index("--work_dir") + 1])
+                    report = work / "hls/syn/report"
+                    report.mkdir(parents=True)
+                    shutil.copyfile(actual, report / "srcnn_csynth.xml")
+                    logfile.write_text("Synthesis completed\n")
+                else:
+                    logfile.write_text("version fixture\n" if "--version" in args else
+                                       'EXP_METRICS {"csim_pass":true,"bit_exact":true}\n')
+                return 0, .01
+            with patch.object(run_exp, "ROOT", root), patch.object(run_exp, "invoke", fake_invoke), contextlib.redirect_stdout(io.StringIO()):
+                code = run_exp.run(config)
+            self.assertEqual(code, 0)
+            row = json.loads((root / "experiments/E999_runner_fixture/metrics.json").read_text())
+            self.assertEqual(row["status"], "pass")
+            self.assertEqual(row["latency_ms_est"], 0)
+            self.assertEqual(row["DSP"], 60)
 
 
 if __name__ == "__main__":

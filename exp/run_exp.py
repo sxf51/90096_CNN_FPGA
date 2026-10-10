@@ -340,7 +340,9 @@ def run(config):
                         loop["ii_ok"] = None if loop["target_ii"] is None else loop["actual_ii"] <= loop["target_ii"]
                 compared = [loop for loop in loops if loop.get("target_ii") is not None]
                 row["ii_ok"] = all(loop.get("ii_ok") is True for loop in compared) if compared else ""
-                complete = all(metrics.get(k) is not None for k in CAPACITY) and bool(row["latency_ms_est"])
+                complete = (all(metrics.get(k) is not None for k in CAPACITY)
+                            and number(row["latency_ms_est"]) is not None
+                            and number(row["latency_ms_est"]) >= 0)
                 feasible = complete and all(metrics[k] <= CAPACITY[k] * LIMIT[k] for k in CAPACITY)
                 row["status"] = "pass" if feasible else "infeasible" if complete else "report_incomplete"
                 if config.get("fixed") and validation.get("image_count", 0) < 14 and row["status"] == "pass":

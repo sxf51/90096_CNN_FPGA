@@ -133,6 +133,8 @@
 
 - 2026-10-10T21:07:56+00:00: E055: mul8_add_control; status=pass; latency_ms_est=0.00066; microbenchmark only; exclude latency from network Pareto; constants are explicit representative integers
 
+- 2026-10-10T21:12:32+00:00: E052: corrected zero-cycle combinational report classification from archived XML; no rerun or resource-limit change
+
 ## Pending Human Decisions / 待人工决策
 
 - Recovery reference: [PHASE2_HANDOFF.md](PHASE2_HANDOFF.md) preserves unimplemented architecture hypotheses derived from E058/E070/E071 across the first-phase finalizer. Phase two must still be executed on the new branch with estimates archived before implementation.
