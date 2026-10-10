@@ -64,7 +64,7 @@ def main():
         for offset,operation in ((1,"impl"),(2,"cosim")):
             exp_id = f"F{first+offset}"
             cases.append({"id":exp_id,"name":"final_"+operation+"_"+row["id"],"series":"F","stage":"arch_final","scope":"frame",
-                          "operation":operation,"verify_parent":row["id"],"design":base["design"],
+                          "operation":operation,"verify_parent":row["id"],"validation_parent":validation_id,"design":base["design"],
                           "clock":base["clock"],"settings":base["settings"],"timeout":21600 if operation == "cosim" else 10800,
                           "estimates":estimates,
                           "purpose":"Verify selected exact resource-feasible point "+row["id"]+" using "+operation+". " +

@@ -109,6 +109,14 @@ def run_verification(config):
     observed, detail, errors = {}, [], []
     settings = Path(config.get("settings", parent_config["settings"]))
     try:
+        if config.get("validation_parent"):
+            full = next((ROOT / "experiments").glob(config["validation_parent"] + "_*/config.json"))
+            validation = json.loads(full.read_text()).get("validation", {})
+            delta = number(validation.get("delta_psnr"))
+            if (validation.get("csim_pass") is not True or validation.get("bit_exact") is not True or
+                    validation.get("image_count") != 13 or delta is None or delta < -.1):
+                row["status"] = "precision_fail"
+                raise RuntimeError("Selected candidate failed mandatory all-supplied-image validation")
         timeout = 21600 if operation == "cosim" else config.get("timeout", 10800)
         with lock(work / ".run.lock"), lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=86400):
             code, seconds = invoke(["vitis-run", "--mode", "hls", "--" + operation,
