@@ -1,0 +1,11 @@
+{
+  "id": "E017", "name": "apfixed_boundary_w10a10", "stage": 1,
+  "design": "designs/fixed_ref_raw", "clock": 10, "fixed": true, "set14": true, "csim_only": true,
+  "precision": "w10a10acc23", "defines": {"EXP_W_BITS": 10, "EXP_A_BITS": 10},
+  "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "purpose": "Cross-check full-image numpy predictions using actual ap_fixed loading and layer-boundary rounding/saturation with exact integer accumulation.",
+  "changes": "Independent integer-carrier reference. Original all-ap_fixed E014/E012/E013 remain independent and unchanged. Accumulator fractional points and cast modes are identical; int64 carries exact raw sums whose analytical bound is below the 23-bit reference accumulator range.",
+  "interpretation": "This experiment verifies actual ap_fixed quantization at every defined quantization point. It does not replace the separately running all-ap_fixed arithmetic experiments. Input, weights and biases convert through actual AMD ap_fixed; full-product integer sums have no rounding between MACs.",
+  "conclusion": "Use only as an independently identified cross-reference until the all-ap_fixed representative completes."
+}
