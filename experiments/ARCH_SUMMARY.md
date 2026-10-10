@@ -54,6 +54,7 @@ Measured direction result: [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) is its f
 | [W12](W12_fixed_tiles_T16_allcontinuous_4ns/W12.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
 | [W08](W08_winograd_network_T16_header_retry/W08.md) | frame | 16 | 5723851.0 | 22.895404 | 326.0 | 241.0 | 0.0 | 75814.0 | 69105.0 | True | 1.661846957728205e-05 | True | provisional |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | frame | 8 | 3493579.0 | 13.974316 | 648.0 | 241.0 | 0.0 | 135496.0 | 148761.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [W13](W13_fixed_tiles_T8_allcontinuous_3p33ns/W13.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
 
 ## G Direction
 
@@ -86,7 +87,7 @@ Measured direction result: [S02](S02_whole_dataflow_control/S02.md) is its faste
 
 Exact Winograd Conv1 combines with output-channel packing Conv2 and/or adjacent-pixel packing Conv3. The paper T4 MAC budgets are932 DSP for both packed layers and1188 for only packed Conv3, before interfaces/converters. Exact10 residual restoration avoids the failed uniform INT8 precision point but adds LUT cost. A T8 control trades raster FIFO BRAM for LUTRAM. HLS estimates include transform/load/reorder overhead.
 
-Completed PE/layer evidence is listed below; it does not establish a resource-feasible frame design.
+Measured direction result: none of its completed frame points satisfies all resource/precision gates. Their estimated latency cannot establish a feasible speedup.
 
 | id | scope | T_target | latency_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | bit_exact | border_mse | ii_ok | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -95,6 +96,8 @@ Completed PE/layer evidence is listed below; it does not establish a resource-fe
 | [C03](C03_wino_packing_T8_all/C03.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [C08](C08_wino_conv2w8_continuous_T8/C08.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | fail |
 | [C09](C09_wino_conv2w8_continuous_T4/C09.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | fail |
+| [C04](C04_wino_packing_T4_all_header_retry/C04.md) | frame | 4 | 2378443.0 | 9.513772 | 936.0 | 241.0 | 0.0 | 293222.0 | 253809.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [C07](C07_continuous_wino_packing_T8/C07.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 
 ## F Direction
 
@@ -108,6 +111,11 @@ Measured direction result: [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md)
 | [F02](F02_uram_line_control/F02.md) | frame | 16 | 2014678.0 | 8.058712 | 505.0 | 132.0 | 20.0 | 56007.0 | 62948.0 | True | 1.661846957728205e-05 | True | provisional |
 | [F03](F03_continuous_T16_oldpad_4ns/F03.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
 | [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md) | frame | 16 | 1048677.0 | 4.194708 | 505.0 | 96.0 | 0.0 | 69362.0 | 106171.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F16](F16_ieee_decode_bit_exact/F16.md) | PE | 1 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [F17](F17_ieee_decode_legacy_control/F17.md) | PE | 1 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [F18](F18_ieee_decode_bit_exact_sdk_retry/F18.md) | PE | 1 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [F19](F19_ieee_decode_legacy_control_sdk_retry/F19.md) | PE | 1 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [F04](F04_continuous_T16_online_4ns/F04.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
 
 ## All Architectures
 
@@ -123,6 +131,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [E042](E042_scan_clock_T16_E042/E042.md) | unknown | designs/dataflow_int | 16 | 8.058712 | 505.0 | 168.0 | 56007.0 | 62948.0 | -0.0695141811880653 | provisional |
 | [F01](F01_fifo_lutram_control/F01.md) | F | designs/fifo_lutram_control | 16 | 8.058712 | 505.0 | 96.0 | 56081.0 | 62800.0 | -0.0695141811880653 | provisional |
 | [F02](F02_uram_line_control/F02.md) | F | designs/uram_line_control | 16 | 8.058712 | 505.0 | 132.0 | 56007.0 | 62948.0 | -0.0695141811880653 | provisional |
+| [C04](C04_wino_packing_T4_all_header_retry/C04.md) | C | designs/combination_network_r1 | 4 | 9.513772 | 936.0 | 241.0 | 293222.0 | 253809.0 | -0.0695141811880653 | infeasible |
 | [E041](E041_scan_clock_T16_E041/E041.md) | unknown | designs/dataflow_int | 16 | 9.7275 | 505.0 | 168.0 | 55553.0 | 59959.0 | -0.0695141811880653 | provisional |
 | [E056](E056_mixed_T4_feasibility/E056.md) | unknown | designs/dataflow_mix | 4 | 10.46292 | 1160.0 | 168.0 | 237025.0 | 120073.0 | -0.0695141811880653 | infeasible |
 | [P10](P10_exact10_packing_T16/P10.md) | P | designs/packing_network | 16 | 12.156332 | 254.0 | 168.0 | 101488.0 | 80563.0 | -0.0695141811880653 | infeasible |
@@ -172,6 +181,9 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [W12](W12_fixed_tiles_T16_allcontinuous_4ns/W12.md) | W | designs/winograd_continuous | 16 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
 | [F03](F03_continuous_T16_oldpad_4ns/F03.md) | F | designs/continuous_direct | 16 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
 | [C09](C09_wino_conv2w8_continuous_T4/C09.md) | C | designs/winograd_mixed_packing | 4 | unknown | unknown | unknown | unknown | unknown | -0.07589037644656216 | fail |
+| [F04](F04_continuous_T16_online_4ns/F04.md) | F | designs/continuous_direct | 16 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
+| [W13](W13_fixed_tiles_T8_allcontinuous_3p33ns/W13.md) | W | designs/winograd_continuous | 8 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
+| [C07](C07_continuous_wino_packing_T8/C07.md) | C | designs/combination_continuous | 8 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 
 ## Estimates And Actuals
 
@@ -220,6 +232,14 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [C09](C09_wino_conv2w8_continuous_T4/C09.md) | frame | 1035.0 | unknown | unknown | 360100.0 | unknown | unknown | fail |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | frame | 647.0 | 648.0 | 0.15455950540959051 | 906968.0 | 3493579.0 | 285.1931931446313 | infeasible |
 | [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md) | frame | 505.0 | 505.0 | 0.0 | 1140400.0 | 1048677.0 | -8.043055068397054 | provisional |
+| [F16](F16_ieee_decode_bit_exact/F16.md) | PE | 0.0 | unknown | unknown | 1045.0 | unknown | unknown | fail |
+| [F17](F17_ieee_decode_legacy_control/F17.md) | PE | 3.0 | unknown | unknown | 1045.0 | unknown | unknown | fail |
+| [F18](F18_ieee_decode_bit_exact_sdk_retry/F18.md) | PE | 0.0 | unknown | unknown | 1045.0 | unknown | unknown | fail |
+| [F19](F19_ieee_decode_legacy_control_sdk_retry/F19.md) | PE | 3.0 | unknown | unknown | 1045.0 | unknown | unknown | fail |
+| [C04](C04_wino_packing_T4_all_header_retry/C04.md) | frame | 935.0 | 936.0 | 0.10695187165774556 | 715360.0 | 2378443.0 | 232.48196712144934 | infeasible |
+| [F04](F04_continuous_T16_online_4ns/F04.md) | frame | 505.0 | unknown | unknown | 1140400.0 | unknown | unknown | fail |
+| [W13](W13_fixed_tiles_T8_allcontinuous_3p33ns/W13.md) | frame | 647.0 | unknown | unknown | 620200.0 | unknown | unknown | fail |
+| [C07](C07_continuous_wino_packing_T8/C07.md) | frame | 469.0 | unknown | unknown | 2100000.0 | unknown | unknown | fail |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -228,15 +248,15 @@ Largest percentage deviations (a zero paper denominator has no percentage):
 | [W08](W08_winograd_network_T16_header_retry/W08.md) | latency_cycles | 1431256.0 | 5723851.0 | 299.9180440116932 | provisional |
 | [W07](W07_winograd_conv1_T16_header_retry/W07.md) | latency_cycles | 1431256.0 | 5721420.0 | 299.7481931953473 | provisional |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | latency_cycles | 906968.0 | 3493579.0 | 285.1931931446313 | infeasible |
+| [C04](C04_wino_packing_T4_all_header_retry/C04.md) | latency_cycles | 715360.0 | 2378443.0 | 232.48196712144934 | infeasible |
 | [S01](S01_ddr_global_probe/S01.md) | latency_cycles | 6250529.0 | 16730473.0 | 167.6649128417771 | invalid_config |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | LUT | 59000.0 | 135496.0 | 129.65423728813562 | infeasible |
 | [S03](S03_tile_fusion_B8/S03.md) | latency_cycles | 11935713.0 | 22803545.0 | 91.05306067597303 | infeasible |
 | [S04](S04_tile_fusion_B16/S04.md) | latency_cycles | 8843233.0 | 16753977.0 | 89.45533833610399 | infeasible |
 | [S05](S05_tile_fusion_B32/S05.md) | latency_cycles | 7521249.0 | 14166377.0 | 88.3513895099072 | infeasible |
 | [S06](S06_tile_fusion_B64/S06.md) | latency_cycles | 6916321.0 | 12981873.0 | 87.69911055313946 | infeasible |
+| [C04](C04_wino_packing_T4_all_header_retry/C04.md) | LUT | 156920.0 | 293222.0 | 86.86082080040785 | infeasible |
 | [W08](W08_winograd_network_T16_header_retry/W08.md) | LUT | 41000.0 | 75814.0 | 84.91219512195123 | provisional |
-| [W02](W02_direct_f2_control/W02.md) | LUT | 1100.0 | 503.0 | -54.27272727272727 | pass |
-| [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) | LUT | 55000.0 | 79158.0 | 43.92363636363636 | provisional |
 
 Cause analysis is in each linked interpretation: ignored external scratch ports allocate full on-chip maps; dynamic tiled memory banks add address/multiplexer logic; packing residual/borrow stages increase both LUT and per-pixel pipeline drain; wider Winograd inverse arithmetic and raster FIFOs exceed pure-product budgets; explicit register reductions change timing and FF.
 
@@ -268,6 +288,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [W08](W08_winograd_network_T16_header_retry/W08.md) | 3 | provisional |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | 3 | infeasible |
 | [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md) | 5 | provisional |
+| [C04](C04_wino_packing_T4_all_header_retry/C04.md) | 3 | infeasible |
 
 ## Failed Directions
 
@@ -293,6 +314,14 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F03](F03_continuous_T16_oldpad_4ns/F03.md) | F | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (F03/source/srcnn.cpp:312:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
 | [C09](C09_wino_conv2w8_continuous_T4/C09.md) | C | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (C09/source/srcnn.cpp:462:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | W | infeasible | LUT=135496.0 exceeds 81984 | unknown |
+| [F16](F16_ieee_decode_bit_exact/F16.md) | F | fail | /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F16/source/ieee_decode.h:18:5: error: no template named 'fp_struct' in namespace 'hls'; did you mean simply 'fp_struct'?; /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F16/source/ieee_decode.h:12:46: error: conditional expression is ambiguous; 'ap_int<12 aka 12>' can be converted to 'ap_int<10 + 1 aka 11>' and vice versa | PE only; conversion-probe cycles are excluded from network rankings; C simulation not accepted (exit=1); synthesis not eligible |
+| [F17](F17_ieee_decode_legacy_control/F17.md) | F | fail | /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F17/source/ieee_decode.h:18:5: error: no template named 'fp_struct' in namespace 'hls'; did you mean simply 'fp_struct'?; ERROR: [SIM 211-100] 'csim_design' failed: compilation error(s). | PE only; conversion-probe cycles are excluded from network rankings; C simulation not accepted (exit=1); synthesis not eligible |
+| [F18](F18_ieee_decode_bit_exact_sdk_retry/F18.md) | F | fail | ld.lld: error: duplicate symbol: ieee_decode_pe(ap_int<10> const*, float*); clang++: error: linker command failed with exit code 1 (use -v to see invocation) | PE only; conversion-probe cycles are excluded from network rankings; C simulation not accepted (exit=1); synthesis not eligible |
+| [F19](F19_ieee_decode_legacy_control_sdk_retry/F19.md) | F | fail | ld.lld: error: duplicate symbol: ieee_decode_pe(ap_int<10> const*, float*); clang++: error: linker command failed with exit code 1 (use -v to see invocation) | PE only; conversion-probe cycles are excluded from network rankings; C simulation not accepted (exit=1); synthesis not eligible |
+| [C04](C04_wino_packing_T4_all_header_retry/C04.md) | C | infeasible | LUT=293222.0 exceeds 81984; FF=253809.0 exceeds 163968 | unknown |
+| [F04](F04_continuous_T16_online_4ns/F04.md) | F | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (F04/source/srcnn.cpp:312:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
+| [W13](W13_fixed_tiles_T8_allcontinuous_3p33ns/W13.md) | W | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (W13/source/srcnn.cpp:488:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
+| [C07](C07_continuous_wino_packing_T8/C07.md) | C | fail | ../../../source/srcnn.cpp:332:2: error: #else without #if; ../../../source/srcnn.cpp:333:13: error: redefinition of 'conv2_stream' | ; C simulation not accepted (exit=1); synthesis not eligible |
 
 ## Pending Human Decisions
 
@@ -320,4 +349,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-10T23:32:22+00:00.
+Generated from archived evidence at 2026-10-10T23:57:13+00:00.
