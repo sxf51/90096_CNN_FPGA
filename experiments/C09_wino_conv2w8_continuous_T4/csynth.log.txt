@@ -1,0 +1,235 @@
+COMMAND ["v++", "-c", "--mode", "hls", "--config", "/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/hls_config.cfg", "--work_dir", "/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09"]
+
+****** v++ v2026.1 (64-bit)
+  **** SW Build 6497934 on 2026-06-16-10:22:25
+  **** Start of session at: Sun Oct 11 10:17:23 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+  **** HLS Build v2026.1 6493734
+INFO: [HLS 200-2005] Using work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09 
+INFO: [HLS 200-2006] Changing directory to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs
+INFO: [HLS 200-2176] Writing Vitis IDE component file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/vitis-comp.json
+INFO: [HLS 200-10] Creating and opening component '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09'.
+INFO: [HLS 200-2174] Applying component config ini file C09/hls_config.cfg
+INFO: [HLS 200-1465] Applying config ini 'syn.file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/source/conv1.cpp' from C09/hls_config.cfg(10)
+INFO: [HLS 200-10] Adding design file '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/source/conv1.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'syn.file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/source/srcnn.cpp' from C09/hls_config.cfg(11)
+INFO: [HLS 200-10] Adding design file '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/source/srcnn.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'syn.cflags=-std=c++14 -ffp-contract=off -DEXP_ALL_CONTINUOUS=1 -DEXP_A_BITS=10 -DEXP_FRAMES=2 -DEXP_STORAGE=1 -DEXP_T=4 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=1 -DEXP_NUMPY_REFERENCE=0 -DEXP_QUICK=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src' from C09/hls_config.cfg(8)
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/validate.cpp' from C09/hls_config.cfg(12)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/validate.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/golden.cpp' from C09/hls_config.cfg(13)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/golden.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_conv1.cpp' from C09/hls_config.cfg(14)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_conv1.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_srcnn.cpp' from C09/hls_config.cfg(15)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_srcnn.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/util.cpp' from C09/hls_config.cfg(16)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/util.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/src/weights' from C09/hls_config.cfg(17)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/src/weights' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/set5' from C09/hls_config.cfg(18)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/set5' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/set14' from C09/hls_config.cfg(19)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/set14' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/fixed_reference.bin' from C09/hls_config.cfg(20)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/fixed_reference.bin' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.cflags=-std=c++14 -ffp-contract=off -DEXP_ALL_CONTINUOUS=1 -DEXP_A_BITS=10 -DEXP_FRAMES=2 -DEXP_STORAGE=1 -DEXP_T=4 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=1 -DEXP_NUMPY_REFERENCE=0 -DEXP_QUICK=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src' from C09/hls_config.cfg(9)
+INFO: [HLS 200-1465] Applying config ini 'syn.top=srcnn' from C09/hls_config.cfg(6)
+INFO: [HLS 200-1465] Applying config ini 'flow_target=vivado' from C09/hls_config.cfg(3)
+INFO: [HLS 200-1505] Using flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=200-1505.html
+WARNING: [HLS 200-2149] The 'flow_target' option is deprecated and will be removed in a future release. For 'vivado' value you may simply remove the option for equivalent behavior.
+INFO: [HLS 200-1465] Applying config ini 'part=xck26-sfvc784-2LV-c' from C09/hls_config.cfg(1)
+INFO: [HLS 200-1611] Setting target device to 'xck26-sfvc784-2LV-c'
+INFO: [HLS 200-1465] Applying config ini 'clock=4ns' from C09/hls_config.cfg(4)
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 4ns.
+INFO: [HLS 200-1465] Applying config ini 'csim.O=true' from C09/hls_config.cfg(7)
+INFO: [HLS 200-1907] Replacing 'config_csim -O=1' with 'config_sim -O=1' in current solution file
+INFO: [HLS 200-1465] Applying config ini 'package.output.format=ip_catalog' from C09/hls_config.cfg(5)
+INFO: [HLS 200-2176] Writing Vitis IDE component file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/vitis-comp.json
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 3.2 seconds. CPU system time: 0.69 seconds. Elapsed time: 3.82 seconds; current allocated memory: 249.824 MB.
+INFO: [HLS 200-2191] C-Synthesis will use clang-16 as the compiler
+INFO: [HLS 200-10] Analyzing design file 'C09/source/srcnn.cpp' ... 
+INFO: [HLS 200-10] Analyzing design file 'C09/source/conv1.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 12.43 seconds. CPU system time: 1.72 seconds. Elapsed time: 14.16 seconds; current allocated memory: 256.133 MB.
+INFO: [HLS 200-1995] There were 20,465 instructions in the design after the 'Compile/Link' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 214-131] Inlining function 'ap_int<10> numeric::raw_value<ap_fixed<10, 1, (ap_q_mode)4, (ap_o_mode)0, 0>, 10>(ap_fixed<10, 1, (ap_q_mode)4, (ap_o_mode)0, 0>)' into 'numeric::encode_weight(float)' (C09/source/integer_numeric.inc:35:12)
+INFO: [HLS 214-131] Inlining function 'ap_int<8> numeric::raw_value<ap_fixed<8, 1, (ap_q_mode)4, (ap_o_mode)0, 0>, 8>(ap_fixed<8, 1, (ap_q_mode)4, (ap_o_mode)0, 0>)' into 'numeric::encode_weight2(float)' (C09/source/srcnn.cpp:14:12)
+INFO: [HLS 214-131] Inlining function 'ap_int<14> wino::add<14>(ap_int<14>, ap_int<14>)' into 'void wino::weight_transform<10>(ap_int<10> const*, ap_int<(10) + (4)>*)' (C09/source/winograd_math.h:62:24)
+INFO: [HLS 214-131] Inlining function 'ap_int<14> wino::sub<14>(ap_int<14>, ap_int<14>)' into 'void wino::weight_transform<10>(ap_int<10> const*, ap_int<(10) + (4)>*)' (C09/source/winograd_math.h:62:36)
+INFO: [HLS 214-131] Inlining function 'void wino::weight_transform<10>(ap_int<10> const*, ap_int<(10) + (4)>*)' into 'transform_weights(ap_int<10> (*) [81], ap_int<14> (*) [9][16])' (C09/source/srcnn.cpp:135:13)
+INFO: [HLS 214-131] Inlining function 'ap_int<10> numeric::raw_value<ap_fixed<10, 2, (ap_q_mode)4, (ap_o_mode)0, 0>, 10>(ap_fixed<10, 2, (ap_q_mode)4, (ap_o_mode)0, 0>)' into 'numeric::encode_input(float)' (C09/source/integer_numeric.inc:30:12)
+INFO: [HLS 214-131] Inlining function 'numeric::encode_input(float)' into 'read_input(float (*) [255][255], hls::stream<ap_int<10>, 0>&)' (C09/source/srcnn.cpp:58:22)
+INFO: [HLS 214-131] Inlining function 'ap_int<12> wino::sub<12>(ap_int<12>, ap_int<12>)' into 'void wino::input_transform<10>(ap_int<10> const*, ap_int<(10) + (2)>*)' (C09/source/winograd_math.h:42:24)
+INFO: [HLS 214-131] Inlining function 'ap_int<12> wino::add<12>(ap_int<12>, ap_int<12>)' into 'void wino::input_transform<10>(ap_int<10> const*, ap_int<(10) + (2)>*)' (C09/source/winograd_math.h:40:24)
+INFO: [HLS 214-131] Inlining function 'void wino::input_transform<10>(ap_int<10> const*, ap_int<(10) + (2)>*)' into 'wino_windows(hls::stream<ap_int<10>, 0>&, hls::stream<transformed_window, 0>&)' (C09/source/srcnn.cpp:191:17)
+INFO: [HLS 214-131] Inlining function 'ap_int<34> wino::add<34>(ap_int<34>, ap_int<34>)' into 'void wino::output_transform<34>(ap_int<34> const*, ap_int<34>*)' (C09/source/winograd_math.h:73:29)
+INFO: [HLS 214-131] Inlining function 'ap_int<34> wino::sub<34>(ap_int<34>, ap_int<34>)' into 'void wino::output_transform<34>(ap_int<34> const*, ap_int<34>*)' (C09/source/winograd_math.h:79:25)
+INFO: [HLS 214-131] Inlining function 'ap_int<10> numeric::quantize<9, ap_int<23> >(ap_int<23>)' into 'numeric::relu1(ap_int<23>)' (C09/source/integer_numeric.inc:60:22)
+INFO: [HLS 214-131] Inlining function 'numeric::relu1(ap_int<23>)' into 'wino_engine(hls::stream<transformed_window, 0>&, hls::stream<tile_block, 0>&, ap_int<14> (*) [9][16], ap_int<10>*)' (C09/source/srcnn.cpp:243:33)
+INFO: [HLS 214-131] Inlining function 'numeric::bias1(ap_int<10>)' into 'wino_engine(hls::stream<transformed_window, 0>&, hls::stream<tile_block, 0>&, ap_int<14> (*) [9][16], ap_int<10>*)' (C09/source/srcnn.cpp:243:60)
+INFO: [HLS 214-131] Inlining function 'void wino::output_transform<34>(ap_int<34> const*, ap_int<34>*)' into 'wino_engine(hls::stream<transformed_window, 0>&, hls::stream<tile_block, 0>&, ap_int<14> (*) [9][16], ap_int<10>*)' (C09/source/srcnn.cpp:237:13)
+INFO: [HLS 214-131] Inlining function 'ap_int<34> wino::add<34>(ap_int<34>, ap_int<34>)' into 'wino_engine(hls::stream<transformed_window, 0>&, hls::stream<tile_block, 0>&, ap_int<14> (*) [9][16], ap_int<10>*)' (C09/source/srcnn.cpp:233:27)
+INFO: [HLS 214-131] Inlining function 'Reduction<1>::sum(ap_int<23>*)' into 'Reduction<2>::sum(ap_int<23>*)' (C09/source/srcnn.cpp:40:16)
+INFO: [HLS 214-131] Inlining function 'Reduction<2>::sum(ap_int<23>*)' into 'Reduction<4>::sum(ap_int<23>*)' (C09/source/srcnn.cpp:40:16)
+INFO: [HLS 214-131] Inlining function 'Reduction<4>::sum(ap_int<23>*)' into 'Reduction<8>::sum(ap_int<23>*)' (C09/source/srcnn.cpp:40:16)
+INFO: [HLS 214-131] Inlining function 'Reduction<8>::sum(ap_int<23>*)' into 'Reduction<16>::sum(ap_int<23>*)' (C09/source/srcnn.cpp:40:16)
+INFO: [HLS 214-131] Inlining function 'Reduction<16>::sum(ap_int<23>*)' into 'Reduction<32>::sum(ap_int<23>*)' (C09/source/srcnn.cpp:40:16)
+INFO: [HLS 214-131] Inlining function 'Reduction<32>::sum(ap_int<23>*)' into 'Reduction<64>::sum(ap_int<23>*)' (C09/source/srcnn.cpp:40:16)
+INFO: [HLS 214-131] Inlining function 'ap_int<10> numeric::quantize<8, ap_int<21> >(ap_int<21>)' into 'conv2_stream(hls::stream<numeric::pixel1, 0>&, hls::stream<numeric::pixel2, 0>&, ap_int<8> (*) [64], ap_int<8>*)' (C09/source/srcnn.cpp:359:39)
+INFO: [HLS 214-131] Inlining function 'Reduction<64>::sum(ap_int<23>*)' into 'conv2_stream(hls::stream<numeric::pixel1, 0>&, hls::stream<numeric::pixel2, 0>&, ap_int<8> (*) [64], ap_int<8>*)' (C09/source/srcnn.cpp:352:31)
+INFO: [HLS 214-131] Inlining function 'Reduction<64>::sum(ap_int<23>*)' into 'Reduction<128>::sum(ap_int<23>*)' (C09/source/srcnn.cpp:40:16)
+INFO: [HLS 214-131] Inlining function 'Reduction<128>::sum(ap_int<23>*)' into 'Reduction<256>::sum(ap_int<23>*)' (C09/source/srcnn.cpp:40:16)
+INFO: [HLS 214-131] Inlining function 'ap_int<10> numeric::quantize<8, ap_int<23> >(ap_int<23>)' into 'engine3(hls::stream<window3, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)' (C09/source/srcnn.cpp:455:36)
+INFO: [HLS 214-131] Inlining function 'numeric::bias3(ap_int<10>)' into 'engine3(hls::stream<window3, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)' (C09/source/srcnn.cpp:452:34)
+INFO: [HLS 214-131] Inlining function 'Reduction<256>::sum(ap_int<23>*)' into 'engine3(hls::stream<window3, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)' (C09/source/srcnn.cpp:451:30)
+INFO: [HLS 214-131] Inlining function 'numeric::decode(ap_int<10>)' into 'write_output(hls::stream<ap_int<10>, 0>&, float (*) [255][255])' (C09/source/srcnn.cpp:534:36)
+INFO: [HLS 214-131] Inlining function 'numeric::encode_weight(float)' into 'srcnn(float (*) [255][255], float (*) [1][9][9], float*, float (*) [64][1][1], float*, float (*) [32][5][5], float*, float (*) [255][255])' (C09/source/srcnn.cpp:626:30)
+INFO: [HLS 214-131] Inlining function 'numeric::encode_weight2(float)' into 'srcnn(float (*) [255][255], float (*) [1][9][9], float*, float (*) [64][1][1], float*, float (*) [32][5][5], float*, float (*) [255][255])' (C09/source/srcnn.cpp:630:30)
+INFO: [HLS 214-377] Adding 'result' into disaggregation list because there's array-partition pragma applied on the struct field (C09/source/srcnn.cpp:182:1)
+INFO: [HLS 214-377] Adding 'tile' into disaggregation list because there's array-partition pragma applied on the struct field (C09/source/srcnn.cpp:209:1)
+INFO: [HLS 214-377] Adding 'value' into disaggregation list because there's array-partition pragma applied on the struct field (C09/source/srcnn.cpp:208:1)
+INFO: [HLS 214-377] Adding 'value' into disaggregation list because there's array-partition pragma applied on the struct field (C09/source/srcnn.cpp:264:1)
+INFO: [HLS 214-377] Adding 'result' into disaggregation list because there's array-partition pragma applied on the struct field (C09/source/srcnn.cpp:324:1)
+INFO: [HLS 214-377] Adding 'value' into disaggregation list because there's array-partition pragma applied on the struct field (C09/source/srcnn.cpp:323:1)
+INFO: [HLS 214-377] Adding 'result' into disaggregation list because there's array-partition pragma applied on the struct field (C09/source/srcnn.cpp:399:1)
+INFO: [HLS 214-377] Adding 'value' into disaggregation list because there's array-partition pragma applied on the struct field (C09/source/srcnn.cpp:435:1)
+INFO: [HLS 214-210] Disaggregating variable 'result' (C09/source/srcnn.cpp:181:32)
+Resolution: For help on HLS 214-210 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=214-210.html
+INFO: [HLS 214-210] Disaggregating variable 'tile' (C09/source/srcnn.cpp:207:16)
+Resolution: For help on HLS 214-210 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=214-210.html
+INFO: [HLS 214-210] Disaggregating variable 'value' (C09/source/srcnn.cpp:206:24)
+Resolution: For help on HLS 214-210 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=214-210.html
+INFO: [HLS 214-210] Disaggregating variable 'value' (C09/source/srcnn.cpp:263:16)
+Resolution: For help on HLS 214-210 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=214-210.html
+INFO: [HLS 214-210] Disaggregating variable 'result' (C09/source/srcnn.cpp:322:12)
+Resolution: For help on HLS 214-210 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=214-210.html
+INFO: [HLS 214-210] Disaggregating variable 'value' (C09/source/srcnn.cpp:321:12)
+Resolution: For help on HLS 214-210 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=214-210.html
+INFO: [HLS 214-210] Disaggregating variable 'result' (C09/source/srcnn.cpp:398:17)
+Resolution: For help on HLS 214-210 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=214-210.html
+INFO: [HLS 214-210] Disaggregating variable 'value' (C09/source/srcnn.cpp:433:13)
+Resolution: For help on HLS 214-210 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=214-210.html
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_442_1' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:442:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_34_1' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:34:26)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_400_1' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:400:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_404_2' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:404:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_409_3' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:409:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_413_4' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:413:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_415_5' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:415:35)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_420_6' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:420:35)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_331_1' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:331:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_337_2' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:337:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_361_3' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:361:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_365_4' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:365:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_216_1' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:216:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_222_2' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:222:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_225_3' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:225:35)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_71_1' is marked as complete unroll implied by the pipeline pragma (C09/source/winograd_math.h:71:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_76_2' is marked as complete unroll implied by the pipeline pragma (C09/source/winograd_math.h:76:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_238_4' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:238:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_246_5' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:246:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_248_6' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:248:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_252_7' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:252:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_163_1' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:163:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_168_2' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:168:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_172_3' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:172:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_174_4' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:174:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_183_5' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:183:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_187_6' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:187:35)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_30_1' is marked as complete unroll implied by the pipeline pragma (C09/source/winograd_math.h:30:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_37_2' is marked as complete unroll implied by the pipeline pragma (C09/source/winograd_math.h:37:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_131_1' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:131:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_51_1' is marked as complete unroll implied by the pipeline pragma (C09/source/winograd_math.h:51:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_58_2' is marked as complete unroll implied by the pipeline pragma (C09/source/winograd_math.h:58:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_136_2' is marked as complete unroll implied by the pipeline pragma (C09/source/srcnn.cpp:136:31)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_442_1' (C09/source/srcnn.cpp:442:27) in function 'engine3' completely with a factor of 256 (C09/source/srcnn.cpp:431:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'engine3' completely with a factor of 128 (C09/source/srcnn.cpp:431:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'engine3' completely with a factor of 64 (C09/source/srcnn.cpp:431:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'engine3' completely with a factor of 32 (C09/source/srcnn.cpp:431:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'engine3' completely with a factor of 16 (C09/source/srcnn.cpp:431:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'engine3' completely with a factor of 8 (C09/source/srcnn.cpp:431:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'engine3' completely with a factor of 4 (C09/source/srcnn.cpp:431:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'engine3' completely with a factor of 2 (C09/source/srcnn.cpp:431:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'engine3' completely with a factor of 1 (C09/source/srcnn.cpp:431:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_400_1' (C09/source/srcnn.cpp:400:27) in function 'windows3' completely with a factor of 32 (C09/source/srcnn.cpp:387:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_413_4' (C09/source/srcnn.cpp:413:31) in function 'windows3' completely with a factor of 5 (C09/source/srcnn.cpp:387:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_420_6' (C09/source/srcnn.cpp:420:35) in function 'windows3' completely with a factor of 5 (C09/source/srcnn.cpp:387:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_415_5' (C09/source/srcnn.cpp:415:35) in function 'windows3' completely with a factor of 4 (C09/source/srcnn.cpp:387:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_409_3' (C09/source/srcnn.cpp:409:31) in function 'windows3' completely with a factor of 4 (C09/source/srcnn.cpp:387:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_404_2' (C09/source/srcnn.cpp:404:31) in function 'windows3' completely with a factor of 4 (C09/source/srcnn.cpp:387:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_331_1' (C09/source/srcnn.cpp:331:27) in function 'conv2_stream' completely with a factor of 4 (C09/source/srcnn.cpp:319:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'conv2_stream' completely with a factor of 1 (C09/source/srcnn.cpp:319:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'conv2_stream' completely with a factor of 2 (C09/source/srcnn.cpp:319:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'conv2_stream' completely with a factor of 4 (C09/source/srcnn.cpp:319:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'conv2_stream' completely with a factor of 8 (C09/source/srcnn.cpp:319:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'conv2_stream' completely with a factor of 16 (C09/source/srcnn.cpp:319:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_34_1' (C09/source/srcnn.cpp:34:26) in function 'conv2_stream' completely with a factor of 32 (C09/source/srcnn.cpp:319:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_337_2' (C09/source/srcnn.cpp:337:31) in function 'conv2_stream' completely with a factor of 64 (C09/source/srcnn.cpp:319:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_361_3' (C09/source/srcnn.cpp:361:27) in function 'conv2_stream' completely with a factor of 24 (C09/source/srcnn.cpp:319:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_365_4' (C09/source/srcnn.cpp:365:27) in function 'conv2_stream' completely with a factor of 8 (C09/source/srcnn.cpp:319:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_216_1' (C09/source/srcnn.cpp:216:27) in function 'wino_engine' completely with a factor of 4 (C09/source/srcnn.cpp:205:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_238_4' (C09/source/srcnn.cpp:238:31) in function 'wino_engine' completely with a factor of 4 (C09/source/srcnn.cpp:205:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_76_2' (C09/source/winograd_math.h:76:22) in function 'wino_engine' completely with a factor of 2 (C09/source/srcnn.cpp:205:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_71_1' (C09/source/winograd_math.h:71:22) in function 'wino_engine' completely with a factor of 4 (C09/source/srcnn.cpp:205:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_222_2' (C09/source/srcnn.cpp:222:31) in function 'wino_engine' completely with a factor of 16 (C09/source/srcnn.cpp:205:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_225_3' (C09/source/srcnn.cpp:225:35) in function 'wino_engine' completely with a factor of 9 (C09/source/srcnn.cpp:205:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_246_5' (C09/source/srcnn.cpp:246:27) in function 'wino_engine' completely with a factor of 4 (C09/source/srcnn.cpp:205:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_252_7' (C09/source/srcnn.cpp:252:31) in function 'wino_engine' completely with a factor of 4 (C09/source/srcnn.cpp:205:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_248_6' (C09/source/srcnn.cpp:248:31) in function 'wino_engine' completely with a factor of 60 (C09/source/srcnn.cpp:205:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_163_1' (C09/source/srcnn.cpp:163:27) in function 'wino_windows' completely with a factor of 9 (C09/source/srcnn.cpp:149:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_168_2' (C09/source/srcnn.cpp:168:27) in function 'wino_windows' completely with a factor of 9 (C09/source/srcnn.cpp:149:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_172_3' (C09/source/srcnn.cpp:172:27) in function 'wino_windows' completely with a factor of 10 (C09/source/srcnn.cpp:149:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_174_4' (C09/source/srcnn.cpp:174:31) in function 'wino_windows' completely with a factor of 9 (C09/source/srcnn.cpp:149:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_183_5' (C09/source/srcnn.cpp:183:31) in function 'wino_windows' completely with a factor of 9 (C09/source/srcnn.cpp:149:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_37_2' (C09/source/winograd_math.h:37:22) in function 'wino_windows' completely with a factor of 4 (C09/source/srcnn.cpp:149:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_30_1' (C09/source/winograd_math.h:30:22) in function 'wino_windows' completely with a factor of 4 (C09/source/srcnn.cpp:149:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_187_6' (C09/source/srcnn.cpp:187:35) in function 'wino_windows' completely with a factor of 16 (C09/source/srcnn.cpp:149:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_131_1' (C09/source/srcnn.cpp:131:31) in function 'transform_weights' completely with a factor of 9 (C09/source/srcnn.cpp:123:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_51_1' (C09/source/winograd_math.h:51:22) in function 'transform_weights' completely with a factor of 3 (C09/source/srcnn.cpp:123:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_58_2' (C09/source/winograd_math.h:58:22) in function 'transform_weights' completely with a factor of 4 (C09/source/srcnn.cpp:123:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_136_2' (C09/source/srcnn.cpp:136:31) in function 'transform_weights' completely with a factor of 16 (C09/source/srcnn.cpp:123:0)
+INFO: [HLS 200-1995] There were 65,842 instructions in the design after the 'Unroll/Inline (step 1)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 47,444 instructions in the design after the 'Unroll/Inline (step 2)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 47,241 instructions in the design after the 'Unroll/Inline (step 3)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 46,945 instructions in the design after the 'Unroll/Inline (step 4)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3': Cyclic partitioning with factor 8 on dimension 1. Complete partitioning on dimension 2. (C09/source/srcnn.cpp:592:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w2': Cyclic partitioning with factor 8 on dimension 1. Complete partitioning on dimension 2. (C09/source/srcnn.cpp:593:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w1': Cyclic partitioning with factor 16 on dimension 1. Complete partitioning on dimension 2. (C09/source/srcnn.cpp:592:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2b2': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:600:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2b1': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:599:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E11transformed': Cyclic partitioning with factor 4 on dimension 1. Complete partitioning on dimension 2. Complete partitioning on dimension 3. (C09/source/srcnn.cpp:594:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZL8windows3RN3hls6streamIN7numeric6pixel2ELi0EEERNS0_I7window3Li0EEEE4line': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:389:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZL8windows3RN3hls6streamIN7numeric6pixel2ELi0EEERNS0_I7window3Li0EEEE6window': Complete partitioning on dimension 1. Complete partitioning on dimension 2. Complete partitioning on dimension 3. (C09/source/srcnn.cpp:389:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZL12wino_windowsRN3hls6streamI6ap_intILi10EELi0EEERNS0_I18transformed_windowLi0EEEE4line': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:151:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZL12wino_windowsRN3hls6streamI6ap_intILi10EELi0EEERNS0_I18transformed_windowLi0EEEE6window': Complete partitioning on dimension 1. Complete partitioning on dimension 2. (C09/source/srcnn.cpp:151:0)
+INFO: [HLS 214-248] Applying array_partition to 'result': Complete partitioning on dimension 1. Complete partitioning on dimension 2. (C09/source/srcnn.cpp:181:32)
+INFO: [HLS 214-248] Applying array_partition to 'value': Complete partitioning on dimension 1. Complete partitioning on dimension 2. (C09/source/srcnn.cpp:206:24)
+INFO: [HLS 214-248] Applying array_partition to 'next': Complete partitioning on dimension 1. Complete partitioning on dimension 2. (C09/source/srcnn.cpp:214:14)
+INFO: [HLS 214-248] Applying array_partition to 'm': Complete partitioning on dimension 1.
+INFO: [HLS 214-248] Applying array_partition to 'value': Complete partitioning on dimension 1. Complete partitioning on dimension 2. (C09/source/srcnn.cpp:263:16)
+INFO: [HLS 214-248] Applying array_partition to 'value': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:321:12)
+INFO: [HLS 214-248] Applying array_partition to 'result': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:322:12)
+INFO: [HLS 214-248] Applying array_partition to 'next': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:329:14)
+INFO: [HLS 214-248] Applying array_partition to 'first': Complete partitioning on dimension 1.
+INFO: [HLS 214-248] Applying array_partition to 'second': Complete partitioning on dimension 1.
+INFO: [HLS 214-248] Applying array_partition to 'result': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:398:17)
+INFO: [HLS 214-248] Applying array_partition to 'next.i': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:32:14)
+INFO: [HLS 214-248] Applying array_partition to 'value': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:433:13)
+INFO: [HLS 214-248] Applying array_partition to 'products': Complete partitioning on dimension 1. (C09/source/srcnn.cpp:440:14)
+WARNING: [HLS 200-1995] There were 745,859 instructions in the design after the 'Array/Struct' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 67,452 instructions in the design after the 'Array/Struct (step 2)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C09/hls/syn/report/csynth_design_size.rpt:2)
+ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (C09/source/srcnn.cpp:462:26)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'features' with compact=bit mode in 640-bits (C09/source/srcnn.cpp:376:25)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'top' with compact=bit mode in 640-bits (C09/source/srcnn.cpp:301:25)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'bottom' with compact=bit mode in 640-bits (C09/source/srcnn.cpp:301:47)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'tiles' with compact=bit mode in 2560-bits (C09/source/srcnn.cpp:300:29)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'windows' with compact=bit mode in 1728-bits (C09/source/srcnn.cpp:299:37)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'features2' with compact=bit mode in 320-bits (C09/source/srcnn.cpp:543:25)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'padded3' with compact=bit mode in 320-bits (C09/source/srcnn.cpp:543:49)
+INFO: [HLS 214-241] Aggregating bram variable 'row' with compact=bit mode in 320-bits (C09/source/srcnn.cpp:87:11)
+ERROR: [HLS 200-1715] Encountered problem during source synthesis
+ERROR: Pre-synthesis failed.
+INFO: [HLS 200-112] Total CPU user time: 85.37 seconds. Total CPU system time: 3.89 seconds. Total elapsed time: 81.31 seconds; peak allocated memory: 276.039 MB.
