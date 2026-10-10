@@ -1,0 +1,31 @@
+{
+  "T": 8,
+  "changes": "E048 exact integer-carrier design; only T and weight storage parameter change.",
+  "clock": 10,
+  "conclusion": "Use only after strict E019/E017 butterfly comparison; retain provisional 13-image precision.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_STORAGE": 1,
+    "EXP_T": 8,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/dataflow_int",
+  "fixed": true,
+  "id": "E059",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare bit identity, inferred resource mapping and timing with E047. CPU arithmetic and synthesized arithmetic share the exact same convolution, padding and cast code.",
+  "name": "integer_lutram_T8",
+  "precision": "w10a10acc23",
+  "purpose": "Banked writable LUTRAM with T=8. Ideal DSP 1004, compute floor 520200 cycles. Gather buffer control 168 BRAM18K. Banked weight storage should remove E047's large register write/read muxes.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 4,
+  "storage": "lutram",
+  "unroll": "Cout/Cout/tap"
+}
