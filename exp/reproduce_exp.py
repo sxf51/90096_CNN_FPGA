@@ -30,6 +30,10 @@ def next_id(series):
 def make_config(parent_id, new_id, settings=None):
     if not re.fullmatch(ARCH_ID, new_id):
         raise ValueError("A new architecture-prefixed ID is required")
+    if ((ROOT / "exp/configs" / (new_id + ".json")).exists() or
+            (ROOT / "workspace/exp_runs" / new_id).exists() or
+            any((ROOT / "experiments").glob(new_id + "_*"))):
+        raise ValueError("Replay ID already reserved: " + new_id)
     folder = archived(parent_id)
     observed = json.loads((folder / "config.json").read_text())
     metrics = json.loads((folder / "metrics.json").read_text())

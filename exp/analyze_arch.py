@@ -216,6 +216,11 @@ def main():
         loops = [loop for loop in config.get("parsed_loops",[]) if loop.get("actual_ii") is not None]
         md_path = archive / (row["id"]+".md")
         text = md_path.read_text()
+        reproduction_start = text.index("## 4. Reproduction / 复现\n\n")
+        reproduction_end = text.index("## 5. Results / 结果", reproduction_start)
+        original = "python3 exp/run_exp.py --config exp/configs/" + row["id"] + ".json"
+        section = "## 4. Reproduction / 复现\n\n```sh\npython3 exp/reproduce_exp.py " + row["id"] + " --run\n```\n\nAllocates a fresh ID and restores frozen design/testbench sources; verification also rebuilds its parent. See [reproduction guide](../REPRODUCE.md). Original reserved invocation:\n\n```sh\n" + original + "\n```\n\n"
+        text = text[:reproduction_start] + section + text[reproduction_end:]
         human = config.get("interpretation", "")+"\n\n"+SERIES_NOTES.get(row["series"], "")
         human += "\n\nEstimate audit (parsed values; zero estimates have no percentage denominator):\n\n"
         human += markdown_table(comparisons,["metric","estimate","actual","deviation_pct","over20pct"])

@@ -39,7 +39,7 @@ def commit():
         return
     # Vendor reports/logs retain original whitespace; CSV uses standard CRLF.
     subprocess.run(["git", "diff", "--cached", "--check", "--", "exp/", "designs/",
-                    ":(exclude)designs/golden_auto/"], cwd=ROOT, check=True)
+                    ":(exclude)designs/golden_auto/", ":(glob,exclude)exp/tb/replay_*/root/**"], cwd=ROOT, check=True)
     subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=ROOT, check=True)
     subprocess.run(["git", "commit", "-m", " ".join(sys.argv[1:])], cwd=ROOT, check=True)
 

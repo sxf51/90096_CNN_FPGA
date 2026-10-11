@@ -61,6 +61,9 @@ def audit_archives(rows):
         for name,digest in config.get("testbench_sha256", {}).items():
             if hashlib.sha256((archive / "testbench" / name).read_bytes()).hexdigest() != digest:
                 raise RuntimeError("Archived testbench hash mismatch: "+row["id"]+" "+name)
+            original = subprocess.check_output(["git", "show", config["frozen_source_commit"]+":"+name], cwd=ROOT)
+            if hashlib.sha256(original).hexdigest() != digest:
+                raise RuntimeError("Replayed testbench differs from recorded Git source: "+row["id"]+" "+name)
         if not config.get("operation") and number(row.get("latency_cycles")) is not None:
             expected = number(row["latency_cycles"])*max(number(row["clock_target_ns"]),number(row["clock_est_ns"]))/1e6
             if abs(expected-number(row["latency_ms_est"])) > 1e-9:
