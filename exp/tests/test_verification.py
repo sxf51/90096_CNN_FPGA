@@ -232,6 +232,7 @@ class VerificationTests(unittest.TestCase):
     def test_diagnostic_excerpt_keeps_thread_and_failure_evidence_in_log_middle(self):
         middle = ("INFO: [Synth 8-7079] Multithreading enabled using a maximum of 7 processes.\n"
                   "EXP_VIVADO_THREADS general=1 synth=1\n"
+                  "EXP_VIVADO_IMPL_THREADS general=4 synth=1\n"
                   "ERROR: synthesis failed\n")
         raw = "session header\n"+"ordinary elaboration line\n"*300+middle+"ordinary mapping line\n"*300+"run ended\n"
         excerpt = vivado_diagnostic_excerpt(raw)

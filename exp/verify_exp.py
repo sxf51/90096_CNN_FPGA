@@ -227,7 +227,7 @@ def prepare_packaged_driver(work, template_work, archive, parent_config, exp_id,
 def vivado_diagnostic_excerpt(text):
     lines = text.splitlines()
     useful = lines[:60] + [line for line in lines if re.search(
-        r"EXP_VIVADO_THREADS|Synth 8-707\d|ERROR:|CRITICAL WARNING:|Killed|terminate|Memory \(MB\)|Finished.*Optimization",line)] + lines[-100:]
+        r"EXP_VIVADO_(?:IMPL_)?THREADS|Synth 8-707\d|ERROR:|CRITICAL WARNING:|Killed|terminate|Memory \(MB\)|Finished.*Optimization",line)] + lines[-100:]
     return "\n".join(useful)+"\n"
 
 
