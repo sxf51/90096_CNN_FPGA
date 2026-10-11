@@ -238,6 +238,8 @@ WS2 有结论后再做。先做 Winograd，直接卷积作对照。
 
 若 WS1 的布线 LUT 比例满足触发条件，W17 的额外实现仅用于校准。其 HLS 超 LUT 门限的原始判定保留；诊断实现必须显式设 `diagnostic_infeasible_parent=true`，仅允许逐位正确且精度通过的原设计，不能进入已验收候选排名。
 
+默认 Vivado timing summary 只含一条 setup 路径。实现完成后，用 `python3 exp/archive_setup_paths.py F89` 从已有 routed checkpoint 额外导出前五条 setup 路径，再运行 `python3 exp/analyze_route.py E070 F89`。此只读网表操作仍使用综合锁；记录 checkpoint SHA256 和完整命令，不重新综合或布线。
+
 ## 8. 汇报格式
 
 每个实验完成后，在第 9 节追加一行，并按 `AGENTS.md` 说明改动、验证方法、结果和限制：

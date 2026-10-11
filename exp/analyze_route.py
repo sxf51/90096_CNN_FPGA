@@ -63,6 +63,9 @@ def analyze(archive):
     for record in config.get("verification_reports", []):
         if record["raw_file"] == observed.get("impl_timing_report"):
             paths = setup_paths((archive / record["archived_file"]).read_text())
+    extra_paths = archive / "reports/impl/srcnn_setup5_routed.rpt"
+    if extra_paths.is_file():
+        paths = setup_paths(extra_paths.read_text())
     write_csv(archive / "route_analysis.csv", [values], list(values))
     write_csv(archive / "critical_paths.csv", paths, ["path","slack_ns","source","destination","logic_levels","data_path_ns","DSP_sites","DSP_cascade_PCIN_PCOUT"])
     memory = archive / "host_memory.csv"
