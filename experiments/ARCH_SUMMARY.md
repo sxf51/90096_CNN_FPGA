@@ -61,6 +61,7 @@ Measured direction result: [W18](W18_narrow_raw_banks_T16/W18.md) is its fastest
 | [W17](W17_narrow_raw_banks_T8/W17.md) | frame | 8 | 532562.0 | 2.130248 | 648.0 | 146.0 | 0.0 | 93166.0 | 122399.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [W18](W18_narrow_raw_banks_T16/W18.md) | frame | 16 | 1056850.0 | 4.2274 | 326.0 | 146.0 | 0.0 | 74480.0 | 87869.0 | True | 1.661846957728205e-05 | True | provisional |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | frame | 8 | 532562.0 | 2.130248 | 648.0 | 146.0 | 0.0 | 148013.0 | 182409.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | frame | 16 | 1056850.0 | 4.2274 | 326.0 | 146.0 | 0.0 | 89114.0 | 92946.0 | True | 1.661846957728205e-05 | True | infeasible |
 
 ## G Direction
 
@@ -174,6 +175,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | F | designs/continuous_rotate_v1 | 16 | 4.194748 | 505.0 | 73.0 | 68903.0 | 106661.0 | -0.0695141811880653 | provisional |
 | [F09](F09_continuous_T16_online_4ns_split4000/F09.md) | F | designs/continuous_direct_r2 | 16 | 4.194748 | 505.0 | 73.0 | 69179.0 | 106647.0 | -0.0695141811880653 | provisional |
 | [W18](W18_narrow_raw_banks_T16/W18.md) | W | designs/winograd_rawbank_v1 | 16 | 4.2274 | 326.0 | 146.0 | 74480.0 | 87869.0 | -0.0695141811880653 | provisional |
+| [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | W | designs/winograd_continuous_r2 | 16 | 4.2274 | 326.0 | 146.0 | 89114.0 | 92946.0 | -0.0695141811880653 | infeasible |
 | [P12](P12_exact10_packing_T4/P12.md) | P | designs/packing_network | 4 | 5.422328 | 1007.0 | 168.0 | 292053.0 | 159828.0 | -0.0695141811880653 | infeasible |
 | [E043](E043_scan_clock_T16_E043/E043.md) | unknown | designs/dataflow_int | 16 | 6.93923049 | 505.0 | 168.0 | 55325.0 | 67025.0 | -0.0695141811880653 | provisional |
 | [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) | W | designs/winograd_continuous | 16 | 7.548204 | 326.0 | 241.0 | 79158.0 | 76052.0 | -0.0695141811880653 | provisional |
@@ -315,6 +317,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F12](F12_continuous_T8_online_3p33ns_split4000/F12.md) | frame | 1007.0 | 1007.0 | 0.0 | 620200.0 | 528501.0 | -14.78539180909384 | infeasible |
 | [F23](F23_continuous_ieee_T16_2p5ns/F23.md) | frame | 502.0 | 502.0 | 0.0 | 1140400.0 | 1048730.0 | -8.03840757628902 | provisional |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | frame | 647.0 | 648.0 | 0.15455950540959051 | 620200.0 | 532562.0 | -14.13060303128023 | infeasible |
+| [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | frame | 325.0 | 326.0 | 0.3076923076922977 | 1140400.0 | 1056850.0 | -7.3263767099263415 | infeasible |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -379,6 +382,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F12](F12_continuous_T8_online_3p33ns_split4000/F12.md) | 5 | infeasible |
 | [F23](F23_continuous_ieee_T16_2p5ns/F23.md) | 5 | provisional |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | 5 | infeasible |
+| [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | 5 | infeasible |
 
 ## Failed Directions
 
@@ -424,6 +428,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F10](F10_continuous_T8_online_4ns_split4000/F10.md) | F | infeasible | LUT=96764.0 exceeds 81984; FF=171240.0 exceeds 163968 | unknown |
 | [F12](F12_continuous_T8_online_3p33ns_split4000/F12.md) | F | infeasible | LUT=97112.0 exceeds 81984; FF=196314.0 exceeds 163968 | unknown |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | W | infeasible | LUT=148013.0 exceeds 81984; FF=182409.0 exceeds 163968 | unknown |
+| [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | W | infeasible | LUT=89114.0 exceeds 81984 | unknown |
 
 ## Pending Human Decisions
 
@@ -451,4 +456,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T02:20:55+00:00.
+Generated from archived evidence at 2026-10-11T02:22:30+00:00.
