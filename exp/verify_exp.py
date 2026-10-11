@@ -42,7 +42,8 @@ def archive_verification_reports(work, archive, operation):
     return records
 
 
-def prepare_serial_implementation(work, template_work, archive, hook_path, template_archive=None):
+def prepare_serial_implementation(work, template_work, archive, hook_path, template_archive=None,
+                                  implementation_clock_ns=None):
     target = work / "hls/impl"
     if target.exists():
         shutil.rmtree(target)
@@ -57,7 +58,7 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
             source = template_archive / record["archived_file"]
             if hashlib.sha256(source.read_bytes()).hexdigest() != record["sha256"]:
                 raise RuntimeError("Frozen implementation script changed: "+str(source))
-            destination = target / "verilog" / source.name
+            destination = work / record["raw_file"] if record.get("raw_file") else target / "verilog" / source.name
             destination.parent.mkdir(parents=True,exist_ok=True)
             shutil.copyfile(source,destination)
     driver = target / "verilog/run_vivado.tcl"
@@ -79,16 +80,42 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
                  "  set_property STEPS.SYNTH_DESIGN.TCL.PRE [file normalize ./serial_synthesis.tcl] $exp_run\n"
                  "}\n")
     driver.write_text(text if "STEPS.SYNTH_DESIGN.TCL.PRE" in text else text.replace(marker,injection+marker))
+    constraints = []
+    if implementation_clock_ns is not None:
+        period = number(implementation_clock_ns)
+        if period is None or period <= 0:
+            raise RuntimeError("Implementation clock must be a positive period")
+        updated, count = re.subn(r'^set target_clk_period_ns "[\d.]+"$',
+                                 f'set target_clk_period_ns "{period:.3f}"', driver.read_text(), flags=re.MULTILINE)
+        if count != 1:
+            raise RuntimeError("Cannot locate the generated implementation clock")
+        driver.write_text(updated)
+        xdc_files = sorted(driver.parent.glob("*.xdc")) + sorted((target / "ip/constraints").glob("*.xdc"))
+        for path in xdc_files:
+            original_constraint = path.read_text()
+            updated, count = re.subn(
+                r'^create_clock -name ap_clk -period [\d.]+(?: -waveform \{[\d.]+ [\d.]+\})? \[get_ports ap_clk\]$',
+                f'create_clock -name ap_clk -period {period:.3f} -waveform {{0.000 {period/2:.3f}}} [get_ports ap_clk]',
+                original_constraint, flags=re.MULTILINE)
+            if count:
+                if count != 1:
+                    raise RuntimeError("Ambiguous ap_clk implementation constraints")
+                path.write_text(updated)
+                constraints.append(path)
+        if sum(path.parent == driver.parent for path in constraints) != 1:
+            raise RuntimeError("Require exactly one top-level generated ap_clk XDC constraint")
     records = []
     for label,path in (("driver",driver),("thread_hook",local_hook),
                        ("settings",driver.parent / "settings.tcl"),
-                       ("report_extraction",driver.parent / "extraction.tcl")):
+                       ("report_extraction",driver.parent / "extraction.tcl"),
+                       *(("implementation_constraint", path) for path in constraints)):
         if not path.is_file():
             raise RuntimeError("Generated-flow dependency missing: "+str(path))
         dest = archive / "implementation" / path.name
         dest.parent.mkdir(parents=True,exist_ok=True)
         shutil.copyfile(path,dest)
         records.append({"kind":label,"archived_file":str(dest.relative_to(archive)),
+                        "raw_file":str(path.relative_to(work)),
                         "sha256":hashlib.sha256(dest.read_bytes()).hexdigest()})
     return driver.parent, records, hashlib.sha256(original.encode()).hexdigest()
 
@@ -211,7 +238,8 @@ def run_verification(config):
         template = ROOT / "workspace/exp_runs" / config["implementation_template"]
         template_archive = ROOT / config["implementation_template_archive"] if config.get("implementation_template_archive") else None
         impl_cwd, records, original_digest = prepare_serial_implementation(
-            work,template,archive,ROOT / config["verification_hook"],template_archive)
+            work,template,archive,ROOT / config["verification_hook"],template_archive,
+            config.get("implementation_clock_ns"))
         config["implementation_files"] = records
         config["original_generated_driver_sha256"] = original_digest
         config["implementation_work_root"] = str(work)
@@ -254,7 +282,8 @@ def run_verification(config):
         row["status"] = operation + "_complete"
         if operation == "impl":
             observed["timing_met"] = observed["impl_WNS_ns"] >= 0
-            observed["impl_clock_ns_est"] = float(config["clock"]) - observed["impl_WNS_ns"]
+            observed["impl_target_clock_ns"] = float(config.get("implementation_clock_ns", config["clock"]))
+            observed["impl_clock_ns_est"] = observed["impl_target_clock_ns"] - observed["impl_WNS_ns"]
         if operation == "cosim":
             actual = observed.get("rtl_latency_max")
             estimate = number(parent_row.get("latency_cycles"))

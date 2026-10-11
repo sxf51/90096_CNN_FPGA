@@ -64,6 +64,30 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual(values["impl_FF"], 33844)
         self.assertAlmostEqual(values["impl_WNS_ns"], -1.277)
 
+    def test_relaxed_implementation_changes_clock_constraints_and_keeps_rtl(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            template, work, archive = root/"F89", root/"F92", root/"archive"
+            generated = template/"hls/impl/verilog"
+            generated.mkdir(parents=True)
+            (generated/"run_vivado.tcl").write_text('set target_clk_period_ns "2.500"\nhls_vivado_reports_setup $report_options\n')
+            (generated/"settings.tcl").write_text("set clock ap_clk\n")
+            (generated/"extraction.tcl").write_text("# extraction\n")
+            (generated/"srcnn.xdc").write_text("create_clock -name ap_clk -period 2.500 -waveform {0.000 1.250} [get_ports ap_clk]\n")
+            (template/"hls/impl/ip").mkdir()
+            (template/"hls/impl/ip/srcnn.v").write_text("module srcnn; endmodule\n")
+            (template/"hls/impl/ip/constraints").mkdir()
+            (template/"hls/impl/ip/constraints/srcnn_ooc.xdc").write_text("create_clock -name ap_clk -period 2.500 [get_ports ap_clk]\n")
+            hook = root/"hook.tcl"
+            hook.write_text("set_param synth.maxThreads 1\n")
+            cwd, records, _ = prepare_serial_implementation(work,template,archive,hook,implementation_clock_ns=5)
+            self.assertIn('set target_clk_period_ns "5.000"', (cwd/"run_vivado.tcl").read_text())
+            self.assertIn("-period 5.000 -waveform {0.000 2.500}", (cwd/"srcnn.xdc").read_text())
+            self.assertIn("-period 2.500", (generated/"srcnn.xdc").read_text())
+            self.assertEqual((work/"hls/impl/ip/srcnn.v").read_bytes(), (template/"hls/impl/ip/srcnn.v").read_bytes())
+            self.assertIn("-period 5.000", (work/"hls/impl/ip/constraints/srcnn_ooc.xdc").read_text())
+            self.assertEqual(len(records),6)
+
     def test_routed_sources_are_copied_outside_generated_hdl_directories(self):
         with tempfile.TemporaryDirectory() as temp:
             work,archive = Path(temp)/"work",Path(temp)/"archive"
