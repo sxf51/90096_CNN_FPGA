@@ -29,6 +29,7 @@ HLS estimates (verification rows inherit their parent and are not new synthesis 
 | [F27](F27_local_streamed_params_T16/F27.md) | unknown | 16 | 2.5 | 2.419 | 1045713.0 | 1045714.0 | 2.6142825 | 502.0 | 73.0 | 61656.0 | 3170.0 | 122055.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | provisional |
 | [F31](F31_reload_testbench_csim_F28/F31.md) | unknown | 16 | 2.5 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | unknown | csim_pass |
 | [F89](F89_serial_vivado_impl_F25/F89.md) | F25 | 16 | 2.5 | 2.377 | 1056904.0 | 1056905.0 | 2.64226 | 502.0 | 73.0 | 69976.0 | unknown | 125404.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | timeout |
+| [F92](F92_ws_impl_F25/F92.md) | F25 | 16 | 2.5 | 2.377 | 1056904.0 | 1056905.0 | 2.64226 | 502.0 | 73.0 | 69976.0 | unknown | 125404.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | impl_complete |
 | [F94](F94_ws_all_F28/F94.md) | unknown | 16 | 2.5 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | csim_pass |
 | [W17](W17_narrow_raw_banks_T8/W17.md) | unknown | 8 | 4 | 3.239 | 532562.0 | 532563.0 | 2.130248 | 648.0 | 146.0 | 93166.0 | 42289.0 | 122399.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | infeasible |
 
@@ -37,10 +38,12 @@ RTL and routed results, kept separate:
 | id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_TNS_ns | route_period_from_slack_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | timing_met | rtl_frame_ms_at_route_target | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F89](F89_serial_vivado_impl_F25/F89.md) | F25 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | timeout |
+| [F92](F92_ws_impl_F25/F92.md) | F25 | F82 | 1068183.0 | unknown | 5.0 | 0.568 | 0.0 | 4.432 | 592.0 | 72.0 | 32400.0 | 77757.0 | True | 5.340915 | impl_complete |
 
 Times derived from RTL cycles at a routed target are conditional on `timing_met=true`. Target minus negative WNS is a slack-derived period estimate, not a proven closed clock. Missing values remain unknown. No board validation has run.
 
-Current recovery state: F92 serial5ns implementation is in placement; F28 C simulation passed and synthesis waits for its hardware lock. F94 all13 images passed; F31 changed-parameter C preflight passed, with every second output bit equal104/256. After strict F28 WS2 acceptance, execute F93 RTL and implement the precommitted W19/F29/F30 independent T8 plans. Then final candidate-specific validation/serial implementation/changed-parameter RTL and measured-path WS4; keep all failure gates explicit.
+Current recovery state: F92 is archived with timing closure at5ns. F28 C simulation passed and synthesis is running; F92 setup-path export waits for its lock. F94 all13 images passed; F31 changed-parameter C preflight passed with104/256 exact second-frame output. After strict F28 WS2 acceptance, execute F93 RTL and implement precommitted W19/F29/F30 independent T8 plans. Then W20 diagnostic calibration, final candidate-specific validation/serial implementation/changed-parameter RTL and measured-path WS4; keep all failure gates explicit.
 
 <!-- AUTO: WORKSTREAM END -->
+
 
