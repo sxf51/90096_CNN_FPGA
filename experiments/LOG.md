@@ -379,6 +379,8 @@
 
 - 2026-10-11T18:21:12+00:00: F26: s2p_bias_shift_T16; status=provisional; latency_ms_est=2.64227; 
 
+- 2026-10-11T18:21:57+00:00: F89: archived partial synth/placed reports and intermediate route summaries; final routed metrics remain unknown and failure/timeout unchanged.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 WS0: 用户授权第 6 节先自行决策并执行、明日复核。暂定保留运行时 float 权重接口及 HLS 资源门限，不做常量 ROM；缺 comic 保持 13 图暂定结论。F89 若再次 OOM，保留内核/内存证据并继续 WS2，不改 swap 或全局设置，不迁移到未经验证的主机。明日复核大内存主机、ROM 专用版本、资源口径和 comic 数据。

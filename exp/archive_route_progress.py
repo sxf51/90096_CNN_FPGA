@@ -8,6 +8,7 @@ import re
 import shlex
 import subprocess
 from analyze_arch import write_csv
+from analyze_route import hierarchy
 from run_exp import ROOT, append_log, check_protected, markdown_table, number, write_json
 
 
@@ -62,7 +63,7 @@ def main():
              ("paths_synth", "hls/impl/verilog/report/srcnn_timing_paths_synth.rpt"),
              ("placed", "hls/impl/verilog/project.runs/impl_1/bd_0_wrapper_utilization_placed.rpt"),
              ("progress", "hls/impl/verilog/project.runs/impl_1/runme.log")]
-    evidence, area, progress = [], [], []
+    evidence, area, progress, modules = [], [], [], []
     for stage, relative in files:
         source = remote+"/"+relative
         present = subprocess.run(ssh+["test -f "+shlex.quote(source)]).returncode
@@ -82,14 +83,22 @@ def main():
             area.append({"stage": stage, "source": str(target.relative_to(archive)), **values})
         if stage == "progress":
             progress = routing_progress(text)
+        if stage == "hierarchy_synth":
+            modules = hierarchy(text)
     config["partial_implementation_reports"] = evidence
     write_json(archive / "config.json", config)
     write_csv(archive / "partial_resources.csv", area, ["stage", "source", "DSP", "LUT", "FF", "BRAM36", "BRAM18K", "URAM"])
     write_csv(archive / "routing_progress.csv", progress, ["iteration", "WNS_ns", "TNS_ns", "final_routed_verdict"])
+    write_csv(archive / "partial_hierarchy.csv", modules, list(modules[0]) if modules else ["Instance", "Module"])
     block = "<!-- AUTO: PARTIAL ROUTE START -->\n\n"
     block += "Partial synthesis/placement and intermediate route evidence; none proves final routed resources or timing. The original timeout/failure status and routed unknowns are unchanged.\n\n"
     block += markdown_table(area, ["stage", "DSP", "LUT", "FF", "BRAM18K", "URAM", "source"])
     block += "\n"+markdown_table(progress, ["iteration", "WNS_ns", "TNS_ns", "final_routed_verdict"])
+    selected = [row for row in modules if not row["Instance"].startswith("(") and
+                row["Module"].endswith(("srcnn_dataflow_region", "srcnn_read_input", "srcnn_engine1",
+                                        "srcnn_conv2_stream", "srcnn_engine3", "srcnn_windows1", "srcnn_windows3"))]
+    block += "\nSynthesized hierarchy only (parent totals include children; never sum nested rows):\n\n"
+    block += markdown_table(selected, ["Instance", "Module", "Total LUTs", "FFs", "BRAM18K", "DSP Blocks"])
     block += "\n<!-- AUTO: PARTIAL ROUTE END -->\n\n"
     md = archive / (args.id+".md")
     text = md.read_text()

@@ -6,10 +6,28 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from analyze_route import setup_paths, hierarchy
 from archive_setup_paths import archive_complete, register_report
+from archive_route_progress import resources, routing_progress
+from verify_exp import parse_verification
 from run_exp import ROOT
 
 
 class RoutedPathTests(unittest.TestCase):
+    def test_timeout_partial_resources_never_become_final_routed_results(self):
+        archive = ROOT / "experiments/F89_serial_vivado_impl_F25"
+        partial = resources((archive / "diagnostics/pre_route/srcnn_utilization_synth.rpt").read_text())
+        self.assertEqual(partial["DSP"], 592)
+        self.assertEqual(partial["LUT"], 37240)
+        observed, _ = parse_verification(archive, "impl")
+        self.assertNotIn("impl_WNS_ns", observed)
+        self.assertNotIn("impl_LUT", observed)
+
+    def test_intermediate_routing_keeps_missing_iteration_and_no_final_verdict(self):
+        text = "INFO: Intermediate Timing Summary | WNS=-1.2 | TNS=-12.3\nPhase 5.2 Global Iteration 1\nINFO: Intermediate Timing Summary | WNS=-0.9 | TNS=-10.1\n"
+        rows = routing_progress(text)
+        self.assertIsNone(rows[0]["iteration"])
+        self.assertEqual(rows[1]["iteration"], 1)
+        self.assertTrue(all(row["final_routed_verdict"] is False for row in rows))
+
     def test_partial_copy_is_not_a_completed_archive_and_registration_is_idempotent(self):
         with tempfile.TemporaryDirectory() as temp:
             archive = Path(temp)

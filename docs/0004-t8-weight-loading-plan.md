@@ -254,6 +254,8 @@ WS2/WS3 新候选可用 `python3 exp/prepare_ws_verify.py <父ID> --id <未占�
 
 WS0–WS4 收尾使用 `python3 exp/close_weight_loading.py`。恢复状态需先明确 `ready_to_close=true`、本次全部 `experiment_ids` 及剩余限制；脚本要求这些 ID 全部归档，没有任何远程硬件任务，核对两份本地/远程校验和与报告来源，重跑全部绘图和汇总，再提交审计。失败、超时仍算已归档操作，但不算验收通过；已暂缓的 F90/F91 不加入本次完成清单。
 
+实现失败或超时后，可用 `python3 exp/archive_route_progress.py <ID>` 只读收回综合、布局报告和中间路由日志。它把来源 SHA256、partial 资源与中间 WNS/TNS 单独归档，保留原失败状态，不填最终 routed 指标；这些来源同样进入收尾审计。
+
 ## 8. 汇报格式
 
 每个实验完成后，在第 9 节追加一行，并按 `AGENTS.md` 说明改动、验证方法、结果和限制：
@@ -280,10 +282,13 @@ WS0–WS4 收尾使用 `python3 exp/close_weight_loading.py`。恢复状态需�
 | id | parent | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | outside_LUT | FF | bit_exact | border_mse | delta_psnr | ws2_all_gates | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F25](../experiments/F25_nested_weight_loader_T16_2p5ns/F25.md) | unknown | 16 | 2.5 | 2.377 | 1056904.0 | 1056905.0 | 2.64226 | 502.0 | 73.0 | 69976.0 | 32294.0 | 125404.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | provisional |
+| [F26](../experiments/F26_s2p_bias_shift_T16/F26.md) | unknown | 16 | 2.5 | 2.377 | 1056908.0 | 1056909.0 | 2.64227 | 502.0 | 73.0 | 70808.0 | 33126.0 | 126285.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | provisional |
+| [F89](../experiments/F89_serial_vivado_impl_F25/F89.md) | F25 | 16 | 2.5 | 2.377 | 1056904.0 | 1056905.0 | 2.64226 | 502.0 | 73.0 | 69976.0 | unknown | 125404.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | timeout |
 | [W17](../experiments/W17_narrow_raw_banks_T8/W17.md) | unknown | 8 | 4 | 3.239 | 532562.0 | 532563.0 | 2.130248 | 648.0 | 146.0 | 93166.0 | 42289.0 | 122399.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | infeasible |
 
 | id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_TNS_ns | route_period_from_slack_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | timing_met | rtl_frame_ms_at_route_target | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F89](../experiments/F89_serial_vivado_impl_F25/F89.md) | F25 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | timeout |
 
 负 WNS 对应的周期只作估计，不能当作时序通过；缺失值为 unknown。
 
