@@ -351,6 +351,8 @@
 
 - 2026-10-11T14:52:06+00:00: F87: final_impl_F23; status=fail; latency_ms_est=2.95951606; impl of F23; HLS estimates inherited, real measurements in data.csv; impl failed (exit=1)
 
+- 2026-10-11T14:53:34+00:00: F87: kernel confirms host OOM killed Vivado; archived subrun/kernel evidence, numerical measurements unchanged. Independent serial retries planned as F89-F91.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T03:45 UTC: F81 failed in Vivado technology mapping because kernel OOM killed the main synthesis process while four internal worker processes used about2.4GiB each. F89-F91 are independent preplanned serial retries; a checked per-run Tcl hook sets general.maxThreads and synth.maxThreads to1, preserving target clocks, directives and HLS sources. No system swap/global tool setting is changed. If serial implementation still cannot complete within host capacity, a larger-memory host is required for routed evidence; failed synthesis is not implementation or timing acceptance.
