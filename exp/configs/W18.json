@@ -1,0 +1,48 @@
+{
+  "T": 16,
+  "changes": "Independent split-window Winograd copy; remove output-channel partition directives for raw w1 and layer-only raw. Keep transformed weights, all arithmetic, runtime parameter loading, precision, online padding and FIFO schedules identical.",
+  "clock": 4,
+  "conclusion": "Retain exact measured controls even if LUT remains infeasible. Use actual banks/registers to decide whether further weight-loading changes have value.",
+  "defines": {
+    "EXP_ALL_CONTINUOUS": 1,
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_STORAGE": 1,
+    "EXP_T": 16,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/winograd_rawbank_v1",
+  "estimates": {
+    "BRAM18K": 155,
+    "Conv1_DSP": 144,
+    "Conv2_DSP": 128,
+    "Conv3_DSP": 50,
+    "DSP": 326,
+    "FF": 85000,
+    "LUT": 90000,
+    "T": 16,
+    "URAM": 0,
+    "basis": "Keep the parent's MAC counts, memory and65025*T+100000 cycle allowance. T8 starts from measured W09 total135496LUT/148761FF and subtracts the30533LUT/48106FF transform delta against W10, then reserves about5000LUT/27000FF for continuous engine/FIFO changes. T16 allows90000LUT/85000FF because the measured T16 transform is already small. Raw cache is64*81*10=51840bits, about810 six-input LUTRAM bit lanes at depth64, before selectors. Both LUT estimates deliberately exceed81984; no feasible result is assumed.",
+    "latency_cycles": 1140400
+  },
+  "fixed": true,
+  "id": "W18",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare transform_weights resources and top totals against W14/W15 and the measured W09/W10 controls. Distinguish raw-bank depth from transformed compute banks; check whether scheduling II or load cycles changed. A resource saving alone cannot establish frame feasibility or RTL throughput.",
+  "name": "narrow_raw_banks_T16",
+  "precision": "w10a10acc23",
+  "purpose": "W09 and C12 measure transform_weights=40992 LUT/48601 FF at T8, with 48533 register FF and 19305 instance LUT in C12. W10 at T16 measures10459 LUT/495 FF. Original coefficients are read only during the sequential load/transform stage, so they need one output-channel bank rather than Conv1 MAC-lane banking. Remove only raw output-channel partitioning, retain all81 tap banks and every transformed compute bank. Test whether deeper64-entry LUTRAM avoids short-bank register/multiplexer growth; attribution remains a hypothesis until synthesis.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "scope": "frame",
+  "series": "W",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_w",
+  "storage": "lutram",
+  "unroll": "G2 F2 nine subkernels/Cout/Cin"
+}
