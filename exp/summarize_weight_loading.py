@@ -11,14 +11,13 @@ def main():
     requested = set(state.get("experiment_ids", ["F25", "W17", "F26", "F27", "F89"]))
     loader_path = ROOT / "experiments/weight_loading_comparison.csv"
     loaders = {row["id"]: row for row in csv.DictReader(loader_path.open(newline=""))} if loader_path.is_file() else {}
-    rows, configs = [], {}
+    rows = []
     for path in sorted((ROOT / "experiments").glob("*_*/metrics.json")):
         metrics = json.loads(path.read_text())
         exp_id = metrics["id"]
         if exp_id not in requested:
             continue
         config = json.loads(path.with_name("config.json").read_text())
-        configs[exp_id] = config
         observed = config.get("verification", {})
         routed_period = number(observed.get("impl_target_clock_ns"))
         if routed_period is None and config.get("operation") == "impl":
@@ -81,6 +80,19 @@ def main():
         text = before+block+after.split(end, 1)[1]
     else:
         text += "\n"+block
+    path.write_text(text)
+    path = ROOT / "docs/0004-t8-weight-loading-plan.md"
+    text = path.read_text()
+    doc_rows = [{**row, "id": "["+row["id"]+"](../experiments/"+row["md_path"]+")"} for row in rows]
+    table = start+"\n\n已归档数字（脚本生成；HLS 与 RTL/布线分列）：\n\n"
+    table += markdown_table(doc_rows, hls_columns)
+    table += "\n"+markdown_table([row for row in doc_rows if row["operation"] in {"cosim", "impl"}], physical_columns)
+    table += "\n负 WNS 对应的周期只作估计，不能当作时序通过；缺失值为 unknown。\n\n"+end+"\n\n"
+    if start in text:
+        before, after = text.split(start, 1)
+        text = before+table+after.split(end, 1)[1].lstrip("\n")
+    else:
+        text = text.replace("### 第 6 节暂定决策", table+"### 第 6 节暂定决策", 1)
     path.write_text(text)
     print("Summarized workstream:", ", ".join(row["id"] for row in rows))
 

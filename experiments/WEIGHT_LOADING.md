@@ -35,3 +35,4 @@ Times derived from RTL cycles at a routed target are conditional on `timing_met=
 Current recovery state: F89 is running exclusively. F26/F27 passed two-frame butterfly C simulation and are waiting; synthesis order F26 then F27 after F89. Choose the loader from measured WS2 gates, then implement W19 and direct-T8 control.
 
 <!-- AUTO: WORKSTREAM END -->
+

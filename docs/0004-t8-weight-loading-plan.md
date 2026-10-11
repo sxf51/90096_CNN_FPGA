@@ -262,6 +262,22 @@ WS2 有结论后再做。先做 Winograd，直接卷积作对照。
 | 2026-10-12 | F89 | 单线程 hook 生效，Vivado IP 子综合已成功；内存采样持续归档到 host_memory.csv，布线结果待出。 |
 | 2026-10-12 | F26/F27 | 先提交估算再独立实现；两帧 butterfly C 仿真逐位通过，综合等待 F89，顺序 F26→F27。自动数字和归因表见 [WEIGHT_LOADING](../experiments/WEIGHT_LOADING.md)。 |
 
+<!-- AUTO: WORKSTREAM START -->
+
+已归档数字（脚本生成；HLS 与 RTL/布线分列）：
+
+| id | parent | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | LUT | outside_LUT | FF | bit_exact | border_mse | delta_psnr | ws2_all_gates | status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F25](../experiments/F25_nested_weight_loader_T16_2p5ns/F25.md) | unknown | 16 | 2.5 | 2.377 | 1056904.0 | 1056905.0 | 2.64226 | 502.0 | 73.0 | 69976.0 | 32294.0 | 125404.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | provisional |
+| [W17](../experiments/W17_narrow_raw_banks_T8/W17.md) | unknown | 8 | 4 | 3.239 | 532562.0 | 532563.0 | 2.130248 | 648.0 | 146.0 | 93166.0 | 42289.0 | 122399.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | infeasible |
+
+| id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_TNS_ns | route_period_from_slack_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | timing_met | rtl_frame_ms_at_route_target | status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+负 WNS 对应的周期只作估计，不能当作时序通过；缺失值为 unknown。
+
+<!-- AUTO: WORKSTREAM END -->
+
 ### 第 6 节暂定决策（2026-10-12）
 
 按用户授权先保守执行，明日再复核：继续使用运行时 float 参数，不做常量 ROM；继续按 HLS 数字判断资源，不放宽门限；缺 comic 时只能称 13 张已提供图像暂定通过。F89 若再次 OOM，归档内核和内存证据，继续 WS2，不改变 swap、不擅自迁移到未知主机；更大内存主机留待明日决定。
