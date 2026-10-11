@@ -261,6 +261,8 @@
 
 - 2026-10-11T00:06:41+00:00: C12: continuous_wino_packing_T8_guard_retry; status=infeasible; latency_ms_est=7.577212; 
 
+- 2026-10-11T00:07:39+00:00: F06: continuous_T16_online_3p33ns; status=fail; latency_ms_est=unknown; ; Synthesis failed (exit=1)
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T23:19:34+00:00: Winograd's requested offline weight transform conflicts with accepting arbitrary original float weight arrays at the frozen srcnn signature. Keep the internal runtime load/transform stage, include its measured cycles/resources and archive the equivalent pretrained G2 tensor. Removing runtime transformation requires an approved transformed-weight contract or a specialized constant-weight wrapper; no such interface change is made in this unattended run.
