@@ -4,37 +4,37 @@
     "BRAM_pct": "25.34722222222222",
     "DSP": "502.0",
     "DSP_pct": "40.22435897435897",
-    "FF": "125404.0",
-    "FF_pct": "53.536543715846996",
-    "LUT": "69976.0",
-    "LUT_pct": "59.74726775956284",
+    "FF": "122055.0",
+    "FF_pct": "52.106813524590166",
+    "LUT": "61656.0",
+    "LUT_pct": "52.64344262295082",
     "T_target": "16",
     "URAM": "0.0",
     "bit_exact": "True",
     "border_mse": "1.661846957728205e-05",
     "butterfly_mse": "1.8197758558556394e-05",
-    "clock_est_ns": "2.377",
+    "clock_est_ns": "2.419",
     "clock_target_ns": "2.5",
     "csim_pass": "True",
     "delta_psnr": "-0.0695141811880653",
-    "design": "designs/continuous_nested_load_v1",
-    "git_commit": "ab5c5e94beb6f6f1374e9bb547b27bf6fe1e055a",
-    "id": "F25",
+    "design": "designs/continuous_param_stream_v1",
+    "git_commit": "499f49417d545659cf945421ca42a2f2715e0db3",
+    "id": "F27",
     "ii_ok": "True",
-    "interval_cycles": "1056905.0",
-    "latency_cycles": "1056904.0",
-    "latency_ms_est": "2.64226",
-    "md_path": "F25_nested_weight_loader_T16_2p5ns/F25.md",
+    "interval_cycles": "1045714.0",
+    "latency_cycles": "1045713.0",
+    "latency_ms_est": "2.6142825",
+    "md_path": "F27_local_streamed_params_T16/F27.md",
     "notes": "",
     "precision_w_a_acc": "w10a10acc23",
     "series": "F",
     "set14_psnr": "29.088943394069588",
-    "stage": "arch_f",
+    "stage": "arch_ws2",
     "status": "provisional",
-    "synth_minutes": "7.032400864316636",
-    "time": "2026-10-11T02:42:50+00:00",
+    "synth_minutes": "6.971990362883329",
+    "time": "2026-10-11T15:18:53+00:00",
     "unroll_split": "Cout/Cout/tap",
-    "weight_storage": "lutram"
+    "weight_storage": "local_lutram_s2p"
   },
   "branch": "exp/explore-arch",
   "completed_architecture_ids": [
@@ -128,7 +128,8 @@
     "F87",
     "F88",
     "F89",
-    "F26"
+    "F26",
+    "F27"
   ],
   "first_phase_head": "2fa7249eaecdfdc360d8d452fcbf52171c35abd2",
   "frozen_design_files": 45,
@@ -138,7 +139,6 @@
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
-    "F27",
     "F92"
   ],
   "selected": [
@@ -173,7 +173,7 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-11T18:22:44+00:00",
+  "time": "2026-10-11T18:28:11+00:00",
   "weight_loading_workstream": {
     "deferred": [
       "F88",
@@ -196,7 +196,6 @@
       "W19"
     ],
     "local_exec_sessions": {
-      "F26": 11690,
       "F27": 51861
     },
     "next": "Finish existing F26 thenF27 synthesis and analyze strict WS2 gates. F92 same-RTL5ns retry is preplanned; start after both syntheses. Select a loader from measured evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.",
@@ -212,7 +211,7 @@
     "verification_tools": "Fresh candidates use prepare_ws_verify.py and serial_packaged_flow: preserve their own IP, copy only checked official F89 driver boilerplate, replace module lists/clock, apply per-run single-thread hook. Template and parent RTL/init hashes must match for serial_generated_flow. Candidate-specific full-image source/flag provenance is checked.52 infrastructure tests passed; fresh-candidate packaged flow still requires actual execution evidence. Current-workstream closure uses close_weight_loading.py and leaves F90/F91 deferred.",
     "ws0": "complete; F85/P13 recovered, F88 interrupted and archived",
     "ws1": "F89 reached original three-hour timeout during routing global iteration4; no final routed report/checkpoint and no new observed OOM. Archive complete. F92 planned same F25 RTL at conservative5ns, single-thread flow; start only after F26/F27 synthesis completes.",
-    "ws2": "F26 started synthesis after F89 timeout; F27 waits for F26 archive. Both existing two-frame butterfly C simulations PASS bit-exact; hardware gates pending.",
+    "ws2": "F26 synthesis complete: mux14134 unchanged, outside33126LUT, total70808LUT, II1/2.377ns/1056908cycles exact; WS2 outside-LUT gate fails. F27 synthesis is active; await ownership experiment evidence.",
     "ws3": "W19 ID unused; wait for WS2 evidence"
   }
 }
