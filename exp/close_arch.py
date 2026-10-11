@@ -58,12 +58,16 @@ def audit_archives(rows):
         for name,digest in source_hashes.items():
             if hashlib.sha256((source_folder / name).read_bytes()).hexdigest() != digest:
                 raise RuntimeError("Archived source hash mismatch: "+row["id"]+" "+name)
+        for name,digest in config.get("testbench_sha256", {}).items():
+            if hashlib.sha256((archive / "testbench" / name).read_bytes()).hexdigest() != digest:
+                raise RuntimeError("Archived testbench hash mismatch: "+row["id"]+" "+name)
         if not config.get("operation") and number(row.get("latency_cycles")) is not None:
             expected = number(row["latency_cycles"])*max(number(row["clock_target_ns"]),number(row["clock_est_ns"]))/1e6
             if abs(expected-number(row["latency_ms_est"])) > 1e-9:
                 raise RuntimeError("Latency formula mismatch: "+row["id"])
         records.append({"id":row["id"],"plan_unchanged":True,"csv_matches_archive":True,
-                        "archived_source_files_checked":len(source_hashes)})
+                        "archived_source_files_checked":len(source_hashes),
+                        "archived_testbench_files_checked":len(config.get("testbench_sha256", {}))})
     return records
 
 

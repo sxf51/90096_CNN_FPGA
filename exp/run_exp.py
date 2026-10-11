@@ -427,6 +427,11 @@ def run(config):
         config["parsed_modules"] = modules
         if (work / "source").exists():
             shutil.copytree(work / "source", archive / "source", dirs_exist_ok=True)
+        if config.get("frozen_testbench_root"):
+            testbench = ROOT / config["frozen_testbench_root"]
+            shutil.copytree(testbench, archive / "testbench", dirs_exist_ok=True)
+            config["testbench_sha256"] = {str(path.relative_to(testbench)): hashlib.sha256(path.read_bytes()).hexdigest()
+                                          for path in sorted(testbench.rglob("*")) if path.is_file()}
         write_json(archive / "config.json", config)
         write_json(archive / "metrics.json", row)
         archive_logs(work, archive)
@@ -452,7 +457,7 @@ def run(config):
         md = f"# {exp_id}: {name}\n\n## 1. Purpose and hypothesis / 目的与假设\n\n{purpose}\n\n"
         md += f"## 2. Changes / 改动\n\n{config.get('changes', 'Independent source/config snapshot.')} Source commit: `{config['source_commit']}`.\n\n"
         md += "## 3. Configuration / 配置\n\n<!-- AUTO: configuration -->\n\n" + cfg_table
-        md += f"\n## 4. Reproduction / 复现\n\n```sh\n{command}\n```\n\nUse a new ID for reruns; existing run directories are immutable. Settings path is recorded in config.json.\n\n"
+        md += f"\n## 4. Reproduction / 复现\n\n```sh\npython3 exp/reproduce_exp.py {exp_id} --run\n```\n\nThis allocates a new ID and restores frozen sources; see [reproduction guide](../REPRODUCE.md). Original reserved invocation:\n\n```sh\n{command}\n```\n\nSettings path is recorded in config.json.\n\n"
         md += "## 5. Results / 结果\n\n<!-- AUTO: parsed measurements; blank values are unknown -->\n\n" + result_table
         md += "\n### Pipeline loops\n\n" + (markdown_table(loops, ["loop", "target_ii", "actual_ii", "ii_ok"]) if loops else "No loop report available.\n")
         md += "\n### Module resources\n\n" + (markdown_table(modules, ["module", "DSP", "BRAM18K", "URAM", "LUT", "FF"]) if modules else "No module report available.\n")

@@ -31,6 +31,10 @@ full P/W, combinations, then F scheduling/memory/timing ideas. New designs
 live in independent directories. PE/layer/frame scope is recorded in config
 and derived CSV; microkernel cycle counts cannot enter frame rankings.
 Explain estimate deviations over20 percent using scheduling/resource evidence.
+Completed IDs are reserved. `exp/reproduce_exp.py` allocates a new ID, restores
+the archived design and the recorded Git testbench sources, and uses the existing
+runner to replay the measurement. P09 validates this path against P01; see
+[reproduction instructions](../experiments/REPRODUCE.md).
 
 ## Failure modes
 
