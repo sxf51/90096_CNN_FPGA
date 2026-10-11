@@ -1,0 +1,56 @@
+%% 参数扫描：位宽固定后寻找可行并行度与存储
+flowchart TB
+  E034["E034<br/>初版 T16 扫描<br/>把每像素计算轮数从 32 改成 16，增加并行乘法。<br/>运行失败<br/>运行失败"]
+  E035["E035<br/>初版 T8 扫描<br/>进一步把每像素计算轮数降到 8。<br/>运行失败<br/>运行失败"]
+  E044["E044<br/>有效 T16 初版流式扫描<br/>修正仿真配置后测量同一高并行思路。<br/>HLS 估计 175.4626 ms / DSP 18<br/>超预算: LUT；HLS 时序警告"]
+  E045["E045<br/>有效 T8 初版流式扫描<br/>有效运行初版 T8 配置。<br/>HLS 估计 280.0106 ms / DSP 36<br/>超预算: LUT；HLS 时序警告"]
+  E057["E057<br/>整数 T32 + LUTRAM 权重银行<br/>把完全拆开的权重寄存器改为可写、按并行端口分银行的 LUTRAM。<br/>HLS 估计 29.8302 ms / DSP 254<br/>候选，仍需验收"]
+  E058["E058<br/>整数 T16 + LUTRAM 权重银行<br/>同一整数组织改为 T16，测量并行度与资源平衡。<br/>HLS 估计 18.7632 ms / DSP 505<br/>候选，仍需验收"]
+  E059["E059<br/>整数 T8 + LUTRAM 权重银行<br/>继续增加并行度至 T8。<br/>HLS 估计 13.2297 ms / DSP 1007<br/>超预算: LUT"]
+  E036["E036<br/>T16：Conv1 展开方向<br/>把 Conv1 并行度从输出通道方向调整到核内分组。<br/>HLS 估计 78.9402 ms / DSP 565<br/>II 未达目标"]
+  E037["E037<br/>T16：Conv2 展开方向<br/>调整 Conv2 通道展开与存储端口的配合。<br/>HLS 估计 18.7632 ms / DSP 505<br/>候选，仍需验收"]
+  E038["E038<br/>T16：Conv3 展开方向<br/>调整 Conv3 输入通道/核内的并行拆分。<br/>HLS 估计 21.5535 ms / DSP 519<br/>候选，仍需验收"]
+  E039["E039<br/>DSP 版 T32：LUTRAM 控制<br/>在 DSP 绑定版本中测量权重 LUTRAM 银行。<br/>HLS 估计 29.8302 ms / DSP 251<br/>候选，仍需验收"]
+  E040["E040<br/>DSP 版 T32：BRAM 权重银行<br/>把相同权重银行放到 BRAM。<br/>HLS 估计 29.8302 ms / DSP 251<br/>超预算: BRAM18K"]
+  E064["E064<br/>T16：完全拆分权重<br/>保留 T16，将权重银行换回完全分区寄存器控制。<br/>HLS 估计 18.0715 ms / DSP 505<br/>超预算: LUT"]
+  E067["E067<br/>T16：BRAM 权重银行<br/>保留 T16，改用 BRAM 存权重。<br/>HLS 估计 18.7632 ms / DSP 505<br/>超预算: BRAM18K"]
+  E041["E041<br/>T16：5 ns 目标<br/>固定精度/存储，观察收紧周期后的调度和资源。<br/>HLS 估计 9.7275 ms / DSP 505<br/>候选，仍需验收"]
+  E042["E042<br/>T16：4 ns 目标<br/>相同架构进一步收紧周期。<br/>HLS 估计 8.0587 ms / DSP 505<br/>HLS 时序警告"]
+  E043["E043<br/>T16：3.33 ns 目标<br/>在同一资源/精度预算下继续收紧目标周期。<br/>HLS 估计 6.9392 ms / DSP 505<br/>HLS 时序警告"]
+  E033["E033 / 外部来源<br/>T32 单图综合控制<br/>HLS 估计 123.54 ms / DSP 9"]
+  E047["E047 / 外部来源<br/>明确把乘法绑定到 DSP<br/>HLS 估计 29.1386 ms / DSP 251"]
+  E048["E048 / 外部来源<br/>整数承载的定点运算<br/>HLS 估计 29.1386 ms / DSP 254"]
+  E033 -->|设计或参数基线| E034
+  E033 -->|设计或参数基线| E035
+  E034 -->|修复后重试| E044
+  E035 -->|修复后重试| E045
+  E048 -->|设计或参数基线| E057
+  E048 -->|设计或参数基线| E058
+  E057 -.->|对照实验| E058
+  E048 -->|设计或参数基线| E059
+  E058 -.->|对照实验| E059
+  E058 -->|设计或参数基线| E036
+  E058 -->|设计或参数基线| E037
+  E058 -->|设计或参数基线| E038
+  E047 -->|设计或参数基线| E039
+  E047 -->|设计或参数基线| E040
+  E039 -.->|对照实验| E040
+  E058 -->|设计或参数基线| E064
+  E058 -->|设计或参数基线| E067
+  E058 -->|设计或参数基线| E041
+  E058 -->|设计或参数基线| E042
+  E041 -.->|对照实验| E042
+  E058 -->|设计或参数基线| E043
+  E042 -.->|对照实验| E043
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E057,E058,E037,E038,E039,E041 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  class E042,E043 warning
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E034,E035 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E044,E045,E059,E036,E040,E064,E067 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E033,E047,E048 context

@@ -1,0 +1,60 @@
+%% 候选验证：同一设计的不同验收步骤
+flowchart TB
+  E069["E069<br/>第一轮 E043 的多图验收<br/>在所有 13 张已有图像上逐位比较最佳第一轮候选。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>C 仿真通过"]
+  E070["E070<br/>第一项可行 E039 的实际实现<br/>运行 Vivado 综合、布局和布线，记录真实利用率及时序。<br/>Routed WNS -1.277 ns<br/>实现时序未达标"]
+  F80["F80<br/>F25 的 13 图 C 仿真<br/>验证所有已有 Set14 图像与两帧 butterfly；每个输出位对照独立定点参考。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>C 仿真通过"]
+  F81["F81<br/>F25 的 Vivado 实现<br/>在独立工作区做实际物理实现。<br/>主机 OOM；无 routed 结果<br/>主机 OOM"]
+  F82["F82<br/>F25 的双帧 C/RTL 协仿<br/>同一 F25 RTL 跑两帧，启用有限 FIFO profiling 和死锁检查。<br/>RTL Pass / 1068183 cycles<br/>RTL 协仿完成"]
+  F83["F83<br/>F24 的 13 图 C 仿真<br/>验证第二候选的完整已有图像集。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>C 仿真通过"]
+  F84["F84<br/>F24 的 Vivado 实现<br/>独立测量第二候选的物理结果。<br/>主机 OOM；无 routed 结果<br/>主机 OOM"]
+  F85["F85<br/>F24 的双帧 RTL 计划<br/>计划验证有限 FIFO、状态复位与 RTL 周期。<br/>已准备，未归档测量<br/>未归档测量"]
+  F86["F86<br/>F23 的多图 C 仿真计划<br/>计划对第三候选执行全部已有图像验收。<br/>已准备，未归档测量<br/>未归档测量"]
+  F87["F87<br/>F23 的 Vivado 实现计划<br/>计划测量第三候选的 routed 资源和时序。<br/>已准备，未归档测量<br/>未归档测量"]
+  F88["F88<br/>F23 的双帧 RTL 计划<br/>计划执行第三候选的有限 FIFO RTL 验证。<br/>已准备，未归档测量<br/>未归档测量"]
+  F89["F89<br/>F25 的单线程实现重试计划<br/>保留生成的 IP/BD 流程，仅用本次 Tcl hook 限制 Vivado 内部线程。<br/>已准备，未归档测量<br/>未归档测量"]
+  F90["F90<br/>F24 的单线程实现重试计划<br/>相同流程控制用于第二候选。<br/>已准备，未归档测量<br/>未归档测量"]
+  F91["F91<br/>F23 的单线程实现计划<br/>计划用相同线程限制流程验证第三候选。<br/>已准备，未归档测量<br/>未归档测量"]
+  E017["E017 / 外部来源<br/>10 位边界与整数参考<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB"]
+  E039["E039 / 外部来源<br/>DSP 版 T32：LUTRAM 控制<br/>HLS 估计 29.8302 ms / DSP 251"]
+  E043["E043 / 外部来源<br/>T16：3.33 ns 目标<br/>HLS 估计 6.9392 ms / DSP 505"]
+  F23["F23 / 外部来源<br/>集成精确输出编码，2.5 ns<br/>HLS 估计 2.9595 ms / DSP 502"]
+  F24["F24 / 外部来源<br/>显式三维权重加载索引<br/>HLS 估计 2.8305 ms / DSP 502"]
+  F25["F25 / 外部来源<br/>关闭权重加载循环合并<br/>HLS 估计 2.6423 ms / DSP 502"]
+  E043 -.->|验证同一设计| E069
+  E017 -.->|数值依据或研究启发| E069
+  E039 -.->|验证同一设计| E070
+  F25 -.->|验证同一设计| F80
+  E017 -.->|数值依据或研究启发| F80
+  F25 -.->|验证同一设计| F81
+  F80 -.->|数值依据或研究启发| F81
+  F25 -.->|验证同一设计| F82
+  F80 -.->|数值依据或研究启发| F82
+  F24 -.->|验证同一设计| F83
+  E017 -.->|数值依据或研究启发| F83
+  F24 -.->|验证同一设计| F84
+  F83 -.->|数值依据或研究启发| F84
+  F24 -.->|验证同一设计| F85
+  F83 -.->|数值依据或研究启发| F85
+  F23 -.->|验证同一设计| F86
+  E017 -.->|数值依据或研究启发| F86
+  F23 -.->|验证同一设计| F87
+  F86 -.->|数值依据或研究启发| F87
+  F23 -.->|验证同一设计| F88
+  F86 -.->|数值依据或研究启发| F88
+  F81 -->|修复后重试| F89
+  F25 -.->|验证同一设计| F89
+  F84 -->|修复后重试| F90
+  F24 -.->|验证同一设计| F90
+  F87 -->|修复后重试| F91
+  F23 -.->|验证同一设计| F91
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E069,F80,F82,F83 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E070,F81,F84 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  class F85,F86,F87,F88,F89,F90,F91 planned
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E017,E039,E043,F23,F24,F25 context

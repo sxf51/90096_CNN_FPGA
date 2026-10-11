@@ -1,0 +1,22 @@
+%% 乘法器小实验：解释 HLS 的映射选择
+flowchart TB
+  E051["E051<br/>16x16 普通乘法<br/>独立测量一条 16x16 有符号乘法的 DSP 映射。<br/>PE: DSP 1 / LUT 62<br/>局部实验通过"]
+  E052["E052<br/>常数权重完全展开<br/>64 个已知常数乘法完全展开，观察常数优化。<br/>PE: DSP 60 / LUT 424<br/>局部实验通过"]
+  E053["E053<br/>8x8 fabric 乘法<br/>显式测量 LUT 乘法并穷举操作数对。<br/>PE: DSP 0 / LUT 119<br/>局部实验通过"]
+  E054["E054<br/>16x16，4 ns 控制<br/>只改变目标时钟，检查单 DSP 映射是否保持。<br/>PE: DSP 1 / LUT 62<br/>局部实验通过"]
+  E055["E055<br/>仅加法的匹配控制<br/>使用同样数组接口/循环，分离接口与乘法本体的 LUT 成本。<br/>PE: DSP 0 / LUT 73<br/>局部实验通过"]
+  E047["E047 / 外部来源<br/>明确把乘法绑定到 DSP<br/>HLS 估计 29.1386 ms / DSP 251"]
+  E047 -.->|数值依据或研究启发| E051
+  E051 -.->|对照实验| E052
+  E051 -.->|对照实验| E053
+  E051 -->|设计或参数基线| E054
+  E053 -.->|对照实验| E055
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E051,E052,E053,E054,E055 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E047 context

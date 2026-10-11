@@ -1,0 +1,37 @@
+%% 编译器对照：保留整幅特征图会怎样
+flowchart TB
+  E020["E020<br/>默认自动优化，10 ns<br/>复制原版并加循环标签，不改变计算和整图存储。<br/>HLS 估计 19601.1385 ms / DSP 10<br/>超预算: BRAM18K"]
+  E021["E021<br/>默认自动优化，4 ns<br/>只收紧目标周期，观察默认调度变化。<br/>HLS 估计 17179.0874 ms / DSP 10<br/>超预算: BRAM18K"]
+  E022["E022<br/>关闭自动流水<br/>测量默认流水策略是否有效。<br/>HLS 估计 44822.2301 ms / DSP 5<br/>超预算: BRAM18K"]
+  E023["E023<br/>最内层流水：无效配置<br/>尝试配置最内层 MAC 流水。<br/>HLS 估计 19601.1385 ms / DSP 10<br/>超预算: BRAM18K；II 未达目标；配置无效"]
+  E024["E024<br/>像素循环流水：无效配置<br/>尝试流水外层像素循环。<br/>HLS 估计 19601.1385 ms / DSP 10<br/>超预算: BRAM18K；II 未达目标；配置无效"]
+  E025["E025<br/>数组分区：无效配置<br/>尝试增加数组端口来改善调度。<br/>HLS 估计 19601.1385 ms / DSP 10<br/>超预算: BRAM18K；II 未达目标；配置无效"]
+  E026["E026<br/>允许浮点数学重排<br/>研究 unsafe-math 对浮点累加调度的影响。<br/>HLS 估计 19601.1367 ms / DSP 10<br/>超预算: BRAM18K"]
+  E027["E027<br/>只改 16 位定点类型<br/>保留整幅特征图，只替换数值类型。<br/>HLS 估计 3912.5609 ms / DSP 66<br/>超预算: BRAM18K/LUT"]
+  E028["E028<br/>有效最内层流水<br/>用工具接受的指令重做最内层 MAC 流水。<br/>HLS 估计 12170.2585 ms / DSP 12<br/>超预算: BRAM18K；HLS 时序警告"]
+  E029["E029<br/>有效像素循环流水<br/>用有效配置研究外层流水和自动内层展开。<br/>HLS 估计 3811.2172 ms / DSP 320<br/>超预算: BRAM18K；II 未达目标"]
+  E032["E032<br/>有效数组分区<br/>修正分区指令，再观察存储端口与流水。<br/>HLS 估计 12170.2585 ms / DSP 12<br/>超预算: BRAM18K；HLS 时序警告"]
+  E000["E000 / 外部来源<br/>原始浮点基线<br/>HLS 估计 19601.1385 ms / DSP 10"]
+  E015["E015 / 外部来源<br/>16/16 位单图有效重试<br/>C 仿真通过"]
+  E000 -->|设计或参数基线| E020
+  E020 -->|设计或参数基线| E021
+  E020 -->|设计或参数基线| E022
+  E020 -->|设计或参数基线| E023
+  E020 -->|设计或参数基线| E024
+  E020 -->|设计或参数基线| E025
+  E020 -->|设计或参数基线| E026
+  E015 -->|设计或参数基线| E027
+  E020 -.->|对照实验| E027
+  E023 -->|修复后重试| E028
+  E024 -->|修复后重试| E029
+  E025 -->|修复后重试| E032
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E023,E024,E025 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E020,E021,E022,E026,E027,E028,E029,E032 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E000,E015 context

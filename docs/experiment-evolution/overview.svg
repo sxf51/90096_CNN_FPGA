@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="2147" height="2621" viewBox="0 0 2147 2621">
+<title>SRCNN 实验总览 / 从原始结构到 F25</title>
+<desc>153 项档案 · 142 项有结果记录 · 11 项仅计划/准备 · HLS ms 按 max(目标周期, 估计周期) 换算。数据快照 800a87a。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="2147" height="2621" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">SRCNN 实验总览 / 从原始结构到 F25</text>
+<text x="48" y="76" font-size="17" fill="#435654">153 项档案 · 142 项有结果记录 · 11 项仅计划/准备 · HLS ms 按 max(目标周期, 估计周期) 换算</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M737.50 392.00 L737.50 440.00 L737.50 488.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M914.50 359.48 L914.50 440.00 L1135.50 440.00 L1135.50 500.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M597.69 392.00 L597.69 440.00 L528.50 440.00 L528.50 597.00 L528.50 754.00 L749.50 754.00 L749.50 834.52" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M737.50 706.00 L737.50 754.00 L800.07 754.00 L800.07 802.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1135.50 694.00 L1135.50 754.00 L1066.31 754.00 L1066.31 802.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1103.50 986.44 L1103.50 1044.00 L1220.00 1044.00 L1220.00 1092.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M749.50 936.11 L749.50 1044.00 L235.00 1044.00 L235.00 1105.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1043.00 1214.54 L1043.00 1334.00 L215.00 1334.00 L218.94 1334.00 L218.94 1397.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M235.00 1273.00 L235.00 1334.00 L231.06 1334.00 L231.06 1397.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1043.00 1231.99 L1043.00 1334.00 L623.00 1334.00 L623.00 1397.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1086.88 1286.00 L1086.88 1334.00 L1021.00 1334.00 L1021.00 1397.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1353.12 1286.00 L1353.12 1334.00 L1419.00 1334.00 L1419.00 1382.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1397.00 1231.99 L1397.00 1334.00 L1817.00 1334.00 L1817.00 1397.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M225.00 1591.00 L225.00 1654.00 L749.50 1654.00 L749.50 1773.63" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1419.00 1606.00 L1419.00 1654.00 L1103.50 1654.00 L1103.50 1756.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1817.00 1591.00 L1817.00 1654.00 L1817.00 1717.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1817.00 1911.00 L1817.00 1974.00 L1817.00 2022.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1817.00 2240.00 L1817.00 2288.00 L1848.85 2288.00 L1848.85 2336.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1397.00 1220.84 L1397.00 1334.00 L2026.00 1334.00 L2026.00 1494.00 L2026.00 1654.00 L2026.00 1814.00 L2026.00 1974.00 L2026.00 2131.00 L2026.00 2288.00 L1994.15 2288.00 L1994.15 2336.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<g data-id="baseline">
+<rect x="560.50" y="198.00" width="354" height="194" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="584.50" y="225.00" font-size="17" font-weight="700" fill="#243031">E000 / 起点</text>
+<text x="584.50" y="256.50" font-size="20" font-weight="700" fill="#243031">原始浮点、完整中间图</text>
+<text x="584.50" y="292.50" font-size="17" font-weight="700" fill="#243031">522.28 M MAC / frame</text>
+<text x="584.50" y="318.00" font-size="17" font-weight="700" fill="#243031">BRAM18K 11064，器件仅 288</text>
+<text x="584.50" y="349.50" font-size="16" font-weight="400" fill="#5c6160">功能成立，存储结构不可行</text>
+</g>
+<g data-id="precision">
+<rect x="560.50" y="488.00" width="354" height="218" rx="4" fill="#edf7f8" stroke="#49838a" stroke-width="1.5"/>
+<text x="584.50" y="515.00" font-size="17" font-weight="700" fill="#243031">E010-E019 / E062-E071</text>
+<text x="584.50" y="546.50" font-size="20" font-weight="700" fill="#243031">精度与独立参考</text>
+<text x="584.50" y="582.50" font-size="17" font-weight="700" fill="#243031">10 位平均 ΔPSNR −0.0695 dB</text>
+<text x="584.50" y="608.00" font-size="17" font-weight="700" fill="#243031">全 8 位约 −5.18 dB</text>
+<text x="584.50" y="639.50" font-size="16" font-weight="400" fill="#5c6160">13 图，缺 comic；bit-exact 指定点</text>
+<text x="584.50" y="663.50" font-size="16" font-weight="400" fill="#5c6160">参考</text>
+</g>
+<g data-id="compiler">
+<rect x="958.50" y="500.00" width="354" height="194" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="982.50" y="527.00" font-size="17" font-weight="700" fill="#243031">E020-E029 / E032</text>
+<text x="982.50" y="558.50" font-size="20" font-weight="700" fill="#243031">只改编译指令</text>
+<text x="982.50" y="594.50" font-size="17" font-weight="700" fill="#243031">有效浮点控制约 3811 ms</text>
+<text x="982.50" y="620.00" font-size="17" font-weight="700" fill="#243031">BRAM18K 11114</text>
+<text x="982.50" y="651.50" font-size="16" font-weight="400" fill="#5c6160">修复无效配置后，仍需改存储组织</text>
+</g>
+<g data-id="streaming">
+<rect x="749.50" y="802.00" width="354" height="194" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="773.50" y="829.00" font-size="17" font-weight="700" fill="#243031">E030-E033 / E047-E048</text>
+<text x="773.50" y="860.50" font-size="20" font-weight="700" fill="#243031">整网流连接与行缓存</text>
+<text x="773.50" y="896.50" font-size="17" font-weight="700" fill="#243031">中间图取消，BRAM18K 168</text>
+<text x="773.50" y="922.00" font-size="17" font-weight="700" fill="#243031">DSP 绑定、整数承载</text>
+<text x="773.50" y="953.50" font-size="16" font-weight="400" fill="#5c6160">权重选择器仍大：LUT 89304</text>
+</g>
+<g data-id="scans">
+<rect x="1043.00" y="1092.00" width="354" height="194" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1067.00" y="1119.00" font-size="17" font-weight="700" fill="#243031">E034-E043 / E057-E067 扫描</text>
+<text x="1067.00" y="1150.50" font-size="20" font-weight="700" fill="#243031">LUTRAM 银行、展开与时钟</text>
+<text x="1067.00" y="1186.50" font-size="17" font-weight="700" fill="#243031">E043：HLS 约 6.9392 ms</text>
+<text x="1067.00" y="1212.00" font-size="17" font-weight="700" fill="#243031">DSP 505 / BRAM18K 168</text>
+<text x="1067.00" y="1243.50" font-size="16" font-weight="400" fill="#5c6160">资源合格；存在 HLS 时序告警</text>
+</g>
+<g data-id="micro">
+<rect x="58.00" y="1105.00" width="354" height="168" rx="4" fill="#edf7f8" stroke="#49838a" stroke-width="1.5"/>
+<text x="82.00" y="1132.00" font-size="17" font-weight="700" fill="#243031">E051-E055 / E071</text>
+<text x="82.00" y="1163.50" font-size="20" font-weight="700" fill="#243031">乘法器和范围控制</text>
+<text x="82.00" y="1199.50" font-size="17" font-weight="700" fill="#243031">DSP / fabric / 常数权重对照</text>
+<text x="82.00" y="1231.00" font-size="16" font-weight="400" fill="#5c6160">小内核成本不能当作整网结果</text>
+</g>
+<g data-id="packing">
+<rect x="48.00" y="1397.00" width="354" height="194" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="1424.00" font-size="17" font-weight="700" fill="#243031">A / P01-P16</text>
+<text x="72.00" y="1455.50" font-size="20" font-weight="700" fill="#243031">Packing：省 DSP 的代价</text>
+<text x="72.00" y="1491.50" font-size="17" font-weight="700" fill="#243031">INT8 与精确十位 PE 成立</text>
+<text x="72.00" y="1517.00" font-size="17" font-weight="700" fill="#243031">P10-P12 整网 LUT 超预算</text>
+<text x="72.00" y="1548.50" font-size="16" font-weight="400" fill="#5c6160">P13-P16：完整 INT16，仅准备记录</text>
+</g>
+<g data-id="scatter">
+<rect x="446.00" y="1397.00" width="354" height="194" rx="4" fill="#edf7f8" stroke="#49838a" stroke-width="1.5"/>
+<text x="470.00" y="1424.00" font-size="17" font-weight="700" fill="#243031">C / E050 / E060 / G01-G03</text>
+<text x="470.00" y="1455.50" font-size="20" font-weight="700" fill="#243031">Conv3 Scatter</text>
+<text x="470.00" y="1491.50" font-size="17" font-weight="700" fill="#243031">BRAM18K 168 → 137 → 87</text>
+<text x="470.00" y="1517.00" font-size="17" font-weight="700" fill="#243031">29.83 → 37.70 → 44.14 ms</text>
+<text x="470.00" y="1548.50" font-size="16" font-weight="400" fill="#5c6160">缓存变少，控制与额外工作变多</text>
+</g>
+<g data-id="memory">
+<rect x="844.00" y="1397.00" width="354" height="194" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="868.00" y="1424.00" font-size="17" font-weight="700" fill="#243031">S01-S06</text>
+<text x="868.00" y="1455.50" font-size="20" font-weight="700" fill="#243031">DDR 探针与分块融合</text>
+<text x="868.00" y="1491.50" font-size="17" font-weight="700" fill="#243031">DDR 探针未导出 scratch 端口</text>
+<text x="868.00" y="1517.00" font-size="17" font-weight="700" fill="#243031">B8-B64：少 BRAM、重算 halo</text>
+<text x="868.00" y="1548.50" font-size="16" font-weight="400" fill="#5c6160">无有效 DDR；分块 LUT/时间不合格</text>
+</g>
+<g data-id="winograd">
+<rect x="1242.00" y="1382.00" width="354" height="224" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1266.00" y="1409.00" font-size="17" font-weight="700" fill="#243031">D / W01-W18</text>
+<text x="1266.00" y="1440.50" font-size="20" font-weight="700" fill="#243031">Winograd → 连续 tile → </text>
+<text x="1266.00" y="1470.50" font-size="20" font-weight="700" fill="#243031">窄银行</text>
+<text x="1266.00" y="1506.50" font-size="17" font-weight="700" fill="#243031">W18：HLS 约 4.2274 ms</text>
+<text x="1266.00" y="1532.00" font-size="17" font-weight="700" fill="#243031">DSP 326 / LUT 74480</text>
+<text x="1266.00" y="1563.50" font-size="16" font-weight="400" fill="#5c6160">资源合格；存在 HLS 时序告警</text>
+</g>
+<g data-id="continuous">
+<rect x="1640.00" y="1397.00" width="354" height="194" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1664.00" y="1424.00" font-size="17" font-weight="700" fill="#243031">B / F01-F15</text>
+<text x="1664.00" y="1455.50" font-size="20" font-weight="700" fill="#243031">连续流水与固定窗口读取</text>
+<text x="1664.00" y="1491.50" font-size="17" font-weight="700" fill="#243031">FIFO LUTRAM、在线补边</text>
+<text x="1664.00" y="1517.00" font-size="17" font-weight="700" fill="#243031">双窗口流、通道轮换、注册加法树</text>
+<text x="1664.00" y="1548.50" font-size="16" font-weight="400" fill="#5c6160">去像素间重启，减少宽选择器</text>
+</g>
+<g data-id="combination">
+<rect x="749.50" y="1702.00" width="354" height="224" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="773.50" y="1729.00" font-size="17" font-weight="700" fill="#243031">C01-C12 / 组合实验</text>
+<text x="773.50" y="1760.50" font-size="20" font-weight="700" fill="#243031">Winograd + Packing / 混合</text>
+<text x="773.50" y="1790.50" font-size="20" font-weight="700" fill="#243031">精度</text>
+<text x="773.50" y="1826.50" font-size="17" font-weight="700" fill="#243031">最快原始估计 C11：1.0817 ms</text>
+<text x="773.50" y="1852.00" font-size="17" font-weight="700" fill="#243031">LUT 248797 / FF 307525</text>
+<text x="773.50" y="1883.50" font-size="16" font-weight="400" fill="#5c6160">明显超量，不能按最小时间选择</text>
+</g>
+<g data-id="loader">
+<rect x="1640.00" y="1717.00" width="354" height="194" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1664.00" y="1744.00" font-size="17" font-weight="700" fill="#243031">F16-F24</text>
+<text x="1664.00" y="1775.50" font-size="20" font-weight="700" fill="#243031">移除输出转换与加载路径瓶颈</text>
+<text x="1664.00" y="1811.50" font-size="17" font-weight="700" fill="#243031">F20：精确 float 编码，0 DSP</text>
+<text x="1664.00" y="1837.00" font-size="17" font-weight="700" fill="#243031">F24：显式三维权重加载索引</text>
+<text x="1664.00" y="1868.50" font-size="16" font-weight="400" fill="#5c6160">全局关键路径转到加载循环控制</text>
+</g>
+<g data-id="f25">
+<rect x="1640.00" y="2022.00" width="354" height="218" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="3"/>
+<text x="1664.00" y="2049.00" font-size="17" font-weight="700" fill="#243031">F25 / 当前直接卷积候选</text>
+<text x="1664.00" y="2080.50" font-size="20" font-weight="700" fill="#243031">关闭 F24 的权重加载循环合并</text>
+<text x="1664.00" y="2116.50" font-size="17" font-weight="700" fill="#243031">HLS 约 2.64226 ms / DSP 502</text>
+<text x="1664.00" y="2142.00" font-size="17" font-weight="700" fill="#243031">BRAM18K 73 / LUT 69976</text>
+<text x="1664.00" y="2173.50" font-size="16" font-weight="400" fill="#5c6160">2.5 ns 有 uncertainty 后的时序告</text>
+<text x="1664.00" y="2197.50" font-size="16" font-weight="400" fill="#5c6160">警</text>
+</g>
+<g data-id="verification">
+<rect x="1744.50" y="2336.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1768.50" y="2363.00" font-size="17" font-weight="700" fill="#243031">E069-E070 / F80-F91</text>
+<text x="1768.50" y="2394.50" font-size="20" font-weight="700" fill="#243031">数值、RTL、物理分别验收</text>
+<text x="1768.50" y="2430.50" font-size="17" font-weight="700" fill="#243031">F80：13 图；F82：双帧 RTL Pass</text>
+<text x="1768.50" y="2456.00" font-size="17" font-weight="700" fill="#243031">F81/F84：主机 OOM，无 routed 报</text>
+<text x="1768.50" y="2481.50" font-size="17" font-weight="700" fill="#243031">告</text>
+<text x="1768.50" y="2513.00" font-size="16" font-weight="400" fill="#5c6160">E070 WNS&lt;0；物理时序与上板未闭环</text>
+</g>
+</svg>

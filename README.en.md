@@ -57,6 +57,12 @@ Local C simulation with the supplied butterfly input, weights, and golden output
 
 These values indicate close agreement with the floating-point reference; they are not image-quality scores against high-resolution ground truth. Use the Set14 MSE and PSNR test for image-quality evaluation.
 
+## Archived optimization experiments
+
+The [experiment evolution guide](docs/0004-experiment-evolution.md) documents all 153 experiments in snapshot `800a87a`, including dependencies, changes, results, limitations, and original reports. Start with the [overview](docs/experiment-evolution/overview.svg), then the [evolution toward F25](docs/experiment-evolution/continuous.svg) and [verification relationships](docs/experiment-evolution/verification.svg). See the [documentation index](docs/README.md) for all entries. The diagrams and detailed commentary are in Chinese.
+
+Optimized experiments live in `designs/`, `exp/`, and `experiments/`; root `src/` and `script.py` remain the floating-point baseline. F82 records passing two-frame RTL co-simulation of F25. F25 still has an HLS timing warning at its 2.5 ns target; physical timing and board performance remain unverified. The plan below describes optimization directions for the original baseline.
+
 ## FPGA optimization plan
 
 The following is a **plan, not an implemented feature list**. It follows the lecture material on tiled convolution, model quantization, dataflow, and overlapping load/compute/store, while using the actual 255 × 255 dimensions in this code. Each change must preserve the current edge-replication behavior and be checked against the golden reference before performance is compared.

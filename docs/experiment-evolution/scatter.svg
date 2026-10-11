@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="920" height="1346" viewBox="0 0 920 1346">
+<title>C：Gather 与 Scatter 的存储/控制取舍</title>
+<desc>先跨通道求和再缓存，能节省多少 BRAM，代价是什么？。数据快照 800a87a。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="920" height="1346" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">C：Gather 与 Scatter 的存储/控制取舍</text>
+<text x="48" y="76" font-size="17" fill="#435654">先跨通道求和再缓存，能节省多少 BRAM，代价是什么？</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M623.00 335.00 L623.00 383.00 L623.00 431.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M225.00 609.00 L225.00 698.00 L285.65 698.00 L285.65 746.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M623.00 650.00 L623.00 698.00 L562.35 698.00 L562.35 746.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M424.00 965.00 L424.00 1013.00 L424.00 1061.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<g data-id="G01">
+<rect x="446.00" y="431.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="470.00" y="458.00" font-size="17" font-weight="700" fill="#243031">G01</text>
+<text x="470.00" y="489.50" font-size="20" font-weight="700" fill="#243031">Gather 统一控制</text>
+<text x="470.00" y="525.50" font-size="16" font-weight="400" fill="#243031">独立复测相同 T32、10 ns、十位精度的</text>
+<text x="470.00" y="549.50" font-size="16" font-weight="400" fill="#243031"> Conv3 行缓存组织。</text>
+<text x="470.00" y="579.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 29.8302 ms / DSP 254</text>
+<text x="470.00" y="609.50" font-size="15" font-weight="400" fill="#5c6160">候选，仍需验收</text>
+</g>
+<g data-id="G02">
+<rect x="247.00" y="746.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="271.00" y="773.00" font-size="17" font-weight="700" fill="#243031">G02</text>
+<text x="271.00" y="804.50" font-size="20" font-weight="700" fill="#243031">显式补边 Scatter</text>
+<text x="271.00" y="840.50" font-size="16" font-weight="400" fill="#243031">存五行 32 位部分和，保留原来的 32 通</text>
+<text x="271.00" y="864.50" font-size="16" font-weight="400" fill="#243031">道补边。</text>
+<text x="271.00" y="894.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 37.7021 ms / DSP 254</text>
+<text x="271.00" y="924.50" font-size="15" font-weight="400" fill="#5c6160">候选，仍需验收</text>
+</g>
+<g data-id="G03">
+<rect x="247.00" y="1061.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="271.00" y="1088.00" font-size="17" font-weight="700" fill="#243031">G03</text>
+<text x="271.00" y="1119.50" font-size="20" font-weight="700" fill="#243031">合并边界核 Scatter</text>
+<text x="271.00" y="1155.50" font-size="16" font-weight="400" fill="#243031">把九种边界位置的重复 taps 合并，移除</text>
+<text x="271.00" y="1179.50" font-size="16" font-weight="400" fill="#243031">宽通道补边缓存。</text>
+<text x="271.00" y="1209.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 44.1393 ms / DSP 254</text>
+<text x="271.00" y="1239.50" font-size="15" font-weight="400" fill="#5c6160">候选，仍需验收</text>
+</g>
+<g data-id="E057">
+<rect x="446.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="470.00" y="225.00" font-size="17" font-weight="700" fill="#243031">E057 / 外部来源</text>
+<text x="470.00" y="256.50" font-size="20" font-weight="700" fill="#243031">整数 T32 + LUTRAM 权重银行</text>
+<text x="470.00" y="292.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 29.8302 ms / DSP 254</text>
+</g>
+<g data-id="E060">
+<rect x="48.00" y="472.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="499.00" font-size="17" font-weight="700" fill="#243031">E060 / 外部来源</text>
+<text x="72.00" y="530.50" font-size="20" font-weight="700" fill="#243031">整数版 Conv3 Scatter</text>
+<text x="72.00" y="566.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 37.7021 ms / DSP 254</text>
+</g>
+</svg>

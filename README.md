@@ -59,6 +59,12 @@
 
 这些数值反映单精度计算与参考输出基本一致；它们不是与高分辨率真值图像比较的超分辨率质量指标。图像质量可通过 Set14 测试中的 MSE 和 PSNR 评估。
 
+## 已归档的优化实验
+
+[实验思路与演进图](docs/0004-experiment-evolution.md) 整理了提交 `800a87a` 中的 153 项实验，包括每项的来源、改动、效果、问题和原始报告。先看 [总览图](docs/experiment-evolution/overview.svg)，再看 [F25 的形成过程](docs/experiment-evolution/continuous.svg) 与 [验证关系](docs/experiment-evolution/verification.svg)。完整入口见 [文档索引](docs/README.md)。
+
+优化实验位于 `designs/`、`exp/` 和 `experiments/`；根目录 `src/`、`script.py` 仍为浮点基线。F82 是 F25 的双帧 RTL 协仿记录，功能 Pass；F25 的 2.5 ns HLS 配置仍有时序警告，物理实现和板端性能尚未验证。下方计划描述的是原始基线的调优方向。
+
 ## 参考
 
 - [sharc-lab FPGA_ECE8893 Lab2](https://github.com/sharc-lab/FPGA_ECE8893/tree/main/2023_Spring/Lab2)：卷积及 HLS 实现方法参考。该 Lab2 的网络与本项目的三层 SRCNN 不相同。
