@@ -63,6 +63,10 @@ runner to replay the measurement. P09 validates this path against P01; see
   reduce those costs while retaining the MAC engines' transformed banks.
   This attribution is a hypothesis; compare exact outputs, loader reports,
   total resources and achieved II before accepting it.
+- F20 exhausts all signed ten-bit output carriers and measures exact IEEE
+  construction with zero DSP. F22/F23 retain the archived F13 network and
+  replace only output decoding at3ns/2.5ns target clocks. The PE's2.051ns
+  estimate cannot establish the full network's critical path or routed timing.
 
 Synthesis is serialized for the15GiB remote host, with60-minute per-run timeout
 and45-minute issue-tuning limit. Generated HDL/cache/binaries remain outside

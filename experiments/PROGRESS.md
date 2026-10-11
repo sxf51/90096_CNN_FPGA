@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-11T01:29:07+00:00 from archived measurements.
+Updated 2026-10-11T01:32:25+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -14,7 +14,7 @@ Fastest resource-feasible exact frame estimate: [F08](F08_continuous_T16_oldpad_
 
 ## Outstanding
 
-Exploration: C10, C11, F11, F12, F21, W14, W15, W16.
+Exploration: C10, C11, F11, F12, F21, F22, F23, W14, W15, W16.
 
 Final verification: awaiting global candidate selection.
 
