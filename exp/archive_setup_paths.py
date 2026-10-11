@@ -11,6 +11,28 @@ from analyze_route import setup_paths
 from run_exp import ROOT, append_log, check_protected, write_json
 
 
+def archive_complete(archive, config, script):
+    destination = archive / "reports/impl/srcnn_setup5_routed.rpt"
+    if (not destination.is_file() or not (archive / "critical_paths.csv").is_file() or
+            not (archive / "setup_paths_operation.txt").is_file() or
+            config.get("setup_paths_script_sha256") != hashlib.sha256(script.read_bytes()).hexdigest()):
+        return False
+    if len(setup_paths(destination.read_text())) != 5:
+        return False
+    records = [item for item in config.get("verification_reports", [])
+               if item["archived_file"] == str(destination.relative_to(archive))]
+    return (len(records) == 1 and
+            records[0]["sha256"] == hashlib.sha256(destination.read_bytes()).hexdigest())
+
+
+def register_report(config, archive, target, raw_file):
+    relative = str(target.relative_to(archive))
+    records = config.setdefault("verification_reports", [])
+    records[:] = [item for item in records if item["archived_file"] != relative]
+    records.append({"raw_file": raw_file, "archived_file": relative,
+                    "sha256": hashlib.sha256(target.read_bytes()).hexdigest()})
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("id")
@@ -21,7 +43,8 @@ def main():
     if config.get("operation") != "impl" or not config.get("verification", {}).get("impl_timing_report"):
         raise RuntimeError("A completed routed implementation is required")
     destination = archive / "reports/impl/srcnn_setup5_routed.rpt"
-    if destination.is_file():
+    script = ROOT / "exp/report_setup_paths.tcl"
+    if archive_complete(archive, config, script):
         print("Already archived setup paths:", args.id)
         return
     remote_root = "/home/lipuze/amdprojects/90096_CNN_FPGA"
@@ -30,7 +53,6 @@ def main():
     paths = subprocess.check_output(ssh + ["find " + shlex.quote(remote_work) + " -type f -name '*_routed.dcp'"], text=True).splitlines()
     if len(paths) != 1:
         raise RuntimeError("Require one unique routed checkpoint")
-    script = ROOT / "exp/report_setup_paths.tcl"
     subprocess.run(["scp", "-F", str(ROOT.parent / "ssh-config"), str(script),
                     "xiaoxin-ubuntu:"+remote_work+"/report_setup_paths.tcl"], check=True)
     output = remote_work+"/srcnn_setup5_routed.rpt"
@@ -52,8 +74,7 @@ def main():
     rows = setup_paths(destination.read_text())
     if len(rows) != 5:
         raise RuntimeError("The exported report does not contain five setup paths")
-    config["verification_reports"].append({"raw_file":"srcnn_setup5_routed.rpt", "archived_file":str(destination.relative_to(archive)),
-                                           "sha256":hashlib.sha256(destination.read_bytes()).hexdigest()})
+    register_report(config, archive, destination, "srcnn_setup5_routed.rpt")
     report_dir = str(Path(config["verification"]["impl_resource_report"]).parent)
     for state in ("synth", "routed"):
         filename = "srcnn_utilization_hierarchical_"+state+".rpt"
@@ -63,11 +84,10 @@ def main():
         if present:
             target = destination.parent / filename
             subprocess.run(["scp", "-F", str(ROOT.parent / "ssh-config"), "xiaoxin-ubuntu:"+source, str(target)], check=True)
-            config["verification_reports"].append({"raw_file":raw_file,"archived_file":str(target.relative_to(archive)),
-                                                   "sha256":hashlib.sha256(target.read_bytes()).hexdigest()})
+            register_report(config, archive, target, raw_file)
     config["setup_paths_script_sha256"] = hashlib.sha256(script.read_bytes()).hexdigest()
-    write_json(archive / "config.json",config)
     write_csv(archive / "critical_paths.csv", rows, list(rows[0]))
+    write_json(archive / "config.json",config)
     append_log(args.id+": exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.")
     print("Archived five setup paths:", args.id)
 
