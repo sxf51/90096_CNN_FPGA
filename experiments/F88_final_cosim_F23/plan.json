@@ -1,0 +1,31 @@
+{
+  "config_sha256": "e022b319cf2ae5599ead8bc67261a6a7410e5b0d96a1f0d9d43461324b0a2151",
+  "configuration": {
+    "clock": 2.5,
+    "design": "designs/continuous_ieee_v1",
+    "estimates": {
+      "BRAM18K": 73.0,
+      "DSP": 502.0,
+      "LUT": 70449.0,
+      "T": 16.0,
+      "URAM": 0.0,
+      "basis": "Frozen parent F23 HLS estimates. Implementation resources may optimize/change, RTL finite-FIFO latency may differ. No board performance estimate is substituted for actual reports.",
+      "latency_cycles": 1048730.0
+    },
+    "id": "F88",
+    "name": "final_cosim_F23",
+    "notes": "Selected globally by lowest HLS latency among resource-feasible exact frame records; full14-image acceptance remains unavailable.",
+    "operation": "cosim",
+    "purpose": "Verify selected exact resource-feasible point F23 using cosim. Run two complete butterfly transactions with dataflow profiling and a six-hour process-tree timeout; compare real latency/interval to frozen HLS predictions and detect deadlock.",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_final",
+    "timeout": 21600,
+    "validation_parent": "F86",
+    "verify_parent": "F23"
+  },
+  "created_at": "2026-10-11T03:25:04+00:00",
+  "created_from_commit": "51723fce954c7a589097eb1a1c8d72db5f80761a",
+  "purpose_section": "Verify selected exact resource-feasible point F23 using cosim. Run two complete butterfly transactions with dataflow profiling and a six-hour process-tree timeout; compare real latency/interval to frozen HLS predictions and detect deadlock.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 502.0 |\n| BRAM18K | 73.0 |\n| URAM | 0.0 |\n| LUT | 70449.0 |\n| T | 16.0 |\n| latency_cycles | 1048730.0 |\n| basis | Frozen parent F23 HLS estimates. Implementation resources may optimize/change, RTL finite-FIFO latency may differ. No board performance estimate is substituted for actual reports. |\n\nPlanned at 2026-10-11T03:25:04+00:00; estimates are hypotheses, not tool measurements."
+}
