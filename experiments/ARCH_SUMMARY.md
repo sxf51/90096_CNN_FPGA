@@ -170,6 +170,7 @@ Loader controls preserve all inference engines, precision and runtime parameters
 | [F23](F23_continuous_ieee_T16_2p5ns/F23.md) | frame | 16 | 1048730.0 | 2.95951606 | 502.0 | 73.0 | 0.0 | 70449.0 | 125618.0 | True | 1.661846957728205e-05 | True | provisional |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | frame | 16 | 1048723.0 | 2.830503377 | 502.0 | 73.0 | 0.0 | 69290.0 | 124577.0 | True | 1.661846957728205e-05 | True | provisional |
 | [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | frame | 16 | 1056904.0 | 2.64226 | 502.0 | 73.0 | 0.0 | 69976.0 | 125404.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F80](F80_final_all_supplied_F25/F80.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
 
 ## All Architectures
 
@@ -343,6 +344,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | frame | 519.0 | 520.0 | 0.19267822736031004 | 620200.0 | 532562.0 | -14.13060303128023 | infeasible |
 | [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | frame | 502.0 | 502.0 | 0.0 | 1068723.0 | 1056904.0 | -1.1058992835374593 | provisional |
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | frame | 1035.0 | 1036.0 | 0.09661835748793202 | 360100.0 | 270418.0 | -24.904748680921962 | infeasible |
+| [F80](F80_final_all_supplied_F25/F80.md) | frame | 502.0 | unknown | unknown | 1056904.0 | unknown | unknown | csim_pass |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -418,6 +420,7 @@ Selected candidates were ranked globally across both phases before validation. M
 
 | id | design | image_count | csim_pass | bit_exact | set14_psnr | delta_psnr | border_mse | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F80](F80_final_all_supplied_F25/F80.md) | designs/continuous_nested_load_v1 | 13 | True | True | 29.088943394069588 | -0.0695141811880653 | 1.661846957728205e-05 | csim_pass |
 
 Routed timing closes for 0 selected implementation runs; 0 selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.
 
@@ -496,4 +499,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T03:25:51+00:00.
+Generated from archived evidence at 2026-10-11T03:29:12+00:00.
