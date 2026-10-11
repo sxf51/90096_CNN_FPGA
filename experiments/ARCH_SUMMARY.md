@@ -98,6 +98,7 @@ Measured direction result: none of its completed frame points satisfies all reso
 | [C09](C09_wino_conv2w8_continuous_T4/C09.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | fail |
 | [C04](C04_wino_packing_T4_all_header_retry/C04.md) | frame | 4 | 2378443.0 | 9.513772 | 936.0 | 241.0 | 0.0 | 293222.0 | 253809.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [C07](C07_continuous_wino_packing_T8/C07.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [C12](C12_continuous_wino_packing_T8_guard_retry/C12.md) | frame | 8 | 1894303.0 | 7.577212 | 470.0 | 169.0 | 0.0 | 174591.0 | 161653.0 | True | 1.661846957728205e-05 | True | infeasible |
 
 ## F Direction
 
@@ -117,6 +118,10 @@ Measured direction result: [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md)
 | [F19](F19_ieee_decode_legacy_control_sdk_retry/F19.md) | PE | 1 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [F04](F04_continuous_T16_online_4ns/F04.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
 | [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | frame | 16 | 1048687.0 | 4.194748 | 505.0 | 73.0 | 0.0 | 68903.0 | 106661.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F05](F05_continuous_T8_online_4ns/F05.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
+| [F06](F06_continuous_T16_online_3p33ns/F06.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
+| [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | frame | 8 | 528488.0 | 2.113952 | 1007.0 | 73.0 | 0.0 | 96488.0 | 171235.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [F07](F07_continuous_T8_online_3p33ns/F07.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
 
 ## All Architectures
 
@@ -124,12 +129,14 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 
 | id | series | design | T_target | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | F | designs/continuous_rotate_v1 | 8 | 2.113952 | 1007.0 | 73.0 | 96488.0 | 171235.0 | -0.0695141811880653 | infeasible |
 | [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md) | F | designs/continuous_direct_r2 | 16 | 4.194708 | 505.0 | 96.0 | 69362.0 | 106171.0 | -0.0695141811880653 | provisional |
 | [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | F | designs/continuous_rotate_v1 | 16 | 4.194748 | 505.0 | 73.0 | 68903.0 | 106661.0 | -0.0695141811880653 | provisional |
 | [P12](P12_exact10_packing_T4/P12.md) | P | designs/packing_network | 4 | 5.422328 | 1007.0 | 168.0 | 292053.0 | 159828.0 | -0.0695141811880653 | infeasible |
 | [E043](E043_scan_clock_T16_E043/E043.md) | unknown | designs/dataflow_int | 16 | 6.93923049 | 505.0 | 168.0 | 55325.0 | 67025.0 | -0.0695141811880653 | provisional |
 | [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) | W | designs/winograd_continuous | 16 | 7.548204 | 326.0 | 241.0 | 79158.0 | 76052.0 | -0.0695141811880653 | provisional |
 | [P11](P11_exact10_packing_T8/P11.md) | P | designs/packing_network | 8 | 7.577208 | 505.0 | 168.0 | 165606.0 | 106599.0 | -0.0695141811880653 | infeasible |
+| [C12](C12_continuous_wino_packing_T8_guard_retry/C12.md) | C | designs/combination_continuous_r1 | 8 | 7.577212 | 470.0 | 169.0 | 174591.0 | 161653.0 | -0.0695141811880653 | infeasible |
 | [E042](E042_scan_clock_T16_E042/E042.md) | unknown | designs/dataflow_int | 16 | 8.058712 | 505.0 | 168.0 | 56007.0 | 62948.0 | -0.0695141811880653 | provisional |
 | [F01](F01_fifo_lutram_control/F01.md) | F | designs/fifo_lutram_control | 16 | 8.058712 | 505.0 | 96.0 | 56081.0 | 62800.0 | -0.0695141811880653 | provisional |
 | [F02](F02_uram_line_control/F02.md) | F | designs/uram_line_control | 16 | 8.058712 | 505.0 | 132.0 | 56007.0 | 62948.0 | -0.0695141811880653 | provisional |
@@ -186,6 +193,9 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [F04](F04_continuous_T16_online_4ns/F04.md) | F | designs/continuous_direct | 16 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
 | [W13](W13_fixed_tiles_T8_allcontinuous_3p33ns/W13.md) | W | designs/winograd_continuous | 8 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
 | [C07](C07_continuous_wino_packing_T8/C07.md) | C | designs/combination_continuous | 8 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [F05](F05_continuous_T8_online_4ns/F05.md) | F | designs/continuous_direct | 8 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
+| [F06](F06_continuous_T16_online_3p33ns/F06.md) | F | designs/continuous_direct | 16 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
+| [F07](F07_continuous_T8_online_3p33ns/F07.md) | F | designs/continuous_direct | 8 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
 
 ## Estimates And Actuals
 
@@ -243,6 +253,11 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [W13](W13_fixed_tiles_T8_allcontinuous_3p33ns/W13.md) | frame | 647.0 | unknown | unknown | 620200.0 | unknown | unknown | fail |
 | [C07](C07_continuous_wino_packing_T8/C07.md) | frame | 469.0 | unknown | unknown | 2100000.0 | unknown | unknown | fail |
 | [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | frame | 505.0 | 505.0 | 0.0 | 1140400.0 | 1048687.0 | -8.04217818309365 | provisional |
+| [F05](F05_continuous_T8_online_4ns/F05.md) | frame | 1007.0 | unknown | unknown | 620200.0 | unknown | unknown | fail |
+| [C12](C12_continuous_wino_packing_T8_guard_retry/C12.md) | frame | 469.0 | 470.0 | 0.2132196162046851 | 2100000.0 | 1894303.0 | -9.795095238095241 | infeasible |
+| [F06](F06_continuous_T16_online_3p33ns/F06.md) | frame | 505.0 | unknown | unknown | 1140400.0 | unknown | unknown | fail |
+| [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | frame | 1007.0 | 1007.0 | 0.0 | 620200.0 | 528488.0 | -14.787487907126728 | infeasible |
+| [F07](F07_continuous_T8_online_3p33ns/F07.md) | frame | 1007.0 | unknown | unknown | 620200.0 | unknown | unknown | fail |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -293,6 +308,8 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md) | 5 | provisional |
 | [C04](C04_wino_packing_T4_all_header_retry/C04.md) | 3 | infeasible |
 | [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | 5 | provisional |
+| [C12](C12_continuous_wino_packing_T8_guard_retry/C12.md) | 4 | infeasible |
+| [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | 5 | infeasible |
 
 ## Failed Directions
 
@@ -326,6 +343,11 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F04](F04_continuous_T16_online_4ns/F04.md) | F | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (F04/source/srcnn.cpp:312:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
 | [W13](W13_fixed_tiles_T8_allcontinuous_3p33ns/W13.md) | W | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (W13/source/srcnn.cpp:488:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
 | [C07](C07_continuous_wino_packing_T8/C07.md) | C | fail | ../../../source/srcnn.cpp:332:2: error: #else without #if; ../../../source/srcnn.cpp:333:13: error: redefinition of 'conv2_stream' | ; C simulation not accepted (exit=1); synthesis not eligible |
+| [F05](F05_continuous_T8_online_4ns/F05.md) | F | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (F05/source/srcnn.cpp:312:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
+| [C12](C12_continuous_wino_packing_T8_guard_retry/C12.md) | C | infeasible | LUT=174591.0 exceeds 81984 | unknown |
+| [F06](F06_continuous_T16_online_3p33ns/F06.md) | F | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (F06/source/srcnn.cpp:312:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
+| [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | F | infeasible | LUT=96488.0 exceeds 81984; FF=171235.0 exceeds 163968 | unknown |
+| [F07](F07_continuous_T8_online_3p33ns/F07.md) | F | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (F07/source/srcnn.cpp:312:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
 
 ## Pending Human Decisions
 
@@ -353,4 +375,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-10T23:59:03+00:00.
+Generated from archived evidence at 2026-10-11T00:22:32+00:00.
