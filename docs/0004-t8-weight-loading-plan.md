@@ -271,6 +271,7 @@ WS0–WS4 收尾使用 `python3 exp/close_weight_loading.py`。恢复状态需�
 | 2026-10-12 | WS0 | F85/P13 已收回；P14–P16/F86/F87 在新指令前已完成并保留。F88 因用户优先级调整主动 SIGTERM 中止并归档，没有 RTL 判定；F90/F91 暂缓。下一步 F89 优先，期间准备 F26/F27。 |
 | 2026-10-12 | F89 | 单线程 hook 生效，Vivado IP 子综合已成功；内存采样持续归档到 host_memory.csv，布线结果待出。 |
 | 2026-10-12 | F26/F27 | 先提交估算再独立实现；两帧 butterfly C 仿真逐位通过，综合等待 F89，顺序 F26→F27。自动数字和归因表见 [WEIGHT_LOADING](../experiments/WEIGHT_LOADING.md)。 |
+| 2026-10-12 | F89/F92 | F89 在原定三小时上限内未完成，timeout 归档，无最终 routed 报告；本次未观察到 OOM。F26 已接过综合槽。F92 预先提交同一 F25 RTL、5 ns 的单线程实现计划，待 F26/F27 综合后执行。 |
 
 <!-- AUTO: WORKSTREAM START -->
 

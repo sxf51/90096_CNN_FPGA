@@ -803,6 +803,50 @@
     "unroll_split": "Cout/Cout/tap",
     "weight_storage": "lutram"
   },
+  "partial_implementation_reports": [
+    {
+      "archived_file": "diagnostics/pre_route/srcnn_utilization_synth.rpt",
+      "final_routed_evidence": false,
+      "raw_file": "hls/impl/verilog/report/srcnn_utilization_synth.rpt",
+      "sha256": "66e6c88e8bad0668a2dfdc5c49f104992d04a6b3b9eb64c95c10967d71b9c5fd",
+      "stage": "synth"
+    },
+    {
+      "archived_file": "diagnostics/pre_route/srcnn_utilization_hierarchical_synth.rpt",
+      "final_routed_evidence": false,
+      "raw_file": "hls/impl/verilog/report/srcnn_utilization_hierarchical_synth.rpt",
+      "sha256": "b9ae7c62ce317037c73f61c50fd0297de9938893c0f75b81057aa17dfd743432",
+      "stage": "hierarchy_synth"
+    },
+    {
+      "archived_file": "diagnostics/pre_route/srcnn_timing_synth.rpt",
+      "final_routed_evidence": false,
+      "raw_file": "hls/impl/verilog/report/srcnn_timing_synth.rpt",
+      "sha256": "3162f5c8aea40561114617a8f59ba1bba7eb63877040f042df4ddd846e2ad140",
+      "stage": "timing_synth"
+    },
+    {
+      "archived_file": "diagnostics/pre_route/srcnn_timing_paths_synth.rpt",
+      "final_routed_evidence": false,
+      "raw_file": "hls/impl/verilog/report/srcnn_timing_paths_synth.rpt",
+      "sha256": "e2869f4b2a7fea1fe8d7f6e108dfbe7257dedcfe0ce611991518b84c80494fb1",
+      "stage": "paths_synth"
+    },
+    {
+      "archived_file": "diagnostics/pre_route/bd_0_wrapper_utilization_placed.rpt",
+      "final_routed_evidence": false,
+      "raw_file": "hls/impl/verilog/project.runs/impl_1/bd_0_wrapper_utilization_placed.rpt",
+      "sha256": "9987b710f1a84a5ca9f6002f70b7f374a47c668a86c68115820fe98d6139a89e",
+      "stage": "placed"
+    },
+    {
+      "archived_file": "diagnostics/pre_route/impl_runme.txt",
+      "final_routed_evidence": false,
+      "raw_file": "hls/impl/verilog/project.runs/impl_1/runme.log",
+      "sha256": "ae83c034c766d7971ecacc9678e8b729c53921bae4c69ab88dd8b9867e635d32",
+      "stage": "progress"
+    }
+  ],
   "precision": "w10a10acc23",
   "purpose": "Retry physical implementation of F25 after F81's documented kernel OOM killed the main Vivado synthesis process while four worker processes were active. Reuse the original HLS-generated IP/BD flow, target clock and synthesis/implementation directives in an independent workspace. Add a formal pre-synthesis hook setting general.maxThreads and synth.maxThreads to1. Expect unchanged HLS compute/DSP/memory estimates; physical resources and slack remain unknown until reports. Reserve one hardware slot and do not change system swap or global tool settings.",
   "scope": "frame",

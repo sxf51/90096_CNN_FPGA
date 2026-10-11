@@ -127,16 +127,20 @@
     "F86",
     "F87",
     "F88",
-    "F89"
+    "F89",
+    "F26"
   ],
   "first_phase_head": "2fa7249eaecdfdc360d8d452fcbf52171c35abd2",
   "frozen_design_files": 45,
   "full_set14": false,
   "hardware_parallelism": 1,
-  "next": "F89 is running exclusively. F26/F27 passed two-frame butterfly C simulation and are waiting; synthesis order F26 then F27 after F89. Choose the loader from measured WS2 gates, then implement W19 and direct-T8 control.",
+  "next": "Finish existing F26 thenF27 synthesis and analyze strict WS2 gates. F92 same-RTL5ns retry is preplanned; start after both syntheses. Select a loader from measured evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
-  "pending_final_verification_ids": [],
+  "pending_final_verification_ids": [
+    "F27",
+    "F92"
+  ],
   "selected": [
     {
       "DSP": "502.0",
@@ -169,28 +173,46 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-11T18:13:53+00:00",
+  "time": "2026-10-11T18:21:12+00:00",
   "weight_loading_workstream": {
     "deferred": [
       "F88",
       "F90",
       "F91"
     ],
+    "experiment_ids": [
+      "F25",
+      "W17",
+      "F89",
+      "F26",
+      "F27",
+      "F92"
+    ],
+    "loader_ids": [
+      "F25",
+      "F26",
+      "F27",
+      "W17",
+      "W19"
+    ],
     "local_exec_sessions": {
       "F26": 11690,
-      "F27": 51861,
-      "F89": 95149
+      "F27": 51861
     },
-    "next": "F89 is running exclusively. F26/F27 passed two-frame butterfly C simulation and are waiting; synthesis order F26 then F27 after F89. Choose the loader from measured WS2 gates, then implement W19 and direct-T8 control.",
+    "next": "Finish existing F26 thenF27 synthesis and analyze strict WS2 gates. F92 same-RTL5ns retry is preplanned; start after both syntheses. Select a loader from measured evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.",
     "plan": "docs/0004-t8-weight-loading-plan.md",
-    "post_route": "After F89 collection: archive_setup_paths.py F89, analyze_route.py E070 F89. If WNS<0, plan new relaxed implementation ID, same RTL. If route/HLS LUT<=0.75, plan W17 diagnostic implementation without changing HLS acceptance.",
+    "post_route": "F89 has no routed checkpoint, so five setup paths cannot be exported. After successful F92: archive_setup_paths.py F92, analyze_route.py E070 F89 F92. If final route/HLS LUT<=0.75, plan W17 diagnostic implementation using fresh serial_packaged_flow because W17 has no driver. Keep its HLS-infeasible status.",
+    "reload_verification": "After selecting the measured loader, preplan a new two-frame RTL ID before adding an independent exp/tb testbench. First frame is exact E017 butterfly; second uses changed sparse runtime parameters and constant0.5 input with exact output104/256 at every pixel. Archive independent testbench and Git source; preserve first-frame border metrics.",
     "verification_queue": [
-      "F89"
+      "F89",
+      "F26",
+      "F27",
+      "F92"
     ],
-    "verification_tools": "Fresh candidates use prepare_ws_verify.py and serial_packaged_flow: preserve their own IP, copy only checked official F89 driver boilerplate, replace module lists/clock, apply per-run single-thread hook. Template and parent RTL/init hashes must match for serial_generated_flow.50 infrastructure tests passed; fresh-candidate packaged flow still requires actual execution evidence.",
+    "verification_tools": "Fresh candidates use prepare_ws_verify.py and serial_packaged_flow: preserve their own IP, copy only checked official F89 driver boilerplate, replace module lists/clock, apply per-run single-thread hook. Template and parent RTL/init hashes must match for serial_generated_flow. Candidate-specific full-image source/flag provenance is checked.52 infrastructure tests passed; fresh-candidate packaged flow still requires actual execution evidence. Current-workstream closure uses close_weight_loading.py and leaves F90/F91 deferred.",
     "ws0": "complete; F85/P13 recovered, F88 interrupted and archived",
-    "ws1": "F89 active; IP/top synthesis and placement completed, congestion rerouting overlaps down to476 at2026-10-11T17:35Z; no final routed verdict; about4.1GiB memory available, samples archived continuously",
-    "ws2": "F26/F27 planned and implemented independently; two-frame butterfly C simulations PASS bit-exact; waiting for hardware slot, F27 synthesis waits for F26 archive",
+    "ws1": "F89 reached original three-hour timeout during routing global iteration4; no final routed report/checkpoint and no new observed OOM. Archive complete. F92 planned same F25 RTL at conservative5ns, single-thread flow; start only after F26/F27 synthesis completes.",
+    "ws2": "F26 started synthesis after F89 timeout; F27 waits for F26 archive. Both existing two-frame butterfly C simulations PASS bit-exact; hardware gates pending.",
     "ws3": "W19 ID unused; wait for WS2 evidence"
   }
 }
