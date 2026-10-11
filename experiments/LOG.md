@@ -335,6 +335,8 @@
 
 - 2026-10-11T06:25:23+00:00: P13-P16: user requested complete INT16 packing research; preplanned direct, four-DSP byte limbs, one-DSP overlap/fabric repair and ordinary mixed controls. Exact32-bit product checks cover all16-bit values in each operand role, boundary cubes and deterministic random triples. Existing final verification queues continue.
 
+- 2026-10-11T14:40:53+00:00: F85: final_cosim_F24; status=cosim_complete; latency_ms_est=2.830503377; cosim of F24; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T03:45 UTC: F81 failed in Vivado technology mapping because kernel OOM killed the main synthesis process while four internal worker processes used about2.4GiB each. F89-F91 are independent preplanned serial retries; a checked per-run Tcl hook sets general.maxThreads and synth.maxThreads to1, preserving target clocks, directives and HLS sources. No system swap/global tool setting is changed. If serial implementation still cannot complete within host capacity, a larger-memory host is required for routed evidence; failed synthesis is not implementation or timing acceptance.
