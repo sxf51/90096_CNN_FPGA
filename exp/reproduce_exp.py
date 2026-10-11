@@ -51,7 +51,8 @@ def make_config(parent_id, new_id, settings=None):
         raise ValueError("Non-HLS analyses retain their original script commands")
     config = {**base, "id": new_id, "name": "reproduction_" + parent_id,
               "series": new_id[0], "stage": "arch_reproduction", "estimates": estimates,
-              "reproduce_parent": parent_id, "frozen_source_commit": metrics["git_commit"],
+              "reproduce_parent": parent_id,
+              "frozen_source_commit": observed.get("frozen_source_commit", metrics["git_commit"]),
               "purpose": "Reproduce archived " + parent_id + " using frozen design and testbench sources, unchanged numerical/resource gates and a fresh experiment ID. Original reports and workspaces remain immutable.",
               "changes": "Copy the archived design snapshot and restore code used by its testbench from the recorded Git commit. Parameter flags and protected binary inputs remain unchanged.",
               "interpretation": "Compare exact numerical checks and report values against the frozen parent. A replay is independent evidence and cannot replace the original record.",
@@ -70,6 +71,9 @@ def make_config(parent_id, new_id, settings=None):
     config["frozen_testbench_root"] = "exp/tb/replay_" + new_id + "/root"
     files = base.get("tb_files", ["exp/tb/validate.cpp", "exp/tb/golden.cpp", "test/tb_conv1.cpp",
                                   "test/tb_srcnn.cpp", "test/util.cpp", "src/weights", "test/set5", "test/set14"])
+    old_root = base.get("frozen_testbench_root", "")
+    if old_root:
+        files = [name[len(old_root) + 1:] if name.startswith(old_root + "/") else name for name in files]
     config["tb_files"] = [config["frozen_testbench_root"] + "/" + name
                           if Path(name).suffix in {".c", ".cc", ".cpp", ".cxx"} else name
                           for name in files]
@@ -92,6 +96,8 @@ def prepare(config, source):
                                      "--", "src", "test", "exp/tb"], cwd=ROOT, text=True).splitlines()
     for name in files:
         if Path(name).suffix not in {".c", ".cc", ".cpp", ".cxx", ".h", ".hpp", ".inc"}:
+            continue
+        if name.startswith("exp/tb/replay_"):
             continue
         destination = replay / name
         destination.parent.mkdir(parents=True, exist_ok=True)

@@ -55,6 +55,17 @@ class ReproductionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "already reserved"):
             reproduce_exp.make_config("P01", "P100")
 
+    def test_replaying_a_replay_preserves_original_testbench_without_nesting(self):
+        self.base.update(frozen_testbench_root="exp/tb/replay_P00/root",
+                         tb_files=["exp/tb/replay_P00/root/exp/tb/check.cpp"])
+        (self.folder / "plan.json").write_text(json.dumps({"configuration": self.base}))
+        observed = json.loads((self.folder / "config.json").read_text())
+        observed["frozen_source_commit"] = "original456"
+        (self.folder / "config.json").write_text(json.dumps(observed))
+        config, _ = reproduce_exp.make_config("P01", "P100")
+        self.assertEqual(config["frozen_source_commit"], "original456")
+        self.assertEqual(config["tb_files"], ["exp/tb/replay_P100/root/exp/tb/check.cpp"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,6 +2,8 @@
 
 The fastest resource-feasible supplied-image point is [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md) at 4.194708ms HLS-estimated latency. Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.
 
+Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.
+
 ## Current Best
 
 | id | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | delta_psnr | status |
@@ -55,6 +57,7 @@ Measured direction result: [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) is its f
 | [W08](W08_winograd_network_T16_header_retry/W08.md) | frame | 16 | 5723851.0 | 22.895404 | 326.0 | 241.0 | 0.0 | 75814.0 | 69105.0 | True | 1.661846957728205e-05 | True | provisional |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | frame | 8 | 3493579.0 | 13.974316 | 648.0 | 241.0 | 0.0 | 135496.0 | 148761.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [W13](W13_fixed_tiles_T8_allcontinuous_3p33ns/W13.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
+| [W17](W17_narrow_raw_banks_T8/W17.md) | frame | 8 | 532562.0 | 2.130248 | 648.0 | 146.0 | 0.0 | 93166.0 | 122399.0 | True | 1.661846957728205e-05 | True | infeasible |
 
 ## G Direction
 
@@ -130,6 +133,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | id | series | design | T_target | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | F | designs/continuous_rotate_v1 | 8 | 2.113952 | 1007.0 | 73.0 | 96488.0 | 171235.0 | -0.0695141811880653 | infeasible |
+| [W17](W17_narrow_raw_banks_T8/W17.md) | W | designs/winograd_rawbank_v1 | 8 | 2.130248 | 648.0 | 146.0 | 93166.0 | 122399.0 | -0.0695141811880653 | infeasible |
 | [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md) | F | designs/continuous_direct_r2 | 16 | 4.194708 | 505.0 | 96.0 | 69362.0 | 106171.0 | -0.0695141811880653 | provisional |
 | [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | F | designs/continuous_rotate_v1 | 16 | 4.194748 | 505.0 | 73.0 | 68903.0 | 106661.0 | -0.0695141811880653 | provisional |
 | [P12](P12_exact10_packing_T4/P12.md) | P | designs/packing_network | 4 | 5.422328 | 1007.0 | 168.0 | 292053.0 | 159828.0 | -0.0695141811880653 | infeasible |
@@ -258,6 +262,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F06](F06_continuous_T16_online_3p33ns/F06.md) | frame | 505.0 | unknown | unknown | 1140400.0 | unknown | unknown | fail |
 | [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | frame | 1007.0 | 1007.0 | 0.0 | 620200.0 | 528488.0 | -14.787487907126728 | infeasible |
 | [F07](F07_continuous_T8_online_3p33ns/F07.md) | frame | 1007.0 | unknown | unknown | 620200.0 | unknown | unknown | fail |
+| [W17](W17_narrow_raw_banks_T8/W17.md) | frame | 648.0 | 648.0 | 0.0 | 620200.0 | 532562.0 | -14.13060303128023 | infeasible |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -310,6 +315,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | 5 | provisional |
 | [C12](C12_continuous_wino_packing_T8_guard_retry/C12.md) | 4 | infeasible |
 | [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | 5 | infeasible |
+| [W17](W17_narrow_raw_banks_T8/W17.md) | 5 | infeasible |
 
 ## Failed Directions
 
@@ -348,6 +354,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F06](F06_continuous_T16_online_3p33ns/F06.md) | F | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (F06/source/srcnn.cpp:312:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
 | [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | F | infeasible | LUT=96488.0 exceeds 81984; FF=171235.0 exceeds 163968 | unknown |
 | [F07](F07_continuous_T8_online_3p33ns/F07.md) | F | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (F07/source/srcnn.cpp:312:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
+| [W17](W17_narrow_raw_banks_T8/W17.md) | W | infeasible | LUT=93166.0 exceeds 81984 | unknown |
 
 ## Pending Human Decisions
 
@@ -375,4 +382,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T00:22:32+00:00.
+Generated from archived evidence at 2026-10-11T00:40:45+00:00.

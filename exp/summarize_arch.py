@@ -43,6 +43,7 @@ def main():
     text = "# SRCNN K26 architecture exploration\n\n"
     text += ("The fastest resource-feasible supplied-image point is ["+best["id"]+"]("+best["md_path"]+") at "+best["latency_ms_est"]+"ms HLS-estimated latency. " if best else "No resource-feasible exact frame point is currently available. ")
     text += "Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.\n\n"
+    text += "Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.\n\n"
     if best:
         text += "## Current Best\n\n"+markdown_table(linked([best]),[
             "id","design","precision_w_a_acc","T_target","clock_target_ns","clock_est_ns","latency_cycles",
