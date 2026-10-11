@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-11T05:22:58+00:00 from archived measurements.
+Updated 2026-10-11T06:25:23+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -14,7 +14,7 @@ Fastest resource-feasible exact frame estimate: [F25](F25_nested_weight_loader_T
 
 ## Outstanding
 
-Exploration: all required runs archived.
+Exploration: P13, P14, P15, P16.
 
 Final verification: F85, F86, F87, F88, F89, F90, F91.
 
