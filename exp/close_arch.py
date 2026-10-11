@@ -131,6 +131,16 @@ def main():
         raise RuntimeError("Required jobs are still pending: "+", ".join(sorted(missing)))
     if len({row["id"] for row in rows}) != len(rows):
         raise RuntimeError("Duplicate experiment IDs")
+    for row in rows:
+        archive = ROOT / "experiments" / Path(row["md_path"]).parent
+        config = json.loads((archive / "config.json").read_text())
+        if (config.get("operation") == "cosim" and
+                config.get("verification", {}).get("rtl_status") == "Pass" and
+                not config.get("verification_profiles")):
+            subprocess.run([sys.executable, str(ROOT / "exp/archive_cosim_profiles.py"),
+                            row["id"], "--pull"], cwd=ROOT, check=True)
+            subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"),
+                            row["id"], "archive_missing_rtl_profile_counters"], cwd=ROOT, check=True)
     ssh_config = ROOT.parent / "ssh-config"
     host = "xiaoxin-ubuntu"
     remote_root = "/home/lipuze/amdprojects/90096_CNN_FPGA"
