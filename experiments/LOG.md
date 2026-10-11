@@ -389,6 +389,8 @@
 
 - 2026-10-11T18:47:08+00:00: F94: ws_all_F28; status=csim_pass; latency_ms_est=unknown; 
 
+- 2026-10-11T18:53:13+00:00: F31: reload_testbench_csim_F28; status=csim_pass; latency_ms_est=unknown; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T18:33:48+00:00: WS2: F27 passes exact/area/II/cycle gates but misses clock2.419>2.377ns. Conservatively retain the gate and use an independent local-load loop-flatten control F28 before selecting the loader. F92 is running on unchanged F25 RTL with5ns implementation constraints; no partial F89 timing or LUT ratio is treated as final route acceptance.

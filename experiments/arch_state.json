@@ -130,7 +130,8 @@
     "F89",
     "F26",
     "F27",
-    "F94"
+    "F94",
+    "F31"
   ],
   "first_phase_head": "2fa7249eaecdfdc360d8d452fcbf52171c35abd2",
   "frozen_design_files": 45,
@@ -175,11 +176,13 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-11T18:47:20+00:00",
+  "time": "2026-10-11T18:53:13+00:00",
   "weight_loading_workstream": {
     "conditional_plans": [
       "F93",
-      "W19"
+      "W19",
+      "F29",
+      "F30"
     ],
     "deferred": [
       "F88",
@@ -206,13 +209,12 @@
     ],
     "local_exec_sessions": {
       "F28": 18344,
-      "F92": 34977,
-      "F94": 11871
+      "F92": 34977
     },
     "next": "F92 serial5ns implementation is running. Preplan/implement F28 to address F27's measured local-loader clock miss while F92 runs; C simulation may overlap, hardware remains serialized. Select a loader from strict WS2 evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.",
     "plan": "docs/0004-t8-weight-loading-plan.md",
     "post_route": "F89 has no routed checkpoint, so five setup paths cannot be exported. After successful F92: archive_setup_paths.py F92, analyze_route.py E070 F89 F92. If final route/HLS LUT<=0.75, plan W17 diagnostic implementation using fresh serial_packaged_flow because W17 has no driver. Keep its HLS-infeasible status.",
-    "reload_verification": "F93 conditional paper plan committed before creating independent exp/tb/validate_reload.cpp. Execute only after measured strict F28 WS2 acceptance; otherwise keep the plan unexecuted and use a fresh parent-specific ID. First frame is exact E017 butterfly; second changes sparse runtime weights/biases and constant0.5 input with exact104/256 per pixel. Archive SHA/source commit and preserve first-frame border. F94 independent all13-image C validation of frozen F28 is running while hardware remains serialized.",
+    "reload_verification": "F93 conditional paper plan committed before creating independent exp/tb/validate_reload.cpp. Execute only after measured strict F28 WS2 acceptance; otherwise keep the plan unexecuted and use a fresh parent-specific ID. First frame is exact E017 butterfly; second changes sparse runtime weights/biases and constant0.5 input with exact104/256 per pixel. Archive SHA/source commit and preserve first-frame border. F94 completed: all13-image full-frame exactness and deltaPSNR=-0.0695141811880653, border unchanged. Verify SHA/flags against eventual F28 before using validation_parent.",
     "verification_queue": [
       "F89",
       "F26",
