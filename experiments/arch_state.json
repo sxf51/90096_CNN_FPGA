@@ -182,7 +182,7 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-11T19:38:54+00:00",
+  "time": "2026-10-11T20:22:00+00:00",
   "weight_loading_workstream": {
     "conditional_plans": [],
     "deferred": [
@@ -244,7 +244,7 @@
     ],
     "verification_tools": "Fresh candidates use prepare_ws_verify.py and serial_packaged_flow: preserve their own IP, copy only checked official F89 driver boilerplate, replace module lists/clock, apply per-run single-thread hook. Template and parent RTL/init hashes must match for serial_generated_flow. Candidate-specific full-image source/flag provenance is checked.60 infrastructure tests passed. Independent reload-params testbench is archived by SHA256 and frozen for verification replay; C/RTL exact markers and unchanged first-frame borders are required. Actual reload cosim and fresh-candidate packaged implementation still need execution evidence. Current-workstream closure uses close_weight_loading.py and leaves F90/F91 deferred.",
     "ws0": "complete; F85/P13 recovered, F88 interrupted and archived",
-    "ws1": "F89 timed out at three hours during congestion routing; no final routed report/checkpoint and no observed new OOM. F92 archived successfully: same F25 RTL at5ns, final WNS+0.568ns/TNS0, LUT32400, FF77757, DSP592, BRAM36=36, URAM0. Routed/HLS LUT ratio0.463 triggers independently packaged W17 diagnostic W20, planned at5ns; W17 remains HLS-infeasible. F92 setup-path export is active and waits for F28 hardware lock.",
+    "ws1": "F89 timed out at three hours during congestion routing; no final routed report/checkpoint and no observed new OOM. F92 archived successfully: same F25 RTL at5ns, final WNS+0.568ns/TNS0, LUT32400, FF77757, DSP592, RAMB36=28 plus RAMB18=16 (36 BRAM36-equivalent tiles), URAM0. Routed/HLS LUT ratio0.463 triggers independently packaged W17 diagnostic W20, planned at5ns; W17 remains HLS-infeasible. F92 five setup paths and hierarchical utilization are already exported and archived; no export job remains active.",
     "ws2": "F26 failed area hypothesis and F27 missed clock. F28 passes every strict WS2 gate: clock2.377ns,1046029cycles,II1 in all three folds,total61553/outside3170/mux184LUT,DSP502,BRAM18K73,FF122061,zero weight-predecessor warnings,exact butterfly and unchanged border. Selected F28; F94 all13-image source/flag provenance matches. Start F93 changed-parameter RTL; C preflight F31 is already exact.",
     "ws3": "Independent W19/F29/F30 sources are frozen in commit7be5296. W19 C simulation passes exact butterfly, unchanged border and parameter stream-empty assertions; synthesis waits for active F93. Local serial queue continues W19 thenF29 thenF30 thenW20. F95 independent F28 packaged implementation is planned at5ns with F94 validation; start after that queue. Select T8 only from actual gates, then full-image/changed-parameter RTL/route."
   }

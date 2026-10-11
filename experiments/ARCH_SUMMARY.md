@@ -593,4 +593,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T19:38:55+00:00.
+Generated from archived evidence at 2026-10-11T20:22:00+00:00.
