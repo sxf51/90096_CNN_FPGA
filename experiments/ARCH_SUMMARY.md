@@ -17,6 +17,7 @@ Actual verification of the current HLS winner:
 | id | operation | status | impl_WNS_ns | timing_met | impl_DSP | impl_LUT | impl_FF | impl_BRAM36 | impl_URAM | rtl_status | rtl_latency_max | rtl_interval_max | cycle_deviation_pct |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F81](F81_final_impl_F25/F81.md) | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F82](F82_final_cosim_F25/F82.md) | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1068183.0 | 1068212.0 | 1.067173555971035 |
 
 ## P Direction
 
@@ -347,6 +348,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | frame | 1035.0 | 1036.0 | 0.09661835748793202 | 360100.0 | 270418.0 | -24.904748680921962 | infeasible |
 | [F80](F80_final_all_supplied_F25/F80.md) | frame | 502.0 | unknown | unknown | 1056904.0 | unknown | unknown | csim_pass |
 | [F81](F81_final_impl_F25/F81.md) | frame | 502.0 | unknown | unknown | 1056904.0 | unknown | unknown | fail |
+| [F82](F82_final_cosim_F25/F82.md) | frame | 502.0 | unknown | unknown | 1056904.0 | 1068183.0 | 1.067173555971035 | cosim_complete |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -376,6 +378,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [E070](E070_first_feasible_implementation/E070.md) | frame | E039 | impl | impl_complete | 270.0 | 31.0 | 20454.0 | 33844.0 | 0.0 | -1.277 | False | unknown | unknown | unknown | unknown |
 | [P08](P08_builtin_mapping_implementation/P08.md) | PE | P05 | impl | impl_complete | 1.0 | 0.0 | 21.0 | 41.0 | 0.0 | 2.805 | True | unknown | unknown | unknown | unknown |
 | [F81](F81_final_impl_F25/F81.md) | frame | F25 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F82](F82_final_cosim_F25/F82.md) | frame | F25 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1068183.0 | 1068212.0 | 1.067173555971035 |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -425,7 +428,7 @@ Selected candidates were ranked globally across both phases before validation. M
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F80](F80_final_all_supplied_F25/F80.md) | designs/continuous_nested_load_v1 | 13 | True | True | 29.088943394069588 | -0.0695141811880653 | 1.661846957728205e-05 | csim_pass |
 
-Routed timing closes for 0 selected implementation runs; 0 selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.
+Routed timing closes for 0 selected implementation runs; 1 selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.
 
 ## Failed Directions
 
@@ -504,4 +507,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T03:50:50+00:00.
+Generated from archived evidence at 2026-10-11T05:16:49+00:00.

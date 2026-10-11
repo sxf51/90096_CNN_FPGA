@@ -325,6 +325,8 @@
 
 - 2026-10-11T05:15:39+00:00: F82: final_cosim_F25; status=cosim_complete; latency_ms_est=2.64226; cosim of F25; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-11T05:18:29+00:00: F83: final_all_supplied_F24; status=csim_pass; latency_ms_est=unknown; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T03:45 UTC: F81 failed in Vivado technology mapping because kernel OOM killed the main synthesis process while four internal worker processes used about2.4GiB each. F89-F91 are independent preplanned serial retries; a checked per-run Tcl hook sets general.maxThreads and synth.maxThreads to1, preserving target clocks, directives and HLS sources. No system swap/global tool setting is changed. If serial implementation still cannot complete within host capacity, a larger-memory host is required for routed evidence; failed synthesis is not implementation or timing acceptance.
