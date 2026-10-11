@@ -68,6 +68,13 @@ def main():
         text += measured_direction(points)
         text += markdown_table(linked(points),["id","scope","T_target","latency_cycles","latency_ms_est",
                                                "DSP","BRAM18K","URAM","LUT","FF","bit_exact","border_mse","ii_ok","status"])
+        if series == "S":
+            text += "\nTraffic/cache models and inferred image burst lengths (words):\n\n"
+            text += markdown_table(linked(points),[
+                "id","ddr_bytes_per_frame","feature_recompute_ratio","cache_bits",
+                "inferred_image_read_bursts","inferred_image_write_bursts",
+                "ddr_theoretical_lower_bound_ms","ddr_50pct_lower_bound_ms","status"])
+            text += "\nBandwidth inputs are from [DS987 and calculation sources](SOURCES.md). S01's traffic is a hypothetical sequential-DDR payload because its scratch ports were absent; tile/dataflow payloads describe their implemented interfaces. Missing burst inference is shown as 'none reported'; requested256-word limits remain configuration bounds.\n"
     text += "\n## All Architectures\n\nFrame records only, ordered by HLS-estimated latency. Microkernels and validation operations are excluded; infeasible/failed results remain visible.\n\n"
     text += markdown_table(linked(frames),["id","series","design","T_target","latency_ms_est","DSP","BRAM18K","LUT","FF","delta_psnr","status"])
     comparisons = list(csv.DictReader((ROOT / "experiments/estimate_actual.csv").open(newline="")))

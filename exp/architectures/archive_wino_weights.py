@@ -27,7 +27,7 @@ def main():
         archive = path.parent
         config = json.loads(path.read_text())
         if not any(name in config.get("design", "") for name in
-                   ("winograd_network", "winograd_continuous", "winograd_mixed_packing", "combination_network", "combination_continuous")):
+                   ("winograd_network", "winograd_continuous", "winograd_mixed_packing", "winograd_rawbank", "combination_network", "combination_continuous")):
             continue
         if config.get("errors"):
             continue

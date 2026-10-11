@@ -87,6 +87,19 @@ Measured direction result: [S02](S02_whole_dataflow_control/S02.md) is its faste
 | [S05](S05_tile_fusion_B32/S05.md) | frame | 32 | 14166377.0 | 141.66377 | 296.0 | 18.0 | 0.0 | 120033.0 | 74038.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [S06](S06_tile_fusion_B64/S06.md) | frame | 32 | 12981873.0 | 129.81873 | 296.0 | 18.0 | 0.0 | 136162.0 | 74127.0 | True | 1.661846957728205e-05 | True | infeasible |
 
+Traffic/cache models and inferred image burst lengths (words):
+
+| id | ddr_bytes_per_frame | feature_recompute_ratio | cache_bits | inferred_image_read_bursts | inferred_image_write_bursts | ddr_theoretical_lower_bound_ms | ddr_50pct_lower_bound_ms | status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [S01](S01_ddr_global_probe/S01.md) | 50491916 | unknown | unknown | none reported | none reported | 2.629787291666667 | 5.259574583333334 | invalid_config |
+| [S02](S02_whole_dataflow_control/S02.md) | 552716 | unknown | unknown | none reported | none reported | unknown | unknown | provisional |
+| [S03](S03_tile_fusion_B8/S03.md) | 1931016 | 2.267681660899654 | 50080 | none reported | none reported | 0.10057375 | 0.2011475 | infeasible |
+| [S04](S04_tile_fusion_B16/S04.md) | 1095432 | 1.5747789311803153 | 135840 | none reported | none reported | 0.05705375 | 0.1141075 | infeasible |
+| [S05](S05_tile_fusion_B32/S05.md) | 788232 | 1.2755709342560553 | 434080 | none reported | none reported | 0.04105375 | 0.0821075 | infeasible |
+| [S06](S06_tile_fusion_B64/S06.md) | 662280 | 1.1377777777777778 | 1537440 | none reported | none reported | 0.03449375 | 0.0689875 | infeasible |
+
+Bandwidth inputs are from [DS987 and calculation sources](SOURCES.md). S01's traffic is a hypothetical sequential-DDR payload because its scratch ports were absent; tile/dataflow payloads describe their implemented interfaces. Missing burst inference is shown as 'none reported'; requested256-word limits remain configuration bounds.
+
 ## C Direction
 
 Exact Winograd Conv1 combines with output-channel packing Conv2 and/or adjacent-pixel packing Conv3. The paper T4 MAC budgets are932 DSP for both packed layers and1188 for only packed Conv3, before interfaces/converters. Exact10 residual restoration avoids the failed uniform INT8 precision point but adds LUT cost. A T8 control trades raster FIFO BRAM for LUTRAM. HLS estimates include transform/load/reorder overhead.
@@ -391,4 +404,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T00:57:03+00:00.
+Generated from archived evidence at 2026-10-11T01:06:21+00:00.
