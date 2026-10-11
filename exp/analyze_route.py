@@ -78,6 +78,7 @@ def analyze(archive):
             if rtl is not None:
                 values["rtl_source_id"] = candidate["id"]
                 values["rtl_latency_cycles"] = rtl
+                values["rtl_interval_cycles"] = number(candidate.get("verification", {}).get("rtl_interval_max"))
                 values["rtl_frame_ms_at_target"] = rtl*target/1e6
                 values["rtl_frame_ms_from_slack"] = rtl*(target-wns)/1e6 if wns is not None else None
     paths = []

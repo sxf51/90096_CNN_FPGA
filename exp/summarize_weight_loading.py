@@ -48,9 +48,10 @@ def main():
             config = json.loads(path.read_text())
             rtl = number(config.get("verification", {}).get("rtl_latency_max"))
             if config.get("operation") == "cosim" and config.get("verify_parent") == row["parent"] and rtl is not None:
-                matches.append((config["id"], rtl))
+                interval = number(config.get("verification", {}).get("rtl_interval_max"))
+                matches.append((config["id"], rtl, interval))
         if len(matches) == 1:
-            row["rtl_source"], row["rtl_latency_cycles"] = matches[0]
+            row["rtl_source"], row["rtl_latency_cycles"], row["rtl_interval_cycles"] = matches[0]
             row["rtl_frame_ms_at_route_target"] = matches[0][1]*row["route_target_ns"]/1e6
     if not rows:
         raise RuntimeError("No completed workstream measurements")
