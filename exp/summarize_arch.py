@@ -66,6 +66,18 @@ def main():
         points = [row for row in arch if row["series"] == series and not row["operation"]]
         text += "\n## "+series+" Direction\n\n"+DESCRIPTIONS[series]+"\n\n"
         text += measured_direction(points)
+        if series == "F":
+            controls = {row["id"]:row for row in points}
+            if all(exp_id in controls for exp_id in ("F20","F21","F23")):
+                exact,legacy,network = (controls[exp_id] for exp_id in ("F20","F21","F23"))
+                text += ("The exact IEEE output encoder [F20]("+exact["md_path"]+") uses "+exact["DSP"]+
+                         " DSP, "+exact["LUT"]+" LUT and "+exact["FF"]+" FF at "+exact["clock_est_ns"]+
+                         "ns estimated clock; its legacy control [F21]("+legacy["md_path"]+") uses "+
+                         legacy["DSP"]+" DSP at "+legacy["clock_est_ns"]+"ns. The independent network copy [F23]("+
+                         network["md_path"]+") keeps the same quantization and weights, reaches "+
+                         network["clock_est_ns"]+"ns estimated clock and removes the legacy output scaling DSPs. "
+                         "Continuous folds reduce the repeated per-pixel pipeline fill/drain; the full network still needs "
+                         "finite-FIFO RTL cycles and routed timing to substantiate its HLS estimate.\n\n")
         text += markdown_table(linked(points),["id","scope","T_target","latency_cycles","latency_ms_est",
                                                "DSP","BRAM18K","URAM","LUT","FF","bit_exact","border_mse","ii_ok","status"])
         if series == "S":

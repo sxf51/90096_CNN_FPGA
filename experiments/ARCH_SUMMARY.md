@@ -127,6 +127,8 @@ Storage controls map shallow wide FIFOs to LUTRAM and Conv3 line banks to20 URAM
 
 Measured direction result: [F23](F23_continuous_ieee_T16_2p5ns/F23.md) is its fastest provisional resource-feasible point at 2.95951606ms, with 502.0 DSP and 70449.0 LUT. RTL and routing must be assessed separately.
 
+The exact IEEE output encoder [F20](F20_ieee_decode_bit_exact_sdk_retry_unique_object/F20.md) uses 0.0 DSP, 242.0 LUT and 52.0 FF at 2.051ns estimated clock; its legacy control [F21](F21_ieee_decode_legacy_control_sdk_retry_unique_object/F21.md) uses 3.0 DSP at 3.239ns. The independent network copy [F23](F23_continuous_ieee_T16_2p5ns/F23.md) keeps the same quantization and weights, reaches 2.822ns estimated clock and removes the legacy output scaling DSPs. Continuous folds reduce the repeated per-pixel pipeline fill/drain; the full network still needs finite-FIFO RTL cycles and routed timing to substantiate its HLS estimate.
+
 | id | scope | T_target | latency_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | bit_exact | border_mse | ii_ok | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F01](F01_fifo_lutram_control/F01.md) | frame | 16 | 2014678.0 | 8.058712 | 505.0 | 96.0 | 0.0 | 56081.0 | 62800.0 | True | 1.661846957728205e-05 | True | provisional |
@@ -449,4 +451,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T02:18:34+00:00.
+Generated from archived evidence at 2026-10-11T02:20:55+00:00.
