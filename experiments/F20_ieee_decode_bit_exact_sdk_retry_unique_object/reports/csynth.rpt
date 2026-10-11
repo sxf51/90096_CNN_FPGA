@@ -1,0 +1,135 @@
+
+
+================================================================
+== Synthesis Summary Report of 'ieee_decode_pe'
+================================================================
++ General Information: 
+    * Date:           Sun Oct 11 12:28:58 2026
+    * Version:        2026.1 (Build 6493734 on Jun 16 2026)
+    * Project:        F20
+    * Solution:       hls (Vivado IP Flow Target)
+    * Product family: zynquplus
+    * Target device:  xck26-sfvc784-2LV-c
+    
+
+* Performance & Resource Estimates: 
++------------------+------+---------------+----------+---------+------+----------+---------+-----------+------+------+----+----------+-----------+-----+
+|      Modules     | Issue|               | Iteration|         | Trip |          |       Latency       |      |      |    |          |           |     |
+|      & Loops     | Type | Violation Type|  Latency | Interval| Count| Pipelined| (cycles)|    (ns)   | Slack| BRAM | DSP|    FF    |    LUT    | URAM|
++------------------+------+---------------+----------+---------+------+----------+---------+-----------+------+------+----+----------+-----------+-----+
+|+ ieee_decode_pe  |     -|              -|         -|     1024|     -|    rewind|     1027|  3.420e+03|  0.38|     -|   -|  52 (~0%)|  242 (~0%)|    -|
+| o decode_words   |     -|              -|         3|        1|  1024|       yes|     1025|  3.413e+03|  2.43|     -|   -|         -|          -|    -|
++------------------+------+---------------+----------+---------+------+----------+---------+-----------+------+------+----+----------+-----------+-----+
+    Name Prefix: '+' for module, 'o' for loop, '*' for dataflow
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AP_MEMORY
++-------------------+-----------+----------+
+| Port              | Direction | Bitwidth |
++-------------------+-----------+----------+
+| input_r_address0  | out       | 10       |
+| input_r_q0        | in        | 10       |
+| output_r_address0 | out       | 10       |
+| output_r_d0       | out       | 32       |
++-------------------+-----------+----------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------------------------------+
+| Interface | Type       | Ports                             |
++-----------+------------+-----------------------------------+
+| ap_clk    | clock      | ap_clk                            |
+| ap_rst    | reset      | ap_rst                            |
+| ap_ctrl   | ap_ctrl_hs | ap_done ap_idle ap_ready ap_start |
++-----------+------------+-----------------------------------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+--------------------+
+| Argument | Direction | Datatype           |
++----------+-----------+--------------------+
+| input    | in        | ap_int<10> const * |
+| output   | out       | float*             |
++----------+-----------+--------------------+
+
+* SW-to-HW Mapping
++----------+-------------------+---------+----------+
+| Argument | HW Interface      | HW Type | HW Usage |
++----------+-------------------+---------+----------+
+| input    | input_r_address0  | port    | offset   |
+| input    | input_r_ce0       | port    |          |
+| input    | input_r_q0        | port    |          |
+| output   | output_r_address0 | port    | offset   |
+| output   | output_r_ce0      | port    |          |
+| output   | output_r_we0      | port    |          |
+| output   | output_r_d0       | port    |          |
++----------+-------------------+---------+----------+
+
+
+================================================================
+== Bind Op Report
+================================================================
++---------------------------+-----+--------+---------------+--------+-----------+---------+
+| Name                      | DSP | Pragma | Variable      | Op     | Impl      | Latency |
++---------------------------+-----+--------+---------------+--------+-----------+---------+
+| + ieee_decode_pe          | 0   |        |               |        |           |         |
+|   magnitude_fu_150_p2     |     |        | magnitude     | sub    | fabric    | 0       |
+|   magnitude_1_fu_156_p3   |     |        | magnitude_1   | select | auto_sel  | 0       |
+|   select_ln19_fu_192_p3   |     |        | select_ln19   | select | auto_sel  | 0       |
+|   or_ln19_fu_200_p2       |     |        | or_ln19       | or     | auto      | 0       |
+|   high_1_fu_206_p3        |     |        | high_1        | select | auto_sel  | 0       |
+|   select_ln19_2_fu_234_p3 |     |        | select_ln19_2 | select | auto_sel  | 0       |
+|   or_ln19_1_fu_242_p2     |     |        | or_ln19_1     | or     | auto      | 0       |
+|   high_2_fu_248_p3        |     |        | high_2        | select | auto_sel  | 0       |
+|   select_ln19_4_fu_272_p3 |     |        | select_ln19_4 | select | auto_sel  | 0       |
+|   or_ln19_2_fu_280_p2     |     |        | or_ln19_2     | or     | auto      | 0       |
+|   high_3_fu_286_p3        |     |        | high_3        | select | auto_sel  | 0       |
+|   select_ln19_6_fu_318_p3 |     |        | select_ln19_6 | select | auto_sel  | 0       |
+|   or_ln19_3_fu_325_p2     |     |        | or_ln19_3     | or     | auto      | 0       |
+|   high_4_fu_330_p3        |     |        | high_4        | select | auto_sel  | 0       |
+|   icmp_ln24_fu_302_p2     |     |        | icmp_ln24     | setne  | auto      | 0       |
+|   add_ln24_fu_342_p2      |     |        | add_ln24      | add    | fabric    | 0       |
+|   result_exp_fu_348_p3    |     |        | result_exp    | select | auto_sel  | 0       |
+|   sub_ln25_fu_362_p2      |     |        | sub_ln25      | sub    | fabric    | 0       |
+|   shl_ln25_fu_372_p2      |     |        | shl_ln25      | shl    | auto_pipe | 0       |
+|   i_3_fu_125_p2           |     |        | i_3           | add    | fabric    | 0       |
+|   icmp_ln7_fu_131_p2      |     |        | icmp_ln7      | seteq  | auto      | 0       |
++---------------------------+-----+--------+---------------+--------+-----------+---------+
+
+
+================================================================
+== Storage Report
+================================================================
+  No bind storage info in design
+
+================================================================
+== Pragma Report
+================================================================
+* Ignored Pragmas
++--------+---------+----------------------------------------------------+-----------------+
+| Type   | Options | Location                                           | Messages        |
++--------+---------+----------------------------------------------------+-----------------+
+| UNROLL |         | in exact_ieee_decode (F20/source/ieee_decode.h:18) | Not implemented |
++--------+---------+----------------------------------------------------+-----------------+
+
+* Implemented Pragmas
++--------+---------+-------------------------------------------------------------------------------------+
+| Type   | Options | Location                                                                            |
++--------+---------+-------------------------------------------------------------------------------------+
+| INLINE |         | in _zl17exact_ieee_decodeili10eli8e6ap_intili10eeeft1_ (F20/source/ieee_decode.h:8) |
++--------+---------+-------------------------------------------------------------------------------------+
+
+* Valid Pragma Syntax
++----------+---------+---------------------------------------------------+
+| Type     | Options | Location                                          |
++----------+---------+---------------------------------------------------+
+| INLINE   |         | in exact_ieee_decode (F20/source/ieee_decode.h:8) |
+| PIPELINE | ii=1    | in ieee_decode_pe (F20/source/kernel.cpp:8)       |
++----------+---------+---------------------------------------------------+
+
+
