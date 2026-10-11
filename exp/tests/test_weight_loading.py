@@ -9,6 +9,37 @@ from run_exp import ROOT
 
 
 class LoaderAnalysisTests(unittest.TestCase):
+    def test_streamed_loader_clock_miss_is_not_ws2_acceptance(self):
+        baseline = json.loads((ROOT / "experiments/F25_nested_weight_loader_T16_2p5ns/metrics.json").read_text())
+        archive = ROOT / "experiments/F27_local_streamed_params_T16"
+        row, warnings = loader_measurement(archive, baseline)
+        self.assertEqual(row["outside_LUT"], 3170)
+        self.assertEqual(warnings, [])
+        self.assertTrue(row["outside_gate"])
+        self.assertTrue(row["cycles_gate"])
+        self.assertFalse(row["clock_gate"])
+        self.assertFalse(row["ws2_all_gates"])
+
+    def test_new_loader_requires_warning_free_ownership(self):
+        baseline = {"latency_cycles": 1056904, "clock_est_ns": 2.377, "border_mse": 0.01}
+        with tempfile.TemporaryDirectory() as temp:
+            archive = Path(temp)
+            row = {"id": "F28", "status": "provisional", "csim_pass": True, "bit_exact": True,
+                   "LUT": 50000, "latency_cycles": 1050000, "clock_est_ns": 2.377, "border_mse": 0.01}
+            config = {"require_weight_predecessor_free": True,
+                      "parsed_modules": [{"module": "dataflow_region", "LUT": 47000}],
+                      "parsed_loops": [{"loop": name, "actual_ii": 1}
+                                       for name in ("c1_fold", "c2_fold", "c3_fold")]}
+            (archive / "metrics.json").write_text(json.dumps(row))
+            (archive / "config.json").write_text(json.dumps(config))
+            log = archive / "csynth.log.txt"
+            log.write_text("WARNING: [HLS 200-1449] direct parameter access\n")
+            result, _ = loader_measurement(archive, baseline)
+            self.assertFalse(result["ws2_all_gates"])
+            log.write_text("completed\n")
+            result, _ = loader_measurement(archive, baseline)
+            self.assertTrue(result["ws2_all_gates"])
+
     def test_winograd_conv1_fold_uses_its_actual_reported_label(self):
         baseline = json.loads((ROOT / "experiments/F25_nested_weight_loader_T16_2p5ns/metrics.json").read_text())
         archive = ROOT / "experiments/W17_narrow_raw_banks_T8"

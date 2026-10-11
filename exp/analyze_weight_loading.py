@@ -40,7 +40,8 @@ def loader_measurement(archive, baseline):
     result["ws2_all_gates"] = (row["status"] in {"pass", "provisional"} and row["bit_exact"] is True and
                                result["fold_II1"] and all(result[key] is True for key in
                                    ("cycles_gate", "clock_gate", "outside_gate", "border_gate")) and
-                               (row["id"] != "F27" or result["weight_predecessor_warnings"] == 0))
+                               (not config.get("require_weight_predecessor_free", row["id"] == "F27") or
+                                result["weight_predecessor_warnings"] == 0))
     for key in ("DSP", "BRAM18K", "LUT", "FF", "latency_cycles", "outside_LUT"):
         estimate = number(config.get("estimates", {}).get(key))
         actual = number(result.get(key))

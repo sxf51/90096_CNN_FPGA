@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-11T18:28:11+00:00 from archived measurements.
+Updated 2026-10-11T18:35:35+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -16,11 +16,11 @@ Fastest resource-feasible exact frame estimate: [F27](F27_local_streamed_params_
 
 Exploration: all required runs archived.
 
-Final verification: F92.
+Final verification: F92, F28.
 
 ## Weight Loading Workstream
 
-Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Finish existing F26 thenF27 synthesis and analyze strict WS2 gates. F92 same-RTL5ns retry is preplanned; start after both syntheses. Select a loader from measured evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.
+Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). F92 serial5ns implementation is running. Preplan/implement F28 to address F27's measured local-loader clock miss while F92 runs; C simulation may overlap, hardware remains serialized. Select a loader from strict WS2 evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 

@@ -135,11 +135,12 @@
   "frozen_design_files": 45,
   "full_set14": false,
   "hardware_parallelism": 1,
-  "next": "Finish existing F26 thenF27 synthesis and analyze strict WS2 gates. F92 same-RTL5ns retry is preplanned; start after both syntheses. Select a loader from measured evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.",
+  "next": "F92 serial5ns implementation is running. Preplan/implement F28 to address F27's measured local-loader clock miss while F92 runs; C simulation may overlap, hardware remains serialized. Select a loader from strict WS2 evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
-    "F92"
+    "F92",
+    "F28"
   ],
   "selected": [
     {
@@ -173,7 +174,7 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-11T18:28:11+00:00",
+  "time": "2026-10-11T18:35:35+00:00",
   "weight_loading_workstream": {
     "deferred": [
       "F88",
@@ -186,19 +187,21 @@
       "F89",
       "F26",
       "F27",
-      "F92"
+      "F92",
+      "F28"
     ],
     "loader_ids": [
       "F25",
       "F26",
       "F27",
+      "F28",
       "W17",
       "W19"
     ],
     "local_exec_sessions": {
-      "F27": 51861
+      "F92": 34977
     },
-    "next": "Finish existing F26 thenF27 synthesis and analyze strict WS2 gates. F92 same-RTL5ns retry is preplanned; start after both syntheses. Select a loader from measured evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.",
+    "next": "F92 serial5ns implementation is running. Preplan/implement F28 to address F27's measured local-loader clock miss while F92 runs; C simulation may overlap, hardware remains serialized. Select a loader from strict WS2 evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.",
     "plan": "docs/0004-t8-weight-loading-plan.md",
     "post_route": "F89 has no routed checkpoint, so five setup paths cannot be exported. After successful F92: archive_setup_paths.py F92, analyze_route.py E070 F89 F92. If final route/HLS LUT<=0.75, plan W17 diagnostic implementation using fresh serial_packaged_flow because W17 has no driver. Keep its HLS-infeasible status.",
     "reload_verification": "After selecting the measured loader, preplan a new two-frame RTL ID before adding an independent exp/tb testbench. First frame is exact E017 butterfly; second uses changed sparse runtime parameters and constant0.5 input with exact output104/256 at every pixel. Archive independent testbench and Git source; preserve first-frame border metrics.",
@@ -206,12 +209,13 @@
       "F89",
       "F26",
       "F27",
-      "F92"
+      "F92",
+      "F28"
     ],
     "verification_tools": "Fresh candidates use prepare_ws_verify.py and serial_packaged_flow: preserve their own IP, copy only checked official F89 driver boilerplate, replace module lists/clock, apply per-run single-thread hook. Template and parent RTL/init hashes must match for serial_generated_flow. Candidate-specific full-image source/flag provenance is checked.52 infrastructure tests passed; fresh-candidate packaged flow still requires actual execution evidence. Current-workstream closure uses close_weight_loading.py and leaves F90/F91 deferred.",
     "ws0": "complete; F85/P13 recovered, F88 interrupted and archived",
-    "ws1": "F89 reached original three-hour timeout during routing global iteration4; no final routed report/checkpoint and no new observed OOM. Archive complete. F92 planned same F25 RTL at conservative5ns, single-thread flow; start only after F26/F27 synthesis completes.",
-    "ws2": "F26 synthesis complete: mux14134 unchanged, outside33126LUT, total70808LUT, II1/2.377ns/1056908cycles exact; WS2 outside-LUT gate fails. F27 synthesis is active; await ownership experiment evidence.",
+    "ws1": "F89 timed out at three hours during congestion routing; no final routed report/checkpoint and no observed new OOM. F26/F27 are archived. F92 started at2026-10-11T18:31UTC on the same F25 RTL with5ns constraints and single-thread flow, preserving the three-hour timeout.",
+    "ws2": "F26 failed area hypothesis. F27 completed: total61656/outside3170/mux184LUT, zero weight-predecessor warnings, II1/1045713cycles exact and unchanged border. Clock2.419ns misses unchanged2.377ns WS2 gate. Preplan independent F28 LOOP_FLATTEN off local-load control; account for pipeline restart cycles before selecting a loader.",
     "ws3": "W19 ID unused; wait for WS2 evidence"
   }
 }

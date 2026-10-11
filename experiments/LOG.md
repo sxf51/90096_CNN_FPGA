@@ -385,6 +385,8 @@
 
 ## Pending Human Decisions / 待人工决策
 
+- 2026-10-11T18:33:48+00:00: WS2: F27 passes exact/area/II/cycle gates but misses clock2.419>2.377ns. Conservatively retain the gate and use an independent local-load loop-flatten control F28 before selecting the loader. F92 is running on unchanged F25 RTL with5ns implementation constraints; no partial F89 timing or LUT ratio is treated as final route acceptance.
+
 - 2026-10-12 WS0: 用户授权第 6 节先自行决策并执行、明日复核。暂定保留运行时 float 权重接口及 HLS 资源门限，不做常量 ROM；缺 comic 保持 13 图暂定结论。F89 若再次 OOM，保留内核/内存证据并继续 WS2，不改 swap 或全局设置，不迁移到未经验证的主机。明日复核大内存主机、ROM 专用版本、资源口径和 comic 数据。
 
 - 2026-10-12 WS0: 2026-10-12 用户决定降低优先级：F88/F90/F91。F88 主动中止（SIGTERM），无 RTL 判定；P14–P16/F86/F87 新指令前已完成，保留实测结果。F85/P13 已收回无需重跑；当前硬件队列仅 F89，随后 WS2→WS3。
