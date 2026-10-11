@@ -45,5 +45,6 @@ python3 exp/remote_exp.py exp/configs/F85.json --collect-only
 Collection requires a remote metrics archive and no active run lock. It checks
 the original paper plan and result identity, appends the CSV record once, updates
 progress and commits with the experiment ID. Repeated collection accepts only an
-identical existing row; conflicting evidence fails. Continue genuinely unstarted
+identical existing row and preserves local report/profiling enrichment without
+another transfer; conflicting evidence fails. Continue genuinely unstarted
 IDs with `exp/run_queue.py`; completed workspaces remain reserved.

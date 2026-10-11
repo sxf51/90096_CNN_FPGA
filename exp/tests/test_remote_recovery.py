@@ -31,6 +31,26 @@ class RemoteRecoveryTests(unittest.TestCase):
         run_exp.write_json(archive / "metrics.json", metrics)
         return config, archive, metrics
 
+    def test_already_collected_job_preserves_local_enrichment_without_transfer(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            config, archive, _ = self.fixture(root)
+            config_path = root / "P99.json"
+            run_exp.write_json(config_path, config)
+            enrichment = archive / "profiling/local_evidence.csv"
+            enrichment.parent.mkdir()
+            enrichment.write_text("name,peak_depth\nfifo,16\n")
+            with patch.object(remote_exp, "ROOT", root), patch.object(run_exp, "ROOT", root), \
+                    patch.object(remote_exp, "check_protected"), \
+                    patch.object(remote_exp.subprocess, "run") as invoked, \
+                    patch.object(sys, "argv", ["remote_exp.py", str(config_path), "--collect-only"]), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(remote_exp.main(), 0)
+            self.assertEqual(enrichment.read_text(), "name,peak_depth\nfifo,16\n")
+            self.assertTrue(invoked.called)
+            self.assertTrue(all(call.args[0][0] not in {"ssh", "scp", "rsync"}
+                                for call in invoked.call_args_list))
+
     def test_repeat_collection_preserves_one_row_including_unknowns(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

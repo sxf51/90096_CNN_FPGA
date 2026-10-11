@@ -79,11 +79,14 @@ def main():
     ssh = ["ssh", "-F", str(args.ssh_config), "-o", "BatchMode=yes"]
     rsync = ["rsync", "-az", "--exclude=__pycache__", "--exclude=AGENTS.md", "--exclude=agent.md", "-e", shlex.join(ssh)]
     folder = exp_id + "_" + config["name"]
+    archive = ROOT / "experiments" / folder
+    collected = args.collect_only and (archive / "metrics.json").is_file()
     if args.collect_only:
-        work = args.remote_root + "/workspace/exp_runs/" + exp_id
-        command = "if test -e " + shlex.quote(work + "/.run.lock") + "; then exit 1; fi\n"
-        command += "test -f " + shlex.quote(args.remote_root + "/experiments/" + folder + "/metrics.json")
-        subprocess.run(ssh + [args.host, command], check=True)
+        if not collected:
+            work = args.remote_root + "/workspace/exp_runs/" + exp_id
+            command = "if test -e " + shlex.quote(work + "/.run.lock") + "; then exit 1; fi\n"
+            command += "test -f " + shlex.quote(args.remote_root + "/experiments/" + folder + "/metrics.json")
+            subprocess.run(ssh + [args.host, command], check=True)
         result_code = 0
     else:
         subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"), exp_id,
@@ -108,9 +111,9 @@ def main():
                         args.host + ":" + args.remote_root + "/exp/configs/" + exp_id + ".json"], check=True)
         command = "cd " + shlex.quote(args.remote_root) + "\npython3 exp/run_exp.py --config " + shlex.quote("exp/configs/" + exp_id + ".json")
         result_code = subprocess.run(ssh + [args.host, command]).returncode
-    subprocess.run(rsync + [args.host + ":" + args.remote_root + "/experiments/" + folder,
-                           str(ROOT / "experiments") + "/"], check=True)
-    archive = ROOT / "experiments" / folder
+    if not collected:
+        subprocess.run(rsync + [args.host + ":" + args.remote_root + "/experiments/" + folder,
+                               str(ROOT / "experiments") + "/"], check=True)
     record_archive(config, archive)
     check_protected()
     if config.get("series"):
