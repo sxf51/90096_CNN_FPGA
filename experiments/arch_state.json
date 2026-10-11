@@ -182,7 +182,7 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-11T20:22:00+00:00",
+  "time": "2026-10-11T20:41:19+00:00",
   "weight_loading_workstream": {
     "conditional_plans": [],
     "deferred": [
@@ -225,7 +225,7 @@
     "next": "F93 changed-parameter RTL is active. W19 C simulation passed and its synthesis waits for F93; serial queue64528 then runs F29/F30/W20. F95 F28 candidate-specific5ns implementation is planned, not started. After measured T8 selection, run its full13-image validation, changed-parameter RTL and serial route, then one measured-path WS4 clock/control experiment. Preserve all failed gates and archive/checksum/plot/summary audits before F99 closure.",
     "plan": "docs/0004-t8-weight-loading-plan.md",
     "post_route": "F92 final timing/resources, five setup paths, checkpoint/script SHA256 and hierarchical utilization reports are archived. All five setup paths are Conv3 FIFO-valid to held-window CE, four logic levels, about4.303ns data delay dominated by routing, no DSP cascade. W20 diagnostic W17 is in the queue at5ns using fresh serial_packaged_flow; preserve its HLS-infeasible status. F95 first F28 route is separately planned at5ns, with actual-path WS4 afterward.",
-    "reload_verification": "F93 conditional paper plan committed before creating independent exp/tb/validate_reload.cpp. Execute only after measured strict F28 WS2 acceptance; otherwise keep the plan unexecuted and use a fresh parent-specific ID. First frame is exact E017 butterfly; second changes sparse runtime weights/biases and constant0.5 input with exact104/256 per pixel. Archive SHA/source commit and preserve first-frame border. F94 completed: all13-image full-frame exactness and deltaPSNR=-0.0695141811880653, border unchanged. Verify SHA/flags against eventual F28 before using validation_parent.",
+    "reload_verification": "F93 conditional paper plan committed before creating independent exp/tb/validate_reload.cpp; strict F28 WS2 acceptance is measured. C preflight passes both frames. RTL transaction1 completed by2026-10-11T20:35UTC; transaction2 is active, with no final correctness verdict. First frame must be exact E017 butterfly; second changes sparse runtime weights/biases and constant0.5 input with exact104/256 per pixel. The xsim RSS began growing by about0.3GiB/min after transaction1; continue monitoring available memory, preserve diagnostic evidence and stop this operation before exhausting the host if growth persists. Do not reduce frame coverage, exactness or deadlock checks. Archive SHA/source commit and preserve first-frame border. F94 completed: all13-image full-frame exactness and deltaPSNR=-0.0695141811880653, border unchanged; source/flags match F28.",
     "selected_loader": "F28",
     "verification_queue": [
       "F89",
