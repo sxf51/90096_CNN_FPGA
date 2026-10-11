@@ -106,9 +106,11 @@ Bandwidth inputs are from [DS987 and calculation sources](SOURCES.md). S01's tra
 
 ## C Direction
 
-Exact Winograd Conv1 combines with output-channel packing Conv2 and/or adjacent-pixel packing Conv3. The paper T4 MAC budgets are932 DSP for both packed layers and1188 for only packed Conv3, before interfaces/converters. Exact10 residual restoration avoids the failed uniform INT8 precision point but adds LUT cost. A T8 control trades raster FIFO BRAM for LUTRAM. HLS estimates include transform/load/reorder overhead.
+Exact Winograd Conv1 combines with output-channel packing Conv2 and/or adjacent-pixel packing Conv3. The paper T4 MAC budgets are932 DSP for both packed layers and1188 for only packed Conv3, before interfaces/converters. Exact10 residual restoration avoids the failed uniform INT8 precision point but adds LUT cost. C10/C11 instead use independently verified Conv2-only8-bit weights and ten-bit activations, removing coefficient residual repair in that layer. HLS estimates include transform/load/reorder overhead.
 
 Measured direction result: none of its completed frame points satisfies all resource/precision gates. Their estimated latency cannot establish a feasible speedup.
+
+An unimplemented raw-bank combination follow-up would still need about 96004.0 LUT if [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) reused the measured 54847.0-LUT whole-network saving from [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) to [W17](W17_narrow_raw_banks_T8/W17.md). This transfer projection is above the unchanged 81984.0-LUT gate and is not a synthesis result; no follow-up is treated as feasible on that assumption.
 
 | id | scope | T_target | latency_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | bit_exact | border_mse | ii_ok | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -122,6 +124,7 @@ Measured direction result: none of its completed frame points satisfies all reso
 | [C12](C12_continuous_wino_packing_T8_guard_retry/C12.md) | frame | 8 | 1894303.0 | 7.577212 | 470.0 | 169.0 | 0.0 | 174591.0 | 161653.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | frame | 4 | 2378443.0 | 9.513772 | 1192.0 | 241.0 | 0.0 | 260882.0 | 263747.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [C06](C06_wino_packing_T8_all_header_retry/C06.md) | frame | 8 | 3493579.0 | 13.974316 | 470.0 | 169.0 | 0.0 | 170165.0 | 153644.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | frame | 8 | 532562.0 | 2.130248 | 520.0 | 146.0 | 0.0 | 150851.0 | 179452.0 | True | 1.405191888267716e-05 | True | infeasible |
 
 ## F Direction
 
@@ -178,6 +181,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [F10](F10_continuous_T8_online_4ns_split4000/F10.md) | F | designs/continuous_direct_r2 | 8 | 2.113952 | 1007.0 | 73.0 | 96764.0 | 171240.0 | -0.0695141811880653 | infeasible |
 | [W17](W17_narrow_raw_banks_T8/W17.md) | W | designs/winograd_rawbank_v1 | 8 | 2.130248 | 648.0 | 146.0 | 93166.0 | 122399.0 | -0.0695141811880653 | infeasible |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | W | designs/winograd_continuous_r2 | 8 | 2.130248 | 648.0 | 146.0 | 148013.0 | 182409.0 | -0.0695141811880653 | infeasible |
+| [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | C | designs/winograd_mixed_packing_r2 | 8 | 2.130248 | 520.0 | 146.0 | 150851.0 | 179452.0 | -0.07589037644656216 | infeasible |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | F | designs/continuous_affine_load_v1 | 16 | 2.830503377 | 502.0 | 73.0 | 69290.0 | 124577.0 | -0.0695141811880653 | provisional |
 | [F23](F23_continuous_ieee_T16_2p5ns/F23.md) | F | designs/continuous_ieee_v1 | 16 | 2.95951606 | 502.0 | 73.0 | 70449.0 | 125618.0 | -0.0695141811880653 | provisional |
 | [F22](F22_continuous_ieee_T16_3ns/F22.md) | F | designs/continuous_ieee_v1 | 16 | 3.146133 | 502.0 | 73.0 | 69483.0 | 121696.0 | -0.0695141811880653 | provisional |
@@ -331,6 +335,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | frame | 325.0 | 326.0 | 0.3076923076922977 | 1140400.0 | 1056850.0 | -7.3263767099263415 | infeasible |
 | [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | frame | 647.0 | 648.0 | 0.15455950540959051 | 620200.0 | 532569.0 | -14.129474363108674 | infeasible |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | frame | 502.0 | 502.0 | 0.0 | 1068730.0 | 1048723.0 | -1.8720350322345203 | provisional |
+| [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | frame | 519.0 | 520.0 | 0.19267822736031004 | 620200.0 | 532562.0 | -14.13060303128023 | infeasible |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -343,11 +348,11 @@ Largest percentage deviations (a zero paper denominator has no percentage):
 | [C04](C04_wino_packing_T4_all_header_retry/C04.md) | latency_cycles | 715360.0 | 2378443.0 | 232.48196712144934 | infeasible |
 | [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | latency_cycles | 715360.0 | 2378443.0 | 232.48196712144934 | infeasible |
 | [S01](S01_ddr_global_probe/S01.md) | latency_cycles | 6250529.0 | 16730473.0 | 167.6649128417771 | invalid_config |
+| [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | LUT | 65100.0 | 150851.0 | 131.7219662058372 | infeasible |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | LUT | 59000.0 | 135496.0 | 129.65423728813562 | infeasible |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | LUT | 72100.0 | 148013.0 | 105.28848821081831 | infeasible |
 | [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | LUT | 72100.0 | 145767.0 | 102.1733703190014 | infeasible |
 | [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | LUT | 133880.0 | 260882.0 | 94.86256348969226 | infeasible |
-| [S03](S03_tile_fusion_B8/S03.md) | latency_cycles | 11935713.0 | 22803545.0 | 91.05306067597303 | infeasible |
 
 Cause analysis is in each linked interpretation: ignored external scratch ports allocate full on-chip maps; dynamic tiled memory banks add address/multiplexer logic; packing residual/borrow stages increase both LUT and per-pixel pipeline drain; wider Winograd inverse arithmetic and raster FIFOs exceed pure-product budgets; explicit register reductions change timing and FF.
 
@@ -398,6 +403,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | 5 | infeasible |
 | [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | 5 | infeasible |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | 5 | provisional |
+| [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | 5 | infeasible |
 
 ## Failed Directions
 
@@ -445,6 +451,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | W | infeasible | LUT=148013.0 exceeds 81984; FF=182409.0 exceeds 163968 | unknown |
 | [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | W | infeasible | LUT=89114.0 exceeds 81984 | unknown |
 | [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | W | infeasible | LUT=145767.0 exceeds 81984; FF=192756.0 exceeds 163968 | unknown |
+| [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | C | infeasible | LUT=150851.0 exceeds 81984; FF=179452.0 exceeds 163968 | unknown |
 
 ## Pending Human Decisions
 
@@ -472,4 +479,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T02:44:27+00:00.
+Generated from archived evidence at 2026-10-11T02:54:12+00:00.

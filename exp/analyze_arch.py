@@ -288,6 +288,16 @@ def main():
             human += "\n"+markdown_table(cells,["cell","AMULTSEL","PREADDINSEL","AREG","BREG","DREG","ADREG","MREG","PREG","INMODEREG"])
         if row["id"] == "S01":
             human += "\nThe global arrays remained on chip because scratch1/scratch2 AXI bundles were absent. Consequently the reported memory/cycles describe an invalid on-chip probe, not an implemented DDR design. The zero external-memory BRAM assumption failed because the interface pragma was ignored. Changing the frozen top signature needs human decision.\n"
+        if row["id"] == "C10":
+            controls = {point["id"]:point for point in rows if point["id"] in {"W14","W17"}}
+            if len(controls) == 2:
+                from run_exp import CAPACITY, LIMIT
+                saving = number(controls["W14"]["LUT"])-number(controls["W17"]["LUT"])
+                projected = number(row["LUT"])-saving
+                human += ("\nUnimplemented raw-bank follow-up projection: transferring the measured W14-to-W17 total saving of "+
+                          str(saving)+" LUT to C10 would leave approximately "+str(projected)+
+                          " LUT, above the unchanged "+str(CAPACITY["LUT"]*LIMIT["LUT"])+
+                          " gate. This projection is not hardware evidence and does not establish feasibility; retain C10's actual failure and finish the remaining controls.\n")
         if config.get("ddr_bytes_per_frame"):
             human += "\nDDR/burst model from configuration and synthesis logs:\n\n"+markdown_table([derived],[
                 "ddr_bytes_per_frame","feature_recompute_ratio","cache_bits", "inferred_image_read_bursts",

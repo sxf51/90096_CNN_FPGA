@@ -4,14 +4,14 @@ import csv
 import json
 import math
 from pathlib import Path
-from run_exp import ROOT, markdown_table, number, utc
+from run_exp import CAPACITY, LIMIT, ROOT, markdown_table, number, utc
 
 DESCRIPTIONS = {
     "P": "Signed INT8 packing is exact when shared operands, field range and negative borrowing are handled explicitly. P01 exhausts16777216 signed8 triples; P03/P06 compare unpack-every7/every2 schedules under their respective safe bounds. P05 tests the DSP builtin and P08 inspects actual primitive attributes. Full-network exact10 residual variants retain the passing precision point but add fabric and pipeline overhead. Uniform w8a8 remains rejected by first-phase precision evidence.",
     "W": "G2=2G makes the F2 inverse exactly divisible by4 before the ordinary layer cast. W01/W03 confirm one DSP per transformed product at10/16-bit operands. The layer and network designs retain complete transform precision, split9x9 into nine3x3 pieces, generate128x128 tiles and reorder two rows into raster streams. Equivalent offline tensors are archived; runtime transforms preserve the fixed incoming-weight contract. Header-order compilation failures and independent retries remain visible.",
     "G": "Three Conv3 organizations share precision,T32 and10ns. Gather keeps four channel-wide lines; explicit-pad scatter keeps five32-bit partial rows plus a channel-wide pad row; merged-edge scatter replaces replicate padding with nine exact source-position kernels. Every output and border is checked on two butterfly frames. Memory savings carry control, load and cycle costs.",
     "S": "Whole-network DATAFLOW is compared to sequential layers and8/16/32/64 output tiles. S01 did not export the required global scratch AXI bundles and is invalid as a DDR implementation; its oversized on-chip result is retained. Tile fusion preserves Conv3 replicate semantics by clamping feature centers before their input neighborhoods, and counts complete partial-edge halos. DDR payload divided by19.2GB/s (DS98764-bit DDR4-2400) and9.6GB/s (assumed50% efficiency) is a lower-bound model, never measured bandwidth. Requested256-word bursts are distinguished from actual compiler inference in bursts.csv.",
-    "C": "Exact Winograd Conv1 combines with output-channel packing Conv2 and/or adjacent-pixel packing Conv3. The paper T4 MAC budgets are932 DSP for both packed layers and1188 for only packed Conv3, before interfaces/converters. Exact10 residual restoration avoids the failed uniform INT8 precision point but adds LUT cost. A T8 control trades raster FIFO BRAM for LUTRAM. HLS estimates include transform/load/reorder overhead.",
+    "C": "Exact Winograd Conv1 combines with output-channel packing Conv2 and/or adjacent-pixel packing Conv3. The paper T4 MAC budgets are932 DSP for both packed layers and1188 for only packed Conv3, before interfaces/converters. Exact10 residual restoration avoids the failed uniform INT8 precision point but adds LUT cost. C10/C11 instead use independently verified Conv2-only8-bit weights and ten-bit activations, removing coefficient residual repair in that layer. HLS estimates include transform/load/reorder overhead.",
     "F": "Storage controls map shallow wide FIFOs to LUTRAM and Conv3 line banks to20 URAM. Continuous engines separate window generation, flatten pixel/fold iterations, shift fixed channel registers and register balanced fabric reductions. Old padding versus online read/emit padding isolates finite-FIFO row serialization. Clock/T controls test actual II, resource and timing limits; final RTL and routed measurements are separate from HLS estimates.",
 }
 
@@ -34,6 +34,7 @@ def measured_direction(points):
 
 def main():
     rows = list(csv.DictReader((ROOT / "experiments/architecture_data.csv").open(newline="")))
+    by_id = {row["id"]:row for row in rows}
     arch = [row for row in rows if row["series"]]
     frames = [row for row in rows if row["scope"] == "frame" and not row["operation"] and
               row.get("validation_only") != "True" and
@@ -66,6 +67,16 @@ def main():
         points = [row for row in arch if row["series"] == series and not row["operation"]]
         text += "\n## "+series+" Direction\n\n"+DESCRIPTIONS[series]+"\n\n"
         text += measured_direction(points)
+        if series == "C" and all(exp_id in by_id for exp_id in ("C10","W14","W17")):
+            combination,wide,narrow = (by_id[exp_id] for exp_id in ("C10","W14","W17"))
+            saving = number(wide["LUT"])-number(narrow["LUT"])
+            projected = number(combination["LUT"])-saving
+            cap = CAPACITY["LUT"]*LIMIT["LUT"]
+            text += ("An unimplemented raw-bank combination follow-up would still need about "+str(projected)+
+                     " LUT if [C10]("+combination["md_path"]+") reused the measured "+str(saving)+
+                     "-LUT whole-network saving from [W14]("+wide["md_path"]+") to [W17]("+narrow["md_path"]+"). "
+                     "This transfer projection is above the unchanged "+str(cap)+
+                     "-LUT gate and is not a synthesis result; no follow-up is treated as feasible on that assumption.\n\n")
         if series == "F":
             controls = {row["id"]:row for row in points}
             if all(exp_id in controls for exp_id in ("F20","F21","F23")):
