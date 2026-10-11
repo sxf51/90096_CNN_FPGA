@@ -72,6 +72,11 @@ runner to replay the measurement. P09 validates this path against P01; see
   independent affine channel/row/column loader to test that measured bottleneck.
   Keep runtime weights and all inference stages fixed; account for nested-loop
   restart overhead and require exact outputs before accepting clock changes.
+- F24's affine loader removes that multiplier but automatic flattening leaves
+  a2.699ns compare/and/select/add/store counter path. F25 preplans a separate
+  LOOP_FLATTEN-off control, budgeting per-row pipeline drains and preserving
+  every inference stage. Compare actual clock times actual cycles before
+  selecting either loader; end this control investigation after that comparison.
 
 Synthesis is serialized for the15GiB remote host, with60-minute per-run timeout
 and45-minute issue-tuning limit. Generated HDL/cache/binaries remain outside
