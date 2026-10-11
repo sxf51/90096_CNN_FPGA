@@ -303,6 +303,50 @@ def check_image_validation(parent_config, validation_config):
         raise RuntimeError("Full-image validation arithmetic flags differ from the frozen candidate")
 
 
+def prepare_verification_testbench(text, config, work, archive):
+    if not config.get("verification_testbench"):
+        if config.get("reload_params"):
+            raise RuntimeError("Changed-parameter verification requires an independent testbench")
+        return text
+    if config["operation"] != "cosim":
+        raise RuntimeError("Verification testbench override requires cosimulation")
+    replay = config.get("verification_testbench_parent_archive")
+    source = ROOT / config["verification_testbench"]
+    if replay:
+        source = ROOT / replay / "testbench" / source.name
+        expected = config.get("verification_testbench_manifest", {}).get(source.name)
+        if not expected or hashlib.sha256(source.read_bytes()).hexdigest() != expected:
+            raise RuntimeError("Frozen verification testbench changed or lacks its manifest")
+    elif not str(Path(config["verification_testbench"])).startswith("exp/tb/"):
+        raise RuntimeError("New verification testbenches must be under exp/tb")
+    target = work / "testbench" / source.name
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, target)
+    dest = archive / "testbench" / source.name
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, dest)
+    config["testbench_sha256"] = {source.name: hashlib.sha256(dest.read_bytes()).hexdigest()}
+    # Keep binary inputs and design flags; only the verification translation units change.
+    lines = [line for line in text.splitlines() if not (
+        line.startswith("tb.file=") and Path(line.split("=", 1)[1]).suffix.lower() in
+        {".c", ".cc", ".cpp", ".cxx"})]
+    lines.append("tb.file=" + target.as_posix())
+    return "\n".join(lines) + "\n"
+
+
+def reload_measurement(logfile, parent):
+    matches = re.findall(r"EXP_METRICS (\{[^\r\n]+\})", logfile.read_text(errors="replace"))
+    if len(matches) < 2:
+        raise RuntimeError("Missing C and RTL changed-parameter testbench checks")
+    result = json.loads(matches[-1])
+    if (result.get("csim_pass") is not True or result.get("bit_exact") is not True or
+            result.get("reload_pass") is not True or result.get("frame_count") != 2 or
+            result.get("reload_expected") != 104 / 256 or
+            result.get("border_mse") != number(parent.get("border_mse"))):
+        raise RuntimeError("Changed-parameter testbench failed exact frame/border/reload gates")
+    return result
+
+
 def run_verification(config):
     check_protected()
     exp_id, name, operation = config["id"], config["name"], config["operation"]
@@ -323,7 +367,10 @@ def run_verification(config):
     cfg = work / "hls_config.cfg"
     cfg_text = cfg.read_text().replace(str(source_work), str(work))
     if operation == "cosim":
-        cfg_text = cfg_text.replace("tb.cflags=", "tb.cflags=-DEXP_FRAMES=2 ")
+        cfg_text = prepare_verification_testbench(cfg_text, config, work, archive)
+        cfg_text = re.sub(r"^(tb\.cflags=)(.*)$", lambda match: match[1] +
+                          re.sub(r"(?:^|\s)-DEXP_FRAMES=\d+", "", match[2]) + " -DEXP_FRAMES=2",
+                          cfg_text, flags=re.MULTILINE)
         cfg_text += "cosim.rtl=verilog\ncosim.trace_level=none\ncosim.enable_dataflow_profiling=true\n"
     else:
         cfg_text += "vivado.flow=impl\n"
@@ -350,6 +397,8 @@ def run_verification(config):
         raise RuntimeError("Serial packaged flow is only valid for implementation")
     settings = Path(config.get("settings", parent_config["settings"]))
     try:
+        if operation == "cosim":
+            config["verification_rtl_check"] = check_template_rtl(source_work, work)
         if config.get("implementation_backend") == "serial_generated_flow":
             if operation != "impl":
                 raise RuntimeError("Serial generated flow is only valid for implementation")
@@ -405,6 +454,8 @@ def run_verification(config):
                 code, seconds = invoke(args,settings,cwd,work / (operation + ".console.log"),timeout)
         config["operation_minutes"] = seconds / 60
         observed, detail = parse_verification(work, operation)
+        if operation == "cosim":
+            config["verification_rtl_check_after"] = check_template_rtl(source_work, work)
         if code:
             row["status"] = "timeout" if code == 124 else "fail"
             raise RuntimeError(f"{operation} failed (exit={code})")
@@ -418,6 +469,9 @@ def run_verification(config):
                 ("rtl_latency_min", "rtl_latency_max", "rtl_interval_min", "rtl_interval_max")):
             row["status"] = "report_incomplete"
             raise RuntimeError("Missing numeric RTL latency/interval evidence for two transactions")
+        if operation == "cosim" and config.get("reload_params"):
+            config["reload_validation"] = reload_measurement(work / "cosim.console.log", parent_row)
+            observed["changed_params_bit_exact"] = True
         row["status"] = operation + "_complete"
         if operation == "impl":
             observed["timing_met"] = observed["impl_WNS_ns"] >= 0
@@ -466,7 +520,10 @@ def run_verification(config):
                 shutil.copyfile(path, dest)
         md = f"# {exp_id}: {name}\n\n## 1. Purpose and hypothesis / 目的与假设\n\n"
         md += (plan["purpose_section"] if plan else config.get("purpose", f"Validate {parent_row['id']} with {operation} using frozen source.")) + "\n\n"
-        md += f"## 2. Changes / 改动\n\nIndependent workspace copy of `{parent_row['id']}`, source commit `{parent_row['git_commit']}`. Cosimulation requests two complete frames to check state reset and transaction interval.\n\n"
+        md += f"## 2. Changes / 改动\n\nIndependent workspace copy of `{parent_row['id']}`, source commit `{parent_row['git_commit']}`. Cosimulation requests two complete frames to check state reset and transaction interval."
+        if config.get("reload_params"):
+            md += " The second frame uses changed runtime weights/biases and constant0.5 input, requiring exact104/256 at every output; the first frame retains E017 butterfly and border checks. Independent testbench source is frozen in testbench/ at verification commit `" + config["source_commit"] + "`."
+        md += "\n\n"
         md += "## 3. Configuration / 配置\n\n" + markdown_table([{"parameter": k, "value": v} for k, v in config.items() if k not in {"parent_config", "parent_metrics"}], ["parameter", "value"])
         md += f"\n## 4. Reproduction / 复现\n\n```sh\npython3 exp/reproduce_exp.py {exp_id} --run\n```\n\nThis rebuilds a fresh frozen parent before verification; see [reproduction guide](../REPRODUCE.md). Original reserved invocation:\n\n```sh\npython3 exp/run_exp.py --config exp/configs/{exp_id}.json\n```\n\nNo parent directory is overwritten.\n\n"
         md += "## 5. Results / 结果\n\n" + markdown_table([{"metric": k, "value": v} for k, v in observed.items()], ["metric", "value"])

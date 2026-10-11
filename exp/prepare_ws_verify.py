@@ -22,6 +22,8 @@ def main():
     parser.add_argument("--implementation-clock", type=float)
     parser.add_argument("--template")
     parser.add_argument("--diagnostic", action="store_true")
+    parser.add_argument("--reload-params", action="store_true",
+                        help="Use independent exact changed-parameter two-frame testbench (cosim only)")
     parser.add_argument("--rationale", help="Measured trigger and conservative decision to archive before execution")
     args = parser.parse_args()
     check_protected()
@@ -34,6 +36,8 @@ def main():
         raise RuntimeError("Parent is not an exact resource/quality-accepted frame point")
     if args.diagnostic and args.operation != "impl":
         raise RuntimeError("Diagnostic infeasible parents are only permitted for implementation")
+    if args.reload_params and (args.operation != "cosim" or base.get("precision") != "w10a10acc23"):
+        raise RuntimeError("Changed-parameter testbench requires w10a10acc23 cosimulation")
     if args.operation != "impl" and (args.implementation_clock is not None or args.template):
         raise RuntimeError("Implementation options require operation=impl")
     if args.validation_parent:
@@ -94,6 +98,10 @@ def main():
     if args.rationale:
         config["purpose"] += "\n\nDecision basis: "+args.rationale
         config["estimates"]["basis"] += " Decision basis: "+args.rationale
+    if args.reload_params:
+        config.update(reload_params=True, verification_testbench="exp/tb/validate_reload.cpp")
+        config["purpose"] += " The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains E017-exact butterfly with unchanged border MSE."
+        config["changes"] += " Override only verification C++ testbench, archive its SHA256/source commit and preserve identical parent RTL."
     plan(config)
     subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"), args.id,
                     "plan_"+config["name"]], cwd=ROOT, check=True)

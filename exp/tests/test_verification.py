@@ -6,11 +6,75 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config, check_template_rtl, prepare_packaged_driver, check_image_validation
+from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config, check_template_rtl, prepare_packaged_driver, check_image_validation, prepare_verification_testbench, reload_measurement
 from run_exp import ROOT
+from unittest.mock import patch
+import hashlib
+import verify_exp
 
 
 class VerificationTests(unittest.TestCase):
+    def test_changed_parameter_override_preserves_design_and_binary_inputs(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            tb = root / "exp/tb/reload.cpp"
+            tb.parent.mkdir(parents=True)
+            tb.write_text("int main() { return 0; }\n")
+            original = ("syn.file=/frozen/srcnn.cpp\nsyn.cflags=-DEXP_T=16\n"
+                        "tb.cflags=-DEXP_T=16 -DEXP_FRAMES=2\n"
+                        "tb.file=/old/validate.cpp\ntb.file=/old/golden.cpp\n"
+                        "tb.file=/old/fixed_reference.bin\ntb.file=/old/test/set5\n")
+            config = {"operation": "cosim", "reload_params": True,
+                      "verification_testbench": "exp/tb/reload.cpp"}
+            work, archive = root / "work", root / "archive"
+            with patch.object(verify_exp, "ROOT", root):
+                text = prepare_verification_testbench(original, config, work, archive)
+            self.assertIn("syn.file=/frozen/srcnn.cpp", text)
+            self.assertIn("syn.cflags=-DEXP_T=16", text)
+            self.assertIn("tb.cflags=-DEXP_T=16 -DEXP_FRAMES=2", text)
+            self.assertIn("tb.file=/old/fixed_reference.bin", text)
+            self.assertIn("tb.file=/old/test/set5", text)
+            self.assertNotIn("tb.file=/old/validate.cpp", text)
+            self.assertNotIn("tb.file=/old/golden.cpp", text)
+            self.assertEqual(config["testbench_sha256"],
+                             {"reload.cpp": hashlib.sha256(tb.read_bytes()).hexdigest()})
+            self.assertEqual((archive / "testbench/reload.cpp").read_bytes(), tb.read_bytes())
+            with self.assertRaisesRegex(RuntimeError, "independent testbench"):
+                prepare_verification_testbench(original, {"reload_params": True}, work, archive)
+
+    def test_reload_replay_checks_frozen_testbench_not_live_source(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            frozen = root / "experiments/F93_parent/testbench/reload.cpp"
+            frozen.parent.mkdir(parents=True)
+            frozen.write_text("frozen\n")
+            config = {"operation": "cosim", "verification_testbench": "exp/tb/reload.cpp",
+                      "verification_testbench_parent_archive": "experiments/F93_parent",
+                      "verification_testbench_manifest": {"reload.cpp": hashlib.sha256(frozen.read_bytes()).hexdigest()}}
+            with patch.object(verify_exp, "ROOT", root):
+                prepare_verification_testbench("tb.file=/old/validate.cpp\n", config, root / "work", root / "archive")
+                frozen.write_text("changed\n")
+                with self.assertRaisesRegex(RuntimeError, "testbench changed"):
+                    prepare_verification_testbench("", config, root / "work2", root / "archive2")
+
+    def test_reload_acceptance_requires_two_exact_checks_and_original_border(self):
+        parent = {"border_mse": 0.00001661846957728205}
+        result = {"csim_pass": True, "bit_exact": True, "reload_pass": True,
+                  "frame_count": 2, "reload_expected": .40625, "border_mse": parent["border_mse"]}
+        with tempfile.TemporaryDirectory() as temp:
+            log = Path(temp) / "cosim.log"
+            marker = "EXP_METRICS " + json.dumps(result) + "\n"
+            log.write_text(marker)
+            with self.assertRaisesRegex(RuntimeError, "Missing C and RTL"):
+                reload_measurement(log, parent)
+            log.write_text(marker + marker)
+            self.assertEqual(reload_measurement(log, parent), result)
+            for changes in ({"reload_pass": False}, {"border_mse": 0},
+                            {"frame_count": 1}, {"bit_exact": False}, {"reload_expected": .4}):
+                log.write_text(marker + "EXP_METRICS " + json.dumps({**result, **changes}) + "\n")
+                with self.assertRaisesRegex(RuntimeError, "exact frame/border/reload"):
+                    reload_measurement(log, parent)
+
     def test_all_image_evidence_requires_candidate_source_and_arithmetic_flags(self):
         parent = {"source_sha256": {"srcnn.cpp": "frozen"}, "fixed": True,
                   "precision": "w10a10acc23", "defines": {"EXP_T": 8, "EXP_FRAMES": 2}}

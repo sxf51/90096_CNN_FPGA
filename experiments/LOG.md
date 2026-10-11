@@ -383,6 +383,10 @@
 
 - 2026-10-11T18:28:11+00:00: F27: local_streamed_params_T16; status=provisional; latency_ms_est=2.6142825; 
 
+- 2026-10-11T18:33:48+00:00: F27/F28: parsed ownership results (total61656/outside3170/mux184LUT, zero HLS200-1449); clock2.419ns is the sole WS2 gate miss. Planned/committed independent F28 local-load LOOP_FLATTEN off before copying its frozen parent; C simulation overlaps the active F92 serial5ns implementation. All resource, precision and clock thresholds remain unchanged.
+
+- 2026-10-11T18:39:00+00:00: WS2 verification infrastructure: added --reload-params planning, independent archived testbench replacement, pre/post cosim RTL SHA checks, exact C/RTL reload/border markers, and archive-based verification replay.60 tests PASS. No changed-parameter RTL result or fresh-candidate routed result is yet claimed.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T18:33:48+00:00: WS2: F27 passes exact/area/II/cycle gates but misses clock2.419>2.377ns. Conservatively retain the gate and use an independent local-load loop-flatten control F28 before selecting the loader. F92 is running on unchanged F25 RTL with5ns implementation constraints; no partial F89 timing or LUT ratio is treated as final route acceptance.

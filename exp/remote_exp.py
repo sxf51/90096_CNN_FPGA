@@ -104,7 +104,8 @@ def main():
             subprocess.run(rsync + [str(plan_folder), args.host + ":" + args.remote_root + "/experiments/"], check=True)
             manifest = ROOT / "experiments/phase1_design_checksums.txt"
             subprocess.run(rsync + [str(manifest), args.host + ":" + args.remote_root + "/experiments/"], check=True)
-        for key in ("implementation_template_archive", "implementation_driver_archive"):
+        for key in ("implementation_template_archive", "implementation_driver_archive",
+                    "verification_testbench_parent_archive"):
             if not config.get(key):
                 continue
             subprocess.run(rsync + [str(ROOT / config[key]),

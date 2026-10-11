@@ -248,6 +248,8 @@ WS2 有结论后再做。先做 Winograd，直接卷积作对照。
 
 新的 WS2/WS3 候选没有现成的 Vivado driver 时，使用 `implementation_backend=serial_packaged_flow` 和同一 `verification_hook`：先在独立验证目录用 `vitis-run --package`、`vivado.flow=none` 打包父 RTL。Vitis 2026.1 的帮助输出与 F25 工作目录核实：此模式不执行 RTL 综合或布局布线，但仍使用 Vivado 做 IP 打包，而且不会生成实现 driver。因此新候选保留自己的 IP，只从 `implementation_driver_template=F89` 复制官方 driver/settings/extraction/XDC 脚本；替换为新点的报告模块清单和实现时钟，再加单线程 hook 执行。脚本模板及修改后脚本分别归档 SHA256，绝不复制模板的 IP。正式候选仍须以实际打包/实现日志验收；打包和实现持有综合锁，不修改父设计、不重新 csynth。
 
+参数重载验证使用 `prepare_ws_verify.py <父ID> --id <新ID> --operation cosim --reload-params`。先提交验证计划再创建独立 `exp/tb/validate_reload.cpp`，父 HLS RTL、设计编译宏不变，只替换 C/RTL 验证的 C++ testbench。testbench 源码及 SHA256 归档到实验目录的 `testbench/`；工具要求 C 仿真和 RTL 后检查均有精确通过标记。复现时优先使用该归档并校验 SHA256，不借用当前 testbench。
+
 WS2/WS3 新候选可用 `python3 exp/prepare_ws_verify.py <父ID> --id <未占用ID> --operation all|cosim|impl` 生成并提交独立验证计划，再用 `run_queue.py <新ID>` 执行。`all` 在计划提交后复制已归档的父源码、跑全部 13 图和两帧 butterfly；`impl` 默认采用上述串行打包流程，`--template <ID>` 则复用已有 driver。`--implementation-clock <ns>` 只修改实现约束；`--diagnostic` 仅允许 C 仿真/逐位/精度已通过但 HLS 资源不可行的父点做诊断实现。最终实现用 `--validation-parent <全部13图验证ID>` 明确精度证据来源。
 
 复用实现模板前逐文件比较父点与模板的 `hls/syn/verilog/` RTL 和初始化文件 SHA256；内容不同明确拒绝，不能仅凭 `srcnn` 签名相同就套用旧 IP。打包新候选后也核对原父 RTL，保证验证的是该父设计。

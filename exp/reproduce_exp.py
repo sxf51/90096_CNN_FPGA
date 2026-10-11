@@ -60,6 +60,16 @@ def make_config(parent_id, new_id, settings=None):
     if settings:
         config["settings"] = settings
     if config.get("operation"):
+        if config.get("verification_testbench"):
+            files = observed.get("testbench_sha256")
+            if not files:
+                raise ValueError("Frozen verification testbench manifest missing")
+            for name, digest in files.items():
+                path = folder / "testbench" / name
+                if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+                    raise ValueError("Frozen verification testbench changed: " + name)
+            config["verification_testbench_parent_archive"] = str(folder.relative_to(ROOT))
+            config["verification_testbench_manifest"] = files
         return config, None
     source = folder / "source"
     hashes = observed.get("source_sha256", {})

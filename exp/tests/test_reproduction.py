@@ -45,6 +45,23 @@ class ReproductionTests(unittest.TestCase):
         self.assertEqual(config["tb_files"], ["exp/tb/replay_P100/root/exp/tb/check.cpp"])
         self.assertFalse((self.root / config["design"]).exists())
 
+    def test_verification_replay_freezes_and_checks_its_independent_testbench(self):
+        self.base.update(operation="cosim", verify_parent="P02",
+                         verification_testbench="exp/tb/reload.cpp", reload_params=True)
+        (self.folder / "plan.json").write_text(json.dumps({"configuration": self.base}))
+        tb = self.folder / "testbench/reload.cpp"
+        tb.parent.mkdir()
+        tb.write_text("frozen verification\n")
+        observed = {"testbench_sha256": {"reload.cpp": hashlib.sha256(tb.read_bytes()).hexdigest()}}
+        (self.folder / "config.json").write_text(json.dumps(observed))
+        config, source = reproduce_exp.make_config("P01", "P100")
+        self.assertIsNone(source)
+        self.assertEqual(config["verification_testbench_parent_archive"], "experiments/P01_parent")
+        self.assertEqual(config["verification_testbench_manifest"], observed["testbench_sha256"])
+        tb.write_text("modified\n")
+        with self.assertRaisesRegex(ValueError, "testbench changed"):
+            reproduce_exp.make_config("P01", "P100")
+
     def test_corrupt_archived_source_is_rejected(self):
         self.kernel.write_text("int changed_kernel;\n")
         with self.assertRaisesRegex(ValueError, "snapshot missing or changed"):
