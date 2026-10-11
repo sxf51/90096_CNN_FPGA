@@ -152,6 +152,61 @@ def check_template_rtl(parent_work, template_work):
     return {"files_checked": len(parent), "manifest_sha256": digest, "template_matches_parent": True}
 
 
+def prepare_packaged_driver(work, template_work, archive, parent_config, exp_id, template_archive=None):
+    target = work / "hls/impl/verilog"
+    if (target / "run_vivado.tcl").is_file():
+        return []
+    component = work / "hls/impl/ip/component.xml"
+    if not component.is_file():
+        raise RuntimeError("Independent candidate IP package is missing")
+    fields = {node.tag.rsplit("}", 1)[-1]: node.text for node in ET.parse(component).getroot()}
+    if tuple(fields.get(key) for key in ("vendor", "library", "name", "version")) != ("xilinx.com", "hls", "srcnn", "1.0"):
+        raise RuntimeError("Packaged candidate VLNV does not match this generated SRCNN flow")
+    template = template_work / "hls/impl/verilog"
+    old_root = str(template_work)
+    if template_archive:
+        frozen = json.loads((template_archive / "config.json").read_text())
+        old_root = frozen["implementation_driver_template_work_root"]
+        files = [(template_archive / record["archived_file"], record["sha256"])
+                 for record in frozen["implementation_driver_template_files"]]
+    else:
+        paths = [template / name for name in ("run_vivado.tcl", "settings.tcl", "extraction.tcl")]
+        paths += sorted(template.glob("*.xdc"))
+        files = [(path, hashlib.sha256(path.read_bytes()).hexdigest()) for path in paths]
+    if not any(path.suffix == ".xdc" for path, _ in files):
+        raise RuntimeError("Generated driver template has no top-level clock constraint")
+    records = []
+    target.mkdir(parents=True, exist_ok=True)
+    for path, digest in files:
+        if hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+            raise RuntimeError("Generated driver template archive changed")
+        dest = archive / "driver_template" / path.name
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, dest)
+        records.append({"archived_file": str(dest.relative_to(archive)), "sha256": digest})
+        (target / path.name).write_text(path.read_text().replace(old_root, str(work)))
+    settings = (target / "settings.tcl").read_text()
+    for key, value in (("top_module", "srcnn"), ("language", "verilog"), ("device", "xck26"),
+                       ("package", "-sfvc784"), ("speed", "-2LV-c"), ("clock", "ap_clk")):
+        if not re.search(r"^set "+key+" "+re.escape(value)+"$", settings, re.MULTILINE):
+            raise RuntimeError("Generated flow template has incompatible "+key)
+    available = {path.stem for path in (work / "hls/syn/verilog").glob("*.v")}
+    if "srcnn" not in available or any(not re.fullmatch(r"[A-Za-z_]\w*", name) for name in available):
+        raise RuntimeError("Cannot determine candidate RTL modules for generated reports")
+    functions = sorted({"srcnn_"+item["module"] for item in parent_config.get("parsed_modules", [])} & available)
+    bindings = sorted(available-set(functions)-{"srcnn"})
+    driver = target / "run_vivado.tcl"
+    text = driver.read_text()
+    for key, value in (("funcmodules", "{"+" ".join(functions)+"}"),
+                       ("bindmodules", "{"+" ".join(bindings)+"}"), ("hls_project", exp_id)):
+        text, count = re.subn(r"^dict set report_options "+key+r" .*?$",
+                              "dict set report_options "+key+" "+value, text, flags=re.MULTILINE)
+        if count != 1:
+            raise RuntimeError("Cannot replace generated report option "+key)
+    driver.write_text(text)
+    return records
+
+
 def vivado_diagnostic_excerpt(text):
     lines = text.splitlines()
     useful = lines[:60] + [line for line in lines if re.search(
@@ -312,9 +367,15 @@ def run_verification(config):
                 if package_code:
                     raise RuntimeError(f"Package-only export failed (exit={package_code})")
                 config["implementation_rtl_check"] = check_template_rtl(source_work, work)
+                template_work = ROOT / "workspace/exp_runs" / config.get("implementation_driver_template", "F89")
+                template_archive = ROOT / config["implementation_driver_archive"] if config.get("implementation_driver_archive") else None
+                config["implementation_driver_template_files"] = prepare_packaged_driver(
+                    work, template_work, archive, parent_config, exp_id, template_archive)
+                if config["implementation_driver_template_files"]:
+                    config["implementation_driver_template_work_root"] = str(template_work)
                 impl_cwd, records, original_digest = prepare_serial_implementation(
                     work, work, archive, ROOT / config["verification_hook"],
-                    implementation_clock_ns=config.get("implementation_clock_ns"), enable_impl=True)
+                    implementation_clock_ns=config.get("implementation_clock_ns", config["clock"]), enable_impl=True)
                 config["implementation_files"] = records
                 config["original_generated_driver_sha256"] = original_digest
                 config["implementation_work_root"] = str(work)

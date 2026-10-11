@@ -73,6 +73,8 @@ def main():
         if args.operation == "impl":
             config.update(implementation_backend="serial_generated_flow" if args.template else "serial_packaged_flow",
                           verification_hook="exp/vivado_serial_hook.tcl")
+            if not args.template:
+                config["implementation_driver_template"] = "F89"
             if args.template:
                 config["implementation_template"] = args.template
             if args.implementation_clock is not None:

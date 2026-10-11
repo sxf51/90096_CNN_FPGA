@@ -1,15 +1,60 @@
 #!/usr/bin/env python3
 """Prevent inherited pre-route reports from becoming implementation evidence."""
 import sys
+import json
 import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config, check_template_rtl
+from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config, check_template_rtl, prepare_packaged_driver
 from run_exp import ROOT
 
 
 class VerificationTests(unittest.TestCase):
+    def test_driver_boilerplate_preserves_new_ip_and_replay_uses_archived_scripts(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            template, work, archive = root/"F89", root/"F97", root/"archive"
+            generated = template/"hls/impl/verilog"
+            generated.mkdir(parents=True)
+            original = ("set has_synth true\nset has_impl 1\n"
+                        "dict set report_options hls_project F81\n"
+                        "dict set report_options funcmodules {old_function}\n"
+                        "dict set report_options bindmodules {old_bind}\n"
+                        "hls_vivado_reports_setup $report_options\n")
+            (generated/"run_vivado.tcl").write_text(original)
+            (generated/"settings.tcl").write_text("set top_module srcnn\nset language verilog\nset device xck26\nset package -sfvc784\nset speed -2LV-c\nset clock ap_clk\n")
+            (generated/"extraction.tcl").write_text("# report procedures\n")
+            (generated/"srcnn.xdc").write_text("create_clock -name ap_clk -period 2.500 [get_ports ap_clk]\n")
+            stale_ip = template/"hls/impl/ip/stale.v"
+            stale_ip.parent.mkdir(parents=True)
+            stale_ip.write_text("module stale; endmodule\n")
+            component = '<component xmlns="test"><vendor>xilinx.com</vendor><library>hls</library><name>srcnn</name><version>1.0</version></component>'
+            for destination in (work, root/"F101"):
+                (destination/"hls/impl/ip").mkdir(parents=True)
+                (destination/"hls/impl/ip/component.xml").write_text(component)
+                rtl = destination/"hls/syn/verilog"
+                rtl.mkdir(parents=True)
+                for name in ("srcnn", "srcnn_local_engine", "srcnn_mul"):
+                    (rtl/(name+".v")).write_text("module "+name+"; endmodule\n")
+            parent = {"parsed_modules": [{"module": "local_engine"}]}
+            records = prepare_packaged_driver(work, template, archive, parent, "F97")
+            self.assertEqual((work/"hls/impl/ip/component.xml").read_text(), component)
+            self.assertFalse((work/"hls/impl/ip/stale.v").exists())
+            driver = (work/"hls/impl/verilog/run_vivado.tcl").read_text()
+            self.assertIn("hls_project F97", driver)
+            self.assertIn("funcmodules {srcnn_local_engine}", driver)
+            self.assertIn("bindmodules {srcnn_mul}", driver)
+            self.assertNotIn("old_function", driver)
+            self.assertEqual((generated/"run_vivado.tcl").read_text(), original)
+            (archive/"config.json").write_text(json.dumps({
+                "implementation_driver_template_work_root": str(template),
+                "implementation_driver_template_files": records}))
+            (generated/"run_vivado.tcl").write_text("changed original template\n")
+            prepare_packaged_driver(root/"F101", template, root/"replay", parent, "F101", archive)
+            self.assertIn("hls_project F101", (root/"F101/hls/impl/verilog/run_vivado.tcl").read_text())
+            self.assertEqual((root/"F101/hls/impl/ip/component.xml").read_text(), component)
+
     def test_same_interface_different_rtl_template_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

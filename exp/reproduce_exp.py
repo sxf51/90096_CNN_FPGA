@@ -154,6 +154,8 @@ def main():
         if config.get("implementation_backend") == "serial_generated_flow":
             config["implementation_template"] = parent_new
             config["implementation_template_archive"] = str(archived(args.parent).relative_to(ROOT))
+        elif config.get("implementation_backend") == "serial_packaged_flow":
+            config["implementation_driver_archive"] = str(archived(args.parent).relative_to(ROOT))
     prepare(config, source)
     print("Prepared", exp_id, "from", args.parent, flush=True)
     return execute(exp_id, args.local) if args.run else 0
