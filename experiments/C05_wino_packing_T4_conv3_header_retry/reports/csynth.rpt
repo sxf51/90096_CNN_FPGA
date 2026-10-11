@@ -1,0 +1,182 @@
+
+
+================================================================
+== Synthesis Summary Report of 'srcnn'
+================================================================
++ General Information: 
+    * Date:           Sun Oct 11 11:43:24 2026
+    * Version:        2026.1 (Build 6493734 on Jun 16 2026)
+    * Project:        C05
+    * Solution:       hls (Vivado IP Flow Target)
+    * Product family: zynquplus
+    * Target device:  xck26-sfvc784-2LV-c
+    
+
+* Performance & Resource Estimates: 
++--------------------------------------------------------+--------+---------------+----------+---------+--------+----------+---------+-----------+-------+-----------+------------+---------------+---------------+-----+
+|                         Modules                        |  Issue |               | Iteration|         |  Trip  |          |       Latency       |       |           |            |               |               |     |
+|                         & Loops                        |  Type  | Violation Type|  Latency | Interval|  Count | Pipelined| (cycles)|    (ns)   | Slack |   BRAM    |     DSP    |       FF      |      LUT      | URAM|
++--------------------------------------------------------+--------+---------------+----------+---------+--------+----------+---------+-----------+-------+-----------+------------+---------------+---------------+-----+
+|+ srcnn                                                 |  Timing|              -|         -|  2378444|       -|        no|  2378443|  9.514e+06|  -0.32|  241 (83%)|  1192 (95%)|  263747 (112%)|  260892 (222%)|    -|
+| + srcnn_Pipeline_load1                                 |       -|              -|         -|     5201|       -|       yes|     5201|  2.080e+04|   0.00|          -|           -|     2051 (~0%)|      4963 (4%)|    -|
+|  o load1                                               |       -|              -|        17|        1|    5184|       yes|     5199|  2.080e+04|   2.92|          -|           -|              -|              -|    -|
+| + srcnn_Pipeline_load2                                 |       -|              -|         -|     2064|       -|       yes|     2064|  8.256e+03|   0.00|          -|           -|     1230 (~0%)|      3017 (2%)|    -|
+|  o load2                                               |       -|              -|        16|        1|    2048|       yes|     2062|  8.248e+03|   2.92|          -|           -|              -|              -|    -|
+| + transform_weights                                    |       -|              -|         -|      587|       -|       yes|      587|  2.348e+03|   0.07|          -|     1 (~0%)|    96629 (41%)|    80932 (69%)|    -|
+|  o wino_load_channels_wino_load_groups                 |       -|              -|        11|        1|     576|       yes|      585|  2.340e+03|   2.92|          -|           -|              -|              -|    -|
+| + srcnn_Pipeline_load3                                 |       -|              -|         -|      817|       -|       yes|      817|  3.268e+03|   0.00|          -|           -|      713 (~0%)|      2300 (1%)|    -|
+|  o load3                                               |       -|              -|        17|        1|     800|       yes|      815|  3.260e+03|   2.92|          -|           -|              -|              -|    -|
+| + srcnn_Pipeline_VITIS_LOOP_518_1                      |       -|              -|         -|       71|       -|       yes|       71|    284.000|   0.00|          -|           -|      550 (~0%)|      1833 (1%)|    -|
+|  o VITIS_LOOP_518_1                                    |       -|              -|         7|        1|      64|       yes|       69|    276.000|   2.92|          -|           -|              -|              -|    -|
+| + srcnn_Pipeline_VITIS_LOOP_519_2                      |       -|              -|         -|       39|       -|       yes|       39|    156.000|   0.00|          -|           -|      516 (~0%)|      1831 (1%)|    -|
+|  o VITIS_LOOP_519_2                                    |       -|              -|         7|        1|      32|       yes|       37|    148.000|   2.92|          -|           -|              -|              -|    -|
+| + dataflow_region*                                     |  Timing|              -|         -|  2370194|       -|  dataflow|  2370210|  9.481e+06|  -0.32|  223 (77%)|  1191 (95%)|   104459 (44%)|    89602 (76%)|    -|
+|  + read_input                                          |       -|              -|         -|    65026|       -|    rewind|    65041|  2.602e+05|   0.00|          -|           -|      567 (~0%)|      2096 (1%)|    -|
+|   o read_pixels                                        |       -|              -|        16|        1|   65025|       yes|    65039|  2.602e+05|   2.92|          -|           -|              -|              -|    -|
+|  + replicate_pad_ap_int_10_4_s                         |       -|              -|         -|   139129|       -|        no|   139129|  5.565e+05|   0.09|    1 (~0%)|           -|       83 (~0%)|      432 (~0%)|    -|
+|   o pad_rows                                           |       -|              -|       527|        -|     264|        no|   139128|  5.565e+05|   2.92|          -|           -|              -|              -|    -|
+|    + replicate_pad_ap_int_10_4_Pipeline_pad_read_row   |       -|              -|         -|      257|       -|       yes|      257|  1.028e+03|   0.22|          -|           -|       19 (~0%)|       79 (~0%)|    -|
+|     o pad_read_row                                     |       -|              -|         2|        1|     255|       yes|      255|  1.020e+03|   2.92|          -|           -|              -|              -|    -|
+|    + replicate_pad_ap_int_10_4_Pipeline_pad_write_row  |       -|              -|         -|      266|       -|       yes|      266|  1.064e+03|   0.09|          -|           -|       12 (~0%)|      139 (~0%)|    -|
+|     o pad_write_row                                    |       -|              -|         2|        1|     264|       yes|      264|  1.056e+03|   2.92|          -|           -|              -|              -|    -|
+|  + conv12*                                             |       -|              -|         -|  2370194|       -|  dataflow|  2370193|  9.481e+06|   0.09|  117 (40%)|  1088 (87%)|    55694 (23%)|    35554 (30%)|    -|
+|   + conv1_stream*                                      |       -|              -|         -|  2370194|       -|  dataflow|  2370193|  9.481e+06|   0.09|   81 (28%)|   576 (46%)|    29922 (12%)|    21026 (17%)|    -|
+|    + conv1_tiles                                       |       -|              -|         -|  2370193|       -|        no|  2370193|  9.481e+06|   0.09|     9 (3%)|   576 (46%)|    28921 (12%)|    20684 (17%)|    -|
+|     o wino_rows                                        |       -|              -|      8978|        -|     264|        no|  2370192|  9.481e+06|   2.92|          -|           -|              -|              -|    -|
+|      o wino_columns                                    |       -|              -|        34|        -|     264|        no|     8976|  3.590e+04|   2.92|          -|           -|              -|              -|    -|
+|       + conv1_tiles_Pipeline_wino_fold                 |       -|              -|         -|       27|       -|       yes|       27|    108.000|   0.09|          -|   576 (46%)|    24359 (10%)|    14691 (12%)|    -|
+|        o wino_fold                                     |       -|              -|        11|        1|      16|       yes|       25|    100.000|   2.92|          -|           -|              -|              -|    -|
+|    + reorder_rows                                      |       -|              -|         -|    65026|       -|    rewind|    65028|  2.601e+05|   0.54|          -|           -|      679 (~0%)|      228 (~0%)|    -|
+|     o raster_rows_raster_columns                       |       -|              -|         3|        1|   65025|       yes|    65026|  2.601e+05|   2.92|          -|           -|              -|              -|    -|
+|   + conv2_stream                                       |       -|              -|         -|   260110|       -|        no|   260110|  1.040e+06|   0.16|          -|   512 (41%)|    25621 (10%)|    14448 (12%)|    -|
+|    o c2_pixels_c2_fold                                 |       -|              -|        10|        1|  260100|       yes|   260108|  1.040e+06|   2.92|          -|           -|              -|              -|    -|
+|  + replicate_pad_pixel2_2_s                            |       -|              -|         -|   135458|       -|        no|   135458|  5.418e+05|   0.09|   32 (11%)|           -|       83 (~0%)|      1583 (1%)|    -|
+|   o pad_rows                                           |       -|              -|       523|        -|     259|        no|   135457|  5.418e+05|   2.92|          -|           -|              -|              -|    -|
+|    + replicate_pad_pixel2_2_Pipeline_pad_read_row      |       -|              -|         -|      257|       -|       yes|      257|  1.028e+03|   0.22|          -|           -|       19 (~0%)|       79 (~0%)|    -|
+|     o pad_read_row                                     |       -|              -|         2|        1|     255|       yes|      255|  1.020e+03|   2.92|          -|           -|              -|              -|    -|
+|    + replicate_pad_pixel2_2_Pipeline_pad_write_row     |       -|              -|         -|      262|       -|       yes|      262|  1.048e+03|   0.09|          -|           -|       12 (~0%)|      141 (~0%)|    -|
+|     o pad_write_row                                    |       -|              -|         2|        1|     260|       yes|      260|  1.040e+03|   2.92|          -|           -|              -|              -|    -|
+|  + conv3_stream                                        |       -|              -|         -|  1347319|       -|        no|  1347319|  5.389e+06|   0.07|   36 (12%)|    100 (8%)|    46824 (19%)|    49082 (41%)|    -|
+|   o c3_rows                                            |       -|              -|      5202|        -|     259|        no|  1347318|  5.389e+06|   2.92|          -|           -|              -|              -|    -|
+|    o c3_columns                                        |       -|              -|        20|        -|     260|        no|     5200|  2.080e+04|   2.92|          -|           -|              -|              -|    -|
+|     + conv3_stream_Pipeline_c3_fold                    |       -|              -|         -|       14|       -|       yes|       14|     56.000|   0.07|          -|    100 (8%)|     17907 (7%)|    41334 (35%)|    -|
+|      o c3_fold                                         |       -|              -|         6|        1|       8|       yes|       12|     48.000|   2.92|          -|           -|              -|              -|    -|
+|  + write_output                                        |  Timing|              -|         -|    65037|       -|    rewind|    65046|  2.602e+05|  -0.32|          -|     3 (~0%)|      547 (~0%)|      536 (~0%)|    -|
+|   o write_pixels                                       |       -|              -|        21|        1|   65025|       yes|    65044|  2.602e+05|   2.92|          -|           -|              -|              -|    -|
++--------------------------------------------------------+--------+---------------+----------+---------+--------+----------+---------+-----------+-------+-----------+------------+---------------+---------------+-----+
+    Name Prefix: '+' for module, 'o' for loop, '*' for dataflow
+
+
+================================================================
+== HW Interfaces
+================================================================
+* M_AXI
++------------------+------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+| Interface        | Read/Write | Data Width | Address Width | Latency | Offset | Register | Max Widen | Max Read     | Max Write    | Num Read    | Num Write   | Resource Estimate |
+|                  |            | (SW->HW)   |               |         |        |          | Bitwidth  | Burst Length | Burst Length | Outstanding | Outstanding |                   |
++------------------+------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+| m_axi_image_in   | READ_ONLY  | 32 -> 32   | 64            | 0       | slave  | 0        | 0         | 256          | 16           | 16          | 16          | BRAM=8            |
+| m_axi_image_out  | WRITE_ONLY | 32 -> 32   | 64            | 0       | slave  | 0        | 0         | 16           | 256          | 16          | 16          | BRAM=2            |
+| m_axi_parameters | READ_ONLY  | 32 -> 32   | 64            | 0       | slave  | 0        | 0         | 256          | 16           | 16          | 16          | BRAM=8            |
++------------------+------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+
+* S_AXILITE Interfaces
++---------------+------------+---------------+--------+----------+
+| Interface     | Data Width | Address Width | Offset | Register |
++---------------+------------+---------------+--------+----------+
+| s_axi_control | 32         | 7             | 16     | 0        |
++---------------+------------+---------------+--------+----------+
+
+* S_AXILITE Registers
++---------------+------------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| Interface     | Register   | Offset | Width | Access | Description                      | Bit Fields                                                           |
++---------------+------------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| s_axi_control | CTRL       | 0x00   | 32    | RW     | Control signals                  | 0=AP_START 1=AP_DONE 2=AP_IDLE 3=AP_READY 7=AUTO_RESTART 9=INTERRUPT |
+| s_axi_control | GIER       | 0x04   | 32    | RW     | Global Interrupt Enable Register | 0=Enable                                                             |
+| s_axi_control | IP_IER     | 0x08   | 32    | RW     | IP Interrupt Enable Register     | 0=CHAN0_INT_EN 1=CHAN1_INT_EN                                        |
+| s_axi_control | IP_ISR     | 0x0c   | 32    | RW     | IP Interrupt Status Register     | 0=CHAN0_INT_ST 1=CHAN1_INT_ST                                        |
+| s_axi_control | in_r_1     | 0x10   | 32    | W      | Data signal of in_r              |                                                                      |
+| s_axi_control | in_r_2     | 0x14   | 32    | W      | Data signal of in_r              |                                                                      |
+| s_axi_control | weights1_1 | 0x1c   | 32    | W      | Data signal of weights1          |                                                                      |
+| s_axi_control | weights1_2 | 0x20   | 32    | W      | Data signal of weights1          |                                                                      |
+| s_axi_control | biases1_1  | 0x28   | 32    | W      | Data signal of biases1           |                                                                      |
+| s_axi_control | biases1_2  | 0x2c   | 32    | W      | Data signal of biases1           |                                                                      |
+| s_axi_control | weights2_1 | 0x34   | 32    | W      | Data signal of weights2          |                                                                      |
+| s_axi_control | weights2_2 | 0x38   | 32    | W      | Data signal of weights2          |                                                                      |
+| s_axi_control | biases2_1  | 0x40   | 32    | W      | Data signal of biases2           |                                                                      |
+| s_axi_control | biases2_2  | 0x44   | 32    | W      | Data signal of biases2           |                                                                      |
+| s_axi_control | weights3_1 | 0x4c   | 32    | W      | Data signal of weights3          |                                                                      |
+| s_axi_control | weights3_2 | 0x50   | 32    | W      | Data signal of weights3          |                                                                      |
+| s_axi_control | biases3_1  | 0x58   | 32    | W      | Data signal of biases3           |                                                                      |
+| s_axi_control | biases3_2  | 0x5c   | 32    | W      | Data signal of biases3           |                                                                      |
+| s_axi_control | out_r_1    | 0x64   | 32    | W      | Data signal of out_r             |                                                                      |
+| s_axi_control | out_r_2    | 0x68   | 32    | W      | Data signal of out_r             |                                                                      |
++---------------+------------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------+
+| Interface | Type       | Ports     |
++-----------+------------+-----------+
+| ap_clk    | clock      | ap_clk    |
+| ap_rst_n  | reset      | ap_rst_n  |
+| interrupt | interrupt  | interrupt |
+| ap_ctrl   | ap_ctrl_hs |           |
++-----------+------------+-----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+----------+
+| Argument | Direction | Datatype |
++----------+-----------+----------+
+| in       | in        | float*   |
+| weights1 | in        | float*   |
+| biases1  | in        | float*   |
+| weights2 | in        | float*   |
+| biases2  | in        | float*   |
+| weights3 | in        | float*   |
+| biases3  | in        | float*   |
+| out      | out       | float*   |
++----------+-----------+----------+
+
+* SW-to-HW Mapping
++----------+------------------+-----------+----------+--------------------------------------+
+| Argument | HW Interface     | HW Type   | HW Usage | HW Info                              |
++----------+------------------+-----------+----------+--------------------------------------+
+| in       | m_axi_image_in   | interface |          | channel=0                            |
+| in       | s_axi_control    | register  | offset   | name=in_r_1 offset=0x10 range=32     |
+| in       | s_axi_control    | register  | offset   | name=in_r_2 offset=0x14 range=32     |
+| weights1 | m_axi_parameters | interface |          | channel=0                            |
+| weights1 | s_axi_control    | register  | offset   | name=weights1_1 offset=0x1c range=32 |
+| weights1 | s_axi_control    | register  | offset   | name=weights1_2 offset=0x20 range=32 |
+| biases1  | m_axi_parameters | interface |          | channel=0                            |
+| biases1  | s_axi_control    | register  | offset   | name=biases1_1 offset=0x28 range=32  |
+| biases1  | s_axi_control    | register  | offset   | name=biases1_2 offset=0x2c range=32  |
+| weights2 | m_axi_parameters | interface |          | channel=0                            |
+| weights2 | s_axi_control    | register  | offset   | name=weights2_1 offset=0x34 range=32 |
+| weights2 | s_axi_control    | register  | offset   | name=weights2_2 offset=0x38 range=32 |
+| biases2  | m_axi_parameters | interface |          | channel=0                            |
+| biases2  | s_axi_control    | register  | offset   | name=biases2_1 offset=0x40 range=32  |
+| biases2  | s_axi_control    | register  | offset   | name=biases2_2 offset=0x44 range=32  |
+| weights3 | m_axi_parameters | interface |          | channel=0                            |
+| weights3 | s_axi_control    | register  | offset   | name=weights3_1 offset=0x4c range=32 |
+| weights3 | s_axi_control    | register  | offset   | name=weights3_2 offset=0x50 range=32 |
+| biases3  | m_axi_parameters | interface |          | channel=0                            |
+| biases3  | s_axi_control    | register  | offset   | name=biases3_1 offset=0x58 range=32  |
+| biases3  | s_axi_control    | register  | offset   | name=biases3_2 offset=0x5c range=32  |
+| out      | m_axi_image_out  | interface |          | channel=0                            |
+| out      | s_axi_control    | register  | offset   | name=out_r_1 offset=0x64 range=32    |
+| out      | s_axi_control    | register  | offset   | name=out_r_2 offset=0x68 range=32    |
++----------+------------------+-----------+----------+--------------------------------------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+* Inferred Burst Summary
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.
