@@ -311,6 +311,8 @@
 
 - 2026-10-11T03:11:05+00:00: F25: refreshed architecture index and CSV-derived figures; separated frame/layer and PE estimate panels, grouped identical labeled points and increased label separation. Audited all 75 completed frozen plans, metric records and archived sources without mismatch.
 
+- 2026-10-11T03:24:56+00:00: C11: wino_conv2w8_continuous_T4_split4000; status=infeasible; latency_ms_est=1.081672; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T23:19:34+00:00: Winograd's requested offline weight transform conflicts with accepting arbitrary original float weight arrays at the frozen srcnn signature. Keep the internal runtime load/transform stage, include its measured cycles/resources and archive the equivalent pretrained G2 tensor. Removing runtime transformation requires an approved transformed-weight contract or a specialized constant-weight wrapper; no such interface change is made in this unattended run.
