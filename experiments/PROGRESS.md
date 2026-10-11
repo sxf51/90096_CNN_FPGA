@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-11T15:11:04+00:00 from archived measurements.
+Updated 2026-10-11T15:13:41+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -16,7 +16,15 @@ Fastest resource-feasible exact frame estimate: [F25](F25_nested_weight_loader_T
 
 Exploration: all required runs archived.
 
-Final verification: F89, F90, F91.
+Final verification: F89.
+
+## Weight Loading Workstream
+
+Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Start F89 exclusively; concurrently prepare F26/F27 plans and sources and run C simulations. Synthesize F26/F27 serially after F89, then choose the measured loader for W19.
+
+2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
+
+Section 6 conservative decisions: preserve runtime float weights and HLS resource gates; keep missing comic explicitly provisional; if serial implementation OOM recurs, archive evidence and continue WS2 without changing host swap or using an unverified machine. Revisit these decisions with the user tomorrow.
 
 P08 routed DSP48E2 inspection confirms one cell, AMULTSEL=AD and ADREG=1. W10-W13/C07 split transformed-window generation from a fixed16384*(4*T) MAC loop to remove W07's conditional264x264 bound inflation. C08/C09 use independently verified Conv2-only8-bit weights, retain ten-bit activations, and omit coefficient residual repair. Vitis rejects the original8000-bit Conv3 stream at its4096-bit limit; F08-F12/W14-W16/C10-C11 use independent two4000-bit-stream retries with identical arithmetic. F13-F15 isolate Conv3 window rotation and tree-register overhead using F08's measured7013 multiplexer LUT. All new designs are independent; source and paper plans are committed before runs. Re-run CSV analyses, equivalent offline-weight archives and all plots after all evidence arrives. Finalize ARCH_SUMMARY.md, both checksum audits and final F99 commit.
 

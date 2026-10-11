@@ -14,6 +14,7 @@ from run_exp import (ROOT, FIELDS, archive_logs, append_log, check_protected,
                      prepare_run_directory, utc, write_json)
 from compact_archive import compact
 from archive_cosim_profiles import archive_profiles, profile_results
+from host_memory import MemoryMonitor
 
 
 def archive_verification_reports(work, archive, operation):
@@ -233,7 +234,8 @@ def run_verification(config):
                 args = ["vitis-run", "--mode", "hls", "--" + operation,
                         "--config", str(cfg), "--work_dir", str(work)]
                 cwd = ROOT
-            code, seconds = invoke(args,settings,cwd,work / (operation + ".console.log"),timeout)
+            with MemoryMonitor(archive / "host_memory.csv"):
+                code, seconds = invoke(args,settings,cwd,work / (operation + ".console.log"),timeout)
         config["operation_minutes"] = seconds / 60
         observed, detail = parse_verification(work, operation)
         if code:

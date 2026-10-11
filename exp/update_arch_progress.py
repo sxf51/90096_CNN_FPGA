@@ -22,6 +22,10 @@ def main():
     selection_path = ROOT / "experiments/final_selection.json"
     selection = json.loads(selection_path.read_text()) if selection_path.is_file() else {}
     final_pending = [exp_id for exp_id in selection.get("queue", []) if exp_id not in ids]
+    ws_path = ROOT / "experiments/weight_loading_state.json"
+    ws = json.loads(ws_path.read_text()) if ws_path.is_file() else None
+    if ws:
+        final_pending = [exp_id for exp_id in ws["verification_queue"] if exp_id not in ids]
     arch = [row for row in rows if row["series"]]
     probe_path = ROOT / "experiments/P08_builtin_mapping_implementation/primitive_probe.json"
     probe = json.loads(probe_path.read_text()) if probe_path.is_file() else {}
@@ -31,7 +35,9 @@ def main():
              "pending_final_verification_ids":final_pending,"selected":selection.get("selected", []),
              "best_provisional":accepted[0] if accepted else None,
              "packing_pre_adder_verified":probe.get("pre_adder_used") is True,
-             "next":"Finish existing queues, then final verification and closure."}
+             "next":ws["next"] if ws else "Finish existing queues, then final verification and closure."}
+    if ws:
+        state["weight_loading_workstream"] = ws
     write_json(ROOT / "experiments/arch_state.json",state)
     text = "# Current progress\n\nUpdated "+state["time"]+" from archived measurements.\n\n"
     text += "Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.\n\n"
@@ -42,6 +48,10 @@ def main():
         text += "Fastest resource-feasible exact frame estimate: ["+best["id"]+"]("+best["md_path"]+"); "+best["latency_ms_est"]+"ms, T="+best["T_target"]+", DSP="+best["DSP"]+", BRAM18K="+best["BRAM18K"]+", LUT="+best["LUT"]+", deltaPSNR="+best["delta_psnr"]+"dB. HLS estimates are distinct from route/RTL results.\n\n"
     text += "## Outstanding\n\nExploration: "+(", ".join(pending) or "all required runs archived")+".\n\n"
     text += "Final verification: "+((", ".join(final_pending) or "all planned operations archived, including failures/timeouts") if selection else "awaiting global candidate selection")+".\n\n"
+    if ws:
+        text += "## Weight Loading Workstream\n\nPlan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). " + ws["next"] + "\n\n"
+        text += "2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.\n\n"
+        text += "Section 6 conservative decisions: preserve runtime float weights and HLS resource gates; keep missing comic explicitly provisional; if serial implementation OOM recurs, archive evidence and continue WS2 without changing host swap or using an unverified machine. Revisit these decisions with the user tomorrow.\n\n"
     text += ("P08 routed DSP48E2 inspection confirms one cell, AMULTSEL=AD and ADREG=1. " if state["packing_pre_adder_verified"] else "P08 needs actual DSP48E2 pre-adder/register inspection. ")
     text += "W10-W13/C07 split transformed-window generation from a fixed16384*(4*T) MAC loop to remove W07's conditional264x264 bound inflation. C08/C09 use independently verified Conv2-only8-bit weights, retain ten-bit activations, and omit coefficient residual repair. Vitis rejects the original8000-bit Conv3 stream at its4096-bit limit; F08-F12/W14-W16/C10-C11 use independent two4000-bit-stream retries with identical arithmetic. F13-F15 isolate Conv3 window rotation and tree-register overhead using F08's measured7013 multiplexer LUT. All new designs are independent; source and paper plans are committed before runs. Re-run CSV analyses, equivalent offline-weight archives and all plots after all evidence arrives. Finalize ARCH_SUMMARY.md, both checksum audits and final F99 commit.\n\n"
     text += "F24 independently rewrites only F23's Conv1 weight-loader indices after its report locates the2.822ns global critical path in a15-bit address multiplier; the dataflow region is2.377ns. Keep T16, quantization and inference fixed, account for nested-load restart overhead, and accept only measured exact/resource-feasible results.\n\n"
