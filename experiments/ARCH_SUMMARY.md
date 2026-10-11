@@ -62,6 +62,7 @@ Measured direction result: [W18](W18_narrow_raw_banks_T16/W18.md) is its fastest
 | [W18](W18_narrow_raw_banks_T16/W18.md) | frame | 16 | 1056850.0 | 4.2274 | 326.0 | 146.0 | 0.0 | 74480.0 | 87869.0 | True | 1.661846957728205e-05 | True | provisional |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | frame | 8 | 532562.0 | 2.130248 | 648.0 | 146.0 | 0.0 | 148013.0 | 182409.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | frame | 16 | 1056850.0 | 4.2274 | 326.0 | 146.0 | 0.0 | 89114.0 | 92946.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | frame | 8 | 532569.0 | 1.77345477 | 648.0 | 146.0 | 0.0 | 145767.0 | 192756.0 | True | 1.661846957728205e-05 | True | infeasible |
 
 ## G Direction
 
@@ -163,6 +164,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | id | series | design | T_target | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F12](F12_continuous_T8_online_3p33ns_split4000/F12.md) | F | designs/continuous_direct_r2 | 8 | 1.75990833 | 1007.0 | 73.0 | 97112.0 | 196314.0 | -0.0695141811880653 | infeasible |
+| [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | W | designs/winograd_continuous_r2 | 8 | 1.77345477 | 648.0 | 146.0 | 145767.0 | 192756.0 | -0.0695141811880653 | infeasible |
 | [F15](F15_rotate_c3_T8_tree0_4ns/F15.md) | F | designs/continuous_rotate_v1 | 8 | 2.113924 | 1007.0 | 73.0 | 101994.0 | 86073.0 | -0.0695141811880653 | infeasible |
 | [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | F | designs/continuous_rotate_v1 | 8 | 2.113952 | 1007.0 | 73.0 | 96488.0 | 171235.0 | -0.0695141811880653 | infeasible |
 | [F10](F10_continuous_T8_online_4ns_split4000/F10.md) | F | designs/continuous_direct_r2 | 8 | 2.113952 | 1007.0 | 73.0 | 96764.0 | 171240.0 | -0.0695141811880653 | infeasible |
@@ -318,6 +320,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F23](F23_continuous_ieee_T16_2p5ns/F23.md) | frame | 502.0 | 502.0 | 0.0 | 1140400.0 | 1048730.0 | -8.03840757628902 | provisional |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | frame | 647.0 | 648.0 | 0.15455950540959051 | 620200.0 | 532562.0 | -14.13060303128023 | infeasible |
 | [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | frame | 325.0 | 326.0 | 0.3076923076922977 | 1140400.0 | 1056850.0 | -7.3263767099263415 | infeasible |
+| [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | frame | 647.0 | 648.0 | 0.15455950540959051 | 620200.0 | 532569.0 | -14.129474363108674 | infeasible |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -332,9 +335,9 @@ Largest percentage deviations (a zero paper denominator has no percentage):
 | [S01](S01_ddr_global_probe/S01.md) | latency_cycles | 6250529.0 | 16730473.0 | 167.6649128417771 | invalid_config |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | LUT | 59000.0 | 135496.0 | 129.65423728813562 | infeasible |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | LUT | 72100.0 | 148013.0 | 105.28848821081831 | infeasible |
+| [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | LUT | 72100.0 | 145767.0 | 102.1733703190014 | infeasible |
 | [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | LUT | 133880.0 | 260882.0 | 94.86256348969226 | infeasible |
 | [S03](S03_tile_fusion_B8/S03.md) | latency_cycles | 11935713.0 | 22803545.0 | 91.05306067597303 | infeasible |
-| [S04](S04_tile_fusion_B16/S04.md) | latency_cycles | 8843233.0 | 16753977.0 | 89.45533833610399 | infeasible |
 
 Cause analysis is in each linked interpretation: ignored external scratch ports allocate full on-chip maps; dynamic tiled memory banks add address/multiplexer logic; packing residual/borrow stages increase both LUT and per-pixel pipeline drain; wider Winograd inverse arithmetic and raster FIFOs exceed pure-product budgets; explicit register reductions change timing and FF.
 
@@ -383,6 +386,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F23](F23_continuous_ieee_T16_2p5ns/F23.md) | 5 | provisional |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | 5 | infeasible |
 | [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | 5 | infeasible |
+| [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | 5 | infeasible |
 
 ## Failed Directions
 
@@ -429,6 +433,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F12](F12_continuous_T8_online_3p33ns_split4000/F12.md) | F | infeasible | LUT=97112.0 exceeds 81984; FF=196314.0 exceeds 163968 | unknown |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | W | infeasible | LUT=148013.0 exceeds 81984; FF=182409.0 exceeds 163968 | unknown |
 | [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | W | infeasible | LUT=89114.0 exceeds 81984 | unknown |
+| [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | W | infeasible | LUT=145767.0 exceeds 81984; FF=192756.0 exceeds 163968 | unknown |
 
 ## Pending Human Decisions
 
@@ -456,4 +461,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T02:22:30+00:00.
+Generated from archived evidence at 2026-10-11T02:34:25+00:00.
