@@ -289,7 +289,7 @@ def generate_config(config, work):
 
 
 def archive_logs(work, archive):
-    for operation in ("csim", "csynth", "impl", "cosim", "help", "version"):
+    for operation in ("csim", "csynth", "impl", "cosim", "package", "help", "version"):
         path = work / (operation + ".console.log")
         if path.exists():
             text = path.read_text(errors="replace")

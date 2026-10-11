@@ -5,11 +5,42 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent
+from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config
 from run_exp import ROOT
 
 
 class VerificationTests(unittest.TestCase):
+    def test_package_only_config_removes_all_vivado_operations(self):
+        with tempfile.TemporaryDirectory() as temp:
+            cfg, target = Path(temp)/"hls.cfg", Path(temp)/"package.cfg"
+            original = "part=xck26-sfvc784-2LV-c\n[hls]\nsyn.top=srcnn\nvivado.flow=impl\nvivado.flow=syn\n"
+            cfg.write_text(original)
+            package_only_config(cfg, target)
+            self.assertEqual(cfg.read_text(), original)
+            self.assertEqual(target.read_text().count("vivado.flow="), 1)
+            self.assertIn("vivado.flow=none", target.read_text())
+
+    def test_fresh_package_driver_enables_serial_impl_without_replacing_ip(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            work, archive = root/"F94", root/"archive"
+            generated = work/"hls/impl/verilog"
+            generated.mkdir(parents=True)
+            (generated/"run_vivado.tcl").write_text("set has_impl 0\nhls_vivado_reports_setup $report_options\n")
+            (generated/"settings.tcl").write_text("set clock ap_clk\n")
+            (generated/"extraction.tcl").write_text("# reports\n")
+            ip = work/"hls/impl/ip/srcnn.v"
+            ip.parent.mkdir(parents=True)
+            ip.write_text("module srcnn; endmodule\n")
+            before = ip.read_bytes()
+            hook = root/"hook.tcl"
+            hook.write_text("set_param synth.maxThreads 1\n")
+            cwd, records, _ = prepare_serial_implementation(work, work, archive, hook, enable_impl=True)
+            self.assertEqual(ip.read_bytes(), before)
+            self.assertIn("set has_impl 1", (cwd/"run_vivado.tcl").read_text())
+            self.assertIn("STEPS.SYNTH_DESIGN.TCL.PRE", (cwd/"run_vivado.tcl").read_text())
+            self.assertEqual(len(records), 4)
+
     def test_diagnostic_route_requires_opt_in_exact_quality_and_csim(self):
         config = {"operation":"impl", "diagnostic_infeasible_parent":True}
         parent = {"csim_pass":True, "status":"infeasible", "bit_exact":True, "delta_psnr":-.07}

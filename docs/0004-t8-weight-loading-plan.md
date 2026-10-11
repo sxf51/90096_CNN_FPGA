@@ -240,6 +240,8 @@ WS2 有结论后再做。先做 Winograd，直接卷积作对照。
 
 默认 Vivado timing summary 只含一条 setup 路径。实现完成后，用 `python3 exp/archive_setup_paths.py F89` 从已有 routed checkpoint 额外导出前五条 setup 路径，再运行 `python3 exp/analyze_route.py E070 F89`。此只读网表操作仍使用综合锁；记录 checkpoint SHA256 和完整命令，不重新综合或布线。
 
+新的 WS2/WS3 候选没有现成的 Vivado driver 时，使用 `implementation_backend=serial_packaged_flow` 和同一 `verification_hook`：先在独立验证目录用 `vitis-run --package`、`vivado.flow=none` 打包父 RTL，随后给新生成的 driver 加单线程 hook 并执行实现。已用 Vitis 2026.1 的 `help export_design` 核实 `flow=none` 不执行 Vivado；正式候选仍须以实际打包/实现日志验收。打包和实现都持有综合锁，不修改父设计、不重新 csynth。
+
 ## 8. 汇报格式
 
 每个实验完成后，在第 9 节追加一行，并按 `AGENTS.md` 说明改动、验证方法、结果和限制：

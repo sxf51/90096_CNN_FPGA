@@ -43,13 +43,14 @@ def archive_verification_reports(work, archive, operation):
 
 
 def prepare_serial_implementation(work, template_work, archive, hook_path, template_archive=None,
-                                  implementation_clock_ns=None):
+                                  implementation_clock_ns=None, enable_impl=False):
     target = work / "hls/impl"
-    if target.exists():
-        shutil.rmtree(target)
-    shutil.copytree(template_work / "hls/impl", target,
-                    ignore=shutil.ignore_patterns("project.*", ".Xil", "*.log", "*.jou",
-                                                 "*.pb", "report", "*.zip", "*.dcp"))
+    if work.resolve() != template_work.resolve():
+        if target.exists():
+            shutil.rmtree(target)
+        shutil.copytree(template_work / "hls/impl", target,
+                        ignore=shutil.ignore_patterns("project.*", ".Xil", "*.log", "*.jou",
+                                                     "*.pb", "report", "*.zip", "*.dcp"))
     old_root = str(template_work)
     if template_archive:
         frozen = json.loads((template_archive / "config.json").read_text())
@@ -70,6 +71,10 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
             if old_root in text:
                 path.write_text(text.replace(old_root,new_root))
     text = driver.read_text()
+    if enable_impl:
+        text, count = re.subn(r"^set has_impl [01]$", "set has_impl 1", text, flags=re.MULTILINE)
+        if count != 1:
+            raise RuntimeError("Cannot enable implementation in the generated package driver")
     marker = "hls_vivado_reports_setup $report_options"
     if text.count(marker) != 1:
         raise RuntimeError("Unexpected generated Vivado driver; cannot install serial hook")
@@ -118,6 +123,13 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
                         "raw_file":str(path.relative_to(work)),
                         "sha256":hashlib.sha256(dest.read_bytes()).hexdigest()})
     return driver.parent, records, hashlib.sha256(original.encode()).hexdigest()
+
+
+def package_only_config(cfg, target):
+    text = cfg.read_text()
+    text = re.sub(r"^vivado\.flow=.*\n?", "", text, flags=re.MULTILINE)
+    target.write_text(text.rstrip()+"\nvivado.flow=none\n")
+    return target
 
 
 def vivado_diagnostic_excerpt(text):
@@ -242,6 +254,9 @@ def run_verification(config):
         row["notes"] += "; diagnostic only: parent remains HLS-resource-infeasible and cannot enter accepted rankings"
     observed, detail, errors = {}, [], []
     impl_cwd = None
+    package_serial = config.get("implementation_backend") == "serial_packaged_flow"
+    if package_serial and operation != "impl":
+        raise RuntimeError("Serial packaged flow is only valid for implementation")
     if config.get("implementation_backend") == "serial_generated_flow":
         if operation != "impl":
             raise RuntimeError("Serial generated flow is only valid for implementation")
@@ -265,6 +280,22 @@ def run_verification(config):
                 raise RuntimeError("Selected candidate failed mandatory all-supplied-image validation")
         timeout = 21600 if operation == "cosim" else config.get("timeout", 10800)
         with lock(work / ".run.lock"), lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=86400):
+            if package_serial:
+                package_cfg = package_only_config(cfg, work / "package_config.cfg")
+                shutil.copyfile(package_cfg, archive / "package_config.cfg")
+                with MemoryMonitor(archive / "package_host_memory.csv"):
+                    package_code, package_seconds = invoke(
+                        ["vitis-run", "--mode", "hls", "--package", "--config", str(package_cfg), "--work_dir", str(work)],
+                        settings, ROOT, work / "package.console.log", 600)
+                config["package_minutes"] = package_seconds / 60
+                if package_code:
+                    raise RuntimeError(f"Package-only export failed (exit={package_code})")
+                impl_cwd, records, original_digest = prepare_serial_implementation(
+                    work, work, archive, ROOT / config["verification_hook"],
+                    implementation_clock_ns=config.get("implementation_clock_ns"), enable_impl=True)
+                config["implementation_files"] = records
+                config["original_generated_driver_sha256"] = original_digest
+                config["implementation_work_root"] = str(work)
             if impl_cwd:
                 args = ["vivado","-mode","batch","-source","run_vivado.tcl","-notrace","-nojournal"]
                 cwd = impl_cwd
