@@ -1,0 +1,9 @@
+Both complete RTL transactions pass the independent testbench: butterfly is E017-bit-exact, and every output of the changed-parameter second frame equals 104/256. The first-frame border MSE remains 1.661846957728205e-05. Parent RTL manifests match before and after verification; the archived testbench and C/RTL metrics preserve the parameter-reload evidence.
+
+The Verilog report records identical minimum/maximum latency of 1,059,506 cycles and interval of 1,059,535 cycles. Latency is 13,477 cycles (1.2884%) above F28's HLS estimate of 1,046,029, and 8,677 cycles below F25's F82 RTL latency of 1,068,183. The measurement is from ideal-clock RTL simulation; F95 still has to establish F28's routed timing. Do not substitute these cycles into a claimed board measurement.
+
+The profiling CSVs show a read_params process latency of 11,198 cycles and no parameter-producer write stalls. Each parameter FIFO peaks at five entries. Engine1/Conv2/Engine3 process stall counters are 10,562/17,270/36,318 over the two-transaction monitoring interval of 2,119,096 cycles. Fast input/window producers block behind the T16 consumers, so their roughly 90-93% write-block fractions are expected rate matching. These overlapping, two-frame counters cannot be added to explain the 13,477-cycle difference, and do not justify increasing FIFO depth by themselves.
+
+After transaction one, xsim RSS grew and then stabilized near 5 GiB. Both transactions completed within the original six-hour limit, with no OOM or deadlock verdict. Preserve host_memory.csv rather than treating the smaller vendor front-end memory figure as the whole process tree's peak.
+
+F28 now has strict WS2 HLS gates, matching full thirteen-image F94 quality evidence, and exact changed-parameter finite-FIFO RTL validation. Continue with the independently frozen W19/F29/F30 T8 comparisons and F95 serial implementation. Missing comic and board validation remain outstanding.

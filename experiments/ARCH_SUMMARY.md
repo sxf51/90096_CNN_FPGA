@@ -4,7 +4,7 @@ The fastest resource-feasible supplied-image point is [F27](F27_local_streamed_p
 
 Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.
 
-Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). F93 changed-parameter RTL is active. W19 C simulation passed and its synthesis waits for F93; serial queue64528 then runs F29/F30/W20. F95 F28 candidate-specific5ns implementation is planned, not started. After measured T8 selection, run its full13-image validation, changed-parameter RTL and serial route, then one measured-path WS4 clock/control experiment. Preserve all failed gates and archive/checksum/plot/summary audits before F99 closure.
+Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). F93 changed-parameter two-frame RTL passed with latency1059506 and interval1059535. W19 synthesis is active; serial queue64528 then runs F29/F30/W20. F95 F28 candidate-specific5ns implementation is planned, not started. After measured T8 selection, run its full13-image validation, changed-parameter RTL and serial route, then one measured-path WS4 clock/control experiment. Preserve all failed gates and archive/checksum/plot/summary audits before F99 closure.
 
 ## Current Best
 
@@ -396,6 +396,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F31](F31_reload_testbench_csim_F28/F31.md) | frame | 502.0 | unknown | unknown | 1046500.0 | unknown | unknown | csim_pass |
 | [F92](F92_ws_impl_F25/F92.md) | frame | 502.0 | 592.0 | 17.928286852589647 | 1056904.0 | unknown | unknown | impl_complete |
 | [F28](F28_local_load_no_flatten_T16/F28.md) | frame | 502.0 | 502.0 | 0.0 | 1046500.0 | 1046029.0 | -0.04500716674630256 | provisional |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | frame | 502.0 | unknown | unknown | 1057900.0 | 1059506.0 | 0.1518101899990576 | cosim_complete |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -432,6 +433,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [F88](F88_final_cosim_F23/F88.md) | frame | F23 | cosim | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F89](F89_serial_vivado_impl_F25/F89.md) | frame | F25 | impl | timeout | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F92](F92_ws_impl_F25/F92.md) | frame | F25 | impl | impl_complete | 592.0 | 36.0 | 32400.0 | 77757.0 | 0.0 | 0.568 | True | unknown | unknown | unknown | unknown |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | frame | F28 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1059506.0 | 1059535.0 | 1.2883964020117933 |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -455,6 +457,18 @@ Finite-FIFO RTL counters span both transactions, including startup/inactive cycl
 | [F85](F85_final_cosim_F24/F85.md) | result_U | 1 | 0.0 | 92.99610344941316 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
 | [F85](F85_final_cosim_F24/F85.md) | windows0_U | 2 | 0.816626538949015 | 1.0820819924707523 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
 | [F85](F85_final_cosim_F24/F85.md) | windows1_1_U | 2 | 0.816626538949015 | 1.0820819924707523 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | raw_U | 512 | 90.58994967665457 | 0.011419963984642508 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | params1_U | 5 | 0.0 | 0.16997814162265418 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | params2_U | 5 | 0.0 | 0.7479604510602634 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | params3_U | 5 | 0.0 | 0.9723013964445216 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | padded1_U | 16 | 92.61024512339223 | 0.03652500877732769 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | features2_U | 4 | 0.06700970602558827 | 92.90782484606643 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | features_U | 4 | 0.3284419393930242 | 0.0 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | windows_U | 2 | 92.63601082725842 | 0.0 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | padded3_U | 16 | 0.6970897024014013 | 92.86205061026023 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | result_U | 1 | 0.0 | 93.85549309705648 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | windows0_U | 2 | 0.8178959329827435 | 0.7415426200606297 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | windows1_1_U | 2 | 0.8178959329827435 | 0.7415426200606297 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -593,4 +607,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T20:22:00+00:00.
+Generated from archived evidence at 2026-10-11T21:25:24+00:00.
