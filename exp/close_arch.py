@@ -74,6 +74,38 @@ def audit_archives(rows):
     return records
 
 
+def audit_verification_reports(rows):
+    checks = []
+    for row in rows:
+        archive = ROOT / "experiments" / Path(row["md_path"]).parent
+        config = json.loads((archive / "config.json").read_text())
+        operation = config.get("operation")
+        if operation not in {"impl", "cosim"}:
+            continue
+        reports = config.get("verification_reports", [])
+        if row["status"] == operation + "_complete":
+            if not reports:
+                raise RuntimeError("Completed verification has no archived source reports: "+row["id"])
+            names = {Path(record["archived_file"]).stem for record in reports}
+            if operation == "impl" and any(not any(name.endswith(suffix) for name in names)
+                    for suffix in ("timing_routed", "utilization_routed")):
+                raise RuntimeError("Missing routed timing/resource archive: "+row["id"])
+        for record in reports:
+            path = archive / record["archived_file"]
+            if hashlib.sha256(path.read_bytes()).hexdigest() != record["sha256"]:
+                raise RuntimeError("Verification source report hash mismatch: "+row["id"])
+            relative = str(path.relative_to(ROOT))
+            ignored = subprocess.run(["git", "check-ignore", "--no-index", "-q", relative], cwd=ROOT)
+            if ignored.returncode != 1:
+                raise RuntimeError("Verification source report is ignored or ignore check failed: "+relative)
+            subprocess.run(["git", "ls-files", "--error-unmatch", "--", relative], cwd=ROOT,
+                           stdout=subprocess.DEVNULL, check=True)
+        checks.append({"id":row["id"], "operation":operation, "status":row["status"],
+                       "reports_checked":len(reports), "sha256_pass":True,
+                       "git_visible_and_tracked":True})
+    return checks
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checksums-only",action="store_true")
@@ -104,6 +136,7 @@ def main():
     checks = [{"location":location,**record} for location,records in (("local",audit_checksums()),("remote",remote))
               for record in records]
     archives = audit_archives(rows)
+    verification_reports = audit_verification_reports(rows)
     large = [str(path.relative_to(ROOT)) for folder in ("exp", "designs", "experiments")
              for path in (ROOT / folder).rglob("*") if path.is_file() and path.stat().st_size>50_000_000]
     if large:
@@ -115,6 +148,7 @@ def main():
     write_json(ROOT / "experiments/architecture_audit.json",{
         "time":utc(),"branch":branch,"full_set14":False,"checks":checks,
         "architecture_archives":archives,
+        "verification_report_archives":verification_reports,
         "required_exploration_records":len(REQUIRED),"final_verification_records":len(selection["queue"]),
         "completed_records":len(rows),"files_above50MB":large,"tracked_rules":tracked_rules,
         "board_validation":False,"pushed":False})

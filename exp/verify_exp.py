@@ -15,10 +15,35 @@ from run_exp import (ROOT, FIELDS, archive_logs, append_log, check_protected,
 from compact_archive import compact
 
 
+def archive_verification_reports(work, archive, operation):
+    records = []
+    report_kind = "impl" if operation == "impl" else "sim"
+    paths = sorted(path for path in work.rglob("*") if path.is_file() and
+                   path.suffix in {".rpt", ".xml"} and
+                   {"report", "reports"}.intersection(path.parts) and report_kind in path.parts)
+    for path in paths:
+        if operation == "impl" and not path.stem.endswith(("timing_routed", "utilization_routed")):
+            continue
+        dest = archive / "reports" / report_kind / path.name
+        if path.resolve() == dest.resolve():
+            continue
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        previous = next((record for record in records if record["archived_file"] == str(dest.relative_to(archive))), None)
+        if previous:
+            if previous["sha256"] != digest:
+                raise RuntimeError("Conflicting verification report basenames: "+path.name)
+            continue
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, dest)
+        records.append({"raw_file":str(path.relative_to(work)),
+                        "archived_file":str(dest.relative_to(archive)),"sha256":digest})
+    return records
+
+
 def parse_verification(work, operation):
     detail = []
     for path in sorted(work.rglob("*.xml")):
-        if "report" not in path.parts or "syn" in path.parts or path.stat().st_size > 10_000_000:
+        if not {"report", "reports"}.intersection(path.parts) or "syn" in path.parts or path.stat().st_size > 10_000_000:
             continue
         try:
             root = ET.parse(path).getroot()
@@ -155,6 +180,7 @@ def run_verification(config):
         row["notes"] += "; " + str(exc)
     finally:
         archive_logs(work, archive)
+        config["verification_reports"] = archive_verification_reports(work,archive,operation)
         config["errors"] = errors
         config["verification"] = observed
         write_json(archive / "config.json", config)
@@ -182,6 +208,8 @@ def run_verification(config):
         md += "## 5. Results / 结果\n\n" + markdown_table([{"metric": k, "value": v} for k, v in observed.items()], ["metric", "value"])
         md += "\nHLS prediction and precision provenance:\n\n" + markdown_table([row], ["latency_cycles", "latency_ms_est", "DSP", "BRAM18K", "LUT", "FF", "csim_pass", "bit_exact", "delta_psnr", "status"])
         md += "\nParent loop II and per-module resources are in the linked parent archive; verification resources are distinct from csynth.\n"
+        md += "\nArchived verification source reports (neutral paths preserve Git tracking):\n\n"
+        md += markdown_table(config["verification_reports"],["raw_file","archived_file","sha256"])
         md += "\n## 6. Interpretation / 解读\n\n" + ("; ".join(errors) if errors else "Actual verification results are parsed from reports in data.csv. Implementation completion alone does not prove timing closure or board operation. Supplied-image precision remains provisional until comic is available.") + "\n"
         md += "\n## 7. Conclusion and next step / 结论与下一步\n\nCompare implementation slack/resources and RTL cycles with HLS estimates. No board result is inferred.\n\n"
         md += f"## 8. Raw files / 原始文件位置\n\n`workspace/exp_runs/{exp_id}/`; parent [{parent_row['id']}](../{parent_row['md_path']}).\n"
