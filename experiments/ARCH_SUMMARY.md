@@ -21,9 +21,24 @@ Actual verification of the current HLS winner:
 
 ## P Direction
 
-Signed INT8 packing is exact when shared operands, field range and negative borrowing are handled explicitly. P01 exhausts16777216 signed8 triples; P03/P06 compare unpack-every7/every2 schedules under their respective safe bounds. P05 tests the DSP builtin and P08 inspects actual primitive attributes. Full-network exact10 residual variants retain the passing precision point but add fabric and pipeline overhead. Uniform w8a8 remains rejected by first-phase precision evidence.
+Signed INT8 packing is exact when shared operands, field range and negative borrowing are handled explicitly. P01 exhausts16777216 signed8 triples; P03/P06 compare unpack-every7/every2 schedules under their respective safe bounds. P05 tests the DSP builtin and P08 inspects actual primitive attributes. Full-network exact10 residual variants retain the passing precision point but add fabric and pipeline overhead. P13-P16 additionally compare complete INT16 product pairs, byte limbs, explicit overlap/fabric recovery and ordinary DSP/fabric mixing. Uniform w8a8 remains rejected by first-phase precision evidence.
 
 Measured direction result: none of its completed frame points satisfies all resource/precision gates. Their estimated latency cannot establish a feasible speedup.
+
+Complete signed16x16 pair controls at equal requested II1. Each call contains64 pairs and checks both complete32-bit outputs. Every16-bit value is swept in each input role under four companion cases, with a boundary cube and deterministic random triples; this does not exhaust all2^48 triples. These PE results do not establish SRCNN16-bit packing or image quality.
+
+| id | mode | DSP | LUT | FF | clock_est_ns | latency_cycles | interval_cycles | ii_ok | checked_products | bit_exact | status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [P13](P13_int16_direct_pair/P13.md) | 0 | 2.0 | 57.0 | 16.0 | 1.813 | 66.0 | 64.0 | True | 3832448 | True | pass |
+| [P14](P14_int16_limb_packing/P14.md) | 1 | 4.0 | 453.0 | 276.0 | 2.818 | 68.0 | 64.0 | True | 3832448 | True | pass |
+| [P15](P15_int16_overlap_fabric_repair/P15.md) | 2 | 1.0 | 747.0 | 200.0 | 3.392 | 69.0 | 64.0 | True | 3832448 | True | pass |
+| [P16](P16_int16_direct_mixed_control/P16.md) | 3 | 1.0 | 330.0 | 16.0 | 2.48 | 66.0 | 64.0 | True | 3832448 | True | pass |
+
+Measured DSP counts for direct/limbs/overlap/mixed are 2.0/4.0/1.0/1.0. Overlap recovery uses 747.0 LUT versus 330.0 LUT for ordinary mixing (difference 417.0). The one-DSP variants still use fabric multiplication; they are not two unrestricted INT16 multiplications implemented solely by one DSP48E2.
+
+At equal II1 and one DSP, overlap repair does not beat the ordinary mixed control: its FF count is 200.0 versus 16.0, and estimated clock is 3.392ns versus 2.48ns. Byte-limb reconstruction is exact but uses more DSP than the direct pair. This measured result gives no resource or timing basis for integrating these INT16 packing variants into the network. See [parsed utilization categories](int16_area_breakdown.csv) for multiplier/repair/control costs.
+
+![Complete INT16 pair resources](figs/int16_packing_resources.png)
 
 | id | scope | T_target | latency_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | bit_exact | border_mse | ii_ok | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -38,6 +53,10 @@ Measured direction result: none of its completed frame points satisfies all reso
 | [P11](P11_exact10_packing_T8/P11.md) | frame | 8 | 1894302.0 | 7.577208 | 505.0 | 168.0 | 0.0 | 165606.0 | 106599.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [P12](P12_exact10_packing_T4/P12.md) | frame | 4 | 1355582.0 | 5.422328 | 1007.0 | 168.0 | 0.0 | 292053.0 | 159828.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [P09](P09_reproduction_P01/P09.md) | PE | 1 | 61.0 | 0.000244 | 1.0 | 0.0 | 0.0 | 132.0 | 86.0 | True | unknown | True | pass |
+| [P13](P13_int16_direct_pair/P13.md) | PE | 1 | 66.0 | 0.000264 | 2.0 | 0.0 | 0.0 | 57.0 | 16.0 | True | unknown | True | pass |
+| [P14](P14_int16_limb_packing/P14.md) | PE | 1 | 68.0 | 0.000272 | 4.0 | 0.0 | 0.0 | 453.0 | 276.0 | True | unknown | True | pass |
+| [P15](P15_int16_overlap_fabric_repair/P15.md) | PE | 1 | 69.0 | 0.000276 | 1.0 | 0.0 | 0.0 | 747.0 | 200.0 | True | unknown | True | pass |
+| [P16](P16_int16_direct_mixed_control/P16.md) | PE | 1 | 66.0 | 0.000264 | 1.0 | 0.0 | 0.0 | 330.0 | 16.0 | True | unknown | True | pass |
 
 ## W Direction
 
@@ -352,6 +371,11 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F82](F82_final_cosim_F25/F82.md) | frame | 502.0 | unknown | unknown | 1056904.0 | 1068183.0 | 1.067173555971035 | cosim_complete |
 | [F83](F83_final_all_supplied_F24/F83.md) | frame | 502.0 | unknown | unknown | 1048723.0 | unknown | unknown | csim_pass |
 | [F84](F84_final_impl_F24/F84.md) | frame | 502.0 | unknown | unknown | 1048723.0 | unknown | unknown | fail |
+| [F85](F85_final_cosim_F24/F85.md) | frame | 502.0 | unknown | unknown | 1048723.0 | 1061153.0 | 1.1852510148056217 | cosim_complete |
+| [P13](P13_int16_direct_pair/P13.md) | PE | 2.0 | 2.0 | 0.0 | 72.0 | 66.0 | -8.333333333333337 | pass |
+| [P14](P14_int16_limb_packing/P14.md) | PE | 4.0 | 4.0 | 0.0 | 80.0 | 68.0 | -15.000000000000002 | pass |
+| [P15](P15_int16_overlap_fabric_repair/P15.md) | PE | 1.0 | 1.0 | 0.0 | 80.0 | 69.0 | -13.749999999999996 | pass |
+| [P16](P16_int16_direct_mixed_control/P16.md) | PE | 1.0 | 1.0 | 0.0 | 76.0 | 66.0 | -13.157894736842103 | pass |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -383,6 +407,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [F81](F81_final_impl_F25/F81.md) | frame | F25 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F82](F82_final_cosim_F25/F82.md) | frame | F25 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1068183.0 | 1068212.0 | 1.067173555971035 |
 | [F84](F84_final_impl_F24/F84.md) | frame | F24 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F85](F85_final_cosim_F24/F85.md) | frame | F24 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1061153.0 | 1061182.0 | 1.1852510148056217 |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -397,6 +422,15 @@ Finite-FIFO RTL counters span both transactions, including startup/inactive cycl
 | [F82](F82_final_cosim_F25/F82.md) | result_U | 1 | 0.0 | 92.38409511104871 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
 | [F82](F82_final_cosim_F25/F82.md) | windows0_U | 2 | 0.8112523110767863 | 1.0749607994570431 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
 | [F82](F82_final_cosim_F25/F82.md) | windows1_1_U | 2 | 0.8112523110767863 | 1.0749607994570431 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | raw_U | 512 | 89.7349685967235 | 0.011402239927628758 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | padded1_U | 16 | 91.75269389697463 | 0.03656255447867734 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | features2_U | 4 | 0.06690570536046626 | 92.04990600219564 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | features_U | 4 | 0.06115746870273606 | 0.23859893798971915 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | windows_U | 2 | 91.77841961185267 | 0.2358661697426015 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | padded3_U | 16 | 0.6960078025245124 | 92.0042028090973 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | result_U | 1 | 0.0 | 92.99610344941316 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | windows0_U | 2 | 0.816626538949015 | 1.0820819924707523 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | windows1_1_U | 2 | 0.816626538949015 | 1.0820819924707523 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -447,7 +481,7 @@ Selected candidates were ranked globally across both phases before validation. M
 | [F80](F80_final_all_supplied_F25/F80.md) | designs/continuous_nested_load_v1 | 13 | True | True | 29.088943394069588 | -0.0695141811880653 | 1.661846957728205e-05 | csim_pass |
 | [F83](F83_final_all_supplied_F24/F83.md) | designs/continuous_affine_load_v1 | 13 | True | True | 29.088943394069588 | -0.0695141811880653 | 1.661846957728205e-05 | csim_pass |
 
-Routed timing closes for 0 selected implementation runs; 1 selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.
+Routed timing closes for 0 selected implementation runs; 2 selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.
 
 ## Failed Directions
 
@@ -527,4 +561,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T05:31:35+00:00.
+Generated from archived evidence at 2026-10-11T14:46:25+00:00.

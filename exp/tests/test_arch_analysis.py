@@ -5,11 +5,20 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from analyze_arch import actual_measurement, failure_reason, scope
+from analyze_arch import actual_measurement, area_breakdown, failure_reason, scope
 from run_exp import ROOT
 
 
 class ArchitectureAnalysisTests(unittest.TestCase):
+    def test_int16_area_categories_sum_to_reported_totals(self):
+        for exp_id in ("P13", "P14", "P15", "P16"):
+            report = next((ROOT / "experiments").glob(exp_id + "_*/csynth.rpt"))
+            with self.subTest(exp_id=exp_id):
+                rows = area_breakdown(report)
+                self.assertEqual(rows[-1]["category"], "Total")
+                for resource in ("DSP", "LUT", "FF"):
+                    self.assertEqual(sum(row[resource] or 0 for row in rows[:-1]), rows[-1][resource])
+
     def test_boundary_exhaustion_is_a_primitive_validation(self):
         config = {"tb_files": ["exp/tb/integer_numeric.cpp"], "csim_only": True}
         self.assertEqual(scope(config, {"design": "designs/dataflow_int"}), "PE")

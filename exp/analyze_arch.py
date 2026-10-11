@@ -32,6 +32,26 @@ def write_csv(path, rows, columns):
         writer.writerows(rows)
 
 
+def area_breakdown(report):
+    columns = ["Name", "BRAM_18K", "DSP", "FF", "LUT", "URAM"]
+    rows, active = [], False
+    with report.open(newline="") as source:
+        for cells in csv.reader(source, delimiter="|"):
+            values = [cell.strip() for cell in cells[1:-1]]
+            if values == columns:
+                active = True
+                continue
+            if not active or len(values) != len(columns):
+                continue
+            category = values[0]
+            if category in {"DSP", "Expression", "FIFO", "Instance", "Memory", "Multiplexer", "Register", "Total"}:
+                rows.append({"category": category, **{key: number(value)
+                             for key, value in zip(columns[1:], values[1:])}})
+                if category == "Total":
+                    return rows
+    raise RuntimeError("Missing HLS utilization summary: " + str(report))
+
+
 def scope(config, row):
     if config.get("operation"):
         return config.get("scope", "frame")
@@ -183,6 +203,10 @@ def deviation_explanation(row, config, comparisons):
             }
             lines.append(explanation.get(mode, "Compare complete INT16 products with the matched direct and mixed controls."))
             lines.append("LUT/FF paper budgets reserve mapping and pipeline margin. Parsed top DSP/LUT/FF, actual clock and pack16_terms iteration depth quantify the actual cost; no whole-network frame speedup is inferred from these64-term PE calls.")
+            if mode in {0, 3}:
+                lines.append("The matched direct controls export their arrays as ap_memory ports instead of allocating internal input/output memories. Their multiplier instances report zero external FF, leaving only loop/control registers. The paper FF allowance assumed additional external datapath stages, so it overestimates the implemented single-cycle operator schedule. Expression and Multiplexer rows account for the remaining control LUT; the mixed control's Instance row also includes its fabric multiplier.")
+            else:
+                lines.append("The Instance row separates byte/fabric multiplier LUT from the Expression row's recombination and correction arithmetic. Register counts cover the external values delayed across the longer operator schedule; DSP internal pipeline registers are not counted as fabric FF. Widened C++ arithmetic does not force every high bit or delayed temporary to survive synthesis. The paper FF allowance reserved complete intermediate stages, whereas the report counts only the retained external stages, explaining the unused FF margin.")
         elif "ieee_decode" in design:
             lines.append("Converter planning allowances reserved selection/control margin. Exact IEEE construction operates on a ten-bit magnitude and highest-set-bit selector, then assigns binary32 exponent/significand fields; its finite range lets synthesis remove unused selector states and registers. The legacy control retains integer-to-float and float scaling operators. These PE array-memory ports also omit the full network's AXI address/handshake logic, so PE resource differences cannot be subtracted blindly from a frame estimate. Compare the parsed DSP, loop depth and clock before integrating the exact converter.")
         else:
@@ -194,16 +218,20 @@ def deviation_explanation(row, config, comparisons):
 
 def main():
     rows = list(csv.DictReader((ROOT / "experiments/results.csv").open(newline="")))
-    structures, estimates, composition, bursts, conv3, warnings, int16 = [], [], [], [], [], [], []
+    structures, estimates, composition, bursts, conv3, warnings, int16, int16_area = [], [], [], [], [], [], [], []
     for row in rows:
         archive = ROOT / "experiments" / Path(row["md_path"]).parent
         path = archive / "config.json"
         if not path.is_file():
             continue
         config = json.loads(path.read_text())
+        pe_area = []
         if config.get("design") == "designs/packing_int16_pe":
             int16.append({**row, **config.get("validation", {}),
                           "mode":config.get("defines", {}).get("EXP_PACK16_MODE")})
+            if (archive / "csynth.rpt").is_file():
+                pe_area = area_breakdown(archive / "csynth.rpt")
+                int16_area.extend({"id": row["id"], **item} for item in pe_area)
         derived = {**row, "scope": scope(config,row), "operation": config.get("operation", ""),
                    "validation_only": bool(config.get("csim_only") and config.get("set14")),
                    "eligible_provisional": eligible(row,config),
@@ -296,6 +324,9 @@ def main():
         human += "\n\nEstimate audit (parsed values; zero estimates have no percentage denominator):\n\n"
         human += markdown_table(comparisons,["metric","estimate","actual","deviation_pct","over20pct"])
         human += deviation_explanation(row,config,comparisons)
+        if pe_area:
+            human += "\nUtilization categories parsed from csynth.rpt; Total is not added to its component rows:\n\n"
+            human += markdown_table(pe_area, ["category", "DSP", "LUT", "FF", "BRAM_18K", "URAM"])
         if report_rows:
             human += "\nWhole layer evidence from csynth XML (child pipeline reports are not added again):\n\n"
             human += markdown_table(report_rows,["module","latency_cycles","DSP","BRAM18K","LUT","FF"])
@@ -367,6 +398,8 @@ def main():
         "csim_pass","bit_exact","tested_terms","checked_products","boundary_triples",
         "role_sweep_triples","random_triples","signed16_value_coverage_per_role",
         "exhaustive_triples","status","md_path"])
+    write_csv(ROOT / "experiments/int16_area_breakdown.csv", int16_area,
+              ["id", "category", "DSP", "LUT", "FF", "BRAM_18K", "URAM"])
     print("Analyzed",len(structures),"runs;",len(estimates),"estimate comparisons")
 
 

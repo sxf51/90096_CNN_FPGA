@@ -86,6 +86,12 @@ def main():
                                  ". Overlap recovery uses "+overlap["LUT"]+" LUT versus "+mixed["LUT"]+
                                  " LUT for ordinary mixing (difference "+str(number(overlap["LUT"])-number(mixed["LUT"]))+
                                  "). The one-DSP variants still use fabric multiplication; they are not two unrestricted INT16 multiplications implemented solely by one DSP48E2.\n\n")
+                        if number(overlap["LUT"]) > number(mixed["LUT"]):
+                            text += ("At equal II1 and one DSP, overlap repair does not beat the ordinary mixed control: its FF count is "+
+                                     overlap["FF"]+" versus "+mixed["FF"]+", and estimated clock is "+overlap["clock_est_ns"]+
+                                     "ns versus "+mixed["clock_est_ns"]+"ns. Byte-limb reconstruction is exact but uses more DSP than the direct pair. "
+                                     "This measured result gives no resource or timing basis for integrating these INT16 packing variants into the network. "
+                                     "See [parsed utilization categories](int16_area_breakdown.csv) for multiplier/repair/control costs.\n\n")
                     text += "![Complete INT16 pair resources](figs/int16_packing_resources.png)\n\n"
         if series == "C" and all(exp_id in by_id for exp_id in ("C10","W14","W17")):
             combination,wide,narrow = (by_id[exp_id] for exp_id in ("C10","W14","W17"))
