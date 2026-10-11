@@ -6,11 +6,30 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config, check_template_rtl, prepare_packaged_driver
+from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config, check_template_rtl, prepare_packaged_driver, check_image_validation
 from run_exp import ROOT
 
 
 class VerificationTests(unittest.TestCase):
+    def test_all_image_evidence_requires_candidate_source_and_arithmetic_flags(self):
+        parent = {"source_sha256": {"srcnn.cpp": "frozen"}, "fixed": True,
+                  "precision": "w10a10acc23", "defines": {"EXP_T": 8, "EXP_FRAMES": 2}}
+        full = {**parent, "defines": {"EXP_T": 8, "EXP_FRAMES": 1, "EXP_SET14": 1},
+                "validation": {"csim_pass": True, "bit_exact": True, "image_count": 13,
+                               "delta_psnr": -.07}}
+        check_image_validation(parent, full)
+        with self.assertRaisesRegex(RuntimeError, "source differs"):
+            check_image_validation(parent, {**full, "source_sha256": {"srcnn.cpp": "other"}})
+        with self.assertRaisesRegex(RuntimeError, "arithmetic flags differ"):
+            check_image_validation(parent, {**full, "defines": {"EXP_T": 16}})
+        with self.assertRaisesRegex(RuntimeError, "all-supplied-image"):
+            check_image_validation(parent, {**full, "validation": {**full["validation"], "image_count": 12}})
+
+    def test_recorded_f25_full_image_validation_matches_frozen_candidate(self):
+        parent = json.loads((ROOT / "experiments/F25_nested_weight_loader_T16_2p5ns/config.json").read_text())
+        full = json.loads((ROOT / "experiments/F80_final_all_supplied_F25/config.json").read_text())
+        check_image_validation(parent, full)
+
     def test_driver_boilerplate_preserves_new_ip_and_replay_uses_archived_scripts(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

@@ -10,7 +10,7 @@ from analyze_arch import eligible
 from plan_arch import plan
 from reproduce_exp import archived
 from run_exp import ROOT, check_protected, number
-from verify_exp import diagnostic_parent
+from verify_exp import check_image_validation, diagnostic_parent
 
 
 def main():
@@ -35,6 +35,11 @@ def main():
         raise RuntimeError("Diagnostic infeasible parents are only permitted for implementation")
     if args.operation != "impl" and (args.implementation_clock is not None or args.template):
         raise RuntimeError("Implementation options require operation=impl")
+    if args.validation_parent:
+        if args.operation == "all":
+            raise RuntimeError("An all-image run must produce its own validation evidence")
+        full = archived(args.validation_parent)
+        check_image_validation(observed, json.loads((full / "config.json").read_text()))
     estimates = {key: number(metrics.get(key)) for key in ("DSP", "BRAM18K", "URAM", "LUT", "FF", "latency_cycles")}
     estimates.update(T=number(metrics["T_target"]),
                      basis="Frozen "+args.parent+" HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred.")

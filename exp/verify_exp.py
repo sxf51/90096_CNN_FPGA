@@ -287,6 +287,22 @@ def diagnostic_parent(config, parent):
             number(parent["delta_psnr"]) >= -.1)
 
 
+def check_image_validation(parent_config, validation_config):
+    validation = validation_config.get("validation", {})
+    delta = number(validation.get("delta_psnr"))
+    if (validation.get("csim_pass") is not True or validation.get("bit_exact") is not True or
+            validation.get("image_count") != 13 or delta is None or delta < -.1):
+        raise RuntimeError("Selected candidate failed mandatory all-supplied-image validation")
+    hashes = parent_config.get("source_sha256", {})
+    if not hashes or validation_config.get("source_sha256") != hashes:
+        raise RuntimeError("Full-image validation source differs from the frozen candidate")
+    tb_only = {"EXP_FRAMES", "EXP_SET14", "EXP_QUICK", "EXP_REFERENCE", "EXP_NUMPY_REFERENCE"}
+    flags = lambda cfg: {key: value for key, value in cfg.get("defines", {}).items() if key not in tb_only}
+    if (flags(parent_config) != flags(validation_config) or
+            any(parent_config.get(key) != validation_config.get(key) for key in ("fixed", "precision"))):
+        raise RuntimeError("Full-image validation arithmetic flags differ from the frozen candidate")
+
+
 def run_verification(config):
     check_protected()
     exp_id, name, operation = config["id"], config["name"], config["operation"]
@@ -348,12 +364,11 @@ def run_verification(config):
             config["implementation_work_root"] = str(work)
         if config.get("validation_parent"):
             full = next((ROOT / "experiments").glob(config["validation_parent"] + "_*/config.json"))
-            validation = json.loads(full.read_text()).get("validation", {})
-            delta = number(validation.get("delta_psnr"))
-            if (validation.get("csim_pass") is not True or validation.get("bit_exact") is not True or
-                    validation.get("image_count") != 13 or delta is None or delta < -.1):
+            try:
+                check_image_validation(parent_config, json.loads(full.read_text()))
+            except RuntimeError:
                 row["status"] = "precision_fail"
-                raise RuntimeError("Selected candidate failed mandatory all-supplied-image validation")
+                raise
         timeout = 21600 if operation == "cosim" else config.get("timeout", 10800)
         with lock(work / ".run.lock"), lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=86400):
             if package_serial:

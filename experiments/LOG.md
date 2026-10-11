@@ -369,6 +369,8 @@
 
 - 2026-10-11T17:35:00+00:00: F89/WS2 recovery: verified original local sessions95149/11690/51861 and remote runners remain active; no restart. F89 congestion overlaps now476, about4.1GiB available memory, original three-hour timeout unchanged. Read both AGENTS and docs0002/0003/0004 plus recovery/summary records; protected sources and existing user edits remain preserved. F26/F27 C validation is exact; hardware gates are pending.
 
+- 2026-10-11T17:37:29+00:00: F89/WS3: final verification now checks validation_parent source SHA256, precision and design defines against the frozen hardware candidate at both plan and execution entry points; testbench-only flags may differ.52 infrastructure tests PASS, including recorded F25/F80 provenance. Live F89 congestion overlaps down to296; no final routed verdict.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 WS0: 用户授权第 6 节先自行决策并执行、明日复核。暂定保留运行时 float 权重接口及 HLS 资源门限，不做常量 ROM；缺 comic 保持 13 图暂定结论。F89 若再次 OOM，保留内核/内存证据并继续 WS2，不改 swap 或全局设置，不迁移到未经验证的主机。明日复核大内存主机、ROM 专用版本、资源口径和 comic 数据。
