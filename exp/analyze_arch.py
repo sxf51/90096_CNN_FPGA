@@ -10,7 +10,7 @@ from run_exp import ROOT, markdown_table, number, resource_summary
 SERIES_NOTES = {
     "S": "Whole-network DATAFLOW overlaps the dedicated layer engines. Tile fusion removes full feature maps but executes Conv1/Conv2 and Conv3 sequentially, recomputes halos, and can lose memory parallelism. Requested AXI burst limits are upper bounds; only inferred bursts are evidence of burst generation. DDR payload/bandwidth models exclude protocol stalls and are lower bounds.",
     "G": "Scatter trades the channel-wide gather line/window storage for five32-bit partial rows and a5x5 register window. Explicit padding retains a32-channel row; merged edge kernels remove it but introduce nine coefficient classes, wider coefficients, selection and runtime merge work. Equality of every butterfly output, including six-pixel borders and the repeated frame, is the padding gate.",
-    "P": "Two products share one DSP only when operand packing and signed-low borrowing are handled explicitly. Exact ten-bit coefficient residuals add fabric control/adders, and adjacent-pixel Conv3 needs a5x6 window plus odd-column disposal. Extra multiplier/pipeline depth is paid on every pixel in nested fold schedules. PE cycle counts cannot be interpreted as network-frame times.",
+    "P": "Two INT8 products share one DSP only when operand packing and signed-low borrowing are handled explicitly. Exact ten-bit coefficient residuals add fabric control/adders, and adjacent-pixel Conv3 needs a5x6 window plus odd-column disposal. Complete INT16 products require separately counted limb multipliers or overlapping-field fabric recovery; compare P13-P16's matched controls. Extra multiplier/pipeline depth is paid on every pixel in nested fold schedules. PE cycle counts cannot be interpreted as network-frame times.",
     "W": "Integer G2 preserves exact products and performs an exact divide-by-four before the original layer cast. Wider transforms and inverse additions, nine subkernels, runtime weight transforms and two raster row FIFOs are outside a multiplication-only budget. The128x128 tile grid computes65536 output positions before discarding the511 extra positions. PE/layer results do not establish full-network feasibility.",
     "C": "The combination retains Winograd Conv1 and uses packing only on other layers, avoiding incompatible transformed INT8 operands. Multiplier budgets omit residual/borrow correction, inverse arithmetic, runtime transformed weights and raster reorder. Dedicated layer resource counts must be summed once; nested child reports repeat their parents' resources.",
     "F": "Continuous scheduling separates window generation and MAC folds, shifts channel registers and explicitly registers fabric reduction trees. This can remove pixel fill/drain but costs pipeline registers and wide window FIFOs. Online padding overlaps source reads with padded writes; old row serialization can create finite-FIFO stalls absent from maximum-component HLS estimates. RTL cycles and routed slack remain the final evidence.",
@@ -173,7 +173,17 @@ def deviation_explanation(row, config, comparisons):
             bits = 32 * config.get("defines", {}).get("EXP_A_BITS", 10)
             lines.append("The online Conv3 pad row is explicitly aggregated into " + str(bits) + "-bit words and its parsed module uses " + str(online["BRAM18K"]) + " BRAM18K. This packs channel fields into wide memory ports, whereas F08's old pad control leaves individual channel fields in separate banks. That storage-fragmentation change explains the BRAM saving independently of the Conv3 rotation or MAC count.")
     elif scope(config,row) == "PE":
-        if "ieee_decode" in design:
+        if "packing_int16_pe" in design:
+            mode = config.get("defines", {}).get("EXP_PACK16_MODE")
+            explanation = {
+                0: "Two independent complete16x16 DSP products need no limb/overlap repair; this is the matched array/control baseline.",
+                1: "Byte splitting requires four packed product groups (low-low, high-low, low-high and high-high), then two full32-bit recombinations. Unsigned low limbs need nine signed operand bits. This recovers every bit but does not reduce DSP versus the two-product baseline.",
+                2: "The27x16 DSP product carries overlapping fields. Two fabric products (8x16 low term and9x16 residual) recover both complete32-bit outputs, plus a43/44-bit subtraction and widened recombination. HLS can prune unused high bits and pipeline/carry logic; the one-DSP count does not mean that all multiplication moved into one DSP.",
+                3: "One complete16x16 product is bound to DSP and the other to fabric. Fabric LUT/carry/register mapping depends on operand width and clock; it is the matched control for overlapping-field repair, not a packed primitive.",
+            }
+            lines.append(explanation.get(mode, "Compare complete INT16 products with the matched direct and mixed controls."))
+            lines.append("LUT/FF paper budgets reserve mapping and pipeline margin. Parsed top DSP/LUT/FF, actual clock and pack16_terms iteration depth quantify the actual cost; no whole-network frame speedup is inferred from these64-term PE calls.")
+        elif "ieee_decode" in design:
             lines.append("Converter planning allowances reserved selection/control margin. Exact IEEE construction operates on a ten-bit magnitude and highest-set-bit selector, then assigns binary32 exponent/significand fields; its finite range lets synthesis remove unused selector states and registers. The legacy control retains integer-to-float and float scaling operators. These PE array-memory ports also omit the full network's AXI address/handshake logic, so PE resource differences cannot be subtracted blindly from a frame estimate. Compare the parsed DSP, loop depth and clock before integrating the exact converter.")
         else:
             lines.append("PE LUT estimates were planning allowances, not bit-level netlists. Direct control avoids transform/borrow logic; wider Winograd operands increase transform/inverse fabric width; exact10 packing adds residual repair. The measured DSP count and loop II must be evaluated independently of unused LUT margin.")
@@ -184,13 +194,16 @@ def deviation_explanation(row, config, comparisons):
 
 def main():
     rows = list(csv.DictReader((ROOT / "experiments/results.csv").open(newline="")))
-    structures, estimates, composition, bursts, conv3, warnings = [], [], [], [], [], []
+    structures, estimates, composition, bursts, conv3, warnings, int16 = [], [], [], [], [], [], []
     for row in rows:
         archive = ROOT / "experiments" / Path(row["md_path"]).parent
         path = archive / "config.json"
         if not path.is_file():
             continue
         config = json.loads(path.read_text())
+        if config.get("design") == "designs/packing_int16_pe":
+            int16.append({**row, **config.get("validation", {}),
+                          "mode":config.get("defines", {}).get("EXP_PACK16_MODE")})
         derived = {**row, "scope": scope(config,row), "operation": config.get("operation", ""),
                    "validation_only": bool(config.get("csim_only") and config.get("set14")),
                    "eligible_provisional": eligible(row,config),
@@ -348,6 +361,12 @@ def main():
     write_csv(ROOT / "experiments/conv3_comparison.csv",conv3,["id","variant","kernel_DSP","kernel_BRAM18K","kernel_LUT","kernel_FF","kernel_latency_cycles",
                                                            "padding_DSP","padding_BRAM18K","padding_LUT","padding_FF","border_mse","bit_exact","ii_ok"])
     write_csv(ROOT / "experiments/dataflow_warnings.csv",warnings,["id","series","warning","source","md_path"])
+    write_csv(ROOT / "experiments/int16_packing_comparison.csv",int16,[
+        "id","mode","precision_w_a_acc","DSP","LUT","FF","BRAM18K","URAM",
+        "clock_target_ns","clock_est_ns","latency_cycles","interval_cycles","ii_ok",
+        "csim_pass","bit_exact","tested_terms","checked_products","boundary_triples",
+        "role_sweep_triples","random_triples","signed16_value_coverage_per_role",
+        "exhaustive_triples","status","md_path"])
     print("Analyzed",len(structures),"runs;",len(estimates),"estimate comparisons")
 
 

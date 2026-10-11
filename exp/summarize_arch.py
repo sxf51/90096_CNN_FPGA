@@ -7,7 +7,7 @@ from pathlib import Path
 from run_exp import CAPACITY, LIMIT, ROOT, markdown_table, number, utc
 
 DESCRIPTIONS = {
-    "P": "Signed INT8 packing is exact when shared operands, field range and negative borrowing are handled explicitly. P01 exhausts16777216 signed8 triples; P03/P06 compare unpack-every7/every2 schedules under their respective safe bounds. P05 tests the DSP builtin and P08 inspects actual primitive attributes. Full-network exact10 residual variants retain the passing precision point but add fabric and pipeline overhead. Uniform w8a8 remains rejected by first-phase precision evidence.",
+    "P": "Signed INT8 packing is exact when shared operands, field range and negative borrowing are handled explicitly. P01 exhausts16777216 signed8 triples; P03/P06 compare unpack-every7/every2 schedules under their respective safe bounds. P05 tests the DSP builtin and P08 inspects actual primitive attributes. Full-network exact10 residual variants retain the passing precision point but add fabric and pipeline overhead. P13-P16 additionally compare complete INT16 product pairs, byte limbs, explicit overlap/fabric recovery and ordinary DSP/fabric mixing. Uniform w8a8 remains rejected by first-phase precision evidence.",
     "W": "G2=2G makes the F2 inverse exactly divisible by4 before the ordinary layer cast. W01/W03 confirm one DSP per transformed product at10/16-bit operands. The layer and network designs retain complete transform precision, split9x9 into nine3x3 pieces, generate128x128 tiles and reorder two rows into raster streams. Equivalent offline tensors are archived; runtime transforms preserve the fixed incoming-weight contract. Header-order compilation failures and independent retries remain visible.",
     "G": "Three Conv3 organizations share precision,T32 and10ns. Gather keeps four channel-wide lines; explicit-pad scatter keeps five32-bit partial rows plus a channel-wide pad row; merged-edge scatter replaces replicate padding with nine exact source-position kernels. Every output and border is checked on two butterfly frames. Memory savings carry control, load and cycle costs.",
     "S": "Whole-network DATAFLOW is compared to sequential layers and8/16/32/64 output tiles. S01 did not export the required global scratch AXI bundles and is invalid as a DDR implementation; its oversized on-chip result is retained. Tile fusion preserves Conv3 replicate semantics by clamping feature centers before their input neighborhoods, and counts complete partial-edge halos. DDR payload divided by19.2GB/s (DS98764-bit DDR4-2400) and9.6GB/s (assumed50% efficiency) is a lower-bound model, never measured bandwidth. Requested256-word bursts are distinguished from actual compiler inference in bursts.csv.",
@@ -67,6 +67,26 @@ def main():
         points = [row for row in arch if row["series"] == series and not row["operation"]]
         text += "\n## "+series+" Direction\n\n"+DESCRIPTIONS[series]+"\n\n"
         text += measured_direction(points)
+        if series == "P":
+            path = ROOT / "experiments/int16_packing_comparison.csv"
+            if path.is_file():
+                with path.open(newline="") as handle:
+                    controls = list(csv.DictReader(handle))
+                if controls:
+                    text += ("Complete signed16x16 pair controls at equal requested II1. Each call contains64 pairs and checks both complete32-bit outputs. Every16-bit value is swept in each input role under four companion cases, with a boundary cube and deterministic random triples; this does not exhaust all2^48 triples. These PE results do not establish SRCNN16-bit packing or image quality.\n\n")
+                    text += markdown_table(linked(controls),[
+                        "id","mode","DSP","LUT","FF","clock_est_ns","latency_cycles",
+                        "interval_cycles","ii_ok","checked_products","bit_exact","status"])+"\n"
+                    indexed = {row["id"]:row for row in controls}
+                    if all(exp_id in indexed and number(indexed[exp_id]["LUT"]) is not None
+                           for exp_id in ("P13","P14","P15","P16")):
+                        direct,limbs,overlap,mixed = (indexed[exp_id] for exp_id in ("P13","P14","P15","P16"))
+                        text += ("Measured DSP counts for direct/limbs/overlap/mixed are "+
+                                 "/".join(row["DSP"] for row in (direct,limbs,overlap,mixed))+
+                                 ". Overlap recovery uses "+overlap["LUT"]+" LUT versus "+mixed["LUT"]+
+                                 " LUT for ordinary mixing (difference "+str(number(overlap["LUT"])-number(mixed["LUT"]))+
+                                 "). The one-DSP variants still use fabric multiplication; they are not two unrestricted INT16 multiplications implemented solely by one DSP48E2.\n\n")
+                    text += "![Complete INT16 pair resources](figs/int16_packing_resources.png)\n\n"
         if series == "C" and all(exp_id in by_id for exp_id in ("C10","W14","W17")):
             combination,wide,narrow = (by_id[exp_id] for exp_id in ("C10","W14","W17"))
             saving = number(wide["LUT"])-number(narrow["LUT"])
