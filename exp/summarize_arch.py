@@ -76,8 +76,13 @@ def main():
                          legacy["DSP"]+" DSP at "+legacy["clock_est_ns"]+"ns. The independent network copy [F23]("+
                          network["md_path"]+") keeps the same quantization and weights, reaches "+
                          network["clock_est_ns"]+"ns estimated clock and removes the legacy output scaling DSPs. "
-                         "Continuous folds reduce the repeated per-pixel pipeline fill/drain; the full network still needs "
-                         "finite-FIFO RTL cycles and routed timing to substantiate its HLS estimate.\n\n")
+                         "Continuous folds reduce the repeated per-pixel pipeline fill/drain; assess finite-FIFO RTL cycles "
+                         "and routed timing in the final verification table independently of that HLS estimate.\n\n")
+            loaders = [controls[exp_id] for exp_id in ("F23","F24","F25") if exp_id in controls]
+            if len(loaders) > 1:
+                text += "Loader controls preserve all inference engines, precision and runtime parameters. F24 removes the quotient-address multiplier; F25 tests the flattened counter versus repeated inner-loop drain. Compare the measured top clock/frame product:\n\n"
+                text += markdown_table(linked(loaders),["id","clock_target_ns","clock_est_ns","latency_cycles",
+                                                       "latency_ms_est","DSP","BRAM18K","LUT","FF","status"])+"\n"
         text += markdown_table(linked(points),["id","scope","T_target","latency_cycles","latency_ms_est",
                                                "DSP","BRAM18K","URAM","LUT","FF","bit_exact","border_mse","ii_ok","status"])
         if series == "S":

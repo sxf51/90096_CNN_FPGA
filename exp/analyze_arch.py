@@ -19,6 +19,9 @@ MODULE_CONTROLS = {
     "F15": ("F14", ("engine1", "conv2_stream", "engine3")),
     "W17": ("W14", ("transform_weights",)),
     "W18": ("W15", ("transform_weights",)),
+    "F24": ("F23", ("srcnn_Pipeline_load1", "srcnn_Pipeline_load1_channels_load1_rows_load1")),
+    "F25": ("F24", ("srcnn_Pipeline_load1", "srcnn_Pipeline_load1_channels_load1_rows_load1",
+                     "srcnn_Pipeline_load1_rows_load1")),
 }
 
 
@@ -259,11 +262,13 @@ def main():
                     comparison.extend({"id":exp_id, **module} for module in data.get("parsed_modules", [])
                                       if module["module"] in names)
                 human += "\nMeasured control-module comparison (identical precision and T):\n\n"
-                human += markdown_table(comparison,["id","module","latency_cycles","DSP","BRAM18K","LUT","FF"])
+                human += markdown_table(comparison,["id","module","clock_est_ns","latency_cycles","DSP","BRAM18K","LUT","FF"])
                 if row["id"] == "F15":
                     human += "\nLatency0 removes registers from the reduction stages. The measured FF saving accompanies a larger LUT count, so register removal alone does not make T8 feasible. Compare the three engines to locate the saving; the output converter can still set the top estimated clock.\n"
-                else:
+                elif row["id"] in {"W17", "W18"}:
                     human += "\nOnly the raw coefficients' output-channel partition changes in this pair; transformed MAC banks remain fixed. Deeper raw banks change the inferred RAM/register and selector mapping in the sequential loader. Compare the loader saving with the total remaining LUT excess before projecting another feasible point.\n"
+                else:
+                    human += "\nOnly the Conv1 loader organization changes in this control pair. F24's report removes the quotient-address multiplier but identifies the flattened kx counter's compare/and/select/add/store path as the new clock limit. F25 tests an unflattened inner loop; its counter clock must be weighed against repeated pipeline drain. The inference engines, coefficient precision and runtime parameter contract remain identical.\n"
         if loops:
             human += "\nPipeline depth and II evidence; nested pixel schedules pay the reported iteration latency at every restart:\n\n"
             human += markdown_table(loops,["module","loop","IterationLatency","PipelineDepth","actual_ii","target_ii","ii_ok"])

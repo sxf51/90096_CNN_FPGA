@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-11T02:40:06+00:00 from archived measurements.
+Updated 2026-10-11T02:42:49+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -14,7 +14,7 @@ Fastest resource-feasible exact frame estimate: [F24](F24_affine_weight_loader_T
 
 ## Outstanding
 
-Exploration: C10, C11.
+Exploration: C10, C11, F25.
 
 Final verification: awaiting global candidate selection.
 
