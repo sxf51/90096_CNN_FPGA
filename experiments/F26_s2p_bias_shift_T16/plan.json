@@ -1,0 +1,57 @@
+{
+  "config_sha256": "14371766c2915b374be50b70fb98b4e02569533d3dc4db2250bd4b20a1983a9c",
+  "configuration": {
+    "T": 16,
+    "changes": "Independent F25 copy; change only weight BIND_STORAGE ram_2p to ram_s2p and sequential shift-register bias loading with constant destination indices. Preserve inference and all quantization boundaries.",
+    "clock": 2.5,
+    "conclusion": "Use measured total LUT and outside LUT together; F27 is the ownership follow-up. Any selected variant requires fresh two-frame RTL and every supplied image.",
+    "control_experiment": "F25",
+    "defines": {
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 16,
+      "EXP_TREE_ADD_LATENCY": 1,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/continuous_s2p_load_v1",
+    "estimates": {
+      "BRAM18K": 73,
+      "Conv1_DSP": 324,
+      "Conv2_DSP": 128,
+      "Conv3_DSP": 50,
+      "DSP": 502,
+      "FF": 125404,
+      "LUT": 55000,
+      "T": 16,
+      "URAM": 0,
+      "basis": "F25 measured 502 DSP, 73 BRAM18K, 37682 dataflow LUT plus 32294 outside LUT, 125404 FF and 1056904 cycles. Same MAC schedule gives 65025*16=1040400 compute cycles plus measured startup/load overhead. Budget roughly 15000 LUT savings from single-write/single-read bank ports and removal of dynamic bias writes; retain shared caller/process bank ownership and converter copies. No extra feature storage. The outside-LUT goal <=12000 is an acceptance target, not this conservative estimate.",
+      "latency_cycles": 1056904,
+      "outside_LUT": 17318
+    },
+    "fixed": true,
+    "id": "F26",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Compare parsed Total and dataflow LUT, Multiplexer LUT, loading modules, HLS200-1449 warnings, clock and cycles with F25. Explain deviations above20 percent. Failure to reach the loader-specific gate remains visible even if general numerical/resource gates pass.",
+    "name": "s2p_bias_shift_T16",
+    "precision": "w10a10acc23",
+    "purpose": "WS2 control: isolate whether simple-dual-port runtime weight banks and constant-index bias shift loading remove top-level bank port multiplexers and dynamic register-write decoding. Keep the frozen F25 arithmetic, online replicate padding, two frames, AXI signature, T16 and 2.5ns clock. Expect identical output and three II1 folds; bank ownership remains shared, so the outside-LUT target may not be reached by this control alone.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws2",
+    "storage": "lutram",
+    "unroll": "Cout/Cout/tap"
+  },
+  "created_at": "2026-10-11T15:16:07+00:00",
+  "created_from_commit": "195947850e79400c33aafd28babb57a142b3cbcc",
+  "purpose_section": "WS2 control: isolate whether simple-dual-port runtime weight banks and constant-index bias shift loading remove top-level bank port multiplexers and dynamic register-write decoding. Keep the frozen F25 arithmetic, online replicate padding, two frames, AXI signature, T16 and 2.5ns clock. Expect identical output and three II1 folds; bank ownership remains shared, so the outside-LUT target may not be reached by this control alone.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 502 |\n| Conv1_DSP | 324 |\n| Conv2_DSP | 128 |\n| Conv3_DSP | 50 |\n| BRAM18K | 73 |\n| URAM | 0 |\n| T | 16 |\n| latency_cycles | 1056904 |\n| LUT | 55000 |\n| outside_LUT | 17318 |\n| FF | 125404 |\n| basis | F25 measured 502 DSP, 73 BRAM18K, 37682 dataflow LUT plus 32294 outside LUT, 125404 FF and 1056904 cycles. Same MAC schedule gives 65025*16=1040400 compute cycles plus measured startup/load overhead. Budget roughly 15000 LUT savings from single-write/single-read bank ports and removal of dynamic bias writes; retain shared caller/process bank ownership and converter copies. No extra feature storage. The outside-LUT goal <=12000 is an acceptance target, not this conservative estimate. |\n\nPlanned at 2026-10-11T15:16:07+00:00; estimates are hypotheses, not tool measurements."
+}
