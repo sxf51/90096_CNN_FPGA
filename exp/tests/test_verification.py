@@ -5,11 +5,20 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt
+from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent
 from run_exp import ROOT
 
 
 class VerificationTests(unittest.TestCase):
+    def test_diagnostic_route_requires_opt_in_exact_quality_and_csim(self):
+        config = {"operation":"impl", "diagnostic_infeasible_parent":True}
+        parent = {"csim_pass":True, "status":"infeasible", "bit_exact":True, "delta_psnr":-.07}
+        self.assertTrue(diagnostic_parent(config,parent))
+        self.assertFalse(diagnostic_parent({"operation":"impl"},parent))
+        self.assertFalse(diagnostic_parent({**config,"operation":"cosim"},parent))
+        for changes in ({"csim_pass":False}, {"status":"fail"}, {"bit_exact":False}, {"delta_psnr":-.11}, {"delta_psnr":None}):
+            self.assertFalse(diagnostic_parent(config,{**parent,**changes}))
+
     def test_diagnostic_excerpt_keeps_thread_and_failure_evidence_in_log_middle(self):
         middle = ("INFO: [Synth 8-7079] Multithreading enabled using a maximum of 7 processes.\n"
                   "EXP_VIVADO_THREADS general=1 synth=1\n"

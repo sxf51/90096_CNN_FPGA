@@ -236,6 +236,8 @@ WS2 有结论后再做。先做 Winograd，直接卷积作对照。
 
 当前执行补充：F26/F27 各启动一个 `remote_exp.py`，先完成 C 仿真后等待同一综合锁；F27 的配置设 `synthesis_after=F26`，只有 F26 归档后才能综合，等待超过 24 小时明确报错。C 仿真成功前不允许综合。`analyze_weight_loading.py` 从归档报告生成加载器门限表，`analyze_route.py` 从布线报告和内存 CSV 生成校准与前五条 setup 路径。
 
+若 WS1 的布线 LUT 比例满足触发条件，W17 的额外实现仅用于校准。其 HLS 超 LUT 门限的原始判定保留；诊断实现必须显式设 `diagnostic_infeasible_parent=true`，仅允许逐位正确且精度通过的原设计，不能进入已验收候选排名。
+
 ## 8. 汇报格式
 
 每个实验完成后，在第 9 节追加一行，并按 `AGENTS.md` 说明改动、验证方法、结果和限制：

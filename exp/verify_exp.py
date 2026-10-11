@@ -193,6 +193,13 @@ def parse_verification(work, operation):
     return observed, detail
 
 
+def diagnostic_parent(config, parent):
+    return (config["operation"] == "impl" and config.get("diagnostic_infeasible_parent") is True and
+            parent.get("csim_pass") is True and parent["status"] == "infeasible" and
+            parent.get("bit_exact") is True and number(parent.get("delta_psnr")) is not None and
+            number(parent["delta_psnr"]) >= -.1)
+
+
 def run_verification(config):
     check_protected()
     exp_id, name, operation = config["id"], config["name"], config["operation"]
@@ -201,7 +208,8 @@ def run_verification(config):
     parent = next((ROOT / "experiments").glob(config["verify_parent"] + "_*"))
     parent_config = json.loads((parent / "config.json").read_text())
     parent_row = json.loads((parent / "metrics.json").read_text())
-    if parent_row.get("csim_pass") is not True or parent_row["status"] not in {"pass", "provisional"}:
+    diagnostic = diagnostic_parent(config, parent_row)
+    if parent_row.get("csim_pass") is not True or (parent_row["status"] not in {"pass", "provisional"} and not diagnostic):
         raise RuntimeError("Verification parent is not numerically and resource accepted")
     work = ROOT / "workspace/exp_runs" / exp_id
     archive = ROOT / "experiments" / (exp_id + "_" + name)
@@ -230,6 +238,8 @@ def run_verification(config):
                series=config.get("series", exp_id[0] if not exp_id.startswith("E") else ""),
                md_path=archive.name + "/" + exp_id + ".md", git_commit=config["source_commit"],
                status="fail", notes=f"{operation} of {parent_row['id']}; HLS estimates inherited, real measurements in data.csv")
+    if diagnostic:
+        row["notes"] += "; diagnostic only: parent remains HLS-resource-infeasible and cannot enter accepted rankings"
     observed, detail, errors = {}, [], []
     impl_cwd = None
     if config.get("implementation_backend") == "serial_generated_flow":
