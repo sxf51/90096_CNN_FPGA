@@ -35,6 +35,7 @@ Measured direction result: none of its completed frame points satisfies all reso
 | [P10](P10_exact10_packing_T16/P10.md) | frame | 16 | 3039083.0 | 12.156332 | 254.0 | 168.0 | 0.0 | 101488.0 | 80563.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [P11](P11_exact10_packing_T8/P11.md) | frame | 8 | 1894302.0 | 7.577208 | 505.0 | 168.0 | 0.0 | 165606.0 | 106599.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [P12](P12_exact10_packing_T4/P12.md) | frame | 4 | 1355582.0 | 5.422328 | 1007.0 | 168.0 | 0.0 | 292053.0 | 159828.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [P09](P09_reproduction_P01/P09.md) | PE | 1 | 61.0 | 0.000244 | 1.0 | 0.0 | 0.0 | 132.0 | 86.0 | True | unknown | True | pass |
 
 ## W Direction
 
@@ -126,6 +127,7 @@ Measured direction result: [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md)
 | [F06](F06_continuous_T16_online_3p33ns/F06.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
 | [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | frame | 8 | 528488.0 | 2.113952 | 1007.0 | 73.0 | 0.0 | 96488.0 | 171235.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [F07](F07_continuous_T8_online_3p33ns/F07.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | fail |
+| [F09](F09_continuous_T16_online_4ns_split4000/F09.md) | frame | 16 | 1048687.0 | 4.194748 | 505.0 | 73.0 | 0.0 | 69179.0 | 106647.0 | True | 1.661846957728205e-05 | True | provisional |
 
 ## All Architectures
 
@@ -137,6 +139,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [W17](W17_narrow_raw_banks_T8/W17.md) | W | designs/winograd_rawbank_v1 | 8 | 2.130248 | 648.0 | 146.0 | 93166.0 | 122399.0 | -0.0695141811880653 | infeasible |
 | [F08](F08_continuous_T16_oldpad_4ns_split4000/F08.md) | F | designs/continuous_direct_r2 | 16 | 4.194708 | 505.0 | 96.0 | 69362.0 | 106171.0 | -0.0695141811880653 | provisional |
 | [F13](F13_rotate_c3_T16_tree1_4ns/F13.md) | F | designs/continuous_rotate_v1 | 16 | 4.194748 | 505.0 | 73.0 | 68903.0 | 106661.0 | -0.0695141811880653 | provisional |
+| [F09](F09_continuous_T16_online_4ns_split4000/F09.md) | F | designs/continuous_direct_r2 | 16 | 4.194748 | 505.0 | 73.0 | 69179.0 | 106647.0 | -0.0695141811880653 | provisional |
 | [P12](P12_exact10_packing_T4/P12.md) | P | designs/packing_network | 4 | 5.422328 | 1007.0 | 168.0 | 292053.0 | 159828.0 | -0.0695141811880653 | infeasible |
 | [E043](E043_scan_clock_T16_E043/E043.md) | unknown | designs/dataflow_int | 16 | 6.93923049 | 505.0 | 168.0 | 55325.0 | 67025.0 | -0.0695141811880653 | provisional |
 | [W10](W10_fixed_tiles_T16_c1only_4ns/W10.md) | W | designs/winograd_continuous | 16 | 7.548204 | 326.0 | 241.0 | 79158.0 | 76052.0 | -0.0695141811880653 | provisional |
@@ -183,9 +186,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [E030](E030_dataflow_float/E030.md) | unknown | designs/dataflow_v1 | 32 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
 | [E034](E034_scan_T_T16_E034/E034.md) | unknown | designs/dataflow_v1 | 16 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [E035](E035_scan_T_T8_E035/E035.md) | unknown | designs/dataflow_v1 | 8 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
-| [E049](E049_integer_boundary_exhaustive/E049.md) | unknown | designs/dataflow_int | unknown | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
 | [E046](E046_dataflow_wrap_T32/E046.md) | unknown | designs/dataflow_wrap | 32 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
-| [E069](E069_final_candidate_all_supplied/E069.md) | unknown | designs/dataflow_int | 16 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | csim_pass |
 | [C01](C01_wino_packing_T4_all/C01.md) | C | designs/combination_network | 4 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [C02](C02_wino_packing_T4_conv3/C02.md) | C | designs/combination_network | 4 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [C03](C03_wino_packing_T8_all/C03.md) | C | designs/combination_network | 8 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
@@ -266,6 +267,8 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F07](F07_continuous_T8_online_3p33ns/F07.md) | frame | 1007.0 | unknown | unknown | 620200.0 | unknown | unknown | fail |
 | [W17](W17_narrow_raw_banks_T8/W17.md) | frame | 648.0 | 648.0 | 0.0 | 620200.0 | 532562.0 | -14.13060303128023 | infeasible |
 | [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | frame | 1191.0 | 1192.0 | 0.08396305625524292 | 715360.0 | 2378443.0 | 232.48196712144934 | infeasible |
+| [P09](P09_reproduction_P01/P09.md) | PE | 1.0 | 1.0 | 0.0 | 61.0 | 61.0 | 0.0 | pass |
+| [F09](F09_continuous_T16_online_4ns_split4000/F09.md) | frame | 505.0 | 505.0 | 0.0 | 1140400.0 | 1048687.0 | -8.04217818309365 | provisional |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -320,6 +323,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | 5 | infeasible |
 | [W17](W17_narrow_raw_banks_T8/W17.md) | 5 | infeasible |
 | [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | 3 | infeasible |
+| [F09](F09_continuous_T16_online_4ns_split4000/F09.md) | 5 | provisional |
 
 ## Failed Directions
 
@@ -387,4 +391,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T00:46:35+00:00.
+Generated from archived evidence at 2026-10-11T00:57:03+00:00.

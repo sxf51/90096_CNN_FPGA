@@ -5,11 +5,15 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from analyze_arch import failure_reason
+from analyze_arch import failure_reason, scope
 from run_exp import ROOT
 
 
 class ArchitectureAnalysisTests(unittest.TestCase):
+    def test_boundary_exhaustion_is_a_primitive_validation(self):
+        config = {"tb_files": ["exp/tb/integer_numeric.cpp"], "csim_only": True}
+        self.assertEqual(scope(config, {"design": "designs/dataflow_int"}), "PE")
+
     def test_real_oversized_aggregate_diagnostic(self):
         reason = failure_reason({"status": "fail", "notes": "Synthesis failed (exit=1)"},
                                 ROOT / "experiments/W11_fixed_tiles_T8_allcontinuous_4ns")

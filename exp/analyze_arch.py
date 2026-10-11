@@ -29,6 +29,8 @@ def scope(config, row):
         return config.get("scope", "frame")
     if config.get("scope") in {"PE", "layer", "frame"}:
         return config["scope"]
+    if config.get("tb_files") == ["exp/tb/integer_numeric.cpp"]:
+        return "PE"
     if "micro" in row["design"]:
         return "PE"
     return "frame"
@@ -143,6 +145,7 @@ def main():
             continue
         config = json.loads(path.read_text())
         derived = {**row, "scope": scope(config,row), "operation": config.get("operation", ""),
+                   "validation_only": bool(config.get("csim_only") and config.get("set14")),
                    "eligible_provisional": eligible(row,config),
                    "failure_reason": failure_reason(row,archive),
                    "ddr_bytes_per_frame": config.get("ddr_bytes_per_frame", ""),
@@ -258,7 +261,7 @@ def main():
         start = text.index("## 6. Interpretation / 解读\n\n")+len("## 6. Interpretation / 解读\n\n")
         end = text.index("\n## 7. Conclusion",start)
         md_path.write_text(text[:start]+human.rstrip()+"\n"+text[end:])
-    extra = ["scope","operation","eligible_provisional","failure_reason","dataflow_warning_count","ddr_bytes_per_frame","feature_recompute_ratio","cache_bits",
+    extra = ["scope","operation","validation_only","eligible_provisional","failure_reason","dataflow_warning_count","ddr_bytes_per_frame","feature_recompute_ratio","cache_bits",
              "inferred_image_read_bursts","inferred_image_write_bursts","ddr_theoretical_lower_bound_ms","ddr_50pct_lower_bound_ms"]
     write_csv(ROOT / "experiments/architecture_data.csv",structures,list(rows[0])+extra)
     write_csv(ROOT / "experiments/estimate_actual.csv",estimates,["id","series","scope","metric","estimate","actual","deviation_pct","over20pct","status","md_path"])

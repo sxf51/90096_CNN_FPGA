@@ -36,6 +36,7 @@ def main():
     rows = list(csv.DictReader((ROOT / "experiments/architecture_data.csv").open(newline="")))
     arch = [row for row in rows if row["series"]]
     frames = [row for row in rows if row["scope"] == "frame" and not row["operation"] and
+              row.get("validation_only") != "True" and
               (row["series"] or "dataflow" in row["design"] or "scatter" in row["design"])]
     frames.sort(key=lambda row:number(row["latency_ms_est"]) if number(row["latency_ms_est"]) is not None else math.inf)
     eligible = [row for row in frames if row["eligible_provisional"] == "True"]
