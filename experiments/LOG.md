@@ -333,6 +333,8 @@
 
 - 2026-10-11T05:29:16+00:00: F82: archived RTL FIFO/process counters and their source prefixes; large per-cycle histories retained only in workspace; arithmetic/timing measurements unchanged.
 
+- 2026-10-11T09:43:21+00:00: F100: reproduction_F25; status=fail; latency_ms_est=unknown; Vitis version probe failed
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T03:45 UTC: F81 failed in Vivado technology mapping because kernel OOM killed the main synthesis process while four internal worker processes used about2.4GiB each. F89-F91 are independent preplanned serial retries; a checked per-run Tcl hook sets general.maxThreads and synth.maxThreads to1, preserving target clocks, directives and HLS sources. No system swap/global tool setting is changed. If serial implementation still cannot complete within host capacity, a larger-memory host is required for routed evidence; failed synthesis is not implementation or timing acceptance.
