@@ -75,6 +75,9 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
         text, count = re.subn(r"^set has_impl [01]$", "set has_impl 1", text, flags=re.MULTILINE)
         if count != 1:
             raise RuntimeError("Cannot enable implementation in the generated package driver")
+        text, count = re.subn(r"^set has_synth (?:true|false)$", "set has_synth true", text, flags=re.MULTILINE)
+        if count != 1:
+            raise RuntimeError("Cannot enable synthesis reports in the generated package driver")
     marker = "hls_vivado_reports_setup $report_options"
     if text.count(marker) != 1:
         raise RuntimeError("Unexpected generated Vivado driver; cannot install serial hook")

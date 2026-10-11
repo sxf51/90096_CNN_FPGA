@@ -359,6 +359,8 @@
 
 - 2026-10-11T16:47:17+00:00: F89/WS3: verified Vitis2026.1 export_design/config_export help: flow=none packages RTL without running Vivado. Added serial_packaged_flow for fresh WS2/WS3 verification workspaces, package logs and independent constraints/hooks;47 infrastructure tests PASS. Actual generated driver and routed verdict still required.
 
+- 2026-10-11T16:52:33+00:00: WS2/WS3: documented conditional packetized exact G2 loading after F27 acceptance;48 infrastructure tests PASS. Loader analysis now recognizes continuous_wino_fold, preserving W17 II1 evidence. Added generated workstream table with separate HLS/RTL/routed columns; pending runs have no invented numeric results.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 WS0: 用户授权第 6 节先自行决策并执行、明日复核。暂定保留运行时 float 权重接口及 HLS 资源门限，不做常量 ROM；缺 comic 保持 13 图暂定结论。F89 若再次 OOM，保留内核/内存证据并继续 WS2，不改 swap 或全局设置，不迁移到未经验证的主机。明日复核大内存主机、ROM 专用版本、资源口径和 comic 数据。

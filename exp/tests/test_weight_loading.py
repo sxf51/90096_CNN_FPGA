@@ -9,6 +9,13 @@ from run_exp import ROOT
 
 
 class LoaderAnalysisTests(unittest.TestCase):
+    def test_winograd_conv1_fold_uses_its_actual_reported_label(self):
+        baseline = json.loads((ROOT / "experiments/F25_nested_weight_loader_T16_2p5ns/metrics.json").read_text())
+        archive = ROOT / "experiments/W17_narrow_raw_banks_T8"
+        row, _ = loader_measurement(archive, baseline)
+        self.assertTrue(row["fold_II1"])
+        self.assertFalse(row["ws2_all_gates"])
+
     def test_archived_baseline_attribution_and_warning_gate(self):
         archive = ROOT / "experiments/F25_nested_weight_loader_T16_2p5ns"
         baseline = json.loads((archive / "metrics.json").read_text())

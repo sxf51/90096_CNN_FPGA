@@ -26,10 +26,11 @@ def loader_measurement(archive, baseline):
     log = archive / "csynth.log.txt"
     warnings = [line.strip() for line in log.read_text().splitlines() if "HLS 200-1449" in line] if log.is_file() else []
     result["weight_predecessor_warnings"] = len(warnings) if log.is_file() else None
+    fold_aliases = (("c1_fold", "wino_fold"), ("c2_fold",), ("c3_fold",))
     folds = [item for item in config.get("parsed_loops", []) if any(
-        key in item["loop"] for key in ("c1_fold", "c2_fold", "c3_fold"))]
-    fold_names = {key for key in ("c1_fold", "c2_fold", "c3_fold")
-                  if any(key in item["loop"] for item in folds)}
+        key in item["loop"] for aliases in fold_aliases for key in aliases)]
+    fold_names = {layer for layer, aliases in enumerate(fold_aliases)
+                  if any(any(key in item["loop"] for key in aliases) for item in folds)}
     result["fold_II1"] = len(fold_names) == 3 and all(item["actual_ii"] == 1 for item in folds)
     actual_cycles, actual_clock = number(row["latency_cycles"]), number(row["clock_est_ns"])
     result["cycles_gate"] = actual_cycles <= number(baseline["latency_cycles"])*1.01 if actual_cycles is not None else None

@@ -26,7 +26,7 @@ class VerificationTests(unittest.TestCase):
             work, archive = root/"F94", root/"archive"
             generated = work/"hls/impl/verilog"
             generated.mkdir(parents=True)
-            (generated/"run_vivado.tcl").write_text("set has_impl 0\nhls_vivado_reports_setup $report_options\n")
+            (generated/"run_vivado.tcl").write_text("set has_synth false\nset has_impl 0\nhls_vivado_reports_setup $report_options\n")
             (generated/"settings.tcl").write_text("set clock ap_clk\n")
             (generated/"extraction.tcl").write_text("# reports\n")
             ip = work/"hls/impl/ip/srcnn.v"
@@ -38,6 +38,7 @@ class VerificationTests(unittest.TestCase):
             cwd, records, _ = prepare_serial_implementation(work, work, archive, hook, enable_impl=True)
             self.assertEqual(ip.read_bytes(), before)
             self.assertIn("set has_impl 1", (cwd/"run_vivado.tcl").read_text())
+            self.assertIn("set has_synth true", (cwd/"run_vivado.tcl").read_text())
             self.assertIn("STEPS.SYNTH_DESIGN.TCL.PRE", (cwd/"run_vivado.tcl").read_text())
             self.assertEqual(len(records), 4)
 
