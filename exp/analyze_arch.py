@@ -311,7 +311,9 @@ def main():
         result_end = text.index("## 6. Interpretation / 解读")
         summary = "<!-- AUTO: resource percentages -->\n\n" + resource_summary(row) + "\n<!-- END: resource percentages -->\n\n"
         text = text[:result_end] + summary + text[result_end:]
-        human = config.get("interpretation", "")+"\n\n"+SERIES_NOTES.get(row["series"], "")
+        narrative = archive / "interpretation.md"
+        human = (narrative.read_text().strip() if narrative.is_file() else config.get("interpretation", ""))
+        human += "\n\n"+SERIES_NOTES.get(row["series"], "")
         if config.get("operation") == "cosim":
             measured = config.get("verification", {})
             if measured.get("rtl_status") == "Pass":
