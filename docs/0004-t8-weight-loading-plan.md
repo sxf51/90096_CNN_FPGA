@@ -20,7 +20,7 @@
 | 布线 | **没有结果**：F81 在 Vivado 综合阶段被主机 OOM 杀掉 | F81 |
 | 板上 | 没有 | — |
 
-- 周期数已经是 T16 理论下限（65,025 × 16 = 1,040,400）的约 98.5%。在 T16 下只能靠时钟变快，而时钟恰恰是没验证的部分。
+- T16 理论下限（65,025 × 16 = 1,040,400）占实际 HLS 周期的约 98.5%。在 T16 下主要靠时钟变快，而时钟恰恰是没验证的部分。
 - F24 的协同仿真 F85 已在远程 PASS，但没有收回本地。
 
 ### 1.2 备选
@@ -189,7 +189,7 @@ WS2 有结论后再做。先做 Winograd，直接卷积作对照。
 
 **W19：Winograd T8**（基于 `designs/winograd_rawbank_v1`，下一个可用 W 编号，开工前确认）
 - 移植 WS2 选定的加载结构。运行时 Winograd 权重变换（`transform_weights`）放进参数读取进程，变换和精度保持不变。
-- 打开 `EXP_ONLINE_PAD=1`：W17 没设，用的是旧补边。
+- 显式打开 `EXP_ONLINE_PAD=1`。源码复核发现 W17 虽未设此宏，但由 `EXP_ALL_CONTINUOUS=1` 分支已调用 `online_pad`；W19 用独立宏明确控制，保持同一复制补边语义。
 - 换用 F20/F22 的 IEEE 输出编码（`ieee_decode.h`）。
 - 时钟先定 3.33 ns，有布线证据后再提。
 - 纸面估计（假设，写进计划）：
@@ -233,6 +233,8 @@ WS2 有结论后再做。先做 Winograd，直接卷积作对照。
 4. 复制父设计到新的 `designs/<目录>` 后修改，不改父目录。
 5. `python3 exp/remote_exp.py exp/configs/<ID>.json`：上传、远程 C 仿真与综合、归档、提交。
 6. 如果 SSH 或本地队列中断而远程已完成，用 `--collect-only` 收回（见 REPRODUCE）。
+
+当前执行补充：F26/F27 各启动一个 `remote_exp.py`，先完成 C 仿真后等待同一综合锁；F27 的配置设 `synthesis_after=F26`，只有 F26 归档后才能综合，等待超过 24 小时明确报错。C 仿真成功前不允许综合。`analyze_weight_loading.py` 从归档报告生成加载器门限表，`analyze_route.py` 从布线报告和内存 CSV 生成校准与前五条 setup 路径。
 
 ## 8. 汇报格式
 

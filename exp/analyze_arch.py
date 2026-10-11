@@ -88,6 +88,10 @@ def actual_measurement(row, config, key):
 
 
 def failure_reason(row, archive):
+    cancellation = archive / "cancellation.json"
+    if cancellation.is_file():
+        record = json.loads(cancellation.read_text())
+        return "User-priority cancellation (" + record["signal"] + "): " + record["reason"] + " No RTL verdict or measured cycles."
     if row["status"] in {"pass", "provisional", "csim_pass", "impl_complete", "cosim_complete", "analysis_complete"}:
         return ""
     if row["status"] == "infeasible":
