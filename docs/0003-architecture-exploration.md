@@ -67,6 +67,11 @@ runner to replay the measurement. P09 validates this path against P01; see
   construction with zero DSP. F22/F23 retain the archived F13 network and
   replace only output decoding at3ns/2.5ns target clocks. The PE's2.051ns
   estimate cannot establish the full network's critical path or routed timing.
+- F23's2.822ns global HLS path is the one-time Conv1 weight loader's address
+  multiplier, while its dataflow region reports2.377ns. F24 preplans an
+  independent affine channel/row/column loader to test that measured bottleneck.
+  Keep runtime weights and all inference stages fixed; account for nested-loop
+  restart overhead and require exact outputs before accepting clock changes.
 
 Synthesis is serialized for the15GiB remote host, with60-minute per-run timeout
 and45-minute issue-tuning limit. Generated HDL/cache/binaries remain outside
