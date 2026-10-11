@@ -197,6 +197,38 @@ class VerificationTests(unittest.TestCase):
         for changes in ({"csim_pass":False}, {"status":"fail"}, {"bit_exact":False}, {"delta_psnr":-.11}, {"delta_psnr":None}):
             self.assertFalse(diagnostic_parent(config,{**parent,**changes}))
 
+    def test_bounded_route_threads_keep_synthesis_serial_and_parent_immutable(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            work, template, archive = root/"W22", root/"F98", root/"archive"
+            generated = template/"hls/impl/verilog"
+            generated.mkdir(parents=True)
+            original = "hls_vivado_reports_setup $report_options\n"
+            (generated/"run_vivado.tcl").write_text(original)
+            (generated/"settings.tcl").write_text("set clock ap_clk\n")
+            (generated/"extraction.tcl").write_text("# reports\n")
+            ip = template/"hls/impl/ip/srcnn.v"
+            ip.parent.mkdir(parents=True)
+            ip.write_text("module srcnn; endmodule\n")
+            hook = root/"hook.tcl"
+            hook.write_text("set_param general.maxThreads 1\nset_param synth.maxThreads 1\n")
+            cwd, records, _ = prepare_serial_implementation(work, template, archive, hook, implementation_threads=4)
+            self.assertEqual((generated/"run_vivado.tcl").read_text(), original)
+            self.assertEqual((work/"hls/impl/ip/srcnn.v").read_bytes(), ip.read_bytes())
+            self.assertIn("STEPS.OPT_DESIGN.TCL.PRE", (cwd/"run_vivado.tcl").read_text())
+            self.assertIn("set_param general.maxThreads 4", (cwd/"bounded_implementation.tcl").read_text())
+            self.assertIn("set_param synth.maxThreads 1", (cwd/"bounded_implementation.tcl").read_text())
+            self.assertIn("set_param general.maxThreads 1", (cwd/"serial_synthesis.tcl").read_text())
+            self.assertTrue(any(record["kind"] == "implementation_thread_hook" for record in records))
+            replay, replay_archive = root/"replay", root/"replay_archive"
+            fresh, _, _ = prepare_serial_implementation(replay, work, replay_archive, hook, implementation_threads=2)
+            self.assertEqual((fresh/"run_vivado.tcl").read_text().count("STEPS.OPT_DESIGN.TCL.PRE"), 1)
+            self.assertIn("general.maxThreads 2", (fresh/"bounded_implementation.tcl").read_text())
+            serial, _, _ = prepare_serial_implementation(root/"serial", work, root/"serial_archive", hook)
+            self.assertNotIn("STEPS.OPT_DESIGN.TCL.PRE", (serial/"run_vivado.tcl").read_text())
+            with self.assertRaises(ValueError):
+                prepare_serial_implementation(root/"bad", template, root/"bad_archive", hook, implementation_threads=12)
+
     def test_diagnostic_excerpt_keeps_thread_and_failure_evidence_in_log_middle(self):
         middle = ("INFO: [Synth 8-7079] Multithreading enabled using a maximum of 7 processes.\n"
                   "EXP_VIVADO_THREADS general=1 synth=1\n"

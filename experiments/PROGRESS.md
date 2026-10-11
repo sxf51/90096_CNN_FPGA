@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-11T23:10:37+00:00 from archived measurements.
+Updated 2026-10-11T23:22:05+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -16,11 +16,11 @@ Fastest resource-feasible exact frame estimate: [W21](W21_subkernel_raw_cache_T8
 
 Exploration: all required runs archived.
 
-Final verification: F95.
+Final verification: F95, F97, F98.
 
 ## Weight Loading Workstream
 
-Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). W21 is the first measured HLS-resource-feasible exact T8 point,81086LUT and525237cycles. F96 queue74739 is validating all13 supplied images; after it passes, plan F97 changed-parameter RTL and F98 independent5ns implementation. Queue29428 exports W20 paths/hierarchy and then runs F95 F28 implementation. Use the accepted candidate's routed paths for one isolated WS4 clock/control experiment, then all local/remote checksum, report, figure and summary audits before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
+Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). F96 has passed every supplied-image check for W21. Session29428 runs F95 F28 implementation; session37202 queues F97 changed-parameter RTL then F98 independent5ns W21 implementation. Preserve these jobs. After their own routed-path exports, run one independent WS4 same-RTL clock probe with bounded implementation threads, then local/remote checksums, report provenance, plots and summaries before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 

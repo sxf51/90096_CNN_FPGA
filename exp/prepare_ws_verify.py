@@ -20,6 +20,7 @@ def main():
     parser.add_argument("--operation", choices=("all", "cosim", "impl"), required=True)
     parser.add_argument("--validation-parent")
     parser.add_argument("--implementation-clock", type=float)
+    parser.add_argument("--implementation-threads", type=int, choices=(1, 2, 4))
     parser.add_argument("--template")
     parser.add_argument("--diagnostic", action="store_true")
     parser.add_argument("--reload-params", action="store_true",
@@ -38,7 +39,7 @@ def main():
         raise RuntimeError("Diagnostic infeasible parents are only permitted for implementation")
     if args.reload_params and (args.operation != "cosim" or base.get("precision") != "w10a10acc23"):
         raise RuntimeError("Changed-parameter testbench requires w10a10acc23 cosimulation")
-    if args.operation != "impl" and (args.implementation_clock is not None or args.template):
+    if args.operation != "impl" and (args.implementation_clock is not None or args.template or args.implementation_threads is not None):
         raise RuntimeError("Implementation options require operation=impl")
     if args.validation_parent:
         if args.operation == "all":
@@ -83,6 +84,9 @@ def main():
         if args.operation == "impl":
             config.update(implementation_backend="serial_generated_flow" if args.template else "serial_packaged_flow",
                           verification_hook="exp/vivado_serial_hook.tcl")
+            if args.implementation_threads is not None:
+                config["implementation_threads"] = args.implementation_threads
+                config["changes"] += f" Limit per-run placement/routing to {args.implementation_threads} threads while synthesis remains single-threaded; preserve the serial hardware lock."
             if not args.template:
                 config["implementation_driver_template"] = "F89"
             if args.template:

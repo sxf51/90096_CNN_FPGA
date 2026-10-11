@@ -5,6 +5,7 @@ import csv
 import json
 import re
 from analyze_arch import write_csv
+from host_memory import cpu_summary
 from run_exp import ROOT, markdown_table, number
 
 
@@ -93,7 +94,8 @@ def analyze(archive):
     memory = archive / "host_memory.csv"
     samples = list(csv.DictReader(memory.open(newline=""))) if memory.is_file() else []
     memory_values = {"samples":len(samples), "min_available_GiB":min(float(item["available_kib"]) for item in samples)/1048576 if samples else None,
-                     "peak_tool_RSS_GiB":max(float(item["tool_rss_kib"]) for item in samples)/1048576 if samples else None}
+                     "peak_tool_RSS_GiB":max(float(item["tool_rss_kib"]) for item in samples)/1048576 if samples else None,
+                     **cpu_summary(samples)}
     write_csv(archive / "host_memory_summary.csv", [memory_values], list(memory_values))
     block = "<!-- AUTO: ROUTE ANALYSIS START -->\n\n"
     block += "Routed calibration (HLS resources remain the acceptance gate):\n\n"

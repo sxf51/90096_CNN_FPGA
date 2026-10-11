@@ -61,6 +61,7 @@ Routed/HLS resource calibration from [route_calibration.csv](route_calibration.c
 
 ![Routed resource calibration](figs/route_calibration.png)
 
-Current recovery state: W21 is the first measured HLS-resource-feasible exact T8 point,81086LUT and525237cycles. F96 queue74739 is validating all13 supplied images; after it passes, plan F97 changed-parameter RTL and F98 independent5ns implementation. Queue29428 exports W20 paths/hierarchy and then runs F95 F28 implementation. Use the accepted candidate's routed paths for one isolated WS4 clock/control experiment, then all local/remote checksum, report, figure and summary audits before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
+Current recovery state: F96 has passed every supplied-image check for W21. Session29428 runs F95 F28 implementation; session37202 queues F97 changed-parameter RTL then F98 independent5ns W21 implementation. Preserve these jobs. After their own routed-path exports, run one independent WS4 same-RTL clock probe with bounded implementation threads, then local/remote checksums, report provenance, plots and summaries before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
 
 <!-- AUTO: WORKSTREAM END -->
+

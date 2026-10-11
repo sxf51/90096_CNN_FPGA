@@ -43,7 +43,9 @@ def archive_verification_reports(work, archive, operation):
 
 
 def prepare_serial_implementation(work, template_work, archive, hook_path, template_archive=None,
-                                  implementation_clock_ns=None, enable_impl=False):
+                                  implementation_clock_ns=None, enable_impl=False, implementation_threads=1):
+    if type(implementation_threads) is not int or implementation_threads not in {1, 2, 4}:
+        raise ValueError("Implementation thread limit must be 1, 2 or 4; synthesis remains single-threaded")
     target = work / "hls/impl"
     if work.resolve() != template_work.resolve():
         if target.exists():
@@ -88,6 +90,20 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
                  "  set_property STEPS.SYNTH_DESIGN.TCL.PRE [file normalize ./serial_synthesis.tcl] $exp_run\n"
                  "}\n")
     driver.write_text(text if "STEPS.SYNTH_DESIGN.TCL.PRE" in text else text.replace(marker,injection+marker))
+    thread_files = []
+    text = re.sub(r"# EXP_IMPLEMENTATION_THREADS_BEGIN\n.*?# EXP_IMPLEMENTATION_THREADS_END\n",
+                  "", driver.read_text(), flags=re.DOTALL)
+    if implementation_threads != 1:
+        route_hook = driver.parent / "bounded_implementation.tcl"
+        route_hook.write_text(f"set_param general.maxThreads {implementation_threads}\nset_param synth.maxThreads 1\n"
+                              'puts "EXP_VIVADO_IMPL_THREADS general=[get_param general.maxThreads] synth=[get_param synth.maxThreads]"\n')
+        block = ("# EXP_IMPLEMENTATION_THREADS_BEGIN\nsource ./bounded_implementation.tcl\n"
+                 "foreach exp_impl_run [get_runs -filter {IS_IMPLEMENTATION == 1}] {\n"
+                 "  set_property STEPS.OPT_DESIGN.TCL.PRE [file normalize ./bounded_implementation.tcl] $exp_impl_run\n"
+                 "}\n# EXP_IMPLEMENTATION_THREADS_END\n")
+        text = text.replace(marker, block+marker)
+        thread_files.append(("implementation_thread_hook", route_hook))
+    driver.write_text(text)
     constraints = []
     if implementation_clock_ns is not None:
         period = number(implementation_clock_ns)
@@ -114,6 +130,7 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
             raise RuntimeError("Require exactly one top-level generated ap_clk XDC constraint")
     records = []
     for label,path in (("driver",driver),("thread_hook",local_hook),
+                       *thread_files,
                        ("settings",driver.parent / "settings.tcl"),
                        ("report_extraction",driver.parent / "extraction.tcl"),
                        *(("implementation_constraint", path) for path in constraints)):
@@ -407,7 +424,8 @@ def run_verification(config):
             template_archive = ROOT / config["implementation_template_archive"] if config.get("implementation_template_archive") else None
             impl_cwd, records, original_digest = prepare_serial_implementation(
                 work,template,archive,ROOT / config["verification_hook"],template_archive,
-                config.get("implementation_clock_ns"))
+                config.get("implementation_clock_ns"),
+                implementation_threads=config.get("implementation_threads", 1))
             config["implementation_files"] = records
             config["original_generated_driver_sha256"] = original_digest
             config["implementation_work_root"] = str(work)
@@ -439,7 +457,8 @@ def run_verification(config):
                     config["implementation_driver_template_work_root"] = str(template_work)
                 impl_cwd, records, original_digest = prepare_serial_implementation(
                     work, work, archive, ROOT / config["verification_hook"],
-                    implementation_clock_ns=config.get("implementation_clock_ns", config["clock"]), enable_impl=True)
+                    implementation_clock_ns=config.get("implementation_clock_ns", config["clock"]), enable_impl=True,
+                    implementation_threads=config.get("implementation_threads", 1))
                 config["implementation_files"] = records
                 config["original_generated_driver_sha256"] = original_digest
                 config["implementation_work_root"] = str(work)
