@@ -91,15 +91,19 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
     return driver.parent, records, hashlib.sha256(original.encode()).hexdigest()
 
 
+def vivado_diagnostic_excerpt(text):
+    lines = text.splitlines()
+    useful = lines[:60] + [line for line in lines if re.search(
+        r"EXP_VIVADO_THREADS|Synth 8-707\d|ERROR:|CRITICAL WARNING:|Killed|terminate|Memory \(MB\)|Finished.*Optimization",line)] + lines[-100:]
+    return "\n".join(useful)+"\n"
+
+
 def archive_verification_diagnostics(work,archive):
     records = []
     for path in sorted(work.glob("hls/impl/*/project.runs/*/runme.log")):
-        lines = path.read_text(errors="replace").splitlines()
-        useful = lines[:60] + [line for line in lines if re.search(
-            r"EXP_VIVADO_THREADS|ERROR:|CRITICAL WARNING:|Killed|terminate|Memory \(MB\)|Finished.*Optimization",line)] + lines[-80:]
         dest = archive / "diagnostics" / (path.parent.name+".txt")
         dest.parent.mkdir(parents=True,exist_ok=True)
-        dest.write_text("\n".join(useful)+"\n")
+        dest.write_text(vivado_diagnostic_excerpt(path.read_text(errors="replace")))
         records.append({"raw_file":str(path.relative_to(work)),"archived_file":str(dest.relative_to(archive)),
                         "raw_sha256":hashlib.sha256(path.read_bytes()).hexdigest(),
                         "sha256":hashlib.sha256(dest.read_bytes()).hexdigest(),"excerpt":True})

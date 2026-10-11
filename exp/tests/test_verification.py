@@ -5,11 +5,22 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation
+from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt
 from run_exp import ROOT
 
 
 class VerificationTests(unittest.TestCase):
+    def test_diagnostic_excerpt_keeps_thread_and_failure_evidence_in_log_middle(self):
+        middle = ("INFO: [Synth 8-7079] Multithreading enabled using a maximum of 7 processes.\n"
+                  "EXP_VIVADO_THREADS general=1 synth=1\n"
+                  "ERROR: synthesis failed\n")
+        raw = "session header\n"+"ordinary elaboration line\n"*300+middle+"ordinary mapping line\n"*300+"run ended\n"
+        excerpt = vivado_diagnostic_excerpt(raw)
+        self.assertIn("session header",excerpt)
+        self.assertIn(middle,excerpt)
+        self.assertIn("run ended",excerpt)
+        self.assertLess(len(excerpt),len(raw))
+
     def test_serial_retry_preserves_template_and_relocates_generated_flow(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
