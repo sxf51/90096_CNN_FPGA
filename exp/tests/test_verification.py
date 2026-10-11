@@ -5,11 +5,29 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config
+from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config, check_template_rtl
 from run_exp import ROOT
 
 
 class VerificationTests(unittest.TestCase):
+    def test_same_interface_different_rtl_template_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            parent, template = root/"F25", root/"W17"
+            for work in (parent, template):
+                rtl = work/"hls/syn/verilog"
+                rtl.mkdir(parents=True)
+                (rtl/"srcnn.v").write_text("module srcnn; endmodule\n")
+                (rtl/"weights.dat").write_text("01\n")
+            result = check_template_rtl(parent, template)
+            self.assertEqual(result["files_checked"], 2)
+            self.assertTrue(result["template_matches_parent"])
+            (template/"hls/syn/verilog/weights.dat").write_text("02\n")
+            with self.assertRaisesRegex(RuntimeError, "differs from the frozen parent"):
+                check_template_rtl(parent, template)
+            with self.assertRaisesRegex(RuntimeError, "RTL is missing"):
+                check_template_rtl(parent, root/"missing")
+
     def test_package_only_config_removes_all_vivado_operations(self):
         with tempfile.TemporaryDirectory() as temp:
             cfg, target = Path(temp)/"hls.cfg", Path(temp)/"package.cfg"

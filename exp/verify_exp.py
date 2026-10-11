@@ -135,6 +135,23 @@ def package_only_config(cfg, target):
     return target
 
 
+def rtl_manifest(work):
+    source = work / "hls/syn/verilog"
+    hashes = {str(path.relative_to(source)): hashlib.sha256(path.read_bytes()).hexdigest()
+              for path in source.rglob("*") if path.is_file() and path.suffix in {".v", ".sv", ".dat", ".mem", ".hex"}}
+    if not any(name.endswith((".v", ".sv")) for name in hashes):
+        raise RuntimeError("Frozen parent RTL is missing: "+str(source))
+    return hashes
+
+
+def check_template_rtl(parent_work, template_work):
+    parent, template = rtl_manifest(parent_work), rtl_manifest(template_work)
+    if parent != template:
+        raise RuntimeError("Implementation template RTL differs from the frozen parent; package this parent independently")
+    digest = hashlib.sha256(json.dumps(parent, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return {"files_checked": len(parent), "manifest_sha256": digest, "template_matches_parent": True}
+
+
 def vivado_diagnostic_excerpt(text):
     lines = text.splitlines()
     useful = lines[:60] + [line for line in lines if re.search(
@@ -260,19 +277,20 @@ def run_verification(config):
     package_serial = config.get("implementation_backend") == "serial_packaged_flow"
     if package_serial and operation != "impl":
         raise RuntimeError("Serial packaged flow is only valid for implementation")
-    if config.get("implementation_backend") == "serial_generated_flow":
-        if operation != "impl":
-            raise RuntimeError("Serial generated flow is only valid for implementation")
-        template = ROOT / "workspace/exp_runs" / config["implementation_template"]
-        template_archive = ROOT / config["implementation_template_archive"] if config.get("implementation_template_archive") else None
-        impl_cwd, records, original_digest = prepare_serial_implementation(
-            work,template,archive,ROOT / config["verification_hook"],template_archive,
-            config.get("implementation_clock_ns"))
-        config["implementation_files"] = records
-        config["original_generated_driver_sha256"] = original_digest
-        config["implementation_work_root"] = str(work)
     settings = Path(config.get("settings", parent_config["settings"]))
     try:
+        if config.get("implementation_backend") == "serial_generated_flow":
+            if operation != "impl":
+                raise RuntimeError("Serial generated flow is only valid for implementation")
+            template = ROOT / "workspace/exp_runs" / config["implementation_template"]
+            config["implementation_rtl_check"] = check_template_rtl(source_work, template)
+            template_archive = ROOT / config["implementation_template_archive"] if config.get("implementation_template_archive") else None
+            impl_cwd, records, original_digest = prepare_serial_implementation(
+                work,template,archive,ROOT / config["verification_hook"],template_archive,
+                config.get("implementation_clock_ns"))
+            config["implementation_files"] = records
+            config["original_generated_driver_sha256"] = original_digest
+            config["implementation_work_root"] = str(work)
         if config.get("validation_parent"):
             full = next((ROOT / "experiments").glob(config["validation_parent"] + "_*/config.json"))
             validation = json.loads(full.read_text()).get("validation", {})
@@ -293,6 +311,7 @@ def run_verification(config):
                 config["package_minutes"] = package_seconds / 60
                 if package_code:
                     raise RuntimeError(f"Package-only export failed (exit={package_code})")
+                config["implementation_rtl_check"] = check_template_rtl(source_work, work)
                 impl_cwd, records, original_digest = prepare_serial_implementation(
                     work, work, archive, ROOT / config["verification_hook"],
                     implementation_clock_ns=config.get("implementation_clock_ns"), enable_impl=True)

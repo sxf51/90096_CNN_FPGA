@@ -363,6 +363,8 @@
 
 - 2026-10-11T16:55:16+00:00: F89: congestion rerouting continues, overlaps4157->2476; no final routed verdict. Workstream numeric tables now regenerate both WEIGHT_LOADING.md and docs0004 section9; future ARCH_SUMMARY regeneration preserves the active priority and tomorrow-review decisions.
 
+- 2026-10-11T17:08:20+00:00: WS2/WS3: added fresh-ID verification planning with frozen source checks and separate all13/cosim/serial-impl operations. Serial templates now require byte-identical parent RTL/init files; package export also checks parent RTL.49 infrastructure tests PASS. Live F89 retains its original loaded runner and timeout.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 WS0: 用户授权第 6 节先自行决策并执行、明日复核。暂定保留运行时 float 权重接口及 HLS 资源门限，不做常量 ROM；缺 comic 保持 13 图暂定结论。F89 若再次 OOM，保留内核/内存证据并继续 WS2，不改 swap 或全局设置，不迁移到未经验证的主机。明日复核大内存主机、ROM 专用版本、资源口径和 comic 数据。

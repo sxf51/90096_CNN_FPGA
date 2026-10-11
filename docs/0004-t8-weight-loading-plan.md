@@ -244,6 +244,10 @@ WS2 有结论后再做。先做 Winograd，直接卷积作对照。
 
 新的 WS2/WS3 候选没有现成的 Vivado driver 时，使用 `implementation_backend=serial_packaged_flow` 和同一 `verification_hook`：先在独立验证目录用 `vitis-run --package`、`vivado.flow=none` 打包父 RTL，随后给新生成的 driver 加单线程 hook 并执行实现。已用 Vitis 2026.1 的 `help export_design` 核实 `flow=none` 不执行 Vivado；正式候选仍须以实际打包/实现日志验收。打包和实现都持有综合锁，不修改父设计、不重新 csynth。
 
+WS2/WS3 新候选可用 `python3 exp/prepare_ws_verify.py <父ID> --id <未占用ID> --operation all|cosim|impl` 生成并提交独立验证计划，再用 `run_queue.py <新ID>` 执行。`all` 在计划提交后复制已归档的父源码、跑全部 13 图和两帧 butterfly；`impl` 默认采用上述串行打包流程，`--template <ID>` 则复用已有 driver。`--implementation-clock <ns>` 只修改实现约束；`--diagnostic` 仅允许 C 仿真/逐位/精度已通过但 HLS 资源不可行的父点做诊断实现。最终实现用 `--validation-parent <全部13图验证ID>` 明确精度证据来源。
+
+复用实现模板前逐文件比较父点与模板的 `hls/syn/verilog/` RTL 和初始化文件 SHA256；内容不同明确拒绝，不能仅凭 `srcnn` 签名相同就套用旧 IP。打包新候选后也核对原父 RTL，保证验证的是该父设计。
+
 ## 8. 汇报格式
 
 每个实验完成后，在第 9 节追加一行，并按 `AGENTS.md` 说明改动、验证方法、结果和限制：
