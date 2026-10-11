@@ -5,7 +5,7 @@ import json
 import math
 import re
 from pathlib import Path
-from run_exp import ROOT, markdown_table, number
+from run_exp import ROOT, markdown_table, number, resource_summary
 
 SERIES_NOTES = {
     "S": "Whole-network DATAFLOW overlaps the dedicated layer engines. Tile fusion removes full feature maps but executes Conv1/Conv2 and Conv3 sequentially, recomputes halos, and can lose memory parallelism. Requested AXI burst limits are upper bounds; only inferred bursts are evidence of burst generation. DDR payload/bandwidth models exclude protocol stalls and are lower bounds.",
@@ -221,6 +221,10 @@ def main():
         original = "python3 exp/run_exp.py --config exp/configs/" + row["id"] + ".json"
         section = "## 4. Reproduction / 复现\n\n```sh\npython3 exp/reproduce_exp.py " + row["id"] + " --run\n```\n\nAllocates a fresh ID and restores frozen design/testbench sources; verification also rebuilds its parent. See [reproduction guide](../REPRODUCE.md). Original reserved invocation:\n\n```sh\n" + original + "\n```\n\n"
         text = text[:reproduction_start] + section + text[reproduction_end:]
+        text = re.sub(r"\n<!-- AUTO: resource percentages -->.*?<!-- END: resource percentages -->\n", "", text, flags=re.S)
+        result_end = text.index("## 6. Interpretation / 解读")
+        summary = "<!-- AUTO: resource percentages -->\n\n" + resource_summary(row) + "\n<!-- END: resource percentages -->\n\n"
+        text = text[:result_end] + summary + text[result_end:]
         human = config.get("interpretation", "")+"\n\n"+SERIES_NOTES.get(row["series"], "")
         human += "\n\nEstimate audit (parsed values; zero estimates have no percentage denominator):\n\n"
         human += markdown_table(comparisons,["metric","estimate","actual","deviation_pct","over20pct"])

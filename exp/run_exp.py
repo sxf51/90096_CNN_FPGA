@@ -201,6 +201,17 @@ def markdown_table(rows, columns):
         "| " + " | ".join(val(row.get(col)) for col in columns) + " |\n" for row in rows)
 
 
+def resource_summary(row):
+    resources = []
+    for key, capacity in CAPACITY.items():
+        count = number(row.get(key))
+        resources.append({"resource": key, "count": count, "device_capacity": capacity,
+                          "device_pct": 100 * count / capacity if count is not None else None,
+                          "gate_pct": 100 * LIMIT[key],
+                          "within_gate": count <= capacity * LIMIT[key] if count is not None else None})
+    return markdown_table(resources, ["resource", "count", "device_capacity", "device_pct", "gate_pct", "within_gate"])
+
+
 def append_log(message):
     path = ROOT / "experiments/LOG.md"
     text = path.read_text(encoding="utf-8")
@@ -459,6 +470,7 @@ def run(config):
         md += "## 3. Configuration / 配置\n\n<!-- AUTO: configuration -->\n\n" + cfg_table
         md += f"\n## 4. Reproduction / 复现\n\n```sh\npython3 exp/reproduce_exp.py {exp_id} --run\n```\n\nThis allocates a new ID and restores frozen sources; see [reproduction guide](../REPRODUCE.md). Original reserved invocation:\n\n```sh\n{command}\n```\n\nSettings path is recorded in config.json.\n\n"
         md += "## 5. Results / 结果\n\n<!-- AUTO: parsed measurements; blank values are unknown -->\n\n" + result_table
+        md += "\n<!-- AUTO: resource percentages -->\n\n" + resource_summary(row) + "\n<!-- END: resource percentages -->\n"
         md += "\n### Pipeline loops\n\n" + (markdown_table(loops, ["loop", "target_ii", "actual_ii", "ii_ok"]) if loops else "No loop report available.\n")
         md += "\n### Module resources\n\n" + (markdown_table(modules, ["module", "DSP", "BRAM18K", "URAM", "LUT", "FF"]) if modules else "No module report available.\n")
         md += f"\n## 6. Interpretation / 解读\n\n{config.get('interpretation', 'Pending report-based interpretation.')}\n"

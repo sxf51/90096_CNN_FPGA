@@ -146,6 +146,9 @@ def main():
         prepare(parent_config, parent_source)
         if execute(parent_new, args.local):
             raise RuntimeError("Frozen HLS parent replay failed")
+        parent_metrics = json.loads((archived(parent_new) / "metrics.json").read_text())
+        if parent_metrics["status"] not in {"pass", "provisional"}:
+            raise RuntimeError("Replayed parent is not numerically/resource accepted; verification is ineligible")
         config["verify_parent"] = parent_new
         config["design"] = parent_config["design"]
     prepare(config, source)
