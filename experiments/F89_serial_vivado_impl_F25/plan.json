@@ -1,0 +1,37 @@
+{
+  "config_sha256": "cd4c37d8c5c1178a76c4430705fcf63fd96001d4a96396e669c0921143b845c1",
+  "configuration": {
+    "changes": "Copy the completed original implementation template F81; regenerate its private project with a per-run serial synthesis hook. No C/C++ design, quantization, data, clock or numerical/resource-gate change.",
+    "clock": 2.5,
+    "conclusion": "Require actual routed reports; retain OOM/timeout/timing failures and the missing-comic precision limitation.",
+    "design": "designs/continuous_nested_load_v1",
+    "estimates": {
+      "BRAM18K": 73.0,
+      "DSP": 502.0,
+      "LUT": 69976.0,
+      "T": 16.0,
+      "URAM": 0.0,
+      "basis": "Frozen parent F25 HLS estimates. Implementation resources may optimize/change, RTL finite-FIFO latency may differ. No board performance estimate is substituted for actual reports. Serial host scheduling changes no arithmetic or hardware budget. F81 kernel evidence shows four approximately2.4GiB Vivado workers plus its main process exceed available memory; hypothesize one worker avoids that host OOM, not that timing closes.",
+      "latency_cycles": 1056904.0
+    },
+    "id": "F89",
+    "implementation_backend": "serial_generated_flow",
+    "implementation_template": "F81",
+    "interpretation": "Compare actual routed utilization/slack against the frozen accepted parent. Kernel OOM is a host-capacity failure, not evidence of FPGA resource or timing feasibility. The retry keeps the official generated flow and changes only tool parallelism.",
+    "name": "serial_vivado_impl_F25",
+    "notes": "Selected globally by lowest HLS latency among resource-feasible exact frame records; full14-image acceptance remains unavailable.",
+    "operation": "impl",
+    "purpose": "Retry physical implementation of F25 after F81's documented kernel OOM killed the main Vivado synthesis process while four worker processes were active. Reuse the original HLS-generated IP/BD flow, target clock and synthesis/implementation directives in an independent workspace. Add a formal pre-synthesis hook setting general.maxThreads and synth.maxThreads to1. Expect unchanged HLS compute/DSP/memory estimates; physical resources and slack remain unknown until reports. Reserve one hardware slot and do not change system swap or global tool settings.",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_final",
+    "timeout": 10800,
+    "validation_parent": "F80",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "F25"
+  },
+  "created_at": "2026-10-11T03:41:36+00:00",
+  "created_from_commit": "c46ae06ec1080ca1af3fe48c4131e089d2ec95f9",
+  "purpose_section": "Retry physical implementation of F25 after F81's documented kernel OOM killed the main Vivado synthesis process while four worker processes were active. Reuse the original HLS-generated IP/BD flow, target clock and synthesis/implementation directives in an independent workspace. Add a formal pre-synthesis hook setting general.maxThreads and synth.maxThreads to1. Expect unchanged HLS compute/DSP/memory estimates; physical resources and slack remain unknown until reports. Reserve one hardware slot and do not change system swap or global tool settings.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| BRAM18K | 73.0 |\n| DSP | 502.0 |\n| LUT | 69976.0 |\n| T | 16.0 |\n| URAM | 0.0 |\n| basis | Frozen parent F25 HLS estimates. Implementation resources may optimize/change, RTL finite-FIFO latency may differ. No board performance estimate is substituted for actual reports. Serial host scheduling changes no arithmetic or hardware budget. F81 kernel evidence shows four approximately2.4GiB Vivado workers plus its main process exceed available memory; hypothesize one worker avoids that host OOM, not that timing closes. |\n| latency_cycles | 1056904.0 |\n\nPlanned at 2026-10-11T03:41:36+00:00; estimates are hypotheses, not tool measurements."
+}

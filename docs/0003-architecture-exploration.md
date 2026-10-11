@@ -83,3 +83,16 @@ and45-minute issue-tuning limit. Generated HDL/cache/binaries remain outside
 commits. Existing ignore rules and user edits stay preserved. See
 [progress](../experiments/PROGRESS.md), [sources](../experiments/SOURCES.md) and
 the eventual [architecture summary](../experiments/ARCH_SUMMARY.md).
+
+## Physical verification recovery
+
+F81's kernel OOM evidence shows that Vivado's internal synthesis workers can
+exceed the host memory budget even with one HLS operation active. Preplan
+independent F89-F91 retries of the three selected candidates. Reuse the original
+HLS-generated IP/BD implementation driver and its target clock/directives, adding
+a formal pre-synthesis Tcl hook for `general.maxThreads=1` and
+`synth.maxThreads=1`. Run this generated flow directly in a fresh workspace;
+do not alter global Vivado settings, system swap, frozen parents or gates.
+Archive the patched driver, hook, original-template provenance and SHA256 values.
+Require actual routed utilization/timing reports and keep the original OOM
+records. All-supplied-image validation and two-frame RTL cosim remain independent.
