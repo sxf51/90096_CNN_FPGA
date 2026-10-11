@@ -102,6 +102,7 @@ Measured direction result: none of its completed frame points satisfies all reso
 | [C04](C04_wino_packing_T4_all_header_retry/C04.md) | frame | 4 | 2378443.0 | 9.513772 | 936.0 | 241.0 | 0.0 | 293222.0 | 253809.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [C07](C07_continuous_wino_packing_T8/C07.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 | [C12](C12_continuous_wino_packing_T8_guard_retry/C12.md) | frame | 8 | 1894303.0 | 7.577212 | 470.0 | 169.0 | 0.0 | 174591.0 | 161653.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | frame | 4 | 2378443.0 | 9.513772 | 1192.0 | 241.0 | 0.0 | 260882.0 | 263747.0 | True | 1.661846957728205e-05 | True | infeasible |
 
 ## F Direction
 
@@ -145,6 +146,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [F01](F01_fifo_lutram_control/F01.md) | F | designs/fifo_lutram_control | 16 | 8.058712 | 505.0 | 96.0 | 56081.0 | 62800.0 | -0.0695141811880653 | provisional |
 | [F02](F02_uram_line_control/F02.md) | F | designs/uram_line_control | 16 | 8.058712 | 505.0 | 132.0 | 56007.0 | 62948.0 | -0.0695141811880653 | provisional |
 | [C04](C04_wino_packing_T4_all_header_retry/C04.md) | C | designs/combination_network_r1 | 4 | 9.513772 | 936.0 | 241.0 | 293222.0 | 253809.0 | -0.0695141811880653 | infeasible |
+| [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | C | designs/combination_network_r1 | 4 | 9.513772 | 1192.0 | 241.0 | 260882.0 | 263747.0 | -0.0695141811880653 | infeasible |
 | [E041](E041_scan_clock_T16_E041/E041.md) | unknown | designs/dataflow_int | 16 | 9.7275 | 505.0 | 168.0 | 55553.0 | 59959.0 | -0.0695141811880653 | provisional |
 | [E056](E056_mixed_T4_feasibility/E056.md) | unknown | designs/dataflow_mix | 4 | 10.46292 | 1160.0 | 168.0 | 237025.0 | 120073.0 | -0.0695141811880653 | infeasible |
 | [P10](P10_exact10_packing_T16/P10.md) | P | designs/packing_network | 16 | 12.156332 | 254.0 | 168.0 | 101488.0 | 80563.0 | -0.0695141811880653 | infeasible |
@@ -263,6 +265,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | frame | 1007.0 | 1007.0 | 0.0 | 620200.0 | 528488.0 | -14.787487907126728 | infeasible |
 | [F07](F07_continuous_T8_online_3p33ns/F07.md) | frame | 1007.0 | unknown | unknown | 620200.0 | unknown | unknown | fail |
 | [W17](W17_narrow_raw_banks_T8/W17.md) | frame | 648.0 | 648.0 | 0.0 | 620200.0 | 532562.0 | -14.13060303128023 | infeasible |
+| [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | frame | 1191.0 | 1192.0 | 0.08396305625524292 | 715360.0 | 2378443.0 | 232.48196712144934 | infeasible |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -272,14 +275,14 @@ Largest percentage deviations (a zero paper denominator has no percentage):
 | [W07](W07_winograd_conv1_T16_header_retry/W07.md) | latency_cycles | 1431256.0 | 5721420.0 | 299.7481931953473 | provisional |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | latency_cycles | 906968.0 | 3493579.0 | 285.1931931446313 | infeasible |
 | [C04](C04_wino_packing_T4_all_header_retry/C04.md) | latency_cycles | 715360.0 | 2378443.0 | 232.48196712144934 | infeasible |
+| [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | latency_cycles | 715360.0 | 2378443.0 | 232.48196712144934 | infeasible |
 | [S01](S01_ddr_global_probe/S01.md) | latency_cycles | 6250529.0 | 16730473.0 | 167.6649128417771 | invalid_config |
 | [W09](W09_winograd_network_T8_header_retry/W09.md) | LUT | 59000.0 | 135496.0 | 129.65423728813562 | infeasible |
+| [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | LUT | 133880.0 | 260882.0 | 94.86256348969226 | infeasible |
 | [S03](S03_tile_fusion_B8/S03.md) | latency_cycles | 11935713.0 | 22803545.0 | 91.05306067597303 | infeasible |
 | [S04](S04_tile_fusion_B16/S04.md) | latency_cycles | 8843233.0 | 16753977.0 | 89.45533833610399 | infeasible |
 | [S05](S05_tile_fusion_B32/S05.md) | latency_cycles | 7521249.0 | 14166377.0 | 88.3513895099072 | infeasible |
 | [S06](S06_tile_fusion_B64/S06.md) | latency_cycles | 6916321.0 | 12981873.0 | 87.69911055313946 | infeasible |
-| [C04](C04_wino_packing_T4_all_header_retry/C04.md) | LUT | 156920.0 | 293222.0 | 86.86082080040785 | infeasible |
-| [W08](W08_winograd_network_T16_header_retry/W08.md) | LUT | 41000.0 | 75814.0 | 84.91219512195123 | provisional |
 
 Cause analysis is in each linked interpretation: ignored external scratch ports allocate full on-chip maps; dynamic tiled memory banks add address/multiplexer logic; packing residual/borrow stages increase both LUT and per-pixel pipeline drain; wider Winograd inverse arithmetic and raster FIFOs exceed pure-product budgets; explicit register reductions change timing and FF.
 
@@ -316,6 +319,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [C12](C12_continuous_wino_packing_T8_guard_retry/C12.md) | 4 | infeasible |
 | [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | 5 | infeasible |
 | [W17](W17_narrow_raw_banks_T8/W17.md) | 5 | infeasible |
+| [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | 3 | infeasible |
 
 ## Failed Directions
 
@@ -355,6 +359,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F14](F14_rotate_c3_T8_tree1_4ns/F14.md) | F | infeasible | LUT=96488.0 exceeds 81984; FF=171235.0 exceeds 163968 | unknown |
 | [F07](F07_continuous_T8_online_3p33ns/F07.md) | F | fail | ERROR: [HLS 214-256] in function 'conv3_stream(hls::stream<numeric::pixel2, 0>&, hls::stream<ap_int<10>, 0>&, ap_int<10> (*) [25], ap_int<10>*)': Unsupported aggregate pragma/directive on variable 'windows' as the bit-width after aggregation (8000) is larger than 4096 (F07/source/srcnn.cpp:312:26); ERROR: [HLS 200-1715] Encountered problem during source synthesis | ; Synthesis failed (exit=1) |
 | [W17](W17_narrow_raw_banks_T8/W17.md) | W | infeasible | LUT=93166.0 exceeds 81984 | unknown |
+| [C05](C05_wino_packing_T4_conv3_header_retry/C05.md) | C | infeasible | LUT=260882.0 exceeds 81984; FF=263747.0 exceeds 163968 | unknown |
 
 ## Pending Human Decisions
 
@@ -382,4 +387,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T00:42:17+00:00.
+Generated from archived evidence at 2026-10-11T00:46:35+00:00.
