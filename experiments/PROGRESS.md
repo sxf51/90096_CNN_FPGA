@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-11T19:25:16+00:00 from archived measurements.
+Updated 2026-10-11T19:27:19+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -16,11 +16,11 @@ Fastest resource-feasible exact frame estimate: [F27](F27_local_streamed_params_
 
 Exploration: all required runs archived.
 
-Final verification: W20.
+Final verification: F93, W19, F29, F30, W20.
 
 ## Weight Loading Workstream
 
-Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). F92 is archived with timing closure at5ns. F28 C simulation passed and synthesis is running; F92 setup-path export waits for its lock. F94 all13 images passed; F31 changed-parameter C preflight passed with104/256 exact second-frame output. After strict F28 WS2 acceptance, execute F93 RTL and implement precommitted W19/F29/F30 independent T8 plans. Then W20 diagnostic calibration, final candidate-specific validation/serial implementation/changed-parameter RTL and measured-path WS4; keep all failure gates explicit.
+Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). F28 is the strict WS2 selected loader, with matching F94 all13-image evidence. Execute F93 changed-parameter RTL and implement precommitted W19/F29/F30 independent T8 plans; their C simulations may overlap while hardware operations serialize. F92 five-path export is active. After T8 measurements, run W20 diagnostic calibration and final candidate-specific validation/serial implementation/changed-parameter RTL, then measured-path WS4. Keep all failure gates explicit.
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 
