@@ -145,6 +145,24 @@ def deviation_explanation(row, config, comparisons):
             lines.append("The nested Conv1 tile producer reports "+str(bound.get("latency_cycles"))+" cycles. Its264x264 scan contains a conditional4*T fold, and the maximum bound charges that branch at every scanned coordinate; only128x128=16384 coordinates actually produce tiles. Consequently the reported worst-case bound is inflated, even with the requested fold II. W10-W13/C07 isolate this by replacing the nested branch with a fixed16384*(4*T) MAC loop. This is report-bound tightening until RTL cycles confirm an actual throughput change.")
         else:
             lines.append("Winograd budgets count2304 MACs per output but also need34-bit inverse additions,144 transformed values per window, a four-pixel output packet and two512-deep640-bit raster FIFOs. Continuous schedules eliminate tile restarts but retain this storage and transform logic; the layer/module table identifies whether the direct Conv2/Conv3 engine now sets the cycle bound.")
+            if not config.get("operation") and scope(config,row) == "frame":
+                t = number(config.get("T"))
+                paper_cycles = number(config.get("estimates",{}).get("latency_cycles"))
+                reported_cycles = number(row.get("latency_cycles"))
+                if t is not None and paper_cycles is not None and reported_cycles is not None:
+                    floor = 255*255*t
+                    lines.append("The T-based compute floor is "+str(floor)+" cycles. The paper plan reserved "+
+                                 str(paper_cycles-floor)+" additional cycles; the reported top bound has "+
+                                 str(reported_cycles-floor)+" cycles above that floor. This compares the conservative load/startup/reorder allowance with the actual HLS bound; it is not a measured DDR or RTL stall count.")
+                transform = next((module for module in modules if module["module"] == "transform_weights"),None)
+                dataflow = next((module for module in modules if module["module"] == "dataflow_region"),None)
+                if transform and dataflow:
+                    loader_lut,inference_lut,total_lut = number(transform.get("LUT")),number(dataflow.get("LUT")),number(row.get("LUT"))
+                    if all(value is not None for value in (loader_lut,inference_lut,total_lut)):
+                        lines.append("Disjoint top-level report counts: transform_weights uses "+str(loader_lut)+
+                                     " LUT and "+str(transform.get("FF"))+" FF; dataflow_region uses "+
+                                     str(inference_lut)+" LUT. The remaining "+str(total_lut-loader_lut-inference_lut)+
+                                     " top-level LUT cover memories, interfaces, loading and control outside those functions. Runtime raw/transformed coefficient banks and their selectors remain required by the float-weight input contract, and are not represented by a DSP-only MAC budget. Nested children are not added again.")
     elif "continuous_direct" in design or "continuous_rotate" in design or "continuous_ieee" in design or "fifo_lutram" in design or "uram_line" in design:
         lines.append("The paper cache estimate used stored-bit capacity, whereas channel/row banking and shallow-wide FIFO mapping consume whole memory primitives. Explicit LUTRAM and URAM bindings change that granularity. Registered reductions add pipeline FF and address/window FIFOs while continuous loops remove per-pixel drain; compare the memory counts and folded iteration depths to the storage controls. HLS maximum-component cycles still exclude finite-FIFO stalls, especially with old row-serialized padding.")
         online = next((module for module in modules if module["module"] == "online_pad_pixel2_2_s"), None)
