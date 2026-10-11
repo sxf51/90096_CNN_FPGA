@@ -25,6 +25,7 @@ const lang = langIndex < 0 ? 'zh' : process.argv[langIndex + 1];
 if (!['zh', 'en'].includes(lang)) throw new Error('--lang must be zh or en');
 const english = lang === 'en';
 const suffix = english ? '.en' : '';
+const fullGraph = process.argv.includes('--full');
 const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data' + suffix + '.json'), 'utf8'));
 const byId = new Map(data.records.map(record => [record.id, record]));
 const xml = value => String(value).replace(/[<>&"']/g, ch => ({
@@ -84,15 +85,83 @@ function wrap(text, size, width) {
 
 function block(node) {
   const rows = [];
+  const width = node.width || nodeWidth;
   let y = 27;
   for (const [text, size, bold, ink] of node.lines) {
-    for (const line of wrap(text, size, nodeWidth - 48)) {
+    for (const line of wrap(text, size, width - 48)) {
       rows.push({ text: line, size, bold, ink: ink || '#243031', y });
       y += size * 1.5;
     }
     y += 6;
   }
-  return { ...node, width: nodeWidth, height: Math.ceil(y + 12), rows };
+  return { ...node, width, height: Math.ceil(y + 12), rows };
+}
+
+function number(value, decimals = 4) {
+  return value == null ? '?' : Number(value).toLocaleString('en-US', { maximumFractionDigits: decimals });
+}
+
+function compactMetrics(record) {
+  const v = record.verification;
+  if (record.status === 'planned') return [english ? 'Not run' : '未运行'];
+  if (record.status === 'invalid_config') return [english ? 'Invalid configuration' : '配置无效'];
+  if (record.status === 'timeout') return [english ? 'Timed out' : '运行超时'];
+  if (record.status === 'fail') {
+    if (record.flags.some(flag => flag.includes('OOM'))) return [english ? 'OOM / no routed result' : 'OOM / 无布线结果'];
+    return [record.functional?.csim_pass === true
+      ? english ? 'Run failed / C Pass' : '运行失败 / C Pass'
+      : english ? 'No passing simulation' : '仿真未通过'];
+  }
+  if (v.impl_WNS_ns != null) return [
+    'WNS ' + (v.impl_WNS_ns >= 0 ? '+' : '') + number(v.impl_WNS_ns) + ' ns',
+    'DSP ' + number(v.impl_DSP) + ' / B36 ' + number(v.impl_BRAM36),
+    'LUT ' + number(v.impl_LUT) + ' / FF ' + number(v.impl_FF)
+  ];
+  if (v.rtl_latency_max != null) return ['RTL ' + number(v.rtl_latency_max) + ' cyc', 'RTL ' + v.rtl_status];
+  const hls = record.hls;
+  if (hls) {
+    const primary = record.scope === 'PE'
+      ? 'PE ' + number(hls.latency_cycles) + ' cyc'
+      : (record.scope === 'layer' ? english ? 'Layer HLS ' : '单层 HLS ' : 'HLS ')
+        + number(hls.latency_ms_est, 5) + ' ms';
+    return [primary,
+      'DSP ' + number(hls.DSP) + ' / B18 ' + number(hls.BRAM18K) + (hls.URAM ? ' / U ' + number(hls.URAM) : ''),
+      'LUT ' + number(hls.LUT) + ' / FF ' + number(hls.FF)];
+  }
+  if (record.quality?.delta_vs_float_db != null) return [
+    (english ? 'Avg ' : '均值 ') + 'ΔPSNR ' + number(record.quality.delta_vs_float_db) + ' dB',
+    record.functional?.bit_exact ? 'C Pass / bit-exact' : 'C Pass'
+  ];
+  if (record.functional?.csim_pass === true) {
+    const mse = record.functional.butterfly_mse;
+    const result = record.functional.bit_exact ? 'C Pass / bit-exact' : 'C Pass';
+    return mse == null ? [result] : ['MSE ' + Number(mse).toExponential(2), result];
+  }
+  return [record.run_kind === 'analysis' ? english ? 'Software analysis' : '软件分析' : english ? 'No measurement' : '无测量记录'];
+}
+
+function compactNode(record, titles) {
+  const verification = record.verification;
+  const sameDesign = record.run_kind === 'impl' && record.parents
+    .filter(parent => parent.kind === 'verify')
+    .map(parent => byId.get(parent.id))
+    .some(parent => parent.functional?.csim_pass === true);
+  const simulationPassed = record.functional?.csim_pass === true || verification.rtl_status === 'Pass' || !!sameDesign;
+  const failed = ['fail', 'timeout', 'invalid_config'].includes(record.status);
+  const faded = failed || record.status === 'planned' || (!simulationPassed && record.run_kind !== 'analysis');
+  const metrics = compactMetrics(record);
+  const stage = verification.impl_WNS_ns != null ? verification.timing_met ? 'routed-pass' : 'routed-fail'
+    : record.run_kind === 'cosim' ? 'rtl' : record.hls ? 'hls' : record.run_kind;
+  const title = titles.get(record.id)[english ? 2 : 1];
+  const tooltip = [record.id + ': ' + record.title, record.change, record.issue,
+    record.graph.flags, metrics.join('; '),
+    english ? 'Passing C/RTL functionality does not establish routed timing. HLS times are estimates.'
+      : 'C/RTL 功能通过不代表布线时序通过；HLS 时间是估计。'].join('\n');
+  return block({ id: record.id, tone: record.graph.tone, width: english ? 340 : 320,
+    opacity: faded ? 0.4 : 1, faded, stage, simulationPassed, tooltip,
+    href: 'records' + suffix + '.md#' + record.id.toLowerCase(),
+    lines: [[record.id, 19, true], [title, 17, false],
+      ...metrics.map((metric, index) => [metric, index === 0 ? 18 : 14, true])] });
 }
 
 function experimentNode(record, context = false) {
@@ -158,9 +227,9 @@ const overviewEdges = [
 
 function mermaid(nodes, edges, title) {
   const quote = value => value.replace(/"/g, '&quot;').replace(/\n/g, '<br/>');
-  const lines = ['%% ' + title, 'flowchart TB'];
+  const lines = ['%% ' + title, fullGraph ? 'flowchart LR' : 'flowchart TB'];
   for (const node of nodes) {
-    const label = node.lines.map(row => row[0]).join('\n');
+    const label = node.lines.map(row => fullGraph && row[2] ? '<b>' + row[0] + '</b>' : row[0]).join('\n');
     lines.push('  ' + node.id + '["' + quote(label) + '"]');
   }
   for (const edge of edges) {
@@ -171,6 +240,10 @@ function mermaid(nodes, edges, title) {
     lines.push('  classDef ' + tone + ' fill:' + fill + ',stroke:' + stroke + ',color:#243031');
     const selected = nodes.filter(node => node.tone === tone).map(node => node.id);
     if (selected.length) lines.push('  class ' + selected.join(',') + ' ' + tone);
+  }
+  if (fullGraph) {
+    lines.push('  classDef faded opacity:0.4');
+    lines.push('  class ' + nodes.filter(node => node.faded).map(node => node.id).join(',') + ' faded');
   }
   return lines.join('\n') + '\n';
 }
@@ -204,7 +277,8 @@ function orthogonal(points, nodes) {
 
 function render(key, title, subtitle, nodes, edges) {
   const g = new dagre.graphlib.Graph({ multigraph: true });
-  g.setGraph({ rankdir: 'TB', ranksep: 96, nodesep: 44, edgesep: 20, marginx: 48, marginy: 28 });
+  g.setGraph({ rankdir: fullGraph ? 'LR' : 'TB', ranksep: fullGraph ? 110 : 96,
+    nodesep: fullGraph ? 34 : 44, edgesep: 20, marginx: 48, marginy: 28 });
   g.setDefaultEdgeLabel(() => ({}));
   nodes.forEach(node => g.setNode(node.id, node));
   edges.forEach(edge => g.setEdge(edge.from, edge.to, { ...edge, weight: solid.has(edge.kind) ? 3 : 1 }, edge.key));
@@ -212,13 +286,19 @@ function render(key, title, subtitle, nodes, edges) {
   const width = Math.max(english ? 1250 : 920, Math.ceil(g.graph().width));
   let header = 170;
   let headerTexts;
-  if (english) {
+  if (english || fullGraph) {
     headerTexts = [];
     let y = 16;
     for (const [text, size, weight, fill] of [
       [title, 27, '700', '#182c2d'], [subtitle, 17, '400', '#435654'],
-      ['Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.', 16, '400', '#526461'],
-      ['Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.', 16, '400', '#526461']
+      [english ? 'Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.'
+        : '实线：基线、修复、集成；虚线：参考、对照、同设计验证、复现。', 16, '400', '#526461'],
+      [fullGraph
+        ? english ? 'Green: current stage passes (C/RTL is not routed timing); amber: HLS timing warning; red: budget/II/configuration/routing failure; teal: analysis.'
+          : '绿：当前阶段通过（C/RTL 不代表布线时序）；琥珀：HLS 时序告警；红：资源、II、配置或实现失败；青：软件分析。'
+        : 'Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.', 16, '400', '#526461'],
+      ...(fullGraph ? [[english ? 'Faded: failed/unrun/no functional pass. Bold: measured-stage metrics. HLS time is an estimate; B18 = BRAM18K; B36 = BRAM36; WNS = routed timing.'
+        : '淡化：运行失败、未运行或无功能通过记录；加粗：本阶段指标。HLS 为时间估计；B18 / B36 区分 BRAM 单位；WNS 为实际布线时序。', 16, '400', '#526461']] : [])
     ]) {
       for (const line of wrap(text, size, width - 96)) {
         headerTexts.push('<text x="48" y="' + (y + size) + '" font-size="' + size + '" font-weight="' + weight + '" fill="' + fill + '">' + xml(line) + '</text>');
@@ -247,7 +327,9 @@ function render(key, title, subtitle, nodes, edges) {
     const edge = g.edge(edgeRef);
     const points = orthogonal(edge.points, g.nodes().map(id => g.node(id))).map(p => ({ x: p.x, y: p.y + header }));
     const d = points.map((p, i) => (i ? 'L' : 'M') + p.x.toFixed(2) + ' ' + p.y.toFixed(2)).join(' ');
+    const faded = fullGraph && (g.node(edge.from).faded || g.node(edge.to).faded);
     pieces.push('<path d="' + d + '" fill="none" stroke="#778482" stroke-width="1.7"'
+      + (fullGraph ? ' opacity="' + (faded ? '0.25' : solid.has(edge.kind) ? '0.85' : '0.55') + '" data-from="' + edge.from + '" data-to="' + edge.to + '"' : '')
       + (solid.has(edge.kind) ? '' : ' stroke-dasharray="6 5"') + ' marker-end="url(#arrow)"/>');
     layout.edges.push({ from: edge.from, to: edge.to, kind: edge.kind, points });
   }
@@ -255,10 +337,11 @@ function render(key, title, subtitle, nodes, edges) {
     const node = g.node(id);
     const x = node.x - node.width / 2, y = node.y - node.height / 2 + header;
     const [fill, stroke] = colors[node.tone];
-    pieces.push('<g data-id="' + xml(id) + '">');
+    pieces.push('<g data-id="' + xml(id) + '"' + (fullGraph ? ' opacity="' + node.opacity + '" data-stage="' + node.stage + '" data-faded="' + node.faded + '"' : '') + '>');
+    if (fullGraph) pieces.push('<title>' + xml(node.tooltip) + '</title>');
     pieces.push('<rect x="' + x.toFixed(2) + '" y="' + y.toFixed(2) + '" width="' + node.width
       + '" height="' + node.height + '" rx="4" fill="' + fill + '" stroke="' + stroke + '" stroke-width="'
-      + (id === 'F25' || id === 'f25' ? '3' : '1.5') + '"'
+      + (id === 'F25' || id === 'f25' || (fullGraph && node.stage.startsWith('routed-')) ? '3' : '1.5') + '"'
       + (node.tone === 'planned' || node.context ? ' stroke-dasharray="6 5"' : '') + '/>');
     const texts = [];
     for (const row of node.rows) {
@@ -269,12 +352,14 @@ function render(key, title, subtitle, nodes, edges) {
     }
     pieces.push('</g>');
     layout.nodes.push({ id, context: !!node.context, x, y, width: node.width, height: node.height, texts });
+    if (fullGraph) Object.assign(layout.nodes[layout.nodes.length - 1], {
+      tone: node.tone, faded: node.faded, stage: node.stage, simulationPassed: node.simulationPassed });
   }
   pieces.push('</svg>');
   return { svg: pieces.join('\n') + '\n', layout, mmd: mermaid(nodes, edges, title) };
 }
 
-const graphs = [{ key: 'overview', title: english ? 'SRCNN experiment overview / Baseline to F25' : 'SRCNN 实验总览 / 从原始结构到 F25',
+let graphs = [{ key: 'overview', title: english ? 'SRCNN experiment overview / Baseline to F25' : 'SRCNN 实验总览 / 从原始结构到 F25',
   subtitle: english ? '153 experiments | 142 result records | 11 planned/prepared | HLS ms use max(target, estimated period)' : '153 项档案 · 142 项有结果记录 · 11 项仅计划/准备 · HLS ms 按 max(目标周期, 估计周期) 换算',
   nodes: overviewNodes, edges: overviewEdges }];
 for (const section of data.sections) {
@@ -286,6 +371,27 @@ for (const section of data.sections) {
     from: parent.id, to: record.id, kind: parent.kind, key: record.id + '-' + index
   })));
   graphs.push({ key: section.key, title: section.title, subtitle: section.question, nodes, edges });
+}
+
+if (fullGraph) {
+  const compact = JSON.parse(fs.readFileSync(path.join(__dirname, 'compact-titles.json'), 'utf8'));
+  const titles = new Map(compact.labels.map(row => [row[0], row]));
+  if (compact.source_commit !== data.source_commit || titles.size !== data.records.length
+      || compact.labels.length !== titles.size || data.records.some(record => !titles.has(record.id))) {
+    throw new Error('Compact titles must match the complete snapshot with no duplicate/missing IDs.');
+  }
+  const nodes = data.records.map(record => compactNode(record, titles));
+  const edges = data.records.flatMap(record => record.parents.map((parent, index) => ({
+    from: parent.id, to: record.id, kind: parent.kind, key: record.id + '-' + index
+  })));
+  const dependencyGraph = new dagre.graphlib.Graph();
+  nodes.forEach(node => dependencyGraph.setNode(node.id));
+  edges.forEach(edge => dependencyGraph.setEdge(edge.from, edge.to));
+  if (!dagre.graphlib.alg.isAcyclic(dependencyGraph)) throw new Error('Experiment dependencies contain a cycle.');
+  graphs = [{ key: 'full', title: english ? 'SRCNN / Complete experiment evolution' : 'SRCNN / 全部实验演进',
+    subtitle: data.records.length + (english ? ' experiments / ' : ' 项实验 / ') + edges.length
+      + (english ? ' dependencies / snapshot ' : ' 条依赖 / 快照 ') + data.source_commit,
+    nodes, edges }];
 }
 
 function checkLayout(layout) {
@@ -327,6 +433,11 @@ const checkOnly = process.argv.includes('--check');
 for (const graph of graphs) {
   const result = render(graph.key, graph.title, graph.subtitle, graph.nodes, graph.edges);
   checkLayout(result.layout);
+  if (fullGraph && (result.layout.nodes.length !== data.records.length
+      || new Set(result.layout.nodes.map(node => node.id)).size !== data.records.length
+      || result.layout.edges.length !== data.records.reduce((count, record) => count + record.parents.length, 0))) {
+    throw new Error('Full graph is missing or duplicating experiment IDs/dependencies.');
+  }
   const svgPath = path.join(__dirname, graph.key + suffix + '.svg');
   const mmdPath = path.join(__dirname, graph.key + suffix + '.mmd');
   if (checkOnly) {
@@ -337,7 +448,28 @@ for (const graph of graphs) {
     fs.writeFileSync(svgPath, result.svg);
     fs.writeFileSync(mmdPath, result.mmd);
   }
+  if (fullGraph) {
+    const icons = JSON.parse(fs.readFileSync(path.join(__dirname, 'viewer-icons.json'), 'utf8'));
+    let html = fs.readFileSync(path.join(__dirname, 'viewer.template.html'), 'utf8');
+    const replacements = {
+      LANG: english ? 'en' : 'zh-CN', PAGE_TITLE: english ? 'SRCNN experiment evolution' : 'SRCNN 实验演进',
+      SVG_FILE: 'full' + suffix + '.svg', SVG: result.svg,
+      GRAPH_JSON: JSON.stringify({ ...result.layout, source_commit: data.source_commit }).replace(/</g, '\\u003c'),
+      ICON_LICENSE: icons.source + '\n' + icons.license,
+      ...Object.fromEntries(Object.entries(icons.icons).map(([name, svg]) => ['ICON_' + name, svg]))
+    };
+    for (const [key, value] of Object.entries(replacements)) html = html.replaceAll('[[' + key + ']]', () => value);
+    if (/\[\[[A-Za-z_-]+\]\]/.test(html)) throw new Error('Unfilled viewer template placeholder');
+    const htmlPath = path.join(__dirname, 'full' + suffix + '.html');
+    if (checkOnly) {
+      if (fs.readFileSync(htmlPath, 'utf8') !== html) throw new Error('Full graph viewer is stale');
+    } else fs.writeFileSync(htmlPath, html);
+  }
   layouts.push(result.layout);
 }
-if (!checkOnly) fs.writeFileSync(path.join(__dirname, 'layout' + suffix + '.json'), JSON.stringify(layouts, null, 2) + '\n');
-console.log((checkOnly ? 'Checked' : 'Generated') + ' ' + graphs.length + ' ' + lang + ' graphs; every experiment appears in its own route.');
+const layoutPath = path.join(__dirname, 'layout' + (fullGraph ? '.full' : '') + suffix + '.json');
+const layoutJson = JSON.stringify(layouts, null, 2) + '\n';
+if (!checkOnly) fs.writeFileSync(layoutPath, layoutJson);
+else if (fullGraph && fs.readFileSync(layoutPath, 'utf8') !== layoutJson) throw new Error('Full graph layout is stale');
+console.log((checkOnly ? 'Checked' : 'Generated') + ' ' + graphs.length + ' ' + lang + ' graphs; '
+  + (fullGraph ? data.records.length + ' unique experiments and ' + graphs[0].edges.length + ' dependencies in one graph.' : 'every experiment appears in its own route.'));

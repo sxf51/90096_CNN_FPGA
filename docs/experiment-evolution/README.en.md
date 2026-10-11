@@ -4,6 +4,16 @@
 
 Start with the [narrative guide](../0004-experiment-evolution.en.md), [overview SVG](overview.en.svg), and [complete ledger](records.en.md). Open SVGs separately to zoom; use experiment IDs to locate ledger entries. Each route also has Mermaid source.
 
+## One Complete Evolution Graph
+
+The [complete compact graph](full.en.svg) puts all 153 experiments and 207 dependencies in one directed graph, with each ID appearing once. The [local viewer](full.en.html) opens directly and supports pan, zoom, ID lookup, and highlighting upstream/downstream relationships without a server or network access. Nodes show only the ID, a short idea, and bold metrics; hover text contains the detailed explanation and verification state. Dependencies still come from `data.en.json`; `compact-titles.json` only shortens bilingual labels.
+
+Colors retain the existing meanings: green indicates passing evidence at the current verification stage, amber indicates HLS timing warnings, red indicates resource/II/configuration or implementation failure, and teal indicates software analysis. Green C/RTL results do not establish routed timing. Actual implementation nodes show WNS: P08 passes routed timing for a small PE, while E070 completes network routing but fails timing.
+
+Failed runs, timeouts, invalid configurations, plans, and hardware experiments without passing functional evidence are faded, along with their adjacent edges. Resource-infeasible designs with passing C simulation retain full red color so their costs remain visible. Hardware simulation does not apply to software analysis. Implementation nodes check functional prerequisites only through explicit same-design verification edges; ordinary design ancestry does not transfer acceptance.
+
+Bold metrics reflect the stage: network/layer HLS time and resources, PE HLS cycles, C-simulation quality/MSE, RTL cycles, or routed WNS. Missing or invalid results show failure/not run; inherited HLS fields and planned estimates are never presented as measurements. HLS time remains an estimate; B18 denotes BRAM18K.
+
 ## Scope and Evidence
 
 The snapshot is commit `800a87a`, covering the union of `experiments/results.csv` and `exp/configs/*.json`: 153 experiments, with 142 result records and 11 plans/preparation records. Failures, invalid configurations, and timeouts count as result records. Incomplete runs in other workspaces are outside this snapshot.
@@ -31,8 +41,12 @@ ruby docs/experiment-evolution/generate.rb
 ruby docs/experiment-evolution/generate.en.rb
 node docs/experiment-evolution/render.cjs
 node docs/experiment-evolution/render.cjs --lang en
+node docs/experiment-evolution/render.cjs --full
+node docs/experiment-evolution/render.cjs --full --lang en
 node docs/experiment-evolution/render.cjs --check
 node docs/experiment-evolution/render.cjs --lang en --check
+node docs/experiment-evolution/render.cjs --full --check
+node docs/experiment-evolution/render.cjs --full --lang en --check
 git diff --check
 ```
 
@@ -45,6 +59,8 @@ DAGRE_MODULE=/tmp/srcnn-map-tools/node_modules/dagre node docs/experiment-evolut
 
 Dagre lays out directed graphs, with orthogonal SVG edges and content-sized nodes. English labels wrap at word boundaries. `--check` detects stale diagrams, text/node boundaries, node overlap, nonorthogonal edges, and edges crossing nodes. `layout.json` and `layout.en.json` retain the geometry used by these checks.
 
+`--full` separately generates `full.svg` / `full.en.svg`, their Mermaid sources, local HTML viewers, and `layout.full*.json`, preserving the original 13 route diagrams. Its checks also verify that every ID and dependency appears exactly once. The viewers embed the same SVG. Icons come from `lucide-static@0.468.0`, with the license retained in `viewer-icons.json` and the generated HTML.
+
 ## Rendering Checks
 
 Local preview and geometry checks use `@larksuite/whiteboard-cli` 0.2.13. They write local images and do not create external documents:
@@ -55,5 +71,7 @@ npx -y @larksuite/whiteboard-cli@0.2.13 -i docs/experiment-evolution/overview.en
 ```
 
 This language update verified identical measurements, statuses, evidence, and 207 dependencies across all 153 experiments. Regeneration consistency and layout checks passed for all 13 diagrams in each language. All 13 English SVGs passed XML parsing and external geometry checks with zero errors or warnings; the overview, continuous pipeline, and verification diagrams were rendered and visually inspected. All 3,000 local links and anchors across the 10 related Markdown files passed. HLS experiments were not rerun for this documentation update.
+
+The complete-graph update separately verified 153 unique nodes and all 207 typed dependencies in both languages against the archive. The 45 failed/unrun nodes are faded; bold metrics distinguish C, RTL, HLS, and routed results. Both SVGs passed XML parsing, regeneration consistency, and external geometry checks with zero errors or warnings. Playwright verified nonblank rendering, no horizontal overflow, ID lookup, invalid IDs, zoom, dragging, touch pinch, relationship highlighting, and clearing selection in both languages at 1440 x 900 desktop and 390 x 844 mobile sizes; screenshots were inspected. All 3,016 local links and anchors across the 10 related Markdown files passed. The original 26 route diagrams and measured data remain consistent.
 
 For new experiments, verify original evidence, update both catalogs and guides, regenerate both languages, and check their coverage and layout. Translation generation rejects missing or duplicate IDs and preserves shared measurements and dependencies.

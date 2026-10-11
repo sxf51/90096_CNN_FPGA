@@ -2,6 +2,8 @@
 
 [中文版](0004-experiment-evolution.md)
 
+One-graph entry: [complete compact SVG](experiment-evolution/full.en.svg) / [local viewer with zoom, lookup, and relationship highlighting](experiment-evolution/full.en.html). All 153 experiments and 207 dependencies appear together, with only IDs, short ideas, and bold metrics on nodes.
+
 This guide explains what each experiment builds on, why its design changed, and how its results motivated the next step. The [complete ledger](experiment-evolution/records.en.md) covers all 153 experiments.
 
 The archive snapshot is source commit `800a87a`: 142 experiments have result records and 11 have only plans or preparation records. Results include failures, timeouts, and invalid configurations. Runs in other workspaces are not automatically counted as complete. IDs name experiment archives, not network layers, clock settings, or different IP blocks.

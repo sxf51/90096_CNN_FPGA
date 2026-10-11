@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="[[LANG]]">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[[PAGE_TITLE]]</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #243031; background: #fff; font: 14px Arial, "PingFang SC", sans-serif; letter-spacing: 0; }
+    main { height: 100vh; height: 100svh; display: flex; flex-direction: column; }
+    .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid #dce2de; }
+    h1 { font-size: 16px; margin: 0; font-weight: 700; }
+    .counts { font-size: 12px; color: #62706b; }
+    .spacer { flex: 1; }
+    form { width: 190px; height: 36px; display: flex; align-items: center; gap: 7px; border: 1px solid #c8d1cc; border-radius: 4px; padding: 0 9px; }
+    input { min-width: 0; width: 100%; padding: 0; border: 0; outline: 0; background: transparent; font: inherit; color: inherit; }
+    form:focus-within { border-color: #458365; outline: 2px solid #e1eee5; }
+    form:has(input[aria-invalid="true"]) { border-color: #b16868; }
+    .tools { display: flex; align-items: center; gap: 3px; }
+    button, .download { width: 36px; height: 36px; padding: 0; display: inline-flex; align-items: center; justify-content: center; color: #354a3f; background: #fff; border: 1px solid #dce2de; border-radius: 4px; cursor: pointer; text-decoration: none; }
+    button:hover, .download:hover { background: #edf3ef; border-color: #9ab5a5; }
+    button:focus-visible, .download:focus-visible { outline: 2px solid #458365; outline-offset: 2px; }
+    .toolbar svg { width: 18px; height: 18px; flex: none; }
+    .zoom { width: 49px; text-align: center; font-size: 12px; font-variant-numeric: tabular-nums; }
+    .legend { display: flex; flex-wrap: wrap; align-items: center; gap: 7px 18px; padding: 8px 16px; border-bottom: 1px solid #e8ece9; font-size: 12px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .swatch { width: 9px; height: 9px; display: inline-block; border-radius: 50%; border: 1px solid; }
+    .green { background: #f0f8f3; border-color: #458365; }
+    .amber { background: #fff7e8; border-color: #ac7b24; }
+    .red { background: #fcf0f0; border-color: #b16868; }
+    .teal { background: #edf7f8; border-color: #49838a; }
+    .faded { background: #f4f5f5; border-color: #b7bfbf; opacity: 0.5; }
+    #viewport { flex: 1; min-height: 0; overflow: hidden; position: relative; touch-action: none; cursor: grab; }
+    #viewport.dragging { cursor: grabbing; }
+    #scene { position: absolute; transform-origin: 0 0; will-change: transform; }
+    #scene svg { display: block; max-width: none; }
+    #scene [data-id] { cursor: pointer; }
+    #scene .unrelated { opacity: 0.12 !important; }
+    #scene .selected > rect { stroke-width: 4; stroke: #243031; }
+    #scene .related-edge { stroke: #243031; stroke-width: 2.6; }
+    footer { min-height: 31px; padding: 8px 16px; border-top: 1px solid #e8ece9; color: #62706b; font-size: 12px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    @media (max-width: 640px) {
+      .toolbar { gap: 8px; padding: 9px 12px; }
+      h1 { width: 100%; }
+      .counts, .spacer { display: none; }
+      form { flex: 1; width: auto; }
+      .tools { gap: 2px; }
+      button, .download { width: 32px; }
+      .legend { gap: 6px 12px; padding: 8px 12px; }
+      .zoom { width: 39px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="toolbar">
+      <h1>[[PAGE_TITLE]]</h1>
+      <span class="counts">153 / 207</span>
+      <span class="spacer"></span>
+      <form id="find">[[ICON_search]]<input id="query" type="search" list="ids" autocomplete="off" spellcheck="false"></form>
+      <datalist id="ids"></datalist>
+      <div class="tools">
+        <button id="out" type="button">[[ICON_zoom-out]]</button>
+        <span id="zoom" class="zoom"></span>
+        <button id="in" type="button">[[ICON_zoom-in]]</button>
+        <button id="fit" type="button">[[ICON_scan]]</button>
+        <button id="clear" type="button">[[ICON_x]]</button>
+        <a id="download" class="download" href="[[SVG_FILE]]" download>[[ICON_download]]</a>
+      </div>
+    </header>
+    <div class="legend">
+      <span><i class="swatch green"></i><span data-text="pass"></span></span>
+      <span><i class="swatch amber"></i><span data-text="timing"></span></span>
+      <span><i class="swatch red"></i><span data-text="failure"></span></span>
+      <span><i class="swatch teal"></i><span data-text="analysis"></span></span>
+      <span><i class="swatch faded"></i><span data-text="faded"></span></span>
+    </div>
+    <div id="viewport"><div id="scene">[[SVG]]</div></div>
+    <footer id="status" role="status" aria-live="polite"></footer>
+  </main>
+  <script id="graph-data" type="application/json">[[GRAPH_JSON]]</script>
+  <script>
+    const graph = JSON.parse(document.getElementById('graph-data').textContent);
+    const english = document.documentElement.lang === 'en';
+    const text = english ? {
+      pass: 'Stage passes; C/RTL does not establish routing', timing: 'HLS timing warning',
+      failure: 'Budget / II / configuration / routing fails', analysis: 'Software analysis', faded: 'Failed / unrun',
+      query: 'Experiment ID', out: 'Zoom out', in: 'Zoom in', fit: 'Fit complete graph', clear: 'Clear selection',
+      download: 'Download SVG', missing: 'Experiment not found', summary: '153 experiments / 207 dependencies / snapshot 800a87a'
+    } : {
+      pass: '本阶段通过；C/RTL 不代表布线', timing: 'HLS 时序告警',
+      failure: '资源 / II / 配置 / 实现失败', analysis: '软件分析', faded: '失败 / 未运行',
+      query: '实验编号', out: '缩小', in: '放大', fit: '显示全图', clear: '清除定位',
+      download: '下载 SVG', missing: '没有该实验记录', summary: '153 项实验 / 207 条依赖 / 快照 800a87a'
+    };
+    for (const element of document.querySelectorAll('[data-text]')) element.textContent = text[element.dataset.text];
+    for (const id of ['out', 'in', 'fit', 'clear', 'download']) {
+      document.getElementById(id).title = text[id];
+      document.getElementById(id).setAttribute('aria-label', text[id]);
+    }
+    const query = document.getElementById('query');
+    query.placeholder = text.query;
+    query.setAttribute('aria-label', text.query);
+    text.summary = graph.nodes.length + (english ? ' experiments / ' : ' 项实验 / ') + graph.edges.length
+      + (english ? ' dependencies / snapshot ' : ' 条依赖 / 快照 ') + graph.source_commit;
+    document.querySelector('.counts').textContent = graph.nodes.length + ' / ' + graph.edges.length;
+    const nodes = new Map(graph.nodes.map(node => [node.id, node]));
+    for (const id of nodes.keys()) {
+      const option = document.createElement('option');
+      option.value = id;
+      document.getElementById('ids').append(option);
+    }
+    const viewport = document.getElementById('viewport');
+    const scene = document.getElementById('scene');
+    const status = document.getElementById('status');
+    let scale = 1, x = 0, y = 0, selected = null, moved = false, pressStart;
+    const pointers = new Map();
+    const update = () => {
+      scene.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+      document.getElementById('zoom').textContent = Math.round(scale * 100) + '%';
+    };
+    const point = event => {
+      const bounds = viewport.getBoundingClientRect();
+      return { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+    };
+    const zoomAt = (next, pivot) => {
+      next = Math.max(0.02, Math.min(4, next));
+      const ratio = next / scale;
+      x = pivot.x - (pivot.x - x) * ratio;
+      y = pivot.y - (pivot.y - y) * ratio;
+      scale = next;
+      update();
+    };
+    const center = () => ({ x: viewport.clientWidth / 2, y: viewport.clientHeight / 2 });
+    const fit = () => {
+      scale = Math.min((viewport.clientWidth - 28) / graph.width, (viewport.clientHeight - 28) / graph.height);
+      x = (viewport.clientWidth - graph.width * scale) / 2;
+      y = (viewport.clientHeight - graph.height * scale) / 2;
+      update();
+    };
+    const walk = (id, reverse) => {
+      const visited = new Set([id]), queue = [id];
+      for (let i = 0; i < queue.length; i++) for (const edge of graph.edges) {
+        const from = reverse ? edge.to : edge.from, to = reverse ? edge.from : edge.to;
+        if (from === queue[i] && !visited.has(to)) { visited.add(to); queue.push(to); }
+      }
+      return visited;
+    };
+    const choose = (id, recenter = true) => {
+      const node = nodes.get(id);
+      if (id && !node) { query.setAttribute('aria-invalid', 'true'); status.textContent = text.missing; return; }
+      selected = id || null;
+      query.removeAttribute('aria-invalid');
+      query.value = id || '';
+      const related = id ? new Set([...walk(id, true), ...walk(id, false)]) : new Set(nodes.keys());
+      for (const group of scene.querySelectorAll('[data-id]')) {
+        group.classList.toggle('unrelated', !related.has(group.dataset.id));
+        group.classList.toggle('selected', group.dataset.id === id);
+      }
+      for (const edge of scene.querySelectorAll('[data-from]')) {
+        const relevant = related.has(edge.dataset.from) && related.has(edge.dataset.to);
+        edge.classList.toggle('unrelated', !relevant);
+        edge.classList.toggle('related-edge', !!id && relevant);
+      }
+      status.textContent = node ? node.id + ' / ' + node.texts.slice(1).map(row => row.text).join(' / ') : text.summary;
+      if (node && recenter) {
+        scale = Math.min(1, (viewport.clientWidth - 40) / node.width);
+        x = viewport.clientWidth / 2 - (node.x + node.width / 2) * scale;
+        y = viewport.clientHeight / 2 - (node.y + node.height / 2) * scale;
+        update();
+      } else if (recenter) fit();
+    };
+    document.getElementById('find').addEventListener('submit', event => { event.preventDefault(); choose(query.value.trim().toUpperCase()); });
+    query.addEventListener('change', () => choose(query.value.trim().toUpperCase()));
+    document.getElementById('in').onclick = () => zoomAt(scale * 1.4, center());
+    document.getElementById('out').onclick = () => zoomAt(scale / 1.4, center());
+    document.getElementById('fit').onclick = () => choose(null);
+    document.getElementById('clear').onclick = () => choose(null, false);
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') choose(null, false); });
+    viewport.addEventListener('wheel', event => { event.preventDefault(); zoomAt(scale * Math.exp(-event.deltaY * 0.002), point(event)); }, { passive: false });
+    viewport.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      if (!pointers.size) { pressStart = point(event); moved = false; }
+      else moved = true;
+      pointers.set(event.pointerId, point(event));
+      viewport.setPointerCapture(event.pointerId);
+      viewport.classList.add('dragging');
+    });
+    viewport.addEventListener('pointermove', event => {
+      if (!pointers.has(event.pointerId)) return;
+      const before = [...pointers.values()], previous = pointers.get(event.pointerId), current = point(event);
+      pointers.set(event.pointerId, current);
+      const after = [...pointers.values()];
+      if (pointers.size === 2) {
+        const distance = pair => Math.hypot(pair[0].x - pair[1].x, pair[0].y - pair[1].y);
+        const midpoint = pair => ({ x: (pair[0].x + pair[1].x) / 2, y: (pair[0].y + pair[1].y) / 2 });
+        const start = midpoint(before), end = midpoint(after);
+        if (distance(before) > 0) zoomAt(scale * distance(after) / distance(before), start);
+        x += end.x - start.x; y += end.y - start.y; moved = true;
+      } else {
+        const dx = current.x - previous.x, dy = current.y - previous.y;
+        if (Math.hypot(current.x - pressStart.x, current.y - pressStart.y) > 4) moved = true;
+        x += dx; y += dy;
+      }
+      update();
+    });
+    const release = event => {
+      if (!pointers.has(event.pointerId)) return;
+      if (!moved && pointers.size === 1 && event.type !== 'pointercancel') {
+        const group = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-id]');
+        if (group && scene.contains(group)) choose(group.dataset.id);
+      }
+      pointers.delete(event.pointerId);
+      if (!pointers.size) viewport.classList.remove('dragging');
+    };
+    viewport.addEventListener('pointerup', release);
+    viewport.addEventListener('pointercancel', release);
+    new ResizeObserver(() => selected ? choose(selected) : fit()).observe(viewport);
+    choose(null);
+  </script>
+  <!-- [[ICON_LICENSE]] -->
+</body>
+</html>

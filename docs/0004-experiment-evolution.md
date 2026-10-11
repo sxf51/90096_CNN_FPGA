@@ -2,6 +2,8 @@
 
 [English](0004-experiment-evolution.en.md)
 
+单图入口：[完整紧凑图](experiment-evolution/full.svg) / [可缩放、定位和高亮关系的本地查看器](experiment-evolution/full.html)。全部 153 项实验和 207 条依赖在同一张图中，节点只保留编号、短思路和加粗指标。
+
 这份文档回答三个问题：每项实验基于什么、为什么做这个调整、结果为什么促成下一次实验。完整逐项索引见 [153 项实验记录](experiment-evolution/records.md)。
 
 本次整理以源码提交 `800a87a` 为快照：142 项有归档结果，11 项只有计划或准备记录。其他工作区中的运行不自动算作已完成。编号是实验档案号，不是网络层数、时钟参数或不同 IP 名称。

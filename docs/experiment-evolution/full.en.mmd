@@ -1,0 +1,377 @@
+%% SRCNN / Complete experiment evolution
+flowchart LR
+  E000["<b>E000</b><br/>Float32 full-frame maps<br/><b>HLS 19,601.13853 ms</b><br/><b>DSP 10 / B18 11,064</b><br/><b>LUT 9,377 / FF 8,027</b>"]
+  E010["<b>E010</b><br/>Measure ranges; scan bit widths<br/><b>Software analysis</b>"]
+  E011["<b>E011</b><br/>16-bit ap_fixed first attempt<br/><b>No passing simulation</b>"]
+  E012["<b>E012</b><br/>10-bit ap_fixed first attempt<br/><b>No passing simulation</b>"]
+  E013["<b>E013</b><br/>All-8-bit numerical control<br/><b>MSE 2.76e-3</b><br/><b>C Pass / bit-exact</b>"]
+  E014["<b>E014</b><br/>16-bit full-data retry<br/><b>Timed out</b>"]
+  E018["<b>E018</b><br/>16-bit single-image attempt<br/><b>No passing simulation</b>"]
+  E015["<b>E015</b><br/>16-bit single-image retry<br/><b>MSE 1.21e-8</b><br/><b>C Pass / bit-exact</b>"]
+  E016["<b>E016</b><br/>8-bit single-image retry<br/><b>MSE 2.76e-3</b><br/><b>C Pass / bit-exact</b>"]
+  E017["<b>E017</b><br/>10-bit rounding and edge reference<br/><b>Avg ΔPSNR -0.0695 dB</b><br/><b>C Pass / bit-exact</b>"]
+  E019["<b>E019</b><br/>10-bit ap_fixed full retry<br/><b>MSE 1.82e-5</b><br/><b>C Pass / bit-exact</b>"]
+  E049["<b>E049</b><br/>Exhaustively check layer rounding<br/><b>C Pass / bit-exact</b>"]
+  E062["<b>E062</b><br/>Try INT8 one layer at a time<br/><b>Software analysis</b>"]
+  E065["<b>E065</b><br/>8-bit weights only in Conv2<br/><b>Avg ΔPSNR -0.0759 dB</b><br/><b>C Pass / bit-exact</b>"]
+  E066["<b>E066</b><br/>Mixed-precision ap_fixed control<br/><b>Avg ΔPSNR -0.0759 dB</b><br/><b>C Pass / bit-exact</b>"]
+  E071["<b>E071</b><br/>Measure packing / Winograd ranges<br/><b>Software analysis</b>"]
+  E020["<b>E020</b><br/>Compiler defaults at 10 ns<br/><b>HLS 19,601.13853 ms</b><br/><b>DSP 10 / B18 11,064</b><br/><b>LUT 9,377 / FF 8,027</b>"]
+  E021["<b>E021</b><br/>Compiler defaults at 4 ns<br/><b>HLS 17,179.0874 ms</b><br/><b>DSP 10 / B18 11,064</b><br/><b>LUT 9,997 / FF 9,596</b>"]
+  E022["<b>E022</b><br/>Disable automatic pipelining<br/><b>HLS 44,822.23011 ms</b><br/><b>DSP 5 / B18 11,064</b><br/><b>LUT 2,217 / FF 1,267</b>"]
+  E023["<b>E023</b><br/>Inner pipeline: invalid config<br/><b>Invalid configuration</b>"]
+  E024["<b>E024</b><br/>Pixel pipeline: invalid config<br/><b>Invalid configuration</b>"]
+  E025["<b>E025</b><br/>Partitioning: invalid config<br/><b>Invalid configuration</b>"]
+  E026["<b>E026</b><br/>Allow float reassociation<br/><b>HLS 19,601.13671 ms</b><br/><b>DSP 10 / B18 11,064</b><br/><b>LUT 7,624 / FF 3,154</b>"]
+  E027["<b>E027</b><br/>Keep full maps; use 16 bits<br/><b>HLS 3,912.56088 ms</b><br/><b>DSP 66 / B18 5,822</b><br/><b>LUT 137,322 / FF 8,096</b>"]
+  E028["<b>E028</b><br/>Inner pipeline: valid retry<br/><b>HLS 12,170.25849 ms</b><br/><b>DSP 12 / B18 11,064</b><br/><b>LUT 9,914 / FF 8,948</b>"]
+  E029["<b>E029</b><br/>Pixel pipeline: valid retry<br/><b>HLS 3,811.21723 ms</b><br/><b>DSP 320 / B18 11,114</b><br/><b>LUT 80,812 / FF 123,203</b>"]
+  E032["<b>E032</b><br/>Partitioning: valid retry<br/><b>HLS 12,170.25849 ms</b><br/><b>DSP 12 / B18 11,096</b><br/><b>LUT 8,585 / FF 10,378</b>"]
+  E030["<b>E030</b><br/>Float line buffers and streams<br/><b>MSE 3.17e-14</b><br/><b>C Pass / bit-exact</b>"]
+  E031["<b>E031</b><br/>10-bit streaming MACs, T32<br/><b>HLS 123.54004 ms</b><br/><b>DSP 9 / B18 168</b><br/><b>LUT 136,868 / FF 149,111</b>"]
+  E033["<b>E033</b><br/>T32 single-image HLS control<br/><b>HLS 123.54004 ms</b><br/><b>DSP 9 / B18 168</b><br/><b>LUT 136,868 / FF 149,111</b>"]
+  E046["<b>E046</b><br/>Remove redundant accumulator saturation<br/><b>Run failed / C Pass</b>"]
+  E063["<b>E063</b><br/>Retry accumulator control<br/><b>HLS 29.13855 ms</b><br/><b>DSP 148 / B18 168</b><br/><b>LUT 95,727 / FF 132,430</b>"]
+  E047["<b>E047</b><br/>Explicitly bind products to DSPs<br/><b>HLS 29.13855 ms</b><br/><b>DSP 251 / B18 168</b><br/><b>LUT 89,341 / FF 132,430</b>"]
+  E048["<b>E048</b><br/>Carry fixed-point values as integers<br/><b>HLS 29.13855 ms</b><br/><b>DSP 254 / B18 168</b><br/><b>LUT 89,304 / FF 132,635</b>"]
+  E050["<b>E050</b><br/>Conv3: reduce before buffering<br/><b>HLS 38.82221 ms</b><br/><b>DSP 34 / B18 137</b><br/><b>LUT 127,718 / FF 128,434</b>"]
+  E060["<b>E060</b><br/>Integer Conv3 scatter<br/><b>HLS 37.70206 ms</b><br/><b>DSP 254 / B18 137</b><br/><b>LUT 39,135 / FF 24,841</b>"]
+  E056["<b>E056</b><br/>Mixed DSP / LUT MACs, T4<br/><b>HLS 10.46292 ms</b><br/><b>DSP 1,160 / B18 168</b><br/><b>LUT 237,025 / FF 120,073</b>"]
+  E034["<b>E034</b><br/>Streaming T16 first attempt<br/><b>No passing simulation</b>"]
+  E035["<b>E035</b><br/>Streaming T8 first attempt<br/><b>No passing simulation</b>"]
+  E044["<b>E044</b><br/>Streaming T16 valid retry<br/><b>HLS 175.46263 ms</b><br/><b>DSP 18 / B18 168</b><br/><b>LUT 167,715 / FF 135,714</b>"]
+  E045["<b>E045</b><br/>Streaming T8 valid retry<br/><b>HLS 280.01057 ms</b><br/><b>DSP 36 / B18 168</b><br/><b>LUT 266,266 / FF 142,153</b>"]
+  E057["<b>E057</b><br/>Integer MACs / LUTRAM weights, T32<br/><b>HLS 29.83024 ms</b><br/><b>DSP 254 / B18 168</b><br/><b>LUT 44,493 / FF 46,328</b>"]
+  E058["<b>E058</b><br/>Integer MACs / LUTRAM weights, T16<br/><b>HLS 18.7632 ms</b><br/><b>DSP 505 / B18 168</b><br/><b>LUT 55,212 / FF 57,723</b>"]
+  E059["<b>E059</b><br/>Integer MACs / LUTRAM weights, T8<br/><b>HLS 13.22968 ms</b><br/><b>DSP 1,007 / B18 168</b><br/><b>LUT 85,147 / FF 88,822</b>"]
+  E036["<b>E036</b><br/>Change Conv1 unroll direction<br/><b>HLS 78.94023 ms</b><br/><b>DSP 565 / B18 168</b><br/><b>LUT 79,846 / FF 76,416</b>"]
+  E037["<b>E037</b><br/>Change Conv2 unroll direction<br/><b>HLS 18.7632 ms</b><br/><b>DSP 505 / B18 168</b><br/><b>LUT 60,050 / FF 56,509</b>"]
+  E038["<b>E038</b><br/>Change Conv3 unroll direction<br/><b>HLS 21.55352 ms</b><br/><b>DSP 519 / B18 168</b><br/><b>LUT 64,526 / FF 57,346</b>"]
+  E039["<b>E039</b><br/>DSP MACs / LUTRAM, T32<br/><b>HLS 29.83024 ms</b><br/><b>DSP 251 / B18 168</b><br/><b>LUT 44,530 / FF 46,123</b>"]
+  E040["<b>E040</b><br/>BRAM weight banks, T32<br/><b>HLS 29.83024 ms</b><br/><b>DSP 251 / B18 419</b><br/><b>LUT 43,275 / FF 41,136</b>"]
+  E064["<b>E064</b><br/>Fully partition weight registers<br/><b>HLS 18.07151 ms</b><br/><b>DSP 505 / B18 168</b><br/><b>LUT 88,306 / FF 138,588</b>"]
+  E067["<b>E067</b><br/>BRAM weight banks, T16<br/><b>HLS 18.7632 ms</b><br/><b>DSP 505 / B18 670</b><br/><b>LUT 53,706 / FF 47,716</b>"]
+  E041["<b>E041</b><br/>T16: tighten clock to 5 ns<br/><b>HLS 9.7275 ms</b><br/><b>DSP 505 / B18 168</b><br/><b>LUT 55,553 / FF 59,959</b>"]
+  E042["<b>E042</b><br/>T16: tighten clock to 4 ns<br/><b>HLS 8.05871 ms</b><br/><b>DSP 505 / B18 168</b><br/><b>LUT 56,007 / FF 62,948</b>"]
+  E043["<b>E043</b><br/>T16: tighten clock to 3.33 ns<br/><b>HLS 6.93923 ms</b><br/><b>DSP 505 / B18 168</b><br/><b>LUT 55,325 / FF 67,025</b>"]
+  E051["<b>E051</b><br/>Ordinary 16x16 multiplier<br/><b>PE 66 cyc</b><br/><b>DSP 1 / B18 0</b><br/><b>LUT 62 / FF 16</b>"]
+  E052["<b>E052</b><br/>Unroll constant-weight products<br/><b>PE 0 cyc</b><br/><b>DSP 60 / B18 0</b><br/><b>LUT 424 / FF 0</b>"]
+  E053["<b>E053</b><br/>Map 8x8 products to LUTs<br/><b>PE 66 cyc</b><br/><b>DSP 0 / B18 0</b><br/><b>LUT 119 / FF 16</b>"]
+  E054["<b>E054</b><br/>16x16 multiplier at 4 ns<br/><b>PE 66 cyc</b><br/><b>DSP 1 / B18 0</b><br/><b>LUT 62 / FF 16</b>"]
+  E055["<b>E055</b><br/>Matched add-only control<br/><b>PE 66 cyc</b><br/><b>DSP 0 / B18 0</b><br/><b>LUT 73 / FF 16</b>"]
+  P01["<b>P01</b><br/>Pack two INT8 products; shared input<br/><b>PE 61 cyc</b><br/><b>DSP 1 / B18 0</b><br/><b>LUT 132 / FF 86</b>"]
+  P02["<b>P02</b><br/>Two ordinary products as control<br/><b>PE 58 cyc</b><br/><b>DSP 2 / B18 0</b><br/><b>LUT 57 / FF 16</b>"]
+  P03["<b>P03</b><br/>Accumulate seven terms; unpack<br/><b>PE 62 cyc</b><br/><b>DSP 1 / B18 0</b><br/><b>LUT 299 / FF 309</b>"]
+  P04["<b>P04</b><br/>Let HLS recognize packing<br/><b>PE 61 cyc</b><br/><b>DSP 1 / B18 0</b><br/><b>LUT 132 / FF 86</b>"]
+  P05["<b>P05</b><br/>Explicit DSP pre-adder builtin<br/><b>PE 63 cyc</b><br/><b>DSP 1 / B18 0</b><br/><b>LUT 127 / FF 162</b>"]
+  P06["<b>P06</b><br/>10-bit activation; unpack two terms<br/><b>PE 62 cyc</b><br/><b>DSP 1 / B18 0</b><br/><b>LUT 274 / FF 424</b>"]
+  P07["<b>P07</b><br/>Recover exact 10-bit residuals<br/><b>PE 62 cyc</b><br/><b>DSP 1 / B18 0</b><br/><b>LUT 454 / FF 453</b>"]
+  P08["<b>P08</b><br/>Place and route the DSP PE<br/><b>WNS +2.805 ns</b><br/><b>DSP 1 / B36 0</b><br/><b>LUT 21 / FF 41</b>"]
+  P09["<b>P09</b><br/>Reproduce frozen packing record<br/><b>PE 61 cyc</b><br/><b>DSP 1 / B18 0</b><br/><b>LUT 132 / FF 86</b>"]
+  P10["<b>P10</b><br/>10-bit packing network, T16<br/><b>HLS 12.15633 ms</b><br/><b>DSP 254 / B18 168</b><br/><b>LUT 101,488 / FF 80,563</b>"]
+  P11["<b>P11</b><br/>10-bit packing network, T8<br/><b>HLS 7.57721 ms</b><br/><b>DSP 505 / B18 168</b><br/><b>LUT 165,606 / FF 106,599</b>"]
+  P12["<b>P12</b><br/>10-bit packing network, T4<br/><b>HLS 5.42233 ms</b><br/><b>DSP 1,007 / B18 168</b><br/><b>LUT 292,053 / FF 159,828</b>"]
+  P13["<b>P13</b><br/>Two complete INT16 products<br/><b>Not run</b>"]
+  P14["<b>P14</b><br/>Split INT16 into packed byte limbs<br/><b>Not run</b>"]
+  P15["<b>P15</b><br/>Overlap INT16 fields; recover<br/><b>Not run</b>"]
+  P16["<b>P16</b><br/>One DSP / one fabric product<br/><b>Not run</b>"]
+  G01["<b>G01</b><br/>Matched gather control<br/><b>HLS 29.83024 ms</b><br/><b>DSP 254 / B18 168</b><br/><b>LUT 44,493 / FF 46,328</b>"]
+  G02["<b>G02</b><br/>Scatter: reduce before buffering<br/><b>HLS 37.70206 ms</b><br/><b>DSP 254 / B18 137</b><br/><b>LUT 39,135 / FF 24,841</b>"]
+  G03["<b>G03</b><br/>Scatter: merge border kernels<br/><b>HLS 44.13926 ms</b><br/><b>DSP 254 / B18 87</b><br/><b>LUT 40,677 / FF 25,230</b>"]
+  S01["<b>S01</b><br/>Probe DDR scratch interfaces<br/><b>Invalid configuration</b>"]
+  S02["<b>S02</b><br/>Whole-network dataflow control<br/><b>HLS 29.83024 ms</b><br/><b>DSP 254 / B18 168</b><br/><b>LUT 44,493 / FF 46,328</b>"]
+  S03["<b>S03</b><br/>Fuse three layers in B8 tiles<br/><b>HLS 228.03545 ms</b><br/><b>DSP 296 / B18 18</b><br/><b>LUT 113,576 / FF 73,880</b>"]
+  S04["<b>S04</b><br/>Fuse three layers in B16 tiles<br/><b>HLS 167.53977 ms</b><br/><b>DSP 296 / B18 18</b><br/><b>LUT 114,061 / FF 73,901</b>"]
+  S05["<b>S05</b><br/>Fuse three layers in B32 tiles<br/><b>HLS 141.66377 ms</b><br/><b>DSP 296 / B18 18</b><br/><b>LUT 120,033 / FF 74,038</b>"]
+  S06["<b>S06</b><br/>Fuse three layers in B64 tiles<br/><b>HLS 129.81873 ms</b><br/><b>DSP 296 / B18 18</b><br/><b>LUT 136,162 / FF 74,127</b>"]
+  W01["<b>W01</b><br/>10-bit Winograd PE<br/><b>PE 36 cyc</b><br/><b>DSP 16 / B18 0</b><br/><b>LUT 1,499 / FF 1,124</b>"]
+  W02["<b>W02</b><br/>Direct-convolution PE control<br/><b>PE 38 cyc</b><br/><b>DSP 36 / B18 0</b><br/><b>LUT 503 / FF 1,025</b>"]
+  W03["<b>W03</b><br/>16-bit Winograd PE<br/><b>PE 37 cyc</b><br/><b>DSP 16 / B18 0</b><br/><b>LUT 2,155 / FF 1,932</b>"]
+  W04["<b>W04</b><br/>Winograd in Conv1 only, T16<br/><b>No passing simulation</b>"]
+  W05["<b>W05</b><br/>Winograd network, T16<br/><b>No passing simulation</b>"]
+  W06["<b>W06</b><br/>Winograd network, T8<br/><b>No passing simulation</b>"]
+  W07["<b>W07</b><br/>Fix layer header collisions<br/><b>Layer HLS 22.88568 ms</b><br/><b>DSP 145 / B18 99</b><br/><b>LUT 30,872 / FF 25,564</b>"]
+  W08["<b>W08</b><br/>Fix network headers, T16<br/><b>HLS 22.8954 ms</b><br/><b>DSP 326 / B18 241</b><br/><b>LUT 75,814 / FF 69,105</b>"]
+  W09["<b>W09</b><br/>Fix network headers, T8<br/><b>HLS 13.97432 ms</b><br/><b>DSP 648 / B18 241</b><br/><b>LUT 135,496 / FF 148,761</b>"]
+  W10["<b>W10</b><br/>Separate windows and tile MACs<br/><b>HLS 7.5482 ms</b><br/><b>DSP 326 / B18 241</b><br/><b>LUT 79,158 / FF 76,052</b>"]
+  W11["<b>W11</b><br/>Continuous Winograd in all layers, T8<br/><b>Run failed / C Pass</b>"]
+  W12["<b>W12</b><br/>Continuous Winograd in all layers, T16<br/><b>Run failed / C Pass</b>"]
+  W13["<b>W13</b><br/>Continuous T8 at 3.33 ns<br/><b>Run failed / C Pass</b>"]
+  W14["<b>W14</b><br/>Split window streams, T8<br/><b>HLS 2.13025 ms</b><br/><b>DSP 648 / B18 146</b><br/><b>LUT 148,013 / FF 182,409</b>"]
+  W15["<b>W15</b><br/>Split window streams, T16<br/><b>HLS 4.2274 ms</b><br/><b>DSP 326 / B18 146</b><br/><b>LUT 89,114 / FF 92,946</b>"]
+  W16["<b>W16</b><br/>Split streams, T8 at 3.33 ns<br/><b>HLS 1.77345 ms</b><br/><b>DSP 648 / B18 146</b><br/><b>LUT 145,767 / FF 192,756</b>"]
+  W17["<b>W17</b><br/>Narrow raw-weight banks, T8<br/><b>HLS 2.13025 ms</b><br/><b>DSP 648 / B18 146</b><br/><b>LUT 93,166 / FF 122,399</b>"]
+  W18["<b>W18</b><br/>Narrow raw-weight banks, T16<br/><b>HLS 4.2274 ms</b><br/><b>DSP 326 / B18 146</b><br/><b>LUT 74,480 / FF 87,869</b>"]
+  C01["<b>C01</b><br/>Wino / Conv2+3 packing, T4<br/><b>No passing simulation</b>"]
+  C02["<b>C02</b><br/>Wino / Conv3 packing, T4<br/><b>No passing simulation</b>"]
+  C03["<b>C03</b><br/>Wino / Conv2+3 packing, T8<br/><b>No passing simulation</b>"]
+  C04["<b>C04</b><br/>Fix two-layer packing headers<br/><b>HLS 9.51377 ms</b><br/><b>DSP 936 / B18 241</b><br/><b>LUT 293,222 / FF 253,809</b>"]
+  C05["<b>C05</b><br/>Fix Conv3 packing headers<br/><b>HLS 9.51377 ms</b><br/><b>DSP 1,192 / B18 241</b><br/><b>LUT 260,882 / FF 263,747</b>"]
+  C06["<b>C06</b><br/>Fix T8 combination headers<br/><b>HLS 13.97432 ms</b><br/><b>DSP 470 / B18 169</b><br/><b>LUT 170,165 / FF 153,644</b>"]
+  C07["<b>C07</b><br/>Continuous Wino / packing<br/><b>No passing simulation</b>"]
+  C12["<b>C12</b><br/>Fix continuous combination guards<br/><b>HLS 7.57721 ms</b><br/><b>DSP 470 / B18 169</b><br/><b>LUT 174,591 / FF 161,653</b>"]
+  C08["<b>C08</b><br/>8-bit Conv2 weights, T8<br/><b>Run failed / C Pass</b>"]
+  C09["<b>C09</b><br/>8-bit Conv2 weights, T4<br/><b>Run failed / C Pass</b>"]
+  C10["<b>C10</b><br/>Mixed combination / split streams, T8<br/><b>HLS 2.13025 ms</b><br/><b>DSP 520 / B18 146</b><br/><b>LUT 150,851 / FF 179,452</b>"]
+  C11["<b>C11</b><br/>Mixed combination / split streams, T4<br/><b>HLS 1.08167 ms</b><br/><b>DSP 1,036 / B18 146</b><br/><b>LUT 248,797 / FF 307,525</b>"]
+  F01["<b>F01</b><br/>Shallow wide FIFOs in LUTRAM<br/><b>HLS 8.05871 ms</b><br/><b>DSP 505 / B18 96</b><br/><b>LUT 56,081 / FF 62,800</b>"]
+  F02["<b>F02</b><br/>Conv3 line buffers in URAM<br/><b>HLS 8.05871 ms</b><br/><b>DSP 505 / B18 132 / U 20</b><br/><b>LUT 56,007 / FF 62,948</b>"]
+  F03["<b>F03</b><br/>Separate windows and continuous MACs<br/><b>Run failed / C Pass</b>"]
+  F04["<b>F04</b><br/>Continuous MACs / online padding, T16<br/><b>Run failed / C Pass</b>"]
+  F05["<b>F05</b><br/>Continuous MACs / online padding, T8<br/><b>Run failed / C Pass</b>"]
+  F06["<b>F06</b><br/>Continuous T16 at 3.33 ns<br/><b>Run failed / C Pass</b>"]
+  F07["<b>F07</b><br/>Continuous T8 at 3.33 ns<br/><b>Run failed / C Pass</b>"]
+  F08["<b>F08</b><br/>Split oversized window streams<br/><b>HLS 4.19471 ms</b><br/><b>DSP 505 / B18 96</b><br/><b>LUT 69,362 / FF 106,171</b>"]
+  F09["<b>F09</b><br/>Split streams / online padding, T16<br/><b>HLS 4.19475 ms</b><br/><b>DSP 505 / B18 73</b><br/><b>LUT 69,179 / FF 106,647</b>"]
+  F10["<b>F10</b><br/>Split streams / online padding, T8<br/><b>HLS 2.11395 ms</b><br/><b>DSP 1,007 / B18 73</b><br/><b>LUT 96,764 / FF 171,240</b>"]
+  F11["<b>F11</b><br/>Split streams, T16 at 3.33 ns<br/><b>HLS 3.49217 ms</b><br/><b>DSP 505 / B18 73</b><br/><b>LUT 69,427 / FF 121,372</b>"]
+  F12["<b>F12</b><br/>Split streams, T8 at 3.33 ns<br/><b>HLS 1.75991 ms</b><br/><b>DSP 1,007 / B18 73</b><br/><b>LUT 97,112 / FF 196,314</b>"]
+  F13["<b>F13</b><br/>Rotate channels for fixed reads<br/><b>HLS 4.19475 ms</b><br/><b>DSP 505 / B18 73</b><br/><b>LUT 68,903 / FF 106,661</b>"]
+  F14["<b>F14</b><br/>Fixed reads / registered tree, T8<br/><b>HLS 2.11395 ms</b><br/><b>DSP 1,007 / B18 73</b><br/><b>LUT 96,488 / FF 171,235</b>"]
+  F15["<b>F15</b><br/>Remove adder-tree stage registers<br/><b>HLS 2.11392 ms</b><br/><b>DSP 1,007 / B18 73</b><br/><b>LUT 101,994 / FF 86,073</b>"]
+  F16["<b>F16</b><br/>Construct float output bits<br/><b>No passing simulation</b>"]
+  F17["<b>F17</b><br/>Ordinary float-conversion control<br/><b>No passing simulation</b>"]
+  F18["<b>F18</b><br/>Fix float-construction SDK types<br/><b>No passing simulation</b>"]
+  F19["<b>F19</b><br/>Fix ordinary-conversion SDK types<br/><b>No passing simulation</b>"]
+  F20["<b>F20</b><br/>Valid exact-float construction<br/><b>PE 1,027 cyc</b><br/><b>DSP 0 / B18 0</b><br/><b>LUT 242 / FF 52</b>"]
+  F21["<b>F21</b><br/>Valid ordinary float conversion<br/><b>PE 1,039 cyc</b><br/><b>DSP 3 / B18 0</b><br/><b>LUT 220 / FF 343</b>"]
+  F22["<b>F22</b><br/>Integrate exact float at 3 ns<br/><b>HLS 3.14613 ms</b><br/><b>DSP 502 / B18 73</b><br/><b>LUT 69,483 / FF 121,696</b>"]
+  F23["<b>F23</b><br/>Integrate exact float at 2.5 ns<br/><b>HLS 2.95952 ms</b><br/><b>DSP 502 / B18 73</b><br/><b>LUT 70,449 / FF 125,618</b>"]
+  F24["<b>F24</b><br/>Use explicit 3D loader counters<br/><b>HLS 2.8305 ms</b><br/><b>DSP 502 / B18 73</b><br/><b>LUT 69,290 / FF 124,577</b>"]
+  F25["<b>F25</b><br/>Disable loader loop flattening<br/><b>HLS 2.64226 ms</b><br/><b>DSP 502 / B18 73</b><br/><b>LUT 69,976 / FF 125,404</b>"]
+  E069["<b>E069</b><br/>E043 multi-image C checks<br/><b>Avg ΔPSNR -0.0695 dB</b><br/><b>C Pass / bit-exact</b>"]
+  E070["<b>E070</b><br/>Place and route the E039 network<br/><b>WNS -1.277 ns</b><br/><b>DSP 270 / B36 31</b><br/><b>LUT 20,454 / FF 33,844</b>"]
+  F80["<b>F80</b><br/>F25 multi-image C checks<br/><b>Avg ΔPSNR -0.0695 dB</b><br/><b>C Pass / bit-exact</b>"]
+  F81["<b>F81</b><br/>Place and route F25<br/><b>OOM / no routed result</b>"]
+  F82["<b>F82</b><br/>F25 two-frame RTL checks<br/><b>RTL 1,068,183 cyc</b><br/><b>RTL Pass</b>"]
+  F83["<b>F83</b><br/>F24 multi-image C checks<br/><b>Avg ΔPSNR -0.0695 dB</b><br/><b>C Pass / bit-exact</b>"]
+  F84["<b>F84</b><br/>Place and route F24<br/><b>OOM / no routed result</b>"]
+  F85["<b>F85</b><br/>Plan F24 two-frame RTL checks<br/><b>Not run</b>"]
+  F86["<b>F86</b><br/>Plan F23 multi-image C checks<br/><b>Not run</b>"]
+  F87["<b>F87</b><br/>Plan F23 place and route<br/><b>Not run</b>"]
+  F88["<b>F88</b><br/>Plan F23 two-frame RTL checks<br/><b>Not run</b>"]
+  F89["<b>F89</b><br/>Retry F25 implementation serially<br/><b>Not run</b>"]
+  F90["<b>F90</b><br/>Retry F24 implementation serially<br/><b>Not run</b>"]
+  F91["<b>F91</b><br/>Plan serial F23 implementation<br/><b>Not run</b>"]
+  E000 -.->|Numerical reference or research motivation| E010
+  E010 -.->|Numerical reference or research motivation| E011
+  E010 -.->|Numerical reference or research motivation| E012
+  E010 -.->|Numerical reference or research motivation| E013
+  E011 -->|Retry after a fix| E014
+  E014 -->|Retry after a fix| E018
+  E018 -->|Retry after a fix| E015
+  E013 -->|Retry after a fix| E016
+  E010 -.->|Numerical reference or research motivation| E017
+  E012 -->|Retry after a fix| E019
+  E017 -.->|Control experiment| E019
+  E017 -.->|Numerical reference or research motivation| E049
+  E048 -.->|Verify the same design| E049
+  E010 -.->|Numerical reference or research motivation| E062
+  E017 -.->|Numerical reference or research motivation| E062
+  E062 -.->|Numerical reference or research motivation| E065
+  E017 -->|Design or parameter baseline| E065
+  E065 -.->|Control experiment| E066
+  E019 -->|Design or parameter baseline| E066
+  E017 -.->|Numerical reference or research motivation| E071
+  E065 -.->|Numerical reference or research motivation| E071
+  E000 -->|Design or parameter baseline| E020
+  E020 -->|Design or parameter baseline| E021
+  E020 -->|Design or parameter baseline| E022
+  E020 -->|Design or parameter baseline| E023
+  E020 -->|Design or parameter baseline| E024
+  E020 -->|Design or parameter baseline| E025
+  E020 -->|Design or parameter baseline| E026
+  E015 -->|Design or parameter baseline| E027
+  E020 -.->|Control experiment| E027
+  E023 -->|Retry after a fix| E028
+  E024 -->|Retry after a fix| E029
+  E025 -->|Retry after a fix| E032
+  E000 -->|Design or parameter baseline| E030
+  E030 -->|Design or parameter baseline| E031
+  E017 -.->|Numerical reference or research motivation| E031
+  E031 -->|Design or parameter baseline| E033
+  E033 -->|Design or parameter baseline| E046
+  E010 -.->|Numerical reference or research motivation| E046
+  E046 -->|Retry after a fix| E063
+  E033 -->|Design or parameter baseline| E047
+  E047 -->|Design or parameter baseline| E048
+  E017 -.->|Numerical reference or research motivation| E048
+  E031 -->|Design or parameter baseline| E050
+  E048 -->|Design or parameter baseline| E060
+  E050 -.->|Numerical reference or research motivation| E060
+  E048 -->|Design or parameter baseline| E056
+  E053 -.->|Numerical reference or research motivation| E056
+  E033 -->|Design or parameter baseline| E034
+  E033 -->|Design or parameter baseline| E035
+  E034 -->|Retry after a fix| E044
+  E035 -->|Retry after a fix| E045
+  E048 -->|Design or parameter baseline| E057
+  E048 -->|Design or parameter baseline| E058
+  E057 -.->|Control experiment| E058
+  E048 -->|Design or parameter baseline| E059
+  E058 -.->|Control experiment| E059
+  E058 -->|Design or parameter baseline| E036
+  E058 -->|Design or parameter baseline| E037
+  E058 -->|Design or parameter baseline| E038
+  E047 -->|Design or parameter baseline| E039
+  E047 -->|Design or parameter baseline| E040
+  E039 -.->|Control experiment| E040
+  E058 -->|Design or parameter baseline| E064
+  E058 -->|Design or parameter baseline| E067
+  E058 -->|Design or parameter baseline| E041
+  E058 -->|Design or parameter baseline| E042
+  E041 -.->|Control experiment| E042
+  E058 -->|Design or parameter baseline| E043
+  E042 -.->|Control experiment| E043
+  E047 -.->|Numerical reference or research motivation| E051
+  E051 -.->|Control experiment| E052
+  E051 -.->|Control experiment| E053
+  E051 -->|Design or parameter baseline| E054
+  E053 -.->|Control experiment| E055
+  E051 -.->|Numerical reference or research motivation| P01
+  E071 -.->|Numerical reference or research motivation| P01
+  P01 -.->|Control experiment| P02
+  P01 -->|Design or parameter baseline| P03
+  P01 -->|Design or parameter baseline| P04
+  P01 -->|Design or parameter baseline| P05
+  P01 -->|Design or parameter baseline| P06
+  E071 -.->|Numerical reference or research motivation| P06
+  P01 -->|Design or parameter baseline| P07
+  E017 -.->|Numerical reference or research motivation| P07
+  P05 -.->|Verify the same design| P08
+  P01 -.->|Reproduce the same experiment| P09
+  E048 -->|Design or parameter baseline| P10
+  P07 -->|Integrate an existing module| P10
+  P10 -->|Design or parameter baseline| P11
+  P10 -->|Design or parameter baseline| P12
+  E054 -.->|Numerical reference or research motivation| P13
+  P13 -.->|Control experiment| P14
+  P01 -.->|Numerical reference or research motivation| P14
+  P13 -.->|Control experiment| P15
+  P01 -.->|Numerical reference or research motivation| P15
+  P13 -.->|Control experiment| P16
+  E057 -->|Design or parameter baseline| G01
+  E060 -->|Design or parameter baseline| G02
+  G01 -.->|Control experiment| G02
+  G02 -->|Design or parameter baseline| G03
+  E048 -->|Design or parameter baseline| S01
+  G01 -->|Design or parameter baseline| S02
+  E048 -->|Design or parameter baseline| S03
+  S02 -.->|Control experiment| S03
+  S03 -->|Design or parameter baseline| S04
+  S03 -->|Design or parameter baseline| S05
+  S03 -->|Design or parameter baseline| S06
+  E071 -.->|Numerical reference or research motivation| W01
+  W01 -.->|Control experiment| W02
+  W01 -->|Design or parameter baseline| W03
+  E048 -->|Design or parameter baseline| W04
+  W01 -->|Integrate an existing module| W04
+  W04 -->|Design or parameter baseline| W05
+  W05 -->|Design or parameter baseline| W06
+  W04 -->|Retry after a fix| W07
+  W05 -->|Retry after a fix| W08
+  W06 -->|Retry after a fix| W09
+  W08 -->|Design or parameter baseline| W10
+  F03 -.->|Numerical reference or research motivation| W10
+  W10 -->|Design or parameter baseline| W11
+  W10 -->|Design or parameter baseline| W12
+  W11 -->|Design or parameter baseline| W13
+  W11 -->|Retry after a fix| W14
+  W12 -->|Retry after a fix| W15
+  W13 -->|Retry after a fix| W16
+  W14 -->|Design or parameter baseline| W17
+  W09 -.->|Numerical reference or research motivation| W17
+  W15 -->|Design or parameter baseline| W18
+  W05 -->|Design or parameter baseline| C01
+  P07 -->|Integrate an existing module| C01
+  C01 -->|Design or parameter baseline| C02
+  C01 -->|Design or parameter baseline| C03
+  C01 -->|Retry after a fix| C04
+  C02 -->|Retry after a fix| C05
+  C03 -->|Retry after a fix| C06
+  C04 -->|Design or parameter baseline| C07
+  W10 -.->|Numerical reference or research motivation| C07
+  C07 -->|Retry after a fix| C12
+  C07 -->|Design or parameter baseline| C08
+  E065 -.->|Numerical reference or research motivation| C08
+  C08 -->|Design or parameter baseline| C09
+  C08 -->|Retry after a fix| C10
+  C09 -->|Retry after a fix| C11
+  E048 -->|Design or parameter baseline| F01
+  E042 -.->|Control experiment| F01
+  E048 -->|Design or parameter baseline| F02
+  E042 -.->|Control experiment| F02
+  E048 -->|Design or parameter baseline| F03
+  E070 -.->|Numerical reference or research motivation| F03
+  F01 -.->|Numerical reference or research motivation| F03
+  F03 -->|Design or parameter baseline| F04
+  F04 -->|Design or parameter baseline| F05
+  F04 -->|Design or parameter baseline| F06
+  F05 -->|Design or parameter baseline| F07
+  F03 -->|Retry after a fix| F08
+  F04 -->|Retry after a fix| F09
+  F08 -.->|Control experiment| F09
+  F05 -->|Retry after a fix| F10
+  F06 -->|Retry after a fix| F11
+  F09 -.->|Control experiment| F11
+  F07 -->|Retry after a fix| F12
+  F09 -->|Design or parameter baseline| F13
+  F08 -.->|Numerical reference or research motivation| F13
+  F13 -->|Design or parameter baseline| F14
+  F14 -->|Design or parameter baseline| F15
+  F08 -.->|Numerical reference or research motivation| F16
+  F16 -.->|Control experiment| F17
+  F16 -->|Retry after a fix| F18
+  F17 -->|Retry after a fix| F19
+  F18 -->|Retry after a fix| F20
+  F19 -->|Retry after a fix| F21
+  F20 -.->|Control experiment| F21
+  F13 -->|Design or parameter baseline| F22
+  F20 -->|Integrate an existing module| F22
+  F13 -->|Design or parameter baseline| F23
+  F20 -->|Integrate an existing module| F23
+  F22 -.->|Control experiment| F23
+  F23 -->|Design or parameter baseline| F24
+  F24 -->|Design or parameter baseline| F25
+  E043 -.->|Verify the same design| E069
+  E017 -.->|Numerical reference or research motivation| E069
+  E039 -.->|Verify the same design| E070
+  F25 -.->|Verify the same design| F80
+  E017 -.->|Numerical reference or research motivation| F80
+  F25 -.->|Verify the same design| F81
+  F80 -.->|Numerical reference or research motivation| F81
+  F25 -.->|Verify the same design| F82
+  F80 -.->|Numerical reference or research motivation| F82
+  F24 -.->|Verify the same design| F83
+  E017 -.->|Numerical reference or research motivation| F83
+  F24 -.->|Verify the same design| F84
+  F83 -.->|Numerical reference or research motivation| F84
+  F24 -.->|Verify the same design| F85
+  F83 -.->|Numerical reference or research motivation| F85
+  F23 -.->|Verify the same design| F86
+  E017 -.->|Numerical reference or research motivation| F86
+  F23 -.->|Verify the same design| F87
+  F86 -.->|Numerical reference or research motivation| F87
+  F23 -.->|Verify the same design| F88
+  F86 -.->|Numerical reference or research motivation| F88
+  F81 -->|Retry after a fix| F89
+  F25 -.->|Verify the same design| F89
+  F84 -->|Retry after a fix| F90
+  F24 -.->|Verify the same design| F90
+  F87 -->|Retry after a fix| F91
+  F23 -.->|Verify the same design| F91
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E013,E015,E016,E017,E019,E049,E065,E066,E030,E060,E057,E058,E037,E038,E039,E041,E051,E052,E053,E054,E055,P02,P05,P08,G01,G02,G03,S02,W01,W02,W03,W07,F20,E069,F80,F82,F83 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  class E042,E043,P01,P03,P04,P06,P07,P09,W08,W10,W18,F01,F02,F08,F09,F11,F13,F21,F22,F23,F24,F25 warning
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E011,E012,E014,E018,E023,E024,E025,E046,E034,E035,S01,W04,W05,W06,W11,W12,W13,C01,C02,C03,C07,C08,C09,F03,F04,F05,F06,F07,F16,F17,F18,F19,E070,F81,F84 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E000,E020,E021,E022,E026,E027,E028,E029,E032,E031,E033,E063,E047,E048,E050,E056,E044,E045,E059,E036,E040,E064,E067,P10,P11,P12,S03,S04,S05,S06,W09,W14,W15,W16,W17,C04,C05,C06,C12,C10,C11,F10,F12,F14,F15 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  class P13,P14,P15,P16,F85,F86,F87,F88,F89,F90,F91 planned
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  class E010,E062,E071 analysis
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  classDef faded opacity:0.4
+  class E011,E012,E014,E018,E023,E024,E025,E046,E034,E035,P13,P14,P15,P16,S01,W04,W05,W06,W11,W12,W13,C01,C02,C03,C07,C08,C09,F03,F04,F05,F06,F07,F16,F17,F18,F19,F81,F84,F85,F86,F87,F88,F89,F90,F91 faded
