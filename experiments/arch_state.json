@@ -132,7 +132,7 @@
   "frozen_design_files": 45,
   "full_set14": false,
   "hardware_parallelism": 1,
-  "next": "Start F89 exclusively; concurrently prepare F26/F27 plans and sources and run C simulations. Synthesize F26/F27 serially after F89, then choose the measured loader for W19.",
+  "next": "F89 is running exclusively. F26/F27 passed two-frame butterfly C simulation and are waiting; synthesis order F26 then F27 after F89. Choose the loader from measured WS2 gates, then implement W19 and direct-T8 control.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
@@ -170,21 +170,21 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-11T15:13:41+00:00",
+  "time": "2026-10-11T15:23:12+00:00",
   "weight_loading_workstream": {
     "deferred": [
       "F88",
       "F90",
       "F91"
     ],
-    "next": "Start F89 exclusively; concurrently prepare F26/F27 plans and sources and run C simulations. Synthesize F26/F27 serially after F89, then choose the measured loader for W19.",
+    "next": "F89 is running exclusively. F26/F27 passed two-frame butterfly C simulation and are waiting; synthesis order F26 then F27 after F89. Choose the loader from measured WS2 gates, then implement W19 and direct-T8 control.",
     "plan": "docs/0004-t8-weight-loading-plan.md",
     "verification_queue": [
       "F89"
     ],
     "ws0": "complete; F85/P13 recovered, F88 interrupted and archived",
-    "ws1": "F89 ready to launch",
-    "ws2": "F26/F27 IDs unused locally and remotely; prepare plans before implementation",
+    "ws1": "F89 active; serial Vivado sub-synthesis completed; awaiting top synthesis and routing",
+    "ws2": "F26/F27 planned and implemented independently; two-frame butterfly C simulations PASS bit-exact; waiting for hardware slot, F27 synthesis waits for F26 archive",
     "ws3": "W19 ID unused; wait for WS2 evidence"
   }
 }

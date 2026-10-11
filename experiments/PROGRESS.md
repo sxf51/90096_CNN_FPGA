@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-11T15:13:41+00:00 from archived measurements.
+Updated 2026-10-11T15:23:12+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -20,7 +20,7 @@ Final verification: F89.
 
 ## Weight Loading Workstream
 
-Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Start F89 exclusively; concurrently prepare F26/F27 plans and sources and run C simulations. Synthesize F26/F27 serially after F89, then choose the measured loader for W19.
+Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). F89 is running exclusively. F26/F27 passed two-frame butterfly C simulation and are waiting; synthesis order F26 then F27 after F89. Choose the loader from measured WS2 gates, then implement W19 and direct-T8 control.
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 
