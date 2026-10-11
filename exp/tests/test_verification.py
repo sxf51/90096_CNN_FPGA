@@ -21,6 +21,7 @@ class VerificationTests(unittest.TestCase):
             (generated/"project.runs").mkdir()
             (generated/"project.runs/old.log").write_text("Old failed project")
             (generated/"settings.tcl").write_text("set parent "+str(template)+"\n")
+            (generated/"extraction.tcl").write_text("proc hls_vivado_reports_setup {args} {}\n")
             (template/"hls/impl/ip").mkdir()
             (template/"hls/impl/ip/component.xml").write_text("<component/>\n")
             hook = root/"hook.tcl"
@@ -32,7 +33,16 @@ class VerificationTests(unittest.TestCase):
             self.assertNotIn(str(template),(cwd/"run_vivado.tcl").read_text())
             self.assertFalse((cwd/"project.runs").exists())
             self.assertTrue((work/"hls/impl/ip/component.xml").is_file())
-            self.assertEqual(len(records),2)
+            self.assertEqual(len(records),4)
+            from run_exp import write_json
+            write_json(archive/"config.json",{"implementation_files":records,"implementation_work_root":str(work)})
+            fresh,replay = root/"F101",root/"F100"
+            (fresh/"hls/impl/ip").mkdir(parents=True)
+            (fresh/"hls/impl/ip/component.xml").write_text("<fresh_component/>\n")
+            replay_cwd,_,_ = prepare_serial_implementation(replay,fresh,root/"replay_archive",hook,archive)
+            self.assertEqual((replay/"hls/impl/ip/component.xml").read_text(),"<fresh_component/>\n")
+            self.assertEqual((replay_cwd/"run_vivado.tcl").read_text().count("STEPS.SYNTH_DESIGN.TCL.PRE"),1)
+            self.assertNotIn(str(work),(replay_cwd/"run_vivado.tcl").read_text())
 
     def test_archived_vivado_2026_route(self):
         reports = ROOT / "experiments/E070_first_feasible_implementation/reports/impl"

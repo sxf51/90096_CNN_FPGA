@@ -54,6 +54,9 @@ def main():
         subprocess.run(rsync + [str(plan_folder), args.host + ":" + args.remote_root + "/experiments/"], check=True)
         manifest = ROOT / "experiments/phase1_design_checksums.txt"
         subprocess.run(rsync + [str(manifest), args.host + ":" + args.remote_root + "/experiments/"], check=True)
+    if config.get("implementation_template_archive"):
+        subprocess.run(rsync + [str(ROOT / config["implementation_template_archive"]),
+                               args.host+":"+args.remote_root+"/experiments/"],check=True)
     subprocess.run(["scp", "-F", str(args.ssh_config), str(transfer),
                     args.host + ":" + args.remote_root + "/exp/configs/" + exp_id + ".json"], check=True)
     command = "cd " + shlex.quote(args.remote_root) + "\npython3 exp/run_exp.py --config " + shlex.quote("exp/configs/" + exp_id + ".json")

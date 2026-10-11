@@ -40,16 +40,27 @@ def archive_verification_reports(work, archive, operation):
     return records
 
 
-def prepare_serial_implementation(work, template_work, archive, hook_path):
+def prepare_serial_implementation(work, template_work, archive, hook_path, template_archive=None):
     target = work / "hls/impl"
     if target.exists():
         shutil.rmtree(target)
     shutil.copytree(template_work / "hls/impl", target,
                     ignore=shutil.ignore_patterns("project.*", ".Xil", "*.log", "*.jou",
                                                  "*.pb", "report", "*.zip", "*.dcp"))
+    old_root = str(template_work)
+    if template_archive:
+        frozen = json.loads((template_archive / "config.json").read_text())
+        old_root = frozen["implementation_work_root"]
+        for record in frozen["implementation_files"]:
+            source = template_archive / record["archived_file"]
+            if hashlib.sha256(source.read_bytes()).hexdigest() != record["sha256"]:
+                raise RuntimeError("Frozen implementation script changed: "+str(source))
+            destination = target / "verilog" / source.name
+            destination.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(source,destination)
     driver = target / "verilog/run_vivado.tcl"
     original = driver.read_text()
-    old_root, new_root = str(template_work), str(work)
+    new_root = str(work)
     for path in target.rglob("*"):
         if path.is_file() and path.suffix in {".tcl", ".sh", ".xml", ".xdc"}:
             text = path.read_text()
@@ -65,9 +76,13 @@ def prepare_serial_implementation(work, template_work, archive, hook_path):
                  "foreach exp_run [get_runs -filter {IS_SYNTHESIS == 1}] {\n"
                  "  set_property STEPS.SYNTH_DESIGN.TCL.PRE [file normalize ./serial_synthesis.tcl] $exp_run\n"
                  "}\n")
-    driver.write_text(text.replace(marker,injection+marker))
+    driver.write_text(text if "STEPS.SYNTH_DESIGN.TCL.PRE" in text else text.replace(marker,injection+marker))
     records = []
-    for label,path in (("driver",driver),("thread_hook",local_hook)):
+    for label,path in (("driver",driver),("thread_hook",local_hook),
+                       ("settings",driver.parent / "settings.tcl"),
+                       ("report_extraction",driver.parent / "extraction.tcl")):
+        if not path.is_file():
+            raise RuntimeError("Generated-flow dependency missing: "+str(path))
         dest = archive / "implementation" / path.name
         dest.parent.mkdir(parents=True,exist_ok=True)
         shutil.copyfile(path,dest)
@@ -188,10 +203,12 @@ def run_verification(config):
         if operation != "impl":
             raise RuntimeError("Serial generated flow is only valid for implementation")
         template = ROOT / "workspace/exp_runs" / config["implementation_template"]
+        template_archive = ROOT / config["implementation_template_archive"] if config.get("implementation_template_archive") else None
         impl_cwd, records, original_digest = prepare_serial_implementation(
-            work,template,archive,ROOT / config["verification_hook"])
+            work,template,archive,ROOT / config["verification_hook"],template_archive)
         config["implementation_files"] = records
         config["original_generated_driver_sha256"] = original_digest
+        config["implementation_work_root"] = str(work)
     settings = Path(config.get("settings", parent_config["settings"]))
     try:
         if config.get("validation_parent"):
