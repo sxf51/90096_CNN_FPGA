@@ -1,0 +1,36 @@
+{
+  "config_sha256": "025c507c30fea1424852c8567d9ccdf32edeac3426ef215ff386ff86fa4380f2",
+  "configuration": {
+    "changes": "Use frozen parent W21 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Override only verification C++ testbench, archive its SHA256/source commit and preserve identical parent RTL.",
+    "clock": 3.33,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/winograd_subkernel_cache_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "DSP": 644.0,
+      "FF": 130057.0,
+      "LUT": 81086.0,
+      "T": 8.0,
+      "URAM": 0.0,
+      "basis": "Frozen W21 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: W21 passes every HLS resource gate and all threefoldII1; F96 verifies identical source/precision/design macros and all13 supplied images with deltaPSNR=-0.069514dB. Require real two-transaction FIFO behavior including changed runtime parameters; separately measure the slower8516-cycle transformer startup.",
+      "latency_cycles": 525237.0
+    },
+    "id": "F97",
+    "interpretation": "Keep parsed HLS, RTL and routed results separate. Missing comic prevents complete Set14 acceptance; retain failed timing, deadlock, host OOM and timeout evidence.",
+    "name": "ws_cosim_W21",
+    "operation": "cosim",
+    "purpose": "Verify frozen W21 using cosim in a new workspace. Run two complete butterfly transactions with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout.\n\nDecision basis: W21 passes every HLS resource gate and all threefoldII1; F96 verifies identical source/precision/design macros and all13 supplied images with deltaPSNR=-0.069514dB. Require real two-transaction FIFO behavior including changed runtime parameters; separately measure the slower8516-cycle transformer startup. The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains E017-exact butterfly with unchanged border MSE.",
+    "reload_params": true,
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 21600,
+    "validation_parent": "F96",
+    "verification_testbench": "exp/tb/validate_reload.cpp",
+    "verify_parent": "W21"
+  },
+  "created_at": "2026-10-11T23:11:54+00:00",
+  "created_from_commit": "b3fa08ab642540f34432a86aeab67078787f6fcc",
+  "purpose_section": "Verify frozen W21 using cosim in a new workspace. Run two complete butterfly transactions with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout.\n\nDecision basis: W21 passes every HLS resource gate and all threefoldII1; F96 verifies identical source/precision/design macros and all13 supplied images with deltaPSNR=-0.069514dB. Require real two-transaction FIFO behavior including changed runtime parameters; separately measure the slower8516-cycle transformer startup. The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains E017-exact butterfly with unchanged border MSE.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 81086.0 |\n| FF | 130057.0 |\n| latency_cycles | 525237.0 |\n| T | 8.0 |\n| basis | Frozen W21 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: W21 passes every HLS resource gate and all threefoldII1; F96 verifies identical source/precision/design macros and all13 supplied images with deltaPSNR=-0.069514dB. Require real two-transaction FIFO behavior including changed runtime parameters; separately measure the slower8516-cycle transformer startup. |\n\nPlanned at 2026-10-11T23:11:54+00:00; estimates are hypotheses, not tool measurements."
+}
