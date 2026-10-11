@@ -126,7 +126,8 @@
     "P16",
     "F86",
     "F87",
-    "F88"
+    "F88",
+    "F89"
   ],
   "first_phase_head": "2fa7249eaecdfdc360d8d452fcbf52171c35abd2",
   "frozen_design_files": 45,
@@ -135,9 +136,7 @@
   "next": "F89 is running exclusively. F26/F27 passed two-frame butterfly C simulation and are waiting; synthesis order F26 then F27 after F89. Choose the loader from measured WS2 gates, then implement W19 and direct-T8 control.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
-  "pending_final_verification_ids": [
-    "F89"
-  ],
+  "pending_final_verification_ids": [],
   "selected": [
     {
       "DSP": "502.0",
@@ -170,7 +169,7 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-11T16:22:04+00:00",
+  "time": "2026-10-11T18:13:53+00:00",
   "weight_loading_workstream": {
     "deferred": [
       "F88",
@@ -188,8 +187,9 @@
     "verification_queue": [
       "F89"
     ],
+    "verification_tools": "Fresh candidates use prepare_ws_verify.py and serial_packaged_flow: preserve their own IP, copy only checked official F89 driver boilerplate, replace module lists/clock, apply per-run single-thread hook. Template and parent RTL/init hashes must match for serial_generated_flow.50 infrastructure tests passed; fresh-candidate packaged flow still requires actual execution evidence.",
     "ws0": "complete; F85/P13 recovered, F88 interrupted and archived",
-    "ws1": "F89 active; IP/top synthesis and placement completed, congestion rerouting progressing; no final routed verdict; memory samples archived continuously",
+    "ws1": "F89 active; IP/top synthesis and placement completed, congestion rerouting overlaps down to476 at2026-10-11T17:35Z; no final routed verdict; about4.1GiB memory available, samples archived continuously",
     "ws2": "F26/F27 planned and implemented independently; two-frame butterfly C simulations PASS bit-exact; waiting for hardware slot, F27 synthesis waits for F26 archive",
     "ws3": "W19 ID unused; wait for WS2 evidence"
   }

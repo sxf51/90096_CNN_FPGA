@@ -373,6 +373,8 @@
 
 - 2026-10-11T17:41:41+00:00: F89/WS4: added close_weight_loading.py for the current workstream instead of restoring deferred F90/F91. Closure requires explicit ready state, every current ID archived, no active remote HLS/Vivado processes, source/report provenance and local/remote checksums, then all CSV summaries/plots. Syntax, early-closure rejection and live process detection verified; no closure executed while F89/F26/F27 remain active.
 
+- 2026-10-11T18:13:53+00:00: F89: serial_vivado_impl_F25; status=timeout; latency_ms_est=2.64226; impl of F25; HLS estimates inherited, real measurements in data.csv; impl failed (exit=124)
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 WS0: 用户授权第 6 节先自行决策并执行、明日复核。暂定保留运行时 float 权重接口及 HLS 资源门限，不做常量 ROM；缺 comic 保持 13 图暂定结论。F89 若再次 OOM，保留内核/内存证据并继续 WS2，不改 swap 或全局设置，不迁移到未经验证的主机。明日复核大内存主机、ROM 专用版本、资源口径和 comic 数据。

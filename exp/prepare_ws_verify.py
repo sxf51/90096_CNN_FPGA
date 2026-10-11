@@ -22,6 +22,7 @@ def main():
     parser.add_argument("--implementation-clock", type=float)
     parser.add_argument("--template")
     parser.add_argument("--diagnostic", action="store_true")
+    parser.add_argument("--rationale", help="Measured trigger and conservative decision to archive before execution")
     args = parser.parse_args()
     check_protected()
     archive = archived(args.parent)
@@ -90,6 +91,9 @@ def main():
             if args.diagnostic:
                 config["diagnostic_infeasible_parent"] = True
                 config["purpose"] += " Diagnostic calibration only: the parent remains HLS-resource-infeasible and cannot enter accepted rankings."
+    if args.rationale:
+        config["purpose"] += "\n\nDecision basis: "+args.rationale
+        config["estimates"]["basis"] += " Decision basis: "+args.rationale
     plan(config)
     subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"), args.id,
                     "plan_"+config["name"]], cwd=ROOT, check=True)
