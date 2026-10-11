@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Archive bounded counter summaries from Vitis 2026.1 RTL profiling."""
+import argparse
 import csv
 import hashlib
 import io
 import json
 from pathlib import Path
 import sys
+import subprocess
 import zipfile
 from run_exp import ROOT, append_log, check_protected, markdown_table, write_json
 
@@ -113,13 +115,28 @@ def profile_results(archive):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("id")
+    parser.add_argument("--pull",action="store_true",help="Fetch profiling inputs from the existing SSH workspace")
+    parser.add_argument("--host",default="xiaoxin-ubuntu")
+    parser.add_argument("--remote-root",default="/home/lipuze/amdprojects/90096_CNN_FPGA")
+    parser.add_argument("--ssh-config",type=Path,default=ROOT.parent / "ssh-config")
+    args = parser.parse_args()
     check_protected()
-    exp_id = sys.argv[1]
+    exp_id = args.id
     archive = next((ROOT / "experiments").glob(exp_id+"_*/config.json")).parent
     config = json.loads((archive / "config.json").read_text())
     if config.get("operation") != "cosim" or config.get("verification",{}).get("rtl_status") != "Pass":
         raise ValueError("Profiling backfill requires a completed passing RTL run")
-    config["verification_profiles"] = archive_profiles(ROOT / "workspace/exp_runs" / exp_id, archive)
+    work = ROOT / "workspace/exp_runs" / exp_id
+    if args.pull:
+        for relative in ("channel_info.csv", "process_info.csv", "channel_depth_info/channel.zip",
+                         "process_stalling_info/process.zip"):
+            target = work / "hls/.autopilot/db" / relative
+            target.parent.mkdir(parents=True,exist_ok=True)
+            remote = args.host+":"+args.remote_root+"/workspace/exp_runs/"+exp_id+"/hls/.autopilot/db/"+relative
+            subprocess.run(["scp","-F",str(args.ssh_config),"-o","BatchMode=yes",remote,str(target)],check=True)
+    config["verification_profiles"] = archive_profiles(work, archive)
     write_json(archive / "config.json", config)
     md = archive / (exp_id+".md")
     text = md.read_text()
