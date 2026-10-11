@@ -1,0 +1,89 @@
+{
+  "T": 1,
+  "changes": "New independent INT16 PE and testbench. Existing INT8/exact10 designs remain frozen. All modes use the same64-term array interface and exact int64 oracle.",
+  "clock": 4,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_PACK16_MODE=1 -DEXP_FIXED=0 -DEXP_SET14=0 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=0 -DEXP_QUICK=0 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/P14/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "Compare complete32-bit product equality, DSP, LUT, FF, achieved II and clock. A one-DSP mixed implementation still spends LUT multipliers; integrate only after a demonstrated network budget.",
+  "cpu_count": 12,
+  "defines": {
+    "EXP_PACK16_MODE": 1
+  },
+  "design": "designs/packing_int16_pe",
+  "errors": [],
+  "estimates": {
+    "BRAM18K": 0,
+    "DSP": 4,
+    "FF": 500,
+    "LUT": 500,
+    "T": 1,
+    "URAM": 0,
+    "basis": "64 independent pairs plus8-16 pipeline cycles; no internal frame memories. Direct16x16 uses one DSP per product. Byte-limb pairs use four27x9/8 DSP products. Overlap repair uses one27x16 DSP plus fabric8x16 and9x16 products; the mixed control uses one DSP plus fabric16x16. LUT/FF values reserve operand repair, carry chains, pipelining and array control; they are hypotheses, not primitive measurements.",
+    "latency_cycles": 80
+  },
+  "id": "P14",
+  "ii_targets": {
+    "pack16_terms": 1
+  },
+  "interpretation": "A complete signed16x16 product needs32 bits. Nonoverlapping two-product fields need at least gap32, making the coefficient port48 bits, beyond DSP48E2's27-bit input; splitting a coefficient alone leaves8x16 products needing24 bits and a32-bit packed port. P14 therefore splits both operands. P15 explicitly pays fabric recovery for overlapping fields. Count every DSP/fabric operation, compare P13/P16 controls, and retain failures or missed II without changing numerical gates.",
+  "name": "int16_limb_packing",
+  "notes": "PE only; two complete signed16 products per term, no network latency or Set14 claim",
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [
+    {
+      "AbsoluteTimeLatency": "264",
+      "InstanceList": "\n",
+      "Latency": "66",
+      "PerformancePragma": "-",
+      "PipelineDepth": "4",
+      "PipelineII": "1",
+      "Slack": "2.92",
+      "TripCount": "64",
+      "actual_ii": 1.0,
+      "ii_ok": true,
+      "isPerfectNested": "0",
+      "loop": "pack16_terms",
+      "target_ii": 1
+    }
+  ],
+  "parsed_modules": [
+    {
+      "BRAM18K": 0.0,
+      "DSP": 4.0,
+      "FF": 276.0,
+      "LUT": 453.0,
+      "URAM": 0.0,
+      "clock_est_ns": 2.818,
+      "interval_cycles": 64.0,
+      "latency_cycles": 68.0,
+      "module": "packing16_pe"
+    }
+  ],
+  "precision": "signed16_signed16_exact32_pair",
+  "purpose": "Split every signed16 value as unsigned low8 plus256*signed high8. Four packed byte-product pairs reconstruct both complete32-bit products exactly. Each low byte product fits a signed18 field, including unsigned255*255=65025. Expect four DSP48E2 multipliers per pair: exact generic16-bit limb packing alone loses DSP area versus two direct products.",
+  "scope": "PE",
+  "series": "P",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "50eab5db29b6fafc50b063d5909f1fb0daaa24e4",
+  "source_sha256": {
+    "packing16_pe.cpp": "8bf77a6502fb1233683c97923c6024828fda0e0bde1471570cd537a60d70be64",
+    "packing16_pe.h": "f64d4caecc1309ec0bbc6f0c4224762e65fbfe1702660d8c9bf426b81f6a070f"
+  },
+  "stage": "arch_pe",
+  "tb_files": [
+    "exp/tb/packing16_validate.cpp"
+  ],
+  "time": "2026-10-11T14:41:07+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Mon Oct 12 01:41:10 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "top": "packing16_pe",
+  "validation": {
+    "bit_exact": true,
+    "boundary_triples": 15625,
+    "checked_products": 3832448,
+    "csim_pass": true,
+    "exhaustive_triples": false,
+    "random_triples": 1048576,
+    "role_sweep_triples": 786432,
+    "signed16_value_coverage_per_role": 65536,
+    "tested_terms": 1916224
+  }
+}
