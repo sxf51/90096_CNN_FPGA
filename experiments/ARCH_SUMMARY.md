@@ -16,6 +16,7 @@ Actual verification of the current HLS winner:
 
 | id | operation | status | impl_WNS_ns | timing_met | impl_DSP | impl_LUT | impl_FF | impl_BRAM36 | impl_URAM | rtl_status | rtl_latency_max | rtl_interval_max | cycle_deviation_pct |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F81](F81_final_impl_F25/F81.md) | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 ## P Direction
 
@@ -345,6 +346,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | frame | 502.0 | 502.0 | 0.0 | 1068723.0 | 1056904.0 | -1.1058992835374593 | provisional |
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | frame | 1035.0 | 1036.0 | 0.09661835748793202 | 360100.0 | 270418.0 | -24.904748680921962 | infeasible |
 | [F80](F80_final_all_supplied_F25/F80.md) | frame | 502.0 | unknown | unknown | 1056904.0 | unknown | unknown | csim_pass |
+| [F81](F81_final_impl_F25/F81.md) | frame | 502.0 | unknown | unknown | 1056904.0 | unknown | unknown | fail |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -373,6 +375,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [E070](E070_first_feasible_implementation/E070.md) | frame | E039 | impl | impl_complete | 270.0 | 31.0 | 20454.0 | 33844.0 | 0.0 | -1.277 | False | unknown | unknown | unknown | unknown |
 | [P08](P08_builtin_mapping_implementation/P08.md) | PE | P05 | impl | impl_complete | 1.0 | 0.0 | 21.0 | 41.0 | 0.0 | 2.805 | True | unknown | unknown | unknown | unknown |
+| [F81](F81_final_impl_F25/F81.md) | frame | F25 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -472,6 +475,7 @@ Routed timing closes for 0 selected implementation runs; 0 selected two-frame RT
 | [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | W | infeasible | LUT=145767.0 exceeds 81984; FF=192756.0 exceeds 163968 | unknown |
 | [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | C | infeasible | LUT=150851.0 exceeds 81984; FF=179452.0 exceeds 163968 | unknown |
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | C | infeasible | LUT=248797.0 exceeds 81984; FF=307525.0 exceeds 163968 | unknown |
+| [F81](F81_final_impl_F25/F81.md) | F | fail | Kernel-confirmed host OOM killed Vivado during synthesis; no routed timing/resource result; ERROR: [Vivado 12-13638] Failed runs(s) : 'bd_0_hls_inst_0_synth_1'; ERROR: [Common 17-39] 'wait_on_runs' failed due to earlier errors. | impl of F25; HLS estimates inherited, real measurements in data.csv; impl failed (exit=1) |
 
 ## Pending Human Decisions
 
@@ -480,6 +484,7 @@ Routed timing closes for 0 selected implementation runs; 0 selected two-frame RT
 - Runtime transformed-weight loading preserves the frozen top signature; true offline-transformed input parameters require an approved new weight contract.
 - Windows settings-batch execution and board integration remain unverified. The existing Linux Vitis2026.1 SSH installation was used.
 - Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).
+- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89-F91 keep the generated flow and set per-run synthesis threads to1; assess their actual routed reports before requesting a larger host. No system swap/global tool settings were changed.
 
 ## Next Steps
 
@@ -499,4 +504,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T03:29:12+00:00.
+Generated from archived evidence at 2026-10-11T03:50:50+00:00.

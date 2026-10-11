@@ -153,6 +153,9 @@ def main():
     text += "- Runtime transformed-weight loading preserves the frozen top signature; true offline-transformed input parameters require an approved new weight contract.\n"
     text += "- Windows settings-batch execution and board integration remain unverified. The existing Linux Vitis2026.1 SSH installation was used.\n"
     text += "- Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).\n"
+    if any((ROOT / "experiments" / Path(row["md_path"]).parent / "diagnostics/kernel_oom.txt").is_file()
+           for row in rows):
+        text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89-F91 keep the generated flow and set per-run synthesis threads to1; assess their actual routed reports before requesting a larger host. No system swap/global tool settings were changed.\n"
     text += "\n## Next Steps\n\nUse the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. Complete the missing image and board/AXI system measurements before claiming deployable performance.\n"
     audit = ROOT / "experiments/architecture_audit.json"
     if audit.is_file():

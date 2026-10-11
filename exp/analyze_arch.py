@@ -77,6 +77,9 @@ def failure_reason(row, archive):
                   number(row[key]) > CAPACITY[key]*LIMIT[key]]
         return "; ".join(excess)
     diagnostics = []
+    oom = archive / "diagnostics/kernel_oom.txt"
+    if oom.is_file() and "Out of memory:" in oom.read_text():
+        diagnostics.append("Kernel-confirmed host OOM killed Vivado during synthesis; no routed timing/resource result")
     for name in ("csim.log.txt", "csynth.log.txt", "impl.log.txt", "cosim.log.txt"):
         path = archive / name
         if not path.is_file():
