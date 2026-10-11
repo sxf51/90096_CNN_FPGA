@@ -1,0 +1,43 @@
+{
+  "config_sha256": "ce8da5aa1f6bc55091ade3eefad12763295ff94080e52d85e74f81fde6fee94a",
+  "configuration": {
+    "T": 1,
+    "changes": "New independent INT16 PE and testbench. Existing INT8/exact10 designs remain frozen. All modes use the same64-term array interface and exact int64 oracle.",
+    "clock": 4,
+    "conclusion": "Compare complete32-bit product equality, DSP, LUT, FF, achieved II and clock. A one-DSP mixed implementation still spends LUT multipliers; integrate only after a demonstrated network budget.",
+    "defines": {
+      "EXP_PACK16_MODE": 0
+    },
+    "design": "designs/packing_int16_pe",
+    "estimates": {
+      "BRAM18K": 0,
+      "DSP": 2,
+      "FF": 120,
+      "LUT": 100,
+      "T": 1,
+      "URAM": 0,
+      "basis": "64 independent pairs plus8-16 pipeline cycles; no internal frame memories. Direct16x16 uses one DSP per product. Byte-limb pairs use four27x9/8 DSP products. Overlap repair uses one27x16 DSP plus fabric8x16 and9x16 products; the mixed control uses one DSP plus fabric16x16. LUT/FF values reserve operand repair, carry chains, pipelining and array control; they are hypotheses, not primitive measurements.",
+      "latency_cycles": 72
+    },
+    "id": "P13",
+    "ii_targets": {
+      "pack16_terms": 1
+    },
+    "interpretation": "A complete signed16x16 product needs32 bits. Nonoverlapping two-product fields need at least gap32, making the coefficient port48 bits, beyond DSP48E2's27-bit input; splitting a coefficient alone leaves8x16 products needing24 bits and a32-bit packed port. P14 therefore splits both operands. P15 explicitly pays fabric recovery for overlapping fields. Count every DSP/fabric operation, compare P13/P16 controls, and retain failures or missed II without changing numerical gates.",
+    "name": "int16_direct_pair",
+    "notes": "PE only; two complete signed16 products per term, no network latency or Set14 claim",
+    "precision": "signed16_signed16_exact32_pair",
+    "purpose": "Control: compute a*c and b*c as two signed16x16 DSP products. Expect two DSP48E2 cells and II1; use this matched pair control rather than doubling unrelated E051 array/control resources.",
+    "scope": "PE",
+    "series": "P",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_pe",
+    "tb_files": [
+      "exp/tb/packing16_validate.cpp"
+    ],
+    "top": "packing16_pe"
+  },
+  "created_at": "2026-10-11T06:25:21+00:00",
+  "created_from_commit": "bcb31812a3566af5f8f0eaf271ba2f17efb14ade",
+  "purpose_section": "Control: compute a*c and b*c as two signed16x16 DSP products. Expect two DSP48E2 cells and II1; use this matched pair control rather than doubling unrelated E051 array/control resources.\n\nPre-implementation paper estimates (scope: PE):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 2 |\n| BRAM18K | 0 |\n| URAM | 0 |\n| LUT | 100 |\n| FF | 120 |\n| T | 1 |\n| latency_cycles | 72 |\n| basis | 64 independent pairs plus8-16 pipeline cycles; no internal frame memories. Direct16x16 uses one DSP per product. Byte-limb pairs use four27x9/8 DSP products. Overlap repair uses one27x16 DSP plus fabric8x16 and9x16 products; the mixed control uses one DSP plus fabric16x16. LUT/FF values reserve operand repair, carry chains, pipelining and array control; they are hypotheses, not primitive measurements. |\n\nPlanned at 2026-10-11T06:25:21+00:00; estimates are hypotheses, not tool measurements."
+}

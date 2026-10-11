@@ -14,7 +14,8 @@ REQUIRED = ([f"G{i:02}" for i in range(1,4)] + [f"S{i:02}" for i in range(1,7)] 
             [f"P{i:02}" for i in range(1,9)] + ["P10","P11","P12"] +
             [f"W{i:02}" for i in range(1,10)] + [f"C{i:02}" for i in range(1,7)] +
             [f"F{i:02}" for i in range(1,22)] + ["W10","W11","W12","W13","C07","C08","C09",
-                                                 "W14","W15","W16","W17","W18","C10","C11","C12","P09","F22","F23","F24","F25"])
+                                                 "W14","W15","W16","W17","W18","C10","C11","C12","P09","F22","F23","F24","F25",
+                                                 "P13","P14","P15","P16"])
 
 
 def main():
