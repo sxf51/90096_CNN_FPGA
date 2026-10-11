@@ -128,6 +128,19 @@ def main():
         verification.append({**row, "parent":config.get("verify_parent"), **config.get("verification",{})})
     text += "\n## Implementation And Cosim\n\nHLS estimates are inherited only for provenance. Routed WNS/resources and two-frame RTL cycles are parsed independently; none is a board measurement.\n\n"
     text += markdown_table(linked(verification),["id","scope","parent","operation","status","impl_DSP","impl_BRAM36","impl_LUT","impl_FF","impl_URAM","impl_WNS_ns","timing_met","rtl_status","rtl_latency_max","rtl_interval_max","cycle_deviation_pct"])
+    profile_rows = []
+    for row in verification:
+        base = Path(row["md_path"]).parent
+        channel_path = ROOT / "experiments" / base / "profiling/channels.csv"
+        if not channel_path.is_file():
+            continue
+        with channel_path.open(newline="") as handle:
+            for channel in csv.DictReader(handle):
+                profile_rows.append({"id":row["id"], "md_path":row["md_path"], **channel,
+                                     "data":"[counters]("+str(base / "profiling/channels.csv")+")"})
+    if profile_rows:
+        text += "\nFinite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.\n\n"
+        text += markdown_table(linked(profile_rows),["id","name","peak_depth","write_block_pct","read_block_pct","data"])
     warning_points = [row for row in arch if number(row.get("dataflow_warning_count")) and not row["operation"]]
     text += "\nDATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.\n\n"
     text += markdown_table(linked(warning_points),["id","dataflow_warning_count","status"])

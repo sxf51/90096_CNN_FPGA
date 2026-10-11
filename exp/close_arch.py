@@ -83,7 +83,8 @@ def audit_verification_reports(rows):
         if operation not in {"impl", "cosim"}:
             continue
         reports = config.get("verification_reports", [])
-        evidence = reports + config.get("implementation_files", []) + config.get("verification_diagnostics", [])
+        evidence = (reports + config.get("implementation_files", []) + config.get("verification_diagnostics", []) +
+                    config.get("verification_profiles", []))
         if config.get("host_failure"):
             evidence.append(config["host_failure"])
         if row["status"] == operation + "_complete":

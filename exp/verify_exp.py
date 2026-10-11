@@ -13,6 +13,7 @@ from run_exp import (ROOT, FIELDS, archive_logs, append_log, check_protected,
                      ensure_results_schema, invoke, lock, markdown_table, number,
                      prepare_run_directory, utc, write_json)
 from compact_archive import compact
+from archive_cosim_profiles import archive_profiles, profile_results
 
 
 def archive_verification_reports(work, archive, operation):
@@ -268,6 +269,12 @@ def run_verification(config):
         archive_logs(work, archive)
         config["verification_reports"] = archive_verification_reports(work,archive,operation)
         config["verification_diagnostics"] = archive_verification_diagnostics(work,archive)
+        if operation == "cosim" and observed.get("rtl_status") == "Pass":
+            try:
+                config["verification_profiles"] = archive_profiles(work,archive)
+            except Exception as exc:
+                config["profiling_archive_error"] = str(exc)
+                row["notes"] += "; profiling archive unavailable: "+str(exc)
         config["errors"] = errors
         config["verification"] = observed
         write_json(archive / "config.json", config)
@@ -297,6 +304,7 @@ def run_verification(config):
         md += "\nParent loop II and per-module resources are in the linked parent archive; verification resources are distinct from csynth.\n"
         md += "\nArchived verification source reports (neutral paths preserve Git tracking):\n\n"
         md += markdown_table(config["verification_reports"],["raw_file","archived_file","sha256"])
+        md += profile_results(archive)
         if config.get("implementation_files"):
             md += "\nIndependent generated-flow retry files:\n\n"
             md += markdown_table(config["implementation_files"],["kind","archived_file","sha256"])
