@@ -309,6 +309,8 @@
 
 - 2026-10-11T03:03:01+00:00: F25: archived existing routed/RTL source reports at Git-visible neutral report paths for E070, P08; original ignore rules, sources and measurements unchanged.
 
+- 2026-10-11T03:11:05+00:00: F25: refreshed architecture index and CSV-derived figures; separated frame/layer and PE estimate panels, grouped identical labeled points and increased label separation. Audited all 75 completed frozen plans, metric records and archived sources without mismatch.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T23:19:34+00:00: Winograd's requested offline weight transform conflicts with accepting arbitrary original float weight arrays at the frozen srcnn signature. Keep the internal runtime load/transform stage, include its measured cycles/resources and archive the equivalent pretrained G2 tensor. Removing runtime transformation requires an approved transformed-weight contract or a specialized constant-weight wrapper; no such interface change is made in this unattended run.

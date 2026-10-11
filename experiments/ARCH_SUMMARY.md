@@ -1,6 +1,6 @@
 # SRCNN K26 architecture exploration
 
-The fastest resource-feasible supplied-image point is [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) at 2.830503377ms HLS-estimated latency. Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.
+The fastest resource-feasible supplied-image point is [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) at 2.64226ms HLS-estimated latency. Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.
 
 Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.
 
@@ -8,9 +8,9 @@ Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUC
 
 | id | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | delta_psnr | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | designs/continuous_affine_load_v1 | w10a10acc23 | 16 | 2.5 | 2.699 | 1048723.0 | 1048724.0 | 2.830503377 | 502.0 | 73.0 | 0.0 | 69290.0 | 124577.0 | -0.0695141811880653 | provisional |
+| [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | designs/continuous_nested_load_v1 | w10a10acc23 | 16 | 2.5 | 2.377 | 1056904.0 | 1056905.0 | 2.64226 | 502.0 | 73.0 | 0.0 | 69976.0 | 125404.0 | -0.0695141811880653 | provisional |
 
-HLS-estimate improvement over first-phase E043: 2.4516x. This ratio is not a measured board speedup.
+HLS-estimate improvement over first-phase E043: 2.6262x. This ratio is not a measured board speedup.
 
 Actual verification of the current HLS winner:
 
@@ -130,7 +130,7 @@ An unimplemented raw-bank combination follow-up would still need about 96004.0 L
 
 Storage controls map shallow wide FIFOs to LUTRAM and Conv3 line banks to20 URAM. Continuous engines separate window generation, flatten pixel/fold iterations, shift fixed channel registers and register balanced fabric reductions. Old padding versus online read/emit padding isolates finite-FIFO row serialization. Clock/T controls test actual II, resource and timing limits; final RTL and routed measurements are separate from HLS estimates.
 
-Measured direction result: [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) is its fastest provisional resource-feasible point at 2.830503377ms, with 502.0 DSP and 69290.0 LUT. RTL and routing must be assessed separately.
+Measured direction result: [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) is its fastest provisional resource-feasible point at 2.64226ms, with 502.0 DSP and 69976.0 LUT. RTL and routing must be assessed separately.
 
 The exact IEEE output encoder [F20](F20_ieee_decode_bit_exact_sdk_retry_unique_object/F20.md) uses 0.0 DSP, 242.0 LUT and 52.0 FF at 2.051ns estimated clock; its legacy control [F21](F21_ieee_decode_legacy_control_sdk_retry_unique_object/F21.md) uses 3.0 DSP at 3.239ns. The independent network copy [F23](F23_continuous_ieee_T16_2p5ns/F23.md) keeps the same quantization and weights, reaches 2.822ns estimated clock and removes the legacy output scaling DSPs. Continuous folds reduce the repeated per-pixel pipeline fill/drain; assess finite-FIFO RTL cycles and routed timing in the final verification table independently of that HLS estimate.
 
@@ -140,6 +140,7 @@ Loader controls preserve all inference engines, precision and runtime parameters
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F23](F23_continuous_ieee_T16_2p5ns/F23.md) | 2.5 | 2.822 | 1048730.0 | 2.95951606 | 502.0 | 73.0 | 70449.0 | 125618.0 | provisional |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | 2.5 | 2.699 | 1048723.0 | 2.830503377 | 502.0 | 73.0 | 69290.0 | 124577.0 | provisional |
+| [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | 2.5 | 2.377 | 1056904.0 | 2.64226 | 502.0 | 73.0 | 69976.0 | 125404.0 | provisional |
 
 | id | scope | T_target | latency_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | bit_exact | border_mse | ii_ok | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -167,6 +168,7 @@ Loader controls preserve all inference engines, precision and runtime parameters
 | [F12](F12_continuous_T8_online_3p33ns_split4000/F12.md) | frame | 8 | 528501.0 | 1.75990833 | 1007.0 | 73.0 | 0.0 | 97112.0 | 196314.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [F23](F23_continuous_ieee_T16_2p5ns/F23.md) | frame | 16 | 1048730.0 | 2.95951606 | 502.0 | 73.0 | 0.0 | 70449.0 | 125618.0 | True | 1.661846957728205e-05 | True | provisional |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | frame | 16 | 1048723.0 | 2.830503377 | 502.0 | 73.0 | 0.0 | 69290.0 | 124577.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | frame | 16 | 1056904.0 | 2.64226 | 502.0 | 73.0 | 0.0 | 69976.0 | 125404.0 | True | 1.661846957728205e-05 | True | provisional |
 
 ## All Architectures
 
@@ -182,6 +184,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [W17](W17_narrow_raw_banks_T8/W17.md) | W | designs/winograd_rawbank_v1 | 8 | 2.130248 | 648.0 | 146.0 | 93166.0 | 122399.0 | -0.0695141811880653 | infeasible |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | W | designs/winograd_continuous_r2 | 8 | 2.130248 | 648.0 | 146.0 | 148013.0 | 182409.0 | -0.0695141811880653 | infeasible |
 | [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | C | designs/winograd_mixed_packing_r2 | 8 | 2.130248 | 520.0 | 146.0 | 150851.0 | 179452.0 | -0.07589037644656216 | infeasible |
+| [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | F | designs/continuous_nested_load_v1 | 16 | 2.64226 | 502.0 | 73.0 | 69976.0 | 125404.0 | -0.0695141811880653 | provisional |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | F | designs/continuous_affine_load_v1 | 16 | 2.830503377 | 502.0 | 73.0 | 69290.0 | 124577.0 | -0.0695141811880653 | provisional |
 | [F23](F23_continuous_ieee_T16_2p5ns/F23.md) | F | designs/continuous_ieee_v1 | 16 | 2.95951606 | 502.0 | 73.0 | 70449.0 | 125618.0 | -0.0695141811880653 | provisional |
 | [F22](F22_continuous_ieee_T16_3ns/F22.md) | F | designs/continuous_ieee_v1 | 16 | 3.146133 | 502.0 | 73.0 | 69483.0 | 121696.0 | -0.0695141811880653 | provisional |
@@ -336,6 +339,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | frame | 647.0 | 648.0 | 0.15455950540959051 | 620200.0 | 532569.0 | -14.129474363108674 | infeasible |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | frame | 502.0 | 502.0 | 0.0 | 1068730.0 | 1048723.0 | -1.8720350322345203 | provisional |
 | [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | frame | 519.0 | 520.0 | 0.19267822736031004 | 620200.0 | 532562.0 | -14.13060303128023 | infeasible |
+| [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | frame | 502.0 | 502.0 | 0.0 | 1068723.0 | 1056904.0 | -1.1058992835374593 | provisional |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -404,6 +408,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | 5 | infeasible |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | 5 | provisional |
 | [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | 5 | infeasible |
+| [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | 5 | provisional |
 
 ## Failed Directions
 
@@ -479,4 +484,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T02:54:12+00:00.
+Generated from archived evidence at 2026-10-11T03:06:19+00:00.

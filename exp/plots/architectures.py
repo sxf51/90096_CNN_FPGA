@@ -39,7 +39,7 @@ frames = [row for row in rows if row["scope"] == "frame" and not row["operation"
           num(row,"latency_ms_est") is not None and num(row,"DSP") is not None and
           row["status"] in {"pass","provisional","infeasible"} and
           (row["series"] or row["id"] in {"E043","E057","E060"})]
-fig,ax = plt.subplots(figsize=(13,8),constrained_layout=True)
+fig,ax = plt.subplots(figsize=(15,10),constrained_layout=True)
 labels,grouped = [],{}
 for row in frames:
     grouped.setdefault((num(row,"DSP"),num(row,"latency_ms_est"),row["series"] or "E",
@@ -55,7 +55,9 @@ ax.grid(alpha=.2)
 ax.legend(handles=[Line2D([0],[0],marker="o",color=color,linestyle="",label=series+" series") for series,color in COLORS.items()]+
                   [Line2D([0],[0],marker="x",color="#444444",linestyle="",label="Resource infeasible")],fontsize=8)
 fig.canvas.draw()
-adjust_text(labels,ax=ax,iter_lim=350,arrowprops={"arrowstyle":"-","color":"#888888","lw":.5})
+fig.set_layout_engine("none")
+adjust_text(labels,ax=ax,iter_lim=1000,expand=(1.2,1.3),force_text=(.3,.5),
+            arrowprops={"arrowstyle":"-","color":"#888888","lw":.5})
 save(fig,"architecture_pareto.png")
 
 compositions = read("dsp_composition.csv")
@@ -82,39 +84,46 @@ for metric,unit,name in (("DSP","DSP48E2 (count)","estimate_actual_dsp.png"),
                          ("latency_cycles","Frame/kernel latency (cycles)","estimate_actual_cycles.png")):
     points = [row for row in estimates if row["metric"] == metric and num(row,"estimate") is not None and
               num(row,"actual") is not None and num(row,"estimate") >= 0 and num(row,"actual") >= 0]
-    fig,ax = plt.subplots(figsize=(10,8),constrained_layout=True)
-    texts = []
-    for row in points:
-        paper,actual = num(row,"estimate"),num(row,"actual")
-        ax.scatter(paper,actual,color=COLORS[row["series"]],marker="s" if row["scope"] == "PE" else "^" if row["scope"] == "layer" else "o",s=35)
-        texts.append(ax.text(paper,actual,row["id"],fontsize=7))
-    if points:
-        high = max(max(num(r,"estimate"),num(r,"actual")) for r in points)*1.4
-        includes_zero = any(num(r,"estimate") == 0 or num(r,"actual") == 0 for r in points)
-        positives = [num(r,key) for r in points for key in ("estimate","actual") if num(r,key) > 0]
-        low = min(positives)*.7 if positives else 1
-        high = max(high,low*2)
-        axis = np.geomspace(low,high,100)
-        if includes_zero:
-            axis = np.concatenate(([0],axis))
-        ax.plot(axis,axis,color="#555555",label="Estimate = actual")
-        ax.fill_between(axis,axis*.8,axis*1.2,color="#cccccc",alpha=.3,label="20% band")
-        if includes_zero:
-            ax.set_xscale("symlog",linthresh=1)
-            ax.set_yscale("symlog",linthresh=1)
-        else:
-            ax.set_xscale("log")
-            ax.set_yscale("log")
-    ax.set(title=f"Paper estimates vs measured {metric}",xlabel="Paper estimate: "+unit,ylabel="Parsed actual: "+unit)
-    ax.grid(alpha=.2)
-    handles,legend_labels = ax.get_legend_handles_labels()
+    fig,axes = plt.subplots(1,2,figsize=(17,8),width_ratios=(2,1),constrained_layout=True)
+    annotations = []
+    for ax,is_pe in zip(axes,(False,True)):
+        subset = [row for row in points if (row["scope"] == "PE") == is_pe]
+        texts, grouped = [], {}
+        for row in subset:
+            paper,actual = num(row,"estimate"),num(row,"actual")
+            ax.scatter(paper,actual,color=COLORS[row["series"]],marker="s" if is_pe else "^" if row["scope"] == "layer" else "o",s=35)
+            grouped.setdefault((paper,actual,row["series"],row["scope"]),[]).append(row["id"])
+        for (paper,actual,_,_),ids in grouped.items():
+            texts.append(ax.text(paper,actual,",".join(ids),fontsize=7))
+        if subset:
+            high = max(max(num(r,"estimate"),num(r,"actual")) for r in subset)*1.4
+            includes_zero = any(num(r,"estimate") == 0 or num(r,"actual") == 0 for r in subset)
+            positives = [num(r,key) for r in subset for key in ("estimate","actual") if num(r,key) > 0]
+            low = min(positives)*.7 if positives else 1
+            high = max(high,low*2)
+            axis = np.geomspace(low,high,100)
+            if includes_zero:
+                axis = np.concatenate(([0],axis))
+            ax.plot(axis,axis,color="#555555",label="Estimate = actual")
+            ax.fill_between(axis,axis*.8,axis*1.2,color="#cccccc",alpha=.3,label="20% band")
+            ax.set_xscale("symlog" if includes_zero else "log",**({"linthresh":1} if includes_zero else {}))
+            ax.set_yscale("symlog" if includes_zero else "log",**({"linthresh":1} if includes_zero else {}))
+        ax.set(title="Processing elements" if is_pe else "Full frames and layers",
+               xlabel="Paper estimate: "+unit,ylabel="Parsed actual: "+unit)
+        ax.grid(alpha=.2)
+        annotations.append((ax,texts))
+    handles,_ = axes[0].get_legend_handles_labels()
     handles += [Line2D([0],[0],marker="o",color=COLORS[series],linestyle="",label=series+" series")
                 for series in sorted({row["series"] for row in points})]
     handles += [Line2D([0],[0],marker=marker,color="#444444",linestyle="",label=label)
                 for marker,label in (("s","PE"),("^","Layer"),("o","Frame"))]
-    ax.legend(handles=handles,fontsize=7,ncol=2)
+    fig.legend(handles=handles,fontsize=8,ncol=6,loc="outside lower center")
+    fig.suptitle(f"Paper estimates vs measured {metric}")
     fig.canvas.draw()
-    adjust_text(texts,ax=ax,iter_lim=250,arrowprops={"arrowstyle":"-","color":"#888888","lw":.4})
+    fig.set_layout_engine("none")
+    for ax,texts in annotations:
+        adjust_text(texts,ax=ax,iter_lim=1000,expand=(1.2,1.3),force_text=(.3,.5),
+                    arrowprops={"arrowstyle":"-","color":"#888888","lw":.4})
     save(fig,name)
 
 g = [row for row in rows if row["id"] in {"G01","G02","G03"}]
