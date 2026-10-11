@@ -173,6 +173,7 @@ Loader controls preserve all inference engines, precision and runtime parameters
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | frame | 16 | 1048723.0 | 2.830503377 | 502.0 | 73.0 | 0.0 | 69290.0 | 124577.0 | True | 1.661846957728205e-05 | True | provisional |
 | [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | frame | 16 | 1056904.0 | 2.64226 | 502.0 | 73.0 | 0.0 | 69976.0 | 125404.0 | True | 1.661846957728205e-05 | True | provisional |
 | [F80](F80_final_all_supplied_F25/F80.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
+| [F83](F83_final_all_supplied_F24/F83.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
 
 ## All Architectures
 
@@ -349,6 +350,8 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F80](F80_final_all_supplied_F25/F80.md) | frame | 502.0 | unknown | unknown | 1056904.0 | unknown | unknown | csim_pass |
 | [F81](F81_final_impl_F25/F81.md) | frame | 502.0 | unknown | unknown | 1056904.0 | unknown | unknown | fail |
 | [F82](F82_final_cosim_F25/F82.md) | frame | 502.0 | unknown | unknown | 1056904.0 | 1068183.0 | 1.067173555971035 | cosim_complete |
+| [F83](F83_final_all_supplied_F24/F83.md) | frame | 502.0 | unknown | unknown | 1048723.0 | unknown | unknown | csim_pass |
+| [F84](F84_final_impl_F24/F84.md) | frame | 502.0 | unknown | unknown | 1048723.0 | unknown | unknown | fail |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -379,6 +382,21 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [P08](P08_builtin_mapping_implementation/P08.md) | PE | P05 | impl | impl_complete | 1.0 | 0.0 | 21.0 | 41.0 | 0.0 | 2.805 | True | unknown | unknown | unknown | unknown |
 | [F81](F81_final_impl_F25/F81.md) | frame | F25 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F82](F82_final_cosim_F25/F82.md) | frame | F25 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1068183.0 | 1068212.0 | 1.067173555971035 |
+| [F84](F84_final_impl_F24/F84.md) | frame | F24 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+
+Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
+
+| id | name | peak_depth | write_block_pct | read_block_pct | data |
+| --- | --- | --- | --- | --- | --- |
+| [F82](F82_final_cosim_F25/F82.md) | raw_U | 512 | 89.14442182124553 | 0.011327201666315618 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
+| [F82](F82_final_cosim_F25/F82.md) | padded1_U | 16 | 91.14886844999883 | 0.03632193592173934 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
+| [F82](F82_final_cosim_F25/F82.md) | features2_U | 4 | 0.06646539820730651 | 91.44412459921833 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
+| [F82](F82_final_cosim_F25/F82.md) | features_U | 4 | 0.06075499075569286 | 0.23702871586042265 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
+| [F82](F82_final_cosim_F25/F82.md) | windows_U | 2 | 91.17442486367572 | 0.23431393198998338 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
+| [F82](F82_final_cosim_F25/F82.md) | padded3_U | 16 | 0.6914273678298112 | 91.39872217931615 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
+| [F82](F82_final_cosim_F25/F82.md) | result_U | 1 | 0.0 | 92.38409511104871 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
+| [F82](F82_final_cosim_F25/F82.md) | windows0_U | 2 | 0.8112523110767863 | 1.0749607994570431 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
+| [F82](F82_final_cosim_F25/F82.md) | windows1_1_U | 2 | 0.8112523110767863 | 1.0749607994570431 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -427,6 +445,7 @@ Selected candidates were ranked globally across both phases before validation. M
 | id | design | image_count | csim_pass | bit_exact | set14_psnr | delta_psnr | border_mse | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F80](F80_final_all_supplied_F25/F80.md) | designs/continuous_nested_load_v1 | 13 | True | True | 29.088943394069588 | -0.0695141811880653 | 1.661846957728205e-05 | csim_pass |
+| [F83](F83_final_all_supplied_F24/F83.md) | designs/continuous_affine_load_v1 | 13 | True | True | 29.088943394069588 | -0.0695141811880653 | 1.661846957728205e-05 | csim_pass |
 
 Routed timing closes for 0 selected implementation runs; 1 selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.
 
@@ -479,6 +498,7 @@ Routed timing closes for 0 selected implementation runs; 1 selected two-frame RT
 | [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | C | infeasible | LUT=150851.0 exceeds 81984; FF=179452.0 exceeds 163968 | unknown |
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | C | infeasible | LUT=248797.0 exceeds 81984; FF=307525.0 exceeds 163968 | unknown |
 | [F81](F81_final_impl_F25/F81.md) | F | fail | Kernel-confirmed host OOM killed Vivado during synthesis; no routed timing/resource result; ERROR: [Vivado 12-13638] Failed runs(s) : 'bd_0_hls_inst_0_synth_1'; ERROR: [Common 17-39] 'wait_on_runs' failed due to earlier errors. | impl of F25; HLS estimates inherited, real measurements in data.csv; impl failed (exit=1) |
+| [F84](F84_final_impl_F24/F84.md) | F | fail | Kernel-confirmed host OOM killed Vivado during synthesis; no routed timing/resource result; ERROR: [Vivado 12-13638] Failed runs(s) : 'bd_0_hls_inst_0_synth_1'; ERROR: [Common 17-39] 'wait_on_runs' failed due to earlier errors. | impl of F24; HLS estimates inherited, real measurements in data.csv; impl failed (exit=1) |
 
 ## Pending Human Decisions
 
@@ -507,4 +527,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T05:16:49+00:00.
+Generated from archived evidence at 2026-10-11T05:31:35+00:00.
