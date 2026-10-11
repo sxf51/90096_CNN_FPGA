@@ -44,6 +44,7 @@ RTL and routed results, kept separate:
 
 Times derived from RTL cycles at a routed target are conditional on `timing_met=true`. Target minus negative WNS is a slack-derived period estimate, not a proven closed clock. Missing values remain unknown. No board validation has run.
 
-Current recovery state: F28 is the strict WS2 selected loader, with matching F94 all13-image evidence. Execute F93 changed-parameter RTL and implement precommitted W19/F29/F30 independent T8 plans; their C simulations may overlap while hardware operations serialize. F92 five-path export is active. After T8 measurements, run W20 diagnostic calibration and final candidate-specific validation/serial implementation/changed-parameter RTL, then measured-path WS4. Keep all failure gates explicit.
+Current recovery state: F93 changed-parameter RTL is active. W19 C simulation passed and its synthesis waits for F93; serial queue64528 then runs F29/F30/W20. F95 F28 candidate-specific5ns implementation is planned, not started. After measured T8 selection, run its full13-image validation, changed-parameter RTL and serial route, then one measured-path WS4 clock/control experiment. Preserve all failed gates and archive/checksum/plot/summary audits before F99 closure.
 
 <!-- AUTO: WORKSTREAM END -->
+
