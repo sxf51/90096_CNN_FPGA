@@ -1,0 +1,35 @@
+{
+  "config_sha256": "ddec71402843d4cfad5e1ad8d078f3ff8f53d90f0b5037528283263cb57986f8",
+  "configuration": {
+    "changes": "Freeze the accepted F28 HLS workspace in a separate verification directory. Replace only verification C++ testbench with a new exp/tb file, archive its source SHA256 and verification commit, check parent RTL before/after and require both C and RTL exact reload markers. Preserve/restore first butterfly output and original runtime parameters for its reported MSE/border values. No frozen design, protected data or threshold changes.",
+    "clock": 2.5,
+    "conclusion": "If exact two-frame RTL passes, carry the measured loader into independently planned T8 controls and validate final candidates on all13 supplied images and serial implementation. A failure/deadlock remains a failed record and cannot establish throughput. Review unattended decisions with the user tomorrow.",
+    "design": "designs/continuous_param_noflat_v1",
+    "estimates": {
+      "BRAM18K": 73,
+      "DSP": 502,
+      "FF": 122255,
+      "LUT": 61856,
+      "T": 16,
+      "URAM": 0,
+      "basis": "F28 paper resource estimate is anchored to measured F27 DSP502/BRAM18K73/LUT61656/FF122055 plus200 control LUT/FF. F27 HLS1045713cycles and F28 startup/drain budget give1046500 HLS cycles; add11400 cycles from F25's observed F82 RTL minus HLS overhead as a provisional finite-AXI/FIFO prediction. Two complete frames are simulated; latency is per transaction, not the sum. Parent hardware is unchanged by a verification-only testbench. Actual F28 HLS acceptance and RTL cycle/resource evidence are mandatory; this conditional paper plan is not a measured result.",
+      "latency_cycles": 1057900
+    },
+    "id": "F93",
+    "interpretation": "Require actual parent strict WS2 acceptance before execution. Compare observed RTL maximum latency/interval with this paper estimate and the parent HLS report; explain deviations>20%. Changed-weight second-frame correctness must be exact and border metrics must come from the original first butterfly. Keep missing comic and absent physical/board validation explicit.",
+    "name": "ws_reload_cosim_F28",
+    "operation": "cosim",
+    "purpose": "Conditionally verify F28 after measured strict WS2 acceptance, using an independent changed-parameter two-frame testbench. The first transaction must match E017 butterfly bit for bit with unchanged six-pixel border MSE. The second changes all runtime arrays: constant0.5 input, sparse channel0 center weights0.25/0.5/0.5 and layer biases0.5/0.25/0.125; every output must be exactly104/256. Exercise finite FIFO backpressure, per-invocation parameter loading and AXI handshakes without changing parent RTL. This plan does not assume the pending F28 synthesis passes; keep it unexecuted if the parent is rejected.",
+    "reload_params": true,
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 21600,
+    "verification_testbench": "exp/tb/validate_reload.cpp",
+    "verify_parent": "F28"
+  },
+  "created_at": "2026-10-11T18:41:37+00:00",
+  "created_from_commit": "35f42775901d5a21cd9b8d4d8661a249e3730e26",
+  "purpose_section": "Conditionally verify F28 after measured strict WS2 acceptance, using an independent changed-parameter two-frame testbench. The first transaction must match E017 butterfly bit for bit with unchanged six-pixel border MSE. The second changes all runtime arrays: constant0.5 input, sparse channel0 center weights0.25/0.5/0.5 and layer biases0.5/0.25/0.125; every output must be exactly104/256. Exercise finite FIFO backpressure, per-invocation parameter loading and AXI handshakes without changing parent RTL. This plan does not assume the pending F28 synthesis passes; keep it unexecuted if the parent is rejected.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 502 |\n| BRAM18K | 73 |\n| URAM | 0 |\n| T | 16 |\n| latency_cycles | 1057900 |\n| LUT | 61856 |\n| FF | 122255 |\n| basis | F28 paper resource estimate is anchored to measured F27 DSP502/BRAM18K73/LUT61656/FF122055 plus200 control LUT/FF. F27 HLS1045713cycles and F28 startup/drain budget give1046500 HLS cycles; add11400 cycles from F25's observed F82 RTL minus HLS overhead as a provisional finite-AXI/FIFO prediction. Two complete frames are simulated; latency is per transaction, not the sum. Parent hardware is unchanged by a verification-only testbench. Actual F28 HLS acceptance and RTL cycle/resource evidence are mandatory; this conditional paper plan is not a measured result. |\n\nPlanned at 2026-10-11T18:41:37+00:00; estimates are hypotheses, not tool measurements."
+}
