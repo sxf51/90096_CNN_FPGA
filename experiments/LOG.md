@@ -367,6 +367,8 @@
 
 - 2026-10-11T17:17:22+00:00: F89/WS3: observed F25 flow=none package has IP but no run_vivado.tcl. Clarification: flow=none skips RTL synthesis/route, while IP packaging still uses Vivado. Fresh serial candidates now copy only official driver/settings/extraction/XDC boilerplate, regenerate module lists/clock, preserve their independently packaged IP, and archive original/patched scripts for replay.50 infrastructure tests PASS. Live route overlaps2476->1277.
 
+- 2026-10-11T17:35:00+00:00: F89/WS2 recovery: verified original local sessions95149/11690/51861 and remote runners remain active; no restart. F89 congestion overlaps now476, about4.1GiB available memory, original three-hour timeout unchanged. Read both AGENTS and docs0002/0003/0004 plus recovery/summary records; protected sources and existing user edits remain preserved. F26/F27 C validation is exact; hardware gates are pending.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 WS0: 用户授权第 6 节先自行决策并执行、明日复核。暂定保留运行时 float 权重接口及 HLS 资源门限，不做常量 ROM；缺 comic 保持 13 图暂定结论。F89 若再次 OOM，保留内核/内存证据并继续 WS2，不改 swap 或全局设置，不迁移到未经验证的主机。明日复核大内存主机、ROM 专用版本、资源口径和 comic 数据。

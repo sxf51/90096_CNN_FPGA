@@ -22,6 +22,10 @@ Final verification: F89.
 
 Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). F89 is running exclusively. F26/F27 passed two-frame butterfly C simulation and are waiting; synthesis order F26 then F27 after F89. Choose the loader from measured WS2 gates, then implement W19 and direct-T8 control.
 
+Recovery check2026-10-11T17:35Z: all three original local sessions and remote runners remain active. F89 congestion overlaps have fallen53631->476; about4.1GiB memory is available and the original three-hour timeout remains in force. No final routed result exists yet. Do not restart these IDs.
+
+Fresh WS2/WS3 verification is prepared through `prepare_ws_verify.py`. Its `serial_packaged_flow` keeps the candidate's own IP and copies only F89 official driver/settings/extraction/XDC boilerplate, with candidate module lists, independent clock constraints and the per-run serial hook. Same-RTL templates require matching RTL/init SHA256.50 infrastructure tests passed; the fresh packaged flow must still be verified by actual execution. The setup-path archiver checks five parsed paths, CSV, operation record and report/script hashes before calling an archive complete.
+
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 
 Section 6 conservative decisions: preserve runtime float weights and HLS resource gates; keep missing comic explicitly provisional; if serial implementation OOM recurs, archive evidence and continue WS2 without changing host swap or using an unverified machine. Revisit these decisions with the user tomorrow.
