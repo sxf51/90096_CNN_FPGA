@@ -81,7 +81,7 @@ estimates = read("estimate_actual.csv")
 for metric,unit,name in (("DSP","DSP48E2 (count)","estimate_actual_dsp.png"),
                          ("latency_cycles","Frame/kernel latency (cycles)","estimate_actual_cycles.png")):
     points = [row for row in estimates if row["metric"] == metric and num(row,"estimate") is not None and
-              num(row,"actual") is not None and num(row,"estimate") > 0 and num(row,"actual") > 0]
+              num(row,"actual") is not None and num(row,"estimate") >= 0 and num(row,"actual") >= 0]
     fig,ax = plt.subplots(figsize=(10,8),constrained_layout=True)
     texts = []
     for row in points:
@@ -89,13 +89,22 @@ for metric,unit,name in (("DSP","DSP48E2 (count)","estimate_actual_dsp.png"),
         ax.scatter(paper,actual,color=COLORS[row["series"]],marker="s" if row["scope"] == "PE" else "^" if row["scope"] == "layer" else "o",s=35)
         texts.append(ax.text(paper,actual,row["id"],fontsize=7))
     if points:
-        low = min(min(num(r,"estimate"),num(r,"actual")) for r in points)*.7
         high = max(max(num(r,"estimate"),num(r,"actual")) for r in points)*1.4
+        includes_zero = any(num(r,"estimate") == 0 or num(r,"actual") == 0 for r in points)
+        positives = [num(r,key) for r in points for key in ("estimate","actual") if num(r,key) > 0]
+        low = min(positives)*.7 if positives else 1
+        high = max(high,low*2)
         axis = np.geomspace(low,high,100)
+        if includes_zero:
+            axis = np.concatenate(([0],axis))
         ax.plot(axis,axis,color="#555555",label="Estimate = actual")
         ax.fill_between(axis,axis*.8,axis*1.2,color="#cccccc",alpha=.3,label="20% band")
-        ax.set_xscale("log")
-        ax.set_yscale("log")
+        if includes_zero:
+            ax.set_xscale("symlog",linthresh=1)
+            ax.set_yscale("symlog",linthresh=1)
+        else:
+            ax.set_xscale("log")
+            ax.set_yscale("log")
     ax.set(title=f"Paper estimates vs measured {metric}",xlabel="Paper estimate: "+unit,ylabel="Parsed actual: "+unit)
     ax.grid(alpha=.2)
     handles,legend_labels = ax.get_legend_handles_labels()
