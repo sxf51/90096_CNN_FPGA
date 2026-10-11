@@ -5,6 +5,7 @@ import hashlib
 import json
 import shlex
 import subprocess
+from pathlib import Path
 from analyze_arch import write_csv
 from analyze_route import setup_paths
 from run_exp import ROOT, append_log, check_protected, write_json
@@ -53,6 +54,17 @@ def main():
         raise RuntimeError("The exported report does not contain five setup paths")
     config["verification_reports"].append({"raw_file":"srcnn_setup5_routed.rpt", "archived_file":str(destination.relative_to(archive)),
                                            "sha256":hashlib.sha256(destination.read_bytes()).hexdigest()})
+    report_dir = str(Path(config["verification"]["impl_resource_report"]).parent)
+    for state in ("synth", "routed"):
+        filename = "srcnn_utilization_hierarchical_"+state+".rpt"
+        raw_file = report_dir+"/"+filename
+        source = remote_work+"/"+raw_file
+        present = subprocess.run(ssh+["test -f "+shlex.quote(source)]).returncode == 0
+        if present:
+            target = destination.parent / filename
+            subprocess.run(["scp", "-F", str(ROOT.parent / "ssh-config"), "xiaoxin-ubuntu:"+source, str(target)], check=True)
+            config["verification_reports"].append({"raw_file":raw_file,"archived_file":str(target.relative_to(archive)),
+                                                   "sha256":hashlib.sha256(target.read_bytes()).hexdigest()})
     config["setup_paths_script_sha256"] = hashlib.sha256(script.read_bytes()).hexdigest()
     write_json(archive / "config.json",config)
     write_csv(archive / "critical_paths.csv", rows, list(rows[0]))

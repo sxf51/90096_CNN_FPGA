@@ -34,6 +34,27 @@ def setup_paths(text):
     return records
 
 
+def hierarchy(text):
+    columns = ["Instance", "Module", "Total LUTs", "Logic LUTs", "LUTRAMs", "SRLs", "FFs",
+               "RAMB36", "RAMB18", "URAM", "DSP Blocks"]
+    records, active = [], False
+    for cells in csv.reader(text.splitlines(), delimiter="|"):
+        values = [cell.strip() for cell in cells[1:-1]]
+        if values == columns:
+            active = True
+            continue
+        if not active or len(values) != len(columns):
+            continue
+        record = dict(zip(columns, values))
+        for key in columns[2:]:
+            record[key] = number(record[key])
+        if record["Total LUTs"] is None:
+            continue
+        record["BRAM18K"] = 2*record["RAMB36"]+record["RAMB18"] if record["RAMB36"] is not None and record["RAMB18"] is not None else None
+        records.append(record)
+    return records
+
+
 def analyze(archive):
     config = json.loads((archive / "config.json").read_text())
     metrics = json.loads((archive / "metrics.json").read_text())
@@ -79,6 +100,18 @@ def analyze(archive):
     block += "\n`period_from_slack_ns = implementation target - WNS` is a slack-derived estimate. Negative slack requires a fresh relaxed-constraint implementation; this arithmetic alone does not prove timing closure. No board result is inferred.\n\n"
     block += "First five available setup paths:\n\n" + markdown_table(paths, ["path","slack_ns","source","destination","logic_levels","data_path_ns","DSP_sites","DSP_cascade_PCIN_PCOUT"])
     block += "\nHost memory during the operation:\n\n" + markdown_table([memory_values], list(memory_values))
+    hierarchy_rows = []
+    for state in ("synth", "routed"):
+        path = archive / ("reports/impl/srcnn_utilization_hierarchical_"+state+".rpt")
+        if path.is_file():
+            parts = hierarchy(path.read_text())
+            write_csv(archive / ("physical_hierarchy_"+state+".csv"), parts, list(parts[0]) if parts else ["Instance","Module"])
+            selected = [part for part in parts if part["Module"] == "(top)" or part["Module"].endswith(
+                ("srcnn_dataflow_region", "srcnn_conv12", "srcnn_conv1_stream", "srcnn_conv3_stream"))]
+            hierarchy_rows.extend({"state":state,**part} for part in selected)
+    if hierarchy_rows:
+        block += "\nPhysical hierarchy (parent totals include children; do not sum nested rows):\n\n"
+        block += markdown_table(hierarchy_rows,["state","Instance","Total LUTs","FFs","BRAM18K","DSP Blocks"])
     block += "\n<!-- AUTO: ROUTE ANALYSIS END -->\n\n"
     md = archive / (config["id"]+".md")
     text = md.read_text()
