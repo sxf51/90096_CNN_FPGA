@@ -96,6 +96,11 @@ def main():
     for exp_id in args.ids:
         archive = next((ROOT / "experiments").glob(exp_id+"_*/metrics.json")).parent
         print(json.dumps(analyze(archive), sort_keys=True))
+    rows = []
+    for path in sorted((ROOT / "experiments").glob("*_*/route_analysis.csv")):
+        rows.extend(csv.DictReader(path.open(newline="")))
+    columns = list(dict.fromkeys(key for row in rows for key in row))
+    write_csv(ROOT / "experiments/route_calibration.csv", rows, columns)
 
 
 if __name__ == "__main__":
