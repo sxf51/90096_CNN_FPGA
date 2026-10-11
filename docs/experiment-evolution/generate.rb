@@ -229,7 +229,7 @@ data = {
 }
 (OUT / "data.json").write(JSON.pretty_generate(data) + "\n")
 
-lines = ["# 全部实验：来源、调整、效果与问题", "",
+lines = ["# 全部实验：来源、调整、效果与问题", "", "[English](records.en.md)", "",
          "快照：`#{CATALOG.fetch('source_commit')}`；#{records.size} 项，#{rows.size} 项有结果档案，#{data['counts']['plan_only']} 项仅有计划/准备。", "",
          "有结果档案包括失败、超时和无效配置，不表示全部成功。箭头表示设计、参数、模块与验收依赖，不能当成逐次 Git clone 历史。", "",
          "HLS 时间沿用注册表公式：cycles × max(目标周期, HLS 估计周期) / 10⁶ ms。这个估计不证明 uncertainty 后时序达标，也不是板端测量。资源预算为 DSP≤1248、BRAM18K≤288、URAM≤64、LUT≤81984、FF≤163968；后两项是全芯片容量的 70%。", "",

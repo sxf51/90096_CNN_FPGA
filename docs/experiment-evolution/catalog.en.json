@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "source_commit": "800a87a",
+  "columns": ["id", "title", "change", "issue"],
+  "edge_kinds": {
+    "source": "Design or parameter baseline",
+    "retry": "Retry after a fix",
+    "reference": "Numerical reference or research motivation",
+    "compare": "Control experiment",
+    "integrate": "Integrate an existing module",
+    "verify": "Verify the same design",
+    "reproduce": "Reproduce the same experiment"
+  },
+  "sections": [
+    {
+      "key": "precision",
+      "title": "Baseline and precision: establish what may change",
+      "question": "Is the original correct and able to fit? How much quality is lost by reducing bit widths?",
+      "records": [
+        ["E000", "Original floating-point baseline", "Preserve src/, network structure, and replicated edges; measure correctness and synthesis scale.", "Two full intermediate maps exceed BRAM capacity. Correct C simulation does not establish device fit."],
+        ["E010", "Layer ranges and bit-width scan", "Measure ranges on 13 inputs and scan 16/12/10/8-bit weight and activation combinations.", "10/10 bits lose about 0.0695 dB average PSNR; 8/8 bits lose about 5.18 dB. Missing comic prevents full Set14 acceptance."],
+        ["E011", "Real ap_fixed: 16/16 bits", "Check the software quantization model using AMD data types, with all supplied images planned.", "C simulation fails. Subsequent retries use separate IDs; this record is not a pass."],
+        ["E012", "Real ap_fixed: 10/10 bits", "Validate the butterfly output of the complete fixed-point convolution network.", "This C simulation fails. Valid E017/E019 checks later establish the numerical evidence."],
+        ["E013", "Real ap_fixed: 8/8 bits", "Check agreement between the quantization model and actual fixed-point arithmetic despite the failed quality gate.", "Arithmetic agreement does not imply acceptable quality; the all-8-bit design remains rejected."],
+        ["E014", "16/16-bit full-dataset retry", "Retry complete ap_fixed simulation across the supplied images.", "Only some images finish within 45 minutes. Retain the timeout; do not claim a full-dataset pass."],
+        ["E018", "16/16-bit single-image control", "Limit complete ap_fixed arithmetic checks to butterfly; retain E010 as the separate multi-image quality evaluation.", "Compilation/simulation fails in this attempt; E015 retries it."],
+        ["E015", "Valid 16/16-bit single-image retry", "Fix run configuration and validate complete ap_fixed butterfly arithmetic.", "The pass covers a single-image arithmetic check, not an actual 13-image full-ap_fixed run."],
+        ["E016", "8/8-bit single-image retry", "Recheck narrow arithmetic using an independent configuration.", "The quality failure still applies; the retry does not relax the PSNR gate."],
+        ["E017", "10-bit boundaries and integer reference", "Use real ap_fixed for input/parameter conversion and layer rounding/saturation; preserve full product and accumulation fractions in integers.", "Establish an independent precision reference across 13 images. This is numerical evidence, not a performance experiment."],
+        ["E019", "Complete 10/10-bit ap_fixed retry", "Check the complete ap_fixed network against the independent integer reference on butterfly, bit for bit.", "Functionality passes. The hardware architecture still requires separate design and synthesis."],
+        ["E049", "Exhaustive layer-boundary rounding", "Exhaust all 25,165,824 states across three 23-bit accumulator boundaries.", "Validate ties-to-even rounding and saturation. No network latency or resource claim follows."],
+        ["E062", "Layer-specific INT8 feasibility", "Try 8-bit weights/activations one layer at a time instead of quantizing the entire network to INT8.", "Only 8-bit Conv2 weights meet the average quality gate. Actual 8-bit activations and Conv1/Conv3 weights fail."],
+        ["E065", "Conv2 8-bit-weight boundary validation", "Retain 10-bit activations and validate mixed precision on 13 images with real ap_fixed boundaries.", "Average PSNR loss is about 0.07589 dB. This supplies independent evidence for combinations; comic remains missing."],
+        ["E066", "Complete mixed-precision ap_fixed control", "Validate mixed-precision butterfly output using the complete ap_fixed network.", "Bit identity establishes when E065 quality evidence can be used by architectures with the same precision."],
+        ["E071", "Packing/Winograd prerequisite ranges", "Measure raw integer coefficients, transform widths, packed low-field accumulation limits, and paper DSP budgets.", "Range and budget analysis is not synthesis. New weights require checking the bounds again."]
+      ]
+    },
+    {
+      "key": "compiler",
+      "title": "Compiler controls: retaining full feature maps",
+      "question": "Can clock, pipeline directives, partitioning, or data types alone make the original organization feasible?",
+      "records": [
+        ["E020", "Default automatic optimization, 10 ns", "Copy the original and add loop labels without changing computation or full-map storage.", "Latency and BRAM scale remain close to the original baseline."],
+        ["E021", "Default automatic optimization, 4 ns", "Tighten only the target period and inspect default scheduling changes.", "Full intermediate maps still do not fit. A clock target is not an implementation result."],
+        ["E022", "Disable automatic pipelining", "Measure whether default pipeline behavior helps.", "Resource issues persist and latency increases."],
+        ["E023", "Inner-loop pipeline: invalid configuration", "Attempt to pipeline the innermost MAC loops through configuration.", "The tool skips the syn.directive key; the result does not measure the intended directive."],
+        ["E024", "Pixel-loop pipeline: invalid configuration", "Attempt to pipeline the outer pixel loops.", "The configuration key is invalid. E029 is the subsequent valid control for this idea."],
+        ["E025", "Array partition: invalid configuration", "Attempt to improve scheduling by adding array ports.", "The key is invalid; E032 corrects it."],
+        ["E026", "Allow floating-point reassociation", "Investigate unsafe-math effects on floating-point accumulation scheduling.", "Network latency improves little and full intermediate maps remain too large."],
+        ["E027", "Change only to 16-bit fixed point", "Retain the full-map architecture and measure changing data types alone.", "Storage decreases but still greatly exceeds capacity; LUTs also exceed the budget."],
+        ["E028", "Valid inner-loop pipeline retry", "Correct the directive key and measure actual innermost pipelining.", "Floating-point recurrence and full-map storage still limit the design."],
+        ["E029", "Valid pixel-loop pipeline retry", "Correct the key and apply the intended pixel-loop pipeline directives.", "The fastest valid float control still needs about 11,114 BRAM18K blocks, and not all II targets are met."],
+        ["E032", "Valid array-partition retry", "Correct partition directives and inspect memory-port and pipeline effects.", "Retaining complete intermediate maps leaves the resource problem unresolved."]
+      ]
+    },
+    {
+      "key": "streaming",
+      "title": "Initial streaming: remove full intermediate maps",
+      "question": "After line buffers and streams work, why do LUT use and timing remain limiting?",
+      "records": [
+        ["E030", "Floating-point streaming functional control", "Connect read/pad/Conv1/Conv2/pad/Conv3/write by streams and reuse windows in line buffers.", "First establish full-image and edge equivalence. This record contains C simulation only."],
+        ["E031", "10-bit streaming, T32", "Convert the validated stream organization to 10-bit fixed point and T=32 partial unrolling.", "BRAM18K falls to 168, but multiplier/type logic maps heavily to LUTs, failing resource and estimated timing goals."],
+        ["E033", "T32 single-image synthesis control", "Shorten the C-simulation workload while retaining the same streaming hardware organization.", "Again obtain 136,868 LUTs and a 31.822 ns estimate. Inner II=1 does not establish high network throughput."],
+        ["E046", "Remove redundant accumulator saturation", "Use archived range bounds to retain complete product precision and quantize only at layer boundaries.", "An existing synthesis lock blocks this attempt; it is not a hardware measurement."],
+        ["E063", "Accumulator-control retry", "Measure removal of redundant saturation in a separate run.", "DSP mapping changes but LUTs remain above budget."],
+        ["E047", "Explicit DSP multiplier binding", "Bind the T32 design's 162/64/25 parallel multipliers to DSPs.", "Estimated latency decreases substantially, but registered weights and selectors still exceed the LUT budget."],
+        ["E048", "Integer carriers for fixed-point arithmetic", "Store fixed-point raw bits in integers and implement layer rounding explicitly without changing numerical boundaries.", "The simplified representation still uses about 89,304 LUTs. Banking and selectors need further work."],
+        ["E050", "Initial Conv3 scatter", "Reduce across channels before buffering partial sums on the side with fewer channels.", "BRAM decreases, but initial fixed-point/mapping logic exceeds the LUT budget."],
+        ["E060", "Integer Conv3 scatter", "Retain explicit padding and use 32-bit partial sums with rotating line buffers.", "Resources can meet the budget, but control and extra work make it slower than gather."],
+        ["E056", "T4 mixed DSP/fabric computation", "Move some Conv1/Conv3 multipliers into fabric when DSP capacity limits greater parallelism.", "The paper DSP budget fits, but 237,025 LUTs do not. DSP count alone cannot select a candidate."]
+      ]
+    },
+    {
+      "key": "scans",
+      "title": "Parameter scans: parallelism, storage, and clock",
+      "question": "With precision fixed, what do T, unroll direction, weight banks, and target period change?",
+      "records": [
+        ["E034", "Initial T16 scan", "Reduce computation rounds per pixel from 32 to 16, increasing parallel multipliers.", "C simulation fails; E044 retries the design."],
+        ["E035", "Initial T8 scan", "Further reduce rounds per pixel to 8.", "C simulation fails; E045 retries it."],
+        ["E044", "Valid initial T16 streaming scan", "Fix simulation settings and measure the same higher-parallelism idea.", "Default arithmetic/mapping produces a 63.218 ns estimate and excessive LUTs."],
+        ["E045", "Valid initial T8 streaming scan", "Run the initial T8 configuration with valid settings.", "A 126.008 ns estimate and 266,266 LUTs show that greater parallelism does not accelerate this network."],
+        ["E057", "Integer T32 with LUTRAM weight banks", "Replace fully partitioned weight registers with writable LUTRAM banks matched to parallel ports.", "LUTs fall to about 44,493, establishing a resource-feasible baseline for further work."],
+        ["E058", "Integer T16 with LUTRAM weight banks", "Use T16 in the same integer organization to measure the parallelism/resource tradeoff.", "About 18.7632 ms; this supplies the parameter baseline for clock and unroll-direction scans."],
+        ["E059", "Integer T8 with LUTRAM weight banks", "Increase parallelism again to T8.", "85,147 LUTs exceed the project's 70% budget despite remaining DSP capacity."],
+        ["E036", "T16 Conv1 unroll direction", "Shift Conv1 parallelism from output channels toward kernel grouping.", "II misses its target and cycles increase. A provisional label does not imply scheduling success."],
+        ["E037", "T16 Conv2 unroll direction", "Change Conv2 channel unrolling and its relationship to memory ports.", "Latency is unchanged and LUT use increases, yielding no better tradeoff."],
+        ["E038", "T16 Conv3 unroll direction", "Change how Conv3 parallelism splits input channels and kernel computation.", "DSPs, LUTs, and cycles all increase."],
+        ["E039", "DSP T32 LUTRAM control", "Measure LUTRAM weight banking in the explicitly DSP-bound design.", "Establish the first resource-feasible candidate. E070 separately measures physical implementation."],
+        ["E040", "DSP T32 BRAM weight banks", "Map the same weight banks to BRAM.", "Many shallow banks waste capacity: 419 BRAM18K blocks exceed the device limit."],
+        ["E064", "T16 fully partitioned weights", "Retain T16 but replace banked weights with fully partitioned registers.", "88,306 LUTs exceed the project budget."],
+        ["E067", "T16 BRAM weight banks", "Retain T16 and store weights in BRAM.", "Shallow banks consume 670 BRAM18K blocks, exceeding device capacity."],
+        ["E041", "T16 at a 5 ns target", "Keep precision/storage fixed and inspect scheduling and resources at a tighter period.", "About 9.7275 ms estimated; the target still requires physical implementation evidence."],
+        ["E042", "T16 at a 4 ns target", "Tighten the target period again without changing the architecture.", "About 8.0587 ms estimated; FIFO and per-pixel pipeline overhead remain."],
+        ["E043", "T16 at a 3.33 ns target", "Continue tightening the target under the same resource and precision budgets.", "First-round fastest resource-qualified estimate: about 6.9392 ms. This is not board performance."]
+      ]
+    },
+    {
+      "key": "micro",
+      "title": "Multiplier controls: explain HLS mapping",
+      "question": "Do narrow multipliers map to DSPs or LUTs, and how far can these local costs be generalized?",
+      "records": [
+        ["E051", "Ordinary 16x16 multiplier", "Measure DSP mapping for one signed 16x16 multiplication in isolation.", "One multiplier maps to one DSP. These PE results are not frame performance."],
+        ["E052", "Fully unrolled constant weights", "Fully unroll 64 multiplications by known constants to observe constant optimization.", "A constant-weight model differs from this project's runtime-loaded weight contract."],
+        ["E053", "8x8 fabric multiplier", "Explicitly measure LUT multiplication and exhaust operand pairs.", "DSP savings come with LUT costs that accumulate at high parallelism."],
+        ["E054", "16x16 multiplier at 4 ns", "Change only the target period and check that single-DSP mapping persists.", "Still one DSP per multiplication; this does not validate INT16 packing."],
+        ["E055", "Matched addition-only control", "Use the same array interface/loop to separate interface LUT cost from multiplier cost.", "The comparison applies to this microkernel; it cannot establish network timing."]
+      ]
+    },
+    {
+      "key": "packing",
+      "title": "A: packing from exact primitives to network cost",
+      "question": "Do DSP savings from two shared-operand products outweigh decoding and recovery logic?",
+      "records": [
+        ["P01", "Two shared-input INT8 products", "Pack two coefficients with gap18, correct borrow for a negative low field, and exhaust signed8 operand triples.", "Two products use one DSP, with additional unpacking logic compared with the direct control."],
+        ["P02", "Direct two-product control", "Compute both products separately with identical interfaces and inputs.", "Two DSPs provide the matched control for packing's LUT and pipeline costs."],
+        ["P03", "Unpack after seven terms", "Accumulate seven packed products within the signed8 safety bound before decoding.", "Accumulation/decoding costs LUTs and FFs. The seven-term bound does not apply directly to 10-bit inputs."],
+        ["P04", "Automatic packing recognition", "Remove explicit DSP binding to test compiler recognition of the expression.", "A successful local mapping does not establish automatic optimal network architecture."],
+        ["P05", "DSP pre-adder builtin", "Express pre-addition and pipeline stages with the SDK DSP48E2 builtin.", "P08 must inspect actual primitive attributes; DSP count alone does not prove pre-adder use."],
+        ["P06", "Nonnegative 10-bit activations, two terms", "Use shared activations in 0..511, allowing at most two safe low-field accumulations.", "Retain the range bound. General signed10 inputs cannot reuse this grouping."],
+        ["P07", "Exact 10-bit coefficient residual recovery", "Split coefficients into signed low8 plus a residual scaled by 256, recovering results exactly in fabric.", "10-bit quality is preserved, but per-product unpacking and residual recovery add logic."],
+        ["P08", "Inspect actual DSP pre-adder mapping", "After Vivado implementation, inspect DSP48E2 AMULTSEL, ADREG, and related attributes.", "Evidence concerns this PE's physical mapping, not full SRCNN deployment."],
+        ["P09", "Frozen-record reproduction", "Restore P01 sources, tests, and parameters under a fresh ID to validate reproducibility.", "A reproduction control introduces no new packing algorithm."],
+        ["P10", "Exact 10-bit packing network, T16", "Pack output channels in Conv1/2 and adjacent output pixels in Conv3.", "DSP use falls, but 101,488 LUTs exceed budget. Per-pixel pipeline overhead remains substantial."],
+        ["P11", "Exact 10-bit packing network, T8", "Increase parallelism with the same arithmetic.", "165,606 LUTs exceed budget. Saving multipliers does not resolve selectors and recovery logic."],
+        ["P12", "Exact 10-bit packing network, T4", "Increase parallelism further and compare time/resource tradeoffs.", "292,053 LUTs exceed budget; lower estimated latency cannot qualify this candidate."],
+        ["P13", "Complete INT16 two-product control", "Directly compute two signed16x16 products with matched interfaces and throughput as the new research baseline.", "Only plans/preparation exist in this snapshot; two measured DSPs or achieved II1 cannot be claimed."],
+        ["P14", "INT16 byte-limb packing", "Split 16-bit operands, combine packed narrow products, and recover both complete 32-bit results.", "Count unpacking, partial products, and fabric multipliers. This snapshot has no measured result."],
+        ["P15", "INT16 overlapping fields with fabric recovery", "Allow field overlap and exactly recover both complete products using fabric arithmetic.", "One DSP does not imply the total cost of two complete multiplications. Results await archiving."],
+        ["P16", "INT16 one-DSP/one-fabric control", "Directly map one product to DSP and one to LUTs, matching P15's resource types.", "Use this to assess whether overlap packing beats ordinary mixed mapping. No result exists in this snapshot."]
+      ]
+    },
+    {
+      "key": "scatter",
+      "title": "C: gather/scatter storage and control tradeoffs",
+      "question": "How much BRAM can channel reduction before buffering save, and what does it cost?",
+      "records": [
+        ["G01", "Matched gather control", "Independently rerun the same T32, 10 ns, 10-bit Conv3 line-buffer organization.", "This supplies the scatter control; compare all three organizations under identical parameters."],
+        ["G02", "Scatter with explicit padding", "Store five rows of 32-bit partial sums while retaining 32-channel padding.", "BRAM18K falls from 168 to 137, but estimated time rises from 29.83 to 37.70 ms."],
+        ["G03", "Scatter with merged boundary kernels", "Merge repeated taps for nine boundary classes and remove the wide-channel padding buffer.", "BRAM18K falls further to 87, but kernel selection, loading, and control increase estimated time to about 44.14 ms."]
+      ]
+    },
+    {
+      "key": "memory",
+      "title": "Storage routes: dataflow, DDR probe, and fused tiles",
+      "question": "Can external memory or small tiles replace full maps while preserving boundary behavior?",
+      "records": [
+        ["S01", "Global-array DDR interface probe", "Attempt to export AXI ports for global scratch arrays and examine layer-to-layer external storage.", "scratch1/2 ports are not generated; storage remains enormous on-chip arrays. This is not a valid DDR implementation."],
+        ["S02", "Whole-network dataflow control", "Reuse the matched gather design as the network control for tile fusion.", "This remeasures the same design rather than introducing a different network."],
+        ["S03", "Three-layer fused output tiles, B8", "Recompute each tile's halo, fuse local Conv1/2 computation, and buffer a small Conv2 tile.", "BRAM is low, but halo recomputation, banking, and address selection cost time and LUTs."],
+        ["S04", "Three-layer fused output tiles, B16", "Increase tile size to reduce relative halo recomputation.", "Sequential tiles still lack whole-network engine overlap; LUTs exceed budget."],
+        ["S05", "Three-layer fused output tiles, B32", "Increase output tile size again to compare buffer and recomputation costs.", "Traffic lower bounds improve, but synthesized latency and LUT use remain unacceptable."],
+        ["S06", "Three-layer fused output tiles, B64", "Scan the largest tile, including actual replicated edges and incomplete boundary tiles.", "A smaller halo ratio still does not offset control/storage costs. Bandwidth is modeled, not measured on board."]
+      ]
+    },
+    {
+      "key": "winograd",
+      "title": "D: Winograd transforms, scheduling, and weight banks",
+      "question": "After reducing multiplication, do transforms, reordering, and wider buffers become the larger costs?",
+      "records": [
+        ["W01", "10-bit integer F(2x2,3x3) PE", "Use G2=2G for integer transforms and divide the inverse result exactly by four before quantization.", "Local multiplication falls, but transform adders, width growth, reordering, and network scheduling are not yet included."],
+        ["W02", "Direct-convolution PE control", "Use the same tile to compare 36 direct products against Winograd's 16.", "DSP savings accompany higher LUT use. PE cycles are not frame latency."],
+        ["W03", "16-bit Winograd PE", "Increase input/weight widths and measure mapping of transformed 18x20-bit products.", "A Winograd primitive passes; this establishes neither INT16 packing nor a deployed 16-bit network."],
+        ["W04", "Winograd Conv1 layer, T16", "Split the 9x9 kernel into nine 3x3 kernels, transform weights at runtime, and reorder tile outputs.", "Dimension macros F2/F3 collide with AMD header identifiers; compilation fails."],
+        ["W05", "Winograd network, T16", "Connect Winograd Conv1 to Conv2/3 and measure the complete frame.", "The same header collision prevents valid synthesis results."],
+        ["W06", "Winograd network, T8", "Change parallelism while retaining the numerical contract.", "Compilation still fails. W09 independently retries the design."],
+        ["W07", "Single-layer header-order fix", "Include AMD type headers before defining network dimension macros.", "Valid layer results emerge, but conditional tile loops inflate HLS's computation iteration estimate."],
+        ["W08", "T16 network header fix", "Fix include order in an independent source copy.", "About 22.8954 ms; legal and exact, with substantial tile scheduling and buffering costs."],
+        ["W09", "T8 network header fix", "Apply the same fix at T8 parallelism.", "135,496 LUTs exceed budget; runtime transform loading has costly selectors and registers."],
+        ["W10", "Fixed tile loops, continuous Conv1 only", "Separate window generation from a fixed-count MAC loop to remove conditional-boundary iteration inflation.", "About 7.5482 ms and 241 BRAM18K blocks. Conv2/3 still have per-pixel pipeline overhead."],
+        ["W11", "Three continuous layers, T8, 4 ns", "Extend continuous scheduling to the other layers and scan T8.", "C simulation is exact, but Conv3's 8000-bit stream exceeds the tool's 4096-bit limit."],
+        ["W12", "Three continuous layers, T16, 4 ns", "Measure continuous three-layer organization at T16.", "The same stream-width limit causes synthesis failure; numerical precision is not the failure."],
+        ["W13", "Three continuous layers, T8, 3.33 ns", "Tighten the period for the same continuous organization.", "Stream width remains invalid, so no performance result is obtained."],
+        ["W14", "T8 dual 4000-bit window streams", "Split each complete Conv3 window into two synchronized channels without changing arithmetic.", "Legal synthesis estimates about 2.1302 ms, but LUT/FF budgets are exceeded."],
+        ["W15", "T16 split-window streams", "Correct the T16 stream representation.", "About 4.2274 ms, but 89,114 LUTs still exceed the project budget."],
+        ["W16", "T8 split-window streams, 3.33 ns", "Fix stream width and measure the tighter period.", "The 1.7735 ms estimate exceeds LUT/FF budgets and cannot qualify as a candidate."],
+        ["W17", "T8 narrow raw-weight banks", "Reduce channel banking for raw weights used only by sequential transforms; retain transformed MAC banks.", "LUTs decrease substantially but remain at 93,166, above budget."],
+        ["W18", "T16 narrow raw-weight banks", "Measure the same loader/banking adjustment at T16.", "About 4.2274 ms, 326 DSPs, and 74,480 LUTs meet this route's resource budget. Final RTL/implementation remain pending."]
+      ]
+    },
+    {
+      "key": "combination",
+      "title": "Combinations: can Winograd and packing savings add up?",
+      "question": "After local multiplier savings, are enough LUTs, FFs, and buffers left for the whole network?",
+      "records": [
+        ["C01", "Winograd plus Conv2/3 packing, T4", "Combine Conv1 Winograd with exact 10-bit packing in both later layers.", "Header dimension macros collide and compilation fails. A paper DSP budget is not a hardware result."],
+        ["C02", "Winograd plus Conv3 packing only, T4", "Keep Conv2 direct to isolate its packing cost.", "The same header collision applies; C05 retries it."],
+        ["C03", "Winograd plus Conv2/3 packing, T8", "Lower parallelism to control resource use.", "The same compilation problem applies; C06 independently fixes it."],
+        ["C04", "Two-layer packing header fix", "Fix only include order, retaining mathematics, precision, and parameters.", "LUT/FF use greatly exceeds budget. Fitting 936 DSPs does not establish overall feasibility."],
+        ["C05", "Conv3-only packing header fix", "Run the valid control with one fewer packed layer.", "About 260,882 LUTs still prevent a resource-qualified combination."],
+        ["C06", "T8 combination header fix", "Validly measure the combination at lower parallelism.", "470 DSPs fit, but 170,165 LUTs exceed budget."],
+        ["C07", "Continuously scheduled 10-bit combination", "Separate window generation from fixed MAC loops in the combined architecture.", "C simulation does not pass. C12 records a separate corrective retry."],
+        ["C12", "Continuous-combination guard fix", "Fix control/representation while preserving the arithmetic contract.", "Functionality is exact, but 174,591 LUTs exceed budget."],
+        ["C08", "Conv2 8-bit-weight combination, T8", "Use validated 8-bit weights only in Conv2 to remove its 10-bit coefficient residual recovery.", "The 8000-bit Conv3 stream exceeds the tool limit; synthesis fails."],
+        ["C09", "Conv2 8-bit-weight combination, T4", "Scan greater parallelism with the same mixed precision.", "The same stream-width limit applies; C11 fixes it."],
+        ["C10", "T8 mixed combination with split windows", "Use two synchronized 4000-bit channels while retaining quantization and MAC arithmetic.", "About 2.1302 ms and 520 DSPs, but 150,851 LUTs exceed budget."],
+        ["C11", "T4 mixed combination with split windows", "Fix window representation at T4.", "The 1.0817 ms estimate needs 248,797 LUTs and 307,525 FFs, so it cannot be selected as a deployment candidate."]
+      ]
+    },
+    {
+      "key": "continuous",
+      "title": "Continuing B: pipelines, windows, and loader timing",
+      "question": "Can direct convolution avoid pixel pipeline restarts, wide selectors, and a one-time loader critical path?",
+      "records": [
+        ["F01", "Shallow wide FIFOs in LUTRAM", "Retain T16 and per-pixel scheduling; explicitly bind shallow wide feature FIFOs to LUTRAM.", "BRAM18K falls from 168 to 96 without reducing estimated cycles."],
+        ["F02", "Conv3 line buffers in URAM", "Move four wide buffer rows into 20 URAM blocks.", "BRAM18K falls to 132, but URAM depth utilization is low and latency is unchanged."],
+        ["F03", "Continuous MACs with original padding", "Separate window generation and MAC engines; run all pixels/groups in continuous II1 loops with registered balanced adder trees.", "The tool rejects the 8000-bit Conv3 window stream. Original padding control may also stall finite FIFOs."],
+        ["F04", "Continuous MACs and online padding, T16", "Read later rows while emitting replicated boundaries to reduce whole-row read-then-write serial phases.", "The same stream-width limit applies. F09 later obtains valid synthesis."],
+        ["F05", "Continuous MACs and online padding, T8", "Increase parallelism and measure T8 time/resource costs.", "Stream width prevents valid synthesis in this run."],
+        ["F06", "Continuous T16, 3.33 ns", "Retain T16 and tighten the target period.", "Stream width still prevents synthesis; F11 fixes it."],
+        ["F07", "Continuous T8, 3.33 ns", "Combine greater parallelism with a tighter target.", "Stream width remains invalid. This run provides no speed evidence."],
+        ["F08", "Legal split windows, original padding", "Replace the complete window stream with two 4000-bit FIFOs while retaining continuous computation and original padding.", "About 4.1947 ms estimated. Dynamic Conv3 channel selectors and finite-FIFO costs motivate further work."],
+        ["F09", "Legal split windows, online padding, T16", "Retain synchronized split channels and measure online padding at T16.", "BRAM18K falls to 73. HLS cycles barely change; padding throughput needs RTL checks."],
+        ["F10", "Legal split windows, online padding, T8", "Fix wide streams and measure greater parallelism.", "Estimated time improves, but LUT/FF budgets are exceeded."],
+        ["F11", "Legal continuous T16, 3.33 ns", "Fix stream representation and measure the tighter T16 target.", "About 3.4922 ms estimated. Target frequency is not achieved physical frequency."],
+        ["F12", "Legal continuous T8, 3.33 ns", "Fix stream representation and measure the tighter T8 target.", "The 1.7599 ms estimate comes with excessive LUT/FF use."],
+        ["F13", "Rotating Conv3 channels, T16", "Rotate used channels away each round so multipliers read fixed positions; retain registered adder trees.", "Dynamic selectors shrink and cycles remain similar. Float output conversion still limits the global timing estimate."],
+        ["F14", "Rotating channels, T8, registered tree", "Change T to measure fixed-position reads at greater parallelism.", "LUT/FF budgets are exceeded."],
+        ["F15", "Rotating channels, T8, unregistered tree", "Bind adder-tree latency to zero to isolate register-stage effects on FFs and timing.", "FF use falls but LUTs exceed budget. Removing registers does not guarantee timing."],
+        ["F16", "Exact float-output construction PE", "Since all raw 10-bit outputs are exactly representable as float, construct sign/exponent/mantissa directly.", "SDK namespace and ap_int conditional-expression type mismatches cause compilation failure."],
+        ["F17", "Ordinary float-conversion PE control", "Measure the original conversion/division on the same input set.", "Compilation problems in the probe project require a separate retry."],
+        ["F18", "Exact-float SDK fix", "Fix fp_struct naming and explicit sign branches for the installed SDK.", "Design/test translation units share a name and produce duplicate objects; linking fails."],
+        ["F19", "Ordinary-conversion SDK fix control", "Retain ordinary conversion in the corrected probe project.", "Object-name collisions persist; F21 fixes them."],
+        ["F20", "Valid exact-float construction probe", "Rename only the design translation unit to kernel.cpp and exhaust all 1024 output encodings.", "Zero DSPs and 242 LUTs. This measures only output encoding; the network critical path may shift elsewhere."],
+        ["F21", "Valid ordinary-conversion control", "Measure ordinary float conversion with matching interfaces and samples.", "Three DSPs and a 3.239 ns estimated path provide a valid control for F20."],
+        ["F22", "Integrate exact output encoding, 3 ns", "Replace only fixed-point-to-float output encoding, retaining 10-bit values and continuous inference engines.", "DSPs fall from 505 to 502. Loader addresses and inference control may limit the clock after conversion is removed."],
+        ["F23", "Integrate exact output encoding, 2.5 ns", "Tighten the target to locate the global critical path.", "Address multiplication in the one-time Conv1 weight loader sets the global estimate to 2.822 ns."],
+        ["F24", "Explicit three-dimensional loader indices", "Replace division/modulo-derived addresses with output-channel/kernel-row/kernel-column counters.", "The address multiplier disappears, but automatically flattened counter control still has a 2.699 ns estimate."],
+        ["F25", "Disable weight-loader loop flattening", "Add LOOP_FLATTEN off only to the Conv1 loader inner loop; retain all inference engines.", "About 2.64226 ms and 73 BRAM18K blocks. Loading cycles increase slightly; 2.5 ns still has HLS timing warnings after uncertainty."]
+      ]
+    },
+    {
+      "key": "verification",
+      "title": "Candidate verification: separate acceptance steps",
+      "question": "What is established for function, RTL cycles, routed timing, and board execution?",
+      "records": [
+        ["E069", "Multi-image acceptance for E043", "Compare the best first-round candidate bit for bit on all 13 supplied images.", "Multi-image checks pass, but comic remains missing. This is not board acceptance."],
+        ["E070", "Physical implementation of E039", "Run Vivado synthesis, placement, and routing; record actual utilization and timing.", "Implementation completes, but WNS=-1.277 ns at 10 ns means timing fails."],
+        ["F80", "F25 C simulation on 13 images", "Check all supplied Set14 pairs and two butterfly frames, comparing every output bit with the independent fixed-point reference.", "The average quality gate passes, but missing comic prevents full 14-image acceptance."],
+        ["F81", "F25 Vivado implementation", "Run physical implementation in an independent workspace.", "Kernel logs confirm host OOM kills synthesis. No routed resource/timing results exist."],
+        ["F82", "F25 two-frame C/RTL co-simulation", "Run the same F25 RTL on two frames with finite-FIFO profiling and deadlock checks.", "Pass; maximum latency is 1,068,183 cycles, about 1.07% above synthesis, with about 103 minutes wall time. Functionality does not prove physical timing."],
+        ["F83", "F24 C simulation on 13 images", "Validate the second candidate on the complete supplied image set.", "Outputs match the reference bit for bit. Precision matches F25, while hardware verification remains separate."],
+        ["F84", "F24 Vivado implementation", "Independently measure the second candidate's physical results.", "Host OOM interrupts the run. No routed results exist, so timing cannot be marked passed."],
+        ["F85", "F24 two-frame RTL plan", "Plan finite-FIFO, state-reset, and RTL-cycle validation.", "This snapshot contains a plan only; no completed result is archived."],
+        ["F86", "F23 multi-image C-simulation plan", "Plan acceptance of the third candidate on all supplied images.", "No run results exist in this snapshot."],
+        ["F87", "F23 Vivado implementation plan", "Plan routed utilization and timing measurements for the third candidate.", "No completed report exists in this snapshot."],
+        ["F88", "F23 two-frame RTL plan", "Plan finite-FIFO RTL verification for the third candidate.", "No completed result exists in this snapshot."],
+        ["F89", "F25 serial implementation retry plan", "Retain the generated IP/BD flow and limit Vivado internal threads through a per-run Tcl hook.", "This addresses host memory pressure; estimates cannot replace actual routed results."],
+        ["F90", "F24 serial implementation retry plan", "Apply the same flow control to the second candidate.", "No actual result exists in this snapshot; timing and precision gates are unchanged."],
+        ["F91", "F23 serial implementation plan", "Plan the same thread-limited verification flow for the third candidate.", "F87 is also a plan. This relationship describes verification flow and does not claim F87 already failed from OOM."]
+      ]
+    }
+  ]
+}

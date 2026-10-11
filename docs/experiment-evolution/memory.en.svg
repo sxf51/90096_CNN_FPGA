@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" width="1444" height="1539" viewBox="0 0 1444 1539">
+<title>Storage routes: dataflow, DDR probe, and fused tiles</title>
+<desc>Can external memory or small tiles replace full maps while preserving boundary behavior?. Snapshot 800a87a. Experiment relationships are not Git ancestry.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="1444" height="1539" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">Storage routes: dataflow, DDR probe, and fused tiles</text>
+<text x="48" y="81.5" font-size="17" font-weight="400" fill="#435654">Can external memory or small tiles replace full maps while preserving boundary behavior?</text>
+<text x="48" y="114" font-size="16" font-weight="400" fill="#526461">Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.</text>
+<text x="48" y="146" font-size="16" font-weight="400" fill="#526461">Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.</text>
+<path d="M258.00 659.00 L258.00 760.00 L258.00 808.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M742.00 343.00 L742.00 391.00 L742.00 439.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M467.99 659.00 L467.99 760.00 L722.00 760.00 L722.00 819.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M742.00 712.00 L742.00 760.00 L735.93 760.00 L735.93 819.50" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M512.00 1044.71 L512.00 1152.00 L258.00 1152.00 L258.00 1212.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M722.00 1092.50 L722.00 1152.00 L722.00 1200.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M932.00 1044.71 L932.00 1152.00 L1186.00 1152.00 L1186.00 1200.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<g data-id="S01">
+<rect x="48.00" y="808.00" width="420" height="296" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="835.00" font-size="17" font-weight="700" fill="#243031">S01</text>
+<text x="72.00" y="866.50" font-size="20" font-weight="700" fill="#243031">Global-array DDR interface</text>
+<text x="72.00" y="896.50" font-size="20" font-weight="700" fill="#243031">probe</text>
+<text x="72.00" y="932.50" font-size="16" font-weight="400" fill="#243031">Attempt to export AXI ports for</text>
+<text x="72.00" y="956.50" font-size="16" font-weight="400" fill="#243031">global scratch arrays and examine</text>
+<text x="72.00" y="980.50" font-size="16" font-weight="400" fill="#243031">layer-to-layer external storage.</text>
+<text x="72.00" y="1010.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 167.3047 ms / DSP 254</text>
+<text x="72.00" y="1040.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: BRAM18K; Invalid</text>
+<text x="72.00" y="1063.00" font-size="15" font-weight="400" fill="#5c6160">configuration</text>
+</g>
+<g data-id="S02">
+<rect x="532.00" y="439.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="556.00" y="466.00" font-size="17" font-weight="700" fill="#243031">S02</text>
+<text x="556.00" y="497.50" font-size="20" font-weight="700" fill="#243031">Whole-network dataflow</text>
+<text x="556.00" y="527.50" font-size="20" font-weight="700" fill="#243031">control</text>
+<text x="556.00" y="563.50" font-size="16" font-weight="400" fill="#243031">Reuse the matched gather design as</text>
+<text x="556.00" y="587.50" font-size="16" font-weight="400" fill="#243031">the network control for tile</text>
+<text x="556.00" y="611.50" font-size="16" font-weight="400" fill="#243031">fusion.</text>
+<text x="556.00" y="641.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.8302 ms / DSP 254</text>
+<text x="556.00" y="671.50" font-size="15" font-weight="400" fill="#5c6160">Candidate; final acceptance pending</text>
+</g>
+<g data-id="S03">
+<rect x="512.00" y="819.50" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="536.00" y="846.50" font-size="17" font-weight="700" fill="#243031">S03</text>
+<text x="536.00" y="878.00" font-size="20" font-weight="700" fill="#243031">Three-layer fused output</text>
+<text x="536.00" y="908.00" font-size="20" font-weight="700" fill="#243031">tiles, B8</text>
+<text x="536.00" y="944.00" font-size="16" font-weight="400" fill="#243031">Recompute each tile&apos;s halo, fuse</text>
+<text x="536.00" y="968.00" font-size="16" font-weight="400" fill="#243031">local Conv1/2 computation, and</text>
+<text x="536.00" y="992.00" font-size="16" font-weight="400" fill="#243031">buffer a small Conv2 tile.</text>
+<text x="536.00" y="1022.00" font-size="16" font-weight="700" fill="#243031">HLS estimate 228.0354 ms / DSP 296</text>
+<text x="536.00" y="1052.00" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT</text>
+</g>
+<g data-id="S04">
+<rect x="48.00" y="1212.00" width="420" height="249" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="1239.00" font-size="17" font-weight="700" fill="#243031">S04</text>
+<text x="72.00" y="1270.50" font-size="20" font-weight="700" fill="#243031">Three-layer fused output</text>
+<text x="72.00" y="1300.50" font-size="20" font-weight="700" fill="#243031">tiles, B16</text>
+<text x="72.00" y="1336.50" font-size="16" font-weight="400" fill="#243031">Increase tile size to reduce</text>
+<text x="72.00" y="1360.50" font-size="16" font-weight="400" fill="#243031">relative halo recomputation.</text>
+<text x="72.00" y="1390.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 167.5398 ms / DSP 296</text>
+<text x="72.00" y="1420.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT</text>
+</g>
+<g data-id="S05">
+<rect x="512.00" y="1200.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="536.00" y="1227.00" font-size="17" font-weight="700" fill="#243031">S05</text>
+<text x="536.00" y="1258.50" font-size="20" font-weight="700" fill="#243031">Three-layer fused output</text>
+<text x="536.00" y="1288.50" font-size="20" font-weight="700" fill="#243031">tiles, B32</text>
+<text x="536.00" y="1324.50" font-size="16" font-weight="400" fill="#243031">Increase output tile size again to</text>
+<text x="536.00" y="1348.50" font-size="16" font-weight="400" fill="#243031">compare buffer and recomputation</text>
+<text x="536.00" y="1372.50" font-size="16" font-weight="400" fill="#243031">costs.</text>
+<text x="536.00" y="1402.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 141.6638 ms / DSP 296</text>
+<text x="536.00" y="1432.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT</text>
+</g>
+<g data-id="S06">
+<rect x="976.00" y="1200.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1000.00" y="1227.00" font-size="17" font-weight="700" fill="#243031">S06</text>
+<text x="1000.00" y="1258.50" font-size="20" font-weight="700" fill="#243031">Three-layer fused output</text>
+<text x="1000.00" y="1288.50" font-size="20" font-weight="700" fill="#243031">tiles, B64</text>
+<text x="1000.00" y="1324.50" font-size="16" font-weight="400" fill="#243031">Scan the largest tile, including</text>
+<text x="1000.00" y="1348.50" font-size="16" font-weight="400" fill="#243031">actual replicated edges and</text>
+<text x="1000.00" y="1372.50" font-size="16" font-weight="400" fill="#243031">incomplete boundary tiles.</text>
+<text x="1000.00" y="1402.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 129.8187 ms / DSP 296</text>
+<text x="1000.00" y="1432.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT</text>
+</g>
+<g data-id="E048">
+<rect x="48.00" y="492.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="519.00" font-size="17" font-weight="700" fill="#243031">E048 / external parent</text>
+<text x="72.00" y="550.50" font-size="20" font-weight="700" fill="#243031">Integer carriers for</text>
+<text x="72.00" y="580.50" font-size="20" font-weight="700" fill="#243031">fixed-point arithmetic</text>
+<text x="72.00" y="616.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.1386 ms / DSP 254</text>
+</g>
+<g data-id="G01">
+<rect x="532.00" y="206.00" width="420" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="556.00" y="233.00" font-size="17" font-weight="700" fill="#243031">G01 / external parent</text>
+<text x="556.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Matched gather control</text>
+<text x="556.00" y="300.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.8302 ms / DSP 254</text>
+</g>
+</svg>

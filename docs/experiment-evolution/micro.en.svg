@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" width="1444" height="1492" viewBox="0 0 1444 1492">
+<title>Multiplier controls: explain HLS mapping</title>
+<desc>Do narrow multipliers map to DSPs or LUTs, and how far can these local costs be generalized?. Snapshot 800a87a. Experiment relationships are not Git ancestry.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="1444" height="1492" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">Multiplier controls: explain HLS mapping</text>
+<text x="48" y="81.5" font-size="17" font-weight="400" fill="#435654">Do narrow multipliers map to DSPs or LUTs, and how far can these local costs be generalized?</text>
+<text x="48" y="114" font-size="16" font-weight="400" fill="#526461">Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.</text>
+<text x="48" y="146" font-size="16" font-weight="400" fill="#526461">Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.</text>
+<path d="M722.00 373.00 L722.00 421.00 L722.00 469.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M512.00 649.78 L512.00 736.00 L258.00 736.00 L258.00 784.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M722.00 688.00 L722.00 736.00 L722.00 799.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M932.00 649.78 L932.00 736.00 L1186.00 736.00 L1186.00 799.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M722.00 1042.00 L722.00 1105.00 L722.00 1153.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<g data-id="E051">
+<rect x="512.00" y="469.00" width="420" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="536.00" y="496.00" font-size="17" font-weight="700" fill="#243031">E051</text>
+<text x="536.00" y="527.50" font-size="20" font-weight="700" fill="#243031">Ordinary 16x16 multiplier</text>
+<text x="536.00" y="563.50" font-size="16" font-weight="400" fill="#243031">Measure DSP mapping for one signed</text>
+<text x="536.00" y="587.50" font-size="16" font-weight="400" fill="#243031">16x16 multiplication in isolation.</text>
+<text x="536.00" y="617.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 62</text>
+<text x="536.00" y="647.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="E052">
+<rect x="48.00" y="784.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="72.00" y="811.00" font-size="17" font-weight="700" fill="#243031">E052</text>
+<text x="72.00" y="842.50" font-size="20" font-weight="700" fill="#243031">Fully unrolled constant</text>
+<text x="72.00" y="872.50" font-size="20" font-weight="700" fill="#243031">weights</text>
+<text x="72.00" y="908.50" font-size="16" font-weight="400" fill="#243031">Fully unroll 64 multiplications by</text>
+<text x="72.00" y="932.50" font-size="16" font-weight="400" fill="#243031">known constants to observe constant</text>
+<text x="72.00" y="956.50" font-size="16" font-weight="400" fill="#243031">optimization.</text>
+<text x="72.00" y="986.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 60 / LUT 424</text>
+<text x="72.00" y="1016.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="E053">
+<rect x="512.00" y="799.00" width="420" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="536.00" y="826.00" font-size="17" font-weight="700" fill="#243031">E053</text>
+<text x="536.00" y="857.50" font-size="20" font-weight="700" fill="#243031">8x8 fabric multiplier</text>
+<text x="536.00" y="893.50" font-size="16" font-weight="400" fill="#243031">Explicitly measure LUT</text>
+<text x="536.00" y="917.50" font-size="16" font-weight="400" fill="#243031">multiplication and exhaust operand</text>
+<text x="536.00" y="941.50" font-size="16" font-weight="400" fill="#243031">pairs.</text>
+<text x="536.00" y="971.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 0 / LUT 119</text>
+<text x="536.00" y="1001.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="E054">
+<rect x="976.00" y="799.00" width="420" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1000.00" y="826.00" font-size="17" font-weight="700" fill="#243031">E054</text>
+<text x="1000.00" y="857.50" font-size="20" font-weight="700" fill="#243031">16x16 multiplier at 4 ns</text>
+<text x="1000.00" y="893.50" font-size="16" font-weight="400" fill="#243031">Change only the target period and</text>
+<text x="1000.00" y="917.50" font-size="16" font-weight="400" fill="#243031">check that single-DSP mapping</text>
+<text x="1000.00" y="941.50" font-size="16" font-weight="400" fill="#243031">persists.</text>
+<text x="1000.00" y="971.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 62</text>
+<text x="1000.00" y="1001.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="E055">
+<rect x="512.00" y="1153.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="536.00" y="1180.00" font-size="17" font-weight="700" fill="#243031">E055</text>
+<text x="536.00" y="1211.50" font-size="20" font-weight="700" fill="#243031">Matched addition-only</text>
+<text x="536.00" y="1241.50" font-size="20" font-weight="700" fill="#243031">control</text>
+<text x="536.00" y="1277.50" font-size="16" font-weight="400" fill="#243031">Use the same array interface/loop</text>
+<text x="536.00" y="1301.50" font-size="16" font-weight="400" fill="#243031">to separate interface LUT cost from</text>
+<text x="536.00" y="1325.50" font-size="16" font-weight="400" fill="#243031">multiplier cost.</text>
+<text x="536.00" y="1355.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 0 / LUT 73</text>
+<text x="536.00" y="1385.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="E047">
+<rect x="512.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="536.00" y="233.00" font-size="17" font-weight="700" fill="#243031">E047 / external parent</text>
+<text x="536.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Explicit DSP multiplier</text>
+<text x="536.00" y="294.50" font-size="20" font-weight="700" fill="#243031">binding</text>
+<text x="536.00" y="330.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.1386 ms / DSP 251</text>
+</g>
+</svg>

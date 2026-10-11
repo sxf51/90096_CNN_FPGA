@@ -1,0 +1,60 @@
+%% Candidate verification: separate acceptance steps
+flowchart TB
+  E069["E069<br/>Multi-image acceptance for E043<br/>Compare the best first-round candidate bit for bit on all 13 supplied images.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
+  E070["E070<br/>Physical implementation of E039<br/>Run Vivado synthesis, placement, and routing; record actual utilization and timing.<br/>Routed WNS -1.277 ns<br/>Routed timing failed"]
+  F80["F80<br/>F25 C simulation on 13 images<br/>Check all supplied Set14 pairs and two butterfly frames, comparing every output bit with the independent fixed-point reference.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
+  F81["F81<br/>F25 Vivado implementation<br/>Run physical implementation in an independent workspace.<br/>Host OOM; no routed results<br/>Host OOM"]
+  F82["F82<br/>F25 two-frame C/RTL co-simulation<br/>Run the same F25 RTL on two frames with finite-FIFO profiling and deadlock checks.<br/>RTL Pass / 1068183 cycles<br/>RTL co-simulation complete"]
+  F83["F83<br/>F24 C simulation on 13 images<br/>Validate the second candidate on the complete supplied image set.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
+  F84["F84<br/>F24 Vivado implementation<br/>Independently measure the second candidate's physical results.<br/>Host OOM; no routed results<br/>Host OOM"]
+  F85["F85<br/>F24 two-frame RTL plan<br/>Plan finite-FIFO, state-reset, and RTL-cycle validation.<br/>Prepared; no archived measurements<br/>No archived measurements"]
+  F86["F86<br/>F23 multi-image C-simulation plan<br/>Plan acceptance of the third candidate on all supplied images.<br/>Prepared; no archived measurements<br/>No archived measurements"]
+  F87["F87<br/>F23 Vivado implementation plan<br/>Plan routed utilization and timing measurements for the third candidate.<br/>Prepared; no archived measurements<br/>No archived measurements"]
+  F88["F88<br/>F23 two-frame RTL plan<br/>Plan finite-FIFO RTL verification for the third candidate.<br/>Prepared; no archived measurements<br/>No archived measurements"]
+  F89["F89<br/>F25 serial implementation retry plan<br/>Retain the generated IP/BD flow and limit Vivado internal threads through a per-run Tcl hook.<br/>Prepared; no archived measurements<br/>No archived measurements"]
+  F90["F90<br/>F24 serial implementation retry plan<br/>Apply the same flow control to the second candidate.<br/>Prepared; no archived measurements<br/>No archived measurements"]
+  F91["F91<br/>F23 serial implementation plan<br/>Plan the same thread-limited verification flow for the third candidate.<br/>Prepared; no archived measurements<br/>No archived measurements"]
+  E017["E017 / external parent<br/>10-bit boundaries and integer reference<br/>C simulation / avg delta PSNR -0.0695 dB"]
+  E039["E039 / external parent<br/>DSP T32 LUTRAM control<br/>HLS estimate 29.8302 ms / DSP 251"]
+  E043["E043 / external parent<br/>T16 at a 3.33 ns target<br/>HLS estimate 6.9392 ms / DSP 505"]
+  F23["F23 / external parent<br/>Integrate exact output encoding, 2.5 ns<br/>HLS estimate 2.9595 ms / DSP 502"]
+  F24["F24 / external parent<br/>Explicit three-dimensional loader indices<br/>HLS estimate 2.8305 ms / DSP 502"]
+  F25["F25 / external parent<br/>Disable weight-loader loop flattening<br/>HLS estimate 2.6423 ms / DSP 502"]
+  E043 -.->|Verify the same design| E069
+  E017 -.->|Numerical reference or research motivation| E069
+  E039 -.->|Verify the same design| E070
+  F25 -.->|Verify the same design| F80
+  E017 -.->|Numerical reference or research motivation| F80
+  F25 -.->|Verify the same design| F81
+  F80 -.->|Numerical reference or research motivation| F81
+  F25 -.->|Verify the same design| F82
+  F80 -.->|Numerical reference or research motivation| F82
+  F24 -.->|Verify the same design| F83
+  E017 -.->|Numerical reference or research motivation| F83
+  F24 -.->|Verify the same design| F84
+  F83 -.->|Numerical reference or research motivation| F84
+  F24 -.->|Verify the same design| F85
+  F83 -.->|Numerical reference or research motivation| F85
+  F23 -.->|Verify the same design| F86
+  E017 -.->|Numerical reference or research motivation| F86
+  F23 -.->|Verify the same design| F87
+  F86 -.->|Numerical reference or research motivation| F87
+  F23 -.->|Verify the same design| F88
+  F86 -.->|Numerical reference or research motivation| F88
+  F81 -->|Retry after a fix| F89
+  F25 -.->|Verify the same design| F89
+  F84 -->|Retry after a fix| F90
+  F24 -.->|Verify the same design| F90
+  F87 -->|Retry after a fix| F91
+  F23 -.->|Verify the same design| F91
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E069,F80,F82,F83 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E070,F81,F84 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  class F85,F86,F87,F88,F89,F90,F91 planned
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E017,E039,E043,F23,F24,F25 context

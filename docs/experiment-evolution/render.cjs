@@ -20,7 +20,12 @@ function loadDagre() {
 }
 
 const dagre = loadDagre();
-const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data.json'), 'utf8'));
+const langIndex = process.argv.indexOf('--lang');
+const lang = langIndex < 0 ? 'zh' : process.argv[langIndex + 1];
+if (!['zh', 'en'].includes(lang)) throw new Error('--lang must be zh or en');
+const english = lang === 'en';
+const suffix = english ? '.en' : '';
+const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data' + suffix + '.json'), 'utf8'));
 const byId = new Map(data.records.map(record => [record.id, record]));
 const xml = value => String(value).replace(/[<>&"']/g, ch => ({
   '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;'
@@ -32,14 +37,14 @@ const colors = {
   context: ['#f4f5f5', '#b7bfbf']
 };
 const solid = new Set(['source', 'retry', 'integrate']);
-const nodeWidth = 354;
-const font = 'Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif';
+const nodeWidth = english ? 420 : 354;
+const font = english ? 'Arial, Helvetica, sans-serif' : 'Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif';
 
 function textWidth(text, size) {
-  return Array.from(text).reduce((width, ch) => width + size * (ch.codePointAt(0) > 255 ? 1 : 0.63), 0);
+  return Array.from(text).reduce((width, ch) => width + size * (ch.codePointAt(0) > 255 ? 1 : english ? 0.66 : 0.63), 0);
 }
 
-function wrap(text, size, width) {
+function wrapCharacters(text, size, width) {
   const lines = [];
   let line = '';
   for (const ch of Array.from(text)) {
@@ -51,6 +56,29 @@ function wrap(text, size, width) {
     }
   }
   if (line) lines.push(line);
+  return lines;
+}
+
+function wrap(text, size, width) {
+  if (!english) return wrapCharacters(text, size, width);
+  const lines = [];
+  for (const paragraph of text.split('\n')) {
+    let line = '';
+    for (const word of paragraph.split(/\s+/).filter(Boolean)) {
+      if (textWidth(word, size) > width) {
+        if (line) lines.push(line);
+        const chunks = wrapCharacters(word, size, width);
+        lines.push(...chunks.slice(0, -1));
+        line = chunks[chunks.length - 1];
+      } else if (line && textWidth(line + ' ' + word, size) > width) {
+        lines.push(line);
+        line = word;
+      } else {
+        line += (line ? ' ' : '') + word;
+      }
+    }
+    if (line) lines.push(line);
+  }
   return lines;
 }
 
@@ -69,18 +97,34 @@ function block(node) {
 
 function experimentNode(record, context = false) {
   const lines = [
-    [record.id + (context ? ' / 外部来源' : ''), 17, true],
+    [record.id + (context ? english ? ' / external parent' : ' / 外部来源' : ''), 17, true],
     [record.title, 20, true]
   ];
   if (!context) lines.push([record.change, 16, false]);
   lines.push([record.graph.result, 16, true]);
   if (!context) lines.push([record.graph.flags, 15, false, '#5c6160']);
   return block({ id: record.id, tone: context ? 'context' : record.graph.tone,
-    context, href: 'records.md#' + record.id.toLowerCase(), lines });
+    context, href: 'records' + suffix + '.md#' + record.id.toLowerCase(), lines });
 }
 
 // Overview edges select the main causal steps; detailed graphs retain every catalog edge.
-const overviewNodes = [
+const overviewNodes = (english ? [
+  ['baseline', 'E000 / starting point', 'Original float32, full maps', '522.28 M MAC / frame\nBRAM18K 11064; device has 288', 'Function passes; storage cannot fit', 'infeasible', 'precision'],
+  ['precision', 'E010-E019 / E062-E071', 'Precision and independent references', '10-bit avg delta PSNR -0.0695 dB\nAll 8-bit: about -5.18 dB', '13 images; missing comic; bit-exact to fixed reference', 'analysis', 'precision'],
+  ['compiler', 'E020-E029 / E032', 'Compiler directives only', 'Valid float control: about 3811 ms\nBRAM18K 11114', 'Fixing invalid keys still leaves full-map storage', 'infeasible', 'compiler'],
+  ['streaming', 'E030-E033 / E047-E048', 'Network streams and line buffers', 'Remove intermediate maps: BRAM18K 168\nDSP binding and integer carriers', 'Weight selectors remain large: LUT 89304', 'infeasible', 'streaming'],
+  ['scans', 'E034-E043 / E057-E067 scans', 'LUTRAM banks, unrolling, and clock', 'E043: HLS about 6.9392 ms\nDSP 505 / BRAM18K 168', 'Within resource budget; HLS timing warning', 'warning', 'scans'],
+  ['micro', 'E051-E055 / E071', 'Multiplier and range controls', 'DSP / fabric / constant-weight controls', 'Primitive costs are not network results', 'analysis', 'micro'],
+  ['packing', 'A / P01-P16', 'Packing: the cost of saving DSPs', 'INT8 and exact10 primitives pass\nP10-P12 networks exceed LUT budget', 'P13-P16: complete INT16; preparation only', 'infeasible', 'packing'],
+  ['scatter', 'C / E050 / E060 / G01-G03', 'Conv3 scatter', 'BRAM18K 168 -> 137 -> 87\n29.83 -> 37.70 -> 44.14 ms', 'Less storage; more control and work', 'analysis', 'scatter'],
+  ['memory', 'S01-S06', 'DDR probe and fused tiles', 'DDR scratch ports not exported\nB8-B64: less BRAM, halo recomputation', 'DDR invalid; tiles miss LUT/time budgets', 'infeasible', 'memory'],
+  ['winograd', 'D / W01-W18', 'Winograd, continuous tiles, narrow banks', 'W18: HLS about 4.2274 ms\nDSP 326 / LUT 74480', 'Within resource budget; HLS timing warning', 'warning', 'winograd'],
+  ['continuous', 'B / F01-F15', 'Continuous pipelines and fixed reads', 'LUTRAM FIFOs, online padding\nSplit windows, channel rotation, registered trees', 'Avoid pixel restarts and reduce wide selectors', 'candidate', 'continuous'],
+  ['combination', 'C01-C12 / combined experiments', 'Winograd plus packing/mixed precision', 'Lowest raw estimate C11: 1.0817 ms\nLUT 248797 / FF 307525', 'Resource limits exclude it from candidate ranking', 'infeasible', 'combination'],
+  ['loader', 'F16-F24', 'Output conversion and loader timing', 'F20: exact float encoding, zero DSPs\nF24: explicit 3D weight-loader indices', 'Global critical path moves to loader counters', 'warning', 'continuous'],
+  ['f25', 'F25 / direct-convolution candidate', 'Disable F24 weight-loader flattening', 'HLS about 2.64226 ms / DSP 502\nBRAM18K 73 / LUT 69976', '2.5 ns still warns after clock uncertainty', 'warning', 'continuous'],
+  ['verification', 'E069-E070 / F80-F91', 'Numerical, RTL, and physical checks', 'F80: 13 images; F82: two-frame RTL Pass\nF81/F84: host OOM; no routed reports', 'E070 WNS<0; physical timing and board acceptance pending', 'warning', 'verification']
+] : [
   ['baseline', 'E000 / 起点', '原始浮点、完整中间图', '522.28 M MAC / frame\nBRAM18K 11064，器件仅 288', '功能成立，存储结构不可行', 'infeasible', 'precision'],
   ['precision', 'E010-E019 / E062-E071', '精度与独立参考', '10 位平均 ΔPSNR −0.0695 dB\n全 8 位约 −5.18 dB', '13 图，缺 comic；bit-exact 指定点参考', 'analysis', 'precision'],
   ['compiler', 'E020-E029 / E032', '只改编译指令', '有效浮点控制约 3811 ms\nBRAM18K 11114', '修复无效配置后，仍需改存储组织', 'infeasible', 'compiler'],
@@ -96,8 +140,8 @@ const overviewNodes = [
   ['loader', 'F16-F24', '移除输出转换与加载路径瓶颈', 'F20：精确 float 编码，0 DSP\nF24：显式三维权重加载索引', '全局关键路径转到加载循环控制', 'warning', 'continuous'],
   ['f25', 'F25 / 当前直接卷积候选', '关闭 F24 的权重加载循环合并', 'HLS 约 2.64226 ms / DSP 502\nBRAM18K 73 / LUT 69976', '2.5 ns 有 uncertainty 后的时序告警', 'warning', 'continuous'],
   ['verification', 'E069-E070 / F80-F91', '数值、RTL、物理分别验收', 'F80：13 图；F82：双帧 RTL Pass\nF81/F84：主机 OOM，无 routed 报告', 'E070 WNS<0；物理时序与上板未闭环', 'warning', 'verification']
-].map(([id, label, title, result, issue, tone, section]) => block({ id, tone,
-  href: section + '.svg', lines: [[label, 17, true], [title, 20, true],
+]).map(([id, label, title, result, issue, tone, section]) => block({ id, tone,
+  href: section + suffix + '.svg', lines: [[label, 17, true], [title, 20, true],
     [result, 17, true], [issue, 16, false, '#5c6160']] }));
 const overviewEdges = [
   ['baseline', 'precision', 'reference'], ['baseline', 'compiler', 'source'],
@@ -165,18 +209,39 @@ function render(key, title, subtitle, nodes, edges) {
   nodes.forEach(node => g.setNode(node.id, node));
   edges.forEach(edge => g.setEdge(edge.from, edge.to, { ...edge, weight: solid.has(edge.kind) ? 3 : 1 }, edge.key));
   dagre.layout(g);
-  const header = 170;
-  const width = Math.max(920, Math.ceil(g.graph().width));
+  const width = Math.max(english ? 1250 : 920, Math.ceil(g.graph().width));
+  let header = 170;
+  let headerTexts;
+  if (english) {
+    headerTexts = [];
+    let y = 16;
+    for (const [text, size, weight, fill] of [
+      [title, 27, '700', '#182c2d'], [subtitle, 17, '400', '#435654'],
+      ['Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.', 16, '400', '#526461'],
+      ['Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.', 16, '400', '#526461']
+    ]) {
+      for (const line of wrap(text, size, width - 96)) {
+        headerTexts.push('<text x="48" y="' + (y + size) + '" font-size="' + size + '" font-weight="' + weight + '" fill="' + fill + '">' + xml(line) + '</text>');
+        y += size * 1.5;
+      }
+      y += 8;
+    }
+    header = Math.ceil(y + 16);
+  } else {
+    headerTexts = [
+      '<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">' + xml(title) + '</text>',
+      '<text x="48" y="76" font-size="17" fill="#435654">' + xml(subtitle) + '</text>',
+      '<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>',
+      '<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>'
+    ];
+  }
   const height = Math.ceil(g.graph().height + header + 38);
   const pieces = ['<svg xmlns="http://www.w3.org/2000/svg" font-family="' + font + '" width="' + width + '" height="' + height + '" viewBox="0 0 ' + width + ' ' + height + '">',
     '<title>' + xml(title) + '</title>',
-    '<desc>' + xml(subtitle + '。数据快照 ' + data.source_commit + '。实验关系不是 Git 提交历史。') + '</desc>',
+    '<desc>' + xml(subtitle + (english ? '. Snapshot ' + data.source_commit + '. Experiment relationships are not Git ancestry.' : '。数据快照 ' + data.source_commit + '。实验关系不是 Git 提交历史。')) + '</desc>',
     '<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#778482"/></marker></defs>',
     '<rect x="0" y="0" width="' + width + '" height="' + height + '" fill="#ffffff"/>',
-    '<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">' + xml(title) + '</text>',
-    '<text x="48" y="76" font-size="17" fill="#435654">' + xml(subtitle) + '</text>',
-    '<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>',
-    '<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>'];
+    ...headerTexts];
   const layout = { key, width, height, nodes: [], edges: [] };
   for (const edgeRef of g.edges()) {
     const edge = g.edge(edgeRef);
@@ -209,8 +274,8 @@ function render(key, title, subtitle, nodes, edges) {
   return { svg: pieces.join('\n') + '\n', layout, mmd: mermaid(nodes, edges, title) };
 }
 
-const graphs = [{ key: 'overview', title: 'SRCNN 实验总览 / 从原始结构到 F25',
-  subtitle: '153 项档案 · 142 项有结果记录 · 11 项仅计划/准备 · HLS ms 按 max(目标周期, 估计周期) 换算',
+const graphs = [{ key: 'overview', title: english ? 'SRCNN experiment overview / Baseline to F25' : 'SRCNN 实验总览 / 从原始结构到 F25',
+  subtitle: english ? '153 experiments | 142 result records | 11 planned/prepared | HLS ms use max(target, estimated period)' : '153 项档案 · 142 项有结果记录 · 11 项仅计划/准备 · HLS ms 按 max(目标周期, 估计周期) 换算',
   nodes: overviewNodes, edges: overviewEdges }];
 for (const section of data.sections) {
   const records = data.records.filter(record => record.section === section.key);
@@ -262,8 +327,8 @@ const checkOnly = process.argv.includes('--check');
 for (const graph of graphs) {
   const result = render(graph.key, graph.title, graph.subtitle, graph.nodes, graph.edges);
   checkLayout(result.layout);
-  const svgPath = path.join(__dirname, graph.key + '.svg');
-  const mmdPath = path.join(__dirname, graph.key + '.mmd');
+  const svgPath = path.join(__dirname, graph.key + suffix + '.svg');
+  const mmdPath = path.join(__dirname, graph.key + suffix + '.mmd');
   if (checkOnly) {
     if (fs.readFileSync(svgPath, 'utf8') !== result.svg || fs.readFileSync(mmdPath, 'utf8') !== result.mmd) {
       throw new Error(graph.key + ': generated diagram is stale');
@@ -274,5 +339,5 @@ for (const graph of graphs) {
   }
   layouts.push(result.layout);
 }
-if (!checkOnly) fs.writeFileSync(path.join(__dirname, 'layout.json'), JSON.stringify(layouts, null, 2) + '\n');
-console.log((checkOnly ? 'Checked' : 'Generated') + ' ' + graphs.length + ' graphs; every experiment appears in its own route.');
+if (!checkOnly) fs.writeFileSync(path.join(__dirname, 'layout' + suffix + '.json'), JSON.stringify(layouts, null, 2) + '\n');
+console.log((checkOnly ? 'Checked' : 'Generated') + ' ' + graphs.length + ' ' + lang + ' graphs; every experiment appears in its own route.');

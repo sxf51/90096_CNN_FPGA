@@ -1,5 +1,7 @@
 # 实验演进图与完整索引
 
+[English](README.en.md)
+
 入口：[实验思路说明](../0004-experiment-evolution.md)、[总览 SVG](overview.svg)、[全部实验记录](records.md)。SVG 可单独打开并放大；按节点的实验编号查阅逐项记录。每条路线另外提供 Mermaid 源码。
 
 ## 范围与证据
@@ -7,6 +9,8 @@
 这是提交 `800a87a` 的档案快照，覆盖 `experiments/results.csv` 与 `exp/configs/*.json` 的并集：153 项，142 项有结果记录，11 项只有计划/准备。失败、无效配置及超时也是结果记录。未完成的其他工作区运行不算入此快照。
 
 `catalog.json` 手工记录每项实验的思路和依赖。关系包括设计/参数基线、修复重试、数值依据、对照、模块集成、同一设计验证和复现；它不是 Git 提交祖先图。总览挑选主要因果关系，各路线保留该路线的全部依赖，灰色节点是外部来源。
+
+`catalog.en.json` 翻译说明文字；`generate.en.rb` 共用中文版本已解析的测量和依赖，生成 `data.en.json` 与 `records.en.md`，不另行维护英文数字或关系历史。
 
 `generate.rb` 用 Ruby 标准 CSV/JSON 解析器合并注册表、实际归档配置、验证记录与 HLS 时序告警，生成 `data.json` 和 `records.md`。其中：
 
@@ -26,8 +30,11 @@ HLS 资源预算为 DSP≤1248、BRAM18K≤288、URAM≤64、LUT≤81984、FF≤
 
 ```sh
 ruby docs/experiment-evolution/generate.rb
+ruby docs/experiment-evolution/generate.en.rb
 node docs/experiment-evolution/render.cjs
+node docs/experiment-evolution/render.cjs --lang en
 node docs/experiment-evolution/render.cjs --check
+node docs/experiment-evolution/render.cjs --lang en --check
 git diff --check
 ```
 
@@ -38,7 +45,7 @@ npm install --prefix /tmp/srcnn-map-tools dagre@0.8.5
 DAGRE_MODULE=/tmp/srcnn-map-tools/node_modules/dagre node docs/experiment-evolution/render.cjs
 ```
 
-布局采用 Dagre 有向图，SVG 连线为直角折线，节点与文字按内容尺寸计算。`--check` 核对生成物是否陈旧，检查节点/文字边界、节点重叠、直角连线及连线是否穿过节点。`layout.json` 保留检查所用几何数据。
+布局采用 Dagre 有向图，SVG 连线为直角折线，节点与文字按内容尺寸计算；英文按单词换行。`--check` 核对生成物是否陈旧，检查节点/文字边界、节点重叠、直角连线及连线是否穿过节点。`layout.json` 与 `layout.en.json` 保留检查所用几何数据。
 
 ## 渲染检查
 
@@ -49,4 +56,6 @@ npx -y @larksuite/whiteboard-cli@0.2.13 -i docs/experiment-evolution/overview.sv
 npx -y @larksuite/whiteboard-cli@0.2.13 -i docs/experiment-evolution/overview.svg -o /tmp/srcnn-experiment-overview.png -f svg -s 1
 ```
 
-总览及每条路线都应能单独打开。新增实验时先核对原始证据、维护 `catalog.json` 和思路说明，再运行上述生成和检查；不要只复制上一项的成功结论。
+本次语言同步已核对 153 项实验及 207 条依赖，确认中英文测量、状态和证据一致；两种语言各 13 张图的生成一致性与布局检查通过。13 张英文 SVG 的 XML 和外部几何检查均通过，外部检查为零错误、零警告；总览、连续流水与验证关系图已渲染目视检查。10 份相关 Markdown 的 3,000 个本地链接和锚点通过检查。本次检查未重新运行 HLS 实验。
+
+总览及每条路线都应能单独打开。新增实验时先核对原始证据、维护中英文 catalog 和思路说明，再运行两种语言的生成和检查；不要只复制上一项的成功结论。英文生成会拒绝缺失或重复编号，并保持测量和依赖共用。

@@ -1,0 +1,47 @@
+%% SRCNN experiment overview / Baseline to F25
+flowchart TB
+  baseline["E000 / starting point<br/>Original float32, full maps<br/>522.28 M MAC / frame<br/>BRAM18K 11064; device has 288<br/>Function passes; storage cannot fit"]
+  precision["E010-E019 / E062-E071<br/>Precision and independent references<br/>10-bit avg delta PSNR -0.0695 dB<br/>All 8-bit: about -5.18 dB<br/>13 images; missing comic; bit-exact to fixed reference"]
+  compiler["E020-E029 / E032<br/>Compiler directives only<br/>Valid float control: about 3811 ms<br/>BRAM18K 11114<br/>Fixing invalid keys still leaves full-map storage"]
+  streaming["E030-E033 / E047-E048<br/>Network streams and line buffers<br/>Remove intermediate maps: BRAM18K 168<br/>DSP binding and integer carriers<br/>Weight selectors remain large: LUT 89304"]
+  scans["E034-E043 / E057-E067 scans<br/>LUTRAM banks, unrolling, and clock<br/>E043: HLS about 6.9392 ms<br/>DSP 505 / BRAM18K 168<br/>Within resource budget; HLS timing warning"]
+  micro["E051-E055 / E071<br/>Multiplier and range controls<br/>DSP / fabric / constant-weight controls<br/>Primitive costs are not network results"]
+  packing["A / P01-P16<br/>Packing: the cost of saving DSPs<br/>INT8 and exact10 primitives pass<br/>P10-P12 networks exceed LUT budget<br/>P13-P16: complete INT16; preparation only"]
+  scatter["C / E050 / E060 / G01-G03<br/>Conv3 scatter<br/>BRAM18K 168 -> 137 -> 87<br/>29.83 -> 37.70 -> 44.14 ms<br/>Less storage; more control and work"]
+  memory["S01-S06<br/>DDR probe and fused tiles<br/>DDR scratch ports not exported<br/>B8-B64: less BRAM, halo recomputation<br/>DDR invalid; tiles miss LUT/time budgets"]
+  winograd["D / W01-W18<br/>Winograd, continuous tiles, narrow banks<br/>W18: HLS about 4.2274 ms<br/>DSP 326 / LUT 74480<br/>Within resource budget; HLS timing warning"]
+  continuous["B / F01-F15<br/>Continuous pipelines and fixed reads<br/>LUTRAM FIFOs, online padding<br/>Split windows, channel rotation, registered trees<br/>Avoid pixel restarts and reduce wide selectors"]
+  combination["C01-C12 / combined experiments<br/>Winograd plus packing/mixed precision<br/>Lowest raw estimate C11: 1.0817 ms<br/>LUT 248797 / FF 307525<br/>Resource limits exclude it from candidate ranking"]
+  loader["F16-F24<br/>Output conversion and loader timing<br/>F20: exact float encoding, zero DSPs<br/>F24: explicit 3D weight-loader indices<br/>Global critical path moves to loader counters"]
+  f25["F25 / direct-convolution candidate<br/>Disable F24 weight-loader flattening<br/>HLS about 2.64226 ms / DSP 502<br/>BRAM18K 73 / LUT 69976<br/>2.5 ns still warns after clock uncertainty"]
+  verification["E069-E070 / F80-F91<br/>Numerical, RTL, and physical checks<br/>F80: 13 images; F82: two-frame RTL Pass<br/>F81/F84: host OOM; no routed reports<br/>E070 WNS<0; physical timing and board acceptance pending"]
+  baseline -.->|Numerical reference or research motivation| precision
+  baseline -->|Design or parameter baseline| compiler
+  baseline -->|Design or parameter baseline| streaming
+  precision -.->|Numerical reference or research motivation| streaming
+  compiler -.->|Numerical reference or research motivation| streaming
+  streaming -->|Design or parameter baseline| scans
+  streaming -.->|Numerical reference or research motivation| micro
+  scans -->|Design or parameter baseline| packing
+  micro -.->|Numerical reference or research motivation| packing
+  scans -->|Design or parameter baseline| scatter
+  scans -->|Design or parameter baseline| memory
+  scans -->|Design or parameter baseline| winograd
+  scans -->|Design or parameter baseline| continuous
+  packing -->|Integrate an existing module| combination
+  winograd -->|Integrate an existing module| combination
+  continuous -->|Design or parameter baseline| loader
+  loader -->|Design or parameter baseline| f25
+  f25 -.->|Verify the same design| verification
+  scans -.->|Verify the same design| verification
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class continuous candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  class scans,winograd,loader,f25,verification warning
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class baseline,compiler,streaming,packing,memory,combination infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  class precision,micro,scatter analysis
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
