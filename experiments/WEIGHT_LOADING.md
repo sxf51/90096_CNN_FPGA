@@ -27,7 +27,9 @@ HLS estimates (verification rows inherit their parent and are not new synthesis 
 | [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | unknown | 16 | 2.5 | 2.377 | 1056904.0 | 1056905.0 | 2.64226 | 502.0 | 73.0 | 69976.0 | 32294.0 | 125404.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | provisional |
 | [F26](F26_s2p_bias_shift_T16/F26.md) | unknown | 16 | 2.5 | 2.377 | 1056908.0 | 1056909.0 | 2.64227 | 502.0 | 73.0 | 70808.0 | 33126.0 | 126285.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | provisional |
 | [F27](F27_local_streamed_params_T16/F27.md) | unknown | 16 | 2.5 | 2.419 | 1045713.0 | 1045714.0 | 2.6142825 | 502.0 | 73.0 | 61656.0 | 3170.0 | 122055.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | provisional |
+| [F31](F31_reload_testbench_csim_F28/F31.md) | unknown | 16 | 2.5 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | unknown | csim_pass |
 | [F89](F89_serial_vivado_impl_F25/F89.md) | F25 | 16 | 2.5 | 2.377 | 1056904.0 | 1056905.0 | 2.64226 | 502.0 | 73.0 | 69976.0 | unknown | 125404.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | timeout |
+| [F94](F94_ws_all_F28/F94.md) | unknown | 16 | 2.5 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | csim_pass |
 | [W17](W17_narrow_raw_banks_T8/W17.md) | unknown | 8 | 4 | 3.239 | 532562.0 | 532563.0 | 2.130248 | 648.0 | 146.0 | 93166.0 | 42289.0 | 122399.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | infeasible |
 
 RTL and routed results, kept separate:
@@ -38,6 +40,7 @@ RTL and routed results, kept separate:
 
 Times derived from RTL cycles at a routed target are conditional on `timing_met=true`. Target minus negative WNS is a slack-derived period estimate, not a proven closed clock. Missing values remain unknown. No board validation has run.
 
-Current recovery state: F92 serial5ns implementation is running. Preplan/implement F28 to address F27's measured local-loader clock miss while F92 runs; C simulation may overlap, hardware remains serialized. Select a loader from strict WS2 evidence, run changed-parameter two-frame RTL, then independent W19/direct-T8 candidates and final validation.
+Current recovery state: F92 serial5ns implementation is in placement; F28 C simulation passed and synthesis waits for its hardware lock. F94 all13 images passed; F31 changed-parameter C preflight passed, with every second output bit equal104/256. After strict F28 WS2 acceptance, execute F93 RTL and implement the precommitted W19/F29/F30 independent T8 plans. Then final candidate-specific validation/serial implementation/changed-parameter RTL and measured-path WS4; keep all failure gates explicit.
 
 <!-- AUTO: WORKSTREAM END -->
+

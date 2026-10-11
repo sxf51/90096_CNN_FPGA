@@ -393,6 +393,8 @@
 
 ## Pending Human Decisions / 待人工决策
 
+- 2026-10-11T18:56:00+00:00: WS2/WS3 preparation: F94 independently passed all13-image exactness and mean deltaPSNR=-0.069514dB. F31 independent changed-parameter C preflight passed, with every second output bit equal104/256 and unchanged first-frame borders; this is not RTL evidence. W19/F29/F30 paper plans are committed and conditional on measured loader selection; no parent design is modified. F92 remains in placement and F28 synthesis waits for its lock.
+
 - 2026-10-11T18:33:48+00:00: WS2: F27 passes exact/area/II/cycle gates but misses clock2.419>2.377ns. Conservatively retain the gate and use an independent local-load loop-flatten control F28 before selecting the loader. F92 is running on unchanged F25 RTL with5ns implementation constraints; no partial F89 timing or LUT ratio is treated as final route acceptance.
 
 - 2026-10-12 WS0: 用户授权第 6 节先自行决策并执行、明日复核。暂定保留运行时 float 权重接口及 HLS 资源门限，不做常量 ROM；缺 comic 保持 13 图暂定结论。F89 若再次 OOM，保留内核/内存证据并继续 WS2，不改 swap 或全局设置，不迁移到未经验证的主机。明日复核大内存主机、ROM 专用版本、资源口径和 comic 数据。
