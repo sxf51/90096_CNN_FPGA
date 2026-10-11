@@ -95,6 +95,7 @@ def analyze(archive):
     samples = list(csv.DictReader(memory.open(newline=""))) if memory.is_file() else []
     memory_values = {"samples":len(samples), "min_available_GiB":min(float(item["available_kib"]) for item in samples)/1048576 if samples else None,
                      "peak_tool_RSS_GiB":max(float(item["tool_rss_kib"]) for item in samples)/1048576 if samples else None,
+                     "implementation_threads": config.get("implementation_threads", 1),
                      **cpu_summary(samples)}
     write_csv(archive / "host_memory_summary.csv", [memory_values], list(memory_values))
     block = "<!-- AUTO: ROUTE ANALYSIS START -->\n\n"

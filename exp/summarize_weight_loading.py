@@ -73,6 +73,8 @@ def main():
     block += "\nTimes derived from RTL cycles at a routed target are conditional on `timing_met=true`. Target minus negative WNS is a slack-derived period estimate, not a proven closed clock. Missing values remain unknown. No board validation has run.\n\n"
     block += "Routed/HLS resource calibration from [route_calibration.csv](route_calibration.csv); HLS resource gates remain unchanged:\n\n"
     block += "![Routed resource calibration](figs/route_calibration.png)\n\n"
+    block += "Host utilization from archived CPU/memory CSV files (short snapshots are labeled; old runs without CPU telemetry stay unknown):\n\n"
+    block += "![Remote host utilization](figs/host_utilization.png)\n\n"
     block += "Current recovery state: "+state["next"]+"\n\n"
     block += "<!-- AUTO: WORKSTREAM END -->\n"
     path = ROOT / "experiments/WEIGHT_LOADING.md"

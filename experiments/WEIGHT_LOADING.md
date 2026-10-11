@@ -61,7 +61,12 @@ Routed/HLS resource calibration from [route_calibration.csv](route_calibration.c
 
 ![Routed resource calibration](figs/route_calibration.png)
 
+Host utilization from archived CPU/memory CSV files (short snapshots are labeled; old runs without CPU telemetry stay unknown):
+
+![Remote host utilization](figs/host_utilization.png)
+
 Current recovery state: F96 has passed every supplied-image check for W21. Session29428 runs F95 F28 implementation; session37202 queues F97 changed-parameter RTL then F98 independent5ns W21 implementation. Preserve these jobs. After their own routed-path exports, run one independent WS4 same-RTL clock probe with bounded implementation threads, then local/remote checksums, report provenance, plots and summaries before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
 
 <!-- AUTO: WORKSTREAM END -->
+
 
