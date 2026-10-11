@@ -1,0 +1,48 @@
+{
+  "T": 16,
+  "changes": "Frozen selected design/defines; enable full supplied-image comparison only. No source algorithm change.",
+  "clock": 2.5,
+  "conclusion": "Keep precision acceptance provisional until comic is available; compare independent implementation/cosim reports.",
+  "control_experiment": "F24",
+  "csim_only": true,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 1,
+    "EXP_STORAGE": 1,
+    "EXP_T": 16,
+    "EXP_TREE_ADD_LATENCY": 1,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/continuous_nested_load_v1",
+  "estimates": {
+    "BRAM18K": 73.0,
+    "DSP": 502.0,
+    "LUT": 69976.0,
+    "T": 16.0,
+    "URAM": 0.0,
+    "basis": "Frozen parent F25 HLS estimates. Implementation resources may optimize/change, RTL finite-FIFO latency may differ. No board performance estimate is substituted for actual reports.",
+    "latency_cycles": 1056904.0
+  },
+  "fixed": true,
+  "id": "F80",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Full supplied-image equality establishes this architecture preserves the measured precision point on all supplied inputs. It does not establish the missing14th image, routed timing or RTL behavior.",
+  "name": "final_all_supplied_F25",
+  "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+  "precision": "w10a10acc23",
+  "purpose": "Validate selected point F25 on every supplied Set14 pair and two butterfly frames. Every output bit must match the independently real-ap_fixed-verified numpy reference, with unchanged normalized-float delta PSNR>=-0.1dB and six-pixel borders. Missing comic stays explicit.",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "scope": "frame",
+  "series": "F",
+  "set14": true,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_final",
+  "storage": "lutram",
+  "unroll": "Cout/Cout/tap"
+}
