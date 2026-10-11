@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from analyze_arch import failure_reason, scope
+from analyze_arch import actual_measurement, failure_reason, scope
 from run_exp import ROOT
 
 
@@ -30,6 +30,24 @@ class ArchitectureAnalysisTests(unittest.TestCase):
     def test_lut_limit_uses_unchanged_gate(self):
         reason = failure_reason({"status": "infeasible", "LUT": "101488", "DSP": "254"}, ROOT)
         self.assertEqual(reason, "LUT=101488 exceeds 81984")
+
+    def test_cosim_resources_are_not_actual_measurements(self):
+        row = {"DSP":"502", "LUT":"70449", "latency_cycles":"1048730"}
+        config = {"operation":"cosim", "verification":{"rtl_latency_max":1100000}}
+        self.assertEqual(actual_measurement(row,config,"latency_cycles"),1100000)
+        self.assertIsNone(actual_measurement(row,config,"DSP"))
+        self.assertIsNone(actual_measurement(row,config,"LUT"))
+
+    def test_missing_rtl_report_does_not_inherit_hls_cycles(self):
+        self.assertIsNone(actual_measurement({"latency_cycles":"1048730"},
+                                           {"operation":"cosim"},"latency_cycles"))
+
+    def test_implementation_resources_are_routed_and_cycles_unknown(self):
+        row = {"DSP":"502", "BRAM18K":"73", "latency_cycles":"1048730"}
+        config = {"operation":"impl", "verification":{"impl_DSP":480,"impl_BRAM36":40.5}}
+        self.assertEqual(actual_measurement(row,config,"DSP"),480)
+        self.assertEqual(actual_measurement(row,config,"BRAM18K"),81)
+        self.assertIsNone(actual_measurement(row,config,"latency_cycles"))
 
 
 if __name__ == "__main__":
