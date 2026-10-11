@@ -53,6 +53,12 @@ Explain estimate deviations over20 percent using scheduling/resource evidence.
   dominate LUT/FF after II1 is reached. F13-F15 test channel rotation and
   reduction latency using the measured F08 module costs; retain any LUT/FF
   infeasibility or increased estimated clock instead of changing the gates.
+- W17/W18 isolate raw-weight channel banking after W09/C12 measured large
+  register and selector costs in the T8 transform loader. Original weights
+  serve only the sequential transform, so a deeper single channel bank may
+  reduce those costs while retaining the MAC engines' transformed banks.
+  This attribution is a hypothesis; compare exact outputs, loader reports,
+  total resources and achieved II before accepting it.
 
 Synthesis is serialized for the15GiB remote host, with60-minute per-run timeout
 and45-minute issue-tuning limit. Generated HDL/cache/binaries remain outside
