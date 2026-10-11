@@ -15,6 +15,11 @@ SERIES_NOTES = {
     "C": "The combination retains Winograd Conv1 and uses packing only on other layers, avoiding incompatible transformed INT8 operands. Multiplier budgets omit residual/borrow correction, inverse arithmetic, runtime transformed weights and raster reorder. Dedicated layer resource counts must be summed once; nested child reports repeat their parents' resources.",
     "F": "Continuous scheduling separates window generation and MAC folds, shifts channel registers and explicitly registers fabric reduction trees. This can remove pixel fill/drain but costs pipeline registers and wide window FIFOs. Online padding overlaps source reads with padded writes; old row serialization can create finite-FIFO stalls absent from maximum-component HLS estimates. RTL cycles and routed slack remain the final evidence.",
 }
+MODULE_CONTROLS = {
+    "F15": ("F14", ("engine1", "conv2_stream", "engine3")),
+    "W17": ("W14", ("transform_weights",)),
+    "W18": ("W15", ("transform_weights",)),
+}
 
 
 def write_csv(path, rows, columns):
@@ -129,7 +134,10 @@ def deviation_explanation(row, config, comparisons):
             bits = 32 * config.get("defines", {}).get("EXP_A_BITS", 10)
             lines.append("The online Conv3 pad row is explicitly aggregated into " + str(bits) + "-bit words and its parsed module uses " + str(online["BRAM18K"]) + " BRAM18K. This packs channel fields into wide memory ports, whereas F08's old pad control leaves individual channel fields in separate banks. That storage-fragmentation change explains the BRAM saving independently of the Conv3 rotation or MAC count.")
     elif scope(config,row) == "PE":
-        lines.append("PE LUT estimates were planning allowances, not bit-level netlists. Direct control avoids transform/borrow logic; wider Winograd operands increase transform/inverse fabric width; exact10 packing adds residual repair. The measured DSP count and loop II must be evaluated independently of unused LUT margin.")
+        if "ieee_decode" in design:
+            lines.append("Converter planning allowances reserved selection/control margin. Exact IEEE construction operates on a ten-bit magnitude and highest-set-bit selector, then assigns binary32 exponent/significand fields; its finite range lets synthesis remove unused selector states and registers. The legacy control retains integer-to-float and float scaling operators. These PE array-memory ports also omit the full network's AXI address/handshake logic, so PE resource differences cannot be subtracted blindly from a frame estimate. Compare the parsed DSP, loop depth and clock before integrating the exact converter.")
+        else:
+            lines.append("PE LUT estimates were planning allowances, not bit-level netlists. Direct control avoids transform/borrow logic; wider Winograd operands increase transform/inverse fabric width; exact10 packing adds residual repair. The measured DSP count and loop II must be evaluated independently of unused LUT margin.")
     if folded:
         lines.append("Observed fold depth/II: "+"; ".join(loop["loop"]+" depth="+str(loop.get("IterationLatency",loop.get("PipelineDepth")))+", II="+str(loop.get("actual_ii")) for loop in folded)+".")
     return "\n\nExplicit explanation of deviations above20%:\n\n"+"\n\n".join(lines)+"\n"
@@ -235,6 +243,21 @@ def main():
         if report_rows:
             human += "\nWhole layer evidence from csynth XML (child pipeline reports are not added again):\n\n"
             human += markdown_table(report_rows,["module","latency_cycles","DSP","BRAM18K","LUT","FF"])
+        if row["id"] in MODULE_CONTROLS:
+            parent_id, names = MODULE_CONTROLS[row["id"]]
+            control_path = next((ROOT / "experiments").glob(parent_id+"_*/config.json"), None)
+            if control_path:
+                control = json.loads(control_path.read_text())
+                comparison = []
+                for exp_id, data in ((parent_id, control), (row["id"], config)):
+                    comparison.extend({"id":exp_id, **module} for module in data.get("parsed_modules", [])
+                                      if module["module"] in names)
+                human += "\nMeasured control-module comparison (identical precision and T):\n\n"
+                human += markdown_table(comparison,["id","module","latency_cycles","DSP","BRAM18K","LUT","FF"])
+                if row["id"] == "F15":
+                    human += "\nLatency0 removes registers from the reduction stages. The measured FF saving accompanies a larger LUT count, so register removal alone does not make T8 feasible. Compare the three engines to locate the saving; the output converter can still set the top estimated clock.\n"
+                else:
+                    human += "\nOnly the raw coefficients' output-channel partition changes in this pair; transformed MAC banks remain fixed. Deeper raw banks change the inferred RAM/register and selector mapping in the sequential loader. Compare the loader saving with the total remaining LUT excess before projecting another feasible point.\n"
         if loops:
             human += "\nPipeline depth and II evidence; nested pixel schedules pay the reported iteration latency at every restart:\n\n"
             human += markdown_table(loops,["module","loop","IterationLatency","PipelineDepth","actual_ii","target_ii","ii_ok"])
