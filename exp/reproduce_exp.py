@@ -151,6 +151,8 @@ def main():
             raise RuntimeError("Replayed parent is not numerically/resource accepted; verification is ineligible")
         config["verify_parent"] = parent_new
         config["design"] = parent_config["design"]
+        if config.get("implementation_backend") == "serial_generated_flow":
+            config["implementation_template"] = parent_new
     prepare(config, source)
     print("Prepared", exp_id, "from", args.parent, flush=True)
     return execute(exp_id, args.local) if args.run else 0

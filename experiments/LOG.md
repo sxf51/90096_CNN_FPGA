@@ -317,6 +317,10 @@
 
 - 2026-10-11T03:32:52+00:00: F81: final_impl_F25; status=fail; latency_ms_est=2.64226; impl of F25; HLS estimates inherited, real measurements in data.csv; impl failed (exit=1)
 
+- 2026-10-11T03:41:38+00:00: F89: preplanned F89/F90/F91 serial Vivado retries of F25/F24/F23 after confirmed F81 host OOM; original runs and gates remain frozen, no host/global-setting changes.
+
+- 2026-10-11T03:44:15+00:00: F81: kernel confirms host OOM killed Vivado; archived subrun/kernel evidence, numerical measurements unchanged. Independent serial retries planned as F89-F91.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-10T23:19:34+00:00: Winograd's requested offline weight transform conflicts with accepting arbitrary original float weight arrays at the frozen srcnn signature. Keep the internal runtime load/transform stage, include its measured cycles/resources and archive the equivalent pretrained G2 tensor. Removing runtime transformation requires an approved transformed-weight contract or a specialized constant-weight wrapper; no such interface change is made in this unattended run.

@@ -14,6 +14,12 @@
     "basis": "Frozen parent F25 HLS estimates. Implementation resources may optimize/change, RTL finite-FIFO latency may differ. No board performance estimate is substituted for actual reports.",
     "latency_cycles": 1056904.0
   },
+  "host_failure": {
+    "archived_file": "diagnostics/kernel_oom.txt",
+    "kind": "kernel_oom",
+    "sha256": "a2347a0b1edb5b56df86ae2e6a5a41424d55285fd9bc645b33900a6a66f237dd",
+    "source_command": "journalctl -k --since '2026-10-11 14:28:00' --until '2026-10-11 14:34:00' --no-pager"
+  },
   "id": "F81",
   "name": "final_impl_F25",
   "notes": "Selected globally by lowest HLS latency among resource-feasible exact frame records; full14-image acceptance remains unavailable.",
@@ -786,6 +792,14 @@
   "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 13:42:52 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
   "validation_parent": "F80",
   "verification": {},
+  "verification_diagnostics": [
+    {
+      "archived_file": "diagnostics/bd_0_hls_inst_0_synth_1.txt",
+      "excerpt": true,
+      "raw_file": "/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F81/hls/impl/verilog/project.runs/bd_0_hls_inst_0_synth_1/runme.log",
+      "sha256": "4e655d420995af4254a03ad436877221e0f88ba9760e03a9b80a7c8b7d7441a1"
+    }
+  ],
   "verification_reports": [],
   "verify_parent": "F25"
 }

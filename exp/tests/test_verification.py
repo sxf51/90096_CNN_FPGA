@@ -5,11 +5,35 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from verify_exp import archive_verification_reports, parse_verification
+from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation
 from run_exp import ROOT
 
 
 class VerificationTests(unittest.TestCase):
+    def test_serial_retry_preserves_template_and_relocates_generated_flow(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            work,template,archive = root/"F89",root/"F81",root/"archive"
+            generated = template/"hls/impl/verilog"
+            generated.mkdir(parents=True)
+            original = "source ./settings.tcl\nset path "+str(template)+"/source\nhls_vivado_reports_setup $report_options\n"
+            (generated/"run_vivado.tcl").write_text(original)
+            (generated/"project.runs").mkdir()
+            (generated/"project.runs/old.log").write_text("Old failed project")
+            (generated/"settings.tcl").write_text("set parent "+str(template)+"\n")
+            (template/"hls/impl/ip").mkdir()
+            (template/"hls/impl/ip/component.xml").write_text("<component/>\n")
+            hook = root/"hook.tcl"
+            hook.write_text("set_param synth.maxThreads 1\n")
+            cwd,records,_ = prepare_serial_implementation(work,template,archive,hook)
+            self.assertEqual((generated/"run_vivado.tcl").read_text(),original)
+            self.assertIn("STEPS.SYNTH_DESIGN.TCL.PRE",(cwd/"run_vivado.tcl").read_text())
+            self.assertIn(str(work),(cwd/"settings.tcl").read_text())
+            self.assertNotIn(str(template),(cwd/"run_vivado.tcl").read_text())
+            self.assertFalse((cwd/"project.runs").exists())
+            self.assertTrue((work/"hls/impl/ip/component.xml").is_file())
+            self.assertEqual(len(records),2)
+
     def test_archived_vivado_2026_route(self):
         reports = ROOT / "experiments/E070_first_feasible_implementation/reports/impl"
         values, _ = parse_verification(reports, "impl")

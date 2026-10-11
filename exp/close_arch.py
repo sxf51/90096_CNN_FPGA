@@ -83,6 +83,9 @@ def audit_verification_reports(rows):
         if operation not in {"impl", "cosim"}:
             continue
         reports = config.get("verification_reports", [])
+        evidence = reports + config.get("implementation_files", []) + config.get("verification_diagnostics", [])
+        if config.get("host_failure"):
+            evidence.append(config["host_failure"])
         if row["status"] == operation + "_complete":
             if not reports:
                 raise RuntimeError("Completed verification has no archived source reports: "+row["id"])
@@ -90,7 +93,7 @@ def audit_verification_reports(rows):
             if operation == "impl" and any(not any(name.endswith(suffix) for name in names)
                     for suffix in ("timing_routed", "utilization_routed")):
                 raise RuntimeError("Missing routed timing/resource archive: "+row["id"])
-        for record in reports:
+        for record in evidence:
             path = archive / record["archived_file"]
             if hashlib.sha256(path.read_bytes()).hexdigest() != record["sha256"]:
                 raise RuntimeError("Verification source report hash mismatch: "+row["id"])
@@ -102,6 +105,7 @@ def audit_verification_reports(rows):
                            stdout=subprocess.DEVNULL, check=True)
         checks.append({"id":row["id"], "operation":operation, "status":row["status"],
                        "reports_checked":len(reports), "sha256_pass":True,
+                       "additional_evidence_files_checked":len(evidence)-len(reports),
                        "git_visible_and_tracked":True})
     return checks
 

@@ -40,6 +40,57 @@ def archive_verification_reports(work, archive, operation):
     return records
 
 
+def prepare_serial_implementation(work, template_work, archive, hook_path):
+    target = work / "hls/impl"
+    if target.exists():
+        shutil.rmtree(target)
+    shutil.copytree(template_work / "hls/impl", target,
+                    ignore=shutil.ignore_patterns("project.*", ".Xil", "*.log", "*.jou",
+                                                 "*.pb", "report", "*.zip", "*.dcp"))
+    driver = target / "verilog/run_vivado.tcl"
+    original = driver.read_text()
+    old_root, new_root = str(template_work), str(work)
+    for path in target.rglob("*"):
+        if path.is_file() and path.suffix in {".tcl", ".sh", ".xml", ".xdc"}:
+            text = path.read_text()
+            if old_root in text:
+                path.write_text(text.replace(old_root,new_root))
+    text = driver.read_text()
+    marker = "hls_vivado_reports_setup $report_options"
+    if text.count(marker) != 1:
+        raise RuntimeError("Unexpected generated Vivado driver; cannot install serial hook")
+    local_hook = target / "verilog/serial_synthesis.tcl"
+    shutil.copyfile(hook_path,local_hook)
+    injection = ("set_param general.maxThreads 1\nset_param synth.maxThreads 1\n"
+                 "foreach exp_run [get_runs -filter {IS_SYNTHESIS == 1}] {\n"
+                 "  set_property STEPS.SYNTH_DESIGN.TCL.PRE [file normalize ./serial_synthesis.tcl] $exp_run\n"
+                 "}\n")
+    driver.write_text(text.replace(marker,injection+marker))
+    records = []
+    for label,path in (("driver",driver),("thread_hook",local_hook)):
+        dest = archive / "implementation" / path.name
+        dest.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(path,dest)
+        records.append({"kind":label,"archived_file":str(dest.relative_to(archive)),
+                        "sha256":hashlib.sha256(dest.read_bytes()).hexdigest()})
+    return driver.parent, records, hashlib.sha256(original.encode()).hexdigest()
+
+
+def archive_verification_diagnostics(work,archive):
+    records = []
+    for path in sorted(work.glob("hls/impl/*/project.runs/*/runme.log")):
+        lines = path.read_text(errors="replace").splitlines()
+        useful = lines[:60] + [line for line in lines if re.search(
+            r"EXP_VIVADO_THREADS|ERROR:|CRITICAL WARNING:|Killed|terminate|Memory \(MB\)|Finished.*Optimization",line)] + lines[-80:]
+        dest = archive / "diagnostics" / (path.parent.name+".txt")
+        dest.parent.mkdir(parents=True,exist_ok=True)
+        dest.write_text("\n".join(useful)+"\n")
+        records.append({"raw_file":str(path.relative_to(work)),"archived_file":str(dest.relative_to(archive)),
+                        "raw_sha256":hashlib.sha256(path.read_bytes()).hexdigest(),
+                        "sha256":hashlib.sha256(dest.read_bytes()).hexdigest(),"excerpt":True})
+    return records
+
+
 def parse_verification(work, operation):
     detail = []
     for path in sorted(work.rglob("*.xml")):
@@ -132,6 +183,15 @@ def run_verification(config):
                md_path=archive.name + "/" + exp_id + ".md", git_commit=config["source_commit"],
                status="fail", notes=f"{operation} of {parent_row['id']}; HLS estimates inherited, real measurements in data.csv")
     observed, detail, errors = {}, [], []
+    impl_cwd = None
+    if config.get("implementation_backend") == "serial_generated_flow":
+        if operation != "impl":
+            raise RuntimeError("Serial generated flow is only valid for implementation")
+        template = ROOT / "workspace/exp_runs" / config["implementation_template"]
+        impl_cwd, records, original_digest = prepare_serial_implementation(
+            work,template,archive,ROOT / config["verification_hook"])
+        config["implementation_files"] = records
+        config["original_generated_driver_sha256"] = original_digest
     settings = Path(config.get("settings", parent_config["settings"]))
     try:
         if config.get("validation_parent"):
@@ -144,9 +204,14 @@ def run_verification(config):
                 raise RuntimeError("Selected candidate failed mandatory all-supplied-image validation")
         timeout = 21600 if operation == "cosim" else config.get("timeout", 10800)
         with lock(work / ".run.lock"), lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=86400):
-            code, seconds = invoke(["vitis-run", "--mode", "hls", "--" + operation,
-                                    "--config", str(cfg), "--work_dir", str(work)],
-                                   settings, ROOT, work / (operation + ".console.log"), timeout)
+            if impl_cwd:
+                args = ["vivado","-mode","batch","-source","run_vivado.tcl","-notrace","-nojournal"]
+                cwd = impl_cwd
+            else:
+                args = ["vitis-run", "--mode", "hls", "--" + operation,
+                        "--config", str(cfg), "--work_dir", str(work)]
+                cwd = ROOT
+            code, seconds = invoke(args,settings,cwd,work / (operation + ".console.log"),timeout)
         config["operation_minutes"] = seconds / 60
         observed, detail = parse_verification(work, operation)
         if code:
@@ -181,6 +246,7 @@ def run_verification(config):
     finally:
         archive_logs(work, archive)
         config["verification_reports"] = archive_verification_reports(work,archive,operation)
+        config["verification_diagnostics"] = archive_verification_diagnostics(work,archive)
         config["errors"] = errors
         config["verification"] = observed
         write_json(archive / "config.json", config)
@@ -210,6 +276,12 @@ def run_verification(config):
         md += "\nParent loop II and per-module resources are in the linked parent archive; verification resources are distinct from csynth.\n"
         md += "\nArchived verification source reports (neutral paths preserve Git tracking):\n\n"
         md += markdown_table(config["verification_reports"],["raw_file","archived_file","sha256"])
+        if config.get("implementation_files"):
+            md += "\nIndependent generated-flow retry files:\n\n"
+            md += markdown_table(config["implementation_files"],["kind","archived_file","sha256"])
+        if config["verification_diagnostics"]:
+            md += "\nVivado subrun diagnostic excerpts:\n\n"
+            md += markdown_table(config["verification_diagnostics"],["raw_file","archived_file","raw_sha256","sha256","excerpt"])
         md += "\n## 6. Interpretation / 解读\n\n" + ("; ".join(errors) if errors else "Actual verification results are parsed from reports in data.csv. Implementation completion alone does not prove timing closure or board operation. Supplied-image precision remains provisional until comic is available.") + "\n"
         md += "\n## 7. Conclusion and next step / 结论与下一步\n\nCompare implementation slack/resources and RTL cycles with HLS estimates. No board result is inferred.\n\n"
         md += f"## 8. Raw files / 原始文件位置\n\n`workspace/exp_runs/{exp_id}/`; parent [{parent_row['id']}](../{parent_row['md_path']}).\n"
