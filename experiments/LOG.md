@@ -417,6 +417,8 @@
 
 - 2026-10-11T23:24:08+00:00: F95/F98: user requests higher remote utilization. Independent 30-second proc snapshot: {'cpu_intervals': 6, 'logical_cpus': 12, 'cpu_busy_pct': 8.863906306107229, 'mean_load1': 1.0471428571428572, 'max_load1': 1.06}. Preserve active serial hardware queue and frozen F95/F97/F98 plans; added per-run1/2/4 implementation-thread limits with synthesis1, CPU/memory telemetry and63 passing infrastructure tests. No global/swap/threshold changes; thread-speed benefit awaits a measured independent WS4 run.
 
+- 2026-10-11T23:56:15+00:00: F95: ws_impl_F28; status=impl_complete; latency_ms_est=2.6150725; impl of F28; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T18:56:00+00:00: WS2/WS3 preparation: F94 independently passed all13-image exactness and mean deltaPSNR=-0.069514dB. F31 independent changed-parameter C preflight passed, with every second output bit equal104/256 and unchanged first-frame borders; this is not RTL evidence. W19/F29/F30 paper plans are committed and conditional on measured loader selection; no parent design is modified. F92 remains in placement and F28 synthesis waits for its lock.
