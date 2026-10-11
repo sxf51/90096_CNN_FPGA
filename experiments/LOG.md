@@ -403,6 +403,8 @@
 
 - 2026-10-11T21:42:35+00:00: F29: streamed_direct_T8_tree1; status=infeasible; latency_ms_est=1.7507841300000002; 
 
+- 2026-10-11T21:51:24+00:00: WS3 recovery: resumed active queue64528 and W21 queue44013 without restarting their workspaces. W19/F29 are archived infeasible with exact butterflies, unchanged borders and foldII1; their manual interpretations now compare total/private-loader resources and paper estimates. W21 two-call C simulation is bit-exact and waits for W20 before synthesis. Updated recovery state and CSV-only area figure; F95 remains planned. F93 actual changed-parameter RTL PASS and latency1059506/interval1059535 are preserved separately from HLS and routed timing.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T18:56:00+00:00: WS2/WS3 preparation: F94 independently passed all13-image exactness and mean deltaPSNR=-0.069514dB. F31 independent changed-parameter C preflight passed, with every second output bit equal104/256 and unchanged first-frame borders; this is not RTL evidence. W19/F29/F30 paper plans are committed and conditional on measured loader selection; no parent design is modified. F92 remains in placement and F28 synthesis waits for its lock.
