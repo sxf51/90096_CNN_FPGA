@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-11T18:47:09+00:00 from archived measurements.
+Updated 2026-10-11T18:47:20+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
