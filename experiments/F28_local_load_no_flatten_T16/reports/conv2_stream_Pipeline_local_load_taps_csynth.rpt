@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'conv2_stream_Pipeline_local_load_taps'
+================================================================
+* Date:           Mon Oct 12 06:24:37 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        F28
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  2.50 ns|  1.627 ns|     0.68 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+-------------------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval |      Pipeline     |
+    |   min   |   max   |    min   |    max   | min | max |        Type       |
+    +---------+---------+----------+----------+-----+-----+-------------------+
+    |       66|       66|  0.165 us|  0.165 us|    0|    0|  loop pipeline stp|
+    +---------+---------+----------+----------+-----+-----+-------------------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +-------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                   |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |     Loop Name     |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +-------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- local_load_taps  |       64|       64|         2|          1|          1|    64|       yes|
+        +-------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      33|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|      45|    -|
+|Register         |        -|     -|      20|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|      20|      78|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +---------------------------+----------+----+---+----+------------+------------+
+    |       Variable Name       | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +---------------------------+----------+----+---+----+------------+------------+
+    |add_ln96_fu_2909_p2        |         +|   0|  0|  14|           7|           1|
+    |ap_block_pp0_stage0_11001  |       and|   0|  0|   2|           1|           1|
+    |icmp_ln96_fu_2903_p2       |      icmp|   0|  0|  15|           7|           8|
+    |ap_enable_pp0              |       xor|   0|  0|   2|           1|           2|
+    +---------------------------+----------+----+---+----+------------+------------+
+    |Total                      |          |   0|  0|  33|          16|          12|
+    +---------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-------------------------+----+-----------+-----+-----------+
+    |           Name          | LUT| Input Size| Bits| Total Bits|
+    +-------------------------+----+-----------+-----+-----------+
+    |ap_done_int              |   9|          2|    1|          2|
+    |ap_enable_reg_pp0_iter1  |   9|          2|    1|          2|
+    |ap_sig_allocacmp_tap_3   |   9|          2|    7|         14|
+    |params2_blk_n            |   9|          2|    1|          2|
+    |tap_fu_436               |   9|          2|    7|         14|
+    +-------------------------+----+-----------+-----+-----------+
+    |Total                    |  45|         10|   17|         34|
+    +-------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-------------------------+---+----+-----+-----------+
+    |           Name          | FF| LUT| Bits| Const Bits|
+    +-------------------------+---+----+-----+-----------+
+    |ap_CS_fsm                |  1|   0|    1|          0|
+    |ap_done_reg              |  1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1  |  1|   0|    1|          0|
+    |tap_fu_436               |  7|   0|    7|          0|
+    |trunc_ln96_reg_3071      |  6|   0|    6|          0|
+    |zext_ln95_cast_reg_2936  |  4|   0|   64|         60|
+    +-------------------------+---+----+-----+-----------+
+    |Total                    | 20|   0|   80|         60|
+    +-------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------------------------------------------------------------------------------------+-----+-----+------------+---------------------------------------------------------------------------------------+--------------+
+|                                            RTL Ports                                           | Dir | Bits|  Protocol  |                                     Source Object                                     |    C Type    |
++------------------------------------------------------------------------------------------------+-----+-----+------------+---------------------------------------------------------------------------------------+--------------+
+|ap_clk                                                                                          |   in|    1|  ap_ctrl_hs|                                                  conv2_stream_Pipeline_local_load_taps|  return value|
+|ap_rst                                                                                          |   in|    1|  ap_ctrl_hs|                                                  conv2_stream_Pipeline_local_load_taps|  return value|
+|ap_start                                                                                        |   in|    1|  ap_ctrl_hs|                                                  conv2_stream_Pipeline_local_load_taps|  return value|
+|ap_done                                                                                         |  out|    1|  ap_ctrl_hs|                                                  conv2_stream_Pipeline_local_load_taps|  return value|
+|ap_idle                                                                                         |  out|    1|  ap_ctrl_hs|                                                  conv2_stream_Pipeline_local_load_taps|  return value|
+|ap_ready                                                                                        |  out|    1|  ap_ctrl_hs|                                                  conv2_stream_Pipeline_local_load_taps|  return value|
+|params2_dout                                                                                    |   in|   10|     ap_fifo|                                                                                params2|       pointer|
+|params2_empty_n                                                                                 |   in|    1|     ap_fifo|                                                                                params2|       pointer|
+|params2_read                                                                                    |  out|    1|     ap_fifo|                                                                                params2|       pointer|
+|params2_num_data_valid                                                                          |   in|    5|     ap_fifo|                                                                                params2|       pointer|
+|params2_fifo_cap                                                                                |   in|    5|     ap_fifo|                                                                                params2|       pointer|
+|zext_ln95                                                                                       |   in|    4|     ap_none|                                                                              zext_ln95|        scalar|
+|empty                                                                                           |   in|    1|     ap_none|                                                                                  empty|        scalar|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_171_address1  |  out|    4|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_171|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_171_ce1       |  out|    1|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_171|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_171_we1       |  out|    1|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_171|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_171_d1        |  out|   10|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_171|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_172_address1  |  out|    4|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_172|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_172_ce1       |  out|    1|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_172|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_172_we1       |  out|    1|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_172|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_172_d1        |  out|   10|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_172|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_183_address1  |  out|    4|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_183|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_183_ce1       |  out|    1|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_183|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_183_we1       |  out|    1|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_183|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_183_d1        |  out|   10|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_183|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_194_address1  |  out|    4|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_194|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_194_ce1       |  out|    1|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_194|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_194_we1       |  out|    1|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_194|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_194_d1        |  out|   10|   ap_memory|  p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_194|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_93_address1   |  out|    4|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_93|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_93_ce1        |  out|    1|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_93|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_93_we1        |  out|    1|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_93|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_93_d1         |  out|   10|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_93|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_82_address1   |  out|    4|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_82|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_82_ce1        |  out|    1|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_82|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_82_we1        |  out|    1|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_82|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_82_d1         |  out|   10|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_82|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_71_address1   |  out|    4|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_71|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_71_ce1        |  out|    1|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_71|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_71_we1        |  out|    1|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_71|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_71_d1         |  out|   10|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_71|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_66_address1   |  out|    4|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_66|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_66_ce1        |  out|    1|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_66|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_66_we1        |  out|    1|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_66|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_66_d1         |  out|   10|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_66|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_65_address1   |  out|    4|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_65|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_65_ce1        |  out|    1|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_65|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_65_we1        |  out|    1|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_65|         array|
+|p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_65_d1         |  out|   10|   ap_memory|   p_ZZL12conv2_streamRN3hls6streamIN7numeric6pixel1ELi0EEERNS0_INS1_6pixel2ELi0EEER_65|         array|
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.
