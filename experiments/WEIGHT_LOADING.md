@@ -44,8 +44,13 @@ RTL and routed results, kept separate:
 
 Times derived from RTL cycles at a routed target are conditional on `timing_met=true`. Target minus negative WNS is a slack-derived period estimate, not a proven closed clock. Missing values remain unknown. No board validation has run.
 
+Routed/HLS resource calibration from [route_calibration.csv](route_calibration.csv); HLS resource gates remain unchanged:
+
+![Routed resource calibration](figs/route_calibration.png)
+
 Current recovery state: F93 changed-parameter RTL is active. W19 C simulation passed and its synthesis waits for F93; serial queue64528 then runs F29/F30/W20. F95 F28 candidate-specific5ns implementation is planned, not started. After measured T8 selection, run its full13-image validation, changed-parameter RTL and serial route, then one measured-path WS4 clock/control experiment. Preserve all failed gates and archive/checksum/plot/summary audits before F99 closure.
 
 <!-- AUTO: WORKSTREAM END -->
+
 
 
