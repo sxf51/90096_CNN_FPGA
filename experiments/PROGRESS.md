@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-11T22:57:22+00:00 from archived measurements.
+Updated 2026-10-11T23:01:05+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -20,7 +20,7 @@ Final verification: W21, F95.
 
 ## Weight Loading Workstream
 
-Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). F93 changed-parameter two-frame RTL passed with latency1059506 and interval1059535. W19/F29/F30 are archived infeasible; W20 diagnostic route is active in queue64528. W21 queue44013 has exact C simulation and waits for W20 before synthesis. F95 F28 candidate-specific5ns implementation is planned, not started. After measured T8 selection, run its full13-image validation, changed-parameter RTL and serial route, then one measured-path WS4 clock/control experiment. Preserve all failed gates and archive/checksum/plot/summary audits before F99 closure.
+Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Original queue64528 completed normally: W19/F29/F30 infeasible and diagnostic W20 routed at5ns with WNS+0.188ns/TNS0. W21 queue44013 has exact C simulation and active synthesis. Export W20 five setup paths/hierarchy, then run F95 F28 candidate-specific5ns implementation. After measured T8 selection, run its full13-image validation, changed-parameter RTL and serial route, then one measured-path WS4 clock/control experiment. Preserve all failed gates and archive/checksum/plot/summary audits before F99 closure.
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 
