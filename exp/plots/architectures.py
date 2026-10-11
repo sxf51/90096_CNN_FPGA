@@ -42,9 +42,9 @@ frames = [row for row in rows if row["scope"] == "frame" and not row["operation"
 fig,ax = plt.subplots(figsize=(13,8),constrained_layout=True)
 labels,grouped = [],{}
 for row in frames:
-    grouped.setdefault((num(row,"DSP"),num(row,"latency_ms_est"),row["series"] or "E"),[]).append(row)
-for (dsp,latency,series),points in grouped.items():
-    bad = all(p["status"] == "infeasible" for p in points)
+    grouped.setdefault((num(row,"DSP"),num(row,"latency_ms_est"),row["series"] or "E",
+                        row["status"] == "infeasible"),[]).append(row)
+for (dsp,latency,series,bad),points in grouped.items():
     ax.scatter(dsp,latency,color=COLORS[series],marker="x" if bad else "o",s=42)
     row = points[0]
     labels.append(ax.text(dsp,latency,",".join(p["id"] for p in points)+f" T={row['T_target']}\n"+row["precision_w_a_acc"],fontsize=7))
