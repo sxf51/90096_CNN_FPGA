@@ -6,7 +6,7 @@ import json
 import re
 from analyze_arch import write_csv
 from host_memory import cpu_summary, swap_summary
-from route_gates import evaluate_route
+from route_gates import archive_route_evidence, evaluate_route
 from rtl_acceptance import accepted_cosim
 from run_exp import ROOT, markdown_table, number
 
@@ -95,9 +95,11 @@ def memory_summary(archive, config):
 def analyze(archive):
     config = json.loads((archive / "config.json").read_text())
     metrics = json.loads((archive / "metrics.json").read_text())
-    observed = config.get("verification", {})
+    recorded = config.get("verification", {})
+    observed = (archive_route_evidence(archive) if config.get("verification_reports")
+                else evaluate_route(recorded))
     routed_policy = config.get("resource_policy") == "routed"
-    route_feasible = evaluate_route(observed).get("route_feasible")
+    route_feasible = observed.get("route_feasible")
     target = config.get("implementation_clock_ns", config["clock"])
     wns = number(observed.get("impl_WNS_ns"))
     values = {"id": config["id"], "parent": config["verify_parent"], "status": metrics["status"],
@@ -126,7 +128,7 @@ def analyze(archive):
                 values["rtl_frame_ms_from_slack"] = rtl*(target-wns)/1e6 if wns is not None else None
     paths = []
     for record in config.get("verification_reports", []):
-        if record["raw_file"] == observed.get("impl_timing_report"):
+        if record["raw_file"] == recorded.get("impl_timing_report"):
             paths = setup_paths((archive / record["archived_file"]).read_text())
     extra_paths = archive / "reports/impl/srcnn_setup5_routed.rpt"
     if extra_paths.is_file():

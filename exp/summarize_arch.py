@@ -271,6 +271,8 @@ def main():
         text += "\n## Integrity Audit\n\nFinal local/remote original and first-phase source checksum and report-provenance audit: ["+audit.name+"]("+audit.name+").\n\n"
         text += markdown_table(audit_data["checks"],["location","manifest","checked_files","pass"])
     text += "\n## Figures\n\n"
+    if (ROOT / "experiments/figs/verified_ip_pareto.png").is_file():
+        text += "![Verified IP frame time versus routed DSP](figs/verified_ip_pareto.png)\n\n"
     for name,label in (("architecture_pareto","Latency vs DSP by series"),("architecture_dsp_layers","DSP composition"),
                        ("estimate_actual_dsp","DSP estimates vs actual"),("estimate_actual_cycles","Cycle estimates vs actual"),
                        ("conv3_resources","Conv3 resource comparison"),

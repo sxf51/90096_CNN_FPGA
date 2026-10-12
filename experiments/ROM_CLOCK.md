@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T15:36:50+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T15:43:36+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C18 leads; F51 verified; F50 RTL and C17 HLS run concurrently. C18/C14 is the verified mixed T4 leader at 5 ns and 1.503160 ms, with an archived IP handoff. W30/W28 closes 4.5 ns at 2.472471 ms for uniform T8. F51/F48 independently passes 5 ns at 2.678855 ms; its five paths and physical hierarchy are archived. C18 checkpoint paths and W32 final post-route-optimization generated paths are also archived. F50 RTL and C17 HLS are running concurrently; C16 has completed C simulation and waits for synthesis budget. W31 is temporarily held by the auto-resuming F50 priority supervisor. Finish these four results. Once C16/C17 pass all 13 images and HLS screening, plan fresh changed-parameter cosim C19/C20 and staged implementation C21/C22; recheck unused IDs before planning. Initial physical targets are 4.5 ns for T8 and 5 ns for T4, with no lower RTL cycle bound. W31 closing 5 ns can trigger a separate ROM 4.5 ns probe, which is not yet planned or running. No resource-driven T4 ROM retry is currently needed. Keep one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses and plots, then perform the final two-location audit. Precision, runtime interfaces and physical gates stay strict. No board results exist.
+C17 screened; C20 RTL queued; F50 RTL and C16 HLS run concurrently. C18/C14 remains the verified mixed T4 leader at 5 ns and 1.503160 ms, with an archived handoff. W30/W28 is the uniform T8 leader at 4.5 ns and 2.472471 ms; F51/F48 also independently closes 5 ns at 2.678855 ms. Their five-path evidence and physical hierarchies are archived. C17 passes all 13 E065-exact images, II1 and the HLS physical-verification screen; retain its original HLS infeasible status. C20 changed-parameter RTL is queued. C22 staged 5 ns implementation is planned but unlaunched until C20 passes. F50 RTL and C16 HLS currently overlap. W31 remains held by the automatically resuming F50 supervisor. After C16 screening, plan C19 RTL and C21 staged 4.5 ns implementation with no lower cycle bound; recheck IDs before planning. W31 closing 5 ns can trigger an unplanned ROM 4.5 ns probe. No resource-driven T4 ROM retry is currently required. Preserve one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses/plots and perform final two-location integrity checks when runnable jobs finish. Runtime interfaces, precision and physical gates stay strict; no board results exist.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -57,6 +57,8 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | --- | --- | --- | --- | --- |
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
 | [W31](W31_ws_impl_W24/W31.md) | W24 | impl | queued_or_running | unknown |
+| [C20](C20_ws_cosim_C17/C20.md) | C17 | cosim | queued_or_running | unknown |
+| [C22](C22_ws_impl_C17/C22.md) | C17 | impl | unlaunched_conditional | C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18 |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 
@@ -107,6 +109,8 @@ Current policy permits one heavy task with light jobs subject to registered budg
 | W23 | W29 | 342.5068440437317 | 161 | 16.554981231689453 | 0.5088157653808594 | 31.89580124556352 |
 | W23 | C15 | 73.9129331111908 | 36 | 10.116344451904297 | 4.914371490478516 | 26.598767270810896 |
 | W23 | C15 | 587.7770907878876 | 279 | 14.542190551757812 | 0.20591354370117188 | 29.55477371313919 |
+| C17 | C16 | 121.87702989578247 | 59 | 1.9005126953125 | 10.32436752319336 | 42.15509217454121 |
+| C16 | C17 | 1.8211803436279297 | 1 | 0.3324623107910156 | 11.27688217163086 | 20.689655172413794 |
 
 Process-tree RSS sums include shared mappings; minimum MemAvailable is measured for the entire host. Sampling alignment tolerance is4seconds. A hatch marks nonzero tool exit, not failed timing closure.
 

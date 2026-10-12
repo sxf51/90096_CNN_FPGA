@@ -115,7 +115,8 @@ def main():
                           for exp_id, path in handoffs.items())
         text += ". Retain the [F98 integration handoff](BOARD_HANDOFF.md); board verification is pending.\n"
     text += "\n## Figures\n\n"
-    for filename, label in (("rom_clock_pareto", "HLS screening"), ("rom_clock_dsp", "DSP composition"),
+    for filename, label in (("verified_ip_pareto", "Verified IP frame time versus routed DSP"),
+                            ("rom_clock_pareto", "HLS screening"), ("rom_clock_dsp", "DSP composition"),
                             ("rom_clock_estimate_DSP", "DSP estimates and measurements"),
                             ("rom_clock_estimate_latency_cycles", "Cycle estimates and measurements"),
                             ("rom_clock_rtl_cycles", "Two-frame RTL cycles")):

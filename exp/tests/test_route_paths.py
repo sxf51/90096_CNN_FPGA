@@ -119,6 +119,43 @@ class RoutedPathTests(unittest.TestCase):
             self.assertNotIn("rtl_source_id", result)
             self.assertNotIn("rtl_frame_ms_at_target", result)
 
+    def test_archived_reports_fill_legacy_route_fields_without_rewriting_results(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            archive = self.route_fixture(root)
+            config_path = archive / "config.json"
+            config = json.loads(config_path.read_text())
+            evidence = {**config["verification"], "route_feasible": True}
+            config["verification"].pop("impl_WHS_ns")
+            config["verification"].pop("impl_unrouted_nets")
+            config["verification_reports"] = [{"raw_file": "timing.rpt", "archived_file": "timing.rpt"}]
+            config_path.write_text(json.dumps(config))
+            before = [path.read_bytes() for path in (config_path, archive / "metrics.json")]
+            with patch("analyze_route.ROOT", root), patch(
+                    "analyze_route.archive_route_evidence", return_value=evidence) as raw:
+                result = analyze(archive)
+            raw.assert_called_once_with(archive)
+            self.assertTrue(result["route_feasible"])
+            self.assertAlmostEqual(result["rtl_frame_ms_at_target"], 2.514411)
+            self.assertEqual(before, [path.read_bytes() for path in (config_path, archive / "metrics.json")])
+
+    def test_raw_route_failure_overrides_stale_success(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            archive = self.route_fixture(root)
+            config_path = archive / "config.json"
+            config = json.loads(config_path.read_text())
+            config["verification_reports"] = [{"raw_file": "timing.rpt", "archived_file": "timing.rpt"}]
+            config_path.write_text(json.dumps(config))
+            evidence = {**config["verification"], "impl_WNS_ns": -.05, "timing_met": False,
+                        "route_feasible": False}
+            with patch("analyze_route.ROOT", root), patch(
+                    "analyze_route.archive_route_evidence", return_value=evidence):
+                result = analyze(archive)
+            self.assertFalse(result["route_feasible"])
+            self.assertEqual(result["WNS_ns"], -.05)
+            self.assertIsNone(result["rtl_frame_ms_at_target"])
+
     def test_timeout_partial_resources_never_become_final_routed_results(self):
         archive = ROOT / "experiments/F89_serial_vivado_impl_F25"
         partial = resources((archive / "diagnostics/pre_route/srcnn_utilization_synth.rpt").read_text())
