@@ -485,6 +485,8 @@
 
 - 2026-10-12T06:52:37+00:00: F45: ws_cosim_F41; status=cosim_complete; latency_ms_est=1.74903921; cosim of F41; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-12T07:57:42+00:00: F46: ws_cosim_F42; status=fail; latency_ms_est=1.74903921; cosim of F42; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.4973716735839844, "floor_gib": 0.5}
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T07:05 UTC 用户明确授权覆盖原预留预算规则：“我觉得不用担心，直接干进去，同时跑两项”。06:58:29 UTC F46 已在 F43 仍运行时准入，两项分别验证 rasterFIFO 与 Conv3 操作数寄存器；不是仅有两个排队任务。调度改为最多两项，预算保留作观察，不再用预算相加拦截第二项，实际可用内存0.5GiB以下中止最近启动项，OOM仍退回串行。W28/F48/C14/F44 的原 Python 等待进程确认未获准入、未启动 Vitis 后迁移到新调度，保留 ID、原计划 SHA256、RTL/init、配置和冻结 testbench；旧 SSH 包装器因任务未完成而退出并报缺 metrics.json，此为等待进程迁移退出，不是 RTL 失败，新进程完成后使用 collect-only 归档。原等待期全局 host_memory 会由恢复进程重新开始采样；它不是工具峰值或性能测量，工具启动后的逐任务 telemetry 单独保存。此前 W23 空闲主机也无法准入的问题已由该授权解决，无需人工重复确认。
