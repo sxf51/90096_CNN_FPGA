@@ -1,14 +1,16 @@
 {
   "plan": "docs/0005-rom-clock-t4-plan.md",
   "phase": "WS-0 complete; WS-B RTL running; WS-C/D independent controls running; WS-C1 awaiting memory admission",
-  "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42"],
+  "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13"],
   "complete_test_set": "Set14 (13 course-provided images)",
   "resource_policy": "routed",
   "next": "W24 passed all13 course images exactly and HLS II checks:630DSP,138BRAM18K,53316LUT,103695FF,524330cycles. W25 is running same-ROM/changed-input two-frame RTL. Mainline controls W27 FRP, F39 registered Conv3 operands, F40/F41 feature FIFO16/32 and F42 reordered-raster buffer run all-image C validation then budgeted synthesis. W26 retains preparation-failure evidence; W27 is its independent retry. W23 identical-RTL4.5ns remains unlaunched because12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve all memory gates and continue independent work. Prepare F98 board handoff; T4 follows measured clock/FIFO evidence.",
-  "completed_workstreams": ["WS-0"],
+  "completed_workstreams": ["WS-0", "WS-A agent handoff (board measurements pending)"],
   "waiting_for_memory": ["W23"],
   "pending_decisions": [
     "Initial remote MemAvailable=14091148 KiB (13.438 GiB), below 14.5 GiB required by the 12.5 GiB implementation reservation plus 2 GiB floor. Keep both stated memory gates; if unchanged after WS-0, record W23 as waiting for memory and continue independent coding/C simulations/syntheses."
   ],
-  "local_exec_sessions": [42923, 95021, 52510, 10109, 50575, 4554]
+  "local_exec_sessions": [42923, 95021, 52510, 10109, 50575, 4554, 71531],
+  "board_handoff": "experiments/BOARD_HANDOFF.md",
+  "wsE": "C13 early HLS screen running; independent runtime-loaded T4 with once-per-frame Conv2 signed8 prepacking; E065 mixed-precision references, no routed feasibility claim."
 }
