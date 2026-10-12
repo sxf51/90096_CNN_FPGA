@@ -65,7 +65,7 @@
 
 [English edition](docs/0004-experiment-evolution.en.md) 提供同步的英文说明、全部实验索引及 13 张英文图，共用相同的测量和依赖关系。
 
-[单张完整演进图](docs/experiment-evolution/full.svg) / [本地查看器](docs/experiment-evolution/full.html) 展示所有 153 项实验及 207 条依赖，使用短思路、加粗指标、原有状态配色与失败淡化。
+[单张完整演进图](docs/experiment-evolution/full.svg) / [本地查看器](docs/experiment-evolution/full.html) 展示所有 153 项实验及 160 条主要优化连线，使用加粗实线、短思路与统一的 100 MHz 参考整网 ms/张；沿用状态配色与失败淡化。
 
 优化实验位于 `designs/`、`exp/` 和 `experiments/`；根目录 `src/`、`script.py` 仍为浮点基线。F82 是 F25 的双帧 RTL 协仿记录，功能 Pass；F25 的 2.5 ns HLS 配置仍有时序警告，物理实现和板端性能尚未验证。下方计划描述的是原始基线的调优方向。
 

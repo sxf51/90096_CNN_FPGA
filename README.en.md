@@ -59,7 +59,7 @@ These values indicate close agreement with the floating-point reference; they ar
 
 ## Archived optimization experiments
 
-The [single complete graph](docs/experiment-evolution/full.en.svg) / [local viewer](docs/experiment-evolution/full.en.html) show all 153 experiments and 207 dependencies with short ideas, bold metrics, status colors, and faded failures.
+The [single complete graph](docs/experiment-evolution/full.en.svg) / [local viewer](docs/experiment-evolution/full.en.html) show all 153 experiments and 160 main optimization links, using thick solid arrows, short ideas, and common network ms/frame at a 100 MHz reference clock, with the existing status colors and faded failures.
 
 The [experiment evolution guide](docs/0004-experiment-evolution.en.md) documents all 153 experiments in snapshot `800a87a`, including dependencies, changes, results, limitations, and original reports. Start with the [overview](docs/experiment-evolution/overview.en.svg), then the [evolution toward F25](docs/experiment-evolution/continuous.en.svg) and [verification relationships](docs/experiment-evolution/verification.en.svg). See the [documentation index](docs/README.en.md) for all entries. [Chinese edition](docs/0004-experiment-evolution.md).
 

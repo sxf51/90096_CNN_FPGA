@@ -37,7 +37,7 @@
     #scene [data-id] { cursor: pointer; }
     #scene .unrelated { opacity: 0.12 !important; }
     #scene .selected > rect { stroke-width: 4; stroke: #243031; }
-    #scene .related-edge { stroke: #243031; stroke-width: 2.6; }
+    #scene .related-edge { stroke: #243031; stroke-width: 5; }
     footer { min-height: 31px; padding: 8px 16px; border-top: 1px solid #e8ece9; color: #62706b; font-size: 12px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
     @media (max-width: 640px) {
       .toolbar { gap: 8px; padding: 9px 12px; }
@@ -55,7 +55,7 @@
   <main>
     <header class="toolbar">
       <h1>[[PAGE_TITLE]]</h1>
-      <span class="counts">153 / 207</span>
+      <span class="counts">[[NODE_COUNT]] / [[EDGE_COUNT]]</span>
       <span class="spacer"></span>
       <form id="find">[[ICON_search]]<input id="query" type="search" list="ids" autocomplete="off" spellcheck="false"></form>
       <datalist id="ids"></datalist>
@@ -69,6 +69,7 @@
       </div>
     </header>
     <div class="legend">
+      <span data-text="metric"></span>
       <span><i class="swatch green"></i><span data-text="pass"></span></span>
       <span><i class="swatch amber"></i><span data-text="timing"></span></span>
       <span><i class="swatch red"></i><span data-text="failure"></span></span>
@@ -83,15 +84,17 @@
     const graph = JSON.parse(document.getElementById('graph-data').textContent);
     const english = document.documentElement.lang === 'en';
     const text = english ? {
+      metric: '100 MHz reference / ms per image',
       pass: 'Stage passes; C/RTL does not establish routing', timing: 'HLS timing warning',
       failure: 'Budget / II / configuration / routing fails', analysis: 'Software analysis', faded: 'Failed / unrun',
       query: 'Experiment ID', out: 'Zoom out', in: 'Zoom in', fit: 'Fit complete graph', clear: 'Clear selection',
-      download: 'Download SVG', missing: 'Experiment not found', summary: '153 experiments / 207 dependencies / snapshot 800a87a'
+      download: 'Download SVG', missing: 'Experiment not found'
     } : {
+      metric: '100 MHz 参考 / ms/张',
       pass: '本阶段通过；C/RTL 不代表布线', timing: 'HLS 时序告警',
       failure: '资源 / II / 配置 / 实现失败', analysis: '软件分析', faded: '失败 / 未运行',
       query: '实验编号', out: '缩小', in: '放大', fit: '显示全图', clear: '清除定位',
-      download: '下载 SVG', missing: '没有该实验记录', summary: '153 项实验 / 207 条依赖 / 快照 800a87a'
+      download: '下载 SVG', missing: '没有该实验记录'
     };
     for (const element of document.querySelectorAll('[data-text]')) element.textContent = text[element.dataset.text];
     for (const id of ['out', 'in', 'fit', 'clear', 'download']) {
@@ -102,7 +105,7 @@
     query.placeholder = text.query;
     query.setAttribute('aria-label', text.query);
     text.summary = graph.nodes.length + (english ? ' experiments / ' : ' 项实验 / ') + graph.edges.length
-      + (english ? ' dependencies / snapshot ' : ' 条依赖 / 快照 ') + graph.source_commit;
+      + (english ? ' main links / snapshot ' : ' 条主要连线 / 快照 ') + graph.source_commit;
     document.querySelector('.counts').textContent = graph.nodes.length + ' / ' + graph.edges.length;
     const nodes = new Map(graph.nodes.map(node => [node.id, node]));
     for (const id of nodes.keys()) {
@@ -162,7 +165,8 @@
         edge.classList.toggle('unrelated', !relevant);
         edge.classList.toggle('related-edge', !!id && relevant);
       }
-      status.textContent = node ? node.id + ' / ' + node.texts.slice(1).map(row => row.text).join(' / ') : text.summary;
+      status.textContent = node ? node.id + ' / ' + node.texts.slice(1).map(row => row.text).join(' / ')
+        + (node.metric ? ' / ' + node.metric.source.toUpperCase() : '') : text.summary;
       if (node && recenter) {
         scale = Math.min(1, (viewport.clientWidth - 40) / node.width);
         x = viewport.clientWidth / 2 - (node.x + node.width / 2) * scale;

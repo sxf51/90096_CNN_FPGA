@@ -2,7 +2,9 @@
 
 [中文版](0004-experiment-evolution.md)
 
-One-graph entry: [complete compact SVG](experiment-evolution/full.en.svg) / [local viewer with zoom, lookup, and relationship highlighting](experiment-evolution/full.en.html). All 153 experiments and 207 dependencies appear together, with only IDs, short ideas, and bold metrics on nodes.
+One-graph entry: [complete compact SVG](experiment-evolution/full.en.svg) / [local viewer with zoom, lookup, and relationship highlighting](experiment-evolution/full.en.html). All 153 experiments appear together, with 160 thick solid arrows for the main optimization progression; only eight essential nodes retain two parents. Nodes show only IDs, short ideas, and bold network ms/frame at a 100 MHz reference clock, or "No frame result" without valid network cycles. All 207 archive relationships remain in the ledger and route diagrams.
+
+The complete graph converts existing cycles with `network latency cycles x 10 ns / 1,000,000` to milliseconds, using a valid current-experiment RTL maximum latency or HLS top-level latency, excluding host/DMA transfers. This reference-clock conversion is neither synthesis rerun at 10 ns nor board measurement. PE, layer-only, and C-simulation-only results do not supply network time. See the [generation guide](experiment-evolution/README.en.md) for the metric definition and edge selection.
 
 This guide explains what each experiment builds on, why its design changed, and how its results motivated the next step. The [complete ledger](experiment-evolution/records.en.md) covers all 153 experiments.
 
@@ -17,9 +19,9 @@ The archive snapshot is source commit `800a87a`: 142 experiments have result rec
 
 ![Experiment overview](experiment-evolution/overview.en.svg)
 
-Edges describe dependencies between designs, parameters, integrated modules, and verification steps. They are not Git commit ancestry. Solid edges show design or parameter evolution; dashed edges show numerical references, controls, or verification of the same design. Combined experiments have several parents, so the structure is a directed graph rather than a strict tree.
+The route diagrams below show complete dependencies between designs, parameters, integrated modules, and verification steps, rather than Git commit ancestry. Their solid edges show design or parameter evolution; dashed edges show numerical references, controls, or verification of the same design. The complete compact graph selects main relationships and uses thick solid arrows throughout. Combined experiments have several parents, so the structure is a directed graph rather than a strict tree.
 
-HLS times retain the original registry formula: `cycles * max(target period, HLS estimated period) / 10^6` milliseconds. This calculation does not establish timing closure after clock uncertainty, routed timing, or measured board performance.
+The text below and the route diagrams retain the original registry formula: `cycles * max(target period, HLS estimated period) / 10^6` milliseconds, which differs from the complete compact graph's common 100 MHz normalization. This original calculation does not establish timing closure after clock uncertainty, routed timing, or measured board performance.
 
 ## Names and Parameters
 

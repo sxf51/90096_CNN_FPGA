@@ -28,6 +28,8 @@ const suffix = english ? '.en' : '';
 const fullGraph = process.argv.includes('--full');
 const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data' + suffix + '.json'), 'utf8'));
 const byId = new Map(data.records.map(record => [record.id, record]));
+const dependencyCount = data.records.reduce((count, record) => count + record.parents.length, 0);
+const referenceClockNs = 10;
 const xml = value => String(value).replace(/[<>&"']/g, ch => ({
   '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;'
 }[ch]));
@@ -101,43 +103,37 @@ function number(value, decimals = 4) {
   return value == null ? '?' : Number(value).toLocaleString('en-US', { maximumFractionDigits: decimals });
 }
 
-function compactMetrics(record) {
-  const v = record.verification;
-  if (record.status === 'planned') return [english ? 'Not run' : '未运行'];
-  if (record.status === 'invalid_config') return [english ? 'Invalid configuration' : '配置无效'];
-  if (record.status === 'timeout') return [english ? 'Timed out' : '运行超时'];
-  if (record.status === 'fail') {
-    if (record.flags.some(flag => flag.includes('OOM'))) return [english ? 'OOM / no routed result' : 'OOM / 无布线结果'];
-    return [record.functional?.csim_pass === true
-      ? english ? 'Run failed / C Pass' : '运行失败 / C Pass'
-      : english ? 'No passing simulation' : '仿真未通过'];
+function frameMetric(record) {
+  if (record.scope !== 'frame' || ['planned', 'fail', 'timeout', 'invalid_config'].includes(record.status)) return null;
+  const rtl = record.verification;
+  const source = rtl.rtl_status === 'Pass' && Number.isFinite(rtl.rtl_latency_max) && rtl.rtl_latency_max > 0
+    ? 'rtl' : 'hls';
+  const cycles = source === 'rtl' ? rtl.rtl_latency_max : record.hls?.latency_cycles;
+  if (!Number.isFinite(cycles) || cycles <= 0) return null;
+  return { source, latency_cycles: cycles, time_ms: cycles * referenceClockNs / 1e6 };
+}
+
+function compactMetricText(metric) {
+  if (!metric) return english ? 'No frame result' : '暂无整网结果';
+  return metric.time_ms.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    + (english ? ' ms/frame' : ' ms/张');
+}
+
+function mainEdges() {
+  const selected = JSON.parse(fs.readFileSync(path.join(__dirname, 'main-parents.json'), 'utf8'));
+  if (selected.source_commit !== data.source_commit) throw new Error('Main-parent selection must match the snapshot.');
+  for (const id of Object.keys(selected.parents)) {
+    if (!byId.has(id) || byId.get(id).parents.length < 2) throw new Error('Unexpected main-parent selection: ' + id);
   }
-  if (v.impl_WNS_ns != null) return [
-    'WNS ' + (v.impl_WNS_ns >= 0 ? '+' : '') + number(v.impl_WNS_ns) + ' ns',
-    'DSP ' + number(v.impl_DSP) + ' / B36 ' + number(v.impl_BRAM36),
-    'LUT ' + number(v.impl_LUT) + ' / FF ' + number(v.impl_FF)
-  ];
-  if (v.rtl_latency_max != null) return ['RTL ' + number(v.rtl_latency_max) + ' cyc', 'RTL ' + v.rtl_status];
-  const hls = record.hls;
-  if (hls) {
-    const primary = record.scope === 'PE'
-      ? 'PE ' + number(hls.latency_cycles) + ' cyc'
-      : (record.scope === 'layer' ? english ? 'Layer HLS ' : '单层 HLS ' : 'HLS ')
-        + number(hls.latency_ms_est, 5) + ' ms';
-    return [primary,
-      'DSP ' + number(hls.DSP) + ' / B18 ' + number(hls.BRAM18K) + (hls.URAM ? ' / U ' + number(hls.URAM) : ''),
-      'LUT ' + number(hls.LUT) + ' / FF ' + number(hls.FF)];
-  }
-  if (record.quality?.delta_vs_float_db != null) return [
-    (english ? 'Avg ' : '均值 ') + 'ΔPSNR ' + number(record.quality.delta_vs_float_db) + ' dB',
-    record.functional?.bit_exact ? 'C Pass / bit-exact' : 'C Pass'
-  ];
-  if (record.functional?.csim_pass === true) {
-    const mse = record.functional.butterfly_mse;
-    const result = record.functional.bit_exact ? 'C Pass / bit-exact' : 'C Pass';
-    return mse == null ? [result] : ['MSE ' + Number(mse).toExponential(2), result];
-  }
-  return [record.run_kind === 'analysis' ? english ? 'Software analysis' : '软件分析' : english ? 'No measurement' : '无测量记录'];
+  return data.records.flatMap(record => {
+    const parents = record.parents.length > 1 ? selected.parents[record.id] : record.parents.map(parent => parent.id);
+    if (!Array.isArray(parents) || (record.parents.length && !parents.length) || new Set(parents).size !== parents.length
+        || parents.some(id => !record.parents.some(parent => parent.id === id))) {
+      throw new Error('Missing, duplicate, or invented main parents: ' + record.id);
+    }
+    return parents.map((id, index) => ({ from: id, to: record.id,
+      kind: record.parents.find(parent => parent.id === id).kind, key: record.id + '-' + index }));
+  });
 }
 
 function compactNode(record, titles) {
@@ -149,19 +145,31 @@ function compactNode(record, titles) {
   const simulationPassed = record.functional?.csim_pass === true || verification.rtl_status === 'Pass' || !!sameDesign;
   const failed = ['fail', 'timeout', 'invalid_config'].includes(record.status);
   const faded = failed || record.status === 'planned' || (!simulationPassed && record.run_kind !== 'analysis');
-  const metrics = compactMetrics(record);
+  const metric = frameMetric(record);
+  const metricText = compactMetricText(metric);
   const stage = verification.impl_WNS_ns != null ? verification.timing_met ? 'routed-pass' : 'routed-fail'
     : record.run_kind === 'cosim' ? 'rtl' : record.hls ? 'hls' : record.run_kind;
   const title = titles.get(record.id)[english ? 2 : 1];
-  const tooltip = [record.id + ': ' + record.title, record.change, record.issue,
-    record.graph.flags, metrics.join('; '),
-    english ? 'Passing C/RTL functionality does not establish routed timing. HLS times are estimates.'
-      : 'C/RTL 功能通过不代表布线时序通过；HLS 时间是估计。'].join('\n');
+  const provenance = metric
+    ? (metric.source === 'rtl' ? english ? 'Current RTL maximum latency: ' : '本实验 RTL 最大延迟：'
+      : english ? 'Current HLS top-level latency estimate: ' : '本实验 HLS 顶层延迟估计：')
+      + number(metric.latency_cycles) + (english ? ' cycles.' : ' 周期。')
+    : english ? 'No valid network latency recorded in this experiment.' : '本实验没有有效的整网延迟记录。';
+  const routed = verification.impl_WNS_ns == null ? ''
+    : (verification.timing_met ? english ? 'Routed timing passes; ' : '布线时序通过；'
+      : english ? 'Routed timing fails; ' : '布线时序未通过；')
+      + 'WNS ' + (verification.impl_WNS_ns >= 0 ? '+' : '') + number(verification.impl_WNS_ns) + ' ns';
+  const parents = record.parents.map(parent => parent.id + ' (' + data.edge_kinds[parent.kind] + ')').join('; ');
+  const tooltip = [record.id + ': ' + record.title, record.change, record.issue, record.graph.flags, routed,
+    metricText, provenance, (english ? 'All archive parents: ' : '全部档案来源：') + (parents || (english ? 'None' : '无')),
+    english ? 'Reference: existing cycles at 100 MHz (10 ns), excluding host/DMA transfers. No 10 ns synthesis rerun or board measurement. C/RTL passes do not establish routed timing.'
+      : '参考口径：现有周期数按 100 MHz（10 ns）折算，不含主机/DMA 传输。未按 10 ns 重新综合，未板端实测；C/RTL 通过不代表布线时序通过。'
+  ].filter(Boolean).join('\n');
   return block({ id: record.id, tone: record.graph.tone, width: english ? 340 : 320,
-    opacity: faded ? 0.4 : 1, faded, stage, simulationPassed, tooltip,
+    opacity: faded ? 0.4 : 1, faded, stage, simulationPassed, tooltip, metric,
     href: 'records' + suffix + '.md#' + record.id.toLowerCase(),
     lines: [[record.id, 19, true], [title, 17, false],
-      ...metrics.map((metric, index) => [metric, index === 0 ? 18 : 14, true])] });
+      [metricText, metric ? 18 : 14, !!metric, metric ? '#243031' : '#687570']] });
 }
 
 function experimentNode(record, context = false) {
@@ -233,8 +241,9 @@ function mermaid(nodes, edges, title) {
     lines.push('  ' + node.id + '["' + quote(label) + '"]');
   }
   for (const edge of edges) {
-    lines.push('  ' + edge.from + (solid.has(edge.kind) ? ' -->|' : ' -.->|')
-      + data.edge_kinds[edge.kind] + '| ' + edge.to);
+    lines.push(fullGraph ? '  ' + edge.from + ' ==> ' + edge.to
+      : '  ' + edge.from + (solid.has(edge.kind) ? ' -->|' : ' -.->|')
+        + data.edge_kinds[edge.kind] + '| ' + edge.to);
   }
   for (const [tone, [fill, stroke]] of Object.entries(colors)) {
     lines.push('  classDef ' + tone + ' fill:' + fill + ',stroke:' + stroke + ',color:#243031');
@@ -244,6 +253,10 @@ function mermaid(nodes, edges, title) {
   if (fullGraph) {
     lines.push('  classDef faded opacity:0.4');
     lines.push('  class ' + nodes.filter(node => node.faded).map(node => node.id).join(',') + ' faded');
+    lines.push('  linkStyle default stroke:#62756f,stroke-width:3.4px');
+    const fadedEdges = edges.map((edge, index) => nodes.find(node => node.id === edge.from).faded
+      || nodes.find(node => node.id === edge.to).faded ? index : null).filter(index => index != null);
+    if (fadedEdges.length) lines.push('  linkStyle ' + fadedEdges.join(',') + ' opacity:0.25');
   }
   return lines.join('\n') + '\n';
 }
@@ -281,7 +294,7 @@ function render(key, title, subtitle, nodes, edges) {
     nodesep: fullGraph ? 34 : 44, edgesep: 20, marginx: 48, marginy: 28 });
   g.setDefaultEdgeLabel(() => ({}));
   nodes.forEach(node => g.setNode(node.id, node));
-  edges.forEach(edge => g.setEdge(edge.from, edge.to, { ...edge, weight: solid.has(edge.kind) ? 3 : 1 }, edge.key));
+  edges.forEach(edge => g.setEdge(edge.from, edge.to, { ...edge, weight: fullGraph || solid.has(edge.kind) ? 3 : 1 }, edge.key));
   dagre.layout(g);
   const width = Math.max(english ? 1250 : 920, Math.ceil(g.graph().width));
   let header = 170;
@@ -291,16 +304,21 @@ function render(key, title, subtitle, nodes, edges) {
     let y = 16;
     for (const [text, size, weight, fill] of [
       [title, 27, '700', '#182c2d'], [subtitle, 17, '400', '#435654'],
-      [english ? 'Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.'
-        : '实线：基线、修复、集成；虚线：参考、对照、同设计验证、复现。', 16, '400', '#526461'],
+      [fullGraph
+        ? english ? 'Thick solid arrows: main optimization relationships. Multiple parents only where needed; all archive relationships remain in the ledger.'
+          : '加粗实线：主要优化演进；必要时保留多个来源。完整档案关系见逐项记录。'
+        : english ? 'Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.'
+          : '实线：基线、修复、集成；虚线：参考、对照、同设计验证、复现。', 16, '400', '#526461'],
       [fullGraph
         ? english ? 'Green: current stage passes (C/RTL is not routed timing); amber: HLS timing warning; red: budget/II/configuration/routing failure; teal: analysis.'
           : '绿：当前阶段通过（C/RTL 不代表布线时序）；琥珀：HLS 时序告警；红：资源、II、配置或实现失败；青：软件分析。'
         : 'Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.', 16, '400', '#526461'],
-      ...(fullGraph ? [[english ? 'Faded: failed/unrun/no functional pass. Bold: measured-stage metrics. HLS time is an estimate; B18 = BRAM18K; B36 = BRAM36; WNS = routed timing.'
-        : '淡化：运行失败、未运行或无功能通过记录；加粗：本阶段指标。HLS 为时间估计；B18 / B36 区分 BRAM 单位；WNS 为实际布线时序。', 16, '400', '#526461']] : [])
+      ...(fullGraph ? [[english ? 'Bold: network ms/frame at a 100 MHz reference clock, from existing HLS/RTL cycles. No synthesis rerun or board measurement; host/DMA excluded.'
+        : '加粗：整网 ms/张，现有 HLS/RTL 周期按 100 MHz 参考时钟折算；未重新综合或板端实测，不含主机/DMA 传输。', 16, '400', '#526461'],
+      [english ? 'No frame result: no valid network latency. Faded: failed/unrun/no passing functionality. Hover for metric provenance and verification status.'
+        : '暂无整网结果：缺少有效整网延迟；淡化：运行失败、未运行或无功能通过记录。测量来源与验证状态见悬停提示。', 16, '400', '#526461']] : [])
     ]) {
-      for (const line of wrap(text, size, width - 96)) {
+      for (const line of wrap(text, size, fullGraph ? 650 : width - 96)) {
         headerTexts.push('<text x="48" y="' + (y + size) + '" font-size="' + size + '" font-weight="' + weight + '" fill="' + fill + '">' + xml(line) + '</text>');
         y += size * 1.5;
       }
@@ -319,18 +337,23 @@ function render(key, title, subtitle, nodes, edges) {
   const pieces = ['<svg xmlns="http://www.w3.org/2000/svg" font-family="' + font + '" width="' + width + '" height="' + height + '" viewBox="0 0 ' + width + ' ' + height + '">',
     '<title>' + xml(title) + '</title>',
     '<desc>' + xml(subtitle + (english ? '. Snapshot ' + data.source_commit + '. Experiment relationships are not Git ancestry.' : '。数据快照 ' + data.source_commit + '。实验关系不是 Git 提交历史。')) + '</desc>',
-    '<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#778482"/></marker></defs>',
+    fullGraph
+      ? '<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" refX="12" refY="6.5" orient="auto"><path d="M0 0 L13 6.5 L0 13 Z" fill="#62756f"/></marker></defs>'
+      : '<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#778482"/></marker></defs>',
     '<rect x="0" y="0" width="' + width + '" height="' + height + '" fill="#ffffff"/>',
     ...headerTexts];
   const layout = { key, width, height, nodes: [], edges: [] };
+  if (fullGraph) Object.assign(layout, { reference_clock_ns: referenceClockNs, archive_dependency_count: dependencyCount });
   for (const edgeRef of g.edges()) {
     const edge = g.edge(edgeRef);
     const points = orthogonal(edge.points, g.nodes().map(id => g.node(id))).map(p => ({ x: p.x, y: p.y + header }));
     const d = points.map((p, i) => (i ? 'L' : 'M') + p.x.toFixed(2) + ' ' + p.y.toFixed(2)).join(' ');
     const faded = fullGraph && (g.node(edge.from).faded || g.node(edge.to).faded);
-    pieces.push('<path d="' + d + '" fill="none" stroke="#778482" stroke-width="1.7"'
-      + (fullGraph ? ' opacity="' + (faded ? '0.25' : solid.has(edge.kind) ? '0.85' : '0.55') + '" data-from="' + edge.from + '" data-to="' + edge.to + '"' : '')
-      + (solid.has(edge.kind) ? '' : ' stroke-dasharray="6 5"') + ' marker-end="url(#arrow)"/>');
+    pieces.push('<path d="' + d + '" fill="none" stroke="' + (fullGraph ? '#62756f' : '#778482')
+      + '" stroke-width="' + (fullGraph ? '3.4' : '1.7') + '"'
+      + (fullGraph ? ' opacity="' + (faded ? '0.25' : '0.9') + '" data-from="' + edge.from + '" data-to="' + edge.to + '"' : '')
+      + (fullGraph || solid.has(edge.kind) ? '' : ' stroke-dasharray="6 5"') + ' marker-end="url(#arrow)"'
+      + (fullGraph ? '><title>' + xml(edge.from + ' → ' + edge.to + ': ' + data.edge_kinds[edge.kind]) + '</title></path>' : '/>'));
     layout.edges.push({ from: edge.from, to: edge.to, kind: edge.kind, points });
   }
   for (const id of g.nodes()) {
@@ -353,7 +376,7 @@ function render(key, title, subtitle, nodes, edges) {
     pieces.push('</g>');
     layout.nodes.push({ id, context: !!node.context, x, y, width: node.width, height: node.height, texts });
     if (fullGraph) Object.assign(layout.nodes[layout.nodes.length - 1], {
-      tone: node.tone, faded: node.faded, stage: node.stage, simulationPassed: node.simulationPassed });
+      tone: node.tone, faded: node.faded, stage: node.stage, simulationPassed: node.simulationPassed, metric: node.metric });
   }
   pieces.push('</svg>');
   return { svg: pieces.join('\n') + '\n', layout, mmd: mermaid(nodes, edges, title) };
@@ -381,16 +404,14 @@ if (fullGraph) {
     throw new Error('Compact titles must match the complete snapshot with no duplicate/missing IDs.');
   }
   const nodes = data.records.map(record => compactNode(record, titles));
-  const edges = data.records.flatMap(record => record.parents.map((parent, index) => ({
-    from: parent.id, to: record.id, kind: parent.kind, key: record.id + '-' + index
-  })));
+  const edges = mainEdges();
   const dependencyGraph = new dagre.graphlib.Graph();
   nodes.forEach(node => dependencyGraph.setNode(node.id));
   edges.forEach(edge => dependencyGraph.setEdge(edge.from, edge.to));
   if (!dagre.graphlib.alg.isAcyclic(dependencyGraph)) throw new Error('Experiment dependencies contain a cycle.');
   graphs = [{ key: 'full', title: english ? 'SRCNN / Complete experiment evolution' : 'SRCNN / 全部实验演进',
     subtitle: data.records.length + (english ? ' experiments / ' : ' 项实验 / ') + edges.length
-      + (english ? ' dependencies / snapshot ' : ' 条依赖 / 快照 ') + data.source_commit,
+      + (english ? ' main links / 100 MHz reference / snapshot ' : ' 条主要连线 / 100 MHz 参考时钟 / 快照 ') + data.source_commit,
     nodes, edges }];
 }
 
@@ -435,8 +456,9 @@ for (const graph of graphs) {
   checkLayout(result.layout);
   if (fullGraph && (result.layout.nodes.length !== data.records.length
       || new Set(result.layout.nodes.map(node => node.id)).size !== data.records.length
-      || result.layout.edges.length !== data.records.reduce((count, record) => count + record.parents.length, 0))) {
-    throw new Error('Full graph is missing or duplicating experiment IDs/dependencies.');
+      || result.layout.edges.length !== graph.edges.length
+      || new Set(result.layout.edges.map(edge => edge.from + '/' + edge.to)).size !== graph.edges.length)) {
+    throw new Error('Full graph is missing or duplicating experiment IDs/main relationships.');
   }
   const svgPath = path.join(__dirname, graph.key + suffix + '.svg');
   const mmdPath = path.join(__dirname, graph.key + suffix + '.mmd');
@@ -453,6 +475,7 @@ for (const graph of graphs) {
     let html = fs.readFileSync(path.join(__dirname, 'viewer.template.html'), 'utf8');
     const replacements = {
       LANG: english ? 'en' : 'zh-CN', PAGE_TITLE: english ? 'SRCNN experiment evolution' : 'SRCNN 实验演进',
+      NODE_COUNT: result.layout.nodes.length, EDGE_COUNT: result.layout.edges.length,
       SVG_FILE: 'full' + suffix + '.svg', SVG: result.svg,
       GRAPH_JSON: JSON.stringify({ ...result.layout, source_commit: data.source_commit }).replace(/</g, '\\u003c'),
       ICON_LICENSE: icons.source + '\n' + icons.license,
@@ -472,4 +495,4 @@ const layoutJson = JSON.stringify(layouts, null, 2) + '\n';
 if (!checkOnly) fs.writeFileSync(layoutPath, layoutJson);
 else if (fullGraph && fs.readFileSync(layoutPath, 'utf8') !== layoutJson) throw new Error('Full graph layout is stale');
 console.log((checkOnly ? 'Checked' : 'Generated') + ' ' + graphs.length + ' ' + lang + ' graphs; '
-  + (fullGraph ? data.records.length + ' unique experiments and ' + graphs[0].edges.length + ' dependencies in one graph.' : 'every experiment appears in its own route.'));
+  + (fullGraph ? data.records.length + ' unique experiments and ' + graphs[0].edges.length + ' main relationships in one graph.' : 'every experiment appears in its own route.'));
