@@ -73,12 +73,6 @@ Host utilization from archived CPU/memory CSV files (short snapshots are labeled
 
 ![Remote host utilization](figs/host_utilization.png)
 
-Current recovery state: All hardware and read-only path exports are complete; no active exec session. Run close_weight_loading.py to audit local/remote protected checksums and report SHA256, regenerate all figures/summaries and commit F99. Selected W21/F96/F97/W22 remains provisional13-image acceptance with898HLS-LUT margin. F98 is5ns fallback; W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.
+Current recovery state: Review section6 decisions, missing comic and any failed route/RTL gates; use measured physical bottlenecks for the next independent design. No board acceptance or push.
 
 <!-- AUTO: WORKSTREAM END -->
-
-
-
-
-
-

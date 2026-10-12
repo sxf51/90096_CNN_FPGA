@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-12T03:03:08+00:00 from archived measurements.
+Updated 2026-10-12T03:09:07+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -20,7 +20,7 @@ Final verification: all planned operations archived, including failures/timeouts
 
 ## Weight Loading Workstream
 
-Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). All hardware and read-only path exports are complete; no active exec session. Run close_weight_loading.py to audit local/remote protected checksums and report SHA256, regenerate all figures/summaries and commit F99. Selected W21/F96/F97/W22 remains provisional13-image acceptance with898HLS-LUT margin. F98 is5ns fallback; W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.
+Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Review section6 decisions, missing comic and any failed route/RTL gates; use measured physical bottlenecks for the next independent design. No board acceptance or push.
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 
@@ -33,3 +33,7 @@ F24 independently rewrites only F23's Conv1 weight-loader indices after its repo
 ## Recovery
 
 Read ARCH_SUMMARY.md, LOG.md, PHASE2_HANDOFF.md and arch_state.json. Check active local exec sessions and remote processes before resuming pending IDs; completed and active workspaces cannot be overwritten. SSH uses `ssh -F ../ssh-config -o BatchMode=yes xiaoxin-ubuntu`; remote root `/home/lipuze/amdprojects/90096_CNN_FPGA`; Vitis settings `/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh`. Hardware jobs serialize through `.synthesis.lock` for15GiB RAM;60-minute csynth/45-minute issue tuning/six-hour cosim. Local plotting interpreter `workspace/exp_runs/_tools/venv/bin/python`. Never run script.py, modify protected data/designs, push, or substitute predicted results for actual evidence.
+
+## Weight Loading Closed
+
+All current workstream operations are archived, including failures/timeouts. Source/data checksums match locally/remotely; report provenance is audited and all figures are regenerated. See [weight_loading_audit.json](weight_loading_audit.json) and [WEIGHT_LOADING.md](WEIGHT_LOADING.md). Historical deferred IDs remain deferred. No board validation or push.

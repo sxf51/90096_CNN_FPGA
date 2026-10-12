@@ -4,7 +4,7 @@ The fastest resource-feasible supplied-image point is [W21](W21_subkernel_raw_ca
 
 Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.
 
-Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). All hardware and read-only path exports are complete; no active exec session. Run close_weight_loading.py to audit local/remote protected checksums and report SHA256, regenerate all figures/summaries and commit F99. Selected W21/F96/F97/W22 remains provisional13-image acceptance with898HLS-LUT margin. F98 is5ns fallback; W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.
+Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). Review section6 decisions, missing comic and any failed route/RTL gates; use measured physical bottlenecks for the next independent design. No board acceptance or push.
 
 ## Current Best
 
@@ -656,6 +656,17 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 
 Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. Complete the missing image and board/AXI system measurements before claiming deployable performance.
 
+## Integrity Audit
+
+Final local/remote original and first-phase source checksum and report-provenance audit: [weight_loading_audit.json](weight_loading_audit.json).
+
+| location | manifest | checked_files | pass |
+| --- | --- | --- | --- |
+| local | checksums.txt | 46 | True |
+| local | phase1_design_checksums.txt | 45 | True |
+| remote | checksums.txt | 46 | True |
+| remote | phase1_design_checksums.txt | 45 | True |
+
 ## Figures
 
 ![Latency vs DSP by series](figs/architecture_pareto.png)
@@ -670,4 +681,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T03:03:08+00:00.
+Generated from archived evidence at 2026-10-12T03:09:07+00:00.
