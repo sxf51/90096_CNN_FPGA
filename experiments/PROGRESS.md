@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C15 host-memory failure archived; build C16/C17 and prepare staged C13 route retry; one-heavy policy. C15 reached routing but was memory-guard terminated at0.433784GiB; no routed verdict exists. F52 registeredConv34.5ns implementation is active; F50/F51/W31/W32/W30 await the one-heavy slot. Build and run independent C16 T8 windows16+FRP and C17 T4 windows32 all13-image C/HLS screening. Plan a fresh C13 5ns implementation with synthesis/report and routing/report in separate Vivado processes to release the live synthesis design; preserve C15. F48 is the T8 basis and faster W28 is accepted under the unchanged upper limit564345. Keep one heavy plus budgeted light work and all numerical/physical gates. No board results exist.
+F52 closes4.5ns; C18 has user priority after active W32. F52 independently closes4.5ns with WNS+0.072ns,644DSP/43468LUT/89030FF/109BRAM18K; matching F43 RTL558758cycles gives2.514411ms IP latency. W32 is active. User prioritizes C18 next: unadmitted F50/F51/W31/W30 workers are paused under the scheduler guard by exp/priority_waiters.py and automatically resume after C18 or supervisor exit. C18 packages frozen C13 and splits synthesis/report from routing/report into fresh Vivado processes at5ns; preserve C15 host-memory failure. C16/C17 all13-image C/HLS screening awaits headroom, followed by new changed-parameter RTL and implementation IDs if screened. Defer F52 checkpoint path export until the priority hold ends. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. No board results exist.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T11:40:15+00:00 from archived measurements.
+Updated 2026-10-12T11:47:15+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 

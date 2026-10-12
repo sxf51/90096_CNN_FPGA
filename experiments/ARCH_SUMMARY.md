@@ -29,6 +29,7 @@ Matching-parent successful RTL latency times an independently closed, resource-f
 
 | id | parent | rtl_source | rtl_cycles | route_clock_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 |
 | [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 |
 | [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
 
@@ -59,6 +60,7 @@ Measured follow-up records from docs/0005; their routed acceptance remains separ
 | [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim_complete | 4 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | 14.269641567524417 | unknown | unknown | unknown |
 | [C15](C15_ws_impl_C13/C15.md) | C13 | fail | 4 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | 14.269641567524417 | unknown | unknown | unknown |
 | [F49](F49_ws_impl_F39/F49.md) | F39 | fail | 8 | 525237.0 | 644.0 | 81518.0 | 558758.0 | 6.382071331608397 | unknown | unknown | unknown |
+| [F52](F52_ws_impl_F39/F52.md) | F39 | impl_complete | 8 | 525237.0 | 644.0 | 81518.0 | 558758.0 | 6.382071331608397 | unknown | True | 2.514411 |
 
 Unmeasured plans have no actual result and do not enter rankings:
 
@@ -67,7 +69,6 @@ Unmeasured plans have no actual result and do not enter rankings:
 | [W30](W30_ws_impl_W27/W30.md) | W27 | impl | queued_or_running | User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override |
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
 | [F51](F51_ws_impl_F47/F51.md) | F47 | impl | queued_or_running | unknown |
-| [F52](F52_ws_impl_F39/F52.md) | F39 | impl | queued_or_running | unknown |
 | [W31](W31_ws_impl_W24/W31.md) | W24 | impl | queued_or_running | unknown |
 | [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl | queued_or_running | unknown |
 | [C16](C16_t8_fifo_frp/C16.md) | F47 | csim/csynth | queued_or_running | unknown |
@@ -529,6 +530,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [W29](W29_ws_impl_W24/W29.md) | frame | 630.0 | unknown | unknown | 524330.0 | unknown | unknown | fail |
 | [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | frame | 644.0 | unknown | unknown | 558758.0 | unknown | unknown | fail |
 | [C15](C15_ws_impl_C13/C15.md) | frame | 1032.0 | unknown | unknown | 263090.0 | unknown | unknown | fail |
+| [F52](F52_ws_impl_F39/F52.md) | frame | 644.0 | 644.0 | 0.0 | 525237.0 | unknown | unknown | impl_complete |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -583,6 +585,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [W29](W29_ws_impl_W24/W29.md) | frame | W24 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | frame | W21 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C15](C15_ws_impl_C13/C15.md) | frame | C13 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F52](F52_ws_impl_F39/F52.md) | frame | F39 | impl | impl_complete | 644.0 | 54.5 | 43468.0 | 89030.0 | 0.0 | 0.072 | True | unknown | unknown | unknown | unknown |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -917,4 +920,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T11:03:02+00:00.
+Generated from archived evidence at 2026-10-12T11:47:15+00:00.
