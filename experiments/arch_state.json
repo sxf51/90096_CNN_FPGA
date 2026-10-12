@@ -190,13 +190,15 @@
   "hardware_scheduler": "one heavy task plus memory-bounded light jobs",
   "max_heavy_tasks": 1,
   "max_light_tasks": 3,
-  "next": "C18/C14 remains the verified mixed T4 leader at 5 ns and 1.503160 ms, with an archived handoff. W30/W28 is the uniform T8 leader at 4.5 ns and 2.472471 ms; F51/F48 also independently closes 5 ns at 2.678855 ms. Their five-path evidence and physical hierarchies are archived. C17 passes all 13 E065-exact images, II1 and the HLS physical-verification screen; retain its original HLS infeasible status. C20 changed-parameter RTL is queued. C22 staged 5 ns implementation is planned but unlaunched until C20 passes. F50 RTL and C16 HLS currently overlap. W31 remains held by the automatically resuming F50 supervisor. After C16 screening, plan C19 RTL and C21 staged 4.5 ns implementation with no lower cycle bound; recheck IDs before planning. W31 closing 5 ns can trigger an unplanned ROM 4.5 ns probe. No resource-driven T4 ROM retry is currently required. Preserve one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses/plots and perform final two-location integrity checks when runnable jobs finish. Runtime interfaces, precision and physical gates stay strict; no board results exist.",
+  "next": "Six planned verification results remain: active F50 RTL, queued W31 ROM5ns implementation and C19/C20 changed-parameter RTL, then conditional C21 T8 staged4.5ns implementation and C22 T4 staged5ns implementation. C16 and C17 have completed all13-image exact/precision and II1 HLS screening; C17 keeps its historical HLS infeasible status. Launch C21 only after accepted C19 and C22 only after accepted C20; faster RTL has no lower cycle bound. W31 remains paused until the F50 supervisor automatically resumes it. C18/C14 remains the fastest verified runtime IP at1.503160ms, with its board handoff archived; W30/W28 is the uniform T8 leader at2.472471ms. W31 closing5ns can trigger a separately planned ROM4.5ns probe. No resource-driven T4 ROM retry is required. Preserve one heavy task, budgeted light admission, the18GiB implementation registration and serial_after_oom while legacy workers exist. Complete fresh report-based plots, interpretations, two-location protected checksums and idle audit after runnable jobs finish. No board results exist.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
     "F50",
     "W31",
+    "C19",
     "C20",
+    "C21",
     "C22"
   ],
   "resource_policy": "routed",
@@ -213,6 +215,7 @@
     ],
     "concurrency_policy": "one_heavy_with_light",
     "deferred": [
+      "C21",
       "C22"
     ],
     "experiment_ids": [
@@ -253,7 +256,9 @@
       "C16",
       "C17",
       "C18",
+      "C19",
       "C20",
+      "C21",
       "C22"
     ],
     "fastest_verified_implementation": "C18",
@@ -268,12 +273,12 @@
     "local_exec_sessions": [
       91661,
       99126,
-      9972,
       1570,
-      4777
+      4777,
+      64820
     ],
     "mainline_basis": "F47",
-    "next": "C18/C14 remains the verified mixed T4 leader at 5 ns and 1.503160 ms, with an archived handoff. W30/W28 is the uniform T8 leader at 4.5 ns and 2.472471 ms; F51/F48 also independently closes 5 ns at 2.678855 ms. Their five-path evidence and physical hierarchies are archived. C17 passes all 13 E065-exact images, II1 and the HLS physical-verification screen; retain its original HLS infeasible status. C20 changed-parameter RTL is queued. C22 staged 5 ns implementation is planned but unlaunched until C20 passes. F50 RTL and C16 HLS currently overlap. W31 remains held by the automatically resuming F50 supervisor. After C16 screening, plan C19 RTL and C21 staged 4.5 ns implementation with no lower cycle bound; recheck IDs before planning. W31 closing 5 ns can trigger an unplanned ROM 4.5 ns probe. No resource-driven T4 ROM retry is currently required. Preserve one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses/plots and perform final two-location integrity checks when runnable jobs finish. Runtime interfaces, precision and physical gates stay strict; no board results exist.",
+    "next": "Six planned verification results remain: active F50 RTL, queued W31 ROM5ns implementation and C19/C20 changed-parameter RTL, then conditional C21 T8 staged4.5ns implementation and C22 T4 staged5ns implementation. C16 and C17 have completed all13-image exact/precision and II1 HLS screening; C17 keeps its historical HLS infeasible status. Launch C21 only after accepted C19 and C22 only after accepted C20; faster RTL has no lower cycle bound. W31 remains paused until the F50 supervisor automatically resumes it. C18/C14 remains the fastest verified runtime IP at1.503160ms, with its board handoff archived; W30/W28 is the uniform T8 leader at2.472471ms. W31 closing5ns can trigger a separately planned ROM4.5ns probe. No resource-driven T4 ROM retry is required. Preserve one heavy task, budgeted light admission, the18GiB implementation registration and serial_after_oom while legacy workers exist. Complete fresh report-based plots, interpretations, two-location protected checksums and idle audit after runnable jobs finish. No board results exist.",
     "paused_waiter_ids": [
       "W31"
     ],
@@ -281,10 +286,11 @@
       "Board validation remains unavailable to the agent; F98 handoff is archived.",
       "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."
     ],
-    "phase": "C17 screened; C20 RTL queued; F50 RTL and C16 HLS run concurrently",
+    "phase": "C16/C17 screening complete; F50 RTL active; W31/C19/C20 queued; C21/C22 conditional",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
+      "C21": "C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30",
       "C22": "C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18",
       "F49": "F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation",
       "W29": "W25 same-ROM/changed-input two-frame RTL must pass before implementation",
@@ -313,18 +319,19 @@
       "4777": [
         "C20"
       ],
+      "64820": [
+        "C19"
+      ],
       "91661": [
         "F50"
       ],
       "99126": [
         "W31"
-      ],
-      "9972": [
-        "C16"
       ]
     },
     "skipped_plans": {},
     "unlaunched_ids": [
+      "C21",
       "C22"
     ],
     "user_cycle_revision": {
@@ -369,7 +376,7 @@
     }
   ],
   "skipped_conditional_plans": {},
-  "time": "2026-10-12T15:43:35+00:00",
+  "time": "2026-10-12T16:01:51+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",

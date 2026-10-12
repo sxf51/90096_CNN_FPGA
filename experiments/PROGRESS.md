@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C17 screened; C20 RTL queued; F50 RTL and C16 HLS run concurrently. C18/C14 remains the verified mixed T4 leader at 5 ns and 1.503160 ms, with an archived handoff. W30/W28 is the uniform T8 leader at 4.5 ns and 2.472471 ms; F51/F48 also independently closes 5 ns at 2.678855 ms. Their five-path evidence and physical hierarchies are archived. C17 passes all 13 E065-exact images, II1 and the HLS physical-verification screen; retain its original HLS infeasible status. C20 changed-parameter RTL is queued. C22 staged 5 ns implementation is planned but unlaunched until C20 passes. F50 RTL and C16 HLS currently overlap. W31 remains held by the automatically resuming F50 supervisor. After C16 screening, plan C19 RTL and C21 staged 4.5 ns implementation with no lower cycle bound; recheck IDs before planning. W31 closing 5 ns can trigger an unplanned ROM 4.5 ns probe. No resource-driven T4 ROM retry is currently required. Preserve one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses/plots and perform final two-location integrity checks when runnable jobs finish. Runtime interfaces, precision and physical gates stay strict; no board results exist.
+C16/C17 screening complete; F50 RTL active; W31/C19/C20 queued; C21/C22 conditional. Six planned verification results remain: active F50 RTL, queued W31 ROM5ns implementation and C19/C20 changed-parameter RTL, then conditional C21 T8 staged4.5ns implementation and C22 T4 staged5ns implementation. C16 and C17 have completed all13-image exact/precision and II1 HLS screening; C17 keeps its historical HLS infeasible status. Launch C21 only after accepted C19 and C22 only after accepted C20; faster RTL has no lower cycle bound. W31 remains paused until the F50 supervisor automatically resumes it. C18/C14 remains the fastest verified runtime IP at1.503160ms, with its board handoff archived; W30/W28 is the uniform T8 leader at2.472471ms. W31 closing5ns can trigger a separately planned ROM4.5ns probe. No resource-driven T4 ROM retry is required. Preserve one heavy task, budgeted light admission, the18GiB implementation registration and serial_after_oom while legacy workers exist. Complete fresh report-based plots, interpretations, two-location protected checksums and idle audit after runnable jobs finish. No board results exist.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T15:43:35+00:00 from archived measurements.
+Updated 2026-10-12T16:01:51+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -26,7 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: F50, W31, C20, C22.
+Final verification: F50, W31, C19, C20, C21, C22.
 
 ## Weight Loading Workstream
 

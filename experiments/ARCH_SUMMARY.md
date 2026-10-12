@@ -80,7 +80,9 @@ Unmeasured plans have no actual result and do not enter rankings:
 | --- | --- | --- | --- | --- |
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
 | [W31](W31_ws_impl_W24/W31.md) | W24 | impl | queued_or_running | unknown |
+| [C19](C19_ws_cosim_C16/C19.md) | C16 | cosim | queued_or_running | unknown |
 | [C20](C20_ws_cosim_C17/C20.md) | C17 | cosim | queued_or_running | unknown |
+| [C21](C21_ws_impl_C16/C21.md) | C16 | impl | unlaunched_conditional | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
 | [C22](C22_ws_impl_C17/C22.md) | C17 | impl | unlaunched_conditional | C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18 |
 
 ## P Direction
@@ -933,6 +935,8 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ## Figures
 
+![Verified IP frame time versus routed DSP](figs/verified_ip_pareto.png)
+
 ![Latency vs DSP by series](figs/architecture_pareto.png)
 
 ![DSP composition](figs/architecture_dsp_layers.png)
@@ -945,4 +949,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T15:43:36+00:00.
+Generated from archived evidence at 2026-10-12T16:01:51+00:00.
