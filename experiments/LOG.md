@@ -573,6 +573,12 @@
 
 - 2026-10-12T23:32:35+00:00: C22: ws_impl_C17; status=impl_complete; latency_ms_est=1.05236; impl of C17; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-12T23:34 UTC C22: recovered completed remote route without rerunning the workspace. Final5ns WNS+0.013/WHS+0.032,TNS0 and no unrouted/partial nets pass;1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles establishes1.365115ms,9.18percent faster than C18. Recovery supervisor33324 has actually started C21; W33 follows. WS-F source, guarded13-image test, four-call sequence and fresh-process fallback are committed; C23 wrapper65418 and C24/C25/F53 wrapper2446 wait for C21 before unchanged memory-budget admission. Six new gate tests and existing runner/verification/profile/architecture tests pass; no WS-F hardware result yet. Monitored cosim uses documented setup plus unchanged generated simulation/post-check scripts, an observer only in the generated testbench, per-call zero-AXI gates and synthesis RTL hashes. No original or first-phase design file changed; no push or board claim.
+
+- 2026-10-12T23:35:41+00:00: C22: archived five setup paths from the matching final generated report; no additional Vivado run.
+
+- 2026-10-12T23:40 UTC C22: matching C20 handoff and IP-package SHA256 are archived; route/architecture/ROM-clock CSV analyses, summaries and three comparison plot scripts refreshed. Eleven ROM-clock checks and five simulation-observer workflow checks pass. Observer tests cover immutable synthesis RTL, rejected duplicate/wrong-count instrumentation, setup failure, cumulative timeout and retained logs. The real monitored HLS driver remains unvalidated until WS-F RTL runs; no unit-test result is substituted for hardware evidence. C21 is the sole active heavy task, with W33 and C23/C24/C25/F53 preserved in their existing supervisor queues.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。

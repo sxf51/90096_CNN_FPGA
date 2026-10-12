@@ -1,14 +1,14 @@
 {
   "plan": "docs/0005-rom-clock-t4-plan.md",
-  "phase": "C19/C20/W31 archived; surviving C22 active; C21/W33 under recovery supervisor; WS-F preparation",
+  "phase": "C22 closed5ns and becomes verified leader; C21 active; W33 queued; WS-F C/HLS checks prepared",
   "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F43", "F44", "F45", "F47", "W28", "W29", "W30", "F48", "F46", "C14", "C15", "F49", "F50", "F51", "F52", "W31", "W32", "C16", "C17", "C18", "C19", "C20", "C21", "C22", "W33", "C23", "C24", "C25", "F53"],
   "complete_test_set": "Set14 (13 course-provided images)",
   "resource_policy": "routed",
-  "next": "C19 and C20 pass both exact changed-parameter RTL transactions at535976/536005 and273023/273052 latency/interval cycles. W31 independently closes5ns with630DSP/33771LUT/82635FF/101BRAM18K and WNS+0.470/WHS+0.038; matching W25 gives2.771130ms. SSH interruption ended local46657 but remoteC22 survived; verified active119223 and noC21 workspace. Recovery supervisor33324 waits and collects C22, then launches C21 and W33 sequentially without overwriting existing workspaces. WS-F C23 paper plan is committed and its independent reload-switch source is being built; prepare C24 sequence, C25 fresh-process cold-start and F53 legacy C13 regression, then independent multi-call RTL and5ns route. Keep C18 as fastest verified runtime IP1.503160ms until new routing passes. Preserve one heavy task,18GiB impl registration, serial_after_oom and all numerical/physical gates. Refresh all CSV plots, interpretations and two-location checksum/idle audit before closure; no board results exist.",
+  "next": "C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles gives1.365115ms and is9.18percent faster than C18. C21 now runs under recovery supervisor33324; W33 follows. Collect generated final paths and prepare C22/C20 handoff without a new Vivado process. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are implemented and preplanned; supervisors65418/2446 wait until C21 is archived before submitting them to unchanged memory admission. Then plan independent monitored four-call RTL and staged5ns route. Preserve one heavy task,18GiB impl registration, serial_after_oom and all numerical/physical gates. Finish plots, interpretations, two-location protected checksums and the idle audit before closure. No board results exist.",
   "completed_workstreams": ["WS-0", "WS-A agent handoff (board measurements pending)"],
   "waiting_for_memory": [],
   "deferred": ["W33"],
-  "unlaunched_ids": ["C21", "W33", "C23", "C24", "C25", "F53"],
+  "unlaunched_ids": ["W33", "C23", "C24", "C25", "F53"],
   "concurrency_policy": "one_heavy_with_light",
   "mainline_basis": "F47",
   "user_cycle_revision": {"reference": "docs/0005 section6.2", "F48_two_percent_target": "diagnostic_only", "W28_max_cycles": 564345, "W30_authorized": true},
@@ -30,7 +30,7 @@
   "priority_evidence": "C18_ws_impl_C13/priority_waiters.json",
   "priority_light_evidence": "C18_ws_impl_C13/priority_light_waiters.json",
   "runtime_environment_evidence": "C18_ws_impl_C13/runtime_host_environment.csv",
-  "fastest_verified_implementation": "C18",
+  "fastest_verified_implementation": "C22",
   "last_oom": {"id": "W23", "before": 1, "after": 2, "exit_code": 137, "time": "2026-10-12T10:19:41+00:00"},
   "planned_conditions": {
     "W29": "W25 same-ROM/changed-input two-frame RTL must pass before implementation",
@@ -42,12 +42,14 @@
   },
   "pending_decisions": ["Board validation remains unavailable to the agent; F98 handoff is archived.", "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."],
   "skipped_plans": {},
-  "local_exec_sessions": [33324],
+  "local_exec_sessions": [33324, 65418, 2446],
   "session_jobs": {
-    "33324": ["C22", "C21", "W33"]
+    "33324": ["C21", "W33"],
+    "65418": ["C23"],
+    "2446": ["C24", "C25", "F53"]
   },
   "board_handoff": "experiments/BOARD_HANDOFF.md",
-  "candidate_board_handoffs": {"C18": "experiments/board_handoff/C18/HANDOFF.md"},
-  "wsE": "C20 passes exact273023cycles,9.18percent lower than C14's300632; C22 now independently routes5ns. C19 passes535976cycles,205 more than F48; C21 independently routes4.5ns next. All13-image precision is unchanged. C18 remains verified1.503160ms. No immediate resource-driven T4 ROM retry is required.",
-  "wsF": "Committed C23 paper plan on frozen C13/C18; independent source adds srcnn_reload with unconditional DATAFLOW calls, internal parameter-load guards and cold-start force-load. Build guarded13-image quality validation, independent four-call load/reuse/reload/retain and fresh-process cold-start checks. C24/C25/F53 IDs confirmed unused in both locations. No WS-F HLS/RTL/route measurement yet."
+  "candidate_board_handoffs": {"C18": "experiments/board_handoff/C18/HANDOFF.md", "C22": "experiments/board_handoff/C22/HANDOFF.md"},
+  "wsE": "C20 passes exact273023cycles,9.18percent lower than C14's300632; C22 independently closes5ns and becomes verified1.365115ms leader with all routed resources feasible. C19 passes535976cycles,205 more than F48; C21 independently routes4.5ns now. All13-image precision is unchanged. C18 remains1.503160ms fallback. No resource-driven T4 ROM retry is required.",
+  "wsF": "C23 independent source and validation infrastructure are committed on frozen C13/C18: srcnn_reload has unconditional DATAFLOW calls, internal parameter-load guards and cold-start force-load. C23 checks all13 images with12 reused parameter calls and synthesizes; C24 checks four-call load/reuse/reload/retain; C25 checks fresh-process first-call load=0; F53 regresses frozen C13 with the shared macro disabled. Supervisors wait for C21 before submission. Monitored four-call RTL and5ns route depend on actual passing C/HLS evidence; no WS-F hardware result exists yet."
 }

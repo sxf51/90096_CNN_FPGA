@@ -54,6 +54,7 @@ def run_monitored(config, work, archive, timeout, invoke_phase):
     shutil.copyfile(driver, archive / driver.name)
     remaining = timeout - first_seconds
     if remaining <= 0:
+        shutil.copyfile(work / "cosim_setup.console.log", work / "cosim.console.log")
         return 124, first_seconds
     code, second_seconds = invoke_phase(
         ["vitis-run", "--mode", "hls", "--tcl", str(driver), "--work_dir", str(work)],

@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T23:32:37+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T23:38:39+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C19/C20/W31 archived; surviving C22 active; C21/W33 under recovery supervisor; WS-F preparation. C19 and C20 pass both exact changed-parameter RTL transactions at535976/536005 and273023/273052 latency/interval cycles. W31 independently closes5ns with630DSP/33771LUT/82635FF/101BRAM18K and WNS+0.470/WHS+0.038; matching W25 gives2.771130ms. SSH interruption ended local46657 but remoteC22 survived; verified active119223 and noC21 workspace. Recovery supervisor33324 waits and collects C22, then launches C21 and W33 sequentially without overwriting existing workspaces. WS-F C23 paper plan is committed and its independent reload-switch source is being built; prepare C24 sequence, C25 fresh-process cold-start and F53 legacy C13 regression, then independent multi-call RTL and5ns route. Keep C18 as fastest verified runtime IP1.503160ms until new routing passes. Preserve one heavy task,18GiB impl registration, serial_after_oom and all numerical/physical gates. Refresh all CSV plots, interpretations and two-location checksum/idle audit before closure; no board results exist.
+C22 closed5ns and becomes verified leader; C21 active; W33 queued; WS-F C/HLS checks prepared. C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles gives1.365115ms and is9.18percent faster than C18. C21 now runs under recovery supervisor33324; W33 follows. Collect generated final paths and prepare C22/C20 handoff without a new Vivado process. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are implemented and preplanned; supervisors65418/2446 wait until C21 is archived before submitting them to unchanged memory admission. Then plan independent monitored four-call RTL and staged5ns route. Preserve one heavy task,18GiB impl registration, serial_after_oom and all numerical/physical gates. Finish plots, interpretations, two-location protected checksums and the idle audit before closure. No board results exist.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -49,7 +49,7 @@ C19/C20/W31 archived; surviving C22 active; C21/W33 under recovery supervisor; W
 | [C18](C18_ws_impl_C13/C18.md) | C13 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | 5.0 | True | 1.50316 | 14.269641567524417 | unknown |
 | [C19](C19_ws_cosim_C16/C19.md) | C16 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | 535976.0 | original_verification_pass | unknown | unknown | unknown | 2.044600818297271 | unknown |
 | [C20](C20_ws_cosim_C17/C20.md) | C17 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | original_verification_pass | unknown | unknown | unknown | 3.7755140826333244 | unknown |
-| [C22](C22_ws_impl_C17/C22.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | 5.0 | True | 1.365115 | unknown | unknown |
+| [C22](C22_ws_impl_C17/C22.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | 5.0 | True | 1.365115 | 3.7755140826333244 | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -60,7 +60,7 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [C21](C21_ws_impl_C16/C21.md) | C16 | impl | unlaunched_conditional | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
+| [C21](C21_ws_impl_C16/C21.md) | C16 | impl | queued_or_running | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
 | [W33](W33_ws_impl_W24/W33.md) | W24 | impl | unlaunched_conditional | unknown |
 | [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
 | [C24](C24_reload_switch_sequence/C24.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
@@ -73,6 +73,7 @@ These plans have no result row. In particular, unlaunched implementation is neit
 
 | id | parent | rtl_source | rtl_cycles | route_clock_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [C22](C22_ws_impl_C17/C22.md) | C17 | C20 | 273023.0 | 5.0 | 0.013 | 1032.0 | 109.0 | 59552.0 | 100499.0 | 1.365115 |
 | [C18](C18_ws_impl_C13/C18.md) | C13 | C14 | 300632.0 | 5.0 | 0.047 | 1032.0 | 109.0 | 58529.0 | 102072.0 | 1.50316 |
 | [W30](W30_ws_impl_W27/W30.md) | W27 | W28 | 549438.0 | 4.5 | 0.027 | 644.0 | 109.0 | 54091.0 | 77784.0 | 2.472471 |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 |
@@ -84,7 +85,7 @@ These plans have no result row. In particular, unlaunched implementation is neit
 
 IP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded integration fallback.
 
-Verified candidate IP packages and register maps: [C18](board_handoff/C18/HANDOFF.md). Retain the [F98 integration handoff](BOARD_HANDOFF.md); board verification is pending.
+Verified candidate IP packages and register maps: [C18](board_handoff/C18/HANDOFF.md), [C22](board_handoff/C22/HANDOFF.md). Retain the [F98 integration handoff](BOARD_HANDOFF.md); board verification is pending.
 
 ## Figures
 

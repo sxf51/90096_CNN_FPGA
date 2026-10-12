@@ -30,6 +30,7 @@ Matching-parent successful RTL latency times an independently closed, resource-f
 
 | id | parent | rtl_source | rtl_cycles | route_clock_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [C22](C22_ws_impl_C17/C22.md) | C17 | C20 | 273023.0 | 5.0 | 0.013 | 1032.0 | 109.0 | 59552.0 | 100499.0 | 1.365115 |
 | [C18](C18_ws_impl_C13/C18.md) | C13 | C14 | 300632.0 | 5.0 | 0.047 | 1032.0 | 109.0 | 58529.0 | 102072.0 | 1.50316 |
 | [W30](W30_ws_impl_W27/W30.md) | W27 | W28 | 549438.0 | 4.5 | 0.027 | 644.0 | 109.0 | 54091.0 | 77784.0 | 2.472471 |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 |
@@ -39,7 +40,7 @@ Matching-parent successful RTL latency times an independently closed, resource-f
 | [W31](W31_ws_impl_W24/W31.md) | W24 | W25 | 554226.0 | 5.0 | 0.47 | 630.0 | 101.0 | 33771.0 | 82635.0 | 2.77113 |
 | [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
 
-Verified candidate IP packages and register maps: [C18](board_handoff/C18/HANDOFF.md). The [F98 handoff](BOARD_HANDOFF.md) remains available; board performance is unmeasured.
+Verified candidate IP packages and register maps: [C18](board_handoff/C18/HANDOFF.md), [C22](board_handoff/C22/HANDOFF.md). The [F98 handoff](BOARD_HANDOFF.md) remains available; board performance is unmeasured.
 
 ## ROM, Clock, FIFO And T4
 
@@ -79,13 +80,13 @@ Measured follow-up records from docs/0005; their routed acceptance remains separ
 | [C18](C18_ws_impl_C13/C18.md) | C13 | impl_complete | 4 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | 14.269641567524417 | unknown | True | 1.50316 |
 | [C19](C19_ws_cosim_C16/C19.md) | C16 | cosim_complete | 8 | 525237.0 | 644.0 | 81485.0 | 535976.0 | 2.044600818297271 | unknown | unknown | unknown |
 | [C20](C20_ws_cosim_C17/C20.md) | C17 | cosim_complete | 4 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | 3.7755140826333244 | unknown | unknown | unknown |
+| [C22](C22_ws_impl_C17/C22.md) | C17 | impl_complete | 4 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | 3.7755140826333244 | unknown | True | 1.365115 |
 
 Unmeasured plans have no actual result and do not enter rankings:
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [C21](C21_ws_impl_C16/C21.md) | C16 | impl | unlaunched_conditional | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
-| [C22](C22_ws_impl_C17/C22.md) | C17 | impl | queued_or_running | C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18 |
+| [C21](C21_ws_impl_C16/C21.md) | C16 | impl | queued_or_running | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
 | [W33](W33_ws_impl_W24/W33.md) | W24 | impl | unlaunched_conditional | unknown |
 | [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
 | [C24](C24_reload_switch_sequence/C24.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
@@ -562,6 +563,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [C20](C20_ws_cosim_C17/C20.md) | frame | 1032.0 | unknown | unknown | 263090.0 | 273023.0 | 3.7755140826333244 | cosim_complete |
 | [C19](C19_ws_cosim_C16/C19.md) | frame | 644.0 | unknown | unknown | 525237.0 | 535976.0 | 2.044600818297271 | cosim_complete |
 | [W31](W31_ws_impl_W24/W31.md) | frame | 630.0 | 630.0 | 0.0 | 524330.0 | unknown | unknown | impl_complete |
+| [C22](C22_ws_impl_C17/C22.md) | frame | 1032.0 | 1032.0 | 0.0 | 263090.0 | unknown | unknown | impl_complete |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -625,6 +627,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [C20](C20_ws_cosim_C17/C20.md) | frame | C17 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 273023.0 | 273052.0 | 3.7755140826333244 |
 | [C19](C19_ws_cosim_C16/C19.md) | frame | C16 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 535976.0 | 536005.0 | 2.044600818297271 |
 | [W31](W31_ws_impl_W24/W31.md) | frame | W24 | impl | impl_complete | 630.0 | 50.5 | 33771.0 | 82635.0 | 0.0 | 0.47 | True | unknown | unknown | unknown | unknown |
+| [C22](C22_ws_impl_C17/C22.md) | frame | C17 | impl | impl_complete | 1032.0 | 54.5 | 59552.0 | 100499.0 | 0.0 | 0.013 | True | unknown | unknown | unknown | unknown |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -1013,4 +1016,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T22:43:29+00:00.
+Generated from archived evidence at 2026-10-12T23:38:40+00:00.
