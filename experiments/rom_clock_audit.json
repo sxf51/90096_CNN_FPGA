@@ -868,6 +868,13 @@
       "csv_matches_archive": true,
       "id": "F39",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 1,
+      "csv_matches_archive": true,
+      "id": "F45",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2011,6 +2018,7 @@
     "F40",
     "F41",
     "F42",
+    "F45",
     "F47",
     "W24",
     "W25",
@@ -2021,19 +2029,19 @@
   "pushed": false,
   "remote_jobs_active": true,
   "remote_processes": [
-    "59397 python3 exp/run_exp.py --config exp/configs/F45.json",
-    "60619 python3 exp/run_exp.py --config exp/configs/W28.json",
-    "61794 python3 exp/run_exp.py --config exp/configs/F48.json",
-    "62502 python3 exp/run_exp.py --config exp/configs/C14.json",
-    "62624 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F45/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F45",
-    "62653 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/loader -exec vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F45/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F45",
-    "62684 /home/lipuze/amdfpga/2026.1/Vitis/bin/unwrapped/lnx64.o/vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F45/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F45",
-    "63979 python3 exp/run_exp.py --config exp/configs/F44.json",
-    "64456 python3 exp/run_exp.py --config exp/configs/F43.json"
+    "64456 python3 exp/run_exp.py --config exp/configs/F43.json",
+    "65227 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F43/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F43",
+    "65256 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/loader -exec vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F43/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F43",
+    "65287 /home/lipuze/amdfpga/2026.1/Vitis/bin/unwrapped/lnx64.o/vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F43/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F43",
+    "66428 python3 exp/run_exp.py --config exp/configs/F46.json",
+    "66433 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F46/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F46",
+    "66462 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/loader -exec vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F46/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F46",
+    "66493 /home/lipuze/amdfpga/2026.1/Vitis/bin/unwrapped/lnx64.o/vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F46/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F46",
+    "67887 python3 exp/run_exp.py --config exp/configs/W23.json"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-12T06:17:25+00:00",
+  "time": "2026-10-12T07:11:25+00:00",
   "unmeasured_plans": [
     {
       "condition": null,
@@ -2049,7 +2057,7 @@
       "id": "C15",
       "operation": "impl",
       "plan_sha256": "e6cacc8137e3eabd159d82759f0c92c66b3bb66db1124342cd9946ea20252884",
-      "unlaunched_for_memory": true
+      "unlaunched_for_memory": false
     },
     {
       "condition": null,
@@ -2070,14 +2078,6 @@
     {
       "condition": null,
       "has_measured_result": false,
-      "id": "F45",
-      "operation": "cosim",
-      "plan_sha256": "4bafe42a630b2cba46054539cd8b0adc213356283ad43e927da7db41fdbf71a4",
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": null,
-      "has_measured_result": false,
       "id": "F46",
       "operation": "cosim",
       "plan_sha256": "b423faa48f5d3dd92b8391b3328da8935da26c04f1faefbe532ba24cbbc4ff33",
@@ -2092,12 +2092,20 @@
       "unlaunched_for_memory": false
     },
     {
+      "condition": "F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation",
+      "has_measured_result": false,
+      "id": "F49",
+      "operation": "impl",
+      "plan_sha256": "d8233b8064720002fab402b4b6c71cfd9d54c3b185205b75f47dfdb4ce12b51b",
+      "unlaunched_for_memory": false
+    },
+    {
       "condition": null,
       "has_measured_result": false,
       "id": "W23",
       "operation": "impl",
       "plan_sha256": "f1c4a8d229998fb62245364dd3ff49dfb95808628c666cf824acf3e70bfb137a",
-      "unlaunched_for_memory": true
+      "unlaunched_for_memory": false
     },
     {
       "condition": null,
@@ -2113,7 +2121,7 @@
       "id": "W29",
       "operation": "impl",
       "plan_sha256": "c306c36866cdf261bbf7cdc95cc388ea213cb949f2d153cd268db958be538a40",
-      "unlaunched_for_memory": true
+      "unlaunched_for_memory": false
     },
     {
       "condition": "W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation",
@@ -2121,7 +2129,7 @@
       "id": "W30",
       "operation": "impl",
       "plan_sha256": "601443380b8e5796bc2acd7da442373159546dfc590ba4bd58e676db73f8960e",
-      "unlaunched_for_memory": true
+      "unlaunched_for_memory": false
     }
   ],
   "verification_report_archives": [
@@ -2273,6 +2281,15 @@
       "additional_evidence_files_checked": 41,
       "git_visible_and_tracked": true,
       "id": "W25",
+      "operation": "cosim",
+      "reports_checked": 4,
+      "sha256_pass": true,
+      "status": "cosim_complete"
+    },
+    {
+      "additional_evidence_files_checked": 59,
+      "git_visible_and_tracked": true,
+      "id": "F45",
       "operation": "cosim",
       "reports_checked": 4,
       "sha256_pass": true,

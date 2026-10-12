@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T07:05:37+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T07:14:21+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -37,7 +37,7 @@ WS-D performance is separate from a successful functional cosimulation. With the
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | unlaunched_conditional | unknown |
+| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | queued_or_running | unknown |
 | [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim | queued_or_running | unknown |
 | [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim | queued_or_running | unknown |
 | [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | queued_or_running | unknown |
@@ -47,6 +47,7 @@ WS-D performance is separate from a successful functional cosimulation. With the
 | [F46](F46_ws_cosim_F42/F46.md) | F42 | cosim | queued_or_running | unknown |
 | [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | queued_or_running | unknown |
 | [C15](C15_ws_impl_C13/C15.md) | C13 | impl | unlaunched_conditional | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
+| [F49](F49_ws_impl_F39/F49.md) | F39 | impl | unlaunched_conditional | F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 

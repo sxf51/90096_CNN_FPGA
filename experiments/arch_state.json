@@ -184,7 +184,8 @@
     "F48",
     "F46",
     "C14",
-    "C15"
+    "C15",
+    "F49"
   ],
   "resource_policy": "routed",
   "rom_clock_workstream": {
@@ -196,10 +197,10 @@
     ],
     "concurrency_policy": "user_two_jobs",
     "deferred": [
-      "W23",
       "W29",
       "W30",
-      "C15"
+      "C15",
+      "F49"
     ],
     "experiment_ids": [
       "F32",
@@ -229,7 +230,8 @@
       "F48",
       "F46",
       "C14",
-      "C15"
+      "C15",
+      "F49"
     ],
     "local_exec_sessions": [
       88402,
@@ -237,7 +239,8 @@
       27651,
       60610,
       90781,
-      25067
+      25067,
+      31749
     ],
     "next": "F43 registeredConv3 and F46 rasterFIFO cosim run concurrently. W28/F48/C14/F44 waiting workers have been migrated without changing plans or prepared RTL and now use the two-task scheduler. Collect each finished remote archive with --collect-only. F45 featureFIFO32 passed changed-parameter RTL at558758cycles, identical to F97; reduced producer write blocking did not meet the WS-D535741-cycle goal. W25 ROM passed at554226cycles. F43/W28 retain the553171..564345 gate. C13 remains E065-exact on all13 images, with1032DSP/127966LUT/192308FF/263090HLS cycles; C14 must pass before C15 routing. Run W23/W29/W30/C15 and an independent registeredConv3 route after their prerequisites; the prior impossible12.5+2GiB admission is superseded by explicit user authorization for two concurrent tasks. Keep actual memory sampling, newest-task pressure termination at0.5GiB, OOM evidence and serial fallback. F98 board handoff is archived; board measurements remain pending.",
     "pending_decisions": [],
@@ -245,6 +248,7 @@
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
+      "F49": "F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation",
       "W29": "W25 same-ROM/changed-input two-frame RTL must pass before implementation",
       "W30": "W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation"
     },
@@ -255,6 +259,9 @@
       ],
       "27651": [
         "W28"
+      ],
+      "31749": [
+        "W23"
       ],
       "60610": [
         "F48"
@@ -270,10 +277,10 @@
       ]
     },
     "unlaunched_ids": [
-      "W23",
       "W29",
       "W30",
-      "C15"
+      "C15",
+      "F49"
     ],
     "waiting_for_memory": [],
     "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL queued; C15 independent5ns route planned conditional on C14. Preserve the old HLS infeasible row; final feasibility is routed."
@@ -310,7 +317,7 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-12T07:05:37+00:00",
+  "time": "2026-10-12T07:14:21+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",

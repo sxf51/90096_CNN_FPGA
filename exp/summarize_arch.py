@@ -61,7 +61,9 @@ def main():
     ws_path = ROOT / "experiments/weight_loading_state.json"
     ws = json.loads(ws_path.read_text()) if ws_path.is_file() else None
     if ws:
-        text += "Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). " + ws["next"] + "\n\n"
+        text += "Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). "
+        text += ("That workstream is archived; current acceptance and remaining tasks follow docs/0005.\n\n"
+                 if rom_current else ws["next"] + "\n\n")
     if best:
         text += ("## HLS Screening Leader\n\n" if rom_current else "## Current Best\n\n")+markdown_table(linked([best]),[
             "id","design","precision_w_a_acc","T_target","clock_target_ns","clock_est_ns","latency_cycles",
@@ -98,6 +100,14 @@ def main():
     current_path = ROOT / "experiments/rom_clock_comparison.csv"
     if rom_current and current_path.is_file():
         current = list(csv.DictReader(current_path.open(newline="")))
+        verified = sorted((row for row in current if row.get("route_feasible") == "True" and
+                           number(row.get("rtl_frame_ms")) is not None),
+                          key=lambda row: number(row["rtl_frame_ms"]))
+        text += "\n## Current Verified IP Timing\n\n"
+        text += "Matching-parent successful RTL latency times an independently closed, resource-feasible routed clock. No DDR, driver or board measurement is included.\n\n"
+        text += markdown_table(linked(verified), ["id", "parent", "rtl_source", "rtl_cycles", "route_clock_ns",
+                                                 "route_WNS_ns", "route_DSP", "route_BRAM18K", "route_LUT",
+                                                 "route_FF", "rtl_frame_ms"])
         text += "\n## ROM, Clock, FIFO And T4\n\n"
         text += "Measured follow-up records from docs/0005; their routed acceptance remains separate from historical HLS statuses. "
         text += "WS-D functional cosimulation and its2% latency goal are separate columns. See [ROM_CLOCK.md](ROM_CLOCK.md) for counters and memory evidence.\n\n"
@@ -232,7 +242,8 @@ def main():
     failed = [row for row in arch if row["status"] not in {"pass","provisional","csim_pass","impl_complete","cosim_complete","analysis_complete"}]
     text += "\n## Failed Directions\n\n"+markdown_table(linked(failed),["id","series","status","failure_reason","notes"])
     text += "\n## Pending Human Decisions\n\n"
-    text += "- Supply the missing comic pair before complete14-image precision acceptance. All13 supplied pairs remain mandatory.\n"
+    text += ("- The user confirmed that the13 course-provided images are the complete test set; no comic input is pending.\n"
+             if rom_current else "- Supply the missing comic pair before complete14-image precision acceptance. All13 supplied pairs remain mandatory.\n")
     text += "- DDR sequential layers need explicit scratch pointers or an approved wrapper; global m_axi did not export ports in S01.\n"
     text += "- Runtime transformed-weight loading preserves the frozen top signature; true offline-transformed input parameters require an approved new weight contract.\n"
     text += "- Windows settings-batch execution and board integration remain unverified. The existing Linux Vitis2026.1 SSH installation was used.\n"
@@ -241,8 +252,11 @@ def main():
            for row in rows):
         text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Assess the archived route and memory evidence before changing hosts. No system swap/global tool settings were changed.\n"
     if ws:
-        text += "- Section6 unattended decision: preserve runtime float weights and HLS resource gates; keep missing-comic acceptance provisional. A repeated host OOM is archived without changing swap or moving to an unverified host. These decisions are recorded for user review tomorrow in [docs/0004](../docs/0004-t8-weight-loading-plan.md).\n"
-    text += "\n## Next Steps\n\nUse the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. Complete the missing image and board/AXI system measurements before claiming deployable performance.\n"
+        text += ("- Current decisions supersede historical docs/0004 defaults: final feasibility uses routed gates, ROM remains exploratory, and the user authorized two concurrent tasks with actual memory telemetry. Board selection and measurements remain pending.\n"
+                 if rom_current else "- Section6 unattended decision: preserve runtime float weights and HLS resource gates; keep missing-comic acceptance provisional. A repeated host OOM is archived without changing swap or moving to an unverified host. These decisions are recorded for user review tomorrow in [docs/0004](../docs/0004-t8-weight-loading-plan.md).\n")
+    text += "\n## Next Steps\n\nUse the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. "
+    text += ("Complete the queued docs/0005 RTL/routing comparisons and board/AXI system measurements before claiming deployable performance.\n"
+             if rom_current else "Complete the missing image and board/AXI system measurements before claiming deployable performance.\n")
     audit = ROOT / "experiments/weight_loading_audit.json"
     if not audit.is_file():
         audit = ROOT / "experiments/architecture_audit.json"

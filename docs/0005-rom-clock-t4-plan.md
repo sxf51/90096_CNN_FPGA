@@ -270,7 +270,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| W23 | W21 | unlaunched_conditional | unknown |
+| W23 | W21 | queued_or_running | unknown |
 | F43 | F39 | queued_or_running | unknown |
 | F44 | F40 | queued_or_running | unknown |
 | W28 | W27 | queued_or_running | unknown |
@@ -280,3 +280,4 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | F46 | F42 | queued_or_running | unknown |
 | C14 | C13 | queued_or_running | unknown |
 | C15 | C13 | unlaunched_conditional | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
+| F49 | F39 | unlaunched_conditional | F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |

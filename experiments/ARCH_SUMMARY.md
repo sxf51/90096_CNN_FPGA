@@ -6,7 +6,7 @@ The lowest HLS estimate satisfying the original HLS resource screen is [W24](W24
 
 Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.
 
-Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). Review section6 decisions, missing comic and any failed route/RTL gates; use measured physical bottlenecks for the next independent design. No board acceptance or push.
+Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). That workstream is archived; current acceptance and remaining tasks follow docs/0005.
 
 ## HLS Screening Leader
 
@@ -21,6 +21,15 @@ Actual verification of the current HLS winner:
 | id | operation | status | impl_target_clock_ns | impl_WNS_ns | timing_met | impl_DSP | impl_LUT | impl_FF | impl_BRAM36 | impl_URAM | rtl_status | rtl_latency_max | rtl_interval_max | cycle_deviation_pct |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [W25](W25_rom_changed_input_cosim_W24/W25.md) | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 554226.0 | 554237.0 | 5.701752712986097 |
+
+## Current Verified IP Timing
+
+Matching-parent successful RTL latency times an independently closed, resource-feasible routed clock. No DDR, driver or board measurement is included.
+
+| id | parent | rtl_source | rtl_cycles | route_clock_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 |
+| [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
 
 ## ROM, Clock, FIFO And T4
 
@@ -44,7 +53,7 @@ Unmeasured plans have no actual result and do not enter rankings:
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | unlaunched_conditional | unknown |
+| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | queued_or_running | unknown |
 | [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim | queued_or_running | unknown |
 | [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim | queued_or_running | unknown |
 | [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | queued_or_running | unknown |
@@ -54,6 +63,7 @@ Unmeasured plans have no actual result and do not enter rankings:
 | [F46](F46_ws_cosim_F42/F46.md) | F42 | cosim | queued_or_running | unknown |
 | [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | queued_or_running | unknown |
 | [C15](C15_ws_impl_C13/C15.md) | C13 | impl | unlaunched_conditional | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
+| [F49](F49_ws_impl_F39/F49.md) | F39 | impl | unlaunched_conditional | F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
 
 ## P Direction
 
@@ -755,17 +765,17 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 
 ## Pending Human Decisions
 
-- Supply the missing comic pair before complete14-image precision acceptance. All13 supplied pairs remain mandatory.
+- The user confirmed that the13 course-provided images are the complete test set; no comic input is pending.
 - DDR sequential layers need explicit scratch pointers or an approved wrapper; global m_axi did not export ports in S01.
 - Runtime transformed-weight loading preserves the frozen top signature; true offline-transformed input parameters require an approved new weight contract.
 - Windows settings-batch execution and board integration remain unverified. The existing Linux Vitis2026.1 SSH installation was used.
 - Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).
 - Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Assess the archived route and memory evidence before changing hosts. No system swap/global tool settings were changed.
-- Section6 unattended decision: preserve runtime float weights and HLS resource gates; keep missing-comic acceptance provisional. A repeated host OOM is archived without changing swap or moving to an unverified host. These decisions are recorded for user review tomorrow in [docs/0004](../docs/0004-t8-weight-loading-plan.md).
+- Current decisions supersede historical docs/0004 defaults: final feasibility uses routed gates, ROM remains exploratory, and the user authorized two concurrent tasks with actual memory telemetry. Board selection and measurements remain pending.
 
 ## Next Steps
 
-Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. Complete the missing image and board/AXI system measurements before claiming deployable performance.
+Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. Complete the queued docs/0005 RTL/routing comparisons and board/AXI system measurements before claiming deployable performance.
 
 ## Integrity Audit
 
@@ -792,4 +802,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T07:05:37+00:00.
+Generated from archived evidence at 2026-10-12T07:14:21+00:00.
