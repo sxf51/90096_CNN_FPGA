@@ -256,6 +256,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | [W25](../experiments/W25_rom_changed_input_cosim_W24/W25.md) | W24 | cosim_complete | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | unknown |
 | [W26](../experiments/W26_frp_W21_T8/W26.md) | W21 | fail | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W27](../experiments/W27_frp_W21_T8/W27.md) | W21 | pass | 525237.0 | 644.0 | 81484.0 | unknown | unknown | unknown |
+| [F39](../experiments/F39_c3_select_W21_T8/F39.md) | W21 | pass | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown |
 | [F40](../experiments/F40_fifo16_W21_T8/F40.md) | W21 | pass | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown |
 | [F41](../experiments/F41_fifo32_W21_T8/F41.md) | W21 | pass | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown |
 | [F42](../experiments/F42_reorder_W21_T8/F42.md) | W21 | pass | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown |
@@ -267,7 +268,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | W23 | W21 | unlaunched_memory | unknown |
-| F39 | W21 | queued_or_running | unknown |
+| F44 | F40 | queued_or_running | unknown |
 | F45 | F41 | queued_or_running | unknown |
 | W28 | W27 | queued_or_running | unknown |
 | W29 | W24 | unlaunched_memory | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
