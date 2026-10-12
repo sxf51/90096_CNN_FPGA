@@ -579,9 +579,11 @@
 
 - 2026-10-12T23:40 UTC C22: matching C20 handoff and IP-package SHA256 are archived; route/architecture/ROM-clock CSV analyses, summaries and three comparison plot scripts refreshed. Eleven ROM-clock checks and five simulation-observer workflow checks pass. Observer tests cover immutable synthesis RTL, rejected duplicate/wrong-count instrumentation, setup failure, cumulative timeout and retained logs. The real monitored HLS driver remains unvalidated until WS-F RTL runs; no unit-test result is substituted for hardware evidence. C21 is the sole active heavy task, with W33 and C23/C24/C25/F53 preserved in their existing supervisor queues.
 
-## Pending Human Decisions / 待人工决策
-
 - 2026-10-12 23:44:26 UTC C23: prepared separate first-load/reuse/reload/retain reporting and CSV-only plots. All154 experiment-infrastructure tests pass, including rejection of failed RTL, mismatched/unclosed routing and nonzero parameter read-valid counts on a skipped call. No reload hardware measurements exist yet; the empty measurement CSV is explicit and no plot or milliseconds are fabricated.
+
+- 2026-10-12 23:52:10 UTC C23: extend independently packaged Vivado flow and verified IP handoff to the approved srcnn_reload top. Legacy srcnn still requires its exact changed-parameter two-call proof; reload handoff independently requires all four exact calls and measured zero skipped-call parameter traffic. Generated one-bit load_params register is distinct from eight64-bit pointers. Archive the original per-transaction performance table and AXI CSV as tracked source evidence even when setup/standalone simulation does not emit the conventional cosim report. Eleven handoff and24 verification checks pass; actual reload RTL/package/route results remain outstanding.
+
+## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。
 

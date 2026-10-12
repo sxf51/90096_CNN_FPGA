@@ -26,6 +26,12 @@ def archive_verification_reports(work, archive, operation):
     paths = sorted(path for path in work.rglob("*") if path.is_file() and
                    path.suffix in {".rpt", ".xml"} and
                    {"report", "reports"}.intersection(path.parts) and report_kind in path.parts)
+    if operation == "cosim":
+        simulation = work / "hls/sim/verilog"
+        paths.extend(sorted(simulation.glob("*.performance.result.transaction.xml")))
+        bus = simulation / "reload_parameter_axi.csv"
+        if bus.is_file():
+            paths.append(bus)
     for path in paths:
         if operation == "impl" and not path.stem.endswith(("timing_routed", "utilization_routed", "status_routed")):
             continue
@@ -191,7 +197,7 @@ def check_template_rtl(parent_work, template_work):
 
 def prepare_packaged_driver(work, template_work, archive, parent_config, exp_id, template_archive=None):
     top = parent_config.get("top", "srcnn")
-    if top not in {"srcnn", "srcnn_rom"}:
+    if top not in {"srcnn", "srcnn_rom", "srcnn_reload"}:
         raise RuntimeError("Unsupported SRCNN package top")
     target = work / "hls/impl/verilog"
     if (target / "run_vivado.tcl").is_file():
@@ -230,7 +236,7 @@ def prepare_packaged_driver(work, template_work, archive, parent_config, exp_id,
         text, count = re.subn(r"^set top_module srcnn$", "set top_module " + top,
                               settings_path.read_text(), flags=re.MULTILINE)
         if count != 1:
-            raise RuntimeError("Cannot adapt generated package settings to the ROM top")
+            raise RuntimeError("Cannot adapt generated package settings to the candidate top")
         settings_path.write_text(text)
         driver_path = target / "run_vivado.tcl"
         text = driver_path.read_text()
@@ -240,7 +246,7 @@ def prepare_packaged_driver(work, template_work, archive, parent_config, exp_id,
                                       'dict set report_options topmodule "' + top + '"')):
             text, count = re.subn(pattern, replacement, text, flags=re.MULTILINE)
             if count != 1:
-                raise RuntimeError("Cannot adapt generated package driver to the ROM top")
+                raise RuntimeError("Cannot adapt generated package driver to the candidate top")
         driver_path.write_text(text)
     settings = (target / "settings.tcl").read_text()
     for key, value in (("top_module", top), ("language", "verilog"), ("device", "xck26"),
