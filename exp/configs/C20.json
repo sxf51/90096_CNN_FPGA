@@ -1,0 +1,33 @@
+{
+  "changes": "Use frozen parent C17 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Override only verification C++ testbench, archive its SHA256/source commit and preserve identical parent RTL.",
+  "clock": 4,
+  "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+  "design": "designs/winograd_t4_windows32_v1",
+  "estimates": {
+    "BRAM18K": 146.0,
+    "DSP": 1032.0,
+    "FF": 192308.0,
+    "LUT": 127985.0,
+    "T": 4.0,
+    "URAM": 0.0,
+    "basis": "Frozen C17 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: C17 passes all 13 E065-exact course images with mean deltaPSNR -0.07589037644656216 dB and border MSE 1.405191888267716e-05; all three MAC folds have actual II=1. Its HLS counts are 1032 DSP, 127985 LUT, 192308 FF and 146 BRAM18K, within the approved physical-verification screen while preserving the original HLS infeasible status. C14 measured 300632 cycles with a two-entry window FIFO; C17 changes only depth to32 and predicted 272000 cycles before implementation. Validate both exact changed-parameter transactions and finite-FIFO counters, allow faster execution without a lower cycle bound, and judge acceleration using independently closed routing. Run with one heavy task plus budgeted light work and retain the six-hour timeout.",
+    "latency_cycles": 263090.0
+  },
+  "id": "C20",
+  "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+  "memory_scheduler": true,
+  "name": "ws_cosim_C17",
+  "operation": "cosim",
+  "purpose": "Verify frozen C17 using cosim in a new workspace. Run two complete butterfly transactions with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout.\n\nDecision basis: C17 passes all 13 E065-exact course images with mean deltaPSNR -0.07589037644656216 dB and border MSE 1.405191888267716e-05; all three MAC folds have actual II=1. Its HLS counts are 1032 DSP, 127985 LUT, 192308 FF and 146 BRAM18K, within the approved physical-verification screen while preserving the original HLS infeasible status. C14 measured 300632 cycles with a two-entry window FIFO; C17 changes only depth to32 and predicted 272000 cycles before implementation. Validate both exact changed-parameter transactions and finite-FIFO counters, allow faster execution without a lower cycle bound, and judge acceleration using independently closed routing. Run with one heavy task plus budgeted light work and retain the six-hour timeout. The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains E065 mixed Conv2-w8-exact butterfly with unchanged border MSE.",
+  "reload_params": true,
+  "required_image_count": 13,
+  "resource_policy": "routed",
+  "scope": "frame",
+  "series": "C",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_ws_verify",
+  "timeout": 21600,
+  "validation_parent": "C17",
+  "verification_testbench": "exp/tb/validate_reload.cpp",
+  "verify_parent": "C17"
+}
