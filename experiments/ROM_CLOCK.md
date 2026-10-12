@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T09:54:29+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T09:56:22+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C14 T4 RTL PASS; W28 exact RTL rejected by unchanged cycle gate; F44/F48 active. C14 mixed T4 passed both changed-parameter RTL transactions at300632 latency/300661 interval cycles; C15 independent5ns routing is queued. W28 exact RTL measured549438cycles, below the immutable553171..564345-cycle gate; preserve fail and do not launch conditional W30. F44 featureFIFO16 and F48 windowFIFO16 are active. W23 strategy4.5ns, F49 registeredConv3 4.5ns, W29 ROM5ns and F50 rasterFIFO retry remain queued. Collect migrated F48/F44 with --collect-only after completion. Choose an independent FIFO route from accepted measured cycles. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.
+F44 featureFIFO16 RTL PASS without latency gain; F49 route/F48 RTL active. F44 featureFIFO16 passed at558758 latency/558787 interval cycles, identical to F97/F45; feature buffering alone misses the535741-cycle WS-D goal. F49 registeredConv34.5ns routing and F48 windowFIFO16 changed-parameter RTL are active. Collect migrated F48 with --collect-only after completion and choose an independent FIFO route from measured cycles/counters. C14 T4 passed at300632/300661cycles; C15 independent5ns route, W23 strategy4.5ns, W29 ROM5ns and F50 rasterFIFO retry are queued. W28 exact549438cycles fails the unchanged553171..564345 gate; conditional W30 remains unlaunched. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -22,12 +22,12 @@ C14 T4 RTL PASS; W28 exact RTL rejected by unchanged cycle gate; F44/F48 active.
 | [W26](W26_frp_W21_T8/W26.md) | W21 | csim/csynth | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W27](W27_frp_W21_T8/W27.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F39](F39_c3_select_W21_T8/F39.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
-| [F40](F40_fifo16_W21_T8/F40.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F40](F40_fifo16_W21_T8/F40.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
 | [F41](F41_fifo32_W21_T8/F41.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
 | [F42](F42_reorder_W21_T8/F42.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C13](C13_runtime_prepacked_conv2_T4/C13.md) | W21 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | unknown | unknown | 6.382071331608397 | unknown |
-| [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | unknown | unknown | unknown | unknown |
+| [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | unknown | unknown | 6.382071331608397 | False |
 | [F45](F45_ws_cosim_F41/F45.md) | F41 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | 558758.0 | unknown | unknown | unknown | 6.382071331608397 | False |
 | [F47](F47_windows16_W21_T8/F47.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | unknown | unknown | unknown | unknown |
@@ -83,6 +83,7 @@ The explicit two-task policy supersedes reservation-based admission. Completed t
 | F43 | F46 | 3551.590785264969 | 1729 | 14.116714477539062 | 0.5022239685058594 | 18.49030818100524 |
 | F43 | W28 | 401.79360151290894 | 191 | 11.563800811767578 | 2.8226356506347656 | 23.84113872200983 |
 | W28 | C14 | 2752.318102836609 | 1337 | 12.649986267089844 | 2.3129348754882812 | 19.501111310893567 |
+| W28 | F44 | 565.5901737213135 | 270 | 8.877937316894531 | 5.957366943359375 | 25.37125178827922 |
 
 Process-tree RSS sums include shared mappings; minimum MemAvailable is measured for the entire host. Sampling alignment tolerance is4seconds. A hatch marks nonzero tool exit, not failed timing closure.
 

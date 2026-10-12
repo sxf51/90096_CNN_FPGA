@@ -176,7 +176,7 @@
   "full_set14": true,
   "hardware_parallelism": 2,
   "hardware_scheduler": "user-authorized two-task scheduling with actual memory telemetry",
-  "next": "C14 mixed T4 passed both changed-parameter RTL transactions at300632 latency/300661 interval cycles; C15 independent5ns routing is queued. W28 exact RTL measured549438cycles, below the immutable553171..564345-cycle gate; preserve fail and do not launch conditional W30. F44 featureFIFO16 and F48 windowFIFO16 are active. W23 strategy4.5ns, F49 registeredConv3 4.5ns, W29 ROM5ns and F50 rasterFIFO retry remain queued. Collect migrated F48/F44 with --collect-only after completion. Choose an independent FIFO route from accepted measured cycles. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.",
+  "next": "F44 featureFIFO16 passed at558758 latency/558787 interval cycles, identical to F97/F45; feature buffering alone misses the535741-cycle WS-D goal. F49 registeredConv34.5ns routing and F48 windowFIFO16 changed-parameter RTL are active. Collect migrated F48 with --collect-only after completion and choose an independent FIFO route from measured cycles/counters. C14 T4 passed at300632/300661cycles; C15 independent5ns route, W23 strategy4.5ns, W29 ROM5ns and F50 rasterFIFO retry are queued. W28 exact549438cycles fails the unchanged553171..564345 gate; conditional W30 remains unlaunched. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
@@ -231,18 +231,17 @@
     ],
     "local_exec_sessions": [
       60610,
-      25067,
       31749,
       61966,
       30859,
       91661,
       38233
     ],
-    "next": "C14 mixed T4 passed both changed-parameter RTL transactions at300632 latency/300661 interval cycles; C15 independent5ns routing is queued. W28 exact RTL measured549438cycles, below the immutable553171..564345-cycle gate; preserve fail and do not launch conditional W30. F44 featureFIFO16 and F48 windowFIFO16 are active. W23 strategy4.5ns, F49 registeredConv3 4.5ns, W29 ROM5ns and F50 rasterFIFO retry remain queued. Collect migrated F48/F44 with --collect-only after completion. Choose an independent FIFO route from accepted measured cycles. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.",
+    "next": "F44 featureFIFO16 passed at558758 latency/558787 interval cycles, identical to F97/F45; feature buffering alone misses the535741-cycle WS-D goal. F49 registeredConv34.5ns routing and F48 windowFIFO16 changed-parameter RTL are active. Collect migrated F48 with --collect-only after completion and choose an independent FIFO route from measured cycles/counters. C14 T4 passed at300632/300661cycles; C15 independent5ns route, W23 strategy4.5ns, W29 ROM5ns and F50 rasterFIFO retry are queued. W28 exact549438cycles fails the unchanged553171..564345 gate; conditional W30 remains unlaunched. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.",
     "pending_decisions": [
       "W28 FRP is exact and1.667985% faster, but exceeds the preplanned plus/minus1% cycle bound. W28 remains fail and W30 stays unlaunched; review a new independently planned FRP throughput study tomorrow without changing this gate."
     ],
-    "phase": "C14 T4 RTL PASS; W28 exact RTL rejected by unchanged cycle gate; F44/F48 active",
+    "phase": "F44 featureFIFO16 RTL PASS without latency gain; F49 route/F48 RTL active",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
@@ -252,9 +251,6 @@
     },
     "resource_policy": "routed",
     "session_jobs": {
-      "25067": [
-        "F44"
-      ],
       "30859": [
         "W29"
       ],
@@ -324,7 +320,7 @@
       "reason": "W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result."
     }
   },
-  "time": "2026-10-12T09:54:29+00:00",
+  "time": "2026-10-12T09:56:22+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",

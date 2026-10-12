@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C14 T4 RTL PASS; W28 exact RTL rejected by unchanged cycle gate; F44/F48 active. C14 mixed T4 passed both changed-parameter RTL transactions at300632 latency/300661 interval cycles; C15 independent5ns routing is queued. W28 exact RTL measured549438cycles, below the immutable553171..564345-cycle gate; preserve fail and do not launch conditional W30. F44 featureFIFO16 and F48 windowFIFO16 are active. W23 strategy4.5ns, F49 registeredConv3 4.5ns, W29 ROM5ns and F50 rasterFIFO retry remain queued. Collect migrated F48/F44 with --collect-only after completion. Choose an independent FIFO route from accepted measured cycles. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.
+F44 featureFIFO16 RTL PASS without latency gain; F49 route/F48 RTL active. F44 featureFIFO16 passed at558758 latency/558787 interval cycles, identical to F97/F45; feature buffering alone misses the535741-cycle WS-D goal. F49 registeredConv34.5ns routing and F48 windowFIFO16 changed-parameter RTL are active. Collect migrated F48 with --collect-only after completion and choose an independent FIFO route from measured cycles/counters. C14 T4 passed at300632/300661cycles; C15 independent5ns route, W23 strategy4.5ns, W29 ROM5ns and F50 rasterFIFO retry are queued. W28 exact549438cycles fails the unchanged553171..564345 gate; conditional W30 remains unlaunched. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=explicit two-task scheduling with actual memory telemetry.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T09:54:29+00:00 from archived measurements.
+Updated 2026-10-12T09:56:22+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
