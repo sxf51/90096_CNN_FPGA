@@ -499,6 +499,8 @@
 
 - 2026-10-12T10:01:54+00:00: F49: ws_impl_F39; status=fail; latency_ms_est=1.74903921; impl of F39; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.3829193115234375, "floor_gib": 0.5}
 
+- 2026-10-12T10:07:17+00:00: F48: ws_cosim_F47; status=cosim_complete; latency_ms_est=1.74903921; cosim of F47; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T09:07 UTC W28: FRP 两帧数值与换参数检查均 PASS，实测549438周期比F97少9320（约1.668%）；超出预先提交的±1%门槛553171..564345，按原规则记fail，W30不启动。原计划和全部RTL/FIFO证据保留；明日复核是否另立新实验评估更快FRP，不改本次门槛或历史状态。C14已逐位PASS，300632latency/300661interval；其前置条件满足，C15独立5ns布线已排队。

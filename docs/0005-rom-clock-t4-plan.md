@@ -274,6 +274,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | [F45](../experiments/F45_ws_cosim_F41/F45.md) | F41 | cosim_complete | 525237.0 | 644.0 | 81105.0 | 558758.0 | unknown | unknown |
 | [F47](../experiments/F47_windows16_W21_T8/F47.md) | W21 | pass | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown |
 | [W28](../experiments/W28_ws_cosim_W27/W28.md) | W27 | fail | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | unknown |
+| [F48](../experiments/F48_ws_cosim_F47/F48.md) | F47 | cosim_complete | 525237.0 | 644.0 | 81086.0 | 535771.0 | unknown | unknown |
 | [F46](../experiments/F46_ws_cosim_F42/F46.md) | F42 | fail | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown |
 | [C14](../experiments/C14_ws_cosim_C13/C14.md) | C13 | cosim_complete | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | unknown |
 | [F49](../experiments/F49_ws_impl_F39/F49.md) | F39 | fail | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown |
@@ -285,6 +286,5 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | W23 | W21 | queued_or_running | unknown |
 | W29 | W24 | queued_or_running | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
 | W30 | W27 | not_run_condition_failed | W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result. |
-| F48 | F47 | queued_or_running | unknown |
 | C15 | C13 | queued_or_running | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
 | F50 | F42 | queued_or_running | unknown |
