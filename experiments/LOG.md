@@ -437,6 +437,10 @@
 
 - 2026-10-12T03:00:07+00:00: W22: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
 
+- 2026-10-12 收尾审计修复：首次 changed-parameter cosim 的 `testbench_sha256` 使用 basename，源码提交记录在 `source_commit`；旧审计只接受重放实验的 `frozen_source_commit` 和仓库相对路径，导致 KeyError。修正提交/路径解析后仍逐字节对比归档 SHA256 和 `git show`，重放优先冻结提交，不跳过校验、不改实验配置或硬件结果。补充首次验证、Git 内容篡改、重放提交优先级和缺失提交四种检查。
+
+- 2026-10-12 F99: 审计修复后的完整基础设施检查通过，67 tests；其中新增四项 testbench 源码来源检查，原有重放、报告解析、时钟隔离、CPU/内存和远程恢复检查全部通过。
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 W22: 最后一个 WS4 探针已完成，4.95 ns 下 WNS +0.047 ns / WHS +0.032 ns，IP 推导帧时间 2.7658521 ms，比 F98 5 ns 低 1%，但 setup 余量从 140 ps 降至 47 ps。按最小延迟目标保留 W22 为当前最快已验证时钟点，同时保留 F98 为更保守的集成起点，板端团队可在系统时钟验收时选择。不得把 4.903 ns 的 slack 推导值当作已验证时钟；缺 comic、资源口径、常量 ROM 和大内存主机仍按第 6 节待复核。
