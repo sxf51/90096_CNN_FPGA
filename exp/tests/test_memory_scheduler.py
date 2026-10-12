@@ -45,15 +45,20 @@ class AdmissionTests(unittest.TestCase):
                 original = (archive/"package_admission.json").read_bytes()
                 scheduled_invoke(config, archive, "impl", ["vivado"],
                                  root/"settings", root, root/"impl.log", 10800)
+                scheduled_invoke(config, archive, "impl", ["vivado", "-source", "report_setup_paths.tcl"],
+                                 root/"settings", root, root/"paths.log", 1800, telemetry_name="setup_paths")
             package = json.loads(original)
             implementation = json.loads((archive/"impl_admission.json").read_text())
+            paths = json.loads((archive/"setup_paths_admission.json").read_text())
             self.assertEqual(package["kind"], "impl")
             self.assertEqual(package["budget_gib"], BUDGETS["impl"])
             self.assertEqual(package["phase"], "package")
             self.assertEqual(implementation["phase"], "impl")
+            self.assertEqual(paths["kind"], "impl")
+            self.assertEqual(paths["phase"], "setup_paths")
             self.assertEqual((archive/"package_admission.json").read_bytes(), original)
             self.assertEqual([call.args[0].name for call in monitor.call_args_list],
-                             ["package_host_memory.csv", "impl_host_memory.csv"])
+                             ["package_host_memory.csv", "impl_host_memory.csv", "setup_paths_host_memory.csv"])
             self.assertEqual(json.loads(Scheduler(root).path.read_text())["tasks"], {})
 
     def test_controlled_three_job_trial_fits(self):
