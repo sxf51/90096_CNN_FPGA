@@ -242,6 +242,8 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 
 `python3 exp/audit_rom_clock.py --snapshot` 可在任务运行时校验两地原始文件、冻结设计、已归档报告及未测量计划；去掉 `--snapshot` 则要求远程无实验进程。审计结果写到 `experiments/rom_clock_audit.json`，明确保留未启动计划和未完成状态。审计通过本身不代表布线或上板验收完成。
 
+条件任务的前置验收失败时，保留原计划和门槛，在状态文件中记录未运行原因及对应失败实验。汇总单独标为 `not_run_condition_failed`，不得制造 results.csv 行、周期或布线结果。收尾审计校验失败证据后可将此条件任务计为已处理；`all_operations_archived` 仍反映有没有实际结果，另用 `all_required_operations_resolved` 区分计划已处理和全部实际运行。
+
 ## 8. 进展记录
 
 | 日期 | ID | 结果 |
@@ -281,7 +283,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | W23 | W21 | queued_or_running | unknown |
 | F44 | F40 | queued_or_running | unknown |
 | W29 | W24 | queued_or_running | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
-| W30 | W27 | unlaunched_conditional | W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
+| W30 | W27 | not_run_condition_failed | W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result. |
 | F48 | F47 | queued_or_running | unknown |
 | C15 | C13 | queued_or_running | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
 | F49 | F39 | queued_or_running | F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |

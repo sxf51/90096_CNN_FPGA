@@ -42,12 +42,14 @@ def main():
     if rom_path.exists():
         rom = json.loads(rom_path.read_text())
         final_pending = list(dict.fromkeys(final_pending + [exp_id for exp_id in rom["experiment_ids"] if exp_id not in ids]))
+        final_pending = [exp_id for exp_id in final_pending if exp_id not in rom.get("skipped_plans", {})]
         state.update(full_set14=True, complete_image_count=13, resource_policy="routed",
                      hardware_parallelism=2 if rom.get("concurrency_policy") == "user_two_jobs" else None,
                      hardware_scheduler=("user-authorized two-task scheduling with actual memory telemetry"
                                          if rom.get("concurrency_policy") == "user_two_jobs"
                                          else "validated memory-budget admission"),
-                     pending_final_verification_ids=final_pending, rom_clock_workstream=rom, next=rom["next"])
+                     pending_final_verification_ids=final_pending, skipped_conditional_plans=rom.get("skipped_plans", {}),
+                     rom_clock_workstream=rom, next=rom["next"])
     write_json(ROOT / "experiments/arch_state.json",state)
     text = "# Current progress\n\nUpdated "+state["time"]+" from archived measurements.\n\n"
     text += "Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.\n\n"
@@ -61,6 +63,9 @@ def main():
         text += "Fastest resource-feasible exact frame estimate: ["+best["id"]+"]("+best["md_path"]+"); "+best["latency_ms_est"]+"ms, T="+best["T_target"]+", DSP="+best["DSP"]+", BRAM18K="+best["BRAM18K"]+", LUT="+best["LUT"]+", deltaPSNR="+best["delta_psnr"]+"dB. HLS estimates are distinct from route/RTL results.\n\n"
     text += "## Outstanding\n\nExploration: "+(", ".join(pending) or "all required runs archived")+".\n\n"
     text += "Final verification: "+((", ".join(final_pending) or "all planned operations archived, including failures/timeouts") if selection else "awaiting global candidate selection")+".\n\n"
+    if rom_path.exists() and rom.get("skipped_plans"):
+        text += "Conditional plans not run (failed prerequisite, no fabricated result):\n\n"
+        text += "\n".join("- " + exp_id + ": " + record["reason"] for exp_id, record in rom["skipped_plans"].items()) + "\n\n"
     if ws:
         text += "## Weight Loading Workstream\n\nPlan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). "
         text += ("Archived. Current gates and next tasks are in docs/0005 and the active block above.\n\n"

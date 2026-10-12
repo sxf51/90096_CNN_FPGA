@@ -17,11 +17,12 @@ def pending_experiments(state):
             raise RuntimeError("Expected one unmeasured plan for " + exp_id)
         config = json.loads(plans[0].read_text())["configuration"]
         waiting = exp_id in state.get("waiting_for_memory", [])
+        skipped = state.get("skipped_plans", {}).get(exp_id)
         records.append({"id": exp_id, "parent": config.get("verify_parent", config.get("control_experiment")),
                         "operation": config.get("operation", "csim/csynth"),
-                        "status": ("unlaunched_memory" if waiting else "unlaunched_conditional"
+                        "status": ("not_run_condition_failed" if skipped else "unlaunched_memory" if waiting else "unlaunched_conditional"
                                    if exp_id in state.get("unlaunched_ids", []) else "queued_or_running"),
-                        "condition": state.get("planned_conditions", {}).get(exp_id),
+                        "condition": skipped["reason"] if skipped else state.get("planned_conditions", {}).get(exp_id),
                         "md_path": plans[0].parent.name + "/" + exp_id + ".md"})
     return records
 

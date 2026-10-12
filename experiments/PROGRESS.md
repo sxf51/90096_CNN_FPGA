@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C14 T4 two-frame RTL PASS; W28/F44 active; C15 eligible for independent5ns routing. C14 mixed T4 completed both changed-parameter RTL transactions PASS at300632 latency/300661 interval cycles; queue C15's preplanned independent5ns route, with any1.503160ms calculation conditional on routed closure/resources. W28 FRP and F44 featureFIFO16 are active. F43 registeredConv3 passed at558758cycles; F49 independent4.5ns route and W29 ROM5ns route are queued. F46 failed at actual MemAvailable0.497372GiB without a new OOM; F50 retries frozen F42 with standard complete profiling/checks. Collect migrated W28/F48/F44 archives with --collect-only after completion. F45 FIFO32 remains558758cycles and W25 ROM554226cycles. Start W30 only after W28 passes553171..564345cycles. Choose an independent FIFO route using measured cycles. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.
+C14 T4 RTL PASS; W28 exact RTL rejected by unchanged cycle gate; F44/F48 active. C14 mixed T4 passed both changed-parameter RTL transactions at300632 latency/300661 interval cycles; C15 independent5ns routing is queued. W28 exact RTL measured549438cycles, below the immutable553171..564345-cycle gate; preserve fail and do not launch conditional W30. F44 featureFIFO16 and F48 windowFIFO16 are active. W23 strategy4.5ns, F49 registeredConv3 4.5ns, W29 ROM5ns and F50 rasterFIFO retry remain queued. Collect migrated F48/F44 with --collect-only after completion. Choose an independent FIFO route from accepted measured cycles. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=explicit two-task scheduling with actual memory telemetry.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T09:00:01+00:00 from archived measurements.
+Updated 2026-10-12T09:06:43+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -26,7 +26,11 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: W23, F44, W29, W30, F48, C15, F49, F50.
+Final verification: W23, F44, W29, F48, C15, F49, F50.
+
+Conditional plans not run (failed prerequisite, no fabricated result):
+
+- W30: W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result.
 
 ## Weight Loading Workstream
 

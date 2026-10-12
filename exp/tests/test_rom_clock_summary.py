@@ -39,6 +39,21 @@ class RomClockSummaryTests(unittest.TestCase):
             self.assertNotIn("DSP", record)
             self.assertNotIn("rtl_cycles", record)
 
+    def test_failed_prerequisite_plan_has_no_result_or_running_status(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            archive = root / "experiments/W30_clock"
+            archive.mkdir(parents=True)
+            (archive / "plan.json").write_text(json.dumps({"configuration": {
+                "id": "W30", "operation": "impl", "verify_parent": "W27"}}))
+            with patch.object(summarize_rom_clock, "ROOT", root):
+                record, = summarize_rom_clock.pending_experiments({
+                    "experiment_ids": ["W30"], "unlaunched_ids": ["W30"],
+                    "skipped_plans": {"W30": {"prerequisite": "W28", "reason": "W28 cycle gate failed"}}})
+            self.assertEqual(record["status"], "not_run_condition_failed")
+            self.assertEqual(record["condition"], "W28 cycle gate failed")
+            self.assertNotIn("rtl_cycles", record)
+
 
 if __name__ == "__main__":
     unittest.main()

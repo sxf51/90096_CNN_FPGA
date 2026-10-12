@@ -19,7 +19,10 @@ def inventory(state, rows):
     unmeasured = sorted(set(requested) - set(ids))
     waiting = set(state.get("waiting_for_memory", []))
     active = {exp_id for jobs in state.get("session_jobs", {}).values() for exp_id in jobs}
-    unexplained = set(unmeasured) - waiting - active - set(state.get("deferred", []))
+    skipped = set(state.get("skipped_plans", {}))
+    if not skipped <= set(unmeasured) or skipped & (waiting | active):
+        raise RuntimeError("Skipped conditional plans must be unmeasured and inactive")
+    unexplained = set(unmeasured) - waiting - active - set(state.get("deferred", [])) - skipped
     if unexplained:
         raise RuntimeError("Unmeasured experiments have no recovery state: " + ", ".join(sorted(unexplained)))
     if waiting & set(measured):
@@ -42,11 +45,23 @@ def audit_pending(state, unmeasured):
         if hashlib.sha256(recorded).digest() != hashlib.sha256(path.read_bytes()).digest():
             raise RuntimeError("Pending paper plan differs from committed version: " + exp_id)
         waiting = exp_id in state.get("waiting_for_memory", [])
+        skipped = state.get("skipped_plans", {}).get(exp_id)
+        prerequisite_sha256 = None
+        if skipped:
+            prerequisites = list((ROOT / "experiments").glob(skipped["prerequisite"] + "_*/metrics.json"))
+            if len(prerequisites) != 1 or json.loads(prerequisites[0].read_text())["status"] != "fail":
+                raise RuntimeError("Skipped conditional plan lacks failed prerequisite evidence: " + exp_id)
+            if not skipped.get("reason") or not state.get("planned_conditions", {}).get(exp_id):
+                raise RuntimeError("Skipped plan lacks its original condition and failure reason: " + exp_id)
+            prerequisite_sha256 = hashlib.sha256(prerequisites[0].read_bytes()).hexdigest()
         if waiting and config.get("operation") != "impl":
             raise RuntimeError("Unexpected class of unlaunched memory-blocked plan: " + exp_id)
         records.append({"id": exp_id, "plan_sha256": hashlib.sha256(recorded).hexdigest(),
                         "operation": config.get("operation", "csim/csynth"),
                         "unlaunched_for_memory": waiting,
+                        "not_run_condition_failed": bool(skipped),
+                        "failure_reason": skipped["reason"] if skipped else None,
+                        "prerequisite_metrics_sha256": prerequisite_sha256,
                         "condition": state.get("planned_conditions", {}).get(exp_id),
                         "has_measured_result": False})
     return records
@@ -90,6 +105,7 @@ def main():
     record = {"time": utc(), "mode": "snapshot" if args.snapshot else "idle_audit",
               "measured_workstream_ids": measured, "unmeasured_plans": pending,
               "all_operations_archived": not unmeasured, "remote_jobs_active": running.returncode == 0,
+              "all_required_operations_resolved": not (set(unmeasured) - set(state.get("skipped_plans", {}))),
               "remote_processes": running.stdout.splitlines(), "checks": checks,
               "architecture_archives": sources, "verification_report_archives": reports,
               "files_above50MB": large, "board_validation": False, "pushed": False,

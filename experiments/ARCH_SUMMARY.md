@@ -49,6 +49,7 @@ Measured follow-up records from docs/0005; their routed acceptance remains separ
 | [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim_complete | 8 | 525237.0 | 644.0 | 81518.0 | 558758.0 | 6.382071331608397 | unknown | unknown | unknown |
 | [F45](F45_ws_cosim_F41/F45.md) | F41 | cosim_complete | 8 | 525237.0 | 644.0 | 81105.0 | 558758.0 | 6.382071331608397 | False | unknown | unknown |
 | [F47](F47_windows16_W21_T8/F47.md) | W21 | pass | 8 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown |
+| [W28](W28_ws_cosim_W27/W28.md) | W27 | fail | 8 | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | unknown | unknown | unknown |
 | [F46](F46_ws_cosim_F42/F46.md) | F42 | fail | 8 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown |
 | [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim_complete | 4 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | 14.269641567524417 | unknown | unknown | unknown |
 
@@ -58,9 +59,8 @@ Unmeasured plans have no actual result and do not enter rankings:
 | --- | --- | --- | --- | --- |
 | [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | queued_or_running | unknown |
 | [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim | queued_or_running | unknown |
-| [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | queued_or_running | unknown |
 | [W29](W29_ws_impl_W24/W29.md) | W24 | impl | queued_or_running | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
-| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | unlaunched_conditional | W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
+| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | not_run_condition_failed | W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result. |
 | [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim | queued_or_running | unknown |
 | [C15](C15_ws_impl_C13/C15.md) | C13 | impl | queued_or_running | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
 | [F49](F49_ws_impl_F39/F49.md) | F39 | impl | queued_or_running | F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
@@ -514,6 +514,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F46](F46_ws_cosim_F42/F46.md) | frame | 644.0 | unknown | unknown | 525237.0 | unknown | unknown | fail |
 | [F43](F43_ws_cosim_F39/F43.md) | frame | 644.0 | unknown | unknown | 525237.0 | 558758.0 | 6.382071331608397 | cosim_complete |
 | [C14](C14_ws_cosim_C13/C14.md) | frame | 1032.0 | unknown | unknown | 263090.0 | 300632.0 | 14.269641567524417 | cosim_complete |
+| [W28](W28_ws_cosim_W27/W28.md) | frame | 644.0 | unknown | unknown | 525237.0 | 549438.0 | 4.6076342679590265 | fail |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -561,6 +562,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [F46](F46_ws_cosim_F42/F46.md) | frame | F42 | cosim | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F43](F43_ws_cosim_F39/F43.md) | frame | F39 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 558758.0 | 558787.0 | 6.382071331608397 |
 | [C14](C14_ws_cosim_C13/C14.md) | frame | C13 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 300632.0 | 300661.0 | 14.269641567524417 |
+| [W28](W28_ws_cosim_W27/W28.md) | frame | W27 | cosim | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 549438.0 | 549467.0 | unknown |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -672,6 +674,22 @@ Finite-FIFO RTL counters span both transactions, including startup/inactive cycl
 | [C14](C14_ws_cosim_C13/C14.md) | result_U | 1 | 0.0 | 78.34764562283404 | [counters](C14_ws_cosim_C13/profiling/channels.csv) |
 | [C14](C14_ws_cosim_C13/C14.md) | windows0_U | 2 | 0.8427732361294957 | 9.772378057297937 | [counters](C14_ws_cosim_C13/profiling/channels.csv) |
 | [C14](C14_ws_cosim_C13/C14.md) | windows1_U | 2 | 0.8427732361294957 | 9.772378057297937 | [counters](C14_ws_cosim_C13/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | raw_U | 512 | 82.11163281648103 | 0.01838101477760792 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | params1_U | 2 | 0.0 | 1.183482565334498 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | params2_U | 4 | 0.0 | 1.453192108902963 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | params3_U | 4 | 0.0 | 1.8861469025260247 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | raw1_U | 16 | 0.01037344398340249 | 0.006915629322268326 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | padded1_U | 16 | 86.35109558127684 | 0.06697241027880906 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | features2_U | 20 | 0.0 | 87.065953264905 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | features_U | 5 | 82.0499381233166 | 0.0 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | windows_U | 5 | 86.40369076217515 | 0.0 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | tiles_U | 1 | 0.0 | 87.28998325689743 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | top_U | 207 | 0.0 | 5.635145956176749 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | bottom_U | 326 | 0.0 | 0.0 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | padded3_U | 16 | 0.6209507170415666 | 87.09106791875955 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | result_U | 1 | 0.0 | 88.15170706850112 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | windows0_U | 5 | 0.6697241027880906 | 0.0 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
+| [W28](W28_ws_cosim_W27/W28.md) | windows1_U | 5 | 0.6697241027880906 | 0.0 | [counters](W28_ws_cosim_W27/profiling/channels.csv) |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -802,6 +820,7 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 | [W26](W26_frp_W21_T8/W26.md) | W | fail | ; Design not found: /home/lipuze/amdprojects/90096_CNN_FPGA/designs/winograd_frp_v1 | ; Design not found: /home/lipuze/amdprojects/90096_CNN_FPGA/designs/winograd_frp_v1 |
 | [C13](C13_runtime_prepacked_conv2_T4/C13.md) | C | infeasible | LUT=127966.0 exceeds 81984; FF=192308.0 exceeds 163968 | ; HLS status retained; final feasibility requires independent routed gates |
 | [F46](F46_ws_cosim_F42/F46.md) | F | fail | cosim of F42; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.4973716735839844, "floor_gib": 0.5} | cosim of F42; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.4973716735839844, "floor_gib": 0.5} |
+| [W28](W28_ws_cosim_W27/W28.md) | W | fail | cosim of W27; HLS estimates inherited, real measurements in data.csv; Measured RTL cycles are below the preplanned acceptance bound | cosim of W27; HLS estimates inherited, real measurements in data.csv; Measured RTL cycles are below the preplanned acceptance bound |
 
 ## Pending Human Decisions
 
@@ -842,4 +861,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T08:55:02+00:00.
+Generated from archived evidence at 2026-10-12T09:06:43+00:00.
