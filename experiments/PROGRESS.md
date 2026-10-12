@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-12T02:12:11+00:00 from archived measurements.
+Updated 2026-10-12T02:13:42+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -16,11 +16,11 @@ Fastest resource-feasible exact frame estimate: [W21](W21_subkernel_raw_cache_T8
 
 Exploration: all required runs archived.
 
-Final verification: all planned operations archived, including failures/timeouts.
+Final verification: W22.
 
 ## Weight Loading Workstream
 
-Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Archive F98 analysis, plan and execute W22, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Then audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.
+Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). W22 is active in Vivado synthesis, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Preserve queue session74996 and its independent workspace; do not restart it. Then export its own routed paths if available, audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 

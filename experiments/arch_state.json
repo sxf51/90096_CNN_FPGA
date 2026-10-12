@@ -149,10 +149,12 @@
   "frozen_design_files": 45,
   "full_set14": false,
   "hardware_parallelism": 1,
-  "next": "Archive F98 analysis, plan and execute W22, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Then audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.",
+  "next": "W22 is active in Vivado synthesis, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Preserve queue session74996 and its independent workspace; do not restart it. Then export its own routed paths if available, audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
-  "pending_final_verification_ids": [],
+  "pending_final_verification_ids": [
+    "W22"
+  ],
   "selected": [
     {
       "DSP": "502.0",
@@ -185,7 +187,7 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-12T02:12:11+00:00",
+  "time": "2026-10-12T02:13:42+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "conditional_plans": [],
@@ -213,7 +215,8 @@
       "F95",
       "F96",
       "F97",
-      "F98"
+      "F98",
+      "W22"
     ],
     "host_utilization_decision": "2026-10-12 user requests more server utilization. Measured12 logical CPUs, load1 about1.3 and18% total busy during F95 single-thread synthesis; about9GiB Vivado RSS and6.5GiB MemAvailable on15GiB host with no swap. Preserve existing jobs and serial hardware slot. Add CPU telemetry and a per-run implementation-thread probe (up to4 placement/routing threads, synthesis1) in the next independent WS4 experiment; do not change global settings, frozen plans, swap or launch concurrent full implementations.",
     "loader_full_image_validation": "F94",
@@ -228,10 +231,13 @@
       "F30",
       "W21"
     ],
-    "local_exec_sessions": {},
-    "next": "Archive F98 analysis, plan and execute W22, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Then audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.",
+    "local_exec_sessions": {
+      "W22_queue": 74996
+    },
+    "next": "W22 is active in Vivado synthesis, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Preserve queue session74996 and its independent workspace; do not restart it. Then export its own routed paths if available, audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.",
     "plan": "docs/0004-t8-weight-loading-plan.md",
     "post_route": "F92/W20/F95/F98 final timing/resources, five setup paths, checkpoint/script SHA256 and hierarchical utilization reports are archived. All five F95 paths are Conv1 local-load address to private LUTRAM WADR1. F98 paths1/3/5 are Conv2 parameter FIFO data to private LUTRAM write data; worst4.704ns data delay is97.598% routing with fanout257 and zero logic levels. Paths2/4 are Conv3 step control through three LUTs into DSP inputs; no DSP cascade. Select conservative4.95ns W22 same-RTL probe from F98's own evidence; preserve its5ns fallback and unchanged HLS gates.",
+    "ready_to_close": false,
     "reload_verification": "F93 and F97 are completed and archived: both RTL transactions pass for each accepted loader/T8 candidate, including E017-exact butterfly/unchanged border and a changed sparse-weight/bias second frame with every output bit equal104/256. Parent RTL SHA256 matches before/after and each testbench is archived by source SHA256. F28 latency1059506/interval1059535 and W21 latency558758/interval558787 are measured, not HLS estimates. No OOM/deadlock/timeout was observed. Matching-source F94/F96 all13-image checks both retain deltaPSNR=-0.0695141811880653. F95 F28 route is complete at5ns; F98 must establish W21's own clock.",
     "selected_T8": "W21",
     "selected_loader": "F28",
@@ -252,7 +258,8 @@
       "F95",
       "F96",
       "F97",
-      "F98"
+      "F98",
+      "W22"
     ],
     "verification_tools": "Fresh candidates use prepare_ws_verify.py and serial_packaged_flow: preserve their own IP, copy only checked official F89 driver boilerplate, replace module lists/clock, apply per-run single-thread synthesis hook. Template and parent RTL/init hashes must match for serial_generated_flow. Candidate-specific full-image source/flag provenance is checked.63 infrastructure tests passed, including CPU accounting and bounded implementation-thread/replay isolation. Independent reload-params testbench is archived by SHA256 and frozen for verification replay; C/RTL exact markers and unchanged first-frame borders are required. F93/F97 have actual reload evidence and F95/F98 route is complete. Only W22 WS4 physical-clock probe remains. Current-workstream closure uses close_weight_loading.py and leaves F90/F91 deferred.",
     "ws0": "complete; F85/P13 recovered, F88 interrupted and archived",
