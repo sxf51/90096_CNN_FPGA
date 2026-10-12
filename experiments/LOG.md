@@ -489,6 +489,8 @@
 
 - 2026-10-12T08:04:26+00:00: F43: ws_cosim_F39; status=cosim_complete; latency_ms_est=1.74903921; cosim of F39; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-12T08:14 UTC: F43 final changed-parameter RTL PASS at558758latency/558787interval, identical to F97 and within553171..564345. F49 independent4.5ns routing and W29 ROM5ns routing are queued; W28 FRP and C14 T4 mixed are actually running concurrently. F46 is retained as fail after actual MemAvailable0.497372GiB termination without a new OOM. Two completed telemetry traces establish3551.591seconds overlap and14.116714GiB aligned combined RSS (including shared mappings). F43's100 extra operand-register module monitors generate1517011599bytes of process event histories and reach9.507710GiB RSS. The installed2026.1 schema confirms cosim.setup, profiling enable and deadlock-detection options, but no aggregate-only mode was found. Preserve standard generated monitors and all correctness/cycle/FIFO gates; F50 is a separately planned retry of F42. No completed workspace, protected design or tool installation is changed.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T07:05 UTC 用户明确授权覆盖原预留预算规则：“我觉得不用担心，直接干进去，同时跑两项”。06:58:29 UTC F46 已在 F43 仍运行时准入，两项分别验证 rasterFIFO 与 Conv3 操作数寄存器；不是仅有两个排队任务。调度改为最多两项，预算保留作观察，不再用预算相加拦截第二项，实际可用内存0.5GiB以下中止最近启动项，OOM仍退回串行。W28/F48/C14/F44 的原 Python 等待进程确认未获准入、未启动 Vitis 后迁移到新调度，保留 ID、原计划 SHA256、RTL/init、配置和冻结 testbench；旧 SSH 包装器因任务未完成而退出并报缺 metrics.json，此为等待进程迁移退出，不是 RTL 失败，新进程完成后使用 collect-only 归档。原等待期全局 host_memory 会由恢复进程重新开始采样；它不是工具峰值或性能测量，工具启动后的逐任务 telemetry 单独保存。此前 W23 空闲主机也无法准入的问题已由该授权解决，无需人工重复确认。
