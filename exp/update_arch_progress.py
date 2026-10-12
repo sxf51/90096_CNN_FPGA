@@ -62,7 +62,10 @@ def main():
         best = accepted[0]
         text += "Fastest resource-feasible exact frame estimate: ["+best["id"]+"]("+best["md_path"]+"); "+best["latency_ms_est"]+"ms, T="+best["T_target"]+", DSP="+best["DSP"]+", BRAM18K="+best["BRAM18K"]+", LUT="+best["LUT"]+", deltaPSNR="+best["delta_psnr"]+"dB. HLS estimates are distinct from route/RTL results.\n\n"
     text += "## Outstanding\n\nExploration: "+(", ".join(pending) or "all required runs archived")+".\n\n"
-    text += "Final verification: "+((", ".join(final_pending) or "all planned operations archived, including failures/timeouts") if selection else "awaiting global candidate selection")+".\n\n"
+    completed_label = ("all runnable planned operations archived, including failures/timeouts; conditional omissions listed below"
+                       if state.get("skipped_conditional_plans") else
+                       "all planned operations archived, including failures/timeouts")
+    text += "Final verification: "+((", ".join(final_pending) or completed_label) if selection else "awaiting global candidate selection")+".\n\n"
     if rom_path.exists() and rom.get("skipped_plans"):
         text += "Conditional plans not run (failed prerequisite, no fabricated result):\n\n"
         text += "\n".join("- " + exp_id + ": " + record["reason"] for exp_id, record in rom["skipped_plans"].items()) + "\n\n"
