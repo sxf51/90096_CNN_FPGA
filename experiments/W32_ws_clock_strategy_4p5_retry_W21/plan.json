@@ -1,0 +1,43 @@
+{
+  "config_sha256": "62b209e81265332cf87e8e6548f9f967d42f742076f506da23519aabe06a7633",
+  "configuration": {
+    "changes": "Only new experiment identity and post-OOM scheduler state relative to W23; keep the same physical clock, strategy, thread limit and W21/F98 RTL. The original failed workspace remains immutable.",
+    "clock": 3.33,
+    "conclusion": "Accept only independently converged timing and routed resources with matching successful RTL cycles. Do not probe sub4ns before4.5ns closure.",
+    "design": "designs/winograd_subkernel_cache_v1",
+    "estimates": {
+      "BRAM18K": 109,
+      "DSP": 644,
+      "FF": 88806,
+      "LUT": 42592,
+      "T": 8,
+      "URAM": 0,
+      "basis": "W22 independently routed resources on identical W21/F98 RTL; F97 measured558758 latency/558787 interval cycles. T8 MAC lower bound65025*8=520200cycles. Clock and strategy may alter mapped resources, which remain hypotheses. W23 exit137 and kernel OOM1->2 justify the scheduler's agreed serial hardware fallback. No source, arithmetic, interface, threshold or completed workspace is modified. A conditional4.5ns frame product2.514411ms is accepted only after independent setup/hold, route-status and resource closure.",
+      "latency_cycles": 558758
+    },
+    "id": "W32",
+    "implementation_backend": "serial_generated_flow",
+    "implementation_clock_ns": 4.5,
+    "implementation_strategy": "Performance_Explore",
+    "implementation_template": "F98",
+    "implementation_threads": 4,
+    "interpretation": "Compare routed results with paper W22 resources and recorded W23 OOM evidence. Missing routed data cannot establish FPGA infeasibility or timing failure; no board claim is made.",
+    "memory_scheduler": true,
+    "name": "ws_clock_strategy_4p5_retry_W21",
+    "operation": "impl",
+    "purpose": "Retry WS-C step1 in a fresh workspace after W23 was actually OOM-killed during overlap with C15. Implement identical W21/F98 RTL at4.5ns with Performance_Explore and post-route physical optimization, synthesis1 and placement-routing4 threads. Check every frozen RTL/init SHA256; preserve F97 exact changed-parameter RTL and13-image E017 precision. Retain W23 failure and use the pre-agreed serial hardware fallback after observed OOM, without reinstating advisory-budget admission. Measure actual timing, physical resources and host memory; keep W22/F98 integration fallbacks until this candidate independently closes.",
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "W",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "rom_clock_wsC1",
+    "timeout": 10800,
+    "validation_parent": "F96",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "W21"
+  },
+  "created_at": "2026-10-12T10:23:12+00:00",
+  "created_from_commit": "407fc18a8562dbcf5baaf526d2d9ededa34ab4e8",
+  "purpose_section": "Retry WS-C step1 in a fresh workspace after W23 was actually OOM-killed during overlap with C15. Implement identical W21/F98 RTL at4.5ns with Performance_Explore and post-route physical optimization, synthesis1 and placement-routing4 threads. Check every frozen RTL/init SHA256; preserve F97 exact changed-parameter RTL and13-image E017 precision. Retain W23 failure and use the pre-agreed serial hardware fallback after observed OOM, without reinstating advisory-budget admission. Measure actual timing, physical resources and host memory; keep W22/F98 integration fallbacks until this candidate independently closes.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644 |\n| BRAM18K | 109 |\n| URAM | 0 |\n| LUT | 42592 |\n| FF | 88806 |\n| T | 8 |\n| latency_cycles | 558758 |\n| basis | W22 independently routed resources on identical W21/F98 RTL; F97 measured558758 latency/558787 interval cycles. T8 MAC lower bound65025*8=520200cycles. Clock and strategy may alter mapped resources, which remain hypotheses. W23 exit137 and kernel OOM1->2 justify the scheduler's agreed serial hardware fallback. No source, arithmetic, interface, threshold or completed workspace is modified. A conditional4.5ns frame product2.514411ms is accepted only after independent setup/hold, route-status and resource closure. |\n\nPlanned at 2026-10-12T10:23:12+00:00; estimates are hypotheses, not tool measurements."
+}

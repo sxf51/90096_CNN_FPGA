@@ -43,9 +43,11 @@ def main():
         rom = json.loads(rom_path.read_text())
         final_pending = list(dict.fromkeys(final_pending + [exp_id for exp_id in rom["experiment_ids"] if exp_id not in ids]))
         final_pending = [exp_id for exp_id in final_pending if exp_id not in rom.get("skipped_plans", {})]
+        serial_after_oom = rom.get("hardware_serial_after_oom", False)
         state.update(full_set14=True, complete_image_count=13, resource_policy="routed",
-                     hardware_parallelism=2 if rom.get("concurrency_policy") == "user_two_jobs" else None,
-                     hardware_scheduler=("user-authorized two-task scheduling with actual memory telemetry"
+                     hardware_parallelism=1 if serial_after_oom else 2 if rom.get("concurrency_policy") == "user_two_jobs" else None,
+                     hardware_scheduler=("serial hardware fallback after measured OOM; two-task policy retained"
+                                         if serial_after_oom else "user-authorized two-task scheduling with actual memory telemetry"
                                          if rom.get("concurrency_policy") == "user_two_jobs"
                                          else "validated memory-budget admission"),
                      pending_final_verification_ids=final_pending, skipped_conditional_plans=rom.get("skipped_plans", {}),
@@ -74,7 +76,7 @@ def main():
         text += ("Archived. Current gates and next tasks are in docs/0005 and the active block above.\n\n"
                  if rom_path.exists() else ws["next"] + "\n\n")
         text += "2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.\n\n"
-        text += ("Current user decisions supersede the initial WS0 defaults: complete course set=13 images; final resources=routed; ROM=exploratory; scheduling=explicit two-task mode with actual memory telemetry. Runtime parameter interfaces, strict precision and no-push rules remain.\n\n"
+        text += ("Current user decisions supersede the initial WS0 defaults: complete course set=13 images; final resources=routed; ROM=exploratory; scheduling=explicit two-task mode with actual memory telemetry and the agreed serial hardware fallback after measured OOM. Runtime parameter interfaces, strict precision and no-push rules remain.\n\n"
                  if rom_path.exists() else "Section 6 conservative decisions: preserve runtime float weights and HLS resource gates; keep missing comic explicitly provisional; if serial implementation OOM recurs, archive evidence and continue WS2 without changing host swap or using an unverified machine. Revisit these decisions with the user tomorrow.\n\n")
     text += ("P08 routed DSP48E2 inspection confirms one cell, AMULTSEL=AD and ADREG=1. " if state["packing_pre_adder_verified"] else "P08 needs actual DSP48E2 pre-adder/register inspection. ")
     text += "W10-W13/C07 split transformed-window generation from a fixed16384*(4*T) MAC loop to remove W07's conditional264x264 bound inflation. C08/C09 use independently verified Conv2-only8-bit weights, retain ten-bit activations, and omit coefficient residual repair. Vitis rejects the original8000-bit Conv3 stream at its4096-bit limit; F08-F12/W14-W16/C10-C11 use independent two4000-bit-stream retries with identical arithmetic. F13-F15 isolate Conv3 window rotation and tree-register overhead using F08's measured7013 multiplexer LUT. All new designs are independent; source and paper plans are committed before runs. Re-run CSV analyses, equivalent offline-weight archives and all plots after all evidence arrives. Finalize ARCH_SUMMARY.md, both checksum audits and final F99 commit.\n\n"

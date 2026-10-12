@@ -143,7 +143,8 @@ def main():
         old = old.split(marker, 2)[-1].lstrip("\n")
     block = marker + "\n\n## Active docs/0005 workstream\n\n" + state["phase"] + ". " + state["next"]
     block += "\n\nSee [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). "
-    policy = ("explicit two-task scheduling with actual memory telemetry" if state.get("concurrency_policy") == "user_two_jobs"
+    policy = ("serial hardware fallback after measured OOM; two-task policy retained" if state.get("hardware_serial_after_oom")
+              else "explicit two-task scheduling with actual memory telemetry" if state.get("concurrency_policy") == "user_two_jobs"
               else "budgeted after WS-0 validation")
     block += "Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=" + policy + ".\n\n" + marker + "\n\n"
     progress.write_text("# Current progress\n\n" + block + old.removeprefix("# Current progress\n\n"))
