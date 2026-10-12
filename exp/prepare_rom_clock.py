@@ -6,9 +6,10 @@ from plan_arch import plan
 from run_exp import ROOT
 
 
-def prepare_ws0():
-    for exp_id, parent, csim_only in (("F32", "F28", False), ("F33", "W21", False),
-                                      ("F34", "F96", True)):
+def prepare_ws0(retry=False):
+    controls = (("F36", "F28", False), ("F37", "W21", False), ("F38", "F96", True)) if retry else (
+        ("F32", "F28", False), ("F33", "W21", False), ("F34", "F96", True))
+    for exp_id, parent, csim_only in controls:
         archive = next((ROOT / "experiments").glob(parent + "_*/metrics.json"))
         metrics = json.loads(archive.read_text())
         original = json.loads(archive.with_name("plan.json").read_text())["configuration"]
@@ -18,7 +19,7 @@ def prepare_ws0():
                   "memory_scheduler": True, "controlled_parallel_validation": True,
                   "required_image_count": 13, "resource_policy": "routed",
                   "purpose": "Controlled WS-0 memory admission validation using unchanged " + parent +
-                             " source/arithmetic. Run F32 and F33 synthesis concurrently with F34 C simulation. "
+                             " source/arithmetic. Run two syntheses concurrently with the all-image C simulation. "
                              "Measure individual process-tree RSS, overlapping task timestamps, MemAvailable and CPU. "
                              "Do not enable general hardware concurrency until this trial passes. No architecture speedup is claimed.",
                   "changes": "Only the runner scheduling and telemetry change; reuse the immutable parent design and flags.",
@@ -35,6 +36,16 @@ def prepare_ws0():
         config["estimates"].update(T=original["T"], basis="Measured unchanged parent HLS counts; "
                                    "registered synth budget 2.5 GiB each, C simulation 1 GiB. "
                                    "Total trial reservation 6 GiB, below 13 GiB with a 2 GiB available-memory floor.")
+        if retry:
+            config["purpose"] += " The first trial F32/F33/F34 passed arithmetic/II and overlapped116.606s "
+                                 "with minimum10.697GiB available and no OOM, but actual csynth tree RSS "
+                                 "3.119/3.430GiB exceeded its2.5GiB registration. Correct registration before enabling concurrency."
+            config["estimates"]["basis"] = "Unchanged F28/W21 HLS counts; corrected csynth registration4GiB "
+                                             "exceeds measured3.430GiB peak by16.6%. C simulation registration1.25GiB "
+                                             "exceeds measured0.960GiB peak by30.2%. Total trial reservation9.25GiB "
+                                             "remains below13GiB, with unchanged2GiB available-memory floor."
+            config["budget_evidence"] = "experiments/memory_validation.json"
+            config["trial_ids"] = ["F36", "F37", "F38"]
         plan(config)
 
 
@@ -130,9 +141,10 @@ def prepare_rom():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("step", choices=("ws0", "clock", "rom"))
+    parser.add_argument("step", choices=("ws0", "ws0-retry", "clock", "rom"))
     args = parser.parse_args()
-    {"ws0": prepare_ws0, "clock": prepare_clock, "rom": prepare_rom}[args.step]()
+    {"ws0": prepare_ws0, "ws0-retry": lambda: prepare_ws0(True),
+     "clock": prepare_clock, "rom": prepare_rom}[args.step]()
 
 
 if __name__ == "__main__":
