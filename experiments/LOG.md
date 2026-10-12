@@ -427,6 +427,8 @@
 
 - 2026-10-12T00:55 UTC: F97 changed-parameter two-frame RTL PASS: measured latency558758/interval558787,6.382071% above HLS; first butterfly and six-pixel border remain exact to the precision reference, second outputs all104/256. F95 checkpoint five-path/hierarchy export also archived with SHA256; all paths are Conv1 local-load address to LUTRAM WADR1. Updated recovery to active F98 and one WS4 clock/thread probe, then F99 closure. Parsed profiles distinguish overlapping FIFO stalls from the frame-cycle deviation.
 
+- 2026-10-12T01:54:26+00:00: F98: ws_impl_W21; status=impl_complete; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T18:56:00+00:00: WS2/WS3 preparation: F94 independently passed all13-image exactness and mean deltaPSNR=-0.069514dB. F31 independent changed-parameter C preflight passed, with every second output bit equal104/256 and unchanged first-frame borders; this is not RTL evidence. W19/F29/F30 paper plans are committed and conditional on measured loader selection; no parent design is modified. F92 remains in placement and F28 synthesis waits for its lock.
