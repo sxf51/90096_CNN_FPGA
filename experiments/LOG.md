@@ -505,6 +505,8 @@
 
 - 2026-10-12T10:18 UTC: Live process and scheduler inspection confirms W23 and C15 independent implementations are active, not merely queued. F50 rasterFIFO RTL and newly launched wrapper F51 windowFIFO16 route await a free task slot. Persisted F48's measured535771/535800cycles,22987-cycle improvement and strict30-cycle WS-D miss. F49/W29 both stopped at the actual0.5GiB guard with unchanged OOM1; preserve host failures and prepare F52/W31 fresh-workspace retries. Reconciled recovery state; no completed workspace or frozen threshold is modified.
 
+- 2026-10-12T10:19:42+00:00: W23: ws_clock_strategy_4p5_W21; status=fail; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv; impl failed (exit=137)
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T10:18 UTC F49/W29: 两次独立实现均被实际可用内存0.5GiB保护终止，分别为0.382919/0.466442GiB，exit-15，OOM计数均1→1；不是RTL、时序或FPGA资源不可行。自行决定保留失败并以F52/W31新ID补跑，继续用户授权的两项并行及实际内存监测，不恢复预留预算拦截、不改swap。若同一方向反复内存失败达到45分钟问题上限，记录后先完成其他方向，再依据实际空槽安排重试。

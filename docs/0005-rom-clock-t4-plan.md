@@ -260,6 +260,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | id | parent | status | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | route_feasible | rtl_cycles_x_route_clock_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F35](../experiments/F35_runtime_rom_bank_equivalence/F35.md) | W19 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
+| [W23](../experiments/W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | fail | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown |
 | [W24](../experiments/W24_constant_rom_T8/W24.md) | W19 | pass | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown |
 | [W25](../experiments/W25_rom_changed_input_cosim_W24/W25.md) | W24 | cosim_complete | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | unknown |
 | [W26](../experiments/W26_frp_W21_T8/W26.md) | W21 | fail | unknown | unknown | unknown | unknown | unknown | unknown |
@@ -284,7 +285,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| W23 | W21 | queued_or_running | unknown |
 | W30 | W27 | not_run_condition_failed | W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result. |
 | C15 | C13 | queued_or_running | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
 | F50 | F42 | queued_or_running | unknown |
+| F51 | F47 | queued_or_running | unknown |

@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T10:08:40+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T10:19:43+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-F44 featureFIFO16 RTL PASS without latency gain; F49 route/F48 RTL active. F44 featureFIFO16 passed at558758 latency/558787 interval cycles, identical to F97/F45; feature buffering alone misses the535741-cycle WS-D goal. F49 registeredConv34.5ns routing and F48 windowFIFO16 changed-parameter RTL are active. Collect migrated F48 with --collect-only after completion and choose an independent FIFO route from measured cycles/counters. C14 T4 passed at300632/300661cycles; C15 independent5ns route, W23 strategy4.5ns, W29 ROM5ns and F50 rasterFIFO retry are queued. W28 exact549438cycles fails the unchanged553171..564345 gate; conditional W30 remains unlaunched. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.
+W23/C15 implementation active; F48 windowFIFO16 exact and4.1percent faster; fresh route retries planned. W23 same-RTL strategy4.5ns and C15 T4 independent5ns implementation are actually active. F50 rasterFIFO changed-parameter RTL and F51 windowFIFO16 independent5ns route are queued. F48 exact535771/535800cycles recovers22987cycles versus F97, but misses the unchanged WS-D535741-cycle limit by30cycles. Preserve F49/W29 memory-protection failures without new OOM or timing claims; prepare fresh F52 registeredConv34.5ns and W31 ROM5ns retries. Conditional follow-up clocks require independently converged timing/resources. W28 exact549438cycles still fails its unchanged cycle gate and W30 stays unlaunched. Keep two concurrent tasks and actual0.5GiB newest-task protection. F98 board handoff is archived; board measurements remain pending.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -17,6 +17,7 @@ F44 featureFIFO16 RTL PASS without latency gain; F49 route/F48 RTL active. F44 f
 | [F37](F37_ws0_memory_control_W21/F37.md) | W21 | csim/csynth | provisional | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F38](F38_ws0_memory_control_F96/F38.md) | F96 | csim | csim_pass | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F35](F35_runtime_rom_bank_equivalence/F35.md) | W19 | csim | csim_pass | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W24](W24_constant_rom_T8/W24.md) | W19 | csim/csynth | pass | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | 5.701752712986097 | unknown |
 | [W25](W25_rom_changed_input_cosim_W24/W25.md) | W24 | cosim | cosim_complete | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | unknown | unknown | 5.701752712986097 | unknown |
 | [W26](W26_frp_W21_T8/W26.md) | W21 | csim/csynth | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
@@ -45,10 +46,10 @@ WS-D performance is separate from a successful functional cosimulation. With the
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | queued_or_running | unknown |
 | [W30](W30_ws_impl_W27/W30.md) | W27 | impl | not_run_condition_failed | W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result. |
 | [C15](C15_ws_impl_C13/C15.md) | C13 | impl | queued_or_running | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
+| [F51](F51_ws_impl_F47/F51.md) | F47 | impl | queued_or_running | unknown |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 
@@ -92,3 +93,4 @@ Process-tree RSS sums include shared mappings; minimum MemAvailable is measured 
 ## Pending human decisions / 待人工决策
 
 - W28 FRP is exact and1.667985% faster, but exceeds the preplanned plus/minus1% cycle bound. W28 remains fail and W30 stays unlaunched; review a new independently planned FRP throughput study tomorrow without changing this gate.
+- F49/W29 actual-memory protection interrupted both independent routes without new OOM; preserve failures and retry under new IDs with explicit two-task scheduling. F48 misses the strict2percent WS-D target by30cycles despite4.113943percent measured speedup; no gate adjustment.
