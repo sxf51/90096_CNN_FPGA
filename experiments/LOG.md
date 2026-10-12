@@ -453,6 +453,8 @@
 
 - 2026-10-12T04:13:55+00:00: F38: ws0_memory_control_F96; status=csim_pass; latency_ms_est=unknown; 
 
+- 2026-10-12T04:17:39+00:00: F35: runtime_rom_bank_equivalence; status=csim_pass; latency_ms_est=unknown; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 收尾展示材料：最终两地 checksum 与全部报告 SHA256 已通过。修复 CPU 图例颜色，折行样本作用域标签，增大资源校准图以容纳实验 ID；等价离线 G2 归档补入 `winograd_param_stream` 和 `winograd_subkernel_cache`，原始权重及运行时接口不变。以上均为归档/展示更新，不新增硬件运行。
