@@ -120,7 +120,8 @@ def main():
         text += markdown_table(linked([row for row in current if row["id"] not in {"W21", "F97", "F98", "W22"}]),
                                ["id", "parent", "status", "T", "HLS_cycles", "HLS_DSP", "HLS_LUT", "rtl_cycles",
                                 "rtl_hls_excess_pct", "wsD_goal_met", "route_feasible", "rtl_frame_ms"])
-        from summarize_rom_clock import pending_experiments
+        from summarize_rom_clock import pending_experiments, reload_measurements_section
+        text += reload_measurements_section()
         pending = pending_experiments(json.loads((ROOT / "experiments/rom_clock_state.json").read_text()))
         text += "\nUnmeasured plans have no actual result and do not enter rankings:\n\n"
         text += markdown_table(linked(pending), ["id", "parent", "operation", "status", "condition"])

@@ -41,6 +41,31 @@ def completed_rtl_matches(parent):
     return matches
 
 
+def reload_measurements_section():
+    path = ROOT / "experiments/reload_switch_measurements.csv"
+    if not path.is_file():
+        return ""
+    with path.open(newline="") as stream:
+        rows = list(csv.DictReader(stream))
+    if not rows:
+        return ""
+    text = "\n## Parameter Reuse\n\n"
+    text += ("Four exact RTL transactions separately measure initial loading, reuse with ignored incoming "
+             "parameters, reloading and retention of the latest banks. Parameter AXI counts come from "
+             "the read-only simulation observer. Milliseconds require matching independently closed "
+             "routing; an unmeasured clock stays unknown. No board/DDR time is inferred.\n\n")
+    text += markdown_table([{**row, "id": "[" + row["id"] + "](" + row["md_path"] + ")",
+                             "rtl_source": "[" + row["rtl_source"] + "](" + row["rtl_md_path"] + ")"}
+                            for row in rows],
+                           ["id", "parent", "rtl_source", "transaction", "case", "load_params",
+                            "latency_cycles", "interval_cycles", "read_bytes", "ar_valid_cycles",
+                            "r_valid_cycles", "route_clock_ns", "ip_frame_ms"])
+    text += "\nFull read/write valid-cycle and handshake counts: [reload_switch_measurements.csv](reload_switch_measurements.csv).\n"
+    if (ROOT / "experiments/figs/reload_switch_transactions.png").is_file():
+        text += "\n![Separate load and reuse transactions](figs/reload_switch_transactions.png)\n"
+    return text
+
+
 def main():
     state = json.loads((ROOT / "experiments/rom_clock_state.json").read_text())
     comparison_path = ROOT / "experiments/rom_clock_comparison.csv"
@@ -108,6 +133,7 @@ def main():
                                ["id", "parent", "rtl_source", "rtl_cycles", "route_clock_ns", "route_WNS_ns",
                                 "route_DSP", "route_BRAM18K", "route_LUT", "route_FF", "rtl_frame_ms"])
         text += "\nIP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded integration fallback.\n"
+    text += reload_measurements_section()
     handoffs = state.get("candidate_board_handoffs", {})
     if handoffs:
         text += "\nVerified candidate IP packages and register maps: "

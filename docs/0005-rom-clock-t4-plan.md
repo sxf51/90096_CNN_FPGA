@@ -251,6 +251,11 @@ WS-F 的参数 AXI 证据采用工具 help 确认的 `cosim.setup=true`：先生
 
 **验收后的结论。** 连续处理视频时，帧时间以 `load=0` 的 RTL 周期 × 收敛时钟为准；第一帧（`load=1`）单独报告。
 
+`exp/analyze_rom_clock.py` 将四个实际事务和参数 AXI 计数整理到
+`experiments/reload_switch_measurements.csv`；两个汇总脚本从该表分别展示首帧、复用、重装和保留。
+只有同父且门限通过的独立布线结果可以提供时钟和毫秒数。新图脚本
+`exp/plots/reload_switch.py` 只读 CSV，没有实测数据时不生成图。
+
 **后续。** 如果 C17（T4 + 32 深窗口 FIFO）胜出，这个开关与 FIFO 修改互不干扰，可以再合成一个组合版本；但必须在两者各自验证之后，另立计划。
 
 **上板。** 交给秀夫时说明：多了一个 `load_params` 控制寄存器（HLS 生成的驱动里会有对应的设置函数）。第一帧写 1，之后写 0。
