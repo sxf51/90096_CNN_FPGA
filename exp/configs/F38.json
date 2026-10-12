@@ -1,0 +1,60 @@
+{
+  "T": 8,
+  "budget_evidence": "experiments/memory_validation.json",
+  "changes": "Only the runner scheduling and telemetry change; reuse the immutable parent design and flags.",
+  "clock": 3.33,
+  "conclusion": "Enable budgeted concurrency only after both syntheses and C simulation pass, measured peaks fit their budgets and host available memory stays at least 2 GiB.",
+  "control_experiment": "F96",
+  "controlled_parallel_validation": true,
+  "csim_only": true,
+  "defines": {
+    "EXP_ALL_CONTINUOUS": 1,
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 1,
+    "EXP_STORAGE": 1,
+    "EXP_T": 8,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/ws_validate_F96",
+  "estimates": {
+    "BRAM18K": 146.0,
+    "DSP": 644.0,
+    "FF": 130057.0,
+    "LUT": 81086.0,
+    "T": 8,
+    "URAM": 0.0,
+    "basis": "Unchanged F28/W21 HLS counts; corrected csynth registration4GiB exceeds measured3.430GiB peak by16.6%. C simulation registration1.25GiB exceeds measured0.960GiB peak by30.2%. Total trial reservation9.25GiB remains below13GiB, with unchanged2GiB available-memory floor.",
+    "latency_cycles": 525237.0
+  },
+  "fixed": true,
+  "id": "F38",
+  "ii_targets": {
+    "c2_fold": 1,
+    "c3_fold": 1,
+    "wino_fold": 1
+  },
+  "interpretation": "Compare reports with the parent and observed peak RSS with the registered budget. Overlap must be measured; numerical, II and timeout checks remain unchanged.",
+  "memory_scheduler": true,
+  "name": "ws0_memory_control_F96",
+  "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+  "precision": "w10a10acc23",
+  "purpose": "Controlled WS-0 memory admission validation using unchanged F96 source/arithmetic. Run two syntheses concurrently with the all-image C simulation. Measure individual process-tree RSS, overlapping task timestamps, MemAvailable and CPU. Do not enable general hardware concurrency until this trial passes. No architecture speedup is claimed. The first trial F32/F33/F34 passed arithmetic/II and overlapped116.606s with minimum10.697GiB available and no OOM, but actual csynth tree RSS 3.119/3.430GiB exceeded its2.5GiB registration. Correct registration before enabling concurrency.",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "require_weight_predecessor_free": true,
+  "required_image_count": 13,
+  "resource_policy": "routed",
+  "scope": "frame",
+  "series": "F",
+  "set14": true,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "rom_clock_ws0",
+  "storage": "local_lutram_s2p",
+  "trial_ids": [
+    "F36",
+    "F37",
+    "F38"
+  ],
+  "unroll": "G2 F2 nine subkernels/Cout/Cin"
+}

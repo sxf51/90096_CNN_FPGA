@@ -37,13 +37,13 @@ def prepare_ws0(retry=False):
                                    "registered synth budget 2.5 GiB each, C simulation 1 GiB. "
                                    "Total trial reservation 6 GiB, below 13 GiB with a 2 GiB available-memory floor.")
         if retry:
-            config["purpose"] += " The first trial F32/F33/F34 passed arithmetic/II and overlapped116.606s "
+            config["purpose"] += (" The first trial F32/F33/F34 passed arithmetic/II and overlapped116.606s "
                                  "with minimum10.697GiB available and no OOM, but actual csynth tree RSS "
-                                 "3.119/3.430GiB exceeded its2.5GiB registration. Correct registration before enabling concurrency."
-            config["estimates"]["basis"] = "Unchanged F28/W21 HLS counts; corrected csynth registration4GiB "
+                                 "3.119/3.430GiB exceeded its2.5GiB registration. Correct registration before enabling concurrency.")
+            config["estimates"]["basis"] = ("Unchanged F28/W21 HLS counts; corrected csynth registration4GiB "
                                              "exceeds measured3.430GiB peak by16.6%. C simulation registration1.25GiB "
                                              "exceeds measured0.960GiB peak by30.2%. Total trial reservation9.25GiB "
-                                             "remains below13GiB, with unchanged2GiB available-memory floor."
+                                             "remains below13GiB, with unchanged2GiB available-memory floor.")
             config["budget_evidence"] = "experiments/memory_validation.json"
             config["trial_ids"] = ["F36", "F37", "F38"]
         plan(config)
