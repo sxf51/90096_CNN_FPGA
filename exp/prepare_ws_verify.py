@@ -29,6 +29,8 @@ def main():
     parser.add_argument("--diagnostic", action="store_true")
     parser.add_argument("--reload-params", action="store_true",
                         help="Use independent exact changed-parameter two-frame testbench (cosim only)")
+    parser.add_argument("--reload-switch", action="store_true",
+                        help="WS-F four-call exact reuse/reload verification with parameter AXI observation")
     parser.add_argument("--rationale", help="Measured trigger and conservative decision to archive before execution")
     args = parser.parse_args()
     check_protected()
@@ -45,6 +47,10 @@ def main():
     if args.reload_params and (args.operation != "cosim" or base.get("precision") not in
                               {"w10a10acc23", "w10_8_10a10acc23_21_23"}):
         raise RuntimeError("Changed-parameter testbench requires a verified ten-bit-activation cosimulation")
+    if args.reload_switch and (args.operation != "cosim" or args.reload_params or
+                              base.get("top") != "srcnn_reload" or
+                              base.get("precision") != "w10_8_10a10acc23_21_23"):
+        raise RuntimeError("WS-F observation requires the independently validated mixed srcnn_reload top")
     if args.rtl_min_cycles is not None or args.rtl_max_cycles is not None:
         if args.operation != "cosim" or any(value is not None and value < 1 for value in
                                            (args.rtl_min_cycles, args.rtl_max_cycles)):
@@ -140,6 +146,19 @@ def main():
         config.update(reload_params=True, verification_testbench="exp/tb/validate_reload.cpp")
         config["purpose"] += " The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains " + precision_reference + "-exact butterfly with unchanged border MSE."
         config["changes"] += " Override only verification C++ testbench, archive its SHA256/source commit and preserve identical parent RTL."
+    if args.reload_switch:
+        config.update(reload_switch_validation=True, parameter_axi_monitor=True, verification_frames=4,
+                      verification_testbench="exp/tb/validate_reload_switch.cpp")
+        config["purpose"] += (" Run load/reuse/reload/latest-bank retention as four complete transactions. "
+                              "Butterfly and ignored-pointer lenna must be E065-exact; constructed loaded "
+                              "and retained outputs must equal104/256 everywhere. Require zero parameter "
+                              "AXI valid cycles and handshakes on both skipped calls and no parameter writes. "
+                              "Each skipped-call latency must not exceed its corresponding loaded call.")
+        config["changes"] += (" Use documented cosim.setup=true, add a read-only AXI observer only to the "
+                              "generated simulation testbench, then execute the unchanged generated simulation "
+                              "and RTL post-check driver with a cumulative six-hour tool limit. Preserve "
+                              "deadlock detection, FIFO profiling and synthesis RTL SHA256 before/after. "
+                              "Archive every transaction's cycles and bus counts; do not use the old two-call gate.")
     plan(config)
     subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"), args.id,
                     "plan_"+config["name"]], cwd=ROOT, check=True)

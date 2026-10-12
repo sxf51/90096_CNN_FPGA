@@ -241,6 +241,8 @@ SHA256，只归档软件驱动和元数据，IP ZIP 保持在 Git 排除的工�
 
 **测试代码。** `exp/tb/validate.cpp` 等共享 testbench 只能用新的编译宏（如 `EXP_RELOAD_SWITCH`）包住新调用序列，不得改变其他设计的行为；改完后至少回归一个旧设计的 C 仿真（如 C13），确认结果不变。
 
+WS-F 的参数 AXI 证据采用工具 help 确认的 `cosim.setup=true`：先生成仿真工程，在生成的 testbench 中加入只读计数器，再通过 HLS Tcl 解释器运行工具原有 `run_sim.tcl`，保留输入向量检查、死锁检测、dataflow profiling 和 RTL 输出的 C 后校验。只观察 `parameters` 的 AR/R/AW/W 有效周期、握手与请求字节数，不修改综合 RTL；运行前后核对综合 RTL 的 SHA256。累计工具时间仍限 6 小时。归档四个事务（装载、复用、重装、保留）的独立周期与计数，复用时包括 ARVALID/RVALID 在内必须全为零；没有计数或 C/RTL 后校验就不能标为通过。原有两帧换参数门限继续单独保留。
+
 **ID 与估计。** 计划用下一个可用的 C 编号（C19–C22 已占用，开工前再确认）。纸面估计：
 
 - DSP 1,032，BRAM18K 146（HLS），URAM 0，T 4；

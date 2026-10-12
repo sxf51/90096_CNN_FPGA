@@ -493,8 +493,13 @@ def run_verification(config, resume_waiting=False):
     if operation == "cosim":
         cfg_text = prepare_verification_testbench(cfg_text, config, work, archive,
                                                  write_files=not resume_waiting)
+        frames = config.get("verification_frames", 2)
+        if type(frames) is not int or frames < 2:
+            raise RuntimeError("Cosimulation requires an integer transaction count of at least two")
+        if config.get("reload_switch_validation") and (frames != 4 or config.get("reload_params")):
+            raise RuntimeError("WS-F needs its independent four-call gate, not the legacy two-call gate")
         cfg_text = re.sub(r"^(tb\.cflags=)(.*)$", lambda match: match[1] +
-                          re.sub(r"(?:^|\s)-DEXP_FRAMES=\d+", "", match[2]) + " -DEXP_FRAMES=2",
+                          re.sub(r"(?:^|\s)-DEXP_FRAMES=\d+", "", match[2]) + " -DEXP_FRAMES=" + str(frames),
                           cfg_text, flags=re.MULTILINE)
         cfg_text += "cosim.rtl=verilog\ncosim.trace_level=none\ncosim.enable_dataflow_profiling=true\n"
     else:
@@ -607,6 +612,16 @@ def run_verification(config, resume_waiting=False):
                         with MemoryMonitor(archive / (phase + "_host_memory.csv")):
                             return invoke(phase_args, settings, phase_cwd, logfile, remaining)
                     code, seconds = run_staged_implementation(config, impl_cwd, work, timeout, invoke_phase)
+                elif operation == "cosim" and config.get("parameter_axi_monitor"):
+                    from monitored_cosim import run_monitored
+                    def invoke_cosim_phase(phase_args, phase_cwd, logfile, remaining, phase):
+                        if config.get("memory_scheduler"):
+                            from memory_scheduler import scheduled_invoke
+                            return scheduled_invoke(config, archive, "cosim", phase_args, settings,
+                                                    phase_cwd, logfile, remaining, telemetry_name=phase)
+                        with MemoryMonitor(archive / (phase + "_host_memory.csv")):
+                            return invoke(phase_args, settings, phase_cwd, logfile, remaining)
+                    code, seconds = run_monitored(config, work, archive, timeout, invoke_cosim_phase)
                 elif config.get("memory_scheduler"):
                     from memory_scheduler import scheduled_invoke
                     code, seconds = scheduled_invoke(config, archive, operation, args, settings, cwd,
@@ -615,6 +630,11 @@ def run_verification(config, resume_waiting=False):
                     code, seconds = invoke(args,settings,cwd,work / (operation + ".console.log"),timeout)
         config["operation_minutes"] = seconds / 60
         observed, detail = parse_verification(work, operation)
+        if operation == "cosim" and config.get("parameter_axi_monitor") and code == 0:
+            from monitored_cosim import measured_result
+            observed.update(measured_result(work, archive, parent_row))
+            detail.extend({"file": "monitored_rtl", "metric": key, "value": value}
+                          for key, value in observed.items())
         if operation == "cosim":
             config["verification_rtl_check_after"] = check_template_rtl(source_work, work)
         if code:
@@ -636,6 +656,15 @@ def run_verification(config, resume_waiting=False):
         if operation == "cosim" and config.get("same_weights_changed_input"):
             config["rom_validation"] = rom_measurement(work / "cosim.console.log", parent_row)
             observed["same_weights_changed_input_bit_exact"] = True
+        if operation == "cosim" and config.get("reload_switch_validation") and not config.get("parameter_axi_monitor"):
+            from reload_switch_evidence import check_rtl_metrics, parse_transactions
+            config["reload_switch_validation_result"] = check_rtl_metrics(
+                (work / "cosim.console.log").read_text(errors="replace"), parent_row)
+            transactions = list((work / "hls/sim/verilog").glob("*.performance.result.transaction.xml"))
+            if len(transactions) != 1:
+                raise RuntimeError("Need one unique per-transaction performance report")
+            observed["reload_switch_transactions"] = parse_transactions(transactions[0].read_text())
+            observed["reload_switch_bit_exact"] = True
         if operation == "cosim" and config.get("rtl_max_cycles") is not None:
             if observed["rtl_latency_max"] > config["rtl_max_cycles"]:
                 raise RuntimeError("Measured RTL cycles exceed the preplanned acceptance bound")
@@ -692,7 +721,7 @@ def run_verification(config, resume_waiting=False):
                 shutil.copyfile(path, dest)
         md = f"# {exp_id}: {name}\n\n## 1. Purpose and hypothesis / 目的与假设\n\n"
         md += (plan["purpose_section"] if plan else config.get("purpose", f"Validate {parent_row['id']} with {operation} using frozen source.")) + "\n\n"
-        md += f"## 2. Changes / 改动\n\nIndependent workspace copy of `{parent_row['id']}`, source commit `{parent_row['git_commit']}`. Cosimulation requests two complete frames to check state reset and transaction interval."
+        md += f"## 2. Changes / 改动\n\nIndependent workspace copy of `{parent_row['id']}`, source commit `{parent_row['git_commit']}`. Cosimulation requests {config.get('verification_frames', 2)} complete frames to check state persistence and transaction interval."
         if config.get("reload_params"):
             md += " The second frame uses changed runtime weights/biases and constant0.5 input, requiring exact104/256 at every output; the first frame retains E017 butterfly and border checks. Independent testbench source is frozen in testbench/ at verification commit `" + config["source_commit"] + "`."
         if config.get("same_weights_changed_input"):
@@ -707,6 +736,14 @@ def run_verification(config, resume_waiting=False):
         md += "\nArchived verification source reports (neutral paths preserve Git tracking):\n\n"
         md += markdown_table(config["verification_reports"],["raw_file","archived_file","sha256"])
         md += profile_results(archive)
+        if config.get("reload_switch_validation"):
+            md += "\nReload-switch per-transaction evidence: [cycles and AXI counts](reload_transactions.csv). "
+            md += "The read-only observer is confined to the generated simulation testbench; "
+            md += "synthesis RTL hashes are checked before and after simulation. "
+            md += "The HLS-generated simulation driver retains vector, deadlock and RTL output checks.\n"
+            md += markdown_table(observed.get("reload_switch_transactions", []),
+                                 ["transaction", "load_params", "latency_cycles", "interval_cycles",
+                                  "ar_requests", "r_beats", "read_bytes", "parameter_axi_zero"])
         if config.get("implementation_files"):
             md += "\nIndependent generated-flow retry files:\n\n"
             md += markdown_table(config["implementation_files"],["kind","archived_file","sha256"])

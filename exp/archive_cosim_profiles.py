@@ -91,7 +91,7 @@ def archive_profiles(work, archive):
     schema = archive / "profiling/schema.json"
     write_json(schema, {"channel_prefix_fields":CHANNEL_FIELDS, "process_prefix_fields":PROCESS_FIELDS,
                         "source_format":"Vitis2026.1 df_fifo_monitor, df_process_monitor and nodf_module_monitor",
-                        "scope":"Counters span both RTL transactions, including startup and inactive cycles. Process intervals are invocation intervals, not pipeline-loop II. Stall categories can overlap; never sum them across processes.",
+                        "scope":"Counters span all recorded RTL transactions, including startup and inactive cycles. Process intervals are invocation intervals, not pipeline-loop II. Stall categories can overlap; never sum them across processes.",
                         "omitted":"Per-cycle traces and large event histories stay in the original workspace. Only the first5/12 scalar CSV rows are archived.",
                         "parser_sha256":hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})
     record(schema, "Counter schema and extraction-script provenance")
@@ -108,7 +108,7 @@ def profile_results(archive):
             data.append(list(csv.DictReader(handle)))
     channels, processes = data
     engines = [row for row in processes if row["name"] in {"engine1_U0","conv2_stream_U0","engine3_U0"}]
-    text = "\n<!-- AUTO: RTL profiling -->\n\nFinite-FIFO profiling over both transactions: [channel counters](profiling/channels.csv), [process/module counters](profiling/processes.csv), [schema](profiling/schema.json). Counter prefixes and source index CSVs are archived; per-cycle traces remain in the workspace. Process intervals below are invocation intervals, not inner-loop II. Percentages use the entire monitor period; parallel/overlapping stall counters cannot be added.\n\n"
+    text = "\n<!-- AUTO: RTL profiling -->\n\nFinite-FIFO profiling over all recorded transactions: [channel counters](profiling/channels.csv), [process/module counters](profiling/processes.csv), [schema](profiling/schema.json). Counter prefixes and source index CSVs are archived; per-cycle traces remain in the workspace. Process intervals below are invocation intervals, not inner-loop II. Percentages use the entire monitor period; parallel/overlapping stall counters cannot be added.\n\n"
     text += markdown_table(channels,["name","peak_depth","write_block_cycles","read_block_cycles","write_block_pct","read_block_pct"])
     text += "\n"+markdown_table(engines,["name","process_latency_max_cycles","process_interval_max_cycles","stall_cycles","read_stall_cycles","write_stall_cycles"])
     return text+"\n<!-- END: RTL profiling -->\n"

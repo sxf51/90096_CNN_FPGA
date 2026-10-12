@@ -383,6 +383,9 @@ def run(config):
                 row["csim_pass"] = False
                 row["status"] = "timeout" if code == 124 else "fail"
                 raise RuntimeError(f"C simulation not accepted (exit={code}); synthesis not eligible")
+            if config.get("reload_switch_mode"):
+                from reload_switch_evidence import check_c_validation
+                check_c_validation(validation, config["reload_switch_mode"], path.read_text(errors="replace"))
             if config.get("quality_reference"):
                 reference_row = json.loads((ROOT / config["quality_reference"]).read_text())
                 if (not validation.get("bit_exact") or not config.get("reference") or

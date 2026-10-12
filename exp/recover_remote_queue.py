@@ -33,8 +33,23 @@ def inspect_remote(config):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ids", nargs="+")
+    parser.add_argument("--after", nargs="+", default=[],
+                        help="Wait for these remote archives before launching the first new run")
     args = parser.parse_args()
     check_protected()
+    for predecessor in args.after:
+        config = json.loads((ROOT / "exp/configs" / (predecessor + ".json")).read_text())
+        while True:
+            try:
+                remote = inspect_remote(config)
+            except (ConnectionError, subprocess.TimeoutExpired) as exc:
+                print("RECONNECT", predecessor, str(exc), flush=True)
+                time.sleep(30)
+                continue
+            if remote["complete"] and not remote["active_pids"]:
+                break
+            print("WAIT_PREDECESSOR", predecessor, json.dumps(remote), flush=True)
+            time.sleep(30)
     for exp_id in args.ids:
         config_path = ROOT / "exp/configs" / (exp_id + ".json")
         config = json.loads(config_path.read_text())
