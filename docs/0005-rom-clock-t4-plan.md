@@ -197,6 +197,62 @@ SHA256，只归档软件驱动和元数据，IP ZIP 保持在 Git 排除的工�
   - 或者收敛时钟 × RTL 周期不比当时最好的 T8 设计更快。
 - 预期（假设）：时钟可能降到 5–6 ns，帧时间约 1.5–1.8 ms。
 
+### WS-F 权重重装开关（用户 2026-10-13 批准，基于 C18/C13）
+
+**问题。** 现在每次调用 `srcnn` 都从 DDR 重新读 8,129 个参数，Conv1 还要重新做 Winograd 变换。官方 `test/tb_set14.cpp` 的用法是“权重读一次，然后连续处理 13 张图”，硬件却每帧重装。
+
+- T8 上实测，重装露出到帧时间里的代价约 4,532 周期（0.8%，W25 对比 F97）。
+- 参数进程本身每帧约 11,230 周期。
+- T4 每帧更短，估计露出 1.5–3.7%；这是假设，用本工作项实测。
+
+**接口（用户批准的接口变更）。**
+
+- 新顶层 `srcnn_reload(ftmap_t in[N0][H][W], 原有 6 个参数数组, ftmap_t out[N3][H][W], bool load_params)`，配置写 `"top": "srcnn_reload"`（runner 已支持自定义顶层，W24 的 `srcnn_rom` 是先例）。
+- `load_params` 走 `s_axilite` 的 control bundle；其余端口、bundle、突发长度和 C13 完全相同。
+- 保留 `srcnn(...)`，原 8 个参数不变，内部以 `load_params=true` 调用 `srcnn_reload`。这样 `test/` 下的官方 testbench 不用改也能编译运行。
+
+**语义。**
+
+- `load_params=1`：与 C13 完全相同，先装全部参数再计算。
+- `load_params=0`：不读任何参数（参数 AXI 口零流量），不做变换，直接用片上已有的权重计算。这一帧传进来的参数指针被忽略。
+- 安全规则：顶层用一个 `static bool params_loaded`，上电初值为 false，实际装载 `do_load = load_params || !params_loaded`，调用结束后置 true。没装过就传 0 时，强制装载，不能用未初始化的权重算出垃圾结果。
+- 主机侧约定：比特流加载后第一次调用、以及换权重的那次调用传 1，其余传 0。
+
+**实现要点（只改这几处，算术、量化、调度、FIFO、时钟全部不变）。**
+
+1. 从 `designs/winograd_prepacked_t4_v1` 复制出新目录（例如 `designs/winograd_prepacked_t4_reload_v1`），不改父目录。
+2. `do_load` 作为标量传入 `dataflow_region`，再传给 `read_params`、`wino_engine`、`conv2_stream`、`engine3`。
+   - 各进程照常无条件调用，保持 DATAFLOW 的规范形式；只在进程内部用 `if (do_load)` 包住参数读取、变换和本地装载循环。
+   - `do_load=0` 时三条参数流保持为空；C 仿真末尾 `params1/2/3.empty()` 的断言必须仍然成立。
+3. 片上权重和 bias（`wino_engine`、`conv2_stream` 的 `packed_weights`/`biases`、`engine3` 经 `load_local` 装载的数组）必须是 `static` 且没有初始化器，确保跨调用保留，复位也不清除。用 RTL 仿真确认，不能凭推断。
+4. `read_raw_params` 的递增下标计数器每次装载都要从 0 开始，不能依赖上一帧残留。
+
+**验证计划（全部要求逐位一致，基准与 C13/C14 相同：E065 定点参考）。**
+
+1. C 仿真，单次运行内按顺序调用：
+   - (a) `load=1`，正常权重，butterfly → 与 E065 逐位一致；
+   - (b) `load=0`，参数指针换成 C14 第二帧用的构造测试参数，输入换成另一张图（如 lenna）→ 输出必须等于“正常权重 × lenna”的参考，证明硬件忽略了新指针、沿用片上权重；
+   - (c) `load=1`，构造测试参数 → 每个输出都是 104/256，证明重装仍然有效；
+   - (d) `load=0` → 仍然是 104/256，证明保留的是最近一次装载；
+   - (e) 新建一个运行或进程，第一次调用就传 `load=0` → 按安全规则强制装载，结果正确。
+2. 13 张图：第一张 `load=1`，其余 12 张 `load=0`。每张都与 E065 逐位一致，平均 ΔPSNR 仍是 −0.0759 dB。
+3. RTL 协同仿真：至少 3 个事务，按 (a)(b)(c) 的顺序，三个都 PASS。分别记录 `load=1` 和 `load=0` 的事务延迟；`load=0` 的延迟必须不大于 `load=1`。原有的“第二帧换参数”检查由 (c) 覆盖。
+4. 在 5 ns 下独立布线，按第 6 节的布线门限验收。资源应与 C18 基本相同；时序没有理由变好，因为参数分发路径仍然存在，只是不再每帧使用。
+
+**测试代码。** `exp/tb/validate.cpp` 等共享 testbench 只能用新的编译宏（如 `EXP_RELOAD_SWITCH`）包住新调用序列，不得改变其他设计的行为；改完后至少回归一个旧设计的 C 仿真（如 C13），确认结果不变。
+
+**ID 与估计。** 计划用下一个可用的 C 编号（C19–C22 已占用，开工前再确认）。纸面估计：
+
+- DSP 1,032，BRAM18K 146（HLS），URAM 0，T 4；
+- LUT 约等于 C13 的 127,966 再加不到 1k；
+- `load=1` 周期约等于 C14 的 300,632；`load=0` 预期少 4.5k–11k 周期。
+
+**验收后的结论。** 连续处理视频时，帧时间以 `load=0` 的 RTL 周期 × 收敛时钟为准；第一帧（`load=1`）单独报告。
+
+**后续。** 如果 C17（T4 + 32 深窗口 FIFO）胜出，这个开关与 FIFO 修改互不干扰，可以再合成一个组合版本；但必须在两者各自验证之后，另立计划。
+
+**上板。** 交给秀夫时说明：多了一个 `load_params` 控制寄存器（HLS 生成的驱动里会有对应的设置函数）。第一帧写 1，之后写 0。
+
 ## 5. 顺序与并行
 
 2026-10-12 用户要求优先 C18。已启动的 W32 保持运行；C18 使用紧接其后的唯一重任务槽。通过 `exp/priority_waiters.py` 在调度锁内核实并暂停未准入的 F50/F51/W31/W30 等待进程，并用独立 `priority_light_waiters.json` 记录 C16/C17 的临时暂停，防止轻任务先占内存延后 C18。C18 的 package、综合报告和布线报告连续优先，完成后自动恢复全部等待队列。不得暂停已准入的工具进程；监督进程退出或等待超时也必须恢复被暂停的等待进程。恢复后轻任务继续遵守原内存预算。此操作不改任何实验计划、源码、工具时限或验收门槛。
@@ -310,6 +366,7 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | --- | --- | --- |
 | 2026-10-12 | — | 文档建立。当前最快：W21，在 W22 的 4.95 ns 下 2.766 ms（IP 级）。用户决定见第 2 节。 |
 | 2026-10-12 | — | 用户补充决定：ROM 只作探索，主线保持运行时加载；不再追 comic，13 张即完整测试集；允许按内存预算并行和多线程（第 6.1 节）。 |
+| 2026-10-13 | — | 用户批准 WS-F：在 C18/C13 基础上加权重重装开关 `load_params`（新顶层 `srcnn_reload`，保留 `srcnn` 兼容包装），规格和验证计划见第 4 节 WS-F。排在当前 C19–C22 验证之后。 |
 | 2026-10-12 | — | 远程开启 8 GiB zstd zram；按清理规则清理 148 个已归档工作区的 `hls/` 生成物（55.4 GiB），系统盘剩余 89 GB。详见第 2 节第 5、6 条。 |
 
 <!-- ROM_CLOCK_MEASUREMENTS -->
@@ -350,6 +407,7 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C16](../experiments/C16_t8_fifo_frp/C16.md) | F47 | pass | 525237.0 | 644.0 | 81485.0 | unknown | unknown | unknown |
 | [C17](../experiments/C17_t4_fifo/C17.md) | C13 | infeasible | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | unknown |
 | [C18](../experiments/C18_ws_impl_C13/C18.md) | C13 | impl_complete | 263090.0 | 1032.0 | 127966.0 | 300632.0 | True | 1.50316 |
+| [C20](../experiments/C20_ws_cosim_C17/C20.md) | C17 | cosim_complete | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | unknown |
 
 未测量的计划：
 
@@ -357,6 +415,5 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | --- | --- | --- | --- |
 | W31 | W24 | queued_or_running | unknown |
 | C19 | C16 | queued_or_running | unknown |
-| C20 | C17 | queued_or_running | unknown |
 | C21 | C16 | unlaunched_conditional | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
 | C22 | C17 | unlaunched_conditional | C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18 |
