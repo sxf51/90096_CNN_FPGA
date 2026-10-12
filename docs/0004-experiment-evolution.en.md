@@ -2,19 +2,19 @@
 
 [中文版](0004-experiment-evolution.md)
 
-One-graph entry: [complete compact SVG](experiment-evolution/full.en.svg) / [local viewer with zoom, lookup, and relationship highlighting](experiment-evolution/full.en.html). All 153 experiments appear together, with 160 thick solid arrows for the main optimization progression; only eight essential nodes retain two parents. Nodes show IDs, short ideas, and network ms/frame at a 100 MHz reference clock. Every green node has comparable latency. Red nodes add one specific problem line and use regular-weight latency; local or C-only exploration without network cycles uses gray scope labels. All 207 archive relationships remain in the ledger and route diagrams.
+One-graph entry: [complete compact SVG](experiment-evolution/full.en.svg) / [local viewer with zoom, lookup, and relationship highlighting](experiment-evolution/full.en.html). All 170 experiments appear together, with 178 thick solid arrows for the main optimization progression; only nine essential nodes retain two parents. Nodes show IDs, short ideas, and network ms/frame at a 100 MHz reference clock. Every green node has comparable latency. Red nodes add one specific problem line and use regular-weight latency; local or C-only exploration without network cycles uses gray scope labels. All 242 archive relationships remain in the ledger and route diagrams.
 
 The complete graph converts existing cycles with `network latency cycles x 10 ns / 1,000,000` to milliseconds, using a valid current-experiment RTL maximum latency or HLS top-level latency, excluding host/DMA transfers. Completed checks of the same design may reference an actual design report: F80 shows `~10.57 ms/frame (F25)`, with `~` and the source ID marking the reference; design timing warnings still apply. This reference-clock conversion is neither synthesis rerun at 10 ns nor board measurement. PE, layer-only, and C checks without an explicit same-design network report do not supply latency. Green still indicates the current stage passes, rather than routed timing closure. Red reasons distinguish resource budgets, compilation, host OOM, and routed timing failures. See the [generation guide](experiment-evolution/README.en.md) for the metric definition and edge selection.
 
-This guide explains what each experiment builds on, why its design changed, and how its results motivated the next step. The [complete ledger](experiment-evolution/records.en.md) covers all 153 experiments.
+This guide explains what each experiment builds on, why its design changed, and how its results motivated the next step. The [complete ledger](experiment-evolution/records.en.md) covers all 170 experiments.
 
-The archive snapshot is source commit `800a87a`: 142 experiments have result records and 11 have only plans or preparation records. Results include failures, timeouts, and invalid configurations. Runs in other workspaces are not automatically counted as complete. IDs name experiment archives, not network layers, clock settings, or different IP blocks.
+The archive snapshot is source commit `a3d78b7`: 168 experiments have result records and two have plans only. Compared with `800a87a`, 17 experiments are new and nine former plans, P13-P16 and F85-F89, now have actual results. The selected target is W22 for W21: routing passes at 4.95 ns and F97 RTL cycles give 2.7658521 ms/frame. F98 at 5 ns and F28 remain fallbacks. Board acceptance is pending, and the 13-image quality evidence still lacks comic. Results include failures, timeouts, and invalid configurations. IDs name experiment archives, not layers, clocks, or IP blocks.
 
 ## Reading Order
 
 1. Start with the [overview](experiment-evolution/overview.en.svg) to see branches and combinations.
-2. Follow the [continuous pipeline route](experiment-evolution/continuous.en.svg) to understand how F25 developed.
-3. Read the [verification graph](experiment-evolution/verification.en.svg) to distinguish F80/F81/F82 from F25.
+2. Follow the [continuous pipeline route](experiment-evolution/continuous.en.svg) from F25 to the private loader F28.
+3. Read the [Winograd route](experiment-evolution/winograd.en.svg) and [verification graph](experiment-evolution/verification.en.svg) to distinguish W21's design, F97 RTL verification, and W22 physical-clock experiment.
 4. Explore the routes below, then use the ledger to check individual settings, evidence, and failure states.
 
 ![Experiment overview](experiment-evolution/overview.en.svg)
@@ -33,8 +33,8 @@ The text below and the route diagrams retain the original registry formula: `cyc
 | S series | DDR probe, streaming control, and fused spatial tiles | S01 did not export scratch ports and is not a valid DDR design |
 | W series | Winograd PEs, single-layer/network designs, scheduling, and banking | W03's 16-bit Winograd is not INT16 packing |
 | C series | Winograd combined with packing or mixed precision | A paper DSP budget says nothing about meeting LUT/FF budgets |
-| F01-F25 | Pipeline, FIFO, window selection, conversion, and loader timing changes | F25 contains cumulative changes; relative to F24 it adds only one loader-loop directive |
-| F80-F91 | Separate acceptance runs and retries for F25/F24/F23 | F82 verifies F25 RTL; it introduces no new algorithm |
+| F01-F31 | Pipeline, FIFO, window selection, conversion, parameter loading, and reload prechecks | F28 changes parameter ownership; F31 checks the testbench without a new inference algorithm |
+| F80-F98 / W20 / W22 | Numerical, RTL, resource diagnostics, and independent routing | F97 verifies W21 RTL; W22 only changes the physical clock and this run's thread settings |
 | T=16 | Sixteen computation rounds per output pixel | It does not mean 16-bit quantization; F25 weights and activations remain 10-bit |
 | B=32 | Output tile side length of 32 pixels | It is neither DSP count nor data width |
 
@@ -80,7 +80,7 @@ E043 and the later W18 both have HLS 200-871 timing warnings. Resource feasibili
 
 P01-P07 validate operand packing, negative low-field borrow correction, safe accumulation groups, DSP builtins, and exact 10-bit residual recovery. P08 checks actual DSP pre-adder attributes; P09 reproduces a frozen archive. P10/P11/P12 integrate exact 10-bit packing into the network. DSP use decreases, but decoding, residual recovery, selectors, and pipeline logic push LUTs beyond the project budget.
 
-P13-P16 investigate two complete INT16 products: a direct two-DSP control, byte-limb packing, overlapping fields with fabric recovery, and a matched ordinary DSP-plus-fabric control. This snapshot contains plans/preparation only, with no measured results. INT8's one-DSP/two-product result cannot be assumed for complete INT16 products; all partial products and recovery logic must be counted.
+P13-P16 now have completed C simulation and synthesis with exact full INT16 products. The direct P13 control uses 2 DSPs, 57 LUTs, and 16 FFs. Byte-limb packing P14 uses 4 DSPs, 453 LUTs, and 276 FFs, increasing cost. Overlap/fabric recovery P15 uses 1 DSP, 747 LUTs, 200 FFs, and a 3.392 ns estimated path. At the same 1 DSP, ordinary mixed mapping P16 uses only 330 LUTs and 16 FFs with a 2.48 ns estimate. These experiments do not show a benefit for full INT16 packing over mixed mapping, so it has not been integrated into the network. These are PE costs, not inferred network latency.
 
 ![Packing](experiment-evolution/packing.en.svg)
 
@@ -105,6 +105,8 @@ S01 attempts to place global scratch arrays in DDR. The tool exports no scratch1
 W01-W03 validate exact integer F(2x2,3x3) transforms and multiplier mapping. W04-W09 obtain valid layer/network results after fixing header macro collisions, but conditional tile loops and raster reordering are expensive. W10 separates window generation from a fixed-count MAC loop. W11-W16 extend continuous scheduling across all three layers and split an unsupported 8000-bit window stream into two 4000-bit channels.
 
 Runtime weight-transform loading then exposes high banking/selector costs. W17/W18 narrow the raw-weight banks used only by sequential transforms while preserving transformed banks serving MACs. W18 estimates 4.2274 ms, 326 DSPs, and 74,480 LUTs, meeting the resource budget for this route. It saves DSPs but has a higher network time estimate than F25 and lacks equivalent final RTL/implementation evidence.
+
+W19 later integrates F28 private parameter streams, and W21 changes the raw-coefficient cache layout to bring Winograd T8 within HLS resource gates. F96/F97/F98/W22 now provide multi-image, parameter-reload RTL, and independent routing evidence; see section 12.
 
 ![Winograd](experiment-evolution/winograd.en.svg)
 
@@ -143,9 +145,12 @@ F25 preserves the three-layer SRCNN, replicated edges, external float32 paramete
 | Design | C simulation | Physical implementation | C/RTL co-simulation | Snapshot conclusion |
 | --- | --- | --- | --- | --- |
 | First-round E043 | E069 | E070 verifies E039, not E043 | No completed report | Numerical checks pass on 13 images |
-| F25 | F80 | F81: host OOM; F89: serial retry planned | F82: two frames Pass | RTL latency 1,068,183 cycles; physical timing and board validation pending |
-| F24 | F83 | F84: host OOM; F90: retry planned | F85: planned | 13-image checks pass; final RTL/physical evidence pending |
-| F23 | F86: planned | F87/F91: planned | F88: planned | Candidate synthesis exists; final acceptance pending |
+| F25 | F80 | F81: OOM; F89: timeout; F92: 5 ns passes | F82: two frames Pass | RTL latency 1,068,183 cycles; routed timing passes, board pending |
+| F24 | F83 | F84: OOM; F90: deferred plan | F85: two frames Pass | RTL latency 1,061,153 cycles; no passing routed report |
+| F23 | F86: 13 images pass | F87: OOM; F91: deferred plan | F88: SIGTERM interruption | Numerical checks pass; RTL/physical evidence incomplete |
+| F28 | F94; F31 reload preflight | F95: 5 ns passes | F93: changed-parameter two frames Pass | RTL latency 1,059,506 cycles; T16 fallback |
+| W21 | F96: 13 images pass | F98: 5 ns; W22: 4.95 ns passes | F97: changed-parameter two frames Pass | RTL latency 558,758 cycles; W22 is the selected implementation |
+| W17 | Original design's C checks | W20: 5 ns passes, diagnostic only | No independent completed record | Original HLS LUT budget is exceeded; excluded from rankings |
 
 F82 takes about 1 hour 42 minutes 40 seconds of wall time. Its progress log reports only 0/2, 1/2, and 2/2 transactions. A long interval without output does not itself prove deadlock. Simulation wall time also differs from the approximately million-cycle RTL hardware latency.
 
@@ -153,13 +158,41 @@ F82 takes about 1 hour 42 minutes 40 seconds of wall time. Its progress log repo
 
 E070 completes actual implementation but has WNS = -1.277 ns. F81/F84 host OOM failures produce no routed results. These are distinct outcomes. There is no completed board acceptance record in this snapshot.
 
+## 12. After F25: Parameter Ownership, T8, and Physical Clock
+
+| Evolution | Idea and effect | Problem or next step |
+| --- | --- | --- |
+| F25 -> F26 | Change only S2P banks and bias shift loading | Total LUTs rise to 70,808; shared load/compute ownership still needs selectors |
+| F25/F26 -> F27 | Convert parameters once, then send three FIFOs into private engine banks | Outside LUTs fall from 32,294 to 3,170; the 2.419 ns estimate misses the loader gate |
+| F27 -> F28 | Disable flattening inside private loading | Restore 2.377 ns, 1,046,029 HLS cycles, and all WS2 gates |
+| W17 + F28 -> W19 | Add private parameter streams to Winograd T8 | 83,623 LUTs, exceeding the gate by 1,639 |
+| W19 -> W21 | Replace the flat 81-coefficient cache with nine subkernels by nine taps | 81,086 LUTs, only 898 spare; 525,237 HLS cycles and resource feasibility |
+| F28 -> F29/F30 | Compare direct T8 with registered and unregistered trees | F29 exceeds LUT/FF budgets; F30 saves FFs but increases LUTs; both remain infeasible |
+| F28/W21 -> F93/F97 | Change input, weights, and biases on frame two, checking finite FIFOs and reload | Both RTL checks pass; cycles exceed HLS by 1.2884% / 6.3821% |
+| W21 -> F98 -> W22 | Route independently at 5 ns, then tighten to 4.95 ns | W22 has 47 ps setup margin; retain F98's 140 ps fallback |
+
+W20 is a calibration prompted by F92's small physical/HLS LUT ratio. Its passing 5 ns timing neither cancels W17's HLS budget failure nor replaces independent implementation of W21.
+
+The following times combine measured same-design RTL cycles with each passing routed target. Host/DMA are excluded, and no board measurement exists. They are listed separately from the graph's fixed 100 MHz reference:
+
+| Implementation | RTL cycle source | Routed target | WNS | 100 MHz reference ms/frame | Compute ms/frame at passing target |
+| --- | --- | --- | --- | --- | --- |
+| F92 / F25 | F82: 1,068,183 | 5 ns | +0.568 ns | 10.68183 | 5.340915 |
+| F95 / F28 | F93: 1,059,506 | 5 ns | +0.282 ns | 10.59506 | 5.29753 |
+| F98 / W21 | F97: 558,758 | 5 ns | +0.140 ns | 5.58758 | 2.79379 |
+| W22 / W21 | F97: 558,758 | 4.95 ns | +0.047 ns | 5.58758 | 2.7658521 |
+
+W22 and F98 have identical RTL cycles, so their normalized graph latency is identical. W22's actual target period is 1% shorter, giving 1% less compute time. Its report also has WHS +0.032 ns, zero THS, and no unrouted nets; all 93 RTL/init file hashes match W21/F98. The measured limits now involve Conv3 control/parameter distribution, routing, and fanout rather than DSP cascades. Board integration, data movement, and actual end-to-end latency remain pending.
+
+See the original [weight-loading plan](0004-t8-weight-loading-plan.md), [separate measurement tables](../experiments/WEIGHT_LOADING.md), and [archive audit](../experiments/weight_loading_audit.json).
+
 ## Complete Ledger and Reproduction
 
-- [All 153 experiments: parents, changes, effects, issues, and original evidence](experiment-evolution/records.en.md)
+- [All 170 experiments: parents, changes, effects, issues, and original evidence](experiment-evolution/records.en.md)
 - [Multiplier controls](experiment-evolution/micro.en.svg)
 - [Machine-readable English metadata and shared results](experiment-evolution/data.en.json)
 - [Mermaid overview source](experiment-evolution/overview.en.mmd)
 - [Regeneration and diagram checks](experiment-evolution/README.en.md)
 - [Frozen experiment reproduction](../experiments/REPRODUCE.md)
 
-E099 is the first-round archive/audit closure event, not another synthesis design. F99 is the planned second-round closure event and is incomplete in this snapshot. The ledger includes actual records and plans without inventing missing IDs.
+E099 is the first-round archive/audit closure event, not another synthesis design. F99 weight-loading closure and archive auditing are now complete, recorded in workflow state and audit files; they are not a separate synthesis point. F90/F91 remain deferred plans, and F88 retains its interrupted result. The ledger includes actual records and plans without inventing missing IDs.

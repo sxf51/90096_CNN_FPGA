@@ -18,9 +18,12 @@ flowchart TB
   W16["W16<br/>T8 split-window streams, 3.33 ns<br/>Fix stream width and measure the tighter period.<br/>HLS estimate 1.7735 ms / DSP 648<br/>Over budget: LUT/FF; HLS timing warning"]
   W17["W17<br/>T8 narrow raw-weight banks<br/>Reduce channel banking for raw weights used only by sequential transforms; retain transformed MAC banks.<br/>HLS estimate 2.1302 ms / DSP 648<br/>Over budget: LUT; HLS timing warning"]
   W18["W18<br/>T16 narrow raw-weight banks<br/>Measure the same loader/banking adjustment at T16.<br/>HLS estimate 4.2274 ms / DSP 326<br/>HLS timing warning"]
+  W19["W19<br/>Private parameter streams for Winograd T8<br/>Integrate the selected private loader into W17: one converter supplies three layer streams, preserving integer Winograd, continuous tiles, and exact output encoding.<br/>HLS estimate 1.749 ms / DSP 645<br/>Over budget: LUT"]
+  W21["W21<br/>Reorder the raw cache by subkernel<br/>Change only the flat 81-coefficient cache into nine subkernels by nine taps, preserving transform arithmetic and stream counts while removing variable sparse selectors.<br/>HLS estimate 1.749 ms / DSP 644<br/>Candidate; final acceptance pending"]
   E048["E048 / external parent<br/>Integer carriers for fixed-point arithmetic<br/>HLS estimate 29.1386 ms / DSP 254"]
   E071["E071 / external parent<br/>Packing/Winograd prerequisite ranges<br/>Analysis complete"]
   F03["F03 / external parent<br/>Continuous MACs with original padding<br/>C simulation / avg delta PSNR -0.0695 dB"]
+  F28["F28 / external parent<br/>Disable private-loader loop flattening<br/>HLS estimate 2.6151 ms / DSP 502"]
   E071 -.->|Numerical reference or research motivation| W01
   W01 -.->|Control experiment| W02
   W01 -->|Design or parameter baseline| W03
@@ -42,15 +45,18 @@ flowchart TB
   W14 -->|Design or parameter baseline| W17
   W09 -.->|Numerical reference or research motivation| W17
   W15 -->|Design or parameter baseline| W18
+  W17 -->|Design or parameter baseline| W19
+  F28 -->|Integrate an existing module| W19
+  W19 -->|Design or parameter baseline| W21
   classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
-  class W01,W02,W03,W07 candidate
+  class W01,W02,W03,W07,W21 candidate
   classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
   class W08,W10,W18 warning
   classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
   class W04,W05,W06,W11,W12,W13 failure
   classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
-  class W09,W14,W15,W16,W17 infeasible
+  class W09,W14,W15,W16,W17,W19 infeasible
   classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
   classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
   classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
-  class E048,E071,F03 context
+  class E048,E071,F03,F28 context

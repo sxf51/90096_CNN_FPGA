@@ -97,6 +97,12 @@ Archive the patched driver, hook, original-template provenance and SHA256 values
 Require actual routed utilization/timing reports and keep the original OOM
 records. All-supplied-image validation and two-frame RTL cosim remain independent.
 
+For completed jobs whose local SSH queue disappeared, use the
+`remote_exp.py --collect-only` mode to recover the measured archive without uploading a plan or
+restarting Vitis. Collection verifies the paper fingerprint, rejects active
+run locks and appends identical results at most once. Conflicting evidence is
+an error; resume only IDs with genuinely unused workspaces.
+
 ## Complete INT16 packing research
 
 The user additionally requests exact full signed16-by-signed16 pair research.

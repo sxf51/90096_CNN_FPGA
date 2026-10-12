@@ -1,0 +1,7 @@
+F30 is the matched F29 control with only the fabric reduction addition latency changed from one to zero. It preserves every butterfly bit, the six-pixel border MSE and all three foldII1 results. Its DSP1004 and BRAM18K73 are unchanged, while HLS frame latency changes by only four cycles, from525761 to525757; the common estimated clock remains2.431ns.
+
+Removing the reduction pipeline registers saves89,834 FF versus F29, bringing total FF from194668 to104834 and below163968. Total LUT rises by5,762, from87869 to93631, exceeding81984 by11647. The new point is therefore still infeasible. Its1.75077081ms HLS estimate cannot enter accepted rankings. Outside3170 LUT and top184 multiplexer LUT remain the ownership controls; all inference resource growth is inside the DATAFLOW region.
+
+The advance83746-LUT estimate was optimistic but differs from actual by less than twenty percent. DSP, BRAM, FF and cycles also stay within twenty percent of their paper budgets; this does not excuse the failed LUT gate. The experiment demonstrates that canceling the fabric-tree registers alone solves the FF problem at the cost of more LUT logic, without improving the frame schedule.
+
+With both direct-T8 controls infeasible, finish W21's isolated Winograd raw-cache probe, keeping every resource and numerical threshold unchanged. F28 remains the exact T16 fallback with independent13-image and changed-parameter RTL evidence. Physical timing and board performance are separate from these HLS results.

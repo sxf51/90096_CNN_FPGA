@@ -61,13 +61,13 @@
 
 ## 已归档的优化实验
 
-[实验思路与演进图](docs/0004-experiment-evolution.md) 整理了提交 `800a87a` 中的 153 项实验，包括每项的来源、改动、效果、问题和原始报告。先看 [总览图](docs/experiment-evolution/overview.svg)，再看 [F25 的形成过程](docs/experiment-evolution/continuous.svg) 与 [验证关系](docs/experiment-evolution/verification.svg)。完整入口见 [文档索引](docs/README.md)。
+[实验思路与演进图](docs/0004-experiment-evolution.md) 整理了提交 `a3d78b7` 中的 170 项实验，包括每项的来源、改动、效果、问题和原始报告。先看 [总览图](docs/experiment-evolution/overview.svg)，再看 [F25 到 F28 的参数加载演进](docs/experiment-evolution/continuous.svg)、[W21 的 Winograd T8 路线](docs/experiment-evolution/winograd.svg) 与 [验证关系](docs/experiment-evolution/verification.svg)。完整入口见 [文档索引](docs/README.md)。
 
 [English edition](docs/0004-experiment-evolution.en.md) 提供同步的英文说明、全部实验索引及 13 张英文图，共用相同的测量和依赖关系。
 
-[单张完整演进图](docs/experiment-evolution/full.svg) / [本地查看器](docs/experiment-evolution/full.html) 展示所有 153 项实验及 160 条主要优化连线，使用加粗实线、短思路与统一的 100 MHz 参考整网 ms/张；绿色都有耗时，红色注明问题且耗时不加粗，局部验证用灰色辅助节点，失败实验淡化。
+[单张完整演进图](docs/experiment-evolution/full.svg) / [本地查看器](docs/experiment-evolution/full.html) 展示所有 170 项实验及 178 条主要优化连线，使用加粗实线、短思路与统一的 100 MHz 参考整网 ms/张；绿色都有耗时，红色注明问题且耗时不加粗，局部验证用灰色辅助节点，失败实验淡化。
 
-优化实验位于 `designs/`、`exp/` 和 `experiments/`；根目录 `src/`、`script.py` 仍为浮点基线。F82 是 F25 的双帧 RTL 协仿记录，功能 Pass；F25 的 2.5 ns HLS 配置仍有时序警告，物理实现和板端性能尚未验证。下方计划描述的是原始基线的调优方向。
+优化实验位于 `designs/`、`exp/` 和 `experiments/`；根目录 `src/`、`script.py` 仍为浮点基线。F25 的 2.5 ns HLS 配置仍有时序警告，但 F92 已完成同设计的独立 5 ns 布线验收。F28 改为各层私有参数银行，W21 再用子卷积缓存实现 Winograd T8；F93/F97 的换参数双帧 RTL 均 Pass。当前选定 W22 的 4.95 ns 实现，按 F97 周期折算计算延迟约 2.766 ms/张；主图统一 100 MHz 值为 5.588 ms/张。F98 的 5 ns 实现与 F28 保留作后备，板端验收和缺失的 comic 图像验证尚未完成。下方计划描述的是原始基线的调优方向。
 
 ## 参考
 

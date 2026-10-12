@@ -144,6 +144,7 @@ records = CATALOG.fetch("sections").flat_map do |section|
     flags << "配置无效" if status == "invalid_config"
     flags << "主机 OOM" if cfg.dig("host_failure", "kind") == "kernel_oom"
     flags << "实现时序未达标" if measured_verification["timing_met"] == false
+    flags << "仅诊断，沿用父设计 HLS 门槛" if cfg["diagnostic_infeasible_parent"]
     paths = []
     paths << relative(ROOT / "exp/configs/#{id}.json") if plans.key?(id)
     if archive
@@ -171,7 +172,7 @@ records = CATALOG.fetch("sections").flat_map do |section|
              "planned"
            elsif %w[fail timeout invalid_config].include?(status) || flags.include?("实现时序未达标")
              "failure"
-           elsif !exceeded.empty? || (hls && hls["ii_ok"] == false)
+           elsif !exceeded.empty? || (hls && hls["ii_ok"] == false) || cfg["diagnostic_infeasible_parent"]
              "infeasible"
            elsif !timing.empty?
              "warning"
@@ -209,6 +210,7 @@ records = CATALOG.fetch("sections").flat_map do |section|
       "tool_version" => cfg["tool_version"]&.match(/vitis-run v(\d+\.\d+)/)&.captures&.first,
       "hls" => hls, "functional" => functional, "quality" => quality,
       "verification" => measured_verification,
+      "diagnostic_only" => cfg["diagnostic_infeasible_parent"] == true,
       "inherited_hls_parent" => verification_run ? cfg["verify_parent"] : nil,
       "hls_timing_warnings" => timing, "flags" => flags,
       "errors" => raw ? cfg.fetch("errors", []) : [],

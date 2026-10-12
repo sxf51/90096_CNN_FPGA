@@ -2,7 +2,7 @@
 
 [English](records.en.md)
 
-快照：`800a87a`；153 项，142 项有结果档案，11 项仅有计划/准备。
+快照：`a3d78b7`；170 项，168 项有结果档案，2 项仅有计划/准备。
 
 有结果档案包括失败、超时和无效配置，不表示全部成功。箭头表示设计、参数、模块与验收依赖，不能当成逐次 Git clone 历史。
 
@@ -24,10 +24,10 @@ HLS 时间沿用注册表公式：cycles × max(目标周期, HLS 估计周期) 
 | [A：Packing，从局部精确性到整网成本](#packing) | [P01](#p01) [P02](#p02) [P03](#p03) [P04](#p04) [P05](#p05) [P06](#p06) [P07](#p07) [P08](#p08) [P09](#p09) [P10](#p10) [P11](#p11) [P12](#p12) [P13](#p13) [P14](#p14) [P15](#p15) [P16](#p16) | [图](packing.svg) |
 | [C：Gather 与 Scatter 的存储/控制取舍](#scatter) | [G01](#g01) [G02](#g02) [G03](#g03) | [图](scatter.svg) |
 | [存储路线：整网数据流、外存探针和分块融合](#memory) | [S01](#s01) [S02](#s02) [S03](#s03) [S04](#s04) [S05](#s05) [S06](#s06) | [图](memory.svg) |
-| [D：Winograd，从精确变换到连续调度和权重银行](#winograd) | [W01](#w01) [W02](#w02) [W03](#w03) [W04](#w04) [W05](#w05) [W06](#w06) [W07](#w07) [W08](#w08) [W09](#w09) [W10](#w10) [W11](#w11) [W12](#w12) [W13](#w13) [W14](#w14) [W15](#w15) [W16](#w16) [W17](#w17) [W18](#w18) | [图](winograd.svg) |
+| [D：Winograd，从精确变换到连续调度和权重银行](#winograd) | [W01](#w01) [W02](#w02) [W03](#w03) [W04](#w04) [W05](#w05) [W06](#w06) [W07](#w07) [W08](#w08) [W09](#w09) [W10](#w10) [W11](#w11) [W12](#w12) [W13](#w13) [W14](#w14) [W15](#w15) [W16](#w16) [W17](#w17) [W18](#w18) [W19](#w19) [W21](#w21) | [图](winograd.svg) |
 | [组合路线：Winograd 与 Packing 能否叠加收益](#combination) | [C01](#c01) [C02](#c02) [C03](#c03) [C04](#c04) [C05](#c05) [C06](#c06) [C07](#c07) [C12](#c12) [C08](#c08) [C09](#c09) [C10](#c10) [C11](#c11) | [图](combination.svg) |
-| [B 的后续：连续流水、窗口控制和加载时序](#continuous) | [F01](#f01) [F02](#f02) [F03](#f03) [F04](#f04) [F05](#f05) [F06](#f06) [F07](#f07) [F08](#f08) [F09](#f09) [F10](#f10) [F11](#f11) [F12](#f12) [F13](#f13) [F14](#f14) [F15](#f15) [F16](#f16) [F17](#f17) [F18](#f18) [F19](#f19) [F20](#f20) [F21](#f21) [F22](#f22) [F23](#f23) [F24](#f24) [F25](#f25) | [图](continuous.svg) |
-| [候选验证：同一设计的不同验收步骤](#verification) | [E069](#e069) [E070](#e070) [F80](#f80) [F81](#f81) [F82](#f82) [F83](#f83) [F84](#f84) [F85](#f85) [F86](#f86) [F87](#f87) [F88](#f88) [F89](#f89) [F90](#f90) [F91](#f91) | [图](verification.svg) |
+| [B 的后续：连续流水、窗口控制和加载时序](#continuous) | [F01](#f01) [F02](#f02) [F03](#f03) [F04](#f04) [F05](#f05) [F06](#f06) [F07](#f07) [F08](#f08) [F09](#f09) [F10](#f10) [F11](#f11) [F12](#f12) [F13](#f13) [F14](#f14) [F15](#f15) [F16](#f16) [F17](#f17) [F18](#f18) [F19](#f19) [F20](#f20) [F21](#f21) [F22](#f22) [F23](#f23) [F24](#f24) [F25](#f25) [F26](#f26) [F27](#f27) [F28](#f28) [F29](#f29) [F30](#f30) | [图](continuous.svg) |
+| [候选验证：同一设计的不同验收步骤](#verification) | [E069](#e069) [E070](#e070) [F80](#f80) [F81](#f81) [F82](#f82) [F83](#f83) [F84](#f84) [F85](#f85) [F86](#f86) [F87](#f87) [F88](#f88) [F89](#f89) [F90](#f90) [F91](#f91) [F31](#f31) [F92](#f92) [F93](#f93) [F94](#f94) [F95](#f95) [W20](#w20) [F96](#f96) [F97](#f97) [F98](#f98) [W22](#w22) | [图](verification.svg) |
 
 <a id="precision"></a>
 
@@ -1939,16 +1939,24 @@ HLS 200-871：逻辑预算 4 − 1.08 = 2.92 ns；告警路径最高估计 3.392
 
 **调整：** 在相同输入/输出和吞吐率下直接计算两路 signed16x16，作为新研究基线。
 
-**效果与问题：** 此快照仅有计划/准备，不能填入已测两 DSP 或 II1。
+**效果与问题：** C 仿真精确；2 DSP、57 LUT、16 FF，66 周期/64 间隔。仅 PE，不推算整网速度。
 
-**记录状态：** `planned` / 已准备，未归档测量；范围 `PE`；步骤 `plan`。
-附加检查：未归档测量。
+**记录状态：** `pass` / 局部实验通过；范围 `PE`；步骤 `csim_csynth`。
 
-计划中的 estimates 仅为假设，保留在配置和 data.json；此处不展示为实际资源、II 或延迟。
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 4 / 1.813 ns |
+| 延迟 / 间隔 | 66 / 64 cycles |
+| 注册表换算时间 | 0.000264 ms（PE 范围，以 4 ns 换算） |
+| DSP / BRAM18K / URAM | 2 / 0 / 0 |
+| LUT / FF | 57 / 16 |
+| 所检查的 II 目标 | 达到 |
 
-工具：未记录 Vitis 版本/不适用；源码提交：尚未归档运行源码提交。
+功能：C 仿真通过；bit_exact=true。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
 
-**原始证据：** [P13.json](../../exp/configs/P13.json)。
+工具：Vitis 2026.1；源码提交：`cacc1bda545cbaa3bc3e9fbadf5e9ee7a024cc4c`。
+
+**原始证据：** [P13.json](../../exp/configs/P13.json) · [P13.md](../../experiments/P13_int16_direct_pair/P13.md) · [config.json](../../experiments/P13_int16_direct_pair/config.json) · [metrics.json](../../experiments/P13_int16_direct_pair/metrics.json) · [csynth.rpt](../../experiments/P13_int16_direct_pair/csynth.rpt) · [csynth.log.txt](../../experiments/P13_int16_direct_pair/csynth.log.txt) · [csim.log.txt](../../experiments/P13_int16_direct_pair/csim.log.txt)。
 
 <a id="p14"></a>
 
@@ -1958,16 +1966,24 @@ HLS 200-871：逻辑预算 4 − 1.08 = 2.92 ns；告警路径最高估计 3.392
 
 **调整：** 拆分十六位操作数，组合小位宽打包乘积，完整恢复两个 32 位结果。
 
-**效果与问题：** 拆包、部分积和 fabric 乘法都要计成本；此快照没有结果。
+**效果与问题：** 功能精确但需要 4 DSP、453 LUT、276 FF，比直接双乘法更贵，没有节省 DSP。
 
-**记录状态：** `planned` / 已准备，未归档测量；范围 `PE`；步骤 `plan`。
-附加检查：未归档测量。
+**记录状态：** `pass` / 局部实验通过；范围 `PE`；步骤 `csim_csynth`。
 
-计划中的 estimates 仅为假设，保留在配置和 data.json；此处不展示为实际资源、II 或延迟。
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 4 / 2.818 ns |
+| 延迟 / 间隔 | 68 / 64 cycles |
+| 注册表换算时间 | 0.000272 ms（PE 范围，以 4 ns 换算） |
+| DSP / BRAM18K / URAM | 4 / 0 / 0 |
+| LUT / FF | 453 / 276 |
+| 所检查的 II 目标 | 达到 |
 
-工具：未记录 Vitis 版本/不适用；源码提交：尚未归档运行源码提交。
+功能：C 仿真通过；bit_exact=true。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
 
-**原始证据：** [P14.json](../../exp/configs/P14.json)。
+工具：Vitis 2026.1；源码提交：`50eab5db29b6fafc50b063d5909f1fb0daaa24e4`。
+
+**原始证据：** [P14.json](../../exp/configs/P14.json) · [P14.md](../../experiments/P14_int16_limb_packing/P14.md) · [config.json](../../experiments/P14_int16_limb_packing/config.json) · [metrics.json](../../experiments/P14_int16_limb_packing/metrics.json) · [csynth.rpt](../../experiments/P14_int16_limb_packing/csynth.rpt) · [csynth.log.txt](../../experiments/P14_int16_limb_packing/csynth.log.txt) · [csim.log.txt](../../experiments/P14_int16_limb_packing/csim.log.txt)。
 
 <a id="p15"></a>
 
@@ -1977,16 +1993,27 @@ HLS 200-871：逻辑预算 4 − 1.08 = 2.92 ns；告警路径最高估计 3.392
 
 **调整：** 允许字段重叠，再用精确 fabric 算术恢复两路完整乘积。
 
-**效果与问题：** 不能预设一 DSP 等于两路完整乘法的总成本；结果待归档。
+**效果与问题：** 1 DSP、747 LUT、200 FF，估计路径 3.392 ns；比 P16 的普通混合映射更贵、更慢，仍有 HLS 时序告警。
 
-**记录状态：** `planned` / 已准备，未归档测量；范围 `PE`；步骤 `plan`。
-附加检查：未归档测量。
+**记录状态：** `pass` / 局部实验通过；范围 `PE`；步骤 `csim_csynth`。
+附加检查：HLS 时序警告。
 
-计划中的 estimates 仅为假设，保留在配置和 data.json；此处不展示为实际资源、II 或延迟。
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 4 / 3.392 ns |
+| 延迟 / 间隔 | 69 / 64 cycles |
+| 注册表换算时间 | 0.000276 ms（PE 范围，以 4 ns 换算） |
+| DSP / BRAM18K / URAM | 1 / 0 / 0 |
+| LUT / FF | 747 / 200 |
+| 所检查的 II 目标 | 达到 |
 
-工具：未记录 Vitis 版本/不适用；源码提交：尚未归档运行源码提交。
+HLS 200-871：逻辑预算 4 − 1.08 = 2.92 ns；告警路径最高估计 3.392 ns。详见原始综合日志。
 
-**原始证据：** [P15.json](../../exp/configs/P15.json)。
+功能：C 仿真通过；bit_exact=true。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+工具：Vitis 2026.1；源码提交：`34bac3c1c25d6a7b20c5bfc05ef97d37260372b0`。
+
+**原始证据：** [P15.json](../../exp/configs/P15.json) · [P15.md](../../experiments/P15_int16_overlap_fabric_repair/P15.md) · [config.json](../../experiments/P15_int16_overlap_fabric_repair/config.json) · [metrics.json](../../experiments/P15_int16_overlap_fabric_repair/metrics.json) · [csynth.rpt](../../experiments/P15_int16_overlap_fabric_repair/csynth.rpt) · [csynth.log.txt](../../experiments/P15_int16_overlap_fabric_repair/csynth.log.txt) · [csim.log.txt](../../experiments/P15_int16_overlap_fabric_repair/csim.log.txt)。
 
 <a id="p16"></a>
 
@@ -1996,16 +2023,24 @@ HLS 200-871：逻辑预算 4 − 1.08 = 2.92 ns；告警路径最高估计 3.392
 
 **调整：** 直接把一条乘法放在 DSP、一条放在 LUT，匹配 P15 的资源类型。
 
-**效果与问题：** 用它判断重叠 Packing 是否优于普通混合映射；此快照没有结果。
+**效果与问题：** 1 DSP、330 LUT、16 FF、2.48 ns 估计路径；相同 DSP 数下优于 P15。没有证据支持把完整 INT16 Packing 集成到整网。
 
-**记录状态：** `planned` / 已准备，未归档测量；范围 `PE`；步骤 `plan`。
-附加检查：未归档测量。
+**记录状态：** `pass` / 局部实验通过；范围 `PE`；步骤 `csim_csynth`。
 
-计划中的 estimates 仅为假设，保留在配置和 data.json；此处不展示为实际资源、II 或延迟。
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 4 / 2.48 ns |
+| 延迟 / 间隔 | 66 / 64 cycles |
+| 注册表换算时间 | 0.000264 ms（PE 范围，以 4 ns 换算） |
+| DSP / BRAM18K / URAM | 1 / 0 / 0 |
+| LUT / FF | 330 / 16 |
+| 所检查的 II 目标 | 达到 |
 
-工具：未记录 Vitis 版本/不适用；源码提交：尚未归档运行源码提交。
+功能：C 仿真通过；bit_exact=true。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
 
-**原始证据：** [P16.json](../../exp/configs/P16.json)。
+工具：Vitis 2026.1；源码提交：`522dea3d16fff9e9272ef2ccf37921359b396e0e`。
+
+**原始证据：** [P16.json](../../exp/configs/P16.json) · [P16.md](../../experiments/P16_int16_direct_mixed_control/P16.md) · [config.json](../../experiments/P16_int16_direct_mixed_control/config.json) · [metrics.json](../../experiments/P16_int16_direct_mixed_control/metrics.json) · [csynth.rpt](../../experiments/P16_int16_direct_mixed_control/csynth.rpt) · [csynth.log.txt](../../experiments/P16_int16_direct_mixed_control/csynth.log.txt) · [csim.log.txt](../../experiments/P16_int16_direct_mixed_control/csim.log.txt)。
 
 <a id="scatter"></a>
 
@@ -2768,6 +2803,65 @@ HLS 200-871：逻辑预算 4 − 1.08 = 2.92 ns；告警路径最高估计 3.239
 工具：Vitis 2026.1；源码提交：`e6ecd9e072d21de4892870138cdf9484a81bce50`。
 
 **原始证据：** [W18.json](../../exp/configs/W18.json) · [W18.md](../../experiments/W18_narrow_raw_banks_T16/W18.md) · [config.json](../../experiments/W18_narrow_raw_banks_T16/config.json) · [metrics.json](../../experiments/W18_narrow_raw_banks_T16/metrics.json) · [csynth.rpt](../../experiments/W18_narrow_raw_banks_T16/csynth.rpt) · [csynth.log.txt](../../experiments/W18_narrow_raw_banks_T16/csynth.log.txt) · [csim.log.txt](../../experiments/W18_narrow_raw_banks_T16/csim.log.txt)。
+
+<a id="w19"></a>
+
+### W19：Winograd T8 接入私有参数流
+
+**基于：** [W17](#w17)（设计或参数基线）；[F28](#f28)（集成已有模块）。
+
+**调整：** 把选定的私有加载器接入 W17，单个转换进程输出三层参数流，保留整数 Winograd、连续 tile 和精确输出编码。
+
+**效果与问题：** 区外 LUT 降至 3,170，但总 LUT 83,623 仍超过 81,984 门槛；功能精确，需继续简化权重变换缓存。
+
+**记录状态：** `infeasible` / 资源/性能门槛未满足；范围 `frame`；步骤 `csim_csynth`。
+附加检查：超预算: LUT。
+
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 3.33 / 2.431 ns |
+| 延迟 / 间隔 | 525237 / 525238 cycles |
+| 注册表换算时间 | 1.74903921 ms（frame 范围，以 3.33 ns 换算） |
+| DSP / BRAM18K / URAM | 645 / 146 / 0 |
+| LUT / FF | 83623 / 130843 |
+| 所检查的 II 目标 | 达到 |
+
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+质量：对 GT 的平均 PSNR=29.088943 dB；相对浮点平均 ΔPSNR=-0.069514 dB。来源：[experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json)。
+
+工具：Vitis 2026.1；源码提交：`7be52961ca1b0ed0b783afb3109d5de80d4d1ff6`。
+
+**原始证据：** [W19.json](../../exp/configs/W19.json) · [W19.md](../../experiments/W19_streamed_winograd_T8/W19.md) · [config.json](../../experiments/W19_streamed_winograd_T8/config.json) · [metrics.json](../../experiments/W19_streamed_winograd_T8/metrics.json) · [csynth.rpt](../../experiments/W19_streamed_winograd_T8/csynth.rpt) · [csynth.log.txt](../../experiments/W19_streamed_winograd_T8/csynth.log.txt) · [csim.log.txt](../../experiments/W19_streamed_winograd_T8/csim.log.txt)。
+
+<a id="w21"></a>
+
+### W21：权重缓存按子卷积重排
+
+**基于：** [W19](#w19)（设计或参数基线）。
+
+**调整：** 只把 81 系数扁平缓存改为 9 子卷积 x 9 tap，保持变换算术和流 token 数不变，消除动态稀疏选择器。
+
+**效果与问题：** 525,237 HLS 周期、81,086 LUT，刚好满足预算，余量 898 LUT；F96/F97 后续完成多图和参数重载 RTL，F98/W22 布线通过。
+
+**记录状态：** `provisional` / 候选，仍需验收；范围 `frame`；步骤 `csim_csynth`。
+
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 3.33 / 2.431 ns |
+| 延迟 / 间隔 | 525237 / 525238 cycles |
+| 注册表换算时间 | 1.74903921 ms（frame 范围，以 3.33 ns 换算） |
+| DSP / BRAM18K / URAM | 644 / 146 / 0 |
+| LUT / FF | 81086 / 130057 |
+| 所检查的 II 目标 | 达到 |
+
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+质量：对 GT 的平均 PSNR=29.088943 dB；相对浮点平均 ΔPSNR=-0.069514 dB。来源：[experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json)。
+
+工具：Vitis 2026.1；源码提交：`255fb6cd0c8f024696e33d9749cd6f2702311dee`。
+
+**原始证据：** [W21.json](../../exp/configs/W21.json) · [W21.md](../../experiments/W21_subkernel_raw_cache_T8/W21.md) · [config.json](../../experiments/W21_subkernel_raw_cache_T8/config.json) · [metrics.json](../../experiments/W21_subkernel_raw_cache_T8/metrics.json) · [csynth.rpt](../../experiments/W21_subkernel_raw_cache_T8/csynth.rpt) · [csynth.log.txt](../../experiments/W21_subkernel_raw_cache_T8/csynth.log.txt) · [csim.log.txt](../../experiments/W21_subkernel_raw_cache_T8/csim.log.txt)。
 
 <a id="combination"></a>
 
@@ -3750,13 +3844,169 @@ HLS 200-871：逻辑预算 2.5 − 0.675 = 1.825 ns；告警路径最高估计 2
 
 **原始证据：** [F25.json](../../exp/configs/F25.json) · [F25.md](../../experiments/F25_nested_weight_loader_T16_2p5ns/F25.md) · [config.json](../../experiments/F25_nested_weight_loader_T16_2p5ns/config.json) · [metrics.json](../../experiments/F25_nested_weight_loader_T16_2p5ns/metrics.json) · [csynth.rpt](../../experiments/F25_nested_weight_loader_T16_2p5ns/csynth.rpt) · [csynth.log.txt](../../experiments/F25_nested_weight_loader_T16_2p5ns/csynth.log.txt) · [csim.log.txt](../../experiments/F25_nested_weight_loader_T16_2p5ns/csim.log.txt)。
 
+<a id="f26"></a>
+
+### F26：S2P 权重银行与 bias 移位加载
+
+**基于：** [F25](#f25)（设计或参数基线）。
+
+**调整：** 仅将共享权重银行改为 simple-dual-port，并用固定下标移位方式写 bias，隔离端口和写入译码成本。
+
+**效果与问题：** 总 LUT 70,808、区外 LUT 33,126，面积假设失败；共享银行的所有权问题仍在，促成 F27。
+
+**记录状态：** `provisional` / 候选，仍需验收；范围 `frame`；步骤 `csim_csynth`。
+附加检查：HLS 时序警告。
+
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 2.5 / 2.377 ns |
+| 延迟 / 间隔 | 1056908 / 1056909 cycles |
+| 注册表换算时间 | 2.64227 ms（frame 范围，以 2.5 ns 换算） |
+| DSP / BRAM18K / URAM | 502 / 73 / 0 |
+| LUT / FF | 70808 / 126285 |
+| 所检查的 II 目标 | 达到 |
+
+HLS 200-871：逻辑预算 2.5 − 0.675 = 1.825 ns；告警路径最高估计 2.377 ns。详见原始综合日志。
+
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+质量：对 GT 的平均 PSNR=29.088943 dB；相对浮点平均 ΔPSNR=-0.069514 dB。来源：[experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json)。
+
+工具：Vitis 2026.1；源码提交：`499f49417d545659cf945421ca42a2f2715e0db3`。
+
+**原始证据：** [F26.json](../../exp/configs/F26.json) · [F26.md](../../experiments/F26_s2p_bias_shift_T16/F26.md) · [config.json](../../experiments/F26_s2p_bias_shift_T16/config.json) · [metrics.json](../../experiments/F26_s2p_bias_shift_T16/metrics.json) · [csynth.rpt](../../experiments/F26_s2p_bias_shift_T16/csynth.rpt) · [csynth.log.txt](../../experiments/F26_s2p_bias_shift_T16/csynth.log.txt) · [csim.log.txt](../../experiments/F26_s2p_bias_shift_T16/csim.log.txt)。
+
+<a id="f27"></a>
+
+### F27：参数流与各层私有银行
+
+**基于：** [F25](#f25)（设计或参数基线）；[F26](#f26)（对照实验）。
+
+**调整：** 在 DATAFLOW 内统一转换参数，分三条流传给各层；各层先加载自己的 S2P LUTRAM 银行，再处理像素。
+
+**效果与问题：** 总 LUT 61,656、区外 3,170，权重前驱警告消失；2.419 ns 估计路径未达到本轮 2.377 ns 加载器门槛。
+
+**记录状态：** `provisional` / 候选，仍需验收；范围 `frame`；步骤 `csim_csynth`。
+附加检查：HLS 时序警告。
+
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 2.5 / 2.419 ns |
+| 延迟 / 间隔 | 1045713 / 1045714 cycles |
+| 注册表换算时间 | 2.6142825 ms（frame 范围，以 2.5 ns 换算） |
+| DSP / BRAM18K / URAM | 502 / 73 / 0 |
+| LUT / FF | 61656 / 122055 |
+| 所检查的 II 目标 | 达到 |
+
+HLS 200-871：逻辑预算 2.5 − 0.675 = 1.825 ns；告警路径最高估计 2.419 ns。详见原始综合日志。
+
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+质量：对 GT 的平均 PSNR=29.088943 dB；相对浮点平均 ΔPSNR=-0.069514 dB。来源：[experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json)。
+
+工具：Vitis 2026.1；源码提交：`499f49417d545659cf945421ca42a2f2715e0db3`。
+
+**原始证据：** [F27.json](../../exp/configs/F27.json) · [F27.md](../../experiments/F27_local_streamed_params_T16/F27.md) · [config.json](../../experiments/F27_local_streamed_params_T16/config.json) · [metrics.json](../../experiments/F27_local_streamed_params_T16/metrics.json) · [csynth.rpt](../../experiments/F27_local_streamed_params_T16/csynth.rpt) · [csynth.log.txt](../../experiments/F27_local_streamed_params_T16/csynth.log.txt) · [csim.log.txt](../../experiments/F27_local_streamed_params_T16/csim.log.txt)。
+
+<a id="f28"></a>
+
+### F28：私有加载器关闭循环合并
+
+**基于：** [F27](#f27)（设计或参数基线）。
+
+**调整：** 只给 load_local 内层 tap 循环加入 LOOP_FLATTEN off，保持私有银行、参数流和推理算术。
+
+**效果与问题：** 1,046,029 HLS 周期、61,553 LUT、2.377 ns 估计路径，全部 WS2 门槛通过；F93/F94/F95 分别补齐重载 RTL、多图和 5 ns 布线。
+
+**记录状态：** `provisional` / 候选，仍需验收；范围 `frame`；步骤 `csim_csynth`。
+附加检查：HLS 时序警告。
+
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 2.5 / 2.377 ns |
+| 延迟 / 间隔 | 1046029 / 1046030 cycles |
+| 注册表换算时间 | 2.6150725 ms（frame 范围，以 2.5 ns 换算） |
+| DSP / BRAM18K / URAM | 502 / 73 / 0 |
+| LUT / FF | 61553 / 122061 |
+| 所检查的 II 目标 | 达到 |
+
+HLS 200-871：逻辑预算 2.5 − 0.675 = 1.825 ns；告警路径最高估计 2.377 ns。详见原始综合日志。
+
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+质量：对 GT 的平均 PSNR=29.088943 dB；相对浮点平均 ΔPSNR=-0.069514 dB。来源：[experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json)。
+
+工具：Vitis 2026.1；源码提交：`be66ec4da15ab273a4b0647b294b0f4cb37f82eb`。
+
+**原始证据：** [F28.json](../../exp/configs/F28.json) · [F28.md](../../experiments/F28_local_load_no_flatten_T16/F28.md) · [config.json](../../experiments/F28_local_load_no_flatten_T16/config.json) · [metrics.json](../../experiments/F28_local_load_no_flatten_T16/metrics.json) · [csynth.rpt](../../experiments/F28_local_load_no_flatten_T16/csynth.rpt) · [csynth.log.txt](../../experiments/F28_local_load_no_flatten_T16/csynth.log.txt) · [csim.log.txt](../../experiments/F28_local_load_no_flatten_T16/csim.log.txt)。
+
+<a id="f29"></a>
+
+### F29：私有参数流直接卷积 T8，注册树
+
+**基于：** [F28](#f28)（设计或参数基线）；[W19](#w19)（对照实验）。
+
+**调整：** 基于 F28 将直接卷积改为 T8，保留加法树级间寄存，和 Winograd T8 比较。
+
+**效果与问题：** 525,761 周期，但 LUT 87,869、FF 194,668 超预算；直接提高并行度没有形成合格候选。
+
+**记录状态：** `infeasible` / 资源/性能门槛未满足；范围 `frame`；步骤 `csim_csynth`。
+附加检查：超预算: LUT/FF。
+
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 3.33 / 2.431 ns |
+| 延迟 / 间隔 | 525761 / 525762 cycles |
+| 注册表换算时间 | 1.75078413 ms（frame 范围，以 3.33 ns 换算） |
+| DSP / BRAM18K / URAM | 1004 / 73 / 0 |
+| LUT / FF | 87869 / 194668 |
+| 所检查的 II 目标 | 达到 |
+
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+质量：对 GT 的平均 PSNR=29.088943 dB；相对浮点平均 ΔPSNR=-0.069514 dB。来源：[experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json)。
+
+工具：Vitis 2026.1；源码提交：`300c27bc3f761d288a8ccb66ef49c27c86023ac2`。
+
+**原始证据：** [F29.json](../../exp/configs/F29.json) · [F29.md](../../experiments/F29_streamed_direct_T8_tree1/F29.md) · [config.json](../../experiments/F29_streamed_direct_T8_tree1/config.json) · [metrics.json](../../experiments/F29_streamed_direct_T8_tree1/metrics.json) · [csynth.rpt](../../experiments/F29_streamed_direct_T8_tree1/csynth.rpt) · [csynth.log.txt](../../experiments/F29_streamed_direct_T8_tree1/csynth.log.txt) · [csim.log.txt](../../experiments/F29_streamed_direct_T8_tree1/csim.log.txt)。
+
+<a id="f30"></a>
+
+### F30：直接卷积 T8，取消树寄存
+
+**基于：** [F28](#f28)（设计或参数基线）；[F29](#f29)（对照实验）。
+
+**调整：** 保持 F29 的参数流和 T8，单独把归约加法延迟绑定为零。
+
+**效果与问题：** FF 降至 104,834，但 LUT 升至 93,631；周期几乎不变，LUT 仍超预算。
+
+**记录状态：** `infeasible` / 资源/性能门槛未满足；范围 `frame`；步骤 `csim_csynth`。
+附加检查：超预算: LUT。
+
+| HLS 测量/估计 | 值 |
+| --- | --- |
+| 目标周期 / 估计周期 | 3.33 / 2.431 ns |
+| 延迟 / 间隔 | 525757 / 525758 cycles |
+| 注册表换算时间 | 1.75077081 ms（frame 范围，以 3.33 ns 换算） |
+| DSP / BRAM18K / URAM | 1004 / 73 / 0 |
+| LUT / FF | 93631 / 104834 |
+| 所检查的 II 目标 | 达到 |
+
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+质量：对 GT 的平均 PSNR=29.088943 dB；相对浮点平均 ΔPSNR=-0.069514 dB。来源：[experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json)。
+
+工具：Vitis 2026.1；源码提交：`a35dd4206d868a81ad8ad08014798cc86cd171cd`。
+
+**原始证据：** [F30.json](../../exp/configs/F30.json) · [F30.md](../../experiments/F30_streamed_direct_T8_tree0/F30.md) · [config.json](../../experiments/F30_streamed_direct_T8_tree0/config.json) · [metrics.json](../../experiments/F30_streamed_direct_T8_tree0/metrics.json) · [csynth.rpt](../../experiments/F30_streamed_direct_T8_tree0/csynth.rpt) · [csynth.log.txt](../../experiments/F30_streamed_direct_T8_tree0/csynth.log.txt) · [csim.log.txt](../../experiments/F30_streamed_direct_T8_tree0/csim.log.txt)。
+
 <a id="verification"></a>
 
 ## 候选验证：同一设计的不同验收步骤
 
 功能、RTL 周期、布局布线时序和板端运行分别验证到了哪里？
 
-[演进图](verification.svg)；路线依据：[exp/prepare_final_arch.py](../../exp/prepare_final_arch.py) · [exp/prepare_impl_retries.py](../../exp/prepare_impl_retries.py) · [experiments/final_selection.json](../../experiments/final_selection.json) · [experiments/F82_final_cosim_F25/reports/sim/srcnn_cosim.rpt](../../experiments/F82_final_cosim_F25/reports/sim/srcnn_cosim.rpt)。
+[演进图](verification.svg)；路线依据：[exp/prepare_final_arch.py](../../exp/prepare_final_arch.py) · [exp/prepare_impl_retries.py](../../exp/prepare_impl_retries.py) · [exp/prepare_ws_verify.py](../../exp/prepare_ws_verify.py) · [experiments/final_selection.json](../../experiments/final_selection.json) · [experiments/WEIGHT_LOADING.md](../../experiments/WEIGHT_LOADING.md) · [experiments/weight_loading_audit.json](../../experiments/weight_loading_audit.json) · [experiments/F82_final_cosim_F25/reports/sim/srcnn_cosim.rpt](../../experiments/F82_final_cosim_F25/reports/sim/srcnn_cosim.rpt)。
 
 <a id="e069"></a>
 
@@ -3899,106 +4149,98 @@ RTL：Pass；最大延迟 1068183 cycles；最大间隔 1068212 cycles；相对 
 
 <a id="f85"></a>
 
-### F85：F24 的双帧 RTL 计划
+### F85：F24 的双帧 RTL 验证
 
 **基于：** [F24](#f24)（验证同一设计）；[F83](#f83)（数值依据或研究启发）。
 
-**调整：** 计划验证有限 FIFO、状态复位与 RTL 周期。
+**调整：** 验证有限 FIFO、状态复位与 RTL 周期，并收回完整归档。
 
-**效果与问题：** 此快照只有计划，尚未归档完成结果。
+**效果与问题：** RTL Pass；1,061,153 最大延迟、1,061,182 间隔，比 HLS 多约 1.185%；不能代替 F24 的物理实现。
 
-**记录状态：** `planned` / 已准备，未归档测量；范围 `frame`；步骤 `plan`。
-附加检查：未归档测量。
+**记录状态：** `cosim_complete` / RTL 协仿完成；范围 `frame`；步骤 `cosim`。
 
 继承的 HLS 估计来自 [F24](#f24)，不作为本步骤的新测量。
 
-计划中的 estimates 仅为假设，保留在配置和 data.json；此处不展示为实际资源、II 或延迟。
+RTL：Pass；最大延迟 1061153 cycles；最大间隔 1061182 cycles；相对 HLS 周期增加 1.1853%。
 
-工具：未记录 Vitis 版本/不适用；源码提交：尚未归档运行源码提交。
+工具：Vitis 2026.1；源码提交：`f00af13de553617e27eeb47c3477e4609ea6c2ea`。
 
-**原始证据：** [F85.json](../../exp/configs/F85.json)。
+**原始证据：** [F85.json](../../exp/configs/F85.json) · [F85.md](../../experiments/F85_final_cosim_F24/F85.md) · [config.json](../../experiments/F85_final_cosim_F24/config.json) · [metrics.json](../../experiments/F85_final_cosim_F24/metrics.json) · [verification.json](../../experiments/F85_final_cosim_F24/verification.json) · [cosim.log.txt](../../experiments/F85_final_cosim_F24/cosim.log.txt) · [srcnn_cosim.rpt](../../experiments/F85_final_cosim_F24/reports/sim/srcnn_cosim.rpt)。
 
 <a id="f86"></a>
 
-### F86：F23 的多图 C 仿真计划
+### F86：F23 的多图 C 仿真
 
 **基于：** [F23](#f23)（验证同一设计）；[E017](#e017)（数值依据或研究启发）。
 
-**调整：** 计划对第三候选执行全部已有图像验收。
+**调整：** 对第三候选执行全部已有 13 张图像验收。
 
-**效果与问题：** 此快照没有运行结果。
+**效果与问题：** 逐位一致，平均 PSNR 降约 0.0695 dB；仍缺 comic。
 
-**记录状态：** `planned` / 已准备，未归档测量；范围 `frame`；步骤 `plan`。
-附加检查：未归档测量。
+**记录状态：** `csim_pass` / C 仿真通过；范围 `frame`；步骤 `csim`。
 
-计划中的 estimates 仅为假设，保留在配置和 data.json；此处不展示为实际资源、II 或延迟。
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
 
-工具：未记录 Vitis 版本/不适用；源码提交：尚未归档运行源码提交。
+质量：对 GT 的平均 PSNR=29.088943 dB；相对浮点平均 ΔPSNR=-0.069514 dB。来源：本次仿真（13 张；见原始记录）。
 
-**原始证据：** [F86.json](../../exp/configs/F86.json)。
+工具：Vitis 2026.1；源码提交：`2d09a79722873be96a57177325b0e3e103b5e11d`。
+
+**原始证据：** [F86.json](../../exp/configs/F86.json) · [F86.md](../../experiments/F86_final_all_supplied_F23/F86.md) · [config.json](../../experiments/F86_final_all_supplied_F23/config.json) · [metrics.json](../../experiments/F86_final_all_supplied_F23/metrics.json) · [csim.log.txt](../../experiments/F86_final_all_supplied_F23/csim.log.txt)。
 
 <a id="f87"></a>
 
-### F87：F23 的 Vivado 实现计划
+### F87：F23 的 Vivado 实现
 
 **基于：** [F23](#f23)（验证同一设计）；[F86](#f86)（数值依据或研究启发）。
 
-**调整：** 计划测量第三候选的 routed 资源和时序。
+**调整：** 独立测量第三候选的 routed 资源和时序。
 
-**效果与问题：** 此快照没有完成报告。
+**效果与问题：** 内核日志确认主机 OOM，未得到布线报告；不是器件资源超量的证据。
 
-**记录状态：** `planned` / 已准备，未归档测量；范围 `frame`；步骤 `plan`。
-附加检查：未归档测量。
+**记录状态：** `fail` / 运行失败；范围 `frame`；步骤 `impl`。
+附加检查：主机 OOM。
 
 继承的 HLS 估计来自 [F23](#f23)，不作为本步骤的新测量。
 
-计划中的 estimates 仅为假设，保留在配置和 data.json；此处不展示为实际资源、II 或延迟。
+工具：Vitis 2026.1；源码提交：`d69779d3f80caeea5fece02a5be26f57e2473773`。
 
-工具：未记录 Vitis 版本/不适用；源码提交：尚未归档运行源码提交。
-
-**原始证据：** [F87.json](../../exp/configs/F87.json)。
+**原始证据：** [F87.json](../../exp/configs/F87.json) · [F87.md](../../experiments/F87_final_impl_F23/F87.md) · [config.json](../../experiments/F87_final_impl_F23/config.json) · [metrics.json](../../experiments/F87_final_impl_F23/metrics.json) · [verification.json](../../experiments/F87_final_impl_F23/verification.json) · [impl.log.txt](../../experiments/F87_final_impl_F23/impl.log.txt) · [kernel_oom.txt](../../experiments/F87_final_impl_F23/diagnostics/kernel_oom.txt)。
 
 <a id="f88"></a>
 
-### F88：F23 的双帧 RTL 计划
+### F88：F23 的双帧 RTL 验证中断
 
 **基于：** [F23](#f23)（验证同一设计）；[F86](#f86)（数值依据或研究启发）。
 
-**调整：** 计划执行第三候选的有限 FIFO RTL 验证。
+**调整：** 尝试第三候选的有限 FIFO RTL 验证，保留完整退出状态。
 
-**效果与问题：** 此快照没有完成结果。
+**效果与问题：** 进程被 SIGTERM 中断，exit=-15；没有 RTL Pass 记录，后续暂缓，不补算成功。
 
-**记录状态：** `planned` / 已准备，未归档测量；范围 `frame`；步骤 `plan`。
-附加检查：未归档测量。
+**记录状态：** `fail` / 运行失败；范围 `frame`；步骤 `cosim`。
 
 继承的 HLS 估计来自 [F23](#f23)，不作为本步骤的新测量。
 
-计划中的 estimates 仅为假设，保留在配置和 data.json；此处不展示为实际资源、II 或延迟。
+工具：Vitis 2026.1；源码提交：`2ef7aa259e602dc0a2c527f0c839923f6824784f`。
 
-工具：未记录 Vitis 版本/不适用；源码提交：尚未归档运行源码提交。
-
-**原始证据：** [F88.json](../../exp/configs/F88.json)。
+**原始证据：** [F88.json](../../exp/configs/F88.json) · [F88.md](../../experiments/F88_final_cosim_F23/F88.md) · [config.json](../../experiments/F88_final_cosim_F23/config.json) · [metrics.json](../../experiments/F88_final_cosim_F23/metrics.json) · [verification.json](../../experiments/F88_final_cosim_F23/verification.json) · [cosim.log.txt](../../experiments/F88_final_cosim_F23/cosim.log.txt)。
 
 <a id="f89"></a>
 
-### F89：F25 的单线程实现重试计划
+### F89：F25 的单线程实现重试
 
 **基于：** [F81](#f81)（修复后重试）；[F25](#f25)（验证同一设计）。
 
 **调整：** 保留生成的 IP/BD 流程，仅用本次 Tcl hook 限制 Vivado 内部线程。
 
-**效果与问题：** 针对主机内存问题；不能用预计值替代实际 routed 结果。
+**效果与问题：** 在拥塞布线阶段达到三小时限时，无最终 routed 报告；本次没有观测到新 OOM。后续 F92 放宽物理时钟。
 
-**记录状态：** `planned` / 已准备，未归档测量；范围 `frame`；步骤 `plan`。
-附加检查：未归档测量。
+**记录状态：** `timeout` / 超时；范围 `frame`；步骤 `impl`。
 
 继承的 HLS 估计来自 [F25](#f25)，不作为本步骤的新测量。
 
-计划中的 estimates 仅为假设，保留在配置和 data.json；此处不展示为实际资源、II 或延迟。
+工具：Vitis 2026.1；源码提交：`195947850e79400c33aafd28babb57a142b3cbcc`。
 
-工具：未记录 Vitis 版本/不适用；源码提交：尚未归档运行源码提交。
-
-**原始证据：** [F89.json](../../exp/configs/F89.json)。
+**原始证据：** [F89.json](../../exp/configs/F89.json) · [F89.md](../../experiments/F89_serial_vivado_impl_F25/F89.md) · [config.json](../../experiments/F89_serial_vivado_impl_F25/config.json) · [metrics.json](../../experiments/F89_serial_vivado_impl_F25/metrics.json) · [verification.json](../../experiments/F89_serial_vivado_impl_F25/verification.json) · [impl.log.txt](../../experiments/F89_serial_vivado_impl_F25/impl.log.txt)。
 
 <a id="f90"></a>
 
@@ -4029,7 +4271,7 @@ RTL：Pass；最大延迟 1068183 cycles；最大间隔 1068212 cycles；相对 
 
 **调整：** 计划用相同线程限制流程验证第三候选。
 
-**效果与问题：** F87 也是计划记录；这条是验证流程关系，不声称 F87 已经 OOM。
+**效果与问题：** F87 已确认主机 OOM；F91 仍未运行，收尾时与 F90 一起暂缓。
 
 **记录状态：** `planned` / 已准备，未归档测量；范围 `frame`；步骤 `plan`。
 附加检查：未归档测量。
@@ -4041,3 +4283,202 @@ RTL：Pass；最大延迟 1068183 cycles；最大间隔 1068212 cycles；相对 
 工具：未记录 Vitis 版本/不适用；源码提交：尚未归档运行源码提交。
 
 **原始证据：** [F91.json](../../exp/configs/F91.json)。
+
+<a id="f31"></a>
+
+### F31：F28 参数重载测试的 C 预检
+
+**基于：** [F28](#f28)（验证同一设计）。
+
+**调整：** 冻结双帧测试：第一帧与 E017 精确一致，第二帧换输入、稀疏权重及 bias，要求全部输出精确为 104/256。
+
+**效果与问题：** C 预检通过；只验证数值与测试编译，有限 FIFO 及 RTL 参数更新由 F93 单独确认。
+
+**记录状态：** `csim_pass` / C 仿真通过；范围 `frame`；步骤 `csim`。
+
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+工具：Vitis 2026.1；源码提交：`fc8af2a6f0e1137f4e112d77f11b89b0c3d2cc31`。
+
+**原始证据：** [F31.json](../../exp/configs/F31.json) · [F31.md](../../experiments/F31_reload_testbench_csim_F28/F31.md) · [config.json](../../experiments/F31_reload_testbench_csim_F28/config.json) · [metrics.json](../../experiments/F31_reload_testbench_csim_F28/metrics.json) · [csim.log.txt](../../experiments/F31_reload_testbench_csim_F28/csim.log.txt)。
+
+<a id="f92"></a>
+
+### F92：F25 放宽到 5 ns 的布线重试
+
+**基于：** [F25](#f25)（验证同一设计）；[F89](#f89)（修复后重试）；[F82](#f82)（验证同一设计）。
+
+**调整：** 复用经哈希确认的相同 F25 RTL，仅把物理时钟放宽到 5 ns 并限制综合线程。
+
+**效果与问题：** WNS +0.568 ns、TNS 0，布线通过；引用 F82 的 1,068,183 RTL 周期，5 ns 下约 5.340915 ms/张。
+
+**记录状态：** `impl_complete` / 实现完成，另看时序；范围 `frame`；步骤 `impl`。
+
+继承的 HLS 估计来自 [F25](#f25)，不作为本步骤的新测量。
+
+实现：WNS=0.568 ns；TNS=0 ns；timing_met=true。实际 DSP / BRAM36 / URAM / LUT / FF = 592 / 36 / 0 / 32400 / 77757。BRAM36 与 HLS 的 BRAM18K 单位不同。
+
+工具：Vitis 2026.1；源码提交：`01f5e5d7e65801f0086786877144b46bf8a2bfc6`。
+
+**原始证据：** [F92.json](../../exp/configs/F92.json) · [F92.md](../../experiments/F92_ws_impl_F25/F92.md) · [config.json](../../experiments/F92_ws_impl_F25/config.json) · [metrics.json](../../experiments/F92_ws_impl_F25/metrics.json) · [verification.json](../../experiments/F92_ws_impl_F25/verification.json) · [impl.log.txt](../../experiments/F92_ws_impl_F25/impl.log.txt) · [srcnn_setup5_routed.rpt](../../experiments/F92_ws_impl_F25/reports/impl/srcnn_setup5_routed.rpt) · [srcnn_timing_routed.rpt](../../experiments/F92_ws_impl_F25/reports/impl/srcnn_timing_routed.rpt) · [srcnn_utilization_hierarchical_routed.rpt](../../experiments/F92_ws_impl_F25/reports/impl/srcnn_utilization_hierarchical_routed.rpt) · [srcnn_utilization_routed.rpt](../../experiments/F92_ws_impl_F25/reports/impl/srcnn_utilization_routed.rpt)。
+
+<a id="f93"></a>
+
+### F93：F28 更换参数的双帧 RTL 验证
+
+**基于：** [F28](#f28)（验证同一设计）；[F31](#f31)（数值依据或研究启发）。
+
+**调整：** 使用独立冻结的重载 testbench，第一帧保留原参数，第二帧换权重及 bias，检查有限 FIFO、状态复位与输出。
+
+**效果与问题：** 双帧 RTL Pass 且参数更新逐位精确；最大延迟 1,059,506、间隔 1,059,535 周期，比 HLS 多 1.2884%。
+
+**记录状态：** `cosim_complete` / RTL 协仿完成；范围 `frame`；步骤 `cosim`。
+
+继承的 HLS 估计来自 [F28](#f28)，不作为本步骤的新测量。
+
+RTL：Pass；最大延迟 1059506 cycles；最大间隔 1059535 cycles；相对 HLS 周期增加 1.2884%。
+
+工具：Vitis 2026.1；源码提交：`e8c2b3c29dbe4ed7806c682df1648ccbaeaca1ac`。
+
+**原始证据：** [F93.json](../../exp/configs/F93.json) · [F93.md](../../experiments/F93_ws_reload_cosim_F28/F93.md) · [config.json](../../experiments/F93_ws_reload_cosim_F28/config.json) · [metrics.json](../../experiments/F93_ws_reload_cosim_F28/metrics.json) · [verification.json](../../experiments/F93_ws_reload_cosim_F28/verification.json) · [cosim.log.txt](../../experiments/F93_ws_reload_cosim_F28/cosim.log.txt) · [srcnn_cosim.rpt](../../experiments/F93_ws_reload_cosim_F28/reports/sim/srcnn_cosim.rpt)。
+
+<a id="f94"></a>
+
+### F94：F28 的全部已有图像验证
+
+**基于：** [F28](#f28)（验证同一设计）；[E017](#e017)（数值依据或研究启发）。
+
+**调整：** 用匹配 F28 源码和编译宏的独立副本检查全部 13 张图。
+
+**效果与问题：** 逐位精确，平均 PSNR 降 0.069514 dB；与 F93 的参数重载验证互补，仍缺 comic。
+
+**记录状态：** `csim_pass` / C 仿真通过；范围 `frame`；步骤 `csim`。
+
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+质量：对 GT 的平均 PSNR=29.088943 dB；相对浮点平均 ΔPSNR=-0.069514 dB。来源：本次仿真（13 张；见原始记录）。
+
+工具：Vitis 2026.1；源码提交：`8a8eb805adfdabdb0d07c0429a50dbfb605a73f1`。
+
+**原始证据：** [F94.json](../../exp/configs/F94.json) · [F94.md](../../experiments/F94_ws_all_F28/F94.md) · [config.json](../../experiments/F94_ws_all_F28/config.json) · [metrics.json](../../experiments/F94_ws_all_F28/metrics.json) · [csim.log.txt](../../experiments/F94_ws_all_F28/csim.log.txt)。
+
+<a id="f95"></a>
+
+### F95：F28 的独立 5 ns 布线
+
+**基于：** [F28](#f28)（验证同一设计）；[F93](#f93)（验证同一设计）；[F94](#f94)（数值依据或研究启发）。
+
+**调整：** 在独立工作区对 F28 RTL 以 5 ns 约束执行综合、布局、布线，归档自己的关键路径和层级资源。
+
+**效果与问题：** WNS +0.282 ns、TNS 0，通过；引用 F93 周期得 5.29753 ms/张。主要路径转到 Conv1 私有加载地址至 LUTRAM 写地址。
+
+**记录状态：** `impl_complete` / 实现完成，另看时序；范围 `frame`；步骤 `impl`。
+
+继承的 HLS 估计来自 [F28](#f28)，不作为本步骤的新测量。
+
+实现：WNS=0.282 ns；TNS=0 ns；timing_met=true。实际 DSP / BRAM36 / URAM / LUT / FF = 591 / 36 / 0 / 30140 / 76498。BRAM36 与 HLS 的 BRAM18K 单位不同。
+
+工具：Vitis 2026.1；源码提交：`8c8b0c79176242e555d51f54b57a512ffc7b06b0`。
+
+**原始证据：** [F95.json](../../exp/configs/F95.json) · [F95.md](../../experiments/F95_ws_impl_F28/F95.md) · [config.json](../../experiments/F95_ws_impl_F28/config.json) · [metrics.json](../../experiments/F95_ws_impl_F28/metrics.json) · [verification.json](../../experiments/F95_ws_impl_F28/verification.json) · [impl.log.txt](../../experiments/F95_ws_impl_F28/impl.log.txt) · [srcnn_setup5_routed.rpt](../../experiments/F95_ws_impl_F28/reports/impl/srcnn_setup5_routed.rpt) · [srcnn_timing_routed.rpt](../../experiments/F95_ws_impl_F28/reports/impl/srcnn_timing_routed.rpt) · [srcnn_utilization_hierarchical_routed.rpt](../../experiments/F95_ws_impl_F28/reports/impl/srcnn_utilization_hierarchical_routed.rpt) · [srcnn_utilization_routed.rpt](../../experiments/F95_ws_impl_F28/reports/impl/srcnn_utilization_routed.rpt)。
+
+<a id="w20"></a>
+
+### W20：W17 的物理资源诊断
+
+**基于：** [W17](#w17)（验证同一设计）；[F92](#f92)（对照实验）。
+
+**调整：** F92 的 routed/HLS LUT 比例偏小，独立实现 W17 校准资源估计；保持原 HLS 门槛和诊断排除。
+
+**效果与问题：** 5 ns 布线通过，WNS +0.188 ns；但 W17 仍超 HLS LUT 预算，W20 仅诊断，不进入候选排名。
+
+**记录状态：** `impl_complete` / 实现完成，另看时序；范围 `frame`；步骤 `impl`。
+附加检查：仅诊断，沿用父设计 HLS 门槛。
+
+继承的 HLS 估计来自 [W17](#w17)，不作为本步骤的新测量。
+
+实现：WNS=0.188 ns；TNS=0 ns；timing_met=true。实际 DSP / BRAM36 / URAM / LUT / FF = 696 / 54.5 / 0 / 42812 / 89690。BRAM36 与 HLS 的 BRAM18K 单位不同。
+
+工具：Vitis 2026.1；源码提交：`6f31b6baa7ed26a574fb8cf6096f28789d76c567`。
+
+**原始证据：** [W20.json](../../exp/configs/W20.json) · [W20.md](../../experiments/W20_ws_impl_W17/W20.md) · [config.json](../../experiments/W20_ws_impl_W17/config.json) · [metrics.json](../../experiments/W20_ws_impl_W17/metrics.json) · [verification.json](../../experiments/W20_ws_impl_W17/verification.json) · [impl.log.txt](../../experiments/W20_ws_impl_W17/impl.log.txt) · [srcnn_setup5_routed.rpt](../../experiments/W20_ws_impl_W17/reports/impl/srcnn_setup5_routed.rpt) · [srcnn_timing_routed.rpt](../../experiments/W20_ws_impl_W17/reports/impl/srcnn_timing_routed.rpt) · [srcnn_utilization_hierarchical_routed.rpt](../../experiments/W20_ws_impl_W17/reports/impl/srcnn_utilization_hierarchical_routed.rpt) · [srcnn_utilization_routed.rpt](../../experiments/W20_ws_impl_W17/reports/impl/srcnn_utilization_routed.rpt)。
+
+<a id="f96"></a>
+
+### F96：W21 的全部已有图像验证
+
+**基于：** [W21](#w21)（验证同一设计）；[E017](#e017)（数值依据或研究启发）。
+
+**调整：** 使用与 W21 一致的源码、精度和宏，逐位验证全部 13 张图。
+
+**效果与问题：** 全部逐位精确，平均 PSNR 降 0.069514 dB；质量仍因缺 comic 保持暂定。
+
+**记录状态：** `csim_pass` / C 仿真通过；范围 `frame`；步骤 `csim`。
+
+功能：C 仿真通过；bit_exact=true；butterfly MSE=1.8197758558556394e-05；六像素边界 MSE=1.661846957728205e-05。bit_exact 与 MSE 的比较对象见原始测试，不能把定点参考一致解释为浮点 golden 一致。
+
+质量：对 GT 的平均 PSNR=29.088943 dB；相对浮点平均 ΔPSNR=-0.069514 dB。来源：本次仿真（13 张；见原始记录）。
+
+工具：Vitis 2026.1；源码提交：`53ff1579c91a1b7920f8fad1058a4a1aae9d1078`。
+
+**原始证据：** [F96.json](../../exp/configs/F96.json) · [F96.md](../../experiments/F96_ws_all_W21/F96.md) · [config.json](../../experiments/F96_ws_all_W21/config.json) · [metrics.json](../../experiments/F96_ws_all_W21/metrics.json) · [csim.log.txt](../../experiments/F96_ws_all_W21/csim.log.txt)。
+
+<a id="f97"></a>
+
+### F97：W21 更换参数的双帧 RTL 验证
+
+**基于：** [W21](#w21)（验证同一设计）；[F96](#f96)（数值依据或研究启发）。
+
+**调整：** 测量 W21 有限 FIFO 的双帧行为，第二帧重新加载权重与 bias，要求全部输出精确为 104/256。
+
+**效果与问题：** RTL Pass，参数更新精确；558,758 最大延迟、558,787 间隔，比 HLS 多 6.3821%，启动变换开销不能忽略。
+
+**记录状态：** `cosim_complete` / RTL 协仿完成；范围 `frame`；步骤 `cosim`。
+
+继承的 HLS 估计来自 [W21](#w21)，不作为本步骤的新测量。
+
+RTL：Pass；最大延迟 558758 cycles；最大间隔 558787 cycles；相对 HLS 周期增加 6.3821%。
+
+工具：Vitis 2026.1；源码提交：`f04868aaa7922b45389b95d10b62b9c881bb4497`。
+
+**原始证据：** [F97.json](../../exp/configs/F97.json) · [F97.md](../../experiments/F97_ws_cosim_W21/F97.md) · [config.json](../../experiments/F97_ws_cosim_W21/config.json) · [metrics.json](../../experiments/F97_ws_cosim_W21/metrics.json) · [verification.json](../../experiments/F97_ws_cosim_W21/verification.json) · [cosim.log.txt](../../experiments/F97_ws_cosim_W21/cosim.log.txt) · [srcnn_cosim.rpt](../../experiments/F97_ws_cosim_W21/reports/sim/srcnn_cosim.rpt)。
+
+<a id="f98"></a>
+
+### F98：W21 的独立 5 ns 布线
+
+**基于：** [W21](#w21)（验证同一设计）；[F97](#f97)（验证同一设计）；[F96](#f96)（数值依据或研究启发）；[W20](#w20)（数值依据或研究启发）。
+
+**调整：** 对符合 HLS 门槛的 W21 独立打包和布线，不复用 W20 的 IP；核对 RTL 和初始化文件哈希。
+
+**效果与问题：** WNS +0.140 ns、TNS 0，通过；F97 周期给出 2.79379 ms/张，作为保守 5 ns 后备实现。
+
+**记录状态：** `impl_complete` / 实现完成，另看时序；范围 `frame`；步骤 `impl`。
+
+继承的 HLS 估计来自 [W21](#w21)，不作为本步骤的新测量。
+
+实现：WNS=0.14 ns；TNS=0 ns；timing_met=true。实际 DSP / BRAM36 / URAM / LUT / FF = 644 / 54.5 / 0 / 42594 / 88806。BRAM36 与 HLS 的 BRAM18K 单位不同。
+
+工具：Vitis 2026.1；源码提交：`166061bbde0a5feeff51600ffa9d63ba9125c3fc`。
+
+**原始证据：** [F98.json](../../exp/configs/F98.json) · [F98.md](../../experiments/F98_ws_impl_W21/F98.md) · [config.json](../../experiments/F98_ws_impl_W21/config.json) · [metrics.json](../../experiments/F98_ws_impl_W21/metrics.json) · [verification.json](../../experiments/F98_ws_impl_W21/verification.json) · [impl.log.txt](../../experiments/F98_ws_impl_W21/impl.log.txt) · [srcnn_setup5_routed.rpt](../../experiments/F98_ws_impl_W21/reports/impl/srcnn_setup5_routed.rpt) · [srcnn_timing_routed.rpt](../../experiments/F98_ws_impl_W21/reports/impl/srcnn_timing_routed.rpt) · [srcnn_utilization_hierarchical_routed.rpt](../../experiments/F98_ws_impl_W21/reports/impl/srcnn_utilization_hierarchical_routed.rpt) · [srcnn_utilization_routed.rpt](../../experiments/F98_ws_impl_W21/reports/impl/srcnn_utilization_routed.rpt)。
+
+<a id="w22"></a>
+
+### W22：相同 W21 RTL 的 4.95 ns 布线
+
+**基于：** [W21](#w21)（验证同一设计）；[F97](#f97)（验证同一设计）；[F98](#f98)（修复后重试）。
+
+**调整：** 只收紧物理时钟到 4.95 ns；综合 1 线程、布局布线 2 线程，93 个 RTL/初始化文件哈希与 W21/F98 一致。
+
+**效果与问题：** WNS +0.047 ns、WHS +0.032 ns、TNS/THS 0，无未布线网络；引用 F97 周期得 2.7658521 ms/张，比 F98 低 1%。当前最短已验证目标，尚未板端验收。
+
+**记录状态：** `impl_complete` / 实现完成，另看时序；范围 `frame`；步骤 `impl`。
+
+继承的 HLS 估计来自 [W21](#w21)，不作为本步骤的新测量。
+
+实现：WNS=0.047 ns；TNS=0 ns；timing_met=true。实际 DSP / BRAM36 / URAM / LUT / FF = 644 / 54.5 / 0 / 42592 / 88806。BRAM36 与 HLS 的 BRAM18K 单位不同。
+
+工具：Vitis 2026.1；源码提交：`43a0900fc4e4b4cce3b3792ed78e6cd2678dbc44`。
+
+**原始证据：** [W22.json](../../exp/configs/W22.json) · [W22.md](../../experiments/W22_ws_clock_4p95_W21/W22.md) · [config.json](../../experiments/W22_ws_clock_4p95_W21/config.json) · [metrics.json](../../experiments/W22_ws_clock_4p95_W21/metrics.json) · [verification.json](../../experiments/W22_ws_clock_4p95_W21/verification.json) · [impl.log.txt](../../experiments/W22_ws_clock_4p95_W21/impl.log.txt) · [srcnn_setup5_routed.rpt](../../experiments/W22_ws_clock_4p95_W21/reports/impl/srcnn_setup5_routed.rpt) · [srcnn_timing_routed.rpt](../../experiments/W22_ws_clock_4p95_W21/reports/impl/srcnn_timing_routed.rpt) · [srcnn_utilization_hierarchical_routed.rpt](../../experiments/W22_ws_clock_4p95_W21/reports/impl/srcnn_utilization_hierarchical_routed.rpt) · [srcnn_utilization_routed.rpt](../../experiments/W22_ws_clock_4p95_W21/reports/impl/srcnn_utilization_routed.rpt)。

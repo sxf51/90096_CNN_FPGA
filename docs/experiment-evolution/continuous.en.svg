@@ -1,187 +1,195 @@
-<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" width="3098" height="4267" viewBox="0 0 3098 4267">
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" width="3098" height="6208" viewBox="0 0 3098 6208">
 <title>Continuing B: pipelines, windows, and loader timing</title>
-<desc>Can direct convolution avoid pixel pipeline restarts, wide selectors, and a one-time loader critical path?. Snapshot 800a87a. Experiment relationships are not Git ancestry.</desc>
+<desc>Can direct convolution avoid pixel pipeline restarts, wide selectors, and a one-time loader critical path?. Snapshot a3d78b7. Experiment relationships are not Git ancestry.</desc>
 <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#778482"/></marker></defs>
-<rect x="0" y="0" width="3098" height="4267" fill="#ffffff"/>
+<rect x="0" y="0" width="3098" height="6208" fill="#ffffff"/>
 <text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">Continuing B: pipelines, windows, and loader timing</text>
 <text x="48" y="81.5" font-size="17" font-weight="400" fill="#435654">Can direct convolution avoid pixel pipeline restarts, wide selectors, and a one-time loader critical path?</text>
 <text x="48" y="114" font-size="16" font-weight="400" fill="#526461">Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.</text>
 <text x="48" y="146" font-size="16" font-weight="400" fill="#526461">Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.</text>
-<path d="M1208.00 363.53 L1208.00 421.00 L1045.00 421.00 L1045.00 469.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2235.00 358.00 L2235.00 421.00 L1255.00 421.00 L1255.00 560.59" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M1475.78 373.00 L1475.78 421.00 L1509.00 421.00 L1509.00 481.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2245.42 358.00 L2245.42 421.00 L2255.00 421.00 L1719.00 421.00 L1719.00 542.79" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M1628.00 324.15 L1628.00 421.00 L2215.00 421.00 L2215.00 590.50 L2215.00 760.00 L1749.00 760.00 L1749.00 903.73" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M1973.00 674.00 L1973.00 760.00 L1749.00 760.00 L1749.00 867.61" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M1045.00 712.00 L1045.00 760.00 L1329.00 760.00 L1329.00 879.87" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M1329.00 1092.54 L1329.00 1177.00 L1186.00 1177.00 L1186.00 1225.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M976.00 1448.41 L976.00 1594.00 L490.00 1594.00 L490.00 1654.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M1186.00 1546.00 L1186.00 1594.00 L1186.00 1669.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M328.84 1927.00 L328.84 1987.00 L258.00 1987.00 L258.00 2050.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M1749.00 1014.69 L1749.00 1177.00 L2487.00 1177.00 L2487.00 1237.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M1372.29 1546.00 L1372.29 1594.00 L1428.00 1594.00 L1509.34 1594.00 L1509.34 1666.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2277.00 1459.09 L2277.00 1594.00 L1892.00 1594.00 L1803.33 1594.00 L1803.33 1666.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M651.16 1927.00 L651.16 1987.00 L722.00 1987.00 L722.00 2035.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M1186.00 1912.00 L1186.00 1987.00 L1189.25 1987.00 L1189.25 2047.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M1509.34 1915.00 L1509.34 1987.00 L1428.00 1987.00 L1352.55 1987.00 L1352.55 2047.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M258.00 2293.00 L258.00 2356.00 L258.00 2419.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M1656.34 1915.00 L1656.34 1987.00 L1660.00 1987.00 L1660.00 2171.50 L1660.00 2356.00 L1693.45 2356.00 L1693.45 2407.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2277.00 1479.86 L2277.00 1594.00 L2023.00 1594.00 L2023.00 1790.50 L2023.00 1987.00 L2023.00 2171.50 L2023.00 2356.00 L1956.11 2356.00 L1956.11 2407.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M1613.13 2674.00 L1613.13 2725.00 L1549.00 2725.00 L1549.00 2785.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1426.00 322.49 L1426.00 421.00 L2053.00 421.00 L2053.00 469.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M794.19 358.00 L794.19 421.00 L833.00 421.00 L1843.00 421.00 L1843.00 561.32" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1158.22 373.00 L1158.22 421.00 L1125.00 421.00 L1125.00 481.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M746.79 358.00 L746.79 421.00 L742.00 421.00 L915.00 421.00 L915.00 497.56" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1006.00 365.57 L1006.00 421.00 L853.00 421.00 L853.00 590.50 L853.00 760.00 L1349.00 760.00 L1349.00 906.48" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1589.00 674.00 L1589.00 760.00 L1582.09 760.00 L1582.09 808.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2053.00 712.00 L2053.00 760.00 L1769.00 760.00 L1769.00 879.87" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1769.00 1043.35 L1769.00 1177.00 L2144.00 1177.00 L2144.00 1225.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2354.00 1479.86 L2354.00 1594.00 L2608.00 1594.00 L2608.00 1654.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1965.41 1546.00 L1965.41 1594.00 L1912.00 1594.00 L1912.00 1669.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2769.16 1927.00 L2769.16 1987.00 L2840.00 1987.00 L2840.00 2050.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1349.00 1029.65 L1349.00 1177.00 L843.00 1177.00 L843.00 1237.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1934.00 1477.87 L1934.00 1594.00 L1670.00 1594.00 L1588.66 1594.00 L1588.66 1666.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1053.00 1506.12 L1053.00 1594.00 L1206.00 1594.00 L1294.67 1594.00 L1294.67 1666.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2446.84 1927.00 L2446.84 1987.00 L2376.00 1987.00 L2376.00 2035.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1912.00 1912.00 L1912.00 1987.00 L1908.75 1987.00 L1908.75 2047.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1588.66 1915.00 L1588.66 1987.00 L1670.00 1987.00 L1745.45 1987.00 L1745.45 2047.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2840.00 2293.00 L2840.00 2356.00 L2840.00 2419.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1441.66 1915.00 L1441.66 1987.00 L1438.00 1987.00 L1438.00 2171.50 L1438.00 2356.00 L1404.55 2356.00 L1404.55 2407.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1008.24 1534.00 L1008.24 1594.00 L1075.00 1594.00 L1075.00 1790.50 L1075.00 1987.00 L1075.00 2171.50 L1075.00 2356.00 L1141.89 2356.00 L1141.89 2407.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1484.87 2674.00 L1484.87 2725.00 L1549.00 2725.00 L1549.00 2785.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
 <path d="M1549.00 3057.50 L1549.00 3118.00 L1549.00 3166.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2573.18 1534.00 L2573.18 1594.00 L2608.00 1594.00 L2608.00 1642.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M2432.67 1939.00 L2432.67 1987.00 L2376.00 1987.00 L2376.00 2035.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M2783.33 1939.00 L2783.33 1987.00 L2840.00 1987.00 L2840.00 2050.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2376.00 2308.00 L2376.00 2356.00 L2376.00 2416.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2840.00 2293.00 L2840.00 2356.00 L2840.00 2404.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2376.00 2665.00 L2376.00 2725.00 L2630.00 2725.00 L2630.00 2832.57" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2743.08 2677.00 L2743.08 2725.00 L2709.00 2725.00 L2749.00 2725.00 L2749.00 2785.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M1781.00 2674.00 L1781.00 2725.00 L2166.00 2725.00 L2166.00 2852.15" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2840.00 2677.00 L2840.00 2725.00 L2586.00 2725.00 L2586.00 2832.57" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M1868.55 2674.00 L1868.55 2725.00 L1902.00 2725.00 L1902.00 2921.50 L1902.00 3118.00 L2398.00 3118.00 L2398.00 3247.62" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M3050.00 2647.24 L3050.00 2725.00 L3203.00 2725.00 L3203.00 2921.50 L3203.00 3118.00 L2818.00 3118.00 L2818.00 3237.38" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2376.00 3070.00 L2376.00 3118.00 L2451.45 3118.00 L2451.45 3178.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
-<path d="M2608.00 3427.00 L2608.00 3487.00 L2608.00 3535.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
-<path d="M2608.00 3832.00 L2608.00 3880.00 L2608.00 3928.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M633.00 1509.54 L633.00 1594.00 L490.00 1594.00 L490.00 1642.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M665.33 1939.00 L665.33 1987.00 L722.00 1987.00 L722.00 2035.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M314.67 1939.00 L314.67 1987.00 L258.00 1987.00 L258.00 2050.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M722.00 2308.00 L722.00 2356.00 L722.00 2416.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M258.00 2293.00 L258.00 2356.00 L258.00 2404.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M722.00 2665.00 L722.00 2725.00 L468.00 2725.00 L468.00 2832.57" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M429.64 2677.00 L429.64 2725.00 L490.00 2725.00 L419.16 2725.00 L419.16 2785.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1317.00 2674.00 L1317.00 2725.00 L932.00 2725.00 L932.00 2852.15" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M258.00 2677.00 L258.00 2725.00 L512.00 2725.00 L512.00 2832.57" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1229.45 2674.00 L1229.45 2725.00 L1196.00 2725.00 L1196.00 2921.50 L1196.00 3118.00 L700.00 3118.00 L700.00 3247.62" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M48.00 2647.24 L48.00 2725.00 L-105.00 2725.00 L-105.00 2921.50 L-105.00 3118.00 L280.00 3118.00 L280.00 3237.38" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M722.00 3070.00 L722.00 3118.00 L646.55 3118.00 L646.55 3178.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M490.00 3427.00 L490.00 3487.00 L490.00 3535.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M490.00 3832.00 L490.00 3880.00 L490.00 3928.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M579.52 4201.00 L579.52 4249.00 L611.00 4249.00 L611.00 4297.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M400.48 4201.00 L400.48 4249.00 L369.00 4249.00 L369.00 4445.50 L369.00 4642.00 L398.56 4642.00 L398.56 4690.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M611.00 4594.00 L611.00 4642.00 L581.44 4642.00 L581.44 4690.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M490.00 4987.00 L490.00 5035.00 L490.00 5083.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M657.77 5380.00 L657.77 5428.00 L712.00 5428.00 L768.67 5428.00 L768.67 5476.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M954.00 5315.00 L954.00 5428.00 L951.56 5428.00 L951.56 5476.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M482.44 5380.00 L482.44 5428.00 L480.00 5428.00 L480.00 5624.50 L480.00 5821.00 L643.00 5821.00 L643.00 5901.63" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M944.00 5773.00 L944.00 5821.00 L920.33 5821.00 L920.33 5869.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
 <g data-id="F01">
-<rect x="835.00" y="469.00" width="420" height="243" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
-<text x="859.00" y="496.00" font-size="17" font-weight="700" fill="#243031">F01</text>
-<text x="859.00" y="527.50" font-size="20" font-weight="700" fill="#243031">Shallow wide FIFOs in LUTRAM</text>
-<text x="859.00" y="563.50" font-size="16" font-weight="400" fill="#243031">Retain T16 and per-pixel</text>
-<text x="859.00" y="587.50" font-size="16" font-weight="400" fill="#243031">scheduling; explicitly bind shallow</text>
-<text x="859.00" y="611.50" font-size="16" font-weight="400" fill="#243031">wide feature FIFOs to LUTRAM.</text>
-<text x="859.00" y="641.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 8.0587 ms / DSP 505</text>
-<text x="859.00" y="671.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="1843.00" y="469.00" width="420" height="243" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1867.00" y="496.00" font-size="17" font-weight="700" fill="#243031">F01</text>
+<text x="1867.00" y="527.50" font-size="20" font-weight="700" fill="#243031">Shallow wide FIFOs in LUTRAM</text>
+<text x="1867.00" y="563.50" font-size="16" font-weight="400" fill="#243031">Retain T16 and per-pixel</text>
+<text x="1867.00" y="587.50" font-size="16" font-weight="400" fill="#243031">scheduling; explicitly bind shallow</text>
+<text x="1867.00" y="611.50" font-size="16" font-weight="400" fill="#243031">wide feature FIFOs to LUTRAM.</text>
+<text x="1867.00" y="641.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 8.0587 ms / DSP 505</text>
+<text x="1867.00" y="671.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
 </g>
 <g data-id="F02">
-<rect x="1299.00" y="481.00" width="420" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
-<text x="1323.00" y="508.00" font-size="17" font-weight="700" fill="#243031">F02</text>
-<text x="1323.00" y="539.50" font-size="20" font-weight="700" fill="#243031">Conv3 line buffers in URAM</text>
-<text x="1323.00" y="575.50" font-size="16" font-weight="400" fill="#243031">Move four wide buffer rows into 20</text>
-<text x="1323.00" y="599.50" font-size="16" font-weight="400" fill="#243031">URAM blocks.</text>
-<text x="1323.00" y="629.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 8.0587 ms / DSP 505</text>
-<text x="1323.00" y="659.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="915.00" y="481.00" width="420" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="939.00" y="508.00" font-size="17" font-weight="700" fill="#243031">F02</text>
+<text x="939.00" y="539.50" font-size="20" font-weight="700" fill="#243031">Conv3 line buffers in URAM</text>
+<text x="939.00" y="575.50" font-size="16" font-weight="400" fill="#243031">Move four wide buffer rows into 20</text>
+<text x="939.00" y="599.50" font-size="16" font-weight="400" fill="#243031">URAM blocks.</text>
+<text x="939.00" y="629.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 8.0587 ms / DSP 505</text>
+<text x="939.00" y="659.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
 </g>
 <g data-id="F03">
-<rect x="1329.00" y="808.00" width="420" height="321" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="1353.00" y="835.00" font-size="17" font-weight="700" fill="#243031">F03</text>
-<text x="1353.00" y="866.50" font-size="20" font-weight="700" fill="#243031">Continuous MACs with</text>
-<text x="1353.00" y="896.50" font-size="20" font-weight="700" fill="#243031">original padding</text>
-<text x="1353.00" y="932.50" font-size="16" font-weight="400" fill="#243031">Separate window generation and MAC</text>
-<text x="1353.00" y="956.50" font-size="16" font-weight="400" fill="#243031">engines; run all pixels/groups in</text>
-<text x="1353.00" y="980.50" font-size="16" font-weight="400" fill="#243031">continuous II1 loops with</text>
-<text x="1353.00" y="1004.50" font-size="16" font-weight="400" fill="#243031">registered balanced adder trees.</text>
-<text x="1353.00" y="1034.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
-<text x="1353.00" y="1058.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
-<text x="1353.00" y="1088.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+<rect x="1349.00" y="808.00" width="420" height="321" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1373.00" y="835.00" font-size="17" font-weight="700" fill="#243031">F03</text>
+<text x="1373.00" y="866.50" font-size="20" font-weight="700" fill="#243031">Continuous MACs with</text>
+<text x="1373.00" y="896.50" font-size="20" font-weight="700" fill="#243031">original padding</text>
+<text x="1373.00" y="932.50" font-size="16" font-weight="400" fill="#243031">Separate window generation and MAC</text>
+<text x="1373.00" y="956.50" font-size="16" font-weight="400" fill="#243031">engines; run all pixels/groups in</text>
+<text x="1373.00" y="980.50" font-size="16" font-weight="400" fill="#243031">continuous II1 loops with</text>
+<text x="1373.00" y="1004.50" font-size="16" font-weight="400" fill="#243031">registered balanced adder trees.</text>
+<text x="1373.00" y="1034.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="1373.00" y="1058.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
+<text x="1373.00" y="1088.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
 </g>
 <g data-id="F04">
-<rect x="976.00" y="1225.00" width="420" height="321" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="1000.00" y="1252.00" font-size="17" font-weight="700" fill="#243031">F04</text>
-<text x="1000.00" y="1283.50" font-size="20" font-weight="700" fill="#243031">Continuous MACs and online</text>
-<text x="1000.00" y="1313.50" font-size="20" font-weight="700" fill="#243031">padding, T16</text>
-<text x="1000.00" y="1349.50" font-size="16" font-weight="400" fill="#243031">Read later rows while emitting</text>
-<text x="1000.00" y="1373.50" font-size="16" font-weight="400" fill="#243031">replicated boundaries to reduce</text>
-<text x="1000.00" y="1397.50" font-size="16" font-weight="400" fill="#243031">whole-row read-then-write serial</text>
-<text x="1000.00" y="1421.50" font-size="16" font-weight="400" fill="#243031">phases.</text>
-<text x="1000.00" y="1451.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
-<text x="1000.00" y="1475.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
-<text x="1000.00" y="1505.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+<rect x="1934.00" y="1225.00" width="420" height="321" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1958.00" y="1252.00" font-size="17" font-weight="700" fill="#243031">F04</text>
+<text x="1958.00" y="1283.50" font-size="20" font-weight="700" fill="#243031">Continuous MACs and online</text>
+<text x="1958.00" y="1313.50" font-size="20" font-weight="700" fill="#243031">padding, T16</text>
+<text x="1958.00" y="1349.50" font-size="16" font-weight="400" fill="#243031">Read later rows while emitting</text>
+<text x="1958.00" y="1373.50" font-size="16" font-weight="400" fill="#243031">replicated boundaries to reduce</text>
+<text x="1958.00" y="1397.50" font-size="16" font-weight="400" fill="#243031">whole-row read-then-write serial</text>
+<text x="1958.00" y="1421.50" font-size="16" font-weight="400" fill="#243031">phases.</text>
+<text x="1958.00" y="1451.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="1958.00" y="1475.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
+<text x="1958.00" y="1505.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
 </g>
 <g data-id="F05">
-<rect x="280.00" y="1654.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="304.00" y="1681.00" font-size="17" font-weight="700" fill="#243031">F05</text>
-<text x="304.00" y="1712.50" font-size="20" font-weight="700" fill="#243031">Continuous MACs and online</text>
-<text x="304.00" y="1742.50" font-size="20" font-weight="700" fill="#243031">padding, T8</text>
-<text x="304.00" y="1778.50" font-size="16" font-weight="400" fill="#243031">Increase parallelism and measure T8</text>
-<text x="304.00" y="1802.50" font-size="16" font-weight="400" fill="#243031">time/resource costs.</text>
-<text x="304.00" y="1832.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
-<text x="304.00" y="1856.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
-<text x="304.00" y="1886.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+<rect x="2398.00" y="1654.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2422.00" y="1681.00" font-size="17" font-weight="700" fill="#243031">F05</text>
+<text x="2422.00" y="1712.50" font-size="20" font-weight="700" fill="#243031">Continuous MACs and online</text>
+<text x="2422.00" y="1742.50" font-size="20" font-weight="700" fill="#243031">padding, T8</text>
+<text x="2422.00" y="1778.50" font-size="16" font-weight="400" fill="#243031">Increase parallelism and measure T8</text>
+<text x="2422.00" y="1802.50" font-size="16" font-weight="400" fill="#243031">time/resource costs.</text>
+<text x="2422.00" y="1832.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="2422.00" y="1856.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
+<text x="2422.00" y="1886.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
 </g>
 <g data-id="F06">
-<rect x="976.00" y="1669.00" width="420" height="243" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="1000.00" y="1696.00" font-size="17" font-weight="700" fill="#243031">F06</text>
-<text x="1000.00" y="1727.50" font-size="20" font-weight="700" fill="#243031">Continuous T16, 3.33 ns</text>
-<text x="1000.00" y="1763.50" font-size="16" font-weight="400" fill="#243031">Retain T16 and tighten the target</text>
-<text x="1000.00" y="1787.50" font-size="16" font-weight="400" fill="#243031">period.</text>
-<text x="1000.00" y="1817.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
-<text x="1000.00" y="1841.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
-<text x="1000.00" y="1871.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+<rect x="1702.00" y="1669.00" width="420" height="243" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1726.00" y="1696.00" font-size="17" font-weight="700" fill="#243031">F06</text>
+<text x="1726.00" y="1727.50" font-size="20" font-weight="700" fill="#243031">Continuous T16, 3.33 ns</text>
+<text x="1726.00" y="1763.50" font-size="16" font-weight="400" fill="#243031">Retain T16 and tighten the target</text>
+<text x="1726.00" y="1787.50" font-size="16" font-weight="400" fill="#243031">period.</text>
+<text x="1726.00" y="1817.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="1726.00" y="1841.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
+<text x="1726.00" y="1871.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
 </g>
 <g data-id="F07">
-<rect x="48.00" y="2050.00" width="420" height="243" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="72.00" y="2077.00" font-size="17" font-weight="700" fill="#243031">F07</text>
-<text x="72.00" y="2108.50" font-size="20" font-weight="700" fill="#243031">Continuous T8, 3.33 ns</text>
-<text x="72.00" y="2144.50" font-size="16" font-weight="400" fill="#243031">Combine greater parallelism with a</text>
-<text x="72.00" y="2168.50" font-size="16" font-weight="400" fill="#243031">tighter target.</text>
-<text x="72.00" y="2198.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
-<text x="72.00" y="2222.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
-<text x="72.00" y="2252.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+<rect x="2630.00" y="2050.00" width="420" height="243" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2654.00" y="2077.00" font-size="17" font-weight="700" fill="#243031">F07</text>
+<text x="2654.00" y="2108.50" font-size="20" font-weight="700" fill="#243031">Continuous T8, 3.33 ns</text>
+<text x="2654.00" y="2144.50" font-size="16" font-weight="400" fill="#243031">Combine greater parallelism with a</text>
+<text x="2654.00" y="2168.50" font-size="16" font-weight="400" fill="#243031">tighter target.</text>
+<text x="2654.00" y="2198.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="2654.00" y="2222.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
+<text x="2654.00" y="2252.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
 </g>
 <g data-id="F08">
-<rect x="2277.00" y="1237.00" width="420" height="297" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
-<text x="2301.00" y="1264.00" font-size="17" font-weight="700" fill="#243031">F08</text>
-<text x="2301.00" y="1295.50" font-size="20" font-weight="700" fill="#243031">Legal split windows,</text>
-<text x="2301.00" y="1325.50" font-size="20" font-weight="700" fill="#243031">original padding</text>
-<text x="2301.00" y="1361.50" font-size="16" font-weight="400" fill="#243031">Replace the complete window stream</text>
-<text x="2301.00" y="1385.50" font-size="16" font-weight="400" fill="#243031">with two 4000-bit FIFOs while</text>
-<text x="2301.00" y="1409.50" font-size="16" font-weight="400" fill="#243031">retaining continuous computation</text>
-<text x="2301.00" y="1433.50" font-size="16" font-weight="400" fill="#243031">and original padding.</text>
-<text x="2301.00" y="1463.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 4.1947 ms / DSP 505</text>
-<text x="2301.00" y="1493.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="633.00" y="1237.00" width="420" height="297" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="657.00" y="1264.00" font-size="17" font-weight="700" fill="#243031">F08</text>
+<text x="657.00" y="1295.50" font-size="20" font-weight="700" fill="#243031">Legal split windows,</text>
+<text x="657.00" y="1325.50" font-size="20" font-weight="700" fill="#243031">original padding</text>
+<text x="657.00" y="1361.50" font-size="16" font-weight="400" fill="#243031">Replace the complete window stream</text>
+<text x="657.00" y="1385.50" font-size="16" font-weight="400" fill="#243031">with two 4000-bit FIFOs while</text>
+<text x="657.00" y="1409.50" font-size="16" font-weight="400" fill="#243031">retaining continuous computation</text>
+<text x="657.00" y="1433.50" font-size="16" font-weight="400" fill="#243031">and original padding.</text>
+<text x="657.00" y="1463.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 4.1947 ms / DSP 505</text>
+<text x="657.00" y="1493.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
 </g>
 <g data-id="F09">
-<rect x="1440.00" y="1666.00" width="420" height="249" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
-<text x="1464.00" y="1693.00" font-size="17" font-weight="700" fill="#243031">F09</text>
-<text x="1464.00" y="1724.50" font-size="20" font-weight="700" fill="#243031">Legal split windows, online</text>
-<text x="1464.00" y="1754.50" font-size="20" font-weight="700" fill="#243031">padding, T16</text>
-<text x="1464.00" y="1790.50" font-size="16" font-weight="400" fill="#243031">Retain synchronized split channels</text>
-<text x="1464.00" y="1814.50" font-size="16" font-weight="400" fill="#243031">and measure online padding at T16.</text>
-<text x="1464.00" y="1844.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 4.1947 ms / DSP 505</text>
-<text x="1464.00" y="1874.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="1238.00" y="1666.00" width="420" height="249" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1262.00" y="1693.00" font-size="17" font-weight="700" fill="#243031">F09</text>
+<text x="1262.00" y="1724.50" font-size="20" font-weight="700" fill="#243031">Legal split windows, online</text>
+<text x="1262.00" y="1754.50" font-size="20" font-weight="700" fill="#243031">padding, T16</text>
+<text x="1262.00" y="1790.50" font-size="16" font-weight="400" fill="#243031">Retain synchronized split channels</text>
+<text x="1262.00" y="1814.50" font-size="16" font-weight="400" fill="#243031">and measure online padding at T16.</text>
+<text x="1262.00" y="1844.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 4.1947 ms / DSP 505</text>
+<text x="1262.00" y="1874.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
 </g>
 <g data-id="F10">
-<rect x="512.00" y="2035.50" width="420" height="272" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="536.00" y="2062.50" font-size="17" font-weight="700" fill="#243031">F10</text>
-<text x="536.00" y="2094.00" font-size="20" font-weight="700" fill="#243031">Legal split windows, online</text>
-<text x="536.00" y="2124.00" font-size="20" font-weight="700" fill="#243031">padding, T8</text>
-<text x="536.00" y="2160.00" font-size="16" font-weight="400" fill="#243031">Fix wide streams and measure</text>
-<text x="536.00" y="2184.00" font-size="16" font-weight="400" fill="#243031">greater parallelism.</text>
-<text x="536.00" y="2214.00" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.114 ms / DSP 1007</text>
-<text x="536.00" y="2244.00" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT/FF; HLS timing</text>
-<text x="536.00" y="2266.50" font-size="15" font-weight="400" fill="#5c6160">warning</text>
+<rect x="2166.00" y="2035.50" width="420" height="272" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2190.00" y="2062.50" font-size="17" font-weight="700" fill="#243031">F10</text>
+<text x="2190.00" y="2094.00" font-size="20" font-weight="700" fill="#243031">Legal split windows, online</text>
+<text x="2190.00" y="2124.00" font-size="20" font-weight="700" fill="#243031">padding, T8</text>
+<text x="2190.00" y="2160.00" font-size="16" font-weight="400" fill="#243031">Fix wide streams and measure</text>
+<text x="2190.00" y="2184.00" font-size="16" font-weight="400" fill="#243031">greater parallelism.</text>
+<text x="2190.00" y="2214.00" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.114 ms / DSP 1007</text>
+<text x="2190.00" y="2244.00" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT/FF; HLS timing</text>
+<text x="2190.00" y="2266.50" font-size="15" font-weight="400" fill="#5c6160">warning</text>
 </g>
 <g data-id="F11">
-<rect x="986.00" y="2047.00" width="420" height="249" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
-<text x="1010.00" y="2074.00" font-size="17" font-weight="700" fill="#243031">F11</text>
-<text x="1010.00" y="2105.50" font-size="20" font-weight="700" fill="#243031">Legal continuous T16, 3.33</text>
-<text x="1010.00" y="2135.50" font-size="20" font-weight="700" fill="#243031">ns</text>
-<text x="1010.00" y="2171.50" font-size="16" font-weight="400" fill="#243031">Fix stream representation and</text>
-<text x="1010.00" y="2195.50" font-size="16" font-weight="400" fill="#243031">measure the tighter T16 target.</text>
-<text x="1010.00" y="2225.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 3.4922 ms / DSP 505</text>
-<text x="1010.00" y="2255.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="1692.00" y="2047.00" width="420" height="249" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1716.00" y="2074.00" font-size="17" font-weight="700" fill="#243031">F11</text>
+<text x="1716.00" y="2105.50" font-size="20" font-weight="700" fill="#243031">Legal continuous T16, 3.33</text>
+<text x="1716.00" y="2135.50" font-size="20" font-weight="700" fill="#243031">ns</text>
+<text x="1716.00" y="2171.50" font-size="16" font-weight="400" fill="#243031">Fix stream representation and</text>
+<text x="1716.00" y="2195.50" font-size="16" font-weight="400" fill="#243031">measure the tighter T16 target.</text>
+<text x="1716.00" y="2225.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 3.4922 ms / DSP 505</text>
+<text x="1716.00" y="2255.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
 </g>
 <g data-id="F12">
-<rect x="48.00" y="2419.50" width="420" height="242" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="72.00" y="2446.50" font-size="17" font-weight="700" fill="#243031">F12</text>
-<text x="72.00" y="2478.00" font-size="20" font-weight="700" fill="#243031">Legal continuous T8, 3.33 ns</text>
-<text x="72.00" y="2514.00" font-size="16" font-weight="400" fill="#243031">Fix stream representation and</text>
-<text x="72.00" y="2538.00" font-size="16" font-weight="400" fill="#243031">measure the tighter T8 target.</text>
-<text x="72.00" y="2568.00" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.7599 ms / DSP 1007</text>
-<text x="72.00" y="2598.00" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT/FF; HLS timing</text>
-<text x="72.00" y="2620.50" font-size="15" font-weight="400" fill="#5c6160">warning</text>
+<rect x="2630.00" y="2419.50" width="420" height="242" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2654.00" y="2446.50" font-size="17" font-weight="700" fill="#243031">F12</text>
+<text x="2654.00" y="2478.00" font-size="20" font-weight="700" fill="#243031">Legal continuous T8, 3.33 ns</text>
+<text x="2654.00" y="2514.00" font-size="16" font-weight="400" fill="#243031">Fix stream representation and</text>
+<text x="2654.00" y="2538.00" font-size="16" font-weight="400" fill="#243031">measure the tighter T8 target.</text>
+<text x="2654.00" y="2568.00" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.7599 ms / DSP 1007</text>
+<text x="2654.00" y="2598.00" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT/FF; HLS timing</text>
+<text x="2654.00" y="2620.50" font-size="15" font-weight="400" fill="#5c6160">warning</text>
 </g>
 <g data-id="F13">
-<rect x="1571.00" y="2407.00" width="420" height="267" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
-<text x="1595.00" y="2434.00" font-size="17" font-weight="700" fill="#243031">F13</text>
-<text x="1595.00" y="2465.50" font-size="20" font-weight="700" fill="#243031">Rotating Conv3 channels, T16</text>
-<text x="1595.00" y="2501.50" font-size="16" font-weight="400" fill="#243031">Rotate used channels away each</text>
-<text x="1595.00" y="2525.50" font-size="16" font-weight="400" fill="#243031">round so multipliers read fixed</text>
-<text x="1595.00" y="2549.50" font-size="16" font-weight="400" fill="#243031">positions; retain registered adder</text>
-<text x="1595.00" y="2573.50" font-size="16" font-weight="400" fill="#243031">trees.</text>
-<text x="1595.00" y="2603.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 4.1947 ms / DSP 505</text>
-<text x="1595.00" y="2633.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="1107.00" y="2407.00" width="420" height="267" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1131.00" y="2434.00" font-size="17" font-weight="700" fill="#243031">F13</text>
+<text x="1131.00" y="2465.50" font-size="20" font-weight="700" fill="#243031">Rotating Conv3 channels, T16</text>
+<text x="1131.00" y="2501.50" font-size="16" font-weight="400" fill="#243031">Rotate used channels away each</text>
+<text x="1131.00" y="2525.50" font-size="16" font-weight="400" fill="#243031">round so multipliers read fixed</text>
+<text x="1131.00" y="2549.50" font-size="16" font-weight="400" fill="#243031">positions; retain registered adder</text>
+<text x="1131.00" y="2573.50" font-size="16" font-weight="400" fill="#243031">trees.</text>
+<text x="1131.00" y="2603.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 4.1947 ms / DSP 505</text>
+<text x="1131.00" y="2633.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
 </g>
 <g data-id="F14">
 <rect x="1339.00" y="2785.50" width="420" height="272" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
@@ -206,133 +214,199 @@
 <text x="1363.00" y="3398.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT; HLS timing warning</text>
 </g>
 <g data-id="F16">
-<rect x="2398.00" y="1642.00" width="420" height="297" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="2422.00" y="1669.00" font-size="17" font-weight="700" fill="#243031">F16</text>
-<text x="2422.00" y="1700.50" font-size="20" font-weight="700" fill="#243031">Exact float-output</text>
-<text x="2422.00" y="1730.50" font-size="20" font-weight="700" fill="#243031">construction PE</text>
-<text x="2422.00" y="1766.50" font-size="16" font-weight="400" fill="#243031">Since all raw 10-bit outputs are</text>
-<text x="2422.00" y="1790.50" font-size="16" font-weight="400" fill="#243031">exactly representable as float,</text>
-<text x="2422.00" y="1814.50" font-size="16" font-weight="400" fill="#243031">construct sign/exponent/mantissa</text>
-<text x="2422.00" y="1838.50" font-size="16" font-weight="400" fill="#243031">directly.</text>
-<text x="2422.00" y="1868.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
-<text x="2422.00" y="1898.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+<rect x="280.00" y="1642.00" width="420" height="297" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="304.00" y="1669.00" font-size="17" font-weight="700" fill="#243031">F16</text>
+<text x="304.00" y="1700.50" font-size="20" font-weight="700" fill="#243031">Exact float-output</text>
+<text x="304.00" y="1730.50" font-size="20" font-weight="700" fill="#243031">construction PE</text>
+<text x="304.00" y="1766.50" font-size="16" font-weight="400" fill="#243031">Since all raw 10-bit outputs are</text>
+<text x="304.00" y="1790.50" font-size="16" font-weight="400" fill="#243031">exactly representable as float,</text>
+<text x="304.00" y="1814.50" font-size="16" font-weight="400" fill="#243031">construct sign/exponent/mantissa</text>
+<text x="304.00" y="1838.50" font-size="16" font-weight="400" fill="#243031">directly.</text>
+<text x="304.00" y="1868.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="304.00" y="1898.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
 </g>
 <g data-id="F17">
-<rect x="2166.00" y="2035.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="2190.00" y="2062.00" font-size="17" font-weight="700" fill="#243031">F17</text>
-<text x="2190.00" y="2093.50" font-size="20" font-weight="700" fill="#243031">Ordinary float-conversion PE</text>
-<text x="2190.00" y="2123.50" font-size="20" font-weight="700" fill="#243031">control</text>
-<text x="2190.00" y="2159.50" font-size="16" font-weight="400" fill="#243031">Measure the original</text>
-<text x="2190.00" y="2183.50" font-size="16" font-weight="400" fill="#243031">conversion/division on the same</text>
-<text x="2190.00" y="2207.50" font-size="16" font-weight="400" fill="#243031">input set.</text>
-<text x="2190.00" y="2237.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
-<text x="2190.00" y="2267.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+<rect x="512.00" y="2035.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="536.00" y="2062.00" font-size="17" font-weight="700" fill="#243031">F17</text>
+<text x="536.00" y="2093.50" font-size="20" font-weight="700" fill="#243031">Ordinary float-conversion PE</text>
+<text x="536.00" y="2123.50" font-size="20" font-weight="700" fill="#243031">control</text>
+<text x="536.00" y="2159.50" font-size="16" font-weight="400" fill="#243031">Measure the original</text>
+<text x="536.00" y="2183.50" font-size="16" font-weight="400" fill="#243031">conversion/division on the same</text>
+<text x="536.00" y="2207.50" font-size="16" font-weight="400" fill="#243031">input set.</text>
+<text x="536.00" y="2237.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="536.00" y="2267.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
 </g>
 <g data-id="F18">
-<rect x="2630.00" y="2050.00" width="420" height="243" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="2654.00" y="2077.00" font-size="17" font-weight="700" fill="#243031">F18</text>
-<text x="2654.00" y="2108.50" font-size="20" font-weight="700" fill="#243031">Exact-float SDK fix</text>
-<text x="2654.00" y="2144.50" font-size="16" font-weight="400" fill="#243031">Fix fp_struct naming and explicit</text>
-<text x="2654.00" y="2168.50" font-size="16" font-weight="400" fill="#243031">sign branches for the installed</text>
-<text x="2654.00" y="2192.50" font-size="16" font-weight="400" fill="#243031">SDK.</text>
-<text x="2654.00" y="2222.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
-<text x="2654.00" y="2252.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+<rect x="48.00" y="2050.00" width="420" height="243" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="2077.00" font-size="17" font-weight="700" fill="#243031">F18</text>
+<text x="72.00" y="2108.50" font-size="20" font-weight="700" fill="#243031">Exact-float SDK fix</text>
+<text x="72.00" y="2144.50" font-size="16" font-weight="400" fill="#243031">Fix fp_struct naming and explicit</text>
+<text x="72.00" y="2168.50" font-size="16" font-weight="400" fill="#243031">sign branches for the installed</text>
+<text x="72.00" y="2192.50" font-size="16" font-weight="400" fill="#243031">SDK.</text>
+<text x="72.00" y="2222.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="72.00" y="2252.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
 </g>
 <g data-id="F19">
-<rect x="2166.00" y="2416.00" width="420" height="249" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
-<text x="2190.00" y="2443.00" font-size="17" font-weight="700" fill="#243031">F19</text>
-<text x="2190.00" y="2474.50" font-size="20" font-weight="700" fill="#243031">Ordinary-conversion SDK fix</text>
-<text x="2190.00" y="2504.50" font-size="20" font-weight="700" fill="#243031">control</text>
-<text x="2190.00" y="2540.50" font-size="16" font-weight="400" fill="#243031">Retain ordinary conversion in the</text>
-<text x="2190.00" y="2564.50" font-size="16" font-weight="400" fill="#243031">corrected probe project.</text>
-<text x="2190.00" y="2594.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
-<text x="2190.00" y="2624.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+<rect x="512.00" y="2416.00" width="420" height="249" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="536.00" y="2443.00" font-size="17" font-weight="700" fill="#243031">F19</text>
+<text x="536.00" y="2474.50" font-size="20" font-weight="700" fill="#243031">Ordinary-conversion SDK fix</text>
+<text x="536.00" y="2504.50" font-size="20" font-weight="700" fill="#243031">control</text>
+<text x="536.00" y="2540.50" font-size="16" font-weight="400" fill="#243031">Retain ordinary conversion in the</text>
+<text x="536.00" y="2564.50" font-size="16" font-weight="400" fill="#243031">corrected probe project.</text>
+<text x="536.00" y="2594.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="536.00" y="2624.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
 </g>
 <g data-id="F20">
-<rect x="2630.00" y="2404.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
-<text x="2654.00" y="2431.00" font-size="17" font-weight="700" fill="#243031">F20</text>
-<text x="2654.00" y="2462.50" font-size="20" font-weight="700" fill="#243031">Valid exact-float</text>
-<text x="2654.00" y="2492.50" font-size="20" font-weight="700" fill="#243031">construction probe</text>
-<text x="2654.00" y="2528.50" font-size="16" font-weight="400" fill="#243031">Rename only the design translation</text>
-<text x="2654.00" y="2552.50" font-size="16" font-weight="400" fill="#243031">unit to kernel.cpp and exhaust all</text>
-<text x="2654.00" y="2576.50" font-size="16" font-weight="400" fill="#243031">1024 output encodings.</text>
-<text x="2654.00" y="2606.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 0 / LUT 242</text>
-<text x="2654.00" y="2636.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+<rect x="48.00" y="2404.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="72.00" y="2431.00" font-size="17" font-weight="700" fill="#243031">F20</text>
+<text x="72.00" y="2462.50" font-size="20" font-weight="700" fill="#243031">Valid exact-float</text>
+<text x="72.00" y="2492.50" font-size="20" font-weight="700" fill="#243031">construction probe</text>
+<text x="72.00" y="2528.50" font-size="16" font-weight="400" fill="#243031">Rename only the design translation</text>
+<text x="72.00" y="2552.50" font-size="16" font-weight="400" fill="#243031">unit to kernel.cpp and exhaust all</text>
+<text x="72.00" y="2576.50" font-size="16" font-weight="400" fill="#243031">1024 output encodings.</text>
+<text x="72.00" y="2606.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 0 / LUT 242</text>
+<text x="72.00" y="2636.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
 </g>
 <g data-id="F21">
-<rect x="2630.00" y="2785.00" width="420" height="273" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
-<text x="2654.00" y="2812.00" font-size="17" font-weight="700" fill="#243031">F21</text>
-<text x="2654.00" y="2843.50" font-size="20" font-weight="700" fill="#243031">Valid ordinary-conversion</text>
-<text x="2654.00" y="2873.50" font-size="20" font-weight="700" fill="#243031">control</text>
-<text x="2654.00" y="2909.50" font-size="16" font-weight="400" fill="#243031">Measure ordinary float conversion</text>
-<text x="2654.00" y="2933.50" font-size="16" font-weight="400" fill="#243031">with matching interfaces and</text>
-<text x="2654.00" y="2957.50" font-size="16" font-weight="400" fill="#243031">samples.</text>
-<text x="2654.00" y="2987.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 3 / LUT 220</text>
-<text x="2654.00" y="3017.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="48.00" y="2785.00" width="420" height="273" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="72.00" y="2812.00" font-size="17" font-weight="700" fill="#243031">F21</text>
+<text x="72.00" y="2843.50" font-size="20" font-weight="700" fill="#243031">Valid ordinary-conversion</text>
+<text x="72.00" y="2873.50" font-size="20" font-weight="700" fill="#243031">control</text>
+<text x="72.00" y="2909.50" font-size="16" font-weight="400" fill="#243031">Measure ordinary float conversion</text>
+<text x="72.00" y="2933.50" font-size="16" font-weight="400" fill="#243031">with matching interfaces and</text>
+<text x="72.00" y="2957.50" font-size="16" font-weight="400" fill="#243031">samples.</text>
+<text x="72.00" y="2987.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 3 / LUT 220</text>
+<text x="72.00" y="3017.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
 </g>
 <g data-id="F22">
-<rect x="2166.00" y="2773.00" width="420" height="297" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
-<text x="2190.00" y="2800.00" font-size="17" font-weight="700" fill="#243031">F22</text>
-<text x="2190.00" y="2831.50" font-size="20" font-weight="700" fill="#243031">Integrate exact output</text>
-<text x="2190.00" y="2861.50" font-size="20" font-weight="700" fill="#243031">encoding, 3 ns</text>
-<text x="2190.00" y="2897.50" font-size="16" font-weight="400" fill="#243031">Replace only fixed-point-to-float</text>
-<text x="2190.00" y="2921.50" font-size="16" font-weight="400" fill="#243031">output encoding, retaining 10-bit</text>
-<text x="2190.00" y="2945.50" font-size="16" font-weight="400" fill="#243031">values and continuous inference</text>
-<text x="2190.00" y="2969.50" font-size="16" font-weight="400" fill="#243031">engines.</text>
-<text x="2190.00" y="2999.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 3.1461 ms / DSP 502</text>
-<text x="2190.00" y="3029.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="512.00" y="2773.00" width="420" height="297" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="536.00" y="2800.00" font-size="17" font-weight="700" fill="#243031">F22</text>
+<text x="536.00" y="2831.50" font-size="20" font-weight="700" fill="#243031">Integrate exact output</text>
+<text x="536.00" y="2861.50" font-size="20" font-weight="700" fill="#243031">encoding, 3 ns</text>
+<text x="536.00" y="2897.50" font-size="16" font-weight="400" fill="#243031">Replace only fixed-point-to-float</text>
+<text x="536.00" y="2921.50" font-size="16" font-weight="400" fill="#243031">output encoding, retaining 10-bit</text>
+<text x="536.00" y="2945.50" font-size="16" font-weight="400" fill="#243031">values and continuous inference</text>
+<text x="536.00" y="2969.50" font-size="16" font-weight="400" fill="#243031">engines.</text>
+<text x="536.00" y="2999.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 3.1461 ms / DSP 502</text>
+<text x="536.00" y="3029.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
 </g>
 <g data-id="F23">
-<rect x="2398.00" y="3178.00" width="420" height="249" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
-<text x="2422.00" y="3205.00" font-size="17" font-weight="700" fill="#243031">F23</text>
-<text x="2422.00" y="3236.50" font-size="20" font-weight="700" fill="#243031">Integrate exact output</text>
-<text x="2422.00" y="3266.50" font-size="20" font-weight="700" fill="#243031">encoding, 2.5 ns</text>
-<text x="2422.00" y="3302.50" font-size="16" font-weight="400" fill="#243031">Tighten the target to locate the</text>
-<text x="2422.00" y="3326.50" font-size="16" font-weight="400" fill="#243031">global critical path.</text>
-<text x="2422.00" y="3356.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.9595 ms / DSP 502</text>
-<text x="2422.00" y="3386.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="280.00" y="3178.00" width="420" height="249" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="304.00" y="3205.00" font-size="17" font-weight="700" fill="#243031">F23</text>
+<text x="304.00" y="3236.50" font-size="20" font-weight="700" fill="#243031">Integrate exact output</text>
+<text x="304.00" y="3266.50" font-size="20" font-weight="700" fill="#243031">encoding, 2.5 ns</text>
+<text x="304.00" y="3302.50" font-size="16" font-weight="400" fill="#243031">Tighten the target to locate the</text>
+<text x="304.00" y="3326.50" font-size="16" font-weight="400" fill="#243031">global critical path.</text>
+<text x="304.00" y="3356.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.9595 ms / DSP 502</text>
+<text x="304.00" y="3386.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
 </g>
 <g data-id="F24">
-<rect x="2398.00" y="3535.00" width="420" height="297" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
-<text x="2422.00" y="3562.00" font-size="17" font-weight="700" fill="#243031">F24</text>
-<text x="2422.00" y="3593.50" font-size="20" font-weight="700" fill="#243031">Explicit three-dimensional</text>
-<text x="2422.00" y="3623.50" font-size="20" font-weight="700" fill="#243031">loader indices</text>
-<text x="2422.00" y="3659.50" font-size="16" font-weight="400" fill="#243031">Replace division/modulo-derived</text>
-<text x="2422.00" y="3683.50" font-size="16" font-weight="400" fill="#243031">addresses with</text>
-<text x="2422.00" y="3707.50" font-size="16" font-weight="400" fill="#243031">output-channel/kernel-row/kernel-co</text>
-<text x="2422.00" y="3731.50" font-size="16" font-weight="400" fill="#243031">lumn counters.</text>
-<text x="2422.00" y="3761.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.8305 ms / DSP 502</text>
-<text x="2422.00" y="3791.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="280.00" y="3535.00" width="420" height="297" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="304.00" y="3562.00" font-size="17" font-weight="700" fill="#243031">F24</text>
+<text x="304.00" y="3593.50" font-size="20" font-weight="700" fill="#243031">Explicit three-dimensional</text>
+<text x="304.00" y="3623.50" font-size="20" font-weight="700" fill="#243031">loader indices</text>
+<text x="304.00" y="3659.50" font-size="16" font-weight="400" fill="#243031">Replace division/modulo-derived</text>
+<text x="304.00" y="3683.50" font-size="16" font-weight="400" fill="#243031">addresses with</text>
+<text x="304.00" y="3707.50" font-size="16" font-weight="400" fill="#243031">output-channel/kernel-row/kernel-co</text>
+<text x="304.00" y="3731.50" font-size="16" font-weight="400" fill="#243031">lumn counters.</text>
+<text x="304.00" y="3761.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.8305 ms / DSP 502</text>
+<text x="304.00" y="3791.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
 </g>
 <g data-id="F25">
-<rect x="2398.00" y="3928.00" width="420" height="273" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="3"/>
-<text x="2422.00" y="3955.00" font-size="17" font-weight="700" fill="#243031">F25</text>
-<text x="2422.00" y="3986.50" font-size="20" font-weight="700" fill="#243031">Disable weight-loader loop</text>
-<text x="2422.00" y="4016.50" font-size="20" font-weight="700" fill="#243031">flattening</text>
-<text x="2422.00" y="4052.50" font-size="16" font-weight="400" fill="#243031">Add LOOP_FLATTEN off only to the</text>
-<text x="2422.00" y="4076.50" font-size="16" font-weight="400" fill="#243031">Conv1 loader inner loop; retain all</text>
-<text x="2422.00" y="4100.50" font-size="16" font-weight="400" fill="#243031">inference engines.</text>
-<text x="2422.00" y="4130.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.6423 ms / DSP 502</text>
-<text x="2422.00" y="4160.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+<rect x="280.00" y="3928.00" width="420" height="273" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="3"/>
+<text x="304.00" y="3955.00" font-size="17" font-weight="700" fill="#243031">F25</text>
+<text x="304.00" y="3986.50" font-size="20" font-weight="700" fill="#243031">Disable weight-loader loop</text>
+<text x="304.00" y="4016.50" font-size="20" font-weight="700" fill="#243031">flattening</text>
+<text x="304.00" y="4052.50" font-size="16" font-weight="400" fill="#243031">Add LOOP_FLATTEN off only to the</text>
+<text x="304.00" y="4076.50" font-size="16" font-weight="400" fill="#243031">Conv1 loader inner loop; retain all</text>
+<text x="304.00" y="4100.50" font-size="16" font-weight="400" fill="#243031">inference engines.</text>
+<text x="304.00" y="4130.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.6423 ms / DSP 502</text>
+<text x="304.00" y="4160.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+</g>
+<g data-id="F26">
+<rect x="401.00" y="4297.00" width="420" height="297" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="425.00" y="4324.00" font-size="17" font-weight="700" fill="#243031">F26</text>
+<text x="425.00" y="4355.50" font-size="20" font-weight="700" fill="#243031">S2P banks and bias shift</text>
+<text x="425.00" y="4385.50" font-size="20" font-weight="700" fill="#243031">loading</text>
+<text x="425.00" y="4421.50" font-size="16" font-weight="400" fill="#243031">Change shared weight banks to</text>
+<text x="425.00" y="4445.50" font-size="16" font-weight="400" fill="#243031">simple dual port and load biases by</text>
+<text x="425.00" y="4469.50" font-size="16" font-weight="400" fill="#243031">fixed-index shifting, isolating</text>
+<text x="425.00" y="4493.50" font-size="16" font-weight="400" fill="#243031">bank-port and write-decoder costs.</text>
+<text x="425.00" y="4523.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.6423 ms / DSP 502</text>
+<text x="425.00" y="4553.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+</g>
+<g data-id="F27">
+<rect x="280.00" y="4690.00" width="420" height="297" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="304.00" y="4717.00" font-size="17" font-weight="700" fill="#243031">F27</text>
+<text x="304.00" y="4748.50" font-size="20" font-weight="700" fill="#243031">Parameter streams and</text>
+<text x="304.00" y="4778.50" font-size="20" font-weight="700" fill="#243031">private layer banks</text>
+<text x="304.00" y="4814.50" font-size="16" font-weight="400" fill="#243031">Convert parameters once inside</text>
+<text x="304.00" y="4838.50" font-size="16" font-weight="400" fill="#243031">DATAFLOW and send three streams to</text>
+<text x="304.00" y="4862.50" font-size="16" font-weight="400" fill="#243031">the engines; each loads its private</text>
+<text x="304.00" y="4886.50" font-size="16" font-weight="400" fill="#243031">S2P LUTRAM before pixels.</text>
+<text x="304.00" y="4916.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.6143 ms / DSP 502</text>
+<text x="304.00" y="4946.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+</g>
+<g data-id="F28">
+<rect x="280.00" y="5083.00" width="420" height="297" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="304.00" y="5110.00" font-size="17" font-weight="700" fill="#243031">F28</text>
+<text x="304.00" y="5141.50" font-size="20" font-weight="700" fill="#243031">Disable private-loader loop</text>
+<text x="304.00" y="5171.50" font-size="20" font-weight="700" fill="#243031">flattening</text>
+<text x="304.00" y="5207.50" font-size="16" font-weight="400" fill="#243031">Add LOOP_FLATTEN off only to the</text>
+<text x="304.00" y="5231.50" font-size="16" font-weight="400" fill="#243031">load_local inner tap loop,</text>
+<text x="304.00" y="5255.50" font-size="16" font-weight="400" fill="#243031">preserving private banks, parameter</text>
+<text x="304.00" y="5279.50" font-size="16" font-weight="400" fill="#243031">streams, and inference arithmetic.</text>
+<text x="304.00" y="5309.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.6151 ms / DSP 502</text>
+<text x="304.00" y="5339.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+</g>
+<g data-id="F29">
+<rect x="734.00" y="5476.00" width="420" height="297" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="758.00" y="5503.00" font-size="17" font-weight="700" fill="#243031">F29</text>
+<text x="758.00" y="5534.50" font-size="20" font-weight="700" fill="#243031">Private-stream direct T8</text>
+<text x="758.00" y="5564.50" font-size="20" font-weight="700" fill="#243031">with registered tree</text>
+<text x="758.00" y="5600.50" font-size="16" font-weight="400" fill="#243031">Change the F28 direct network to</text>
+<text x="758.00" y="5624.50" font-size="16" font-weight="400" fill="#243031">T8, retaining reduction-tree</text>
+<text x="758.00" y="5648.50" font-size="16" font-weight="400" fill="#243031">registers, as a control for</text>
+<text x="758.00" y="5672.50" font-size="16" font-weight="400" fill="#243031">Winograd T8.</text>
+<text x="758.00" y="5702.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.7508 ms / DSP 1004</text>
+<text x="758.00" y="5732.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT/FF</text>
+</g>
+<g data-id="F30">
+<rect x="643.00" y="5869.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="667.00" y="5896.00" font-size="17" font-weight="700" fill="#243031">F30</text>
+<text x="667.00" y="5927.50" font-size="20" font-weight="700" fill="#243031">Direct T8 without tree</text>
+<text x="667.00" y="5957.50" font-size="20" font-weight="700" fill="#243031">registers</text>
+<text x="667.00" y="5993.50" font-size="16" font-weight="400" fill="#243031">Keep F29 parameter streams and T8,</text>
+<text x="667.00" y="6017.50" font-size="16" font-weight="400" fill="#243031">changing only reduction-addition</text>
+<text x="667.00" y="6041.50" font-size="16" font-weight="400" fill="#243031">latency to zero.</text>
+<text x="667.00" y="6071.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.7508 ms / DSP 1004</text>
+<text x="667.00" y="6101.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT</text>
 </g>
 <g data-id="E042">
-<rect x="2025.00" y="221.00" width="420" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
-<text x="2049.00" y="248.00" font-size="17" font-weight="700" fill="#243031">E042 / external parent</text>
-<text x="2049.00" y="279.50" font-size="20" font-weight="700" fill="#243031">T16 at a 4 ns target</text>
-<text x="2049.00" y="315.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 8.0587 ms / DSP 505</text>
+<rect x="542.00" y="221.00" width="420" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="566.00" y="248.00" font-size="17" font-weight="700" fill="#243031">E042 / external parent</text>
+<text x="566.00" y="279.50" font-size="20" font-weight="700" fill="#243031">T16 at a 4 ns target</text>
+<text x="566.00" y="315.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 8.0587 ms / DSP 505</text>
 </g>
 <g data-id="E048">
-<rect x="1208.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
-<text x="1232.00" y="233.00" font-size="17" font-weight="700" fill="#243031">E048 / external parent</text>
-<text x="1232.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Integer carriers for</text>
-<text x="1232.00" y="294.50" font-size="20" font-weight="700" fill="#243031">fixed-point arithmetic</text>
-<text x="1232.00" y="330.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.1386 ms / DSP 254</text>
+<rect x="1006.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1030.00" y="233.00" font-size="17" font-weight="700" fill="#243031">E048 / external parent</text>
+<text x="1030.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Integer carriers for</text>
+<text x="1030.00" y="294.50" font-size="20" font-weight="700" fill="#243031">fixed-point arithmetic</text>
+<text x="1030.00" y="330.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.1386 ms / DSP 254</text>
 </g>
 <g data-id="E070">
-<rect x="1763.00" y="507.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
-<text x="1787.00" y="534.00" font-size="17" font-weight="700" fill="#243031">E070 / external parent</text>
-<text x="1787.00" y="565.50" font-size="20" font-weight="700" fill="#243031">Physical implementation of</text>
-<text x="1787.00" y="595.50" font-size="20" font-weight="700" fill="#243031">E039</text>
-<text x="1787.00" y="631.50" font-size="16" font-weight="700" fill="#243031">Routed WNS -1.277 ns</text>
+<rect x="1379.00" y="507.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1403.00" y="534.00" font-size="17" font-weight="700" fill="#243031">E070 / external parent</text>
+<text x="1403.00" y="565.50" font-size="20" font-weight="700" fill="#243031">Physical implementation of</text>
+<text x="1403.00" y="595.50" font-size="20" font-weight="700" fill="#243031">E039</text>
+<text x="1403.00" y="631.50" font-size="16" font-weight="700" fill="#243031">Routed WNS -1.277 ns</text>
+</g>
+<g data-id="W19">
+<rect x="744.00" y="5148.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="768.00" y="5175.00" font-size="17" font-weight="700" fill="#243031">W19 / external parent</text>
+<text x="768.00" y="5206.50" font-size="20" font-weight="700" fill="#243031">Private parameter streams</text>
+<text x="768.00" y="5236.50" font-size="20" font-weight="700" fill="#243031">for Winograd T8</text>
+<text x="768.00" y="5272.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 645</text>
 </g>
 </svg>

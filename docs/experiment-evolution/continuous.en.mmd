@@ -25,9 +25,15 @@ flowchart TB
   F23["F23<br/>Integrate exact output encoding, 2.5 ns<br/>Tighten the target to locate the global critical path.<br/>HLS estimate 2.9595 ms / DSP 502<br/>HLS timing warning"]
   F24["F24<br/>Explicit three-dimensional loader indices<br/>Replace division/modulo-derived addresses with output-channel/kernel-row/kernel-column counters.<br/>HLS estimate 2.8305 ms / DSP 502<br/>HLS timing warning"]
   F25["F25<br/>Disable weight-loader loop flattening<br/>Add LOOP_FLATTEN off only to the Conv1 loader inner loop; retain all inference engines.<br/>HLS estimate 2.6423 ms / DSP 502<br/>HLS timing warning"]
+  F26["F26<br/>S2P banks and bias shift loading<br/>Change shared weight banks to simple dual port and load biases by fixed-index shifting, isolating bank-port and write-decoder costs.<br/>HLS estimate 2.6423 ms / DSP 502<br/>HLS timing warning"]
+  F27["F27<br/>Parameter streams and private layer banks<br/>Convert parameters once inside DATAFLOW and send three streams to the engines; each loads its private S2P LUTRAM before pixels.<br/>HLS estimate 2.6143 ms / DSP 502<br/>HLS timing warning"]
+  F28["F28<br/>Disable private-loader loop flattening<br/>Add LOOP_FLATTEN off only to the load_local inner tap loop, preserving private banks, parameter streams, and inference arithmetic.<br/>HLS estimate 2.6151 ms / DSP 502<br/>HLS timing warning"]
+  F29["F29<br/>Private-stream direct T8 with registered tree<br/>Change the F28 direct network to T8, retaining reduction-tree registers, as a control for Winograd T8.<br/>HLS estimate 1.7508 ms / DSP 1004<br/>Over budget: LUT/FF"]
+  F30["F30<br/>Direct T8 without tree registers<br/>Keep F29 parameter streams and T8, changing only reduction-addition latency to zero.<br/>HLS estimate 1.7508 ms / DSP 1004<br/>Over budget: LUT"]
   E042["E042 / external parent<br/>T16 at a 4 ns target<br/>HLS estimate 8.0587 ms / DSP 505"]
   E048["E048 / external parent<br/>Integer carriers for fixed-point arithmetic<br/>HLS estimate 29.1386 ms / DSP 254"]
   E070["E070 / external parent<br/>Physical implementation of E039<br/>Routed WNS -1.277 ns"]
+  W19["W19 / external parent<br/>Private parameter streams for Winograd T8<br/>HLS estimate 1.749 ms / DSP 645"]
   E048 -->|Design or parameter baseline| F01
   E042 -.->|Control experiment| F01
   E048 -->|Design or parameter baseline| F02
@@ -64,15 +70,23 @@ flowchart TB
   F22 -.->|Control experiment| F23
   F23 -->|Design or parameter baseline| F24
   F24 -->|Design or parameter baseline| F25
+  F25 -->|Design or parameter baseline| F26
+  F25 -->|Design or parameter baseline| F27
+  F26 -.->|Control experiment| F27
+  F27 -->|Design or parameter baseline| F28
+  F28 -->|Design or parameter baseline| F29
+  W19 -.->|Control experiment| F29
+  F28 -->|Design or parameter baseline| F30
+  F29 -.->|Control experiment| F30
   classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
   class F20 candidate
   classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
-  class F01,F02,F08,F09,F11,F13,F21,F22,F23,F24,F25 warning
+  class F01,F02,F08,F09,F11,F13,F21,F22,F23,F24,F25,F26,F27,F28 warning
   classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
   class F03,F04,F05,F06,F07,F16,F17,F18,F19 failure
   classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
-  class F10,F12,F14,F15 infeasible
+  class F10,F12,F14,F15,F29,F30 infeasible
   classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
   classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
   classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
-  class E042,E048,E070 context
+  class E042,E048,E070,W19 context

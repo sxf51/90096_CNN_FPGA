@@ -289,7 +289,7 @@ def generate_config(config, work):
 
 
 def archive_logs(work, archive):
-    for operation in ("csim", "csynth", "impl", "cosim", "help", "version"):
+    for operation in ("csim", "csynth", "impl", "cosim", "package", "help", "version"):
         path = work / (operation + ".console.log")
         if path.exists():
             text = path.read_text(errors="replace")
@@ -372,6 +372,20 @@ def run(config):
             if config.get("csim_only"):
                 row["status"] = "csim_pass"
             else:
+                predecessor = config.get("synthesis_after")
+                if predecessor:
+                    if not re.fullmatch(EXPERIMENT_ID, predecessor) or predecessor == exp_id:
+                        raise RuntimeError("Invalid synthesis predecessor")
+                    deadline = time.monotonic() + 86400
+                    while True:
+                        completed = list((ROOT / "experiments").glob(predecessor + "_*/metrics.json"))
+                        if completed:
+                            if len(completed) != 1 or json.loads(completed[0].read_text())["id"] != predecessor:
+                                raise RuntimeError("Ambiguous synthesis predecessor archive")
+                            break
+                        if time.monotonic() >= deadline:
+                            raise RuntimeError("Synthesis predecessor wait exceeded24 hours")
+                        time.sleep(5)
                 with lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=86400):
                     code, seconds = invoke(["v++", "-c", "--mode", "hls", "--config", str(cfg), "--work_dir", str(work)],
                                            settings, ROOT, work / "csynth.console.log", min(config.get("synth_timeout", 3600), 3600))

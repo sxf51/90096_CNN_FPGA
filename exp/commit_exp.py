@@ -6,7 +6,8 @@ import re
 from run_exp import ROOT, ARCH_ID, EXPERIMENT_ID, check_protected, lock
 from compact_archive import compact
 
-OWNED = ("exp/", "designs/", "experiments/", "docs/0002-overnight-experiments.md", "docs/0003-architecture-exploration.md")
+OWNED = ("exp/", "designs/", "experiments/", "docs/0002-overnight-experiments.md",
+         "docs/0003-architecture-exploration.md", "docs/0004-t8-weight-loading-plan.md")
 
 
 def commit():

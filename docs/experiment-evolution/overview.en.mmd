@@ -1,4 +1,4 @@
-%% SRCNN experiment overview / Baseline to F25
+%% SRCNN experiment overview / Baseline to W22
 flowchart TB
   baseline["E000 / starting point<br/>Original float32, full maps<br/>522.28 M MAC / frame<br/>BRAM18K 11064; device has 288<br/>Function passes; storage cannot fit"]
   precision["E010-E019 / E062-E071<br/>Precision and independent references<br/>10-bit avg delta PSNR -0.0695 dB<br/>All 8-bit: about -5.18 dB<br/>13 images; missing comic; bit-exact to fixed reference"]
@@ -6,7 +6,7 @@ flowchart TB
   streaming["E030-E033 / E047-E048<br/>Network streams and line buffers<br/>Remove intermediate maps: BRAM18K 168<br/>DSP binding and integer carriers<br/>Weight selectors remain large: LUT 89304"]
   scans["E034-E043 / E057-E067 scans<br/>LUTRAM banks, unrolling, and clock<br/>E043: HLS about 6.9392 ms<br/>DSP 505 / BRAM18K 168<br/>Within resource budget; HLS timing warning"]
   micro["E051-E055 / E071<br/>Multiplier and range controls<br/>DSP / fabric / constant-weight controls<br/>Primitive costs are not network results"]
-  packing["A / P01-P16<br/>Packing: the cost of saving DSPs<br/>INT8 and exact10 primitives pass<br/>P10-P12 networks exceed LUT budget<br/>P13-P16: complete INT16; preparation only"]
+  packing["A / P01-P16<br/>Packing: the cost of saving DSPs<br/>INT8 and exact10 primitives pass<br/>P10-P12 networks exceed LUT budget<br/>P13-P16 measured: direct mixed mapping beats INT16 packing"]
   scatter["C / E050 / E060 / G01-G03<br/>Conv3 scatter<br/>BRAM18K 168 -> 137 -> 87<br/>29.83 -> 37.70 -> 44.14 ms<br/>Less storage; more control and work"]
   memory["S01-S06<br/>DDR probe and fused tiles<br/>DDR scratch ports not exported<br/>B8-B64: less BRAM, halo recomputation<br/>DDR invalid; tiles miss LUT/time budgets"]
   winograd["D / W01-W18<br/>Winograd, continuous tiles, narrow banks<br/>W18: HLS about 4.2274 ms<br/>DSP 326 / LUT 74480<br/>Within resource budget; HLS timing warning"]
@@ -14,7 +14,10 @@ flowchart TB
   combination["C01-C12 / combined experiments<br/>Winograd plus packing/mixed precision<br/>Lowest raw estimate C11: 1.0817 ms<br/>LUT 248797 / FF 307525<br/>Resource limits exclude it from candidate ranking"]
   loader["F16-F24<br/>Output conversion and loader timing<br/>F20: exact float encoding, zero DSPs<br/>F24: explicit 3D weight-loader indices<br/>Global critical path moves to loader counters"]
   f25["F25 / direct-convolution candidate<br/>Disable F24 weight-loader flattening<br/>HLS about 2.64226 ms / DSP 502<br/>BRAM18K 73 / LUT 69976<br/>2.5 ns still warns after clock uncertainty"]
-  verification["E069-E070 / F80-F91<br/>Numerical, RTL, and physical checks<br/>F80: 13 images; F82: two-frame RTL Pass<br/>F81/F84: host OOM; no routed reports<br/>E070 WNS<0; physical timing and board acceptance pending"]
+  private["F26-F28 / private parameters<br/>Stream parameters into engine-owned banks<br/>F28: HLS 2.6151 ms / outside LUT 3170<br/>F26 area hypothesis fails; F27 misses loader-clock gate<br/>F28 passes WS2; F93/F94/F95 verify reload, images, routing"]
+  t8["W19-W21 / F29-F30<br/>Winograd T8 with subkernel-indexed cache<br/>W19 misses LUT budget; W21 fits with 898 LUT spare<br/>Direct T8 controls still exceed budgets<br/>W21: HLS 525237 cycles; F97: RTL 558758 cycles"]
+  verification["E069-E070 / F80-F98 / W20<br/>Numerical, RTL, and physical checks<br/>F93/F97: changed-parameter two-frame RTL Pass<br/>F92/F95/F98: independent 5 ns routing passes<br/>W20 remains diagnostic; missing comic and board acceptance pending"]
+  w22["W22 / selected physical target<br/>Same W21 RTL, routed at 4.95 ns<br/>F97 RTL cycles at the closed target: 2.7658521 ms<br/>WNS +0.047 ns / 1% below F98 at 5 ns<br/>Compute time, not board time; retain F98 fallback"]
   baseline -.->|Numerical reference or research motivation| precision
   baseline -->|Design or parameter baseline| compiler
   baseline -->|Design or parameter baseline| streaming
@@ -34,10 +37,16 @@ flowchart TB
   loader -->|Design or parameter baseline| f25
   f25 -.->|Verify the same design| verification
   scans -.->|Verify the same design| verification
+  f25 -->|Design or parameter baseline| private
+  private -->|Integrate an existing module| t8
+  winograd -->|Design or parameter baseline| t8
+  private -.->|Verify the same design| verification
+  t8 -.->|Verify the same design| verification
+  verification -->|Retry after a fix| w22
   classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
-  class continuous candidate
+  class continuous,verification,w22 candidate
   classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
-  class scans,winograd,loader,f25,verification warning
+  class scans,winograd,loader,f25,private,t8 warning
   classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
   classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
   class baseline,compiler,streaming,packing,memory,combination infeasible

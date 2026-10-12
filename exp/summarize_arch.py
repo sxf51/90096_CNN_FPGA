@@ -46,6 +46,10 @@ def main():
     text += ("The fastest resource-feasible supplied-image point is ["+best["id"]+"]("+best["md_path"]+") at "+best["latency_ms_est"]+"ms HLS-estimated latency. " if best else "No resource-feasible exact frame point is currently available. ")
     text += "Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.\n\n"
     text += "Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.\n\n"
+    ws_path = ROOT / "experiments/weight_loading_state.json"
+    ws = json.loads(ws_path.read_text()) if ws_path.is_file() else None
+    if ws:
+        text += "Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). " + ws["next"] + "\n\n"
     if best:
         text += "## Current Best\n\n"+markdown_table(linked([best]),[
             "id","design","precision_w_a_acc","T_target","clock_target_ns","clock_est_ns","latency_cycles",
@@ -61,8 +65,24 @@ def main():
             if config.get("verify_parent") == best["id"]:
                 related.append({**row,**config.get("verification",{})})
         text += "\nActual verification of the current HLS winner:\n\n"+markdown_table(linked(related),[
-            "id","operation","status","impl_WNS_ns","timing_met","impl_DSP","impl_LUT","impl_FF",
+            "id","operation","status","impl_target_clock_ns","impl_WNS_ns","timing_met","impl_DSP","impl_LUT","impl_FF",
             "impl_BRAM36","impl_URAM","rtl_status","rtl_latency_max","rtl_interval_max","cycle_deviation_pct"])
+    physical_path = ROOT / "experiments/weight_loading_workstream.csv"
+    if physical_path.is_file():
+        physical = list(csv.DictReader(physical_path.open(newline="")))
+        physical = [row for row in physical if row["operation"] == "impl" and
+                    row["status"] == "impl_complete" and row["timing_met"] == "True" and
+                    number(row["rtl_frame_ms_at_route_target"]) is not None and
+                    by_id.get(row["parent"], {}).get("eligible_provisional") == "True"]
+        physical.sort(key=lambda row: number(row["rtl_frame_ms_at_route_target"]))
+        if physical:
+            text += "\n## Verified IP Timing\n\n"
+            text += "Matching-source RTL cycles multiplied by independently closed implementation targets. These times exclude board/DDR/driver overhead, and all image-quality acceptance remains provisional until comic is supplied. The routed resources do not replace the original HLS acceptance gates.\n\n"
+            text += markdown_table(linked(physical),[
+                "id","parent","rtl_source","rtl_latency_cycles","rtl_interval_cycles",
+                "route_target_ns","route_WNS_ns","route_DSP","route_BRAM18K","route_LUT",
+                "route_FF","rtl_frame_ms_at_route_target"])
+            text += "\nTarget minus WNS is a slack-derived estimate; only each implemented target above is accepted. Actual first-five-path and hierarchy reports are linked from each experiment.\n"
     for series in ("P","W","G","S","C","F"):
         points = [row for row in arch if row["series"] == series and not row["operation"]]
         text += "\n## "+series+" Direction\n\n"+DESCRIPTIONS[series]+"\n\n"
@@ -86,6 +106,12 @@ def main():
                                  ". Overlap recovery uses "+overlap["LUT"]+" LUT versus "+mixed["LUT"]+
                                  " LUT for ordinary mixing (difference "+str(number(overlap["LUT"])-number(mixed["LUT"]))+
                                  "). The one-DSP variants still use fabric multiplication; they are not two unrestricted INT16 multiplications implemented solely by one DSP48E2.\n\n")
+                        if number(overlap["LUT"]) > number(mixed["LUT"]):
+                            text += ("At equal II1 and one DSP, overlap repair does not beat the ordinary mixed control: its FF count is "+
+                                     overlap["FF"]+" versus "+mixed["FF"]+", and estimated clock is "+overlap["clock_est_ns"]+
+                                     "ns versus "+mixed["clock_est_ns"]+"ns. Byte-limb reconstruction is exact but uses more DSP than the direct pair. "
+                                     "This measured result gives no resource or timing basis for integrating these INT16 packing variants into the network. "
+                                     "See [parsed utilization categories](int16_area_breakdown.csv) for multiplier/repair/control costs.\n\n")
                     text += "![Complete INT16 pair resources](figs/int16_packing_resources.png)\n\n"
         if series == "C" and all(exp_id in by_id for exp_id in ("C10","W14","W17")):
             combination,wide,narrow = (by_id[exp_id] for exp_id in ("C10","W14","W17"))
@@ -188,12 +214,16 @@ def main():
     text += "- Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).\n"
     if any((ROOT / "experiments" / Path(row["md_path"]).parent / "diagnostics/kernel_oom.txt").is_file()
            for row in rows):
-        text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89-F91 keep the generated flow and set per-run synthesis threads to1; assess their actual routed reports before requesting a larger host. No system swap/global tool settings were changed.\n"
+        text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Assess the archived route and memory evidence before changing hosts. No system swap/global tool settings were changed.\n"
+    if ws:
+        text += "- Section6 unattended decision: preserve runtime float weights and HLS resource gates; keep missing-comic acceptance provisional. A repeated host OOM is archived without changing swap or moving to an unverified host. These decisions are recorded for user review tomorrow in [docs/0004](../docs/0004-t8-weight-loading-plan.md).\n"
     text += "\n## Next Steps\n\nUse the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. Complete the missing image and board/AXI system measurements before claiming deployable performance.\n"
-    audit = ROOT / "experiments/architecture_audit.json"
+    audit = ROOT / "experiments/weight_loading_audit.json"
+    if not audit.is_file():
+        audit = ROOT / "experiments/architecture_audit.json"
     if audit.is_file():
         audit_data = json.loads(audit.read_text())
-        text += "\n## Integrity Audit\n\nFinal local/remote original and first-phase source checksum audit: [architecture_audit.json](architecture_audit.json).\n\n"
+        text += "\n## Integrity Audit\n\nFinal local/remote original and first-phase source checksum and report-provenance audit: ["+audit.name+"]("+audit.name+").\n\n"
         text += markdown_table(audit_data["checks"],["location","manifest","checked_files","pass"])
     text += "\n## Figures\n\n"
     for name,label in (("architecture_pareto","Latency vs DSP by series"),("architecture_dsp_layers","DSP composition"),

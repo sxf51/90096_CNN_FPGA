@@ -7,19 +7,32 @@ flowchart TB
   F82["F82<br/>F25 two-frame C/RTL co-simulation<br/>Run the same F25 RTL on two frames with finite-FIFO profiling and deadlock checks.<br/>RTL Pass / 1068183 cycles<br/>RTL co-simulation complete"]
   F83["F83<br/>F24 C simulation on 13 images<br/>Validate the second candidate on the complete supplied image set.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
   F84["F84<br/>F24 Vivado implementation<br/>Independently measure the second candidate's physical results.<br/>Host OOM; no routed results<br/>Host OOM"]
-  F85["F85<br/>F24 two-frame RTL plan<br/>Plan finite-FIFO, state-reset, and RTL-cycle validation.<br/>Prepared; no archived measurements<br/>No archived measurements"]
-  F86["F86<br/>F23 multi-image C-simulation plan<br/>Plan acceptance of the third candidate on all supplied images.<br/>Prepared; no archived measurements<br/>No archived measurements"]
-  F87["F87<br/>F23 Vivado implementation plan<br/>Plan routed utilization and timing measurements for the third candidate.<br/>Prepared; no archived measurements<br/>No archived measurements"]
-  F88["F88<br/>F23 two-frame RTL plan<br/>Plan finite-FIFO RTL verification for the third candidate.<br/>Prepared; no archived measurements<br/>No archived measurements"]
-  F89["F89<br/>F25 serial implementation retry plan<br/>Retain the generated IP/BD flow and limit Vivado internal threads through a per-run Tcl hook.<br/>Prepared; no archived measurements<br/>No archived measurements"]
+  F85["F85<br/>F24 two-frame RTL verification<br/>Validate finite FIFOs, state reset, and RTL cycles, and recover the complete archive.<br/>RTL Pass / 1061153 cycles<br/>RTL co-simulation complete"]
+  F86["F86<br/>F23 multi-image C simulation<br/>Check the third candidate on all 13 supplied images.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
+  F87["F87<br/>F23 Vivado implementation<br/>Independently measure routed utilization and timing for the third candidate.<br/>Host OOM; no routed results<br/>Host OOM"]
+  F88["F88<br/>Interrupted F23 two-frame RTL verification<br/>Attempt finite-FIFO RTL verification and preserve the actual exit status.<br/>RTL incomplete / unknown cycles<br/>Run failed"]
+  F89["F89<br/>F25 serial implementation retry<br/>Retain the generated IP/BD flow and limit Vivado internal threads through a per-run Tcl hook.<br/>Physical implementation incomplete<br/>Timed out"]
   F90["F90<br/>F24 serial implementation retry plan<br/>Apply the same flow control to the second candidate.<br/>Prepared; no archived measurements<br/>No archived measurements"]
   F91["F91<br/>F23 serial implementation plan<br/>Plan the same thread-limited verification flow for the third candidate.<br/>Prepared; no archived measurements<br/>No archived measurements"]
+  F31["F31<br/>C preflight of the F28 reload testbench<br/>Freeze a two-frame check: the first matches E017 exactly, while changed input, sparse weights, and biases require every second-frame output to equal 104/256.<br/>C simulation passed<br/>C simulation passed"]
+  F92["F92<br/>Retry F25 routing at 5 ns<br/>Reuse hash-checked identical F25 RTL, relaxing only the physical clock to 5 ns and bounding synthesis threads.<br/>Routed WNS 0.568 ns<br/>Implementation complete; check timing separately"]
+  F93["F93<br/>F28 two-frame RTL with changed parameters<br/>Use an independently frozen reload testbench: original parameters on the first frame and changed weights/biases on the second, checking finite FIFOs, reset, and outputs.<br/>RTL Pass / 1059506 cycles<br/>RTL co-simulation complete"]
+  F94["F94<br/>All supplied images on F28<br/>Check all 13 supplied images using an independent copy with matching F28 sources and compilation macros.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
+  F95["F95<br/>Independent F28 routing at 5 ns<br/>Synthesize, place, and route F28 RTL at 5 ns in a separate workspace, archiving its own paths and hierarchical resources.<br/>Routed WNS 0.282 ns<br/>Implementation complete; check timing separately"]
+  W20["W20<br/>Physical-resource diagnostic for W17<br/>F92's small routed/HLS LUT ratio motivates independently implementing W17 for calibration, preserving HLS gates and diagnostic exclusion.<br/>Routed WNS 0.188 ns<br/>Diagnostic only; parent HLS gates retained"]
+  F96["F96<br/>All supplied images on W21<br/>Match W21 sources, precision, and macros and verify every output bit on all 13 images.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
+  F97["F97<br/>W21 two-frame RTL with changed parameters<br/>Measure finite-FIFO behavior across two frames, reloading weights/biases for the second and requiring every output to equal 104/256 exactly.<br/>RTL Pass / 558758 cycles<br/>RTL co-simulation complete"]
+  F98["F98<br/>Independent W21 routing at 5 ns<br/>Package and route HLS-eligible W21 independently, without reusing W20 IP; check RTL and initialization hashes.<br/>Routed WNS 0.14 ns<br/>Implementation complete; check timing separately"]
+  W22["W22<br/>Same W21 RTL routed at 4.95 ns<br/>Tighten only the physical clock to 4.95 ns, with one synthesis and two place/route threads. All 93 RTL/init file hashes match W21/F98.<br/>Routed WNS 0.047 ns<br/>Implementation complete; check timing separately"]
   E017["E017 / external parent<br/>10-bit boundaries and integer reference<br/>C simulation / avg delta PSNR -0.0695 dB"]
   E039["E039 / external parent<br/>DSP T32 LUTRAM control<br/>HLS estimate 29.8302 ms / DSP 251"]
   E043["E043 / external parent<br/>T16 at a 3.33 ns target<br/>HLS estimate 6.9392 ms / DSP 505"]
   F23["F23 / external parent<br/>Integrate exact output encoding, 2.5 ns<br/>HLS estimate 2.9595 ms / DSP 502"]
   F24["F24 / external parent<br/>Explicit three-dimensional loader indices<br/>HLS estimate 2.8305 ms / DSP 502"]
   F25["F25 / external parent<br/>Disable weight-loader loop flattening<br/>HLS estimate 2.6423 ms / DSP 502"]
+  F28["F28 / external parent<br/>Disable private-loader loop flattening<br/>HLS estimate 2.6151 ms / DSP 502"]
+  W17["W17 / external parent<br/>T8 narrow raw-weight banks<br/>HLS estimate 2.1302 ms / DSP 648"]
+  W21["W21 / external parent<br/>Reorder the raw cache by subkernel<br/>HLS estimate 1.749 ms / DSP 644"]
   E043 -.->|Verify the same design| E069
   E017 -.->|Numerical reference or research motivation| E069
   E039 -.->|Verify the same design| E070
@@ -47,14 +60,39 @@ flowchart TB
   F24 -.->|Verify the same design| F90
   F87 -->|Retry after a fix| F91
   F23 -.->|Verify the same design| F91
+  F28 -.->|Verify the same design| F31
+  F25 -.->|Verify the same design| F92
+  F89 -->|Retry after a fix| F92
+  F82 -.->|Verify the same design| F92
+  F28 -.->|Verify the same design| F93
+  F31 -.->|Numerical reference or research motivation| F93
+  F28 -.->|Verify the same design| F94
+  E017 -.->|Numerical reference or research motivation| F94
+  F28 -.->|Verify the same design| F95
+  F93 -.->|Verify the same design| F95
+  F94 -.->|Numerical reference or research motivation| F95
+  W17 -.->|Verify the same design| W20
+  F92 -.->|Control experiment| W20
+  W21 -.->|Verify the same design| F96
+  E017 -.->|Numerical reference or research motivation| F96
+  W21 -.->|Verify the same design| F97
+  F96 -.->|Numerical reference or research motivation| F97
+  W21 -.->|Verify the same design| F98
+  F97 -.->|Verify the same design| F98
+  F96 -.->|Numerical reference or research motivation| F98
+  W20 -.->|Numerical reference or research motivation| F98
+  W21 -.->|Verify the same design| W22
+  F97 -.->|Verify the same design| W22
+  F98 -->|Retry after a fix| W22
   classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
-  class E069,F80,F82,F83 candidate
+  class E069,F80,F82,F83,F85,F86,F31,F92,F93,F94,F95,F96,F97,F98,W22 candidate
   classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
   classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
-  class E070,F81,F84 failure
+  class E070,F81,F84,F87,F88,F89 failure
   classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class W20 infeasible
   classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
-  class F85,F86,F87,F88,F89,F90,F91 planned
+  class F90,F91 planned
   classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
   classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
-  class E017,E039,E043,F23,F24,F25 context
+  class E017,E039,E043,F23,F24,F25,F28,W17,W21 context

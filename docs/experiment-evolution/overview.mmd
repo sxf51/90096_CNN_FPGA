@@ -1,4 +1,4 @@
-%% SRCNN 实验总览 / 从原始结构到 F25
+%% SRCNN 实验总览 / 从原始结构到 W22
 flowchart TB
   baseline["E000 / 起点<br/>原始浮点、完整中间图<br/>522.28 M MAC / frame<br/>BRAM18K 11064，器件仅 288<br/>功能成立，存储结构不可行"]
   precision["E010-E019 / E062-E071<br/>精度与独立参考<br/>10 位平均 ΔPSNR −0.0695 dB<br/>全 8 位约 −5.18 dB<br/>13 图，缺 comic；bit-exact 指定点参考"]
@@ -6,7 +6,7 @@ flowchart TB
   streaming["E030-E033 / E047-E048<br/>整网流连接与行缓存<br/>中间图取消，BRAM18K 168<br/>DSP 绑定、整数承载<br/>权重选择器仍大：LUT 89304"]
   scans["E034-E043 / E057-E067 扫描<br/>LUTRAM 银行、展开与时钟<br/>E043：HLS 约 6.9392 ms<br/>DSP 505 / BRAM18K 168<br/>资源合格；存在 HLS 时序告警"]
   micro["E051-E055 / E071<br/>乘法器和范围控制<br/>DSP / fabric / 常数权重对照<br/>小内核成本不能当作整网结果"]
-  packing["A / P01-P16<br/>Packing：省 DSP 的代价<br/>INT8 与精确十位 PE 成立<br/>P10-P12 整网 LUT 超预算<br/>P13-P16：完整 INT16，仅准备记录"]
+  packing["A / P01-P16<br/>Packing：省 DSP 的代价<br/>INT8 与精确十位 PE 成立<br/>P10-P12 整网 LUT 超预算<br/>P13-P16 已测：普通混合映射优于完整 INT16 Packing"]
   scatter["C / E050 / E060 / G01-G03<br/>Conv3 Scatter<br/>BRAM18K 168 → 137 → 87<br/>29.83 → 37.70 → 44.14 ms<br/>缓存变少，控制与额外工作变多"]
   memory["S01-S06<br/>DDR 探针与分块融合<br/>DDR 探针未导出 scratch 端口<br/>B8-B64：少 BRAM、重算 halo<br/>无有效 DDR；分块 LUT/时间不合格"]
   winograd["D / W01-W18<br/>Winograd → 连续 tile → 窄银行<br/>W18：HLS 约 4.2274 ms<br/>DSP 326 / LUT 74480<br/>资源合格；存在 HLS 时序告警"]
@@ -14,7 +14,10 @@ flowchart TB
   combination["C01-C12 / 组合实验<br/>Winograd + Packing / 混合精度<br/>最快原始估计 C11：1.0817 ms<br/>LUT 248797 / FF 307525<br/>明显超量，不能按最小时间选择"]
   loader["F16-F24<br/>移除输出转换与加载路径瓶颈<br/>F20：精确 float 编码，0 DSP<br/>F24：显式三维权重加载索引<br/>全局关键路径转到加载循环控制"]
   f25["F25 / 当前直接卷积候选<br/>关闭 F24 的权重加载循环合并<br/>HLS 约 2.64226 ms / DSP 502<br/>BRAM18K 73 / LUT 69976<br/>2.5 ns 有 uncertainty 后的时序告警"]
-  verification["E069-E070 / F80-F91<br/>数值、RTL、物理分别验收<br/>F80：13 图；F82：双帧 RTL Pass<br/>F81/F84：主机 OOM，无 routed 报告<br/>E070 WNS<0；物理时序与上板未闭环"]
+  private["F26-F28 / 私有参数<br/>参数流接入各层私有权重银行<br/>F28：HLS 2.6151 ms / 区外 LUT 3170<br/>F26 面积假设失败，F27 未达加载器时钟门槛<br/>F28 达 WS2 门槛；F93/F94/F95 验证重载、多图、布线"]
+  t8["W19-W21 / F29-F30<br/>Winograd T8，缓存按子卷积索引<br/>W19 LUT 超预算；W21 剩 898 LUT 余量<br/>直接卷积 T8 对照仍超预算<br/>W21：HLS 525237 周期；F97：RTL 558758 周期"]
+  verification["E069-E070 / F80-F98 / W20<br/>数值、RTL、物理分别验收<br/>F93/F97：换参数双帧 RTL Pass<br/>F92/F95/F98：独立 5 ns 布线通过<br/>W20 仍仅诊断；缺 comic，板端验收未完成"]
+  w22["W22 / 已选物理目标<br/>相同 W21 RTL，4.95 ns 布线<br/>F97 RTL 周期按通过目标折算：2.7658521 ms<br/>WNS +0.047 ns，比 F98 的 5 ns 低 1%<br/>计算耗时，未板端实测；保留 F98 后备"]
   baseline -.->|数值依据或研究启发| precision
   baseline -->|设计或参数基线| compiler
   baseline -->|设计或参数基线| streaming
@@ -34,10 +37,16 @@ flowchart TB
   loader -->|设计或参数基线| f25
   f25 -.->|验证同一设计| verification
   scans -.->|验证同一设计| verification
+  f25 -->|设计或参数基线| private
+  private -->|集成已有模块| t8
+  winograd -->|设计或参数基线| t8
+  private -.->|验证同一设计| verification
+  t8 -.->|验证同一设计| verification
+  verification -->|修复后重试| w22
   classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
-  class continuous candidate
+  class continuous,verification,w22 candidate
   classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
-  class scans,winograd,loader,f25,verification warning
+  class scans,winograd,loader,f25,private,t8 warning
   classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
   classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
   class baseline,compiler,streaming,packing,memory,combination infeasible

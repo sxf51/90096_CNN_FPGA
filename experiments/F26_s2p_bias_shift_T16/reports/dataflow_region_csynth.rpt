@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'dataflow_region'
+================================================================
+* Date:           Mon Oct 12 05:20:41 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        F26
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  2.50 ns|  2.377 ns|     0.68 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+---------+---------+----------+
+    |  Latency (cycles) |  Latency (absolute) |      Interval     | Pipeline |
+    |   min   |   max   |    min   |    max   |   min   |   max   |   Type   |
+    +---------+---------+----------+----------+---------+---------+----------+
+    |  1040467|  1040467|  2.601 ms|  2.601 ms|  1040415|  1040415|  dataflow|
+    +---------+---------+----------+----------+---------+---------+----------+
+
+    + Detail: 
+        * Instance: 
+        +---------------------------+--------------------------+---------+---------+----------+----------+---------+---------+-----------------------------------------+
+        |                           |                          |  Latency (cycles) |  Latency (absolute) |      Interval     |                 Pipeline                |
+        |          Instance         |          Module          |   min   |   max   |    min   |    max   |   min   |   max   |                   Type                  |
+        +---------------------------+--------------------------+---------+---------+----------+----------+---------+---------+-----------------------------------------+
+        |read_input_U0              |read_input                |    65046|    65046|  0.163 ms|  0.163 ms|    65026|    65026|  loop auto-rewind stp (delay=0 cycle(s))|
+        |online_pad_ap_int_10_4_U0  |online_pad_ap_int_10_4_s  |    69447|    69447|  0.174 ms|  0.174 ms|    69447|    69447|                                       no|
+        |conv12_U0                  |conv12                    |  1040428|  1040428|  2.601 ms|  2.601 ms|  1040415|  1040415|                                 dataflow|
+        |online_pad_pixel2_2_U0     |online_pad_pixel2_2_s     |    67359|    67359|  0.168 ms|  0.168 ms|    67359|    67359|                                       no|
+        |conv3_stream_U0            |conv3_stream              |  1040415|  1040415|  2.601 ms|  2.601 ms|  1040414|  1040414|                                 dataflow|
+        |write_output_U0            |write_output              |    65035|    65035|  0.163 ms|  0.163 ms|    65026|    65026|  loop auto-rewind stp (delay=0 cycle(s))|
+        +---------------------------+--------------------------+---------+---------+----------+----------+---------+---------+-----------------------------------------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      16|    -|
+|FIFO             |        1|     -|     557|     324|    0|
+|Instance         |       54|   502|  102058|   37315|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|      27|    -|
+|Register         |        -|     -|       4|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |       55|   502|  102619|   37682|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |       19|    40|      43|      32|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +---------------------------+--------------------------+---------+-----+-------+-------+-----+
+    |          Instance         |          Module          | BRAM_18K| DSP |   FF  |  LUT  | URAM|
+    +---------------------------+--------------------------+---------+-----+-------+-------+-----+
+    |conv12_U0                  |conv12                    |        8|  452|  64411|  13484|    0|
+    |conv3_stream_U0            |conv3_stream              |       36|   50|  34772|  19190|    0|
+    |online_pad_ap_int_10_4_U0  |online_pad_ap_int_10_4_s  |        1|    0|    194|    890|    0|
+    |online_pad_pixel2_2_U0     |online_pad_pixel2_2_s     |        9|    0|    812|    888|    0|
+    |read_input_U0              |read_input                |        0|    0|   1463|   2298|    0|
+    |write_output_U0            |write_output              |        0|    0|    406|    565|    0|
+    +---------------------------+--------------------------+---------+-----+-------+-------+-----+
+    |Total                      |                          |       54|  502| 102058|  37315|    0|
+    +---------------------------+--------------------------+---------+-----+-------+-------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +-------------+---------+-----+----+-----+------+-----+---------+
+    |     Name    | BRAM_18K|  FF | LUT| URAM| Depth| Bits| Size:D*B|
+    +-------------+---------+-----+----+-----+------+-----+---------+
+    |features2_U  |        0|   99|  67|    0|     4|  320|     1280|
+    |padded1_U    |        0|   99|  67|    0|    16|   10|      160|
+    |padded3_U    |        0|   99|  67|    0|    16|  320|     5120|
+    |raw_U        |        1|  161|  56|    0|   512|   10|     5120|
+    |result_U     |        0|   99|  67|    0|    16|   10|      160|
+    +-------------+---------+-----+----+-----+------+-----+---------+
+    |Total        |        1|  557| 324|    0|   564|  670|    11840|
+    +-------------+---------+-----+----+-----+------+-----+---------+
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |ap_idle                           |       and|   0|  0|   2|           1|           1|
+    |ap_sync_ready                     |       and|   0|  0|   2|           1|           1|
+    |conv12_U0_ap_start                |       and|   0|  0|   2|           1|           1|
+    |conv3_stream_U0_ap_start          |       and|   0|  0|   2|           1|           1|
+    |read_input_U0_ap_start            |       and|   0|  0|   2|           1|           1|
+    |ap_sync_conv12_U0_ap_ready        |        or|   0|  0|   2|           1|           1|
+    |ap_sync_conv3_stream_U0_ap_ready  |        or|   0|  0|   2|           1|           1|
+    |ap_sync_read_input_U0_ap_ready    |        or|   0|  0|   2|           1|           1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  16|           8|           8|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +--------------------------------------+----+-----------+-----+-----------+
+    |                 Name                 | LUT| Input Size| Bits| Total Bits|
+    +--------------------------------------+----+-----------+-----+-----------+
+    |ap_sync_reg_conv12_U0_ap_ready        |   9|          2|    1|          2|
+    |ap_sync_reg_conv3_stream_U0_ap_ready  |   9|          2|    1|          2|
+    |ap_sync_reg_read_input_U0_ap_ready    |   9|          2|    1|          2|
+    +--------------------------------------+----+-----------+-----+-----------+
+    |Total                                 |  27|          6|    3|          6|
+    +--------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +--------------------------------------+---+----+-----+-----------+
+    |                 Name                 | FF| LUT| Bits| Const Bits|
+    +--------------------------------------+---+----+-----+-----------+
+    |ap_sync_ready                         |  1|   0|    1|          0|
+    |ap_sync_reg_conv12_U0_ap_ready        |  1|   0|    1|          0|
+    |ap_sync_reg_conv3_stream_U0_ap_ready  |  1|   0|    1|          0|
+    |ap_sync_reg_read_input_U0_ap_ready    |  1|   0|    1|          0|
+    +--------------------------------------+---+----+-----+-----------+
+    |Total                                 |  4|   0|    4|          0|
+    +--------------------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++----------------------------------------------------------------------------------------+-----+-----+------------+-------------------------------------------------------------------------------+--------------+
+|                                        RTL Ports                                       | Dir | Bits|  Protocol  |                                 Source Object                                 |    C Type    |
++----------------------------------------------------------------------------------------+-----+-----+------------+-------------------------------------------------------------------------------+--------------+
+|m_axi_image_in_0_AWVALID                                                                |  out|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWREADY                                                                |   in|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWADDR                                                                 |  out|   64|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWID                                                                   |  out|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWLEN                                                                  |  out|   32|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWSIZE                                                                 |  out|    3|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWBURST                                                                |  out|    2|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWLOCK                                                                 |  out|    2|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWCACHE                                                                |  out|    4|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWPROT                                                                 |  out|    3|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWQOS                                                                  |  out|    4|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWREGION                                                               |  out|    4|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_AWUSER                                                                 |  out|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_WVALID                                                                 |  out|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_WREADY                                                                 |   in|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_WDATA                                                                  |  out|   32|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_WSTRB                                                                  |  out|    4|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_WLAST                                                                  |  out|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_WID                                                                    |  out|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_WUSER                                                                  |  out|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_ARVALID                                                                |  out|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_ARREADY                                                                |   in|    1|       m_axi|                                                                       image_in|       pointer|
+|m_axi_image_in_0_ARADDR                                                                 |  out|   64|       m_axi|                                                                       image_in|       pointer|
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.

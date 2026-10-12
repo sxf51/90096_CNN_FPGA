@@ -61,9 +61,16 @@ def audit_archives(rows):
         for name,digest in config.get("testbench_sha256", {}).items():
             if hashlib.sha256((archive / "testbench" / name).read_bytes()).hexdigest() != digest:
                 raise RuntimeError("Archived testbench hash mismatch: "+row["id"]+" "+name)
-            original = subprocess.check_output(["git", "show", config["frozen_source_commit"]+":"+name], cwd=ROOT)
+            commit = config.get("frozen_source_commit", config.get("source_commit"))
+            if not commit:
+                raise RuntimeError("Missing testbench source commit: "+row["id"])
+            original_path = name
+            override = config.get("verification_testbench")
+            if override and name == Path(override).name:
+                original_path = override
+            original = subprocess.check_output(["git", "show", commit+":"+original_path], cwd=ROOT)
             if hashlib.sha256(original).hexdigest() != digest:
-                raise RuntimeError("Replayed testbench differs from recorded Git source: "+row["id"]+" "+name)
+                raise RuntimeError("Archived testbench differs from recorded Git source: "+row["id"]+" "+name)
         if not config.get("operation") and number(row.get("latency_cycles")) is not None:
             expected = number(row["latency_cycles"])*max(number(row["clock_target_ns"]),number(row["clock_est_ns"]))/1e6
             if abs(expected-number(row["latency_ms_est"])) > 1e-9:
@@ -83,7 +90,7 @@ def audit_verification_reports(rows):
         if operation not in {"impl", "cosim"}:
             continue
         reports = config.get("verification_reports", [])
-        evidence = (reports + config.get("implementation_files", []) + config.get("verification_diagnostics", []) +
+        evidence = (reports + config.get("partial_implementation_reports", []) + config.get("implementation_files", []) + config.get("implementation_driver_template_files", []) + config.get("verification_diagnostics", []) +
                     config.get("verification_profiles", []))
         if config.get("host_failure"):
             evidence.append(config["host_failure"])

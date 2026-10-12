@@ -1,0 +1,355 @@
+
+
+================================================================
+== Vitis HLS Report for 'engine3_Pipeline_local_load_channels_local_load_taps'
+================================================================
+* Date:           Mon Oct 12 05:27:38 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        F27
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  2.50 ns|  2.419 ns|     0.68 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+-------------------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval |      Pipeline     |
+    |   min   |   max   |    min   |    max   | min | max |        Type       |
+    +---------+---------+----------+----------+-----+-----+-------------------+
+    |      803|      803|  2.007 us|  2.007 us|    0|    0|  loop pipeline stp|
+    +---------+---------+----------+----------+-----+-----+-------------------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +---------------------------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                                       |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |               Loop Name               |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +---------------------------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- local_load_channels_local_load_taps  |      801|      801|         3|          1|          1|   800|       yes|
+        +---------------------------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      82|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|      63|    -|
+|Register         |        -|     -|      32|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|      32|     145|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +---------------------------+----------+----+---+----+------------+------------+
+    |       Variable Name       | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +---------------------------+----------+----+---+----+------------+------------+
+    |add_ln95_1_fu_1246_p2      |         +|   0|  0|  13|           6|           6|
+    |add_ln95_fu_1197_p2        |         +|   0|  0|  17|          10|           1|
+    |add_ln96_fu_1225_p2        |         +|   0|  0|  12|           5|           1|
+    |ap_block_pp0_stage0_11001  |       and|   0|  0|   2|           1|           1|
+    |icmp_ln95_fu_1191_p2       |      icmp|   0|  0|  17|          10|           9|
+    |icmp_ln96_fu_1211_p2       |      icmp|   0|  0|  12|           5|           4|
+    |empty_fu_1239_p3           |    select|   0|  0|   2|           1|           1|
+    |select_ln95_fu_1217_p3     |    select|   0|  0|   5|           1|           1|
+    |ap_enable_pp0              |       xor|   0|  0|   2|           1|           2|
+    +---------------------------+----------+----+---+----+------------+------------+
+    |Total                      |          |   0|  0|  82|          40|          26|
+    +---------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +--------------------------------------+----+-----------+-----+-----------+
+    |                 Name                 | LUT| Input Size| Bits| Total Bits|
+    +--------------------------------------+----+-----------+-----+-----------+
+    |ap_done_int                           |   9|          2|    1|          2|
+    |ap_enable_reg_pp0_iter1               |   9|          2|    1|          2|
+    |ap_sig_allocacmp_indvar_flatten_load  |   9|          2|   10|         20|
+    |indvar_flatten_fu_212                 |   9|          2|   10|         20|
+    |oc_fu_208                             |   9|          2|    6|         12|
+    |params3_blk_n                         |   9|          2|    1|          2|
+    |tap_fu_204                            |   9|          2|    5|         10|
+    +--------------------------------------+----+-----------+-----+-----------+
+    |Total                                 |  63|         14|   34|         68|
+    +--------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +----------------------------------+----+----+-----+-----------+
+    |               Name               | FF | LUT| Bits| Const Bits|
+    +----------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                         |   1|   0|    1|          0|
+    |ap_done_reg                       |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1           |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter2           |   1|   0|    1|          0|
+    |ap_loop_exit_ready_pp0_iter1_reg  |   1|   0|    1|          0|
+    |icmp_ln96_reg_1350                |   1|   0|    1|          0|
+    |indvar_flatten_fu_212             |  10|   0|   10|          0|
+    |oc_fu_208                         |   6|   0|    6|          0|
+    |select_ln95_reg_1355              |   5|   0|    5|          0|
+    |tap_fu_204                        |   5|   0|    5|          0|
+    +----------------------------------+----+----+-----+-----------+
+    |Total                             |  32|   0|   32|          0|
+    +----------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------------------------------------------------------------------------------------------------------------------+-----+-----+------------+--------------------------------------------------------------------------------------------------------------+--------------+
+|                                                       RTL Ports                                                       | Dir | Bits|  Protocol  |                                                 Source Object                                                |    C Type    |
++-----------------------------------------------------------------------------------------------------------------------+-----+-----+------------+--------------------------------------------------------------------------------------------------------------+--------------+
+|ap_clk                                                                                                                 |   in|    1|  ap_ctrl_hs|                                                          engine3_Pipeline_local_load_channels_local_load_taps|  return value|
+|ap_rst                                                                                                                 |   in|    1|  ap_ctrl_hs|                                                          engine3_Pipeline_local_load_channels_local_load_taps|  return value|
+|ap_start                                                                                                               |   in|    1|  ap_ctrl_hs|                                                          engine3_Pipeline_local_load_channels_local_load_taps|  return value|
+|ap_done                                                                                                                |  out|    1|  ap_ctrl_hs|                                                          engine3_Pipeline_local_load_channels_local_load_taps|  return value|
+|ap_idle                                                                                                                |  out|    1|  ap_ctrl_hs|                                                          engine3_Pipeline_local_load_channels_local_load_taps|  return value|
+|ap_ready                                                                                                               |  out|    1|  ap_ctrl_hs|                                                          engine3_Pipeline_local_load_channels_local_load_taps|  return value|
+|params3_dout                                                                                                           |   in|   10|     ap_fifo|                                                                                                       params3|       pointer|
+|params3_empty_n                                                                                                        |   in|    1|     ap_fifo|                                                                                                       params3|       pointer|
+|params3_read                                                                                                           |  out|    1|     ap_fifo|                                                                                                       params3|       pointer|
+|params3_num_data_valid                                                                                                 |   in|    5|     ap_fifo|                                                                                                       params3|       pointer|
+|params3_fifo_cap                                                                                                       |   in|    5|     ap_fifo|                                                                                                       params3|       pointer|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_642_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_642|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_642_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_642|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_642_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_642|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_642_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_642|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_643_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_643|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_643_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_643|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_643_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_643|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_643_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_643|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_655_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_655|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_655_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_655|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_655_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_655|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_655_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_655|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_661_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_661|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_661_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_661|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_661_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_661|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_661_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_661|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_662_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_662|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_662_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_662|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_662_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_662|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_662_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_662|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_664_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_664|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_664_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_664|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_664_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_664|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_664_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_664|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_665_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_665|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_665_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_665|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_665_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_665|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_665_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_665|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_666_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_666|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_666_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_666|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_666_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_666|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_666_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_666|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_667_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_667|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_667_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_667|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_667_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_667|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_667_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_667|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_668_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_668|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_668_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_668|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_668_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_668|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_668_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_668|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_644_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_644|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_644_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_644|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_644_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_644|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_644_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_644|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_645_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_645|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_645_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_645|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_645_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_645|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_645_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_645|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_646_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_646|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_646_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_646|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_646_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_646|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_646_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_646|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_647_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_647|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_647_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_647|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_647_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_647|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_647_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_647|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_648_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_648|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_648_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_648|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_648_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_648|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_648_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_648|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_649_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_649|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_649_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_649|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_649_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_649|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_649_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_649|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_650_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_650|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_650_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_650|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_650_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_650|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_650_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_650|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_651_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_651|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_651_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_651|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_651_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_651|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_651_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_651|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_653_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_653|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_653_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_653|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_653_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_653|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_653_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_653|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_654_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_654|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_654_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_654|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_654_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_654|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_654_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_654|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_656_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_656|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_656_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_656|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_656_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_656|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_656_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_656|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_657_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_657|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_657_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_657|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_657_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_657|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_657_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_657|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_658_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_658|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_658_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_658|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_658_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_658|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_658_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_658|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_659_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_659|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_659_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_659|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_659_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_659|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_659_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_659|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_660_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_660|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_660_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_660|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_660_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_660|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_660_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_660|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_669_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_669|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_669_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_669|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_669_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_669|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_669_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_669|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_670_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_670|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_670_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_670|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_670_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_670|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_670_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_670|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_682_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_682|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_682_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_682|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_682_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_682|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_682_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_682|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_640_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_640|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_640_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_640|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_640_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_640|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_640_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_640|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_641_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_641|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_641_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_641|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_641_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_641|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_641_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_641|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_652_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_652|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_652_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_652|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_652_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_652|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_652_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_652|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_663_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_663|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_663_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_663|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_663_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_663|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_663_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_663|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_674_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_674|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_674_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_674|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_674_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_674|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_674_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_674|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_685_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_685|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_685_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_685|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_685_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_685|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_685_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_685|         array|
+|p_ZZL7engine3RN3hls6streamI7window3Li0EEES3_RNS0_I6ap_intILi10EELi0EEES7_E7weight_address1                             |  out|    4|   ap_memory|                             p_ZZL7engine3RN3hls6streamI7window3Li0EEES3_RNS0_I6ap_intILi10EELi0EEES7_E7weight|         array|
+|p_ZZL7engine3RN3hls6streamI7window3Li0EEES3_RNS0_I6ap_intILi10EELi0EEES7_E7weight_ce1                                  |  out|    1|   ap_memory|                             p_ZZL7engine3RN3hls6streamI7window3Li0EEES3_RNS0_I6ap_intILi10EELi0EEES7_E7weight|         array|
+|p_ZZL7engine3RN3hls6streamI7window3Li0EEES3_RNS0_I6ap_intILi10EELi0EEES7_E7weight_we1                                  |  out|    1|   ap_memory|                             p_ZZL7engine3RN3hls6streamI7window3Li0EEES3_RNS0_I6ap_intILi10EELi0EEES7_E7weight|         array|
+|p_ZZL7engine3RN3hls6streamI7window3Li0EEES3_RNS0_I6ap_intILi10EELi0EEES7_E7weight_d1                                   |  out|   10|   ap_memory|                             p_ZZL7engine3RN3hls6streamI7window3Li0EEES3_RNS0_I6ap_intILi10EELi0EEES7_E7weight|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_671_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_671|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_671_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_671|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_671_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_671|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_671_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_671|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_672_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_672|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_672_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_672|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_672_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_672|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_672_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_672|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_673_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_673|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_673_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_673|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_673_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_673|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_673_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_673|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_675_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_675|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_675_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_675|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_675_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_675|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_675_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_675|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_676_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_676|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_676_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_676|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_676_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_676|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_676_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_676|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_677_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_677|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_677_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_677|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_677_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_677|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_677_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_677|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_678_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_678|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_678_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_678|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_678_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_678|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_678_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_678|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_679_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_679|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_679_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_679|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_679_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_679|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_679_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_679|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_680_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_680|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_680_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_680|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_680_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_680|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_680_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_680|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_681_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_681|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_681_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_681|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_681_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_681|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_681_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_681|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_683_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_683|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_683_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_683|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_683_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_683|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_683_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_683|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_684_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_684|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_684_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_684|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_684_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_684|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_684_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_684|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_address1      |  out|    4|   ap_memory|      engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_ce1           |  out|    1|   ap_memory|      engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_we1           |  out|    1|   ap_memory|      engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_d1            |  out|   10|   ap_memory|      engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_638_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_638|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_638_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_638|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_638_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_638|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_638_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_638|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_639_address1  |  out|    4|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_639|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_639_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_639|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_639_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_639|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_639_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_639|         array|
++-----------------------------------------------------------------------------------------------------------------------+-----+-----+------------+--------------------------------------------------------------------------------------------------------------+--------------+
+

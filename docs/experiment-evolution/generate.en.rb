@@ -17,7 +17,8 @@ STATUS = {
 FLAGS = {
   "未归档测量" => "No archived measurements", "II 未达目标" => "II target missed",
   "HLS 时序警告" => "HLS timing warning", "配置无效" => "Invalid configuration",
-  "主机 OOM" => "Host OOM", "实现时序未达标" => "Routed timing failed"
+  "主机 OOM" => "Host OOM", "实现时序未达标" => "Routed timing failed",
+  "仅诊断，沿用父设计 HLS 门槛" => "Diagnostic only; parent HLS gates retained"
 }.freeze
 
 def number(value, decimals = 4)

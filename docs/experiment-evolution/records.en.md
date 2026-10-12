@@ -2,7 +2,7 @@
 
 [中文版](records.md)
 
-Snapshot: `800a87a`; 153 experiments, 142 result archives, and 11 plans/preparation records.
+Snapshot: `a3d78b7`; 170 experiments, 168 result archives, and 2 plans/preparation records.
 
 Result records include failures, timeouts, and invalid configurations. Edges represent design, parameter, integration, and acceptance dependencies, not sequential Git clone history.
 
@@ -24,10 +24,10 @@ Ordinary synthesis rows may inherit quality from an independent precision refere
 | [A: packing from exact primitives to network cost](#packing) | [P01](#p01) [P02](#p02) [P03](#p03) [P04](#p04) [P05](#p05) [P06](#p06) [P07](#p07) [P08](#p08) [P09](#p09) [P10](#p10) [P11](#p11) [P12](#p12) [P13](#p13) [P14](#p14) [P15](#p15) [P16](#p16) | [Graph](packing.en.svg) |
 | [C: gather/scatter storage and control tradeoffs](#scatter) | [G01](#g01) [G02](#g02) [G03](#g03) | [Graph](scatter.en.svg) |
 | [Storage routes: dataflow, DDR probe, and fused tiles](#memory) | [S01](#s01) [S02](#s02) [S03](#s03) [S04](#s04) [S05](#s05) [S06](#s06) | [Graph](memory.en.svg) |
-| [D: Winograd transforms, scheduling, and weight banks](#winograd) | [W01](#w01) [W02](#w02) [W03](#w03) [W04](#w04) [W05](#w05) [W06](#w06) [W07](#w07) [W08](#w08) [W09](#w09) [W10](#w10) [W11](#w11) [W12](#w12) [W13](#w13) [W14](#w14) [W15](#w15) [W16](#w16) [W17](#w17) [W18](#w18) | [Graph](winograd.en.svg) |
+| [D: Winograd transforms, scheduling, and weight banks](#winograd) | [W01](#w01) [W02](#w02) [W03](#w03) [W04](#w04) [W05](#w05) [W06](#w06) [W07](#w07) [W08](#w08) [W09](#w09) [W10](#w10) [W11](#w11) [W12](#w12) [W13](#w13) [W14](#w14) [W15](#w15) [W16](#w16) [W17](#w17) [W18](#w18) [W19](#w19) [W21](#w21) | [Graph](winograd.en.svg) |
 | [Combinations: can Winograd and packing savings add up?](#combination) | [C01](#c01) [C02](#c02) [C03](#c03) [C04](#c04) [C05](#c05) [C06](#c06) [C07](#c07) [C12](#c12) [C08](#c08) [C09](#c09) [C10](#c10) [C11](#c11) | [Graph](combination.en.svg) |
-| [Continuing B: pipelines, windows, and loader timing](#continuous) | [F01](#f01) [F02](#f02) [F03](#f03) [F04](#f04) [F05](#f05) [F06](#f06) [F07](#f07) [F08](#f08) [F09](#f09) [F10](#f10) [F11](#f11) [F12](#f12) [F13](#f13) [F14](#f14) [F15](#f15) [F16](#f16) [F17](#f17) [F18](#f18) [F19](#f19) [F20](#f20) [F21](#f21) [F22](#f22) [F23](#f23) [F24](#f24) [F25](#f25) | [Graph](continuous.en.svg) |
-| [Candidate verification: separate acceptance steps](#verification) | [E069](#e069) [E070](#e070) [F80](#f80) [F81](#f81) [F82](#f82) [F83](#f83) [F84](#f84) [F85](#f85) [F86](#f86) [F87](#f87) [F88](#f88) [F89](#f89) [F90](#f90) [F91](#f91) | [Graph](verification.en.svg) |
+| [Continuing B: pipelines, windows, and loader timing](#continuous) | [F01](#f01) [F02](#f02) [F03](#f03) [F04](#f04) [F05](#f05) [F06](#f06) [F07](#f07) [F08](#f08) [F09](#f09) [F10](#f10) [F11](#f11) [F12](#f12) [F13](#f13) [F14](#f14) [F15](#f15) [F16](#f16) [F17](#f17) [F18](#f18) [F19](#f19) [F20](#f20) [F21](#f21) [F22](#f22) [F23](#f23) [F24](#f24) [F25](#f25) [F26](#f26) [F27](#f27) [F28](#f28) [F29](#f29) [F30](#f30) | [Graph](continuous.en.svg) |
+| [Candidate verification: separate acceptance steps](#verification) | [E069](#e069) [E070](#e070) [F80](#f80) [F81](#f81) [F82](#f82) [F83](#f83) [F84](#f84) [F85](#f85) [F86](#f86) [F87](#f87) [F88](#f88) [F89](#f89) [F90](#f90) [F91](#f91) [F31](#f31) [F92](#f92) [F93](#f93) [F94](#f94) [F95](#f95) [W20](#w20) [F96](#f96) [F97](#f97) [F98](#f98) [W22](#w22) | [Graph](verification.en.svg) |
 
 <a id="precision"></a>
 
@@ -1939,16 +1939,24 @@ Tool: Vitis 2026.1; source commit: `580a5f33c3aa35ba7101090bf4ebd1d5d59e7a1e`.
 
 **Change:** Directly compute two signed16x16 products with matched interfaces and throughput as the new research baseline.
 
-**Effects and issues:** Only plans/preparation exist in this snapshot; two measured DSPs or achieved II1 cannot be claimed.
+**Effects and issues:** Exact C simulation; 2 DSPs, 57 LUTs, 16 FFs, 66 latency/64 interval cycles. PE only; no network latency inference.
 
-**Status:** `planned` / Prepared; no archived measurements; scope `PE`; step `plan`.
-Additional checks: No archived measurements.
+**Status:** `pass` / Local experiment passed; scope `PE`; step `csim_csynth`.
 
-Planned estimates remain hypotheses in the configuration/data.en.json. They are not displayed as measured resources, II, or latency.
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 4 / 1.813 ns |
+| Latency / interval | 66 / 64 cycles |
+| Registry time conversion | 0.000264 ms (PE scope; converted at 4 ns) |
+| DSP / BRAM18K / URAM | 2 / 0 / 0 |
+| LUT / FF | 57 / 16 |
+| Checked II targets | Met |
 
-Tool: Vitis version not recorded/not applicable; source commit: run source commit not yet archived.
+Function: C simulation passed; bit_exact=true. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
 
-**Original evidence:** [P13.json](../../exp/configs/P13.json).
+Tool: Vitis 2026.1; source commit: `cacc1bda545cbaa3bc3e9fbadf5e9ee7a024cc4c`.
+
+**Original evidence:** [P13.json](../../exp/configs/P13.json) | [P13.md](../../experiments/P13_int16_direct_pair/P13.md) | [config.json](../../experiments/P13_int16_direct_pair/config.json) | [metrics.json](../../experiments/P13_int16_direct_pair/metrics.json) | [csynth.rpt](../../experiments/P13_int16_direct_pair/csynth.rpt) | [csynth.log.txt](../../experiments/P13_int16_direct_pair/csynth.log.txt) | [csim.log.txt](../../experiments/P13_int16_direct_pair/csim.log.txt).
 
 <a id="p14"></a>
 
@@ -1958,16 +1966,24 @@ Tool: Vitis version not recorded/not applicable; source commit: run source commi
 
 **Change:** Split 16-bit operands, combine packed narrow products, and recover both complete 32-bit results.
 
-**Effects and issues:** Count unpacking, partial products, and fabric multipliers. This snapshot has no measured result.
+**Effects and issues:** Exact functionality, but 4 DSPs, 453 LUTs, and 276 FFs cost more than the direct control; DSPs are not saved.
 
-**Status:** `planned` / Prepared; no archived measurements; scope `PE`; step `plan`.
-Additional checks: No archived measurements.
+**Status:** `pass` / Local experiment passed; scope `PE`; step `csim_csynth`.
 
-Planned estimates remain hypotheses in the configuration/data.en.json. They are not displayed as measured resources, II, or latency.
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 4 / 2.818 ns |
+| Latency / interval | 68 / 64 cycles |
+| Registry time conversion | 0.000272 ms (PE scope; converted at 4 ns) |
+| DSP / BRAM18K / URAM | 4 / 0 / 0 |
+| LUT / FF | 453 / 276 |
+| Checked II targets | Met |
 
-Tool: Vitis version not recorded/not applicable; source commit: run source commit not yet archived.
+Function: C simulation passed; bit_exact=true. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
 
-**Original evidence:** [P14.json](../../exp/configs/P14.json).
+Tool: Vitis 2026.1; source commit: `50eab5db29b6fafc50b063d5909f1fb0daaa24e4`.
+
+**Original evidence:** [P14.json](../../exp/configs/P14.json) | [P14.md](../../experiments/P14_int16_limb_packing/P14.md) | [config.json](../../experiments/P14_int16_limb_packing/config.json) | [metrics.json](../../experiments/P14_int16_limb_packing/metrics.json) | [csynth.rpt](../../experiments/P14_int16_limb_packing/csynth.rpt) | [csynth.log.txt](../../experiments/P14_int16_limb_packing/csynth.log.txt) | [csim.log.txt](../../experiments/P14_int16_limb_packing/csim.log.txt).
 
 <a id="p15"></a>
 
@@ -1977,16 +1993,27 @@ Tool: Vitis version not recorded/not applicable; source commit: run source commi
 
 **Change:** Allow field overlap and exactly recover both complete products using fabric arithmetic.
 
-**Effects and issues:** One DSP does not imply the total cost of two complete multiplications. Results await archiving.
+**Effects and issues:** 1 DSP, 747 LUTs, 200 FFs, and a 3.392 ns estimate; more costly and slower than P16 mixed mapping, with HLS timing warnings.
 
-**Status:** `planned` / Prepared; no archived measurements; scope `PE`; step `plan`.
-Additional checks: No archived measurements.
+**Status:** `pass` / Local experiment passed; scope `PE`; step `csim_csynth`.
+Additional checks: HLS timing warning.
 
-Planned estimates remain hypotheses in the configuration/data.en.json. They are not displayed as measured resources, II, or latency.
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 4 / 3.392 ns |
+| Latency / interval | 69 / 64 cycles |
+| Registry time conversion | 0.000276 ms (PE scope; converted at 4 ns) |
+| DSP / BRAM18K / URAM | 1 / 0 / 0 |
+| LUT / FF | 747 / 200 |
+| Checked II targets | Met |
 
-Tool: Vitis version not recorded/not applicable; source commit: run source commit not yet archived.
+HLS 200-871: logic budget 4 - 1.08 = 2.92 ns; maximum warned path estimate 3.392 ns. See the original synthesis log.
 
-**Original evidence:** [P15.json](../../exp/configs/P15.json).
+Function: C simulation passed; bit_exact=true. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Tool: Vitis 2026.1; source commit: `34bac3c1c25d6a7b20c5bfc05ef97d37260372b0`.
+
+**Original evidence:** [P15.json](../../exp/configs/P15.json) | [P15.md](../../experiments/P15_int16_overlap_fabric_repair/P15.md) | [config.json](../../experiments/P15_int16_overlap_fabric_repair/config.json) | [metrics.json](../../experiments/P15_int16_overlap_fabric_repair/metrics.json) | [csynth.rpt](../../experiments/P15_int16_overlap_fabric_repair/csynth.rpt) | [csynth.log.txt](../../experiments/P15_int16_overlap_fabric_repair/csynth.log.txt) | [csim.log.txt](../../experiments/P15_int16_overlap_fabric_repair/csim.log.txt).
 
 <a id="p16"></a>
 
@@ -1996,16 +2023,24 @@ Tool: Vitis version not recorded/not applicable; source commit: run source commi
 
 **Change:** Directly map one product to DSP and one to LUTs, matching P15's resource types.
 
-**Effects and issues:** Use this to assess whether overlap packing beats ordinary mixed mapping. No result exists in this snapshot.
+**Effects and issues:** 1 DSP, 330 LUTs, 16 FFs, and a 2.48 ns estimate beat P15 at the same DSP count. No evidence supports integrating full INT16 packing into the network.
 
-**Status:** `planned` / Prepared; no archived measurements; scope `PE`; step `plan`.
-Additional checks: No archived measurements.
+**Status:** `pass` / Local experiment passed; scope `PE`; step `csim_csynth`.
 
-Planned estimates remain hypotheses in the configuration/data.en.json. They are not displayed as measured resources, II, or latency.
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 4 / 2.48 ns |
+| Latency / interval | 66 / 64 cycles |
+| Registry time conversion | 0.000264 ms (PE scope; converted at 4 ns) |
+| DSP / BRAM18K / URAM | 1 / 0 / 0 |
+| LUT / FF | 330 / 16 |
+| Checked II targets | Met |
 
-Tool: Vitis version not recorded/not applicable; source commit: run source commit not yet archived.
+Function: C simulation passed; bit_exact=true. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
 
-**Original evidence:** [P16.json](../../exp/configs/P16.json).
+Tool: Vitis 2026.1; source commit: `522dea3d16fff9e9272ef2ccf37921359b396e0e`.
+
+**Original evidence:** [P16.json](../../exp/configs/P16.json) | [P16.md](../../experiments/P16_int16_direct_mixed_control/P16.md) | [config.json](../../experiments/P16_int16_direct_mixed_control/config.json) | [metrics.json](../../experiments/P16_int16_direct_mixed_control/metrics.json) | [csynth.rpt](../../experiments/P16_int16_direct_mixed_control/csynth.rpt) | [csynth.log.txt](../../experiments/P16_int16_direct_mixed_control/csynth.log.txt) | [csim.log.txt](../../experiments/P16_int16_direct_mixed_control/csim.log.txt).
 
 <a id="scatter"></a>
 
@@ -2768,6 +2803,65 @@ Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against floa
 Tool: Vitis 2026.1; source commit: `e6ecd9e072d21de4892870138cdf9484a81bce50`.
 
 **Original evidence:** [W18.json](../../exp/configs/W18.json) | [W18.md](../../experiments/W18_narrow_raw_banks_T16/W18.md) | [config.json](../../experiments/W18_narrow_raw_banks_T16/config.json) | [metrics.json](../../experiments/W18_narrow_raw_banks_T16/metrics.json) | [csynth.rpt](../../experiments/W18_narrow_raw_banks_T16/csynth.rpt) | [csynth.log.txt](../../experiments/W18_narrow_raw_banks_T16/csynth.log.txt) | [csim.log.txt](../../experiments/W18_narrow_raw_banks_T16/csim.log.txt).
+
+<a id="w19"></a>
+
+### W19: Private parameter streams for Winograd T8
+
+**Based on:** [W17](#w17) (Design or parameter baseline); [F28](#f28) (Integrate an existing module).
+
+**Change:** Integrate the selected private loader into W17: one converter supplies three layer streams, preserving integer Winograd, continuous tiles, and exact output encoding.
+
+**Effects and issues:** Outside LUTs fall to 3,170, but total LUTs of 83,623 still exceed the 81,984 gate. Exact functionality motivates simplifying the transform cache.
+
+**Status:** `infeasible` / Resource/performance gate not met; scope `frame`; step `csim_csynth`.
+Additional checks: Over budget: LUT.
+
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 3.33 / 2.431 ns |
+| Latency / interval | 525237 / 525238 cycles |
+| Registry time conversion | 1.74903921 ms (frame scope; converted at 3.33 ns) |
+| DSP / BRAM18K / URAM | 645 / 146 / 0 |
+| LUT / FF | 83623 / 130843 |
+| Checked II targets | Met |
+
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against float = -0.069514 dB. Source: [experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json).
+
+Tool: Vitis 2026.1; source commit: `7be52961ca1b0ed0b783afb3109d5de80d4d1ff6`.
+
+**Original evidence:** [W19.json](../../exp/configs/W19.json) | [W19.md](../../experiments/W19_streamed_winograd_T8/W19.md) | [config.json](../../experiments/W19_streamed_winograd_T8/config.json) | [metrics.json](../../experiments/W19_streamed_winograd_T8/metrics.json) | [csynth.rpt](../../experiments/W19_streamed_winograd_T8/csynth.rpt) | [csynth.log.txt](../../experiments/W19_streamed_winograd_T8/csynth.log.txt) | [csim.log.txt](../../experiments/W19_streamed_winograd_T8/csim.log.txt).
+
+<a id="w21"></a>
+
+### W21: Reorder the raw cache by subkernel
+
+**Based on:** [W19](#w19) (Design or parameter baseline).
+
+**Change:** Change only the flat 81-coefficient cache into nine subkernels by nine taps, preserving transform arithmetic and stream counts while removing variable sparse selectors.
+
+**Effects and issues:** 525,237 HLS cycles and 81,086 LUTs pass the budget with only 898 LUTs spare. F96/F97 later validate images and parameter reload; F98/W22 pass routing.
+
+**Status:** `provisional` / Candidate; final acceptance pending; scope `frame`; step `csim_csynth`.
+
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 3.33 / 2.431 ns |
+| Latency / interval | 525237 / 525238 cycles |
+| Registry time conversion | 1.74903921 ms (frame scope; converted at 3.33 ns) |
+| DSP / BRAM18K / URAM | 644 / 146 / 0 |
+| LUT / FF | 81086 / 130057 |
+| Checked II targets | Met |
+
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against float = -0.069514 dB. Source: [experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json).
+
+Tool: Vitis 2026.1; source commit: `255fb6cd0c8f024696e33d9749cd6f2702311dee`.
+
+**Original evidence:** [W21.json](../../exp/configs/W21.json) | [W21.md](../../experiments/W21_subkernel_raw_cache_T8/W21.md) | [config.json](../../experiments/W21_subkernel_raw_cache_T8/config.json) | [metrics.json](../../experiments/W21_subkernel_raw_cache_T8/metrics.json) | [csynth.rpt](../../experiments/W21_subkernel_raw_cache_T8/csynth.rpt) | [csynth.log.txt](../../experiments/W21_subkernel_raw_cache_T8/csynth.log.txt) | [csim.log.txt](../../experiments/W21_subkernel_raw_cache_T8/csim.log.txt).
 
 <a id="combination"></a>
 
@@ -3750,13 +3844,169 @@ Tool: Vitis 2026.1; source commit: `ab5c5e94beb6f6f1374e9bb547b27bf6fe1e055a`.
 
 **Original evidence:** [F25.json](../../exp/configs/F25.json) | [F25.md](../../experiments/F25_nested_weight_loader_T16_2p5ns/F25.md) | [config.json](../../experiments/F25_nested_weight_loader_T16_2p5ns/config.json) | [metrics.json](../../experiments/F25_nested_weight_loader_T16_2p5ns/metrics.json) | [csynth.rpt](../../experiments/F25_nested_weight_loader_T16_2p5ns/csynth.rpt) | [csynth.log.txt](../../experiments/F25_nested_weight_loader_T16_2p5ns/csynth.log.txt) | [csim.log.txt](../../experiments/F25_nested_weight_loader_T16_2p5ns/csim.log.txt).
 
+<a id="f26"></a>
+
+### F26: S2P banks and bias shift loading
+
+**Based on:** [F25](#f25) (Design or parameter baseline).
+
+**Change:** Change shared weight banks to simple dual port and load biases by fixed-index shifting, isolating bank-port and write-decoder costs.
+
+**Effects and issues:** 70,808 total and 33,126 outside LUTs reject the area hypothesis. Shared ownership remains, motivating F27.
+
+**Status:** `provisional` / Candidate; final acceptance pending; scope `frame`; step `csim_csynth`.
+Additional checks: HLS timing warning.
+
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 2.5 / 2.377 ns |
+| Latency / interval | 1056908 / 1056909 cycles |
+| Registry time conversion | 2.64227 ms (frame scope; converted at 2.5 ns) |
+| DSP / BRAM18K / URAM | 502 / 73 / 0 |
+| LUT / FF | 70808 / 126285 |
+| Checked II targets | Met |
+
+HLS 200-871: logic budget 2.5 - 0.675 = 1.825 ns; maximum warned path estimate 2.377 ns. See the original synthesis log.
+
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against float = -0.069514 dB. Source: [experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json).
+
+Tool: Vitis 2026.1; source commit: `499f49417d545659cf945421ca42a2f2715e0db3`.
+
+**Original evidence:** [F26.json](../../exp/configs/F26.json) | [F26.md](../../experiments/F26_s2p_bias_shift_T16/F26.md) | [config.json](../../experiments/F26_s2p_bias_shift_T16/config.json) | [metrics.json](../../experiments/F26_s2p_bias_shift_T16/metrics.json) | [csynth.rpt](../../experiments/F26_s2p_bias_shift_T16/csynth.rpt) | [csynth.log.txt](../../experiments/F26_s2p_bias_shift_T16/csynth.log.txt) | [csim.log.txt](../../experiments/F26_s2p_bias_shift_T16/csim.log.txt).
+
+<a id="f27"></a>
+
+### F27: Parameter streams and private layer banks
+
+**Based on:** [F25](#f25) (Design or parameter baseline); [F26](#f26) (Control experiment).
+
+**Change:** Convert parameters once inside DATAFLOW and send three streams to the engines; each loads its private S2P LUTRAM before pixels.
+
+**Effects and issues:** 61,656 total and 3,170 outside LUTs; weight-predecessor warnings disappear. The 2.419 ns estimate misses this workstream's 2.377 ns loader gate.
+
+**Status:** `provisional` / Candidate; final acceptance pending; scope `frame`; step `csim_csynth`.
+Additional checks: HLS timing warning.
+
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 2.5 / 2.419 ns |
+| Latency / interval | 1045713 / 1045714 cycles |
+| Registry time conversion | 2.6142825 ms (frame scope; converted at 2.5 ns) |
+| DSP / BRAM18K / URAM | 502 / 73 / 0 |
+| LUT / FF | 61656 / 122055 |
+| Checked II targets | Met |
+
+HLS 200-871: logic budget 2.5 - 0.675 = 1.825 ns; maximum warned path estimate 2.419 ns. See the original synthesis log.
+
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against float = -0.069514 dB. Source: [experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json).
+
+Tool: Vitis 2026.1; source commit: `499f49417d545659cf945421ca42a2f2715e0db3`.
+
+**Original evidence:** [F27.json](../../exp/configs/F27.json) | [F27.md](../../experiments/F27_local_streamed_params_T16/F27.md) | [config.json](../../experiments/F27_local_streamed_params_T16/config.json) | [metrics.json](../../experiments/F27_local_streamed_params_T16/metrics.json) | [csynth.rpt](../../experiments/F27_local_streamed_params_T16/csynth.rpt) | [csynth.log.txt](../../experiments/F27_local_streamed_params_T16/csynth.log.txt) | [csim.log.txt](../../experiments/F27_local_streamed_params_T16/csim.log.txt).
+
+<a id="f28"></a>
+
+### F28: Disable private-loader loop flattening
+
+**Based on:** [F27](#f27) (Design or parameter baseline).
+
+**Change:** Add LOOP_FLATTEN off only to the load_local inner tap loop, preserving private banks, parameter streams, and inference arithmetic.
+
+**Effects and issues:** 1,046,029 HLS cycles, 61,553 LUTs, and a 2.377 ns estimate pass all WS2 gates. F93/F94/F95 supply reload RTL, multi-image checks, and 5 ns routing.
+
+**Status:** `provisional` / Candidate; final acceptance pending; scope `frame`; step `csim_csynth`.
+Additional checks: HLS timing warning.
+
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 2.5 / 2.377 ns |
+| Latency / interval | 1046029 / 1046030 cycles |
+| Registry time conversion | 2.6150725 ms (frame scope; converted at 2.5 ns) |
+| DSP / BRAM18K / URAM | 502 / 73 / 0 |
+| LUT / FF | 61553 / 122061 |
+| Checked II targets | Met |
+
+HLS 200-871: logic budget 2.5 - 0.675 = 1.825 ns; maximum warned path estimate 2.377 ns. See the original synthesis log.
+
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against float = -0.069514 dB. Source: [experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json).
+
+Tool: Vitis 2026.1; source commit: `be66ec4da15ab273a4b0647b294b0f4cb37f82eb`.
+
+**Original evidence:** [F28.json](../../exp/configs/F28.json) | [F28.md](../../experiments/F28_local_load_no_flatten_T16/F28.md) | [config.json](../../experiments/F28_local_load_no_flatten_T16/config.json) | [metrics.json](../../experiments/F28_local_load_no_flatten_T16/metrics.json) | [csynth.rpt](../../experiments/F28_local_load_no_flatten_T16/csynth.rpt) | [csynth.log.txt](../../experiments/F28_local_load_no_flatten_T16/csynth.log.txt) | [csim.log.txt](../../experiments/F28_local_load_no_flatten_T16/csim.log.txt).
+
+<a id="f29"></a>
+
+### F29: Private-stream direct T8 with registered tree
+
+**Based on:** [F28](#f28) (Design or parameter baseline); [W19](#w19) (Control experiment).
+
+**Change:** Change the F28 direct network to T8, retaining reduction-tree registers, as a control for Winograd T8.
+
+**Effects and issues:** 525,761 cycles, but 87,869 LUTs and 194,668 FFs exceed budgets. Greater parallelism does not yield a qualified candidate.
+
+**Status:** `infeasible` / Resource/performance gate not met; scope `frame`; step `csim_csynth`.
+Additional checks: Over budget: LUT/FF.
+
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 3.33 / 2.431 ns |
+| Latency / interval | 525761 / 525762 cycles |
+| Registry time conversion | 1.75078413 ms (frame scope; converted at 3.33 ns) |
+| DSP / BRAM18K / URAM | 1004 / 73 / 0 |
+| LUT / FF | 87869 / 194668 |
+| Checked II targets | Met |
+
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against float = -0.069514 dB. Source: [experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json).
+
+Tool: Vitis 2026.1; source commit: `300c27bc3f761d288a8ccb66ef49c27c86023ac2`.
+
+**Original evidence:** [F29.json](../../exp/configs/F29.json) | [F29.md](../../experiments/F29_streamed_direct_T8_tree1/F29.md) | [config.json](../../experiments/F29_streamed_direct_T8_tree1/config.json) | [metrics.json](../../experiments/F29_streamed_direct_T8_tree1/metrics.json) | [csynth.rpt](../../experiments/F29_streamed_direct_T8_tree1/csynth.rpt) | [csynth.log.txt](../../experiments/F29_streamed_direct_T8_tree1/csynth.log.txt) | [csim.log.txt](../../experiments/F29_streamed_direct_T8_tree1/csim.log.txt).
+
+<a id="f30"></a>
+
+### F30: Direct T8 without tree registers
+
+**Based on:** [F28](#f28) (Design or parameter baseline); [F29](#f29) (Control experiment).
+
+**Change:** Keep F29 parameter streams and T8, changing only reduction-addition latency to zero.
+
+**Effects and issues:** FFs fall to 104,834, but LUTs rise to 93,631. Nearly unchanged cycles and excessive LUTs still disqualify the design.
+
+**Status:** `infeasible` / Resource/performance gate not met; scope `frame`; step `csim_csynth`.
+Additional checks: Over budget: LUT.
+
+| HLS measurement/estimate | Value |
+| --- | --- |
+| Target / estimated period | 3.33 / 2.431 ns |
+| Latency / interval | 525757 / 525758 cycles |
+| Registry time conversion | 1.75077081 ms (frame scope; converted at 3.33 ns) |
+| DSP / BRAM18K / URAM | 1004 / 73 / 0 |
+| LUT / FF | 93631 / 104834 |
+| Checked II targets | Met |
+
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against float = -0.069514 dB. Source: [experiments/E017_apfixed_boundary_w10a10/metrics.json](../../experiments/E017_apfixed_boundary_w10a10/metrics.json).
+
+Tool: Vitis 2026.1; source commit: `a35dd4206d868a81ad8ad08014798cc86cd171cd`.
+
+**Original evidence:** [F30.json](../../exp/configs/F30.json) | [F30.md](../../experiments/F30_streamed_direct_T8_tree0/F30.md) | [config.json](../../experiments/F30_streamed_direct_T8_tree0/config.json) | [metrics.json](../../experiments/F30_streamed_direct_T8_tree0/metrics.json) | [csynth.rpt](../../experiments/F30_streamed_direct_T8_tree0/csynth.rpt) | [csynth.log.txt](../../experiments/F30_streamed_direct_T8_tree0/csynth.log.txt) | [csim.log.txt](../../experiments/F30_streamed_direct_T8_tree0/csim.log.txt).
+
 <a id="verification"></a>
 
 ## Candidate verification: separate acceptance steps
 
 What is established for function, RTL cycles, routed timing, and board execution?
 
-[Evolution graph](verification.en.svg). Route evidence: [exp/prepare_final_arch.py](../../exp/prepare_final_arch.py) | [exp/prepare_impl_retries.py](../../exp/prepare_impl_retries.py) | [experiments/final_selection.json](../../experiments/final_selection.json) | [experiments/F82_final_cosim_F25/reports/sim/srcnn_cosim.rpt](../../experiments/F82_final_cosim_F25/reports/sim/srcnn_cosim.rpt).
+[Evolution graph](verification.en.svg). Route evidence: [exp/prepare_final_arch.py](../../exp/prepare_final_arch.py) | [exp/prepare_impl_retries.py](../../exp/prepare_impl_retries.py) | [exp/prepare_ws_verify.py](../../exp/prepare_ws_verify.py) | [experiments/final_selection.json](../../experiments/final_selection.json) | [experiments/WEIGHT_LOADING.md](../../experiments/WEIGHT_LOADING.md) | [experiments/weight_loading_audit.json](../../experiments/weight_loading_audit.json) | [experiments/F82_final_cosim_F25/reports/sim/srcnn_cosim.rpt](../../experiments/F82_final_cosim_F25/reports/sim/srcnn_cosim.rpt).
 
 <a id="e069"></a>
 
@@ -3899,106 +4149,98 @@ Tool: Vitis 2026.1; source commit: `cb2bcc80a424bb07cf6fe41abcf8c160f61ac3ad`.
 
 <a id="f85"></a>
 
-### F85: F24 two-frame RTL plan
+### F85: F24 two-frame RTL verification
 
 **Based on:** [F24](#f24) (Verify the same design); [F83](#f83) (Numerical reference or research motivation).
 
-**Change:** Plan finite-FIFO, state-reset, and RTL-cycle validation.
+**Change:** Validate finite FIFOs, state reset, and RTL cycles, and recover the complete archive.
 
-**Effects and issues:** This snapshot contains a plan only; no completed result is archived.
+**Effects and issues:** RTL Pass; 1,061,153 maximum latency and 1,061,182 interval cycles, about 1.185% above HLS. F24 physical implementation remains separate.
 
-**Status:** `planned` / Prepared; no archived measurements; scope `frame`; step `plan`.
-Additional checks: No archived measurements.
+**Status:** `cosim_complete` / RTL co-simulation complete; scope `frame`; step `cosim`.
 
 Inherited HLS estimates come from [F24](#f24); they are not new measurements from this step.
 
-Planned estimates remain hypotheses in the configuration/data.en.json. They are not displayed as measured resources, II, or latency.
+RTL: Pass; maximum latency 1061153 cycles; maximum interval 1061182 cycles; 1.1853% more cycles than HLS.
 
-Tool: Vitis version not recorded/not applicable; source commit: run source commit not yet archived.
+Tool: Vitis 2026.1; source commit: `f00af13de553617e27eeb47c3477e4609ea6c2ea`.
 
-**Original evidence:** [F85.json](../../exp/configs/F85.json).
+**Original evidence:** [F85.json](../../exp/configs/F85.json) | [F85.md](../../experiments/F85_final_cosim_F24/F85.md) | [config.json](../../experiments/F85_final_cosim_F24/config.json) | [metrics.json](../../experiments/F85_final_cosim_F24/metrics.json) | [verification.json](../../experiments/F85_final_cosim_F24/verification.json) | [cosim.log.txt](../../experiments/F85_final_cosim_F24/cosim.log.txt) | [srcnn_cosim.rpt](../../experiments/F85_final_cosim_F24/reports/sim/srcnn_cosim.rpt).
 
 <a id="f86"></a>
 
-### F86: F23 multi-image C-simulation plan
+### F86: F23 multi-image C simulation
 
 **Based on:** [F23](#f23) (Verify the same design); [E017](#e017) (Numerical reference or research motivation).
 
-**Change:** Plan acceptance of the third candidate on all supplied images.
+**Change:** Check the third candidate on all 13 supplied images.
 
-**Effects and issues:** No run results exist in this snapshot.
+**Effects and issues:** Bit-exact output with about 0.0695 dB average PSNR loss; comic remains missing.
 
-**Status:** `planned` / Prepared; no archived measurements; scope `frame`; step `plan`.
-Additional checks: No archived measurements.
+**Status:** `csim_pass` / C simulation passed; scope `frame`; step `csim`.
 
-Planned estimates remain hypotheses in the configuration/data.en.json. They are not displayed as measured resources, II, or latency.
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
 
-Tool: Vitis version not recorded/not applicable; source commit: run source commit not yet archived.
+Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against float = -0.069514 dB. Source: current simulation (13 images; see original archive).
 
-**Original evidence:** [F86.json](../../exp/configs/F86.json).
+Tool: Vitis 2026.1; source commit: `2d09a79722873be96a57177325b0e3e103b5e11d`.
+
+**Original evidence:** [F86.json](../../exp/configs/F86.json) | [F86.md](../../experiments/F86_final_all_supplied_F23/F86.md) | [config.json](../../experiments/F86_final_all_supplied_F23/config.json) | [metrics.json](../../experiments/F86_final_all_supplied_F23/metrics.json) | [csim.log.txt](../../experiments/F86_final_all_supplied_F23/csim.log.txt).
 
 <a id="f87"></a>
 
-### F87: F23 Vivado implementation plan
+### F87: F23 Vivado implementation
 
 **Based on:** [F23](#f23) (Verify the same design); [F86](#f86) (Numerical reference or research motivation).
 
-**Change:** Plan routed utilization and timing measurements for the third candidate.
+**Change:** Independently measure routed utilization and timing for the third candidate.
 
-**Effects and issues:** No completed report exists in this snapshot.
+**Effects and issues:** Kernel logs confirm host OOM and no routed report. This does not establish excess device resources.
 
-**Status:** `planned` / Prepared; no archived measurements; scope `frame`; step `plan`.
-Additional checks: No archived measurements.
+**Status:** `fail` / Run failed; scope `frame`; step `impl`.
+Additional checks: Host OOM.
 
 Inherited HLS estimates come from [F23](#f23); they are not new measurements from this step.
 
-Planned estimates remain hypotheses in the configuration/data.en.json. They are not displayed as measured resources, II, or latency.
+Tool: Vitis 2026.1; source commit: `d69779d3f80caeea5fece02a5be26f57e2473773`.
 
-Tool: Vitis version not recorded/not applicable; source commit: run source commit not yet archived.
-
-**Original evidence:** [F87.json](../../exp/configs/F87.json).
+**Original evidence:** [F87.json](../../exp/configs/F87.json) | [F87.md](../../experiments/F87_final_impl_F23/F87.md) | [config.json](../../experiments/F87_final_impl_F23/config.json) | [metrics.json](../../experiments/F87_final_impl_F23/metrics.json) | [verification.json](../../experiments/F87_final_impl_F23/verification.json) | [impl.log.txt](../../experiments/F87_final_impl_F23/impl.log.txt) | [kernel_oom.txt](../../experiments/F87_final_impl_F23/diagnostics/kernel_oom.txt).
 
 <a id="f88"></a>
 
-### F88: F23 two-frame RTL plan
+### F88: Interrupted F23 two-frame RTL verification
 
 **Based on:** [F23](#f23) (Verify the same design); [F86](#f86) (Numerical reference or research motivation).
 
-**Change:** Plan finite-FIFO RTL verification for the third candidate.
+**Change:** Attempt finite-FIFO RTL verification and preserve the actual exit status.
 
-**Effects and issues:** No completed result exists in this snapshot.
+**Effects and issues:** SIGTERM interrupts the process with exit=-15. No RTL Pass exists; further work is deferred, without claiming success.
 
-**Status:** `planned` / Prepared; no archived measurements; scope `frame`; step `plan`.
-Additional checks: No archived measurements.
+**Status:** `fail` / Run failed; scope `frame`; step `cosim`.
 
 Inherited HLS estimates come from [F23](#f23); they are not new measurements from this step.
 
-Planned estimates remain hypotheses in the configuration/data.en.json. They are not displayed as measured resources, II, or latency.
+Tool: Vitis 2026.1; source commit: `2ef7aa259e602dc0a2c527f0c839923f6824784f`.
 
-Tool: Vitis version not recorded/not applicable; source commit: run source commit not yet archived.
-
-**Original evidence:** [F88.json](../../exp/configs/F88.json).
+**Original evidence:** [F88.json](../../exp/configs/F88.json) | [F88.md](../../experiments/F88_final_cosim_F23/F88.md) | [config.json](../../experiments/F88_final_cosim_F23/config.json) | [metrics.json](../../experiments/F88_final_cosim_F23/metrics.json) | [verification.json](../../experiments/F88_final_cosim_F23/verification.json) | [cosim.log.txt](../../experiments/F88_final_cosim_F23/cosim.log.txt).
 
 <a id="f89"></a>
 
-### F89: F25 serial implementation retry plan
+### F89: F25 serial implementation retry
 
 **Based on:** [F81](#f81) (Retry after a fix); [F25](#f25) (Verify the same design).
 
 **Change:** Retain the generated IP/BD flow and limit Vivado internal threads through a per-run Tcl hook.
 
-**Effects and issues:** This addresses host memory pressure; estimates cannot replace actual routed results.
+**Effects and issues:** Congestion routing reaches the three-hour timeout, without final routed reports or a newly observed OOM. F92 later relaxes the physical clock.
 
-**Status:** `planned` / Prepared; no archived measurements; scope `frame`; step `plan`.
-Additional checks: No archived measurements.
+**Status:** `timeout` / Timed out; scope `frame`; step `impl`.
 
 Inherited HLS estimates come from [F25](#f25); they are not new measurements from this step.
 
-Planned estimates remain hypotheses in the configuration/data.en.json. They are not displayed as measured resources, II, or latency.
+Tool: Vitis 2026.1; source commit: `195947850e79400c33aafd28babb57a142b3cbcc`.
 
-Tool: Vitis version not recorded/not applicable; source commit: run source commit not yet archived.
-
-**Original evidence:** [F89.json](../../exp/configs/F89.json).
+**Original evidence:** [F89.json](../../exp/configs/F89.json) | [F89.md](../../experiments/F89_serial_vivado_impl_F25/F89.md) | [config.json](../../experiments/F89_serial_vivado_impl_F25/config.json) | [metrics.json](../../experiments/F89_serial_vivado_impl_F25/metrics.json) | [verification.json](../../experiments/F89_serial_vivado_impl_F25/verification.json) | [impl.log.txt](../../experiments/F89_serial_vivado_impl_F25/impl.log.txt).
 
 <a id="f90"></a>
 
@@ -4029,7 +4271,7 @@ Tool: Vitis version not recorded/not applicable; source commit: run source commi
 
 **Change:** Plan the same thread-limited verification flow for the third candidate.
 
-**Effects and issues:** F87 is also a plan. This relationship describes verification flow and does not claim F87 already failed from OOM.
+**Effects and issues:** F87 has confirmed host OOM. F91 remains unrun and is deferred alongside F90 at closure.
 
 **Status:** `planned` / Prepared; no archived measurements; scope `frame`; step `plan`.
 Additional checks: No archived measurements.
@@ -4041,3 +4283,202 @@ Planned estimates remain hypotheses in the configuration/data.en.json. They are 
 Tool: Vitis version not recorded/not applicable; source commit: run source commit not yet archived.
 
 **Original evidence:** [F91.json](../../exp/configs/F91.json).
+
+<a id="f31"></a>
+
+### F31: C preflight of the F28 reload testbench
+
+**Based on:** [F28](#f28) (Verify the same design).
+
+**Change:** Freeze a two-frame check: the first matches E017 exactly, while changed input, sparse weights, and biases require every second-frame output to equal 104/256.
+
+**Effects and issues:** C preflight passes. It validates arithmetic and test compilation; F93 separately verifies finite-FIFO RTL parameter updates.
+
+**Status:** `csim_pass` / C simulation passed; scope `frame`; step `csim`.
+
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Tool: Vitis 2026.1; source commit: `fc8af2a6f0e1137f4e112d77f11b89b0c3d2cc31`.
+
+**Original evidence:** [F31.json](../../exp/configs/F31.json) | [F31.md](../../experiments/F31_reload_testbench_csim_F28/F31.md) | [config.json](../../experiments/F31_reload_testbench_csim_F28/config.json) | [metrics.json](../../experiments/F31_reload_testbench_csim_F28/metrics.json) | [csim.log.txt](../../experiments/F31_reload_testbench_csim_F28/csim.log.txt).
+
+<a id="f92"></a>
+
+### F92: Retry F25 routing at 5 ns
+
+**Based on:** [F25](#f25) (Verify the same design); [F89](#f89) (Retry after a fix); [F82](#f82) (Verify the same design).
+
+**Change:** Reuse hash-checked identical F25 RTL, relaxing only the physical clock to 5 ns and bounding synthesis threads.
+
+**Effects and issues:** WNS +0.568 ns and TNS 0 pass routing. F82's 1,068,183 RTL cycles give about 5.340915 ms/frame at 5 ns.
+
+**Status:** `impl_complete` / Implementation complete; check timing separately; scope `frame`; step `impl`.
+
+Inherited HLS estimates come from [F25](#f25); they are not new measurements from this step.
+
+Implementation: WNS=0.568 ns; TNS=0 ns; timing_met=true. Actual DSP / BRAM36 / URAM / LUT / FF = 592 / 36 / 0 / 32400 / 77757. BRAM36 and HLS BRAM18K are different units.
+
+Tool: Vitis 2026.1; source commit: `01f5e5d7e65801f0086786877144b46bf8a2bfc6`.
+
+**Original evidence:** [F92.json](../../exp/configs/F92.json) | [F92.md](../../experiments/F92_ws_impl_F25/F92.md) | [config.json](../../experiments/F92_ws_impl_F25/config.json) | [metrics.json](../../experiments/F92_ws_impl_F25/metrics.json) | [verification.json](../../experiments/F92_ws_impl_F25/verification.json) | [impl.log.txt](../../experiments/F92_ws_impl_F25/impl.log.txt) | [srcnn_setup5_routed.rpt](../../experiments/F92_ws_impl_F25/reports/impl/srcnn_setup5_routed.rpt) | [srcnn_timing_routed.rpt](../../experiments/F92_ws_impl_F25/reports/impl/srcnn_timing_routed.rpt) | [srcnn_utilization_hierarchical_routed.rpt](../../experiments/F92_ws_impl_F25/reports/impl/srcnn_utilization_hierarchical_routed.rpt) | [srcnn_utilization_routed.rpt](../../experiments/F92_ws_impl_F25/reports/impl/srcnn_utilization_routed.rpt).
+
+<a id="f93"></a>
+
+### F93: F28 two-frame RTL with changed parameters
+
+**Based on:** [F28](#f28) (Verify the same design); [F31](#f31) (Numerical reference or research motivation).
+
+**Change:** Use an independently frozen reload testbench: original parameters on the first frame and changed weights/biases on the second, checking finite FIFOs, reset, and outputs.
+
+**Effects and issues:** Both RTL frames pass with exact parameter updates. Maximum latency/interval are 1,059,506/1,059,535 cycles, 1.2884% above HLS.
+
+**Status:** `cosim_complete` / RTL co-simulation complete; scope `frame`; step `cosim`.
+
+Inherited HLS estimates come from [F28](#f28); they are not new measurements from this step.
+
+RTL: Pass; maximum latency 1059506 cycles; maximum interval 1059535 cycles; 1.2884% more cycles than HLS.
+
+Tool: Vitis 2026.1; source commit: `e8c2b3c29dbe4ed7806c682df1648ccbaeaca1ac`.
+
+**Original evidence:** [F93.json](../../exp/configs/F93.json) | [F93.md](../../experiments/F93_ws_reload_cosim_F28/F93.md) | [config.json](../../experiments/F93_ws_reload_cosim_F28/config.json) | [metrics.json](../../experiments/F93_ws_reload_cosim_F28/metrics.json) | [verification.json](../../experiments/F93_ws_reload_cosim_F28/verification.json) | [cosim.log.txt](../../experiments/F93_ws_reload_cosim_F28/cosim.log.txt) | [srcnn_cosim.rpt](../../experiments/F93_ws_reload_cosim_F28/reports/sim/srcnn_cosim.rpt).
+
+<a id="f94"></a>
+
+### F94: All supplied images on F28
+
+**Based on:** [F28](#f28) (Verify the same design); [E017](#e017) (Numerical reference or research motivation).
+
+**Change:** Check all 13 supplied images using an independent copy with matching F28 sources and compilation macros.
+
+**Effects and issues:** Bit-exact output and 0.069514 dB mean PSNR loss complement F93 reload validation; comic is still missing.
+
+**Status:** `csim_pass` / C simulation passed; scope `frame`; step `csim`.
+
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against float = -0.069514 dB. Source: current simulation (13 images; see original archive).
+
+Tool: Vitis 2026.1; source commit: `8a8eb805adfdabdb0d07c0429a50dbfb605a73f1`.
+
+**Original evidence:** [F94.json](../../exp/configs/F94.json) | [F94.md](../../experiments/F94_ws_all_F28/F94.md) | [config.json](../../experiments/F94_ws_all_F28/config.json) | [metrics.json](../../experiments/F94_ws_all_F28/metrics.json) | [csim.log.txt](../../experiments/F94_ws_all_F28/csim.log.txt).
+
+<a id="f95"></a>
+
+### F95: Independent F28 routing at 5 ns
+
+**Based on:** [F28](#f28) (Verify the same design); [F93](#f93) (Verify the same design); [F94](#f94) (Numerical reference or research motivation).
+
+**Change:** Synthesize, place, and route F28 RTL at 5 ns in a separate workspace, archiving its own paths and hierarchical resources.
+
+**Effects and issues:** WNS +0.282 ns and TNS 0 pass. F93 cycles give 5.29753 ms/frame. Main paths move to Conv1 private-load addresses driving LUTRAM write addresses.
+
+**Status:** `impl_complete` / Implementation complete; check timing separately; scope `frame`; step `impl`.
+
+Inherited HLS estimates come from [F28](#f28); they are not new measurements from this step.
+
+Implementation: WNS=0.282 ns; TNS=0 ns; timing_met=true. Actual DSP / BRAM36 / URAM / LUT / FF = 591 / 36 / 0 / 30140 / 76498. BRAM36 and HLS BRAM18K are different units.
+
+Tool: Vitis 2026.1; source commit: `8c8b0c79176242e555d51f54b57a512ffc7b06b0`.
+
+**Original evidence:** [F95.json](../../exp/configs/F95.json) | [F95.md](../../experiments/F95_ws_impl_F28/F95.md) | [config.json](../../experiments/F95_ws_impl_F28/config.json) | [metrics.json](../../experiments/F95_ws_impl_F28/metrics.json) | [verification.json](../../experiments/F95_ws_impl_F28/verification.json) | [impl.log.txt](../../experiments/F95_ws_impl_F28/impl.log.txt) | [srcnn_setup5_routed.rpt](../../experiments/F95_ws_impl_F28/reports/impl/srcnn_setup5_routed.rpt) | [srcnn_timing_routed.rpt](../../experiments/F95_ws_impl_F28/reports/impl/srcnn_timing_routed.rpt) | [srcnn_utilization_hierarchical_routed.rpt](../../experiments/F95_ws_impl_F28/reports/impl/srcnn_utilization_hierarchical_routed.rpt) | [srcnn_utilization_routed.rpt](../../experiments/F95_ws_impl_F28/reports/impl/srcnn_utilization_routed.rpt).
+
+<a id="w20"></a>
+
+### W20: Physical-resource diagnostic for W17
+
+**Based on:** [W17](#w17) (Verify the same design); [F92](#f92) (Control experiment).
+
+**Change:** F92's small routed/HLS LUT ratio motivates independently implementing W17 for calibration, preserving HLS gates and diagnostic exclusion.
+
+**Effects and issues:** 5 ns routing passes with WNS +0.188 ns. W17 still exceeds its HLS LUT budget; W20 is diagnostic only and excluded from candidate rankings.
+
+**Status:** `impl_complete` / Implementation complete; check timing separately; scope `frame`; step `impl`.
+Additional checks: Diagnostic only; parent HLS gates retained.
+
+Inherited HLS estimates come from [W17](#w17); they are not new measurements from this step.
+
+Implementation: WNS=0.188 ns; TNS=0 ns; timing_met=true. Actual DSP / BRAM36 / URAM / LUT / FF = 696 / 54.5 / 0 / 42812 / 89690. BRAM36 and HLS BRAM18K are different units.
+
+Tool: Vitis 2026.1; source commit: `6f31b6baa7ed26a574fb8cf6096f28789d76c567`.
+
+**Original evidence:** [W20.json](../../exp/configs/W20.json) | [W20.md](../../experiments/W20_ws_impl_W17/W20.md) | [config.json](../../experiments/W20_ws_impl_W17/config.json) | [metrics.json](../../experiments/W20_ws_impl_W17/metrics.json) | [verification.json](../../experiments/W20_ws_impl_W17/verification.json) | [impl.log.txt](../../experiments/W20_ws_impl_W17/impl.log.txt) | [srcnn_setup5_routed.rpt](../../experiments/W20_ws_impl_W17/reports/impl/srcnn_setup5_routed.rpt) | [srcnn_timing_routed.rpt](../../experiments/W20_ws_impl_W17/reports/impl/srcnn_timing_routed.rpt) | [srcnn_utilization_hierarchical_routed.rpt](../../experiments/W20_ws_impl_W17/reports/impl/srcnn_utilization_hierarchical_routed.rpt) | [srcnn_utilization_routed.rpt](../../experiments/W20_ws_impl_W17/reports/impl/srcnn_utilization_routed.rpt).
+
+<a id="f96"></a>
+
+### F96: All supplied images on W21
+
+**Based on:** [W21](#w21) (Verify the same design); [E017](#e017) (Numerical reference or research motivation).
+
+**Change:** Match W21 sources, precision, and macros and verify every output bit on all 13 images.
+
+**Effects and issues:** All outputs are exact with 0.069514 dB mean PSNR loss. Missing comic keeps quality acceptance provisional.
+
+**Status:** `csim_pass` / C simulation passed; scope `frame`; step `csim`.
+
+Function: C simulation passed; bit_exact=true; butterfly MSE=1.8197758558556394e-05; six-pixel border MSE=1.661846957728205e-05. See the original tests for bit_exact/MSE comparison targets; equality to a fixed-point reference does not mean equality to floating-point golden output.
+
+Quality: average PSNR against GT = 29.088943 dB; average delta PSNR against float = -0.069514 dB. Source: current simulation (13 images; see original archive).
+
+Tool: Vitis 2026.1; source commit: `53ff1579c91a1b7920f8fad1058a4a1aae9d1078`.
+
+**Original evidence:** [F96.json](../../exp/configs/F96.json) | [F96.md](../../experiments/F96_ws_all_W21/F96.md) | [config.json](../../experiments/F96_ws_all_W21/config.json) | [metrics.json](../../experiments/F96_ws_all_W21/metrics.json) | [csim.log.txt](../../experiments/F96_ws_all_W21/csim.log.txt).
+
+<a id="f97"></a>
+
+### F97: W21 two-frame RTL with changed parameters
+
+**Based on:** [W21](#w21) (Verify the same design); [F96](#f96) (Numerical reference or research motivation).
+
+**Change:** Measure finite-FIFO behavior across two frames, reloading weights/biases for the second and requiring every output to equal 104/256 exactly.
+
+**Effects and issues:** RTL Pass with exact parameter updates: 558,758 maximum latency and 558,787 interval cycles, 6.3821% above HLS. Transform startup overhead matters.
+
+**Status:** `cosim_complete` / RTL co-simulation complete; scope `frame`; step `cosim`.
+
+Inherited HLS estimates come from [W21](#w21); they are not new measurements from this step.
+
+RTL: Pass; maximum latency 558758 cycles; maximum interval 558787 cycles; 6.3821% more cycles than HLS.
+
+Tool: Vitis 2026.1; source commit: `f04868aaa7922b45389b95d10b62b9c881bb4497`.
+
+**Original evidence:** [F97.json](../../exp/configs/F97.json) | [F97.md](../../experiments/F97_ws_cosim_W21/F97.md) | [config.json](../../experiments/F97_ws_cosim_W21/config.json) | [metrics.json](../../experiments/F97_ws_cosim_W21/metrics.json) | [verification.json](../../experiments/F97_ws_cosim_W21/verification.json) | [cosim.log.txt](../../experiments/F97_ws_cosim_W21/cosim.log.txt) | [srcnn_cosim.rpt](../../experiments/F97_ws_cosim_W21/reports/sim/srcnn_cosim.rpt).
+
+<a id="f98"></a>
+
+### F98: Independent W21 routing at 5 ns
+
+**Based on:** [W21](#w21) (Verify the same design); [F97](#f97) (Verify the same design); [F96](#f96) (Numerical reference or research motivation); [W20](#w20) (Numerical reference or research motivation).
+
+**Change:** Package and route HLS-eligible W21 independently, without reusing W20 IP; check RTL and initialization hashes.
+
+**Effects and issues:** WNS +0.140 ns and TNS 0 pass. F97 cycles give 2.79379 ms/frame, retained as the conservative 5 ns implementation.
+
+**Status:** `impl_complete` / Implementation complete; check timing separately; scope `frame`; step `impl`.
+
+Inherited HLS estimates come from [W21](#w21); they are not new measurements from this step.
+
+Implementation: WNS=0.14 ns; TNS=0 ns; timing_met=true. Actual DSP / BRAM36 / URAM / LUT / FF = 644 / 54.5 / 0 / 42594 / 88806. BRAM36 and HLS BRAM18K are different units.
+
+Tool: Vitis 2026.1; source commit: `166061bbde0a5feeff51600ffa9d63ba9125c3fc`.
+
+**Original evidence:** [F98.json](../../exp/configs/F98.json) | [F98.md](../../experiments/F98_ws_impl_W21/F98.md) | [config.json](../../experiments/F98_ws_impl_W21/config.json) | [metrics.json](../../experiments/F98_ws_impl_W21/metrics.json) | [verification.json](../../experiments/F98_ws_impl_W21/verification.json) | [impl.log.txt](../../experiments/F98_ws_impl_W21/impl.log.txt) | [srcnn_setup5_routed.rpt](../../experiments/F98_ws_impl_W21/reports/impl/srcnn_setup5_routed.rpt) | [srcnn_timing_routed.rpt](../../experiments/F98_ws_impl_W21/reports/impl/srcnn_timing_routed.rpt) | [srcnn_utilization_hierarchical_routed.rpt](../../experiments/F98_ws_impl_W21/reports/impl/srcnn_utilization_hierarchical_routed.rpt) | [srcnn_utilization_routed.rpt](../../experiments/F98_ws_impl_W21/reports/impl/srcnn_utilization_routed.rpt).
+
+<a id="w22"></a>
+
+### W22: Same W21 RTL routed at 4.95 ns
+
+**Based on:** [W21](#w21) (Verify the same design); [F97](#f97) (Verify the same design); [F98](#f98) (Retry after a fix).
+
+**Change:** Tighten only the physical clock to 4.95 ns, with one synthesis and two place/route threads. All 93 RTL/init file hashes match W21/F98.
+
+**Effects and issues:** WNS +0.047 ns, WHS +0.032 ns, zero TNS/THS, and no unrouted nets pass. F97 cycles give 2.7658521 ms/frame, 1% below F98. Fastest verified target so far; board acceptance remains pending.
+
+**Status:** `impl_complete` / Implementation complete; check timing separately; scope `frame`; step `impl`.
+
+Inherited HLS estimates come from [W21](#w21); they are not new measurements from this step.
+
+Implementation: WNS=0.047 ns; TNS=0 ns; timing_met=true. Actual DSP / BRAM36 / URAM / LUT / FF = 644 / 54.5 / 0 / 42592 / 88806. BRAM36 and HLS BRAM18K are different units.
+
+Tool: Vitis 2026.1; source commit: `43a0900fc4e4b4cce3b3792ed78e6cd2678dbc44`.
+
+**Original evidence:** [W22.json](../../exp/configs/W22.json) | [W22.md](../../experiments/W22_ws_clock_4p95_W21/W22.md) | [config.json](../../experiments/W22_ws_clock_4p95_W21/config.json) | [metrics.json](../../experiments/W22_ws_clock_4p95_W21/metrics.json) | [verification.json](../../experiments/W22_ws_clock_4p95_W21/verification.json) | [impl.log.txt](../../experiments/W22_ws_clock_4p95_W21/impl.log.txt) | [srcnn_setup5_routed.rpt](../../experiments/W22_ws_clock_4p95_W21/reports/impl/srcnn_setup5_routed.rpt) | [srcnn_timing_routed.rpt](../../experiments/W22_ws_clock_4p95_W21/reports/impl/srcnn_timing_routed.rpt) | [srcnn_utilization_hierarchical_routed.rpt](../../experiments/W22_ws_clock_4p95_W21/reports/impl/srcnn_utilization_hierarchical_routed.rpt) | [srcnn_utilization_routed.rpt](../../experiments/W22_ws_clock_4p95_W21/reports/impl/srcnn_utilization_routed.rpt).

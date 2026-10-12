@@ -25,9 +25,15 @@ flowchart TB
   F23["F23<br/>集成精确输出编码，2.5 ns<br/>进一步收紧目标周期，定位全局关键路径。<br/>HLS 估计 2.9595 ms / DSP 502<br/>HLS 时序警告"]
   F24["F24<br/>显式三维权重加载索引<br/>用输出通道/核行/核列计数器替代除法和取余推导的地址。<br/>HLS 估计 2.8305 ms / DSP 502<br/>HLS 时序警告"]
   F25["F25<br/>关闭权重加载循环合并<br/>只在 Conv1 权重加载内层加入 LOOP_FLATTEN off，推理引擎保持相同。<br/>HLS 估计 2.6423 ms / DSP 502<br/>HLS 时序警告"]
+  F26["F26<br/>S2P 权重银行与 bias 移位加载<br/>仅将共享权重银行改为 simple-dual-port，并用固定下标移位方式写 bias，隔离端口和写入译码成本。<br/>HLS 估计 2.6423 ms / DSP 502<br/>HLS 时序警告"]
+  F27["F27<br/>参数流与各层私有银行<br/>在 DATAFLOW 内统一转换参数，分三条流传给各层；各层先加载自己的 S2P LUTRAM 银行，再处理像素。<br/>HLS 估计 2.6143 ms / DSP 502<br/>HLS 时序警告"]
+  F28["F28<br/>私有加载器关闭循环合并<br/>只给 load_local 内层 tap 循环加入 LOOP_FLATTEN off，保持私有银行、参数流和推理算术。<br/>HLS 估计 2.6151 ms / DSP 502<br/>HLS 时序警告"]
+  F29["F29<br/>私有参数流直接卷积 T8，注册树<br/>基于 F28 将直接卷积改为 T8，保留加法树级间寄存，和 Winograd T8 比较。<br/>HLS 估计 1.7508 ms / DSP 1004<br/>超预算: LUT/FF"]
+  F30["F30<br/>直接卷积 T8，取消树寄存<br/>保持 F29 的参数流和 T8，单独把归约加法延迟绑定为零。<br/>HLS 估计 1.7508 ms / DSP 1004<br/>超预算: LUT"]
   E042["E042 / 外部来源<br/>T16：4 ns 目标<br/>HLS 估计 8.0587 ms / DSP 505"]
   E048["E048 / 外部来源<br/>整数承载的定点运算<br/>HLS 估计 29.1386 ms / DSP 254"]
   E070["E070 / 外部来源<br/>第一项可行 E039 的实际实现<br/>Routed WNS -1.277 ns"]
+  W19["W19 / 外部来源<br/>Winograd T8 接入私有参数流<br/>HLS 估计 1.749 ms / DSP 645"]
   E048 -->|设计或参数基线| F01
   E042 -.->|对照实验| F01
   E048 -->|设计或参数基线| F02
@@ -64,15 +70,23 @@ flowchart TB
   F22 -.->|对照实验| F23
   F23 -->|设计或参数基线| F24
   F24 -->|设计或参数基线| F25
+  F25 -->|设计或参数基线| F26
+  F25 -->|设计或参数基线| F27
+  F26 -.->|对照实验| F27
+  F27 -->|设计或参数基线| F28
+  F28 -->|设计或参数基线| F29
+  W19 -.->|对照实验| F29
+  F28 -->|设计或参数基线| F30
+  F29 -.->|对照实验| F30
   classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
   class F20 candidate
   classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
-  class F01,F02,F08,F09,F11,F13,F21,F22,F23,F24,F25 warning
+  class F01,F02,F08,F09,F11,F13,F21,F22,F23,F24,F25,F26,F27,F28 warning
   classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
   class F03,F04,F05,F06,F07,F16,F17,F18,F19 failure
   classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
-  class F10,F12,F14,F15 infeasible
+  class F10,F12,F14,F15,F29,F30 infeasible
   classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
   classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
   classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
-  class E042,E048,E070 context
+  class E042,E048,E070,W19 context

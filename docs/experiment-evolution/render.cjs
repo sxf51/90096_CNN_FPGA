@@ -125,8 +125,10 @@ function frameMetric(record) {
   const references = record.parents.filter(parent => parent.kind === 'verify')
     .map(parent => ({ id: parent.id, metric: reportedFrameMetric(byId.get(parent.id)) }))
     .filter(parent => parent.metric);
-  if (references.length > 1) throw new Error('Ambiguous same-design latency: ' + record.id);
-  return references.length ? { ...references[0].metric, reference_id: references[0].id } : null;
+  const rtlReferences = references.filter(parent => parent.metric.source === 'rtl');
+  const preferred = rtlReferences.length ? rtlReferences : references;
+  if (preferred.length > 1) throw new Error('Ambiguous same-design latency: ' + record.id);
+  return preferred.length ? { ...preferred[0].metric, reference_id: preferred[0].id } : null;
 }
 
 function compactMetricText(record, metric) {
@@ -160,6 +162,8 @@ const problemLabels = new Map([
     ['流位宽 8000 > 4096 bit 上限', 'Stream 8000 > 4096-bit limit']],
   [['F16', 'F17'], ['SDK / 数据类型编译失败', 'SDK/type compilation failure']],
   [['F18', 'F19'], ['目标文件重名，链接失败', 'Duplicate objects; link failed']],
+  [['F88'], ['RTL 仿真被 SIGTERM 中断', 'RTL interrupted by SIGTERM']],
+  [['F89'], ['布线超时（3 小时）', 'Routing timed out after 3 hours']],
   [['E011', 'E012', 'E018', 'E034', 'E035', 'C07'], ['C 编译或仿真失败', 'C compilation/simulation failed']]
 ].flatMap(([ids, labels]) => ids.map(id => [id, labels])));
 
@@ -167,6 +171,8 @@ function compactProblem(record) {
   if (!['failure', 'infeasible'].includes(record.graph.tone)) return null;
   const curated = problemLabels.get(record.id);
   if (curated) return curated[english ? 1 : 0];
+  if (record.diagnostic_only) return (english ? 'Diagnostic: ' : '仅诊断：') + record.inherited_hls_parent
+    + (english ? ' HLS LUT budget' : ' HLS LUT 超预算');
   if (record.flags.some(flag => flag.includes('OOM'))) return english ? 'Host OOM; no routed report' : '主机 OOM，无布线报告';
   if (record.verification.timing_met === false) return english ? 'Routed timing failed' : '布线时序未通过';
   const budget = record.flags.find(flag => /^(Over budget: |超预算: )/.test(flag));
@@ -263,7 +269,7 @@ const overviewNodes = (english ? [
   ['streaming', 'E030-E033 / E047-E048', 'Network streams and line buffers', 'Remove intermediate maps: BRAM18K 168\nDSP binding and integer carriers', 'Weight selectors remain large: LUT 89304', 'infeasible', 'streaming'],
   ['scans', 'E034-E043 / E057-E067 scans', 'LUTRAM banks, unrolling, and clock', 'E043: HLS about 6.9392 ms\nDSP 505 / BRAM18K 168', 'Within resource budget; HLS timing warning', 'warning', 'scans'],
   ['micro', 'E051-E055 / E071', 'Multiplier and range controls', 'DSP / fabric / constant-weight controls', 'Primitive costs are not network results', 'analysis', 'micro'],
-  ['packing', 'A / P01-P16', 'Packing: the cost of saving DSPs', 'INT8 and exact10 primitives pass\nP10-P12 networks exceed LUT budget', 'P13-P16: complete INT16; preparation only', 'infeasible', 'packing'],
+  ['packing', 'A / P01-P16', 'Packing: the cost of saving DSPs', 'INT8 and exact10 primitives pass\nP10-P12 networks exceed LUT budget', 'P13-P16 measured: direct mixed mapping beats INT16 packing', 'infeasible', 'packing'],
   ['scatter', 'C / E050 / E060 / G01-G03', 'Conv3 scatter', 'BRAM18K 168 -> 137 -> 87\n29.83 -> 37.70 -> 44.14 ms', 'Less storage; more control and work', 'analysis', 'scatter'],
   ['memory', 'S01-S06', 'DDR probe and fused tiles', 'DDR scratch ports not exported\nB8-B64: less BRAM, halo recomputation', 'DDR invalid; tiles miss LUT/time budgets', 'infeasible', 'memory'],
   ['winograd', 'D / W01-W18', 'Winograd, continuous tiles, narrow banks', 'W18: HLS about 4.2274 ms\nDSP 326 / LUT 74480', 'Within resource budget; HLS timing warning', 'warning', 'winograd'],
@@ -271,7 +277,10 @@ const overviewNodes = (english ? [
   ['combination', 'C01-C12 / combined experiments', 'Winograd plus packing/mixed precision', 'Lowest raw estimate C11: 1.0817 ms\nLUT 248797 / FF 307525', 'Resource limits exclude it from candidate ranking', 'infeasible', 'combination'],
   ['loader', 'F16-F24', 'Output conversion and loader timing', 'F20: exact float encoding, zero DSPs\nF24: explicit 3D weight-loader indices', 'Global critical path moves to loader counters', 'warning', 'continuous'],
   ['f25', 'F25 / direct-convolution candidate', 'Disable F24 weight-loader flattening', 'HLS about 2.64226 ms / DSP 502\nBRAM18K 73 / LUT 69976', '2.5 ns still warns after clock uncertainty', 'warning', 'continuous'],
-  ['verification', 'E069-E070 / F80-F91', 'Numerical, RTL, and physical checks', 'F80: 13 images; F82: two-frame RTL Pass\nF81/F84: host OOM; no routed reports', 'E070 WNS<0; physical timing and board acceptance pending', 'warning', 'verification']
+  ['private', 'F26-F28 / private parameters', 'Stream parameters into engine-owned banks', 'F28: HLS 2.6151 ms / outside LUT 3170\nF26 area hypothesis fails; F27 misses loader-clock gate', 'F28 passes WS2; F93/F94/F95 verify reload, images, routing', 'warning', 'continuous'],
+  ['t8', 'W19-W21 / F29-F30', 'Winograd T8 with subkernel-indexed cache', 'W19 misses LUT budget; W21 fits with 898 LUT spare\nDirect T8 controls still exceed budgets', 'W21: HLS 525237 cycles; F97: RTL 558758 cycles', 'warning', 'winograd'],
+  ['verification', 'E069-E070 / F80-F98 / W20', 'Numerical, RTL, and physical checks', 'F93/F97: changed-parameter two-frame RTL Pass\nF92/F95/F98: independent 5 ns routing passes', 'W20 remains diagnostic; missing comic and board acceptance pending', 'candidate', 'verification'],
+  ['w22', 'W22 / selected physical target', 'Same W21 RTL, routed at 4.95 ns', 'F97 RTL cycles at the closed target: 2.7658521 ms\nWNS +0.047 ns / 1% below F98 at 5 ns', 'Compute time, not board time; retain F98 fallback', 'candidate', 'verification']
 ] : [
   ['baseline', 'E000 / 起点', '原始浮点、完整中间图', '522.28 M MAC / frame\nBRAM18K 11064，器件仅 288', '功能成立，存储结构不可行', 'infeasible', 'precision'],
   ['precision', 'E010-E019 / E062-E071', '精度与独立参考', '10 位平均 ΔPSNR −0.0695 dB\n全 8 位约 −5.18 dB', '13 图，缺 comic；bit-exact 指定点参考', 'analysis', 'precision'],
@@ -279,7 +288,7 @@ const overviewNodes = (english ? [
   ['streaming', 'E030-E033 / E047-E048', '整网流连接与行缓存', '中间图取消，BRAM18K 168\nDSP 绑定、整数承载', '权重选择器仍大：LUT 89304', 'infeasible', 'streaming'],
   ['scans', 'E034-E043 / E057-E067 扫描', 'LUTRAM 银行、展开与时钟', 'E043：HLS 约 6.9392 ms\nDSP 505 / BRAM18K 168', '资源合格；存在 HLS 时序告警', 'warning', 'scans'],
   ['micro', 'E051-E055 / E071', '乘法器和范围控制', 'DSP / fabric / 常数权重对照', '小内核成本不能当作整网结果', 'analysis', 'micro'],
-  ['packing', 'A / P01-P16', 'Packing：省 DSP 的代价', 'INT8 与精确十位 PE 成立\nP10-P12 整网 LUT 超预算', 'P13-P16：完整 INT16，仅准备记录', 'infeasible', 'packing'],
+  ['packing', 'A / P01-P16', 'Packing：省 DSP 的代价', 'INT8 与精确十位 PE 成立\nP10-P12 整网 LUT 超预算', 'P13-P16 已测：普通混合映射优于完整 INT16 Packing', 'infeasible', 'packing'],
   ['scatter', 'C / E050 / E060 / G01-G03', 'Conv3 Scatter', 'BRAM18K 168 → 137 → 87\n29.83 → 37.70 → 44.14 ms', '缓存变少，控制与额外工作变多', 'analysis', 'scatter'],
   ['memory', 'S01-S06', 'DDR 探针与分块融合', 'DDR 探针未导出 scratch 端口\nB8-B64：少 BRAM、重算 halo', '无有效 DDR；分块 LUT/时间不合格', 'infeasible', 'memory'],
   ['winograd', 'D / W01-W18', 'Winograd → 连续 tile → 窄银行', 'W18：HLS 约 4.2274 ms\nDSP 326 / LUT 74480', '资源合格；存在 HLS 时序告警', 'warning', 'winograd'],
@@ -287,7 +296,10 @@ const overviewNodes = (english ? [
   ['combination', 'C01-C12 / 组合实验', 'Winograd + Packing / 混合精度', '最快原始估计 C11：1.0817 ms\nLUT 248797 / FF 307525', '明显超量，不能按最小时间选择', 'infeasible', 'combination'],
   ['loader', 'F16-F24', '移除输出转换与加载路径瓶颈', 'F20：精确 float 编码，0 DSP\nF24：显式三维权重加载索引', '全局关键路径转到加载循环控制', 'warning', 'continuous'],
   ['f25', 'F25 / 当前直接卷积候选', '关闭 F24 的权重加载循环合并', 'HLS 约 2.64226 ms / DSP 502\nBRAM18K 73 / LUT 69976', '2.5 ns 有 uncertainty 后的时序告警', 'warning', 'continuous'],
-  ['verification', 'E069-E070 / F80-F91', '数值、RTL、物理分别验收', 'F80：13 图；F82：双帧 RTL Pass\nF81/F84：主机 OOM，无 routed 报告', 'E070 WNS<0；物理时序与上板未闭环', 'warning', 'verification']
+  ['private', 'F26-F28 / 私有参数', '参数流接入各层私有权重银行', 'F28：HLS 2.6151 ms / 区外 LUT 3170\nF26 面积假设失败，F27 未达加载器时钟门槛', 'F28 达 WS2 门槛；F93/F94/F95 验证重载、多图、布线', 'warning', 'continuous'],
+  ['t8', 'W19-W21 / F29-F30', 'Winograd T8，缓存按子卷积索引', 'W19 LUT 超预算；W21 剩 898 LUT 余量\n直接卷积 T8 对照仍超预算', 'W21：HLS 525237 周期；F97：RTL 558758 周期', 'warning', 'winograd'],
+  ['verification', 'E069-E070 / F80-F98 / W20', '数值、RTL、物理分别验收', 'F93/F97：换参数双帧 RTL Pass\nF92/F95/F98：独立 5 ns 布线通过', 'W20 仍仅诊断；缺 comic，板端验收未完成', 'candidate', 'verification'],
+  ['w22', 'W22 / 已选物理目标', '相同 W21 RTL，4.95 ns 布线', 'F97 RTL 周期按通过目标折算：2.7658521 ms\nWNS +0.047 ns，比 F98 的 5 ns 低 1%', '计算耗时，未板端实测；保留 F98 后备', 'candidate', 'verification']
 ]).map(([id, label, title, result, issue, tone, section]) => block({ id, tone,
   href: section + suffix + '.svg', lines: [[label, 17, true], [title, 20, true],
     [result, 17, true], [issue, 16, false, '#5c6160']] }));
@@ -301,7 +313,10 @@ const overviewEdges = [
   ['scans', 'continuous', 'source'], ['packing', 'combination', 'integrate'],
   ['winograd', 'combination', 'integrate'], ['continuous', 'loader', 'source'],
   ['loader', 'f25', 'source'], ['f25', 'verification', 'verify'],
-  ['scans', 'verification', 'verify']
+  ['scans', 'verification', 'verify'], ['f25', 'private', 'source'],
+  ['private', 't8', 'integrate'], ['winograd', 't8', 'source'],
+  ['private', 'verification', 'verify'], ['t8', 'verification', 'verify'],
+  ['verification', 'w22', 'retry']
 ].map(([from, to, kind], index) => ({ from, to, kind, key: 'overview-' + index }));
 
 function mermaid(nodes, edges, title) {
@@ -456,8 +471,11 @@ function render(key, title, subtitle, nodes, edges) {
   return { svg: pieces.join('\n') + '\n', layout, mmd: mermaid(nodes, edges, title) };
 }
 
-let graphs = [{ key: 'overview', title: english ? 'SRCNN experiment overview / Baseline to F25' : 'SRCNN 实验总览 / 从原始结构到 F25',
-  subtitle: english ? '153 experiments | 142 result records | 11 planned/prepared | HLS ms use max(target, estimated period)' : '153 项档案 · 142 项有结果记录 · 11 项仅计划/准备 · HLS ms 按 max(目标周期, 估计周期) 换算',
+let graphs = [{ key: 'overview', title: english ? 'SRCNN experiment overview / Baseline to W22' : 'SRCNN 实验总览 / 从原始结构到 W22',
+  subtitle: data.counts.experiments + (english ? ' experiments / ' : ' 项档案 / ') + data.counts.with_result_record
+    + (english ? ' result records / ' : ' 项有结果记录 / ') + data.counts.plan_only
+    + (english ? ' planned / HLS times retain report clocks; routed times use closed targets'
+      : ' 项仅计划 / HLS 时间沿用报告时钟；布线时间按通过目标折算'),
   nodes: overviewNodes, edges: overviewEdges }];
 for (const section of data.sections) {
   const records = data.records.filter(record => record.section === section.key);

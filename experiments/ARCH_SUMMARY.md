@@ -1,29 +1,60 @@
 # SRCNN K26 architecture exploration
 
-The fastest resource-feasible supplied-image point is [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) at 2.64226ms HLS-estimated latency. Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.
+The fastest resource-feasible supplied-image point is [W21](W21_subkernel_raw_cache_T8/W21.md) at 1.74903921ms HLS-estimated latency. Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.
 
 Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.
+
+Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). Review section6 decisions, missing comic and any failed route/RTL gates; use measured physical bottlenecks for the next independent design. No board acceptance or push.
 
 ## Current Best
 
 | id | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | delta_psnr | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | designs/continuous_nested_load_v1 | w10a10acc23 | 16 | 2.5 | 2.377 | 1056904.0 | 1056905.0 | 2.64226 | 502.0 | 73.0 | 0.0 | 69976.0 | 125404.0 | -0.0695141811880653 | provisional |
+| [W21](W21_subkernel_raw_cache_T8/W21.md) | designs/winograd_subkernel_cache_v1 | w10a10acc23 | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81086.0 | 130057.0 | -0.0695141811880653 | provisional |
 
-HLS-estimate improvement over first-phase E043: 2.6262x. This ratio is not a measured board speedup.
+HLS-estimate improvement over first-phase E043: 3.9675x. This ratio is not a measured board speedup.
 
 Actual verification of the current HLS winner:
 
-| id | operation | status | impl_WNS_ns | timing_met | impl_DSP | impl_LUT | impl_FF | impl_BRAM36 | impl_URAM | rtl_status | rtl_latency_max | rtl_interval_max | cycle_deviation_pct |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [F81](F81_final_impl_F25/F81.md) | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
-| [F82](F82_final_cosim_F25/F82.md) | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1068183.0 | 1068212.0 | 1.067173555971035 |
+| id | operation | status | impl_target_clock_ns | impl_WNS_ns | timing_met | impl_DSP | impl_LUT | impl_FF | impl_BRAM36 | impl_URAM | rtl_status | rtl_latency_max | rtl_interval_max | cycle_deviation_pct |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F97](F97_ws_cosim_W21/F97.md) | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 558758.0 | 558787.0 | 6.382071331608397 |
+| [F98](F98_ws_impl_W21/F98.md) | impl | impl_complete | 5.0 | 0.14 | True | 644.0 | 42594.0 | 88806.0 | 54.5 | 0.0 | unknown | unknown | unknown | unknown |
+| [W22](W22_ws_clock_4p95_W21/W22.md) | impl | impl_complete | 4.95 | 0.047 | True | 644.0 | 42592.0 | 88806.0 | 54.5 | 0.0 | unknown | unknown | unknown | unknown |
+
+## Verified IP Timing
+
+Matching-source RTL cycles multiplied by independently closed implementation targets. These times exclude board/DDR/driver overhead, and all image-quality acceptance remains provisional until comic is supplied. The routed resources do not replace the original HLS acceptance gates.
+
+| id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms_at_route_target |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 558787.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 |
+| [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 558787.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
+| [F95](F95_ws_impl_F28/F95.md) | F28 | F93 | 1059506.0 | 1059535.0 | 5.0 | 0.282 | 591.0 | 72.0 | 30140.0 | 76498.0 | 5.29753 |
+| [F92](F92_ws_impl_F25/F92.md) | F25 | F82 | 1068183.0 | 1068212.0 | 5.0 | 0.568 | 592.0 | 72.0 | 32400.0 | 77757.0 | 5.340915 |
+
+Target minus WNS is a slack-derived estimate; only each implemented target above is accepted. Actual first-five-path and hierarchy reports are linked from each experiment.
 
 ## P Direction
 
-Signed INT8 packing is exact when shared operands, field range and negative borrowing are handled explicitly. P01 exhausts16777216 signed8 triples; P03/P06 compare unpack-every7/every2 schedules under their respective safe bounds. P05 tests the DSP builtin and P08 inspects actual primitive attributes. Full-network exact10 residual variants retain the passing precision point but add fabric and pipeline overhead. Uniform w8a8 remains rejected by first-phase precision evidence.
+Signed INT8 packing is exact when shared operands, field range and negative borrowing are handled explicitly. P01 exhausts16777216 signed8 triples; P03/P06 compare unpack-every7/every2 schedules under their respective safe bounds. P05 tests the DSP builtin and P08 inspects actual primitive attributes. Full-network exact10 residual variants retain the passing precision point but add fabric and pipeline overhead. P13-P16 additionally compare complete INT16 product pairs, byte limbs, explicit overlap/fabric recovery and ordinary DSP/fabric mixing. Uniform w8a8 remains rejected by first-phase precision evidence.
 
 Measured direction result: none of its completed frame points satisfies all resource/precision gates. Their estimated latency cannot establish a feasible speedup.
+
+Complete signed16x16 pair controls at equal requested II1. Each call contains64 pairs and checks both complete32-bit outputs. Every16-bit value is swept in each input role under four companion cases, with a boundary cube and deterministic random triples; this does not exhaust all2^48 triples. These PE results do not establish SRCNN16-bit packing or image quality.
+
+| id | mode | DSP | LUT | FF | clock_est_ns | latency_cycles | interval_cycles | ii_ok | checked_products | bit_exact | status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [P13](P13_int16_direct_pair/P13.md) | 0 | 2.0 | 57.0 | 16.0 | 1.813 | 66.0 | 64.0 | True | 3832448 | True | pass |
+| [P14](P14_int16_limb_packing/P14.md) | 1 | 4.0 | 453.0 | 276.0 | 2.818 | 68.0 | 64.0 | True | 3832448 | True | pass |
+| [P15](P15_int16_overlap_fabric_repair/P15.md) | 2 | 1.0 | 747.0 | 200.0 | 3.392 | 69.0 | 64.0 | True | 3832448 | True | pass |
+| [P16](P16_int16_direct_mixed_control/P16.md) | 3 | 1.0 | 330.0 | 16.0 | 2.48 | 66.0 | 64.0 | True | 3832448 | True | pass |
+
+Measured DSP counts for direct/limbs/overlap/mixed are 2.0/4.0/1.0/1.0. Overlap recovery uses 747.0 LUT versus 330.0 LUT for ordinary mixing (difference 417.0). The one-DSP variants still use fabric multiplication; they are not two unrestricted INT16 multiplications implemented solely by one DSP48E2.
+
+At equal II1 and one DSP, overlap repair does not beat the ordinary mixed control: its FF count is 200.0 versus 16.0, and estimated clock is 3.392ns versus 2.48ns. Byte-limb reconstruction is exact but uses more DSP than the direct pair. This measured result gives no resource or timing basis for integrating these INT16 packing variants into the network. See [parsed utilization categories](int16_area_breakdown.csv) for multiplier/repair/control costs.
+
+![Complete INT16 pair resources](figs/int16_packing_resources.png)
 
 | id | scope | T_target | latency_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | bit_exact | border_mse | ii_ok | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -38,12 +69,16 @@ Measured direction result: none of its completed frame points satisfies all reso
 | [P11](P11_exact10_packing_T8/P11.md) | frame | 8 | 1894302.0 | 7.577208 | 505.0 | 168.0 | 0.0 | 165606.0 | 106599.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [P12](P12_exact10_packing_T4/P12.md) | frame | 4 | 1355582.0 | 5.422328 | 1007.0 | 168.0 | 0.0 | 292053.0 | 159828.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [P09](P09_reproduction_P01/P09.md) | PE | 1 | 61.0 | 0.000244 | 1.0 | 0.0 | 0.0 | 132.0 | 86.0 | True | unknown | True | pass |
+| [P13](P13_int16_direct_pair/P13.md) | PE | 1 | 66.0 | 0.000264 | 2.0 | 0.0 | 0.0 | 57.0 | 16.0 | True | unknown | True | pass |
+| [P14](P14_int16_limb_packing/P14.md) | PE | 1 | 68.0 | 0.000272 | 4.0 | 0.0 | 0.0 | 453.0 | 276.0 | True | unknown | True | pass |
+| [P15](P15_int16_overlap_fabric_repair/P15.md) | PE | 1 | 69.0 | 0.000276 | 1.0 | 0.0 | 0.0 | 747.0 | 200.0 | True | unknown | True | pass |
+| [P16](P16_int16_direct_mixed_control/P16.md) | PE | 1 | 66.0 | 0.000264 | 1.0 | 0.0 | 0.0 | 330.0 | 16.0 | True | unknown | True | pass |
 
 ## W Direction
 
 G2=2G makes the F2 inverse exactly divisible by4 before the ordinary layer cast. W01/W03 confirm one DSP per transformed product at10/16-bit operands. The layer and network designs retain complete transform precision, split9x9 into nine3x3 pieces, generate128x128 tiles and reorder two rows into raster streams. Equivalent offline tensors are archived; runtime transforms preserve the fixed incoming-weight contract. Header-order compilation failures and independent retries remain visible.
 
-Measured direction result: [W18](W18_narrow_raw_banks_T16/W18.md) is its fastest provisional resource-feasible point at 4.2274ms, with 326.0 DSP and 74480.0 LUT. RTL and routing must be assessed separately.
+Measured direction result: [W21](W21_subkernel_raw_cache_T8/W21.md) is its fastest provisional resource-feasible point at 1.74903921ms, with 644.0 DSP and 81086.0 LUT. RTL and routing must be assessed separately.
 
 | id | scope | T_target | latency_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | bit_exact | border_mse | ii_ok | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -65,6 +100,8 @@ Measured direction result: [W18](W18_narrow_raw_banks_T16/W18.md) is its fastest
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | frame | 8 | 532562.0 | 2.130248 | 648.0 | 146.0 | 0.0 | 148013.0 | 182409.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [W15](W15_fixed_tiles_T16_allcontinuous_4ns_split4000/W15.md) | frame | 16 | 1056850.0 | 4.2274 | 326.0 | 146.0 | 0.0 | 89114.0 | 92946.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | frame | 8 | 532569.0 | 1.77345477 | 648.0 | 146.0 | 0.0 | 145767.0 | 192756.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [W19](W19_streamed_winograd_T8/W19.md) | frame | 8 | 525237.0 | 1.74903921 | 645.0 | 146.0 | 0.0 | 83623.0 | 130843.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [W21](W21_subkernel_raw_cache_T8/W21.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81086.0 | 130057.0 | True | 1.661846957728205e-05 | True | provisional |
 
 ## G Direction
 
@@ -133,7 +170,7 @@ An unimplemented raw-bank combination follow-up would still need about 96004.0 L
 
 Storage controls map shallow wide FIFOs to LUTRAM and Conv3 line banks to20 URAM. Continuous engines separate window generation, flatten pixel/fold iterations, shift fixed channel registers and register balanced fabric reductions. Old padding versus online read/emit padding isolates finite-FIFO row serialization. Clock/T controls test actual II, resource and timing limits; final RTL and routed measurements are separate from HLS estimates.
 
-Measured direction result: [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) is its fastest provisional resource-feasible point at 2.64226ms, with 502.0 DSP and 69976.0 LUT. RTL and routing must be assessed separately.
+Measured direction result: [F27](F27_local_streamed_params_T16/F27.md) is its fastest provisional resource-feasible point at 2.6142825ms, with 502.0 DSP and 61656.0 LUT. RTL and routing must be assessed separately.
 
 The exact IEEE output encoder [F20](F20_ieee_decode_bit_exact_sdk_retry_unique_object/F20.md) uses 0.0 DSP, 242.0 LUT and 52.0 FF at 2.051ns estimated clock; its legacy control [F21](F21_ieee_decode_legacy_control_sdk_retry_unique_object/F21.md) uses 3.0 DSP at 3.239ns. The independent network copy [F23](F23_continuous_ieee_T16_2p5ns/F23.md) keeps the same quantization and weights, reaches 2.822ns estimated clock and removes the legacy output scaling DSPs. Continuous folds reduce the repeated per-pixel pipeline fill/drain; assess finite-FIFO RTL cycles and routed timing in the final verification table independently of that HLS estimate.
 
@@ -174,6 +211,15 @@ Loader controls preserve all inference engines, precision and runtime parameters
 | [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | frame | 16 | 1056904.0 | 2.64226 | 502.0 | 73.0 | 0.0 | 69976.0 | 125404.0 | True | 1.661846957728205e-05 | True | provisional |
 | [F80](F80_final_all_supplied_F25/F80.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
 | [F83](F83_final_all_supplied_F24/F83.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
+| [F86](F86_final_all_supplied_F23/F86.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
+| [F26](F26_s2p_bias_shift_T16/F26.md) | frame | 16 | 1056908.0 | 2.64227 | 502.0 | 73.0 | 0.0 | 70808.0 | 126285.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F27](F27_local_streamed_params_T16/F27.md) | frame | 16 | 1045713.0 | 2.6142825 | 502.0 | 73.0 | 0.0 | 61656.0 | 122055.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F94](F94_ws_all_F28/F94.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
+| [F31](F31_reload_testbench_csim_F28/F31.md) | frame | 16 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
+| [F28](F28_local_load_no_flatten_T16/F28.md) | frame | 16 | 1046029.0 | 2.6150725 | 502.0 | 73.0 | 0.0 | 61553.0 | 122061.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F29](F29_streamed_direct_T8_tree1/F29.md) | frame | 8 | 525761.0 | 1.7507841300000002 | 1004.0 | 73.0 | 0.0 | 87869.0 | 194668.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [F30](F30_streamed_direct_T8_tree0/F30.md) | frame | 8 | 525757.0 | 1.7507708100000001 | 1004.0 | 73.0 | 0.0 | 93631.0 | 104834.0 | True | 1.661846957728205e-05 | True | infeasible |
+| [F96](F96_ws_all_W21/F96.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
 
 ## All Architectures
 
@@ -182,6 +228,10 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | id | series | design | T_target | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | C | designs/winograd_mixed_packing_r2 | 4 | 1.081672 | 1036.0 | 146.0 | 248797.0 | 307525.0 | -0.07589037644656216 | infeasible |
+| [W19](W19_streamed_winograd_T8/W19.md) | W | designs/winograd_param_stream_v1 | 8 | 1.74903921 | 645.0 | 146.0 | 83623.0 | 130843.0 | -0.0695141811880653 | infeasible |
+| [W21](W21_subkernel_raw_cache_T8/W21.md) | W | designs/winograd_subkernel_cache_v1 | 8 | 1.74903921 | 644.0 | 146.0 | 81086.0 | 130057.0 | -0.0695141811880653 | provisional |
+| [F30](F30_streamed_direct_T8_tree0/F30.md) | F | designs/continuous_param_T8_tree0_v1 | 8 | 1.7507708100000001 | 1004.0 | 73.0 | 93631.0 | 104834.0 | -0.0695141811880653 | infeasible |
+| [F29](F29_streamed_direct_T8_tree1/F29.md) | F | designs/continuous_param_T8_tree1_v1 | 8 | 1.7507841300000002 | 1004.0 | 73.0 | 87869.0 | 194668.0 | -0.0695141811880653 | infeasible |
 | [F12](F12_continuous_T8_online_3p33ns_split4000/F12.md) | F | designs/continuous_direct_r2 | 8 | 1.75990833 | 1007.0 | 73.0 | 97112.0 | 196314.0 | -0.0695141811880653 | infeasible |
 | [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | W | designs/winograd_continuous_r2 | 8 | 1.77345477 | 648.0 | 146.0 | 145767.0 | 192756.0 | -0.0695141811880653 | infeasible |
 | [F15](F15_rotate_c3_T8_tree0_4ns/F15.md) | F | designs/continuous_rotate_v1 | 8 | 2.113924 | 1007.0 | 73.0 | 101994.0 | 86073.0 | -0.0695141811880653 | infeasible |
@@ -190,7 +240,10 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [W17](W17_narrow_raw_banks_T8/W17.md) | W | designs/winograd_rawbank_v1 | 8 | 2.130248 | 648.0 | 146.0 | 93166.0 | 122399.0 | -0.0695141811880653 | infeasible |
 | [W14](W14_fixed_tiles_T8_allcontinuous_4ns_split4000/W14.md) | W | designs/winograd_continuous_r2 | 8 | 2.130248 | 648.0 | 146.0 | 148013.0 | 182409.0 | -0.0695141811880653 | infeasible |
 | [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | C | designs/winograd_mixed_packing_r2 | 8 | 2.130248 | 520.0 | 146.0 | 150851.0 | 179452.0 | -0.07589037644656216 | infeasible |
+| [F27](F27_local_streamed_params_T16/F27.md) | F | designs/continuous_param_stream_v1 | 16 | 2.6142825 | 502.0 | 73.0 | 61656.0 | 122055.0 | -0.0695141811880653 | provisional |
+| [F28](F28_local_load_no_flatten_T16/F28.md) | F | designs/continuous_param_noflat_v1 | 16 | 2.6150725 | 502.0 | 73.0 | 61553.0 | 122061.0 | -0.0695141811880653 | provisional |
 | [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | F | designs/continuous_nested_load_v1 | 16 | 2.64226 | 502.0 | 73.0 | 69976.0 | 125404.0 | -0.0695141811880653 | provisional |
+| [F26](F26_s2p_bias_shift_T16/F26.md) | F | designs/continuous_s2p_load_v1 | 16 | 2.64227 | 502.0 | 73.0 | 70808.0 | 126285.0 | -0.0695141811880653 | provisional |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | F | designs/continuous_affine_load_v1 | 16 | 2.830503377 | 502.0 | 73.0 | 69290.0 | 124577.0 | -0.0695141811880653 | provisional |
 | [F23](F23_continuous_ieee_T16_2p5ns/F23.md) | F | designs/continuous_ieee_v1 | 16 | 2.95951606 | 502.0 | 73.0 | 70449.0 | 125618.0 | -0.0695141811880653 | provisional |
 | [F22](F22_continuous_ieee_T16_3ns/F22.md) | F | designs/continuous_ieee_v1 | 16 | 3.146133 | 502.0 | 73.0 | 69483.0 | 121696.0 | -0.0695141811880653 | provisional |
@@ -264,6 +317,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [F05](F05_continuous_T8_online_4ns/F05.md) | F | designs/continuous_direct | 8 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
 | [F06](F06_continuous_T16_online_3p33ns/F06.md) | F | designs/continuous_direct | 16 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
 | [F07](F07_continuous_T8_online_3p33ns/F07.md) | F | designs/continuous_direct | 8 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
+| [F31](F31_reload_testbench_csim_F28/F31.md) | F | designs/ws_reload_F31 | 16 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
 
 ## Estimates And Actuals
 
@@ -352,6 +406,32 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F82](F82_final_cosim_F25/F82.md) | frame | 502.0 | unknown | unknown | 1056904.0 | 1068183.0 | 1.067173555971035 | cosim_complete |
 | [F83](F83_final_all_supplied_F24/F83.md) | frame | 502.0 | unknown | unknown | 1048723.0 | unknown | unknown | csim_pass |
 | [F84](F84_final_impl_F24/F84.md) | frame | 502.0 | unknown | unknown | 1048723.0 | unknown | unknown | fail |
+| [F85](F85_final_cosim_F24/F85.md) | frame | 502.0 | unknown | unknown | 1048723.0 | 1061153.0 | 1.1852510148056217 | cosim_complete |
+| [P13](P13_int16_direct_pair/P13.md) | PE | 2.0 | 2.0 | 0.0 | 72.0 | 66.0 | -8.333333333333337 | pass |
+| [P14](P14_int16_limb_packing/P14.md) | PE | 4.0 | 4.0 | 0.0 | 80.0 | 68.0 | -15.000000000000002 | pass |
+| [P15](P15_int16_overlap_fabric_repair/P15.md) | PE | 1.0 | 1.0 | 0.0 | 80.0 | 69.0 | -13.749999999999996 | pass |
+| [P16](P16_int16_direct_mixed_control/P16.md) | PE | 1.0 | 1.0 | 0.0 | 76.0 | 66.0 | -13.157894736842103 | pass |
+| [F86](F86_final_all_supplied_F23/F86.md) | frame | 502.0 | unknown | unknown | 1048730.0 | unknown | unknown | csim_pass |
+| [F87](F87_final_impl_F23/F87.md) | frame | 502.0 | unknown | unknown | 1048730.0 | unknown | unknown | fail |
+| [F88](F88_final_cosim_F23/F88.md) | frame | 502.0 | unknown | unknown | 1048730.0 | unknown | unknown | fail |
+| [F89](F89_serial_vivado_impl_F25/F89.md) | frame | 502.0 | unknown | unknown | 1056904.0 | unknown | unknown | timeout |
+| [F26](F26_s2p_bias_shift_T16/F26.md) | frame | 502.0 | 502.0 | 0.0 | 1056904.0 | 1056908.0 | 0.00037846389076001685 | provisional |
+| [F27](F27_local_streamed_params_T16/F27.md) | frame | 502.0 | 502.0 | 0.0 | 1052000.0 | 1045713.0 | -0.5976235741444902 | provisional |
+| [F94](F94_ws_all_F28/F94.md) | frame | 502.0 | unknown | unknown | 1046500.0 | unknown | unknown | csim_pass |
+| [F31](F31_reload_testbench_csim_F28/F31.md) | frame | 502.0 | unknown | unknown | 1046500.0 | unknown | unknown | csim_pass |
+| [F92](F92_ws_impl_F25/F92.md) | frame | 502.0 | 592.0 | 17.928286852589647 | 1056904.0 | unknown | unknown | impl_complete |
+| [F28](F28_local_load_no_flatten_T16/F28.md) | frame | 502.0 | 502.0 | 0.0 | 1046500.0 | 1046029.0 | -0.04500716674630256 | provisional |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | frame | 502.0 | unknown | unknown | 1057900.0 | 1059506.0 | 0.1518101899990576 | cosim_complete |
+| [W19](W19_streamed_winograd_T8/W19.md) | frame | 648.0 | 645.0 | -0.462962962962965 | 538500.0 | 525237.0 | -2.462952646239558 | infeasible |
+| [F29](F29_streamed_direct_T8_tree1/F29.md) | frame | 1004.0 | 1004.0 | 0.0 | 526300.0 | 525761.0 | -0.10241307239217123 | infeasible |
+| [F30](F30_streamed_direct_T8_tree0/F30.md) | frame | 1004.0 | 1004.0 | 0.0 | 526300.0 | 525757.0 | -0.10317309519285445 | infeasible |
+| [W20](W20_ws_impl_W17/W20.md) | frame | 648.0 | 696.0 | 7.407407407407418 | 532562.0 | unknown | unknown | impl_complete |
+| [W21](W21_subkernel_raw_cache_T8/W21.md) | frame | 645.0 | 644.0 | -0.15503875968991832 | 527000.0 | 525237.0 | -0.33453510436433076 | provisional |
+| [F96](F96_ws_all_W21/F96.md) | frame | 644.0 | unknown | unknown | 525237.0 | unknown | unknown | csim_pass |
+| [F95](F95_ws_impl_F28/F95.md) | frame | 502.0 | 591.0 | 17.729083665338653 | 1046029.0 | unknown | unknown | impl_complete |
+| [F97](F97_ws_cosim_W21/F97.md) | frame | 644.0 | unknown | unknown | 525237.0 | 558758.0 | 6.382071331608397 | cosim_complete |
+| [F98](F98_ws_impl_W21/F98.md) | frame | 644.0 | 644.0 | 0.0 | 525237.0 | unknown | unknown | impl_complete |
+| [W22](W22_ws_clock_4p95_W21/W22.md) | frame | 644.0 | 644.0 | 0.0 | 558758.0 | unknown | unknown | impl_complete |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -383,6 +463,17 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [F81](F81_final_impl_F25/F81.md) | frame | F25 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F82](F82_final_cosim_F25/F82.md) | frame | F25 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1068183.0 | 1068212.0 | 1.067173555971035 |
 | [F84](F84_final_impl_F24/F84.md) | frame | F24 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F85](F85_final_cosim_F24/F85.md) | frame | F24 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1061153.0 | 1061182.0 | 1.1852510148056217 |
+| [F87](F87_final_impl_F23/F87.md) | frame | F23 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F88](F88_final_cosim_F23/F88.md) | frame | F23 | cosim | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F89](F89_serial_vivado_impl_F25/F89.md) | frame | F25 | impl | timeout | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F92](F92_ws_impl_F25/F92.md) | frame | F25 | impl | impl_complete | 592.0 | 36.0 | 32400.0 | 77757.0 | 0.0 | 0.568 | True | unknown | unknown | unknown | unknown |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | frame | F28 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1059506.0 | 1059535.0 | 1.2883964020117933 |
+| [W20](W20_ws_impl_W17/W20.md) | frame | W17 | impl | impl_complete | 696.0 | 54.5 | 42812.0 | 89690.0 | 0.0 | 0.188 | True | unknown | unknown | unknown | unknown |
+| [F95](F95_ws_impl_F28/F95.md) | frame | F28 | impl | impl_complete | 591.0 | 36.0 | 30140.0 | 76498.0 | 0.0 | 0.282 | True | unknown | unknown | unknown | unknown |
+| [F97](F97_ws_cosim_W21/F97.md) | frame | W21 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 558758.0 | 558787.0 | 6.382071331608397 |
+| [F98](F98_ws_impl_W21/F98.md) | frame | W21 | impl | impl_complete | 644.0 | 54.5 | 42594.0 | 88806.0 | 0.0 | 0.14 | True | unknown | unknown | unknown | unknown |
+| [W22](W22_ws_clock_4p95_W21/W22.md) | frame | W21 | impl | impl_complete | 644.0 | 54.5 | 42592.0 | 88806.0 | 0.0 | 0.047 | True | unknown | unknown | unknown | unknown |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -397,6 +488,43 @@ Finite-FIFO RTL counters span both transactions, including startup/inactive cycl
 | [F82](F82_final_cosim_F25/F82.md) | result_U | 1 | 0.0 | 92.38409511104871 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
 | [F82](F82_final_cosim_F25/F82.md) | windows0_U | 2 | 0.8112523110767863 | 1.0749607994570431 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
 | [F82](F82_final_cosim_F25/F82.md) | windows1_1_U | 2 | 0.8112523110767863 | 1.0749607994570431 | [counters](F82_final_cosim_F25/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | raw_U | 512 | 89.7349685967235 | 0.011402239927628758 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | padded1_U | 16 | 91.75269389697463 | 0.03656255447867734 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | features2_U | 4 | 0.06690570536046626 | 92.04990600219564 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | features_U | 4 | 0.06115746870273606 | 0.23859893798971915 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | windows_U | 2 | 91.77841961185267 | 0.2358661697426015 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | padded3_U | 16 | 0.6960078025245124 | 92.0042028090973 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | result_U | 1 | 0.0 | 92.99610344941316 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | windows0_U | 2 | 0.816626538949015 | 1.0820819924707523 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F85](F85_final_cosim_F24/F85.md) | windows1_1_U | 2 | 0.816626538949015 | 1.0820819924707523 | [counters](F85_final_cosim_F24/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | raw_U | 512 | 90.58994967665457 | 0.011419963984642508 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | params1_U | 5 | 0.0 | 0.16997814162265418 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | params2_U | 5 | 0.0 | 0.7479604510602634 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | params3_U | 5 | 0.0 | 0.9723013964445216 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | padded1_U | 16 | 92.61024512339223 | 0.03652500877732769 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | features2_U | 4 | 0.06700970602558827 | 92.90782484606643 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | features_U | 4 | 0.3284419393930242 | 0.0 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | windows_U | 2 | 92.63601082725842 | 0.0 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | padded3_U | 16 | 0.6970897024014013 | 92.86205061026023 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | result_U | 1 | 0.0 | 93.85549309705648 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | windows0_U | 2 | 0.8178959329827435 | 0.7415426200606297 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | windows1_1_U | 2 | 0.8178959329827435 | 0.7415426200606297 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | raw_U | 512 | 82.47619899785253 | 0.01807444523979957 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | params1_U | 2 | 0.0 | 1.1637437365783823 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | params2_U | 4 | 0.0 | 1.4289549033643523 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | params3_U | 4 | 0.0 | 1.854688618468146 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | raw1_U | 16 | 0.010200429491768075 | 0.006800286327845383 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | padded1_U | 16 | 86.63260558339299 | 0.0658554044380816 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | features2_U | 4 | 0.13439513242662848 | 87.28793843951324 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | features_U | 4 | 80.87240515390121 | 4.204545454545454 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | windows_U | 2 | 86.68432355046528 | 4.113636363636363 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | tiles_U | 1 | 0.0 | 87.51360057265569 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | top_U | 210 | 0.0 | 6.991410164638511 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | bottom_U | 330 | 0.0 | 0.0 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | padded3_U | 16 | 0.614352183249821 | 87.20150322118826 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | result_U | 1 | 0.0 | 88.34931997136721 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | windows0_U | 2 | 0.8192555476020043 | 4.881531853972799 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | windows1_U | 2 | 0.8192555476020043 | 4.881531853972799 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -439,6 +567,13 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | 5 | infeasible |
 | [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | 5 | provisional |
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | 5 | infeasible |
+| [F26](F26_s2p_bias_shift_T16/F26.md) | 5 | provisional |
+| [F27](F27_local_streamed_params_T16/F27.md) | 5 | provisional |
+| [F28](F28_local_load_no_flatten_T16/F28.md) | 5 | provisional |
+| [W19](W19_streamed_winograd_T8/W19.md) | 7 | infeasible |
+| [F29](F29_streamed_direct_T8_tree1/F29.md) | 5 | infeasible |
+| [F30](F30_streamed_direct_T8_tree0/F30.md) | 5 | infeasible |
+| [W21](W21_subkernel_raw_cache_T8/W21.md) | 7 | provisional |
 
 Selected candidates were ranked globally across both phases before validation. Mandatory full-supplied-image C simulation:
 
@@ -446,8 +581,9 @@ Selected candidates were ranked globally across both phases before validation. M
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F80](F80_final_all_supplied_F25/F80.md) | designs/continuous_nested_load_v1 | 13 | True | True | 29.088943394069588 | -0.0695141811880653 | 1.661846957728205e-05 | csim_pass |
 | [F83](F83_final_all_supplied_F24/F83.md) | designs/continuous_affine_load_v1 | 13 | True | True | 29.088943394069588 | -0.0695141811880653 | 1.661846957728205e-05 | csim_pass |
+| [F86](F86_final_all_supplied_F23/F86.md) | designs/continuous_ieee_v1 | 13 | True | True | 29.088943394069588 | -0.0695141811880653 | 1.661846957728205e-05 | csim_pass |
 
-Routed timing closes for 0 selected implementation runs; 1 selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.
+Routed timing closes for 1 selected implementation runs; 2 selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.
 
 ## Failed Directions
 
@@ -499,6 +635,12 @@ Routed timing closes for 0 selected implementation runs; 1 selected two-frame RT
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | C | infeasible | LUT=248797.0 exceeds 81984; FF=307525.0 exceeds 163968 | unknown |
 | [F81](F81_final_impl_F25/F81.md) | F | fail | Kernel-confirmed host OOM killed Vivado during synthesis; no routed timing/resource result; ERROR: [Vivado 12-13638] Failed runs(s) : 'bd_0_hls_inst_0_synth_1'; ERROR: [Common 17-39] 'wait_on_runs' failed due to earlier errors. | impl of F25; HLS estimates inherited, real measurements in data.csv; impl failed (exit=1) |
 | [F84](F84_final_impl_F24/F84.md) | F | fail | Kernel-confirmed host OOM killed Vivado during synthesis; no routed timing/resource result; ERROR: [Vivado 12-13638] Failed runs(s) : 'bd_0_hls_inst_0_synth_1'; ERROR: [Common 17-39] 'wait_on_runs' failed due to earlier errors. | impl of F24; HLS estimates inherited, real measurements in data.csv; impl failed (exit=1) |
+| [F87](F87_final_impl_F23/F87.md) | F | fail | Kernel-confirmed host OOM killed Vivado during synthesis; no routed timing/resource result; ERROR: [Vivado 12-13638] Failed runs(s) : 'bd_0_hls_inst_0_synth_1'; ERROR: [Common 17-39] 'wait_on_runs' failed due to earlier errors. | impl of F23; HLS estimates inherited, real measurements in data.csv; impl failed (exit=1) |
+| [F88](F88_final_cosim_F23/F88.md) | F | fail | User-priority cancellation (SIGTERM): Stop F88 to prioritize WS1 F89 under docs/0004; preserve its interrupted archive and defer F90/F91. No RTL verdict or measured cycles. | cosim of F23; HLS estimates inherited, real measurements in data.csv; cosim failed (exit=-15) |
+| [F89](F89_serial_vivado_impl_F25/F89.md) | F | timeout | EXP_TIMEOUT after 10800 seconds; process tree terminated | impl of F25; HLS estimates inherited, real measurements in data.csv; impl failed (exit=124) |
+| [W19](W19_streamed_winograd_T8/W19.md) | W | infeasible | LUT=83623.0 exceeds 81984 | unknown |
+| [F29](F29_streamed_direct_T8_tree1/F29.md) | F | infeasible | LUT=87869.0 exceeds 81984; FF=194668.0 exceeds 163968 | unknown |
+| [F30](F30_streamed_direct_T8_tree0/F30.md) | F | infeasible | LUT=93631.0 exceeds 81984 | unknown |
 
 ## Pending Human Decisions
 
@@ -507,11 +649,23 @@ Routed timing closes for 0 selected implementation runs; 1 selected two-frame RT
 - Runtime transformed-weight loading preserves the frozen top signature; true offline-transformed input parameters require an approved new weight contract.
 - Windows settings-batch execution and board integration remain unverified. The existing Linux Vitis2026.1 SSH installation was used.
 - Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).
-- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89-F91 keep the generated flow and set per-run synthesis threads to1; assess their actual routed reports before requesting a larger host. No system swap/global tool settings were changed.
+- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Assess the archived route and memory evidence before changing hosts. No system swap/global tool settings were changed.
+- Section6 unattended decision: preserve runtime float weights and HLS resource gates; keep missing-comic acceptance provisional. A repeated host OOM is archived without changing swap or moving to an unverified host. These decisions are recorded for user review tomorrow in [docs/0004](../docs/0004-t8-weight-loading-plan.md).
 
 ## Next Steps
 
 Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. Complete the missing image and board/AXI system measurements before claiming deployable performance.
+
+## Integrity Audit
+
+Final local/remote original and first-phase source checksum and report-provenance audit: [weight_loading_audit.json](weight_loading_audit.json).
+
+| location | manifest | checked_files | pass |
+| --- | --- | --- | --- |
+| local | checksums.txt | 46 | True |
+| local | phase1_design_checksums.txt | 45 | True |
+| remote | checksums.txt | 46 | True |
+| remote | phase1_design_checksums.txt | 45 | True |
 
 ## Figures
 
@@ -527,4 +681,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T05:31:35+00:00.
+Generated from archived evidence at 2026-10-12T03:13:30+00:00.

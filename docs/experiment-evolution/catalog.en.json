@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_commit": "800a87a",
+  "source_commit": "a3d78b7",
   "columns": ["id", "title", "change", "issue"],
   "edge_kinds": {
     "source": "Design or parameter baseline",
@@ -123,10 +123,10 @@
         ["P10", "Exact 10-bit packing network, T16", "Pack output channels in Conv1/2 and adjacent output pixels in Conv3.", "DSP use falls, but 101,488 LUTs exceed budget. Per-pixel pipeline overhead remains substantial."],
         ["P11", "Exact 10-bit packing network, T8", "Increase parallelism with the same arithmetic.", "165,606 LUTs exceed budget. Saving multipliers does not resolve selectors and recovery logic."],
         ["P12", "Exact 10-bit packing network, T4", "Increase parallelism further and compare time/resource tradeoffs.", "292,053 LUTs exceed budget; lower estimated latency cannot qualify this candidate."],
-        ["P13", "Complete INT16 two-product control", "Directly compute two signed16x16 products with matched interfaces and throughput as the new research baseline.", "Only plans/preparation exist in this snapshot; two measured DSPs or achieved II1 cannot be claimed."],
-        ["P14", "INT16 byte-limb packing", "Split 16-bit operands, combine packed narrow products, and recover both complete 32-bit results.", "Count unpacking, partial products, and fabric multipliers. This snapshot has no measured result."],
-        ["P15", "INT16 overlapping fields with fabric recovery", "Allow field overlap and exactly recover both complete products using fabric arithmetic.", "One DSP does not imply the total cost of two complete multiplications. Results await archiving."],
-        ["P16", "INT16 one-DSP/one-fabric control", "Directly map one product to DSP and one to LUTs, matching P15's resource types.", "Use this to assess whether overlap packing beats ordinary mixed mapping. No result exists in this snapshot."]
+        ["P13", "Complete INT16 two-product control", "Directly compute two signed16x16 products with matched interfaces and throughput as the new research baseline.", "Exact C simulation; 2 DSPs, 57 LUTs, 16 FFs, 66 latency/64 interval cycles. PE only; no network latency inference."],
+        ["P14", "INT16 byte-limb packing", "Split 16-bit operands, combine packed narrow products, and recover both complete 32-bit results.", "Exact functionality, but 4 DSPs, 453 LUTs, and 276 FFs cost more than the direct control; DSPs are not saved."],
+        ["P15", "INT16 overlapping fields with fabric recovery", "Allow field overlap and exactly recover both complete products using fabric arithmetic.", "1 DSP, 747 LUTs, 200 FFs, and a 3.392 ns estimate; more costly and slower than P16 mixed mapping, with HLS timing warnings."],
+        ["P16", "INT16 one-DSP/one-fabric control", "Directly map one product to DSP and one to LUTs, matching P15's resource types.", "1 DSP, 330 LUTs, 16 FFs, and a 2.48 ns estimate beat P15 at the same DSP count. No evidence supports integrating full INT16 packing into the network."]
       ]
     },
     {
@@ -174,7 +174,9 @@
         ["W15", "T16 split-window streams", "Correct the T16 stream representation.", "About 4.2274 ms, but 89,114 LUTs still exceed the project budget."],
         ["W16", "T8 split-window streams, 3.33 ns", "Fix stream width and measure the tighter period.", "The 1.7735 ms estimate exceeds LUT/FF budgets and cannot qualify as a candidate."],
         ["W17", "T8 narrow raw-weight banks", "Reduce channel banking for raw weights used only by sequential transforms; retain transformed MAC banks.", "LUTs decrease substantially but remain at 93,166, above budget."],
-        ["W18", "T16 narrow raw-weight banks", "Measure the same loader/banking adjustment at T16.", "About 4.2274 ms, 326 DSPs, and 74,480 LUTs meet this route's resource budget. Final RTL/implementation remain pending."]
+        ["W18", "T16 narrow raw-weight banks", "Measure the same loader/banking adjustment at T16.", "About 4.2274 ms, 326 DSPs, and 74,480 LUTs meet this route's resource budget. Final RTL/implementation remain pending."],
+        ["W19", "Private parameter streams for Winograd T8", "Integrate the selected private loader into W17: one converter supplies three layer streams, preserving integer Winograd, continuous tiles, and exact output encoding.", "Outside LUTs fall to 3,170, but total LUTs of 83,623 still exceed the 81,984 gate. Exact functionality motivates simplifying the transform cache."],
+        ["W21", "Reorder the raw cache by subkernel", "Change only the flat 81-coefficient cache into nine subkernels by nine taps, preserving transform arithmetic and stream counts while removing variable sparse selectors.", "525,237 HLS cycles and 81,086 LUTs pass the budget with only 898 LUTs spare. F96/F97 later validate images and parameter reload; F98/W22 pass routing."]
       ]
     },
     {
@@ -225,7 +227,12 @@
         ["F22", "Integrate exact output encoding, 3 ns", "Replace only fixed-point-to-float output encoding, retaining 10-bit values and continuous inference engines.", "DSPs fall from 505 to 502. Loader addresses and inference control may limit the clock after conversion is removed."],
         ["F23", "Integrate exact output encoding, 2.5 ns", "Tighten the target to locate the global critical path.", "Address multiplication in the one-time Conv1 weight loader sets the global estimate to 2.822 ns."],
         ["F24", "Explicit three-dimensional loader indices", "Replace division/modulo-derived addresses with output-channel/kernel-row/kernel-column counters.", "The address multiplier disappears, but automatically flattened counter control still has a 2.699 ns estimate."],
-        ["F25", "Disable weight-loader loop flattening", "Add LOOP_FLATTEN off only to the Conv1 loader inner loop; retain all inference engines.", "About 2.64226 ms and 73 BRAM18K blocks. Loading cycles increase slightly; 2.5 ns still has HLS timing warnings after uncertainty."]
+        ["F25", "Disable weight-loader loop flattening", "Add LOOP_FLATTEN off only to the Conv1 loader inner loop; retain all inference engines.", "About 2.64226 ms and 73 BRAM18K blocks. Loading cycles increase slightly; 2.5 ns still has HLS timing warnings after uncertainty."],
+        ["F26", "S2P banks and bias shift loading", "Change shared weight banks to simple dual port and load biases by fixed-index shifting, isolating bank-port and write-decoder costs.", "70,808 total and 33,126 outside LUTs reject the area hypothesis. Shared ownership remains, motivating F27."],
+        ["F27", "Parameter streams and private layer banks", "Convert parameters once inside DATAFLOW and send three streams to the engines; each loads its private S2P LUTRAM before pixels.", "61,656 total and 3,170 outside LUTs; weight-predecessor warnings disappear. The 2.419 ns estimate misses this workstream's 2.377 ns loader gate."],
+        ["F28", "Disable private-loader loop flattening", "Add LOOP_FLATTEN off only to the load_local inner tap loop, preserving private banks, parameter streams, and inference arithmetic.", "1,046,029 HLS cycles, 61,553 LUTs, and a 2.377 ns estimate pass all WS2 gates. F93/F94/F95 supply reload RTL, multi-image checks, and 5 ns routing."],
+        ["F29", "Private-stream direct T8 with registered tree", "Change the F28 direct network to T8, retaining reduction-tree registers, as a control for Winograd T8.", "525,761 cycles, but 87,869 LUTs and 194,668 FFs exceed budgets. Greater parallelism does not yield a qualified candidate."],
+        ["F30", "Direct T8 without tree registers", "Keep F29 parameter streams and T8, changing only reduction-addition latency to zero.", "FFs fall to 104,834, but LUTs rise to 93,631. Nearly unchanged cycles and excessive LUTs still disqualify the design."]
       ]
     },
     {
@@ -240,13 +247,23 @@
         ["F82", "F25 two-frame C/RTL co-simulation", "Run the same F25 RTL on two frames with finite-FIFO profiling and deadlock checks.", "Pass; maximum latency is 1,068,183 cycles, about 1.07% above synthesis, with about 103 minutes wall time. Functionality does not prove physical timing."],
         ["F83", "F24 C simulation on 13 images", "Validate the second candidate on the complete supplied image set.", "Outputs match the reference bit for bit. Precision matches F25, while hardware verification remains separate."],
         ["F84", "F24 Vivado implementation", "Independently measure the second candidate's physical results.", "Host OOM interrupts the run. No routed results exist, so timing cannot be marked passed."],
-        ["F85", "F24 two-frame RTL plan", "Plan finite-FIFO, state-reset, and RTL-cycle validation.", "This snapshot contains a plan only; no completed result is archived."],
-        ["F86", "F23 multi-image C-simulation plan", "Plan acceptance of the third candidate on all supplied images.", "No run results exist in this snapshot."],
-        ["F87", "F23 Vivado implementation plan", "Plan routed utilization and timing measurements for the third candidate.", "No completed report exists in this snapshot."],
-        ["F88", "F23 two-frame RTL plan", "Plan finite-FIFO RTL verification for the third candidate.", "No completed result exists in this snapshot."],
-        ["F89", "F25 serial implementation retry plan", "Retain the generated IP/BD flow and limit Vivado internal threads through a per-run Tcl hook.", "This addresses host memory pressure; estimates cannot replace actual routed results."],
+        ["F85", "F24 two-frame RTL verification", "Validate finite FIFOs, state reset, and RTL cycles, and recover the complete archive.", "RTL Pass; 1,061,153 maximum latency and 1,061,182 interval cycles, about 1.185% above HLS. F24 physical implementation remains separate."],
+        ["F86", "F23 multi-image C simulation", "Check the third candidate on all 13 supplied images.", "Bit-exact output with about 0.0695 dB average PSNR loss; comic remains missing."],
+        ["F87", "F23 Vivado implementation", "Independently measure routed utilization and timing for the third candidate.", "Kernel logs confirm host OOM and no routed report. This does not establish excess device resources."],
+        ["F88", "Interrupted F23 two-frame RTL verification", "Attempt finite-FIFO RTL verification and preserve the actual exit status.", "SIGTERM interrupts the process with exit=-15. No RTL Pass exists; further work is deferred, without claiming success."],
+        ["F89", "F25 serial implementation retry", "Retain the generated IP/BD flow and limit Vivado internal threads through a per-run Tcl hook.", "Congestion routing reaches the three-hour timeout, without final routed reports or a newly observed OOM. F92 later relaxes the physical clock."],
         ["F90", "F24 serial implementation retry plan", "Apply the same flow control to the second candidate.", "No actual result exists in this snapshot; timing and precision gates are unchanged."],
-        ["F91", "F23 serial implementation plan", "Plan the same thread-limited verification flow for the third candidate.", "F87 is also a plan. This relationship describes verification flow and does not claim F87 already failed from OOM."]
+        ["F91", "F23 serial implementation plan", "Plan the same thread-limited verification flow for the third candidate.", "F87 has confirmed host OOM. F91 remains unrun and is deferred alongside F90 at closure."],
+        ["F31", "C preflight of the F28 reload testbench", "Freeze a two-frame check: the first matches E017 exactly, while changed input, sparse weights, and biases require every second-frame output to equal 104/256.", "C preflight passes. It validates arithmetic and test compilation; F93 separately verifies finite-FIFO RTL parameter updates."],
+        ["F92", "Retry F25 routing at 5 ns", "Reuse hash-checked identical F25 RTL, relaxing only the physical clock to 5 ns and bounding synthesis threads.", "WNS +0.568 ns and TNS 0 pass routing. F82's 1,068,183 RTL cycles give about 5.340915 ms/frame at 5 ns."],
+        ["F93", "F28 two-frame RTL with changed parameters", "Use an independently frozen reload testbench: original parameters on the first frame and changed weights/biases on the second, checking finite FIFOs, reset, and outputs.", "Both RTL frames pass with exact parameter updates. Maximum latency/interval are 1,059,506/1,059,535 cycles, 1.2884% above HLS."],
+        ["F94", "All supplied images on F28", "Check all 13 supplied images using an independent copy with matching F28 sources and compilation macros.", "Bit-exact output and 0.069514 dB mean PSNR loss complement F93 reload validation; comic is still missing."],
+        ["F95", "Independent F28 routing at 5 ns", "Synthesize, place, and route F28 RTL at 5 ns in a separate workspace, archiving its own paths and hierarchical resources.", "WNS +0.282 ns and TNS 0 pass. F93 cycles give 5.29753 ms/frame. Main paths move to Conv1 private-load addresses driving LUTRAM write addresses."],
+        ["W20", "Physical-resource diagnostic for W17", "F92's small routed/HLS LUT ratio motivates independently implementing W17 for calibration, preserving HLS gates and diagnostic exclusion.", "5 ns routing passes with WNS +0.188 ns. W17 still exceeds its HLS LUT budget; W20 is diagnostic only and excluded from candidate rankings."],
+        ["F96", "All supplied images on W21", "Match W21 sources, precision, and macros and verify every output bit on all 13 images.", "All outputs are exact with 0.069514 dB mean PSNR loss. Missing comic keeps quality acceptance provisional."],
+        ["F97", "W21 two-frame RTL with changed parameters", "Measure finite-FIFO behavior across two frames, reloading weights/biases for the second and requiring every output to equal 104/256 exactly.", "RTL Pass with exact parameter updates: 558,758 maximum latency and 558,787 interval cycles, 6.3821% above HLS. Transform startup overhead matters."],
+        ["F98", "Independent W21 routing at 5 ns", "Package and route HLS-eligible W21 independently, without reusing W20 IP; check RTL and initialization hashes.", "WNS +0.140 ns and TNS 0 pass. F97 cycles give 2.79379 ms/frame, retained as the conservative 5 ns implementation."],
+        ["W22", "Same W21 RTL routed at 4.95 ns", "Tighten only the physical clock to 4.95 ns, with one synthesis and two place/route threads. All 93 RTL/init file hashes match W21/F98.", "WNS +0.047 ns, WHS +0.032 ns, zero TNS/THS, and no unrouted nets pass. F97 cycles give 2.7658521 ms/frame, 1% below F98. Fastest verified target so far; board acceptance remains pending."]
       ]
     }
   ]

@@ -1,5 +1,5 @@
 {
-  "source_commit": "800a87a",
+  "source_commit": "a3d78b7",
   "labels": [
     ["E000", "浮点整图存储", "Float32 full-frame maps"],
     ["E010", "先测范围，再扫描位宽", "Measure ranges; scan bit widths"],
@@ -140,6 +140,13 @@
     ["F23", "整网接入精确 float，2.5 ns", "Integrate exact float at 2.5 ns"],
     ["F24", "加载地址改为三维计数", "Use explicit 3D loader counters"],
     ["F25", "加载循环不再合并", "Disable loader loop flattening"],
+    ["F26", "S2P 银行 + bias 移位加载", "S2P banks / bias shift loading"],
+    ["F27", "参数流 + 各层私有权重", "Parameter streams / private banks"],
+    ["F28", "私有加载循环不再合并", "Disable private-loader flattening"],
+    ["F29", "直接卷积 T8，注册加法树", "Direct T8 with registered tree"],
+    ["F30", "直接卷积 T8，去掉树寄存", "Direct T8 without tree registers"],
+    ["W19", "Winograd T8 接入参数流", "Streamed parameters for Winograd T8"],
+    ["W21", "权重缓存改为子卷积索引", "Index raw cache by subkernel"],
     ["E069", "E043 多图 C 验证", "E043 multi-image C checks"],
     ["E070", "E039 整网布局布线", "Place and route the E039 network"],
     ["F80", "F25 多图 C 验证", "F25 multi-image C checks"],
@@ -147,12 +154,22 @@
     ["F82", "F25 双帧 RTL 验证", "F25 two-frame RTL checks"],
     ["F83", "F24 多图 C 验证", "F24 multi-image C checks"],
     ["F84", "F24 布局布线", "Place and route F24"],
-    ["F85", "F24 双帧 RTL 计划", "Plan F24 two-frame RTL checks"],
-    ["F86", "F23 多图 C 验证计划", "Plan F23 multi-image C checks"],
-    ["F87", "F23 布局布线计划", "Plan F23 place and route"],
-    ["F88", "F23 双帧 RTL 计划", "Plan F23 two-frame RTL checks"],
+    ["F85", "F24 双帧 RTL 验证", "F24 two-frame RTL checks"],
+    ["F86", "F23 多图 C 验证", "F23 multi-image C checks"],
+    ["F87", "F23 布局布线", "Place and route F23"],
+    ["F88", "F23 双帧 RTL 验证中断", "Interrupted F23 two-frame RTL"],
     ["F89", "F25 单线程实现重试", "Retry F25 implementation serially"],
     ["F90", "F24 单线程实现重试", "Retry F24 implementation serially"],
-    ["F91", "F23 单线程实现计划", "Plan serial F23 implementation"]
+    ["F91", "F23 单线程实现计划", "Plan serial F23 implementation"],
+    ["F31", "更换参数的双帧 C 预检", "C preflight of parameter reload"],
+    ["F92", "F25 布线目标放宽到 5 ns", "Route F25 at a relaxed 5 ns"],
+    ["F93", "F28 双帧 RTL，更换参数", "F28 two-frame RTL / reload params"],
+    ["F94", "F28 多图 C 验证", "F28 multi-image C checks"],
+    ["F95", "F28 独立布线，5 ns", "Independent F28 routing at 5 ns"],
+    ["W20", "W17 物理资源诊断", "W17 physical-resource diagnostic"],
+    ["F96", "W21 多图 C 验证", "W21 multi-image C checks"],
+    ["F97", "W21 双帧 RTL，更换参数", "W21 two-frame RTL / reload params"],
+    ["F98", "W21 独立布线，5 ns", "Independent W21 routing at 5 ns"],
+    ["W22", "W21 布线时钟收紧到 4.95 ns", "Tighten W21 routing to 4.95 ns"]
   ]
 }
