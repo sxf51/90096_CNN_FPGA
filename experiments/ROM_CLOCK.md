@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T08:52:54+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T08:55:01+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-WS-0 complete; F43 exact RTL passed; W28 and C14 active under two-task concurrency. F43 registeredConv3 completed changed-parameter two-frame RTL PASS at558758cycles, within553171..564345. F49 independent4.5ns routing and W29 ROM5ns routing may now launch; W28 FRP and C14 T4 mixed are currently active. F46 was stopped at actual MemAvailable0.497372GiB without a new OOM; retain fail and retry with a new ID after investigating profiling-history memory. Collect migrated W28/F48/C14/F44 archives with --collect-only after completion. F45 featureFIFO32 completed at558758cycles, identical to F97; WS-D535741-cycle goal remains unmet. W25 ROM passed at554226cycles. Start W30 only after W28 cycle-gate PASS, C15 only after C14 mixed RTL PASS, and route the best FIFO candidate based on measured cycles. Keep two concurrent tasks, actual memory telemetry and newest-task pressure termination at0.5GiB. F98 board handoff is archived; board measurements remain pending.
+C14 T4 two-frame RTL PASS; W28/F44 active; C15 eligible for independent5ns routing. C14 mixed T4 completed both changed-parameter RTL transactions PASS at300632 latency/300661 interval cycles; queue C15's preplanned independent5ns route, with any1.503160ms calculation conditional on routed closure/resources. W28 FRP and F44 featureFIFO16 are active. F43 registeredConv3 passed at558758cycles; F49 independent4.5ns route and W29 ROM5ns route are queued. F46 failed at actual MemAvailable0.497372GiB without a new OOM; F50 retries frozen F42 with standard complete profiling/checks. Collect migrated W28/F48/F44 archives with --collect-only after completion. F45 FIFO32 remains558758cycles and W25 ROM554226cycles. Start W30 only after W28 passes553171..564345cycles. Choose an independent FIFO route using measured cycles. Keep two concurrent tasks and the actual0.5GiB newest-task pressure guard. F98 board handoff is archived; board measurements remain pending.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -25,12 +25,12 @@ WS-0 complete; F43 exact RTL passed; W28 and C14 active under two-task concurren
 | [F40](F40_fifo16_W21_T8/F40.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F41](F41_fifo32_W21_T8/F41.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
 | [F42](F42_reorder_W21_T8/F42.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | unknown |
-| [C13](C13_runtime_prepacked_conv2_T4/C13.md) | W21 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C13](C13_runtime_prepacked_conv2_T4/C13.md) | W21 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | unknown | unknown | 6.382071331608397 | unknown |
 | [F45](F45_ws_cosim_F41/F45.md) | F41 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | 558758.0 | unknown | unknown | unknown | 6.382071331608397 | False |
 | [F47](F47_windows16_W21_T8/F47.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F46](F46_ws_cosim_F42/F46.md) | F42 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | unknown |
-| [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | unknown | unknown | unknown | unknown |
+| [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | unknown | unknown | 14.269641567524417 | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -46,7 +46,7 @@ WS-D performance is separate from a successful functional cosimulation. With the
 | [W29](W29_ws_impl_W24/W29.md) | W24 | impl | queued_or_running | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
 | [W30](W30_ws_impl_W27/W30.md) | W27 | impl | unlaunched_conditional | W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
 | [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim | queued_or_running | unknown |
-| [C15](C15_ws_impl_C13/C15.md) | C13 | impl | unlaunched_conditional | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
+| [C15](C15_ws_impl_C13/C15.md) | C13 | impl | queued_or_running | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
 | [F49](F49_ws_impl_F39/F49.md) | F39 | impl | queued_or_running | F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
 
