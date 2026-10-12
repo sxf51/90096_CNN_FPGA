@@ -1,7 +1,7 @@
 {
   "plan": "docs/0005-rom-clock-t4-plan.md",
   "phase": "C15 host-memory failure archived; build C16/C17 and prepare staged C13 route retry; one-heavy policy",
-  "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F43", "F44", "F45", "F47", "W28", "W29", "W30", "F48", "F46", "C14", "C15", "F49", "F50", "F51", "F52", "W31", "W32", "C16", "C17"],
+  "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F43", "F44", "F45", "F47", "W28", "W29", "W30", "F48", "F46", "C14", "C15", "F49", "F50", "F51", "F52", "W31", "W32", "C16", "C17", "C18"],
   "complete_test_set": "Set14 (13 course-provided images)",
   "resource_policy": "routed",
   "next": "C15 reached routing but was memory-guard terminated at0.433784GiB; no routed verdict exists. F52 registeredConv34.5ns implementation is active; F50/F51/W31/W32/W30 await the one-heavy slot. Build and run independent C16 T8 windows16+FRP and C17 T4 windows32 all13-image C/HLS screening. Plan a fresh C13 5ns implementation with synthesis/report and routing/report in separate Vivado processes to release the live synthesis design; preserve C15. F48 is the T8 basis and faster W28 is accepted under the unchanged upper limit564345. Keep one heavy plus budgeted light work and all numerical/physical gates. No board results exist.",
@@ -22,14 +22,17 @@
   },
   "pending_decisions": ["Board validation remains unavailable to the agent; F98 handoff is archived.", "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."],
   "skipped_plans": {},
-  "local_exec_sessions": [91661, 80070, 2370, 99126, 18016, 12166],
+  "local_exec_sessions": [91661, 80070, 2370, 99126, 18016, 12166, 9972, 89193, 68247],
   "session_jobs": {
     "91661": ["F50"],
     "80070": ["F51"],
     "2370": ["F52"],
     "99126": ["W31"],
     "18016": ["W32"],
-    "12166": ["W30"]
+    "12166": ["W30"],
+    "9972": ["C16"],
+    "89193": ["C17"],
+    "68247": ["C18"]
   },
   "board_handoff": "experiments/BOARD_HANDOFF.md",
   "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL PASS at300632/300661cycles; C15 5ns reached routing but host-memory guard stopped it without a physical verdict. Build C17 and prepare an isolated staged implementation retry. Preserve the old HLS infeasible row; final feasibility is routed."

@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C15 T4 placement active; user accepts F48 mainline basis and faster W28; one-heavy policy. C15 T4 independent5ns placement remains active. User now accepts F48 as the T8 mainline basis and W28 faster RTL under the original upper bound only; retain all historical verdicts and append explicit authorization. Launch W30 FRP4.5ns route. F50 rasterFIFO RTL, F51 windowFIFO16 route, F52 registeredConv34.5ns, W31 ROM5ns and W32 strategy4.5ns retries remain queued. Enforce one heavy impl/cosim plus budgeted light jobs, preserving currentC15 actual0.5GiB guard. After C15 completes, implement independent T8 windows16+FRP and T4 windows32 combinations; consider T4 ROM only from physical pressure evidence. Original memory failures and OOM1->2 remain. No board results exist.
+C15 host-memory failure archived; build C16/C17 and prepare staged C13 route retry; one-heavy policy. C15 reached routing but was memory-guard terminated at0.433784GiB; no routed verdict exists. F52 registeredConv34.5ns implementation is active; F50/F51/W31/W32/W30 await the one-heavy slot. Build and run independent C16 T8 windows16+FRP and C17 T4 windows32 all13-image C/HLS screening. Plan a fresh C13 5ns implementation with synthesis/report and routing/report in separate Vivado processes to release the live synthesis design; preserve C15. F48 is the T8 basis and faster W28 is accepted under the unchanged upper limit564345. Keep one heavy plus budgeted light work and all numerical/physical gates. No board results exist.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T10:55:15+00:00 from archived measurements.
+Updated 2026-10-12T11:03:01+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -26,7 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: W30, F50, F51, F52, W31, W32.
+Final verification: W30, F50, F51, F52, W31, W32, C16, C17, C18.
 
 ## Weight Loading Workstream
 
@@ -42,4 +42,4 @@ F24 independently rewrites only F23's Conv1 weight-loader indices after its repo
 
 ## Recovery
 
-Read ARCH_SUMMARY.md, LOG.md, PHASE2_HANDOFF.md and arch_state.json. Check active local exec sessions and remote processes before resuming pending IDs; completed and active workspaces cannot be overwritten. SSH uses `ssh -F ../ssh-config -o BatchMode=yes xiaoxin-ubuntu`; remote root `/home/lipuze/amdprojects/90096_CNN_FPGA`; Vitis settings `/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh`. The current two-task scheduler uses `.memory_scheduler.json`; recover only provably unlaunched waiting workers with `exp/resume_waiting.py`, and collect completed jobs with `--collect-only`. 60-minute csynth/45-minute issue tuning/six-hour cosim. Local plotting interpreter `workspace/exp_runs/_tools/venv/bin/python`. Never run script.py, modify protected data/designs, push, or substitute predicted results for actual evidence.
+Read ARCH_SUMMARY.md, LOG.md, PHASE2_HANDOFF.md and arch_state.json. Check active local exec sessions and remote processes before resuming pending IDs; completed and active workspaces cannot be overwritten. SSH uses `ssh -F ../ssh-config -o BatchMode=yes xiaoxin-ubuntu`; remote root `/home/lipuze/amdprojects/90096_CNN_FPGA`; Vitis settings `/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh`. The current one-heavy scheduler uses `.memory_scheduler.json`; preserve serial_after_oom=true while old waiting workers exist. Recover only provably unlaunched waiting workers with `exp/resume_waiting.py`, and collect completed jobs with `--collect-only`. 60-minute csynth/45-minute issue tuning/six-hour cosim. Local plotting interpreter `workspace/exp_runs/_tools/venv/bin/python`. Never run script.py, modify protected data/designs, push, or substitute predicted results for actual evidence.

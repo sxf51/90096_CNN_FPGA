@@ -183,7 +183,7 @@
   "hardware_scheduler": "one heavy task plus memory-bounded light jobs",
   "max_heavy_tasks": 1,
   "max_light_tasks": 3,
-  "next": "C15 T4 independent5ns placement remains active. User now accepts F48 as the T8 mainline basis and W28 faster RTL under the original upper bound only; retain all historical verdicts and append explicit authorization. Launch W30 FRP4.5ns route. F50 rasterFIFO RTL, F51 windowFIFO16 route, F52 registeredConv34.5ns, W31 ROM5ns and W32 strategy4.5ns retries remain queued. Enforce one heavy impl/cosim plus budgeted light jobs, preserving currentC15 actual0.5GiB guard. After C15 completes, implement independent T8 windows16+FRP and T4 windows32 combinations; consider T4 ROM only from physical pressure evidence. Original memory failures and OOM1->2 remain. No board results exist.",
+  "next": "C15 reached routing but was memory-guard terminated at0.433784GiB; no routed verdict exists. F52 registeredConv34.5ns implementation is active; F50/F51/W31/W32/W30 await the one-heavy slot. Build and run independent C16 T8 windows16+FRP and C17 T4 windows32 all13-image C/HLS screening. Plan a fresh C13 5ns implementation with synthesis/report and routing/report in separate Vivado processes to release the live synthesis design; preserve C15. F48 is the T8 basis and faster W28 is accepted under the unchanged upper limit564345. Keep one heavy plus budgeted light work and all numerical/physical gates. No board results exist.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
@@ -192,7 +192,10 @@
     "F51",
     "F52",
     "W31",
-    "W32"
+    "W32",
+    "C16",
+    "C17",
+    "C18"
   ],
   "resource_policy": "routed",
   "rom_clock_workstream": {
@@ -238,7 +241,10 @@
       "F51",
       "F52",
       "W31",
-      "W32"
+      "W32",
+      "C16",
+      "C17",
+      "C18"
     ],
     "hardware_serial_after_oom": true,
     "last_oom": {
@@ -250,20 +256,22 @@
     },
     "local_exec_sessions": [
       91661,
-      38233,
       80070,
       2370,
       99126,
       18016,
-      12166
+      12166,
+      9972,
+      89193,
+      68247
     ],
     "mainline_basis": "F47",
-    "next": "C15 T4 independent5ns placement remains active. User now accepts F48 as the T8 mainline basis and W28 faster RTL under the original upper bound only; retain all historical verdicts and append explicit authorization. Launch W30 FRP4.5ns route. F50 rasterFIFO RTL, F51 windowFIFO16 route, F52 registeredConv34.5ns, W31 ROM5ns and W32 strategy4.5ns retries remain queued. Enforce one heavy impl/cosim plus budgeted light jobs, preserving currentC15 actual0.5GiB guard. After C15 completes, implement independent T8 windows16+FRP and T4 windows32 combinations; consider T4 ROM only from physical pressure evidence. Original memory failures and OOM1->2 remain. No board results exist.",
+    "next": "C15 reached routing but was memory-guard terminated at0.433784GiB; no routed verdict exists. F52 registeredConv34.5ns implementation is active; F50/F51/W31/W32/W30 await the one-heavy slot. Build and run independent C16 T8 windows16+FRP and C17 T4 windows32 all13-image C/HLS screening. Plan a fresh C13 5ns implementation with synthesis/report and routing/report in separate Vivado processes to release the live synthesis design; preserve C15. F48 is the T8 basis and faster W28 is accepted under the unchanged upper limit564345. Keep one heavy plus budgeted light work and all numerical/physical gates. No board results exist.",
     "pending_decisions": [
       "Board validation remains unavailable to the agent; F98 handoff is archived.",
       "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."
     ],
-    "phase": "C15 T4 placement active; user accepts F48 mainline basis and faster W28; one-heavy policy",
+    "phase": "C15 host-memory failure archived; build C16/C17 and prepare staged C13 route retry; one-heavy policy",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
@@ -282,17 +290,23 @@
       "2370": [
         "F52"
       ],
-      "38233": [
-        "C15"
+      "68247": [
+        "C18"
       ],
       "80070": [
         "F51"
+      ],
+      "89193": [
+        "C17"
       ],
       "91661": [
         "F50"
       ],
       "99126": [
         "W31"
+      ],
+      "9972": [
+        "C16"
       ]
     },
     "skipped_plans": {},
@@ -304,7 +318,7 @@
       "reference": "docs/0005 section6.2"
     },
     "waiting_for_memory": [],
-    "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL PASS at300632/300661cycles; queue C15 independent5ns route. Preserve the old HLS infeasible row; final feasibility is routed."
+    "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL PASS at300632/300661cycles; C15 5ns reached routing but host-memory guard stopped it without a physical verdict. Build C17 and prepare an isolated staged implementation retry. Preserve the old HLS infeasible row; final feasibility is routed."
   },
   "selected": [
     {
@@ -339,7 +353,7 @@
     }
   ],
   "skipped_conditional_plans": {},
-  "time": "2026-10-12T10:55:15+00:00",
+  "time": "2026-10-12T11:03:01+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",

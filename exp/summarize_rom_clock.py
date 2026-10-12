@@ -82,7 +82,8 @@ def main():
     write_csv(ROOT / "experiments/rom_clock_workstream.csv", rows, columns)
     text = "# ROM, clock, FIFO and T4 workstream\n\n"
     text += "Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated " + utc() + ".\n\n"
-    text += "Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. "
+    text += ("The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. "
+             "ROM is an independent experiment. Set14 means the complete 13-image course-provided set. ")
     text += "Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.\n\n"
     text += "## Current state\n\n" + state["phase"] + ". " + state["next"] + "\n\n"
     display_columns = ["id", "parent", "operation", "status", "bit_exact", "delta_psnr", "HLS_cycles",
@@ -118,7 +119,10 @@ def main():
     if overlap_path.is_file():
         overlaps = list(csv.DictReader(overlap_path.open(newline="")))
         text += "\n## Measured Parallel Execution\n\n"
-        text += "The explicit two-task policy supersedes reservation-based admission. Completed tool intervals and per-task telemetry are in [parallel_jobs.csv](parallel_jobs.csv) and [parallel_overlap.csv](parallel_overlap.csv). Active tasks enter these tables only after a release record is archived.\n\n"
+        text += ("Current policy permits one heavy task with light jobs subject to registered budgets and actual memory headroom. "
+                 "The earlier two-heavy overlap failures remain visible. Completed tool intervals and per-task telemetry are in "
+                 "[parallel_jobs.csv](parallel_jobs.csv) and [parallel_overlap.csv](parallel_overlap.csv). "
+                 "Active tasks enter these tables only after a release record is archived.\n\n")
         text += markdown_table(overlaps, ["first_id", "second_id", "overlap_seconds", "aligned_samples",
                                           "peak_combined_process_tree_rss_GiB", "minimum_available_GiB", "cpu_busy_pct"])
         text += "\nProcess-tree RSS sums include shared mappings; minimum MemAvailable is measured for the entire host. Sampling alignment tolerance is4seconds. A hatch marks nonzero tool exit, not failed timing closure.\n"

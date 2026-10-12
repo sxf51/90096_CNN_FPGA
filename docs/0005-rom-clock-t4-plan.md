@@ -310,3 +310,6 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 | F52 | F39 | queued_or_running | unknown |
 | W31 | W24 | queued_or_running | unknown |
 | W32 | W21 | queued_or_running | unknown |
+| C16 | F47 | queued_or_running | unknown |
+| C17 | C13 | queued_or_running | unknown |
+| C18 | C13 | queued_or_running | unknown |
