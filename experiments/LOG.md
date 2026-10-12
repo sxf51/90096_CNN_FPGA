@@ -433,6 +433,8 @@
 
 - 2026-10-12T02:10 UTC: F98 routed analysis completed:5ns WNS+0.140ns/TNS0,644DSP/42594LUT/88806FF/109BRAM18K. F97 RTL cycles imply2.79379ms at the closed target. Three critical paths are Conv2 parameter FIFO to weight LUTRAM write data; two are Conv3 step control to DSP. Minimum available memory3.011604GiB/peak toolRSS11.642307GiB. Select one final W22 same-RTL4.95ns probe, placement/routing2 threads/synthesis1; preserve original HLS gates and5ns fallback. Remote hardware is idle; obsolete F98 session cleared. No further exploration will be added.
 
+- 2026-10-12T02:56:23+00:00: W22: ws_clock_4p95_W21; status=impl_complete; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T18:56:00+00:00: WS2/WS3 preparation: F94 independently passed all13-image exactness and mean deltaPSNR=-0.069514dB. F31 independent changed-parameter C preflight passed, with every second output bit equal104/256 and unchanged first-frame borders; this is not RTL evidence. W19/F29/F30 paper plans are committed and conditional on measured loader selection; no parent design is modified. F92 remains in placement and F28 synthesis waits for its lock.
