@@ -511,6 +511,8 @@
 
 - 2026-10-12T10:55:15+00:00: C15: ws_impl_C13; status=fail; latency_ms_est=1.05236; impl of C13; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.43378448486328125, "floor_gib": 0.5}
 
+- 2026-10-12T11:40:15+00:00: F52: ws_impl_F39; status=impl_complete; latency_ms_est=1.74903921; impl of F39; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T11:02 UTC C15: 单重任务仍在布线阶段触发内存保护（0.433784GiB，exit-15），没有最终布线/时序/资源结论。诊断为生成驱动的综合报告open_run保留父进程设计，另起实现子进程导致数据库内存叠加。自行决定新ID补跑：综合与报告后退出，第二Vivado进程重开project.xpr做原实现与报告，累计3小时且不改数值/布线门槛、不改原工作区或swap。C16/C17现在建设并跑13图/HLS；ROM仍待实际物理证据决定。C15 OOM1→2涵盖先前W23的实际OOM，不能重复归因成C15的新内核杀进程。

@@ -299,6 +299,7 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 | [C14](../experiments/C14_ws_cosim_C13/C14.md) | C13 | cosim_complete | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | unknown |
 | [C15](../experiments/C15_ws_impl_C13/C15.md) | C13 | fail | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown |
 | [F49](../experiments/F49_ws_impl_F39/F49.md) | F39 | fail | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown |
+| [F52](../experiments/F52_ws_impl_F39/F52.md) | F39 | impl_complete | 525237.0 | 644.0 | 81518.0 | 558758.0 | True | 2.514411 |
 
 未测量的计划：
 
@@ -307,7 +308,6 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 | W30 | W27 | queued_or_running | User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override |
 | F50 | F42 | queued_or_running | unknown |
 | F51 | F47 | queued_or_running | unknown |
-| F52 | F39 | queued_or_running | unknown |
 | W31 | W24 | queued_or_running | unknown |
 | W32 | W21 | queued_or_running | unknown |
 | C16 | F47 | queued_or_running | unknown |
