@@ -541,6 +541,8 @@
 
 - 2026-10-12T15:06:59+00:00: F51: ws_impl_F47; status=impl_complete; latency_ms_est=1.74903921; impl of F47; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-12T15:10:49+00:00: C18: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。

@@ -7,7 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from analyze_route import analyze, setup_paths, hierarchy
-from archive_setup_paths import archive_complete, register_report, select_checkpoint
+from archive_setup_paths import archive_complete, register_report, select_checkpoint, validate_generated_paths
 from archive_route_progress import resources, routing_progress
 from verify_exp import parse_verification
 from run_exp import ROOT
@@ -27,6 +27,43 @@ class RoutedPathTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "unique final"):
             select_checkpoint(["work/impl_1/top_postroute_physopt.dcp",
                                "work/impl_2/top_postroute_physopt.dcp"], True)
+
+    def test_generated_paths_require_final_stage_and_matching_worst_slack(self):
+        config = {"implementation_strategy": "Performance_Explore", "verification": {"impl_WNS_ns": .144}}
+        block = "Slack (MET) : 0.144ns\n  Source: start/Q\n  Destination: finish/D\n  Path Type: Setup\n"
+        final = "hls/impl/verilog/project.runs/impl_1/top_timing_summary_postroute_physopted.rpt"
+        rows, stage = validate_generated_paths(block*5, config, final)
+        self.assertEqual(len(rows), 5)
+        self.assertEqual(stage, "post_route_phys_opt")
+        with self.assertRaisesRegex(RuntimeError, "physical optimization report"):
+            validate_generated_paths(block*5, config, final.replace("postroute_physopted", "routed"))
+        with self.assertRaisesRegex(RuntimeError, "worst slack"):
+            validate_generated_paths(block.replace("0.144", "0.143")*5, config, final)
+        with self.assertRaisesRegex(RuntimeError, "fewer than five"):
+            validate_generated_paths(block*4, config, final)
+        with self.assertRaisesRegex(RuntimeError, "final implementation run"):
+            validate_generated_paths(block*5, config, "../"+final)
+
+    def test_generated_archive_is_complete_without_claiming_a_checkpoint_export(self):
+        with tempfile.TemporaryDirectory() as temp:
+            archive = Path(temp)
+            report = archive / "reports/impl/srcnn_setup5_routed.rpt"
+            report.parent.mkdir(parents=True)
+            report.write_text("Slack (MET) : 0.144ns\n  Source: start/Q\n  Destination: finish/D\n  Path Type: Setup\n"*5)
+            (archive / "critical_paths.csv").write_text("path,slack_ns\n")
+            (archive / "setup_paths_operation.txt").write_text("Copied existing final report\n")
+            raw = "hls/impl/verilog/project.runs/impl_1/top_timing_summary_postroute_physopted.rpt"
+            config = {"implementation_strategy": "Performance_Explore", "verification": {"impl_WNS_ns": .144},
+                      "setup_paths_provenance": {"kind": "generated_final_report", "raw_file": raw,
+                                                 "stage": "post_route_phys_opt",
+                                                 "sha256": hashlib.sha256(report.read_bytes()).hexdigest()}}
+            register_report(config, archive, report, raw)
+            self.assertTrue(archive_complete(archive, config, archive / "not_executed.tcl"))
+            config["setup_paths_provenance"]["stage"] = "routed"
+            self.assertFalse(archive_complete(archive, config, archive / "not_executed.tcl"))
+            config["setup_paths_provenance"]["stage"] = "post_route_phys_opt"
+            report.write_text(report.read_text().replace("0.144", "0.143"))
+            self.assertFalse(archive_complete(archive, config, archive / "not_executed.tcl"))
 
     def route_fixture(self, root, wns=.1, accepted_cosim=True):
         archive = root / "experiments/F01_impl"

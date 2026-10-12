@@ -292,6 +292,14 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 
 启用布线后物理优化的 `Performance_Explore` 实验必须从最终 `*_postroute_physopt.dcp` 导出路径，而不是优化前的 `*_routed.dcp`；归档选用的相对路径、阶段和SHA256。最终checkpoint缺失或同阶段有多个文件时明确报错，不能回退到较早状态。默认策略继续使用最终routed checkpoint。C18优先期间不另行占槽导出。
 
+已有最终工程报告包含至少五条 setup 路径时，可以用
+`python3 exp/archive_setup_paths.py <ID> --generated-report <工作区相对报告路径>`
+直接归档。脚本核对传输 SHA256、最差 slack 与已归档最终结果一致；
+`Performance_Explore` 必须使用 `*_timing_summary_postroute_physopted.rpt`，不能使用
+较早的 routed 报告。记录源报告、阶段和未重新运行 Vivado，保留被替代的等待进程
+诊断。此路径不宣称打开过 checkpoint，也不更改实现结果或门限；内容不足或阶段
+不符时继续使用最终 checkpoint 导出。已经准入的导出任务保持运行。
+
 `python3 exp/audit_rom_clock.py --snapshot` 可在任务运行时校验两地原始文件、冻结设计、已归档报告及未测量计划；去掉 `--snapshot` 则要求远程无实验进程。审计结果写到 `experiments/rom_clock_audit.json`，明确保留未启动计划和未完成状态。审计通过本身不代表布线或上板验收完成。
 
 条件任务的前置验收失败时，保留原计划和门槛，在状态文件中记录未运行原因及对应失败实验。汇总单独标为 `not_run_condition_failed`，不得制造 results.csv 行、周期或布线结果。收尾审计校验失败证据后可将此条件任务计为已处理；`all_operations_archived` 仍反映有没有实际结果，另用 `all_required_operations_resolved` 区分计划已处理和全部实际运行。
