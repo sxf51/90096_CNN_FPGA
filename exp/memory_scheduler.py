@@ -170,6 +170,11 @@ class Lease:
     def __exit__(self, *args):
         self.stop.set()
         self.thread.join()
+        if self.pressure and self.group:
+            try:
+                os.killpg(self.group, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
         self.oom_after = oom_count()
         with self.scheduler.state() as state:
             state["tasks"].pop(self.token, None)

@@ -57,6 +57,9 @@ def main():
     text += "F24 independently rewrites only F23's Conv1 weight-loader indices after its report locates the2.822ns global critical path in a15-bit address multiplier; the dataflow region is2.377ns. Keep T16, quantization and inference fixed, account for nested-load restart overhead, and accept only measured exact/resource-feasible results.\n\n"
     text += "## Recovery\n\nRead ARCH_SUMMARY.md, LOG.md, PHASE2_HANDOFF.md and arch_state.json. Check active local exec sessions and remote processes before resuming pending IDs; completed and active workspaces cannot be overwritten. SSH uses `ssh -F ../ssh-config -o BatchMode=yes xiaoxin-ubuntu`; remote root `/home/lipuze/amdprojects/90096_CNN_FPGA`; Vitis settings `/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh`. Hardware jobs serialize through `.synthesis.lock` for15GiB RAM;60-minute csynth/45-minute issue tuning/six-hour cosim. Local plotting interpreter `workspace/exp_runs/_tools/venv/bin/python`. Never run script.py, modify protected data/designs, push, or substitute predicted results for actual evidence.\n"
     (ROOT / "experiments/PROGRESS.md").write_text(text)
+    if (ROOT / "experiments/rom_clock_state.json").exists():
+        from summarize_rom_clock import main as summarize_current_workstream
+        summarize_current_workstream()
     print("Progress:",len(arch),"completed;",len(pending),"exploration and",len(final_pending),"final jobs pending")
 
 

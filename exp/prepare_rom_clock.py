@@ -66,11 +66,73 @@ def prepare_clock():
     plan(config)
 
 
+def prepare_rom():
+    base = json.loads((ROOT / "exp/configs/W21.json").read_text())
+    base.pop("synthesis_after", None)
+    estimates = {"DSP": 644, "BRAM18K": 146, "URAM": 0, "T": 8,
+                 "LUT": 81086, "FF": 130057, "latency_cycles": 525237,
+                 "basis": "Frozen W21 reports. C-only probe changes no synthesized arithmetic; export "
+                          "9216 transformed Conv1 coefficients, 2048 Conv2 coefficients, 800 Conv3 "
+                          "coefficients and 97 biases after the ordinary runtime load. Compare all 12161 "
+                          "signed integer carriers with separately generated AP_RND_CONV/AP_SAT/G2 ROM content."}
+    probe = {**base, "id": "F35", "series": "F", "stage": "rom_clock_wsB_banks",
+             "name": "runtime_rom_bank_equivalence", "design": "designs/rom_bank_probe_v1",
+             "csim_only": True, "memory_scheduler": True, "resource_policy": "routed",
+             "required_image_count": 13,
+             "tb_files": ["exp/tb/rom_banks.cpp", "exp/tb/golden.cpp", "test/tb_conv1.cpp",
+                          "test/tb_srcnn.cpp", "test/util.cpp", "src/weights", "test/set5", "test/set14"],
+             "purpose": "WS-B equivalence prerequisite: export the exact post-load private banks from "
+                        "a frozen W21 copy during two butterfly C calls, compare every stored integer "
+                        "against generated constant ROM contents and retain the ordinary exact output/border checks. "
+                        "No synthesis is permitted for the ROM candidate before this prerequisite passes.",
+             "changes": "Independent W21 source copy with simulation-only bank exports; arithmetic, "
+                        "streams, parameter signature and quantization stay identical. Testbench wraps the existing validator.",
+             "estimates": estimates, "interpretation": "Require equality for each layer coefficient and bias, "
+                                                     "including ordering, saturation and convergent rounding. "
+                                                     "This C-only export is not a hardware resource measurement.",
+             "conclusion": "Only an exact bank and butterfly match allows W24 C synthesis."}
+    plan(probe)
+    rom = {**base, "id": "W24", "series": "W", "stage": "rom_clock_wsB",
+           "name": "constant_rom_T8", "design": "designs/winograd_rom_v1", "top": "srcnn_rom",
+           "memory_scheduler": True, "resource_policy": "routed", "required_image_count": 13,
+           "required_bank_validation": "F35", "set14": True,
+           "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+           "tb_files": ["exp/tb/rom_validate.cpp", "exp/tb/golden.cpp", "test/tb_conv1.cpp",
+                        "test/tb_srcnn.cpp", "test/util.cpp", "src/weights", "test/set5", "test/set14"],
+           "required_axi_bundles": ["image_in", "image_out"], "storage": "constant_lutram_rom",
+           "purpose": "WS-B independent constant-weight exploration. Fix the exact training parameters "
+                      "at compile time, remove parameter AXI/reader/transformer/FIFOs/private write ports, "
+                      "and keep W21 compute, raster order, quantization and replicate padding. "
+                      "The new srcnn_rom top has only image input/output and control ports. "
+                      "Runtime-loaded W21 remains the mainline. Require exact bank equivalence before synthesis, "
+                      "all 13 course Set14 images, then two-frame same-weight/changed-input RTL and routed gates.",
+           "changes": "Independent W21 copy, offline-generated integer coefficients/biases and new image-only top. "
+                      "Remove runtime parameter processes, retain cyclic bank factors and DSP-bound products.",
+           "estimates": {"DSP": 644, "BRAM18K": 146, "URAM": 0, "T": 8,
+                         "Conv1_DSP": 288, "Conv2_DSP": 256, "Conv3_DSP": 100,
+                         "LUT": 65000, "FF": 120000, "latency_cycles": 547500,
+                         "basis": "644 MACs preserve W21 parallelism: 2304/8+2048/8+800/8. "
+                                  "Line/raster buffers are unchanged, so budget146 BRAM18K and zeroURAM. "
+                                  "Remove converter, raw G2 transform, parameter FIFOs and private write control "
+                                  "from W21 HLS81086LUT/130057FF; allow approximately65kLUT/120kFF, "
+                                  "with real constant-ROM optimization unknown. Cycles estimate is RTL-based: "
+                                  "F97 558758 minus approximately11230 parameter startup=547528, rounded547500. "
+                                  "HLS nominal lower bound remains524288 Winograd fold cycles, not a claimed RTL number. "
+                                  "Predict route LUT35k-43k; first independently route at5ns when admitted."},
+           "interpretation": "Compare parameter-free HLS and matching RTL/route reports with W21, "
+                             "including all deviations above20%. Constant coefficients may optimize DSP/fabric "
+                             "even with BIND_OP; only actual resources decide. Changed-parameter testing is inapplicable.",
+           "conclusion": "Measure removed-parameter startup/control/timing cost while preserving the mainline "
+                         "runtime interface. Do not select ROM as the board version without the user's decision."}
+    rom.pop("quality_reference", None)
+    plan(rom)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("step", choices=("ws0", "clock"))
+    parser.add_argument("step", choices=("ws0", "clock", "rom"))
     args = parser.parse_args()
-    (prepare_ws0 if args.step == "ws0" else prepare_clock)()
+    {"ws0": prepare_ws0, "clock": prepare_clock, "rom": prepare_rom}[args.step]()
 
 
 if __name__ == "__main__":

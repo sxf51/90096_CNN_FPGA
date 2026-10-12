@@ -1,5 +1,5 @@
 help phys_opt_design
-create_project -in_memory -part xck26-sfvc784-2LV-c
+create_project strategy_probe ./project -part xck26-sfvc784-2LV-c
 set run [get_runs impl_1]
 puts "EXP_SUPPORTED_STRATEGIES [list_property_value STRATEGY $run]"
 set_property STRATEGY Performance_Explore $run

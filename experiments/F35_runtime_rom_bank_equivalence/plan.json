@@ -1,0 +1,68 @@
+{
+  "config_sha256": "c7a811050d8fb29d49b69a95131538465b4ec61107fff7e21a220208ac046f96",
+  "configuration": {
+    "T": 8,
+    "changes": "Independent W21 source copy with simulation-only bank exports; arithmetic, streams, parameter signature and quantization stay identical. Testbench wraps the existing validator.",
+    "clock": 3.33,
+    "conclusion": "Only an exact bank and butterfly match allows W24 C synthesis.",
+    "control_experiment": "W19",
+    "csim_only": true,
+    "defines": {
+      "EXP_ALL_CONTINUOUS": 1,
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 8,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/rom_bank_probe_v1",
+    "estimates": {
+      "BRAM18K": 146,
+      "DSP": 644,
+      "FF": 130057,
+      "LUT": 81086,
+      "T": 8,
+      "URAM": 0,
+      "basis": "Frozen W21 reports. C-only probe changes no synthesized arithmetic; export 9216 transformed Conv1 coefficients, 2048 Conv2 coefficients, 800 Conv3 coefficients and 97 biases after the ordinary runtime load. Compare all 12161 signed integer carriers with separately generated AP_RND_CONV/AP_SAT/G2 ROM content.",
+      "latency_cycles": 525237
+    },
+    "fixed": true,
+    "id": "F35",
+    "ii_targets": {
+      "c2_fold": 1,
+      "c3_fold": 1,
+      "wino_fold": 1
+    },
+    "interpretation": "Require equality for each layer coefficient and bias, including ordering, saturation and convergent rounding. This C-only export is not a hardware resource measurement.",
+    "memory_scheduler": true,
+    "name": "runtime_rom_bank_equivalence",
+    "precision": "w10a10acc23",
+    "purpose": "WS-B equivalence prerequisite: export the exact post-load private banks from a frozen W21 copy during two butterfly C calls, compare every stored integer against generated constant ROM contents and retain the ordinary exact output/border checks. No synthesis is permitted for the ROM candidate before this prerequisite passes.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "require_weight_predecessor_free": true,
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "rom_clock_wsB_banks",
+    "storage": "local_lutram_s2p",
+    "tb_files": [
+      "exp/tb/rom_banks.cpp",
+      "exp/tb/golden.cpp",
+      "test/tb_conv1.cpp",
+      "test/tb_srcnn.cpp",
+      "test/util.cpp",
+      "src/weights",
+      "test/set5",
+      "test/set14"
+    ],
+    "unroll": "G2 F2 nine subkernels/Cout/Cin"
+  },
+  "created_at": "2026-10-12T04:02:37+00:00",
+  "created_from_commit": "71144bd0e464500b14a7e36fb84938266ac86642",
+  "purpose_section": "WS-B equivalence prerequisite: export the exact post-load private banks from a frozen W21 copy during two butterfly C calls, compare every stored integer against generated constant ROM contents and retain the ordinary exact output/border checks. No synthesis is permitted for the ROM candidate before this prerequisite passes.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644 |\n| BRAM18K | 146 |\n| URAM | 0 |\n| T | 8 |\n| LUT | 81086 |\n| FF | 130057 |\n| latency_cycles | 525237 |\n| basis | Frozen W21 reports. C-only probe changes no synthesized arithmetic; export 9216 transformed Conv1 coefficients, 2048 Conv2 coefficients, 800 Conv3 coefficients and 97 biases after the ordinary runtime load. Compare all 12161 signed integer carriers with separately generated AP_RND_CONV/AP_SAT/G2 ROM content. |\n\nPlanned at 2026-10-12T04:02:37+00:00; estimates are hypotheses, not tool measurements."
+}
