@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import re
 import signal
 import time
 
@@ -61,9 +62,12 @@ def main():
     parser.add_argument("priority")
     parser.add_argument("waiters", nargs="+")
     parser.add_argument("--timeout", type=float, default=18000)
+    parser.add_argument("--record-name", default="priority_waiters.json")
     args = parser.parse_args()
     if args.priority in args.waiters or len(set(args.waiters)) != len(args.waiters) or args.timeout <= 0:
         raise RuntimeError("Require a separate priority job and distinct waiting jobs")
+    if not re.fullmatch(r"[A-Za-z0-9_]+\.json", args.record_name):
+        raise RuntimeError("Priority evidence must be a JSON basename")
     scheduler = Scheduler(ROOT)
     archives = list((ROOT / "experiments").glob(args.priority + "_*/plan.json"))
     if len(archives) != 1 or (archives[0].parent / "metrics.json").exists():
@@ -77,7 +81,7 @@ def main():
     if (b"exp/run_exp.py" not in priority_command or
             ("exp/configs/" + args.priority + ".json").encode() not in priority_command):
         raise RuntimeError("Priority worker PID does not match this experiment")
-    evidence = archives[0].parent / "priority_waiters.json"
+    evidence = archives[0].parent / args.record_name
     if evidence.exists():
         raise RuntimeError("Priority hold already recorded; inspect it before repeating")
     record = {"priority": args.priority, "started": utc(), "pid": os.getpid(),

@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T11:50:32+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T12:12:34+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-F52 closes4.5ns; C18 has user priority after active W32. F52 independently closes4.5ns with WNS+0.072ns,644DSP/43468LUT/89030FF/109BRAM18K; matching F43 RTL558758cycles gives2.514411ms IP latency. W32 is active. User prioritizes C18 next: unadmitted F50/F51/W31/W30 workers are paused under the scheduler guard by exp/priority_waiters.py and automatically resume after C18 or supervisor exit. C18 packages frozen C13 and splits synthesis/report from routing/report into fresh Vivado processes at5ns; preserve C15 host-memory failure. C16/C17 all13-image C/HLS screening awaits headroom, followed by new changed-parameter RTL and implementation IDs if screened. Defer F52 checkpoint path export until the priority hold ends. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. No board results exist.
+F52 closes4.5ns; C18 has user priority after active W32. F52 independently closes4.5ns with WNS+0.072ns,644DSP/43468LUT/89030FF/109BRAM18K; matching F43 RTL558758cycles gives2.514411ms IP latency. W32 is active. User prioritizes C18 next: unadmitted F50/F51/W31/W30 and C16/C17 workers are paused under the scheduler guard by exp/priority_waiters.py and automatically resume after C18 or supervisor exit. C18 packages frozen C13 and splits synthesis/report from routing/report into fresh Vivado processes at5ns; preserve C15 host-memory failure. C16/C17 all13-image C/HLS screening resumes after C18, followed by new changed-parameter RTL and implementation IDs if screened. Defer F52 checkpoint path export until the priority hold ends. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. No board results exist.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
