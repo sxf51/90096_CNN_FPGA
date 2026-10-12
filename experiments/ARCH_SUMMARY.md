@@ -681,4 +681,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T03:09:07+00:00.
+Generated from archived evidence at 2026-10-12T03:13:30+00:00.
