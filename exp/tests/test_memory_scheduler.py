@@ -15,6 +15,18 @@ def task(kind):
 
 
 class AdmissionTests(unittest.TestCase):
+    def test_explicit_two_job_policy_bypasses_predicted_reservations(self):
+        self.assertIsNone(admission_reason([task("cosim")], "cosim", 6.5,
+                                          parallel=True, floor_gib=.5, user_two_jobs=True))
+        self.assertIsNone(admission_reason([], "impl", 13.4,
+                                          parallel=True, floor_gib=.5, user_two_jobs=True))
+        self.assertIn("cap", admission_reason([task("cosim"), task("cosim")], "cosim", 3,
+                                              parallel=True, floor_gib=.5, user_two_jobs=True))
+        self.assertIn("actual MemAvailable", admission_reason([], "cosim", .4,
+                                                             floor_gib=.5, user_two_jobs=True))
+        self.assertIn("disabled after OOM", admission_reason([task("cosim")], "cosim", 6.5,
+                                                            floor_gib=.5, user_two_jobs=True))
+
     def test_package_and_implementation_share_budget_but_keep_separate_evidence(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

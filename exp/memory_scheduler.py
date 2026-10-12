@@ -14,10 +14,18 @@ BUDGETS = {"impl": 12.5, "cosim": 7.5, "csynth": 2.5, "csynth_t4": 4.0, "csim": 
 
 
 def admission_reason(tasks, kind, available_gib, budgets=None, parallel=False,
-                     total_gib=13.0, floor_gib=2.0):
+                     total_gib=13.0, floor_gib=2.0, user_two_jobs=False):
     budgets = budgets or BUDGETS
     if kind not in budgets:
         raise ValueError("Unknown memory task class: " + kind)
+    if user_two_jobs:
+        if len(tasks) >= 2:
+            return "user-authorized two-task concurrency cap reached"
+        if tasks and not parallel and kind != "csim":
+            return "hardware concurrency has not been validated or was disabled after OOM"
+        if available_gib < floor_gib:
+            return "actual MemAvailable is below the available-memory floor"
+        return None
     reserved = sum(task["budget_gib"] for task in tasks)
     if reserved + budgets[kind] > total_gib:
         return "registered reservations exceed total memory budget"
@@ -107,12 +115,15 @@ class Scheduler:
                                           state["budgets"],
                                           (state["parallel_validated"] or controlled) and
                                           not state["serial_after_oom"],
-                                          state["total_gib"], state["floor_gib"])
+                                          state["total_gib"], state["floor_gib"],
+                                          state.get("user_two_jobs", False))
                 if reason is None:
                     state["tasks"][token] = {"id": exp_id, "kind": kind, "pid": os.getpid(),
                                               "process_start": process_start(os.getpid()),
                                               "budget_gib": state["budgets"][kind],
-                                              "available_gib_at_start": current, "started": time.time()}
+                                              "available_gib_at_start": current, "started": time.time(),
+                                              "admission_policy": ("user_two_jobs" if state.get("user_two_jobs")
+                                                                   else "reserved_memory")}
                     record = dict(state["tasks"][token])
             if reason is None:
                 if event:
@@ -148,8 +159,10 @@ class Lease:
             floor = 2.0
             with self.scheduler.state() as state:
                 floor = state["floor_gib"]
+                newest = max(state["tasks"].values(), key=lambda task: task["started"], default=None)
+                stop_this_task = not state.get("user_two_jobs") or newest == state["tasks"].get(self.token)
             current = available_gib()
-            if current < floor and self.group:
+            if current < floor and self.group and stop_this_task:
                 self.pressure = {"available_gib": current, "floor_gib": floor}
                 try:
                     os.killpg(self.group, signal.SIGTERM)
@@ -209,5 +222,5 @@ def scheduled_invoke(config, archive, kind, args, settings, cwd, logfile, timeou
     write_json(archive / (name + "_admission.json"), record)
     event({"event": "released", **record})
     if lease.pressure:
-        raise RuntimeError("Task terminated to preserve 2 GiB MemAvailable: " + json.dumps(lease.pressure))
+        raise RuntimeError("Task terminated at the configured MemAvailable floor: " + json.dumps(lease.pressure))
     return result
