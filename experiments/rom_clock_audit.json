@@ -953,6 +953,20 @@
       "csv_matches_archive": true,
       "id": "F52",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "W32",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C18",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2087,6 +2101,7 @@
     "C13",
     "C14",
     "C15",
+    "C18",
     "F32",
     "F33",
     "F34",
@@ -2112,7 +2127,8 @@
     "W26",
     "W27",
     "W28",
-    "W29"
+    "W29",
+    "W32"
   ],
   "mode": "snapshot",
   "pushed": false,
@@ -2121,17 +2137,15 @@
     "72894 python3 exp/run_exp.py --config exp/configs/F50.json",
     "79191 python3 exp/run_exp.py --config exp/configs/F51.json",
     "80160 python3 exp/run_exp.py --config exp/configs/W31.json",
-    "80234 python3 exp/run_exp.py --config exp/configs/W32.json",
     "82711 python3 exp/run_exp.py --config exp/configs/W30.json",
     "84220 python3 exp/run_exp.py --config exp/configs/C16.json",
     "84221 python3 exp/run_exp.py --config exp/configs/C17.json",
-    "84656 python3 exp/run_exp.py --config exp/configs/C18.json",
-    "88500 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_vivado.tcl -notrace -nojournal",
-    "88730 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -log bd_0_hls_inst_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source bd_0_hls_inst_0.tcl"
+    "100206 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_vivado.tcl -notrace -nojournal",
+    "101329 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -log bd_0_wrapper.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source bd_0_wrapper.tcl -notrace"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-12T11:49:52+00:00",
+  "time": "2026-10-12T14:09:59+00:00",
   "unmeasured_plans": [
     {
       "condition": null,
@@ -2152,17 +2166,6 @@
       "not_run_condition_failed": false,
       "operation": "csim/csynth",
       "plan_sha256": "f88325155734d7021341c869262da5a7b95908e294e206cc3e28c42e196a379c",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": null,
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "C18",
-      "not_run_condition_failed": false,
-      "operation": "impl",
-      "plan_sha256": "20c2086f6f726820e0ffb36719bcc01341db826a65885376934b325e400a060b",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     },
@@ -2207,17 +2210,6 @@
       "not_run_condition_failed": false,
       "operation": "impl",
       "plan_sha256": "f579b2a61b9924faae12c141fb0bacde91e59fc031c996bc12388afc690b4ca9",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": null,
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "W32",
-      "not_run_condition_failed": false,
-      "operation": "impl",
-      "plan_sha256": "1d57806b384967400a068bb326df6f685e0c55bc753b6797219b40c893648c24",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     }
@@ -2479,6 +2471,24 @@
       "additional_evidence_files_checked": 14,
       "git_visible_and_tracked": true,
       "id": "F52",
+      "operation": "impl",
+      "reports_checked": 3,
+      "sha256_pass": true,
+      "status": "impl_complete"
+    },
+    {
+      "additional_evidence_files_checked": 11,
+      "git_visible_and_tracked": true,
+      "id": "W32",
+      "operation": "impl",
+      "reports_checked": 3,
+      "sha256_pass": true,
+      "status": "impl_complete"
+    },
+    {
+      "additional_evidence_files_checked": 16,
+      "git_visible_and_tracked": true,
+      "id": "C18",
       "operation": "impl",
       "reports_checked": 3,
       "sha256_pass": true,
