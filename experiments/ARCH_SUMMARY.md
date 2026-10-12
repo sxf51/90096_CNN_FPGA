@@ -891,7 +891,7 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 - Runtime transformed-weight loading preserves the frozen top signature; true offline-transformed input parameters require an approved new weight contract.
 - Windows settings-batch execution and board integration remain unverified. The existing Linux Vitis2026.1 SSH installation was used.
 - Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).
-- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Assess the archived route and memory evidence before changing hosts. No system swap/global tool settings were changed.
+- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Those original retries did not change system swap or global tool settings. The later user-configured8GiB zram and current memory observations are documented in [docs/0005](../docs/0005-rom-clock-t4-plan.md).
 - Current decisions supersede historical docs/0004 defaults: final feasibility uses routed gates, ROM remains exploratory, and the user authorized two concurrent tasks with actual memory telemetry. Board selection and measurements remain pending.
 
 ## Next Steps
@@ -923,4 +923,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T12:30:14+00:00.
+Generated from archived evidence at 2026-10-12T13:09:55+00:00.

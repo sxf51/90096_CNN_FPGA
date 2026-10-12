@@ -3,6 +3,7 @@
 import csv
 import json
 from analyze_arch import dsp_composition, write_csv
+from host_memory import swap_summary
 from run_exp import ROOT, number
 from route_gates import archive_route_evidence
 from rtl_acceptance import accepted_cosim, acceptance_basis
@@ -125,7 +126,8 @@ def main():
                                "samples": len(samples),
                                "peak_process_tree_rss_GiB": max(float(item["task_tree_rss_kib"]) for item in samples)/1048576
                                if "task_tree_rss_kib" in samples[0] else None,
-                               "minimum_available_GiB": min(float(item["available_kib"]) for item in samples)/1048576})
+                               "minimum_available_GiB": min(float(item["available_kib"]) for item in samples)/1048576,
+                               **swap_summary(samples)})
     outputs = (("rom_clock_comparison.csv", comparisons), ("rom_clock_estimates.csv", estimates),
                ("rom_clock_dsp.csv", composition), ("rom_clock_fifo.csv", fifos), ("rom_clock_memory.csv", memory))
     for filename, rows in outputs:

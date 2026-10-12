@@ -250,7 +250,7 @@ def main():
     text += "- Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).\n"
     if any((ROOT / "experiments" / Path(row["md_path"]).parent / "diagnostics/kernel_oom.txt").is_file()
            for row in rows):
-        text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Assess the archived route and memory evidence before changing hosts. No system swap/global tool settings were changed.\n"
+        text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Those original retries did not change system swap or global tool settings. The later user-configured8GiB zram and current memory observations are documented in [docs/0005](../docs/0005-rom-clock-t4-plan.md).\n"
     if ws:
         text += ("- Current decisions supersede historical docs/0004 defaults: final feasibility uses routed gates, ROM remains exploratory, and the user authorized two concurrent tasks with actual memory telemetry. Board selection and measurements remain pending.\n"
                  if rom_current else "- Section6 unattended decision: preserve runtime float weights and HLS resource gates; keep missing-comic acceptance provisional. A repeated host OOM is archived without changing swap or moving to an unverified host. These decisions are recorded for user review tomorrow in [docs/0004](../docs/0004-t8-weight-loading-plan.md).\n")
