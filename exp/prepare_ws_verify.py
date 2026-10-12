@@ -127,8 +127,9 @@ def main():
         config["purpose"] += "\n\nDecision basis: "+args.rationale
         config["estimates"]["basis"] += " Decision basis: "+args.rationale
     if args.reload_params:
+        precision_reference = "E065 mixed Conv2-w8" if base.get("precision") == "w10_8_10a10acc23_21_23" else "E017"
         config.update(reload_params=True, verification_testbench="exp/tb/validate_reload.cpp")
-        config["purpose"] += " The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains E017-exact butterfly with unchanged border MSE."
+        config["purpose"] += " The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains " + precision_reference + "-exact butterfly with unchanged border MSE."
         config["changes"] += " Override only verification C++ testbench, archive its SHA256/source commit and preserve identical parent RTL."
     plan(config)
     subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"), args.id,

@@ -473,9 +473,9 @@
 
 - 2026-10-12T05:50:52+00:00: C13: runtime_prepacked_conv2_T4; status=infeasible; latency_ms_est=1.05236; ; HLS status retained; final feasibility requires independent routed gates
 
-## Pending Human Decisions / 待人工决策
+- 2026-10-12T05:52 UTC: ROM/clock/FIFO progress recovered without rerunning active jobs. F48 (window FIFO16) and F46 (reorder output FIFO256) paper plans committed and queued for changed-parameter two-frame RTL. State now includes W28/W29/W30 and removes completed sessions. Summary includes unmeasured plans separately and refuses to attach a failed cosim cycle gate to an accepted routed frame time;89 infrastructure tests pass. CSV-only plots group overlapping IDs, and interpretations compare the actual HLS reports with paper estimates. Implementation W23/W29/W30 remains unlaunched under the unchanged12.5+2GiB admission requirement.
 
-- 2026-10-12T05:54 UTC: ROM/clock/FIFO progress recovered without rerunning active jobs. F48 (window FIFO16) and F46 (reorder output FIFO256) paper plans committed and queued for changed-parameter two-frame RTL. State now includes W28/W29/W30 and removes completed sessions. Summary includes unmeasured plans separately and refuses to attach a failed cosim cycle gate to an accepted routed frame time;89 infrastructure tests pass. CSV-only plots group overlapping IDs, and interpretations compare the actual HLS reports with paper estimates. Implementation W23/W29/W30 remains unlaunched under the unchanged12.5+2GiB admission requirement.
+## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 HLS FIFO accounting: F47's1728-bit transformed-window FIFO reports67LUT at both depth2 and16; F42's163840-bit raster FIFO reports347LUT. The logical capacities require much more storage under a naive64bits/LUT model. Preserve these raw estimates and require routed utilization to resolve the discrepancy; do not claim near-zero physical storage cost or alter any resource gate.
 
