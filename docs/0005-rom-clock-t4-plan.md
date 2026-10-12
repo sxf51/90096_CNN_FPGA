@@ -254,6 +254,8 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 
 验收先检查脚本的项目恢复、阶段互斥、超时和失败传播，再用C13同一RTL/5ns独立补跑验证真实报告及峰值。预期每阶段峰值接近单一设计数据库而不再叠加父综合与子实现；这是待验证的主机运行假设，不是FPGA面积优化。C16/C17已满足用户“等C15出结果”的启动条件；T4是否需ROM仍由最终布线资源/时序决定。
 
+分阶段实现的内存汇总必须使用 `impl_synth_host_memory.csv` 和 `impl_route_host_memory.csv`，另存 `host_memory_phases.csv`。总峰值取两阶段实测最大值；CPU利用率只累加各阶段内部的计数器差，排除调度等待、package和阶段之间的空隙。任一阶段缺少采样时写明缺失，不能回退到包含其他任务的全局等待期 `host_memory.csv` 并宣称该任务占用。旧的单进程实现仍使用自己的 `impl_host_memory.csv`。
+
 同 0004 第 8 节的表格；另加 `route_feasible` 和 `rtl_cycles × route_clock` 两列。没有测到的写 unknown。
 
 新布线结果的路径分析同样采用本工作流的布线门限。只关联 `cosim_complete` 且 RTL 报告为 PASS 的同父设计周期；失败、超时或周期门槛未通过的仿真不能进入已验证帧时间。布线未收敛时，目标时钟乘周期不能标为已验证时间。

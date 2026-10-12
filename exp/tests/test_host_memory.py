@@ -44,6 +44,16 @@ class MemorySampleTests(unittest.TestCase):
         self.assertIsNone(cpu_summary([{}, {}])["cpu_busy_pct"])
         self.assertIsNone(cpu_summary(list(reversed(rows)))["cpu_busy_pct"])
 
+    def test_separate_tool_segments_exclude_busy_queue_gaps(self):
+        rows = [{"cpu_total_ticks": total, "cpu_idle_ticks": idle,
+                 "logical_cpus": 12, "load1": 1.5, "phase": phase}
+                for total, idle, phase in ((100, 80, "synth"), (200, 160, "synth"),
+                                           (5000, 160, "route"), (5100, 240, "route"))]
+        result = cpu_summary(rows, segment_key="phase")
+        self.assertEqual(result["cpu_intervals"], 2)
+        self.assertEqual(result["cpu_busy_pct"], 20)
+        self.assertGreater(cpu_summary(rows)["cpu_busy_pct"], 90)
+
 
 if __name__ == "__main__":
     unittest.main()

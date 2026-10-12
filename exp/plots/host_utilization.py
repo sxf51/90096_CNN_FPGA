@@ -15,7 +15,8 @@ from host_memory import cpu_summary
 records = []
 for path in sorted((root / "experiments").glob("*_*/host_memory_summary.csv")):
     for row in csv.DictReader(path.open(newline="")):
-        records.append({**row, "id": path.parent.name.split("_", 1)[0], "scope": "full operation"})
+        records.append({**row, "id": path.parent.name.split("_", 1)[0],
+                        "scope": row.get("measurement_scope", "full operation")})
 for path in sorted((root / "experiments").glob("*_*/host_utilization_baseline.csv")):
     samples = list(csv.DictReader(path.open(newline="")))
     if samples:
@@ -38,7 +39,8 @@ for axis, metric, ylabel, title in zip(axes, ("cpu_busy_pct", "min_available_GiB
         axis.annotate(row["id"]+f"\n{value:.2f}", (index, value), xytext=(0, 4),
                       textcoords="offset points", ha="center", fontsize=8)
     axis.set_xticks(range(len(available)), [row["id"]+"\n"+(
-        "full\noperation" if row["scope"] == "full operation" else "30 s\nsnapshot")
+        "full\noperation" if row["scope"] == "full operation" else
+        "synth+\nroute" if row["scope"] == "synthesis and implementation stages" else "30 s\nsnapshot")
         for row in available], fontsize=8)
     axis.set_xlabel("Experiment and measurement scope")
     axis.set_ylabel(ylabel)

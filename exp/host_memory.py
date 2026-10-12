@@ -22,9 +22,11 @@ def cpu_sample(proc_root):
     return result
 
 
-def cpu_summary(rows):
+def cpu_summary(rows, *, segment_key=None):
     total, idle, intervals = 0, 0, 0
     for first, last in zip(rows, rows[1:]):
+        if segment_key is not None and first.get(segment_key) != last.get(segment_key):
+            continue
         try:
             elapsed = int(last["cpu_total_ticks"])-int(first["cpu_total_ticks"])
             waiting = int(last["cpu_idle_ticks"])-int(first["cpu_idle_ticks"])
