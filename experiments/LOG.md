@@ -539,6 +539,8 @@
 
 - 2026-10-12T14:50 UTC F50 queue ordering: priority_waiters now accepts an explicit decision basis (four existing pause/resume tests pass). In the scheduler lock, W31's package waiter PID80160 was proven unadmitted and paused; active F51 was untouched. F50 will be favored over W31 after F51, permitting C16/C17 screening if the13GiB total budget and2GiB light headroom both pass. A7.5GiB cosim, one4GiB synth and one1.25GiB csim total12.75GiB; actual overlap remains unmeasured. Supervisor session1570 automatically resumes W31 on F50 completion, timeout or exit. Preserve18GiB impl registration, serial_after_oom=true, all original plans, tool timeouts and gates. C18/W32 checkpoint exports remain under the same one-heavy cap.
 
+- 2026-10-12T15:06:59+00:00: F51: ws_impl_F47; status=impl_complete; latency_ms_est=1.74903921; impl of F47; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。
