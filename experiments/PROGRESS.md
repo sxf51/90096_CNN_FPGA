@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-12T02:56:23+00:00 from archived measurements.
+Updated 2026-10-12T03:03:08+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -20,7 +20,7 @@ Final verification: all planned operations archived, including failures/timeouts
 
 ## Weight Loading Workstream
 
-Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). W22 is active in Vivado synthesis, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Preserve queue session74996 and its independent workspace; do not restart it. Then export its own routed paths if available, audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.
+Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). All hardware and read-only path exports are complete; no active exec session. Run close_weight_loading.py to audit local/remote protected checksums and report SHA256, regenerate all figures/summaries and commit F99. Selected W21/F96/F97/W22 remains provisional13-image acceptance with898HLS-LUT margin. F98 is5ns fallback; W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 

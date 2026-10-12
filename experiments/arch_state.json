@@ -150,7 +150,7 @@
   "frozen_design_files": 45,
   "full_set14": false,
   "hardware_parallelism": 1,
-  "next": "W22 is active in Vivado synthesis, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Preserve queue session74996 and its independent workspace; do not restart it. Then export its own routed paths if available, audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.",
+  "next": "All hardware and read-only path exports are complete; no active exec session. Run close_weight_loading.py to audit local/remote protected checksums and report SHA256, regenerate all figures/summaries and commit F99. Selected W21/F96/F97/W22 remains provisional13-image acceptance with898HLS-LUT margin. F98 is5ns fallback; W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [],
@@ -186,10 +186,11 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-12T02:56:23+00:00",
+  "time": "2026-10-12T03:03:08+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "conditional_plans": [],
+    "conservative_implementation_fallback": "F98",
     "deferred": [
       "F88",
       "F90",
@@ -217,7 +218,7 @@
       "F98",
       "W22"
     ],
-    "host_utilization_decision": "2026-10-12 user requests more server utilization. Measured12 logical CPUs, load1 about1.3 and18% total busy during F95 single-thread synthesis; about9GiB Vivado RSS and6.5GiB MemAvailable on15GiB host with no swap. Preserve existing jobs and serial hardware slot. Add CPU telemetry and a per-run implementation-thread probe (up to4 placement/routing threads, synthesis1) in the next independent WS4 experiment; do not change global settings, frozen plans, swap or launch concurrent full implementations.",
+    "host_utilization_decision": "W22 completed with synthesis1/placement-routing2 threads, both confirmed in tool logs.176 full-operation samples show mean CPU busy12.983811% across12 logical CPUs, mean load1=1.507330, minimum available memory2.615864GiB and peak tool RSS12.013729GiB. Its43.898946minutes versus F98's62.947585minutes is a descriptive comparison at different clock/thread settings, not isolated thread speedup. Serial hardware lock, no swap/global settings changes and no full-network concurrency were retained.",
     "loader_full_image_validation": "F94",
     "loader_ids": [
       "F25",
@@ -230,16 +231,16 @@
       "F30",
       "W21"
     ],
-    "local_exec_sessions": {
-      "W22_queue": 74996
-    },
-    "next": "W22 is active in Vivado synthesis, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Preserve queue session74996 and its independent workspace; do not restart it. Then export its own routed paths if available, audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.",
+    "local_exec_sessions": {},
+    "next": "All hardware and read-only path exports are complete; no active exec session. Run close_weight_loading.py to audit local/remote protected checksums and report SHA256, regenerate all figures/summaries and commit F99. Selected W21/F96/F97/W22 remains provisional13-image acceptance with898HLS-LUT margin. F98 is5ns fallback; W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.",
     "plan": "docs/0004-t8-weight-loading-plan.md",
-    "post_route": "F92/W20/F95/F98 final timing/resources, five setup paths, checkpoint/script SHA256 and hierarchical utilization reports are archived. All five F95 paths are Conv1 local-load address to private LUTRAM WADR1. F98 paths1/3/5 are Conv2 parameter FIFO data to private LUTRAM write data; worst4.704ns data delay is97.598% routing with fanout257 and zero logic levels. Paths2/4 are Conv3 step control through three LUTs into DSP inputs; no DSP cascade. Select conservative4.95ns W22 same-RTL probe from F98's own evidence; preserve its5ns fallback and unchanged HLS gates.",
-    "ready_to_close": false,
+    "post_route": "Complete. F92/W20/F95/F98/W22 final timing/resources, five setup paths, checkpoint/script SHA256 and hierarchical reports are archived. F95 paths are Conv1 local-load address to LUTRAM WADR1. F98's worst path is Conv2 parameter FIFO to private LUTRAM write data,97.598% routing and fanout257. W22 paths1/2/4/5 instead start at Conv3 pipeline enable, pass four LUT/MUX levels and enter one DSP; worst4.325ns data delay is83.329% routing with control fanout956. W22 path3 is Conv3 parameter FIFO to private LUTRAM write data,4.715ns/97.497% routing/fanout101/zero logic levels. No DSP cascade appears. Future independent changes should target measured Conv3 control/parameter distribution. Preserve4.95ns accepted target,5ns fallback and unchanged HLS gates.",
+    "ready_to_close": true,
     "reload_verification": "F93 and F97 are completed and archived: both RTL transactions pass for each accepted loader/T8 candidate, including E017-exact butterfly/unchanged border and a changed sparse-weight/bias second frame with every output bit equal104/256. Parent RTL SHA256 matches before/after and each testbench is archived by source SHA256. F28 latency1059506/interval1059535 and W21 latency558758/interval558787 are measured, not HLS estimates. No OOM/deadlock/timeout was observed. Matching-source F94/F96 all13-image checks both retain deltaPSNR=-0.0695141811880653. F95 F28 route is complete at5ns; F98 must establish W21's own clock.",
     "selected_T8": "W21",
+    "selected_implementation": "W22",
     "selected_loader": "F28",
+    "selected_rtl_validation": "F97",
     "verification_queue": [
       "F89",
       "F26",
@@ -260,11 +261,11 @@
       "F98",
       "W22"
     ],
-    "verification_tools": "Fresh candidates use prepare_ws_verify.py and serial_packaged_flow: preserve their own IP, copy only checked official F89 driver boilerplate, replace module lists/clock, apply per-run single-thread synthesis hook. Template and parent RTL/init hashes must match for serial_generated_flow. Candidate-specific full-image source/flag provenance is checked.63 infrastructure tests passed, including CPU accounting and bounded implementation-thread/replay isolation. Independent reload-params testbench is archived by SHA256 and frozen for verification replay; C/RTL exact markers and unchanged first-frame borders are required. F93/F97 have actual reload evidence and F95/F98 route is complete. Only W22 WS4 physical-clock probe remains. Current-workstream closure uses close_weight_loading.py and leaves F90/F91 deferred.",
+    "verification_tools": "All current hardware operations are complete. Fresh candidates use serial_packaged_flow; same-RTL retries use serial_generated_flow with parent/template RTL and init SHA256 checks. W22 checked93 files with matching W21/F98 manifestdf75f254be1cb10373d1f6022a51a9dabbad41f499e1d116ebfb8ca59ee2a50e. Candidate-specific full-image source/flag provenance and frozen reload-params testbench hashes are checked.63 infrastructure tests previously passed. F93/F97 provide changed-parameter RTL evidence and F95/F98/W22 are routed. Finish W22 own-path export, then close_weight_loading.py audits all records and leaves F88/F90/F91 deferred.",
     "ws0": "complete; F85/P13 recovered, F88 interrupted and archived",
     "ws1": "F89 timed out at three hours during congestion routing; no final routed report/checkpoint and no observed new OOM. F92 archived successfully: same F25 RTL at5ns, final WNS+0.568ns/TNS0, LUT32400, FF77757, DSP592, RAMB36=28 plus RAMB18=16 (36 BRAM36-equivalent tiles), URAM0. Its0.463 routed/HLS LUT ratio triggered diagnostic W20, which completes at5ns with WNS+0.188ns/TNS0,696DSP,42812LUT,89690FF and109BRAM18K (46RAMB36 plus17RAMB18), noURAM. W20 five-path/hierarchy/checkpoint-hash export is complete; worst path is FIFO valid to Conv3 window CE,3 logic levels and90.847% routing delay. Preserve W17 HLS-infeasible status and diagnostic exclusion.",
     "ws2": "Complete: F26 failed area hypothesis and F27 missed clock. F28 passes every strict WS2 gate: clock2.377ns,1046029cycles,II1 in all three folds,total61553/outside3170/mux184LUT,DSP502,BRAM18K73,FF122061,zero weight-predecessor warnings,exact butterfly and unchanged border. Selected F28; F94 all13-image source/flag provenance matches. F93 changed-parameter two-frame RTL passes with exact104/256 second outputs, latency1059506/interval1059535 and1.2884% latency overhead versus HLS. F95 completed at5ns: WNS+0.282ns/TNS0,591DSP/30140LUT/76498FF/72BRAM18K/zeroURAM. Combined with F93, the routed-target IP frame time is5.29753ms, not board measured. Its own five paths and physical hierarchy are now archived.",
     "ws3": "Complete. W19/F29/F30 are archived infeasible. W21 is HLS-resource-feasible:644DSP/146BRAM18K/81086LUT/130057FF,525237cycles,2.431ns estimate at3.33ns target,threefoldII1,zero weight-predecessor warnings,exact butterfly and unchanged border. F96 all13-image outputs are exact with deltaPSNR=-0.0695141811880653dB. F97 changed-parameter two-frame RTL passes: latency558758/interval558787,6.382071% above HLS and exact104/256 second outputs. F98 closes its independent5ns implementation with WNS+0.140ns/TNS0,644DSP/42594LUT/88806FF/109BRAM18K/URAM0; F97 cycles give2.79379ms at the closed target. F98 five paths and physical hierarchy are archived. Keep898HLS-LUT margin and missing comic explicit; F28 remains the T16 fallback.",
-    "ws4": "One remaining experiment W22: independent4.95ns physical-clock probe using F98's checked W21 RTL/driver. F98 has only+0.140ns slack,3.011604GiB minimum available memory and11.642307GiB peak RSS; conservatively choose placement/routing2 threads, synthesis1, rather than the permitted maximum4. Preserve serial hardware lock, interface, arithmetic and HLS gates. Record CPU/memory and hook values; changed clock and thread count prevent attributing wall-time difference solely to threads. No further exploration will be added."
+    "ws4": "Complete including own-five-path and physical-hierarchy archives. W22 identical W21 RTL at4.95ns closes WNS+0.047ns/TNS0/WHS+0.032ns/THS0/TPWS0 with zero unrouted nets. Routed644DSP/42592LUT/88806FF/109BRAM18K/URAM0 and matching93-file manifest. F97 measured558758/558787 cycles give2.7658521ms latency/2.76599565ms interval at the closed target. Exactly1% lower IP frame time than F98, with47ps versus140ps setup margin. Select W22 as fastest verified target and retain F98 as conservative5ns fallback. No further exploration; final audits and F99 closure are next."
   }
 }

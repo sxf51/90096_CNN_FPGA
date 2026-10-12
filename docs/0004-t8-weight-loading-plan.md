@@ -2,6 +2,8 @@
 
 本文是接手 agent 的工作文档，2026-10-12 根据已归档证据整理。所有数字来自 `experiments/` 下的报告；标注“假设”或“估计”的内容还没有实验证据。
 
+WS0-WS4 的硬件运行和路径导出已完成，正在做最终完整性审计。当前候选和 HLS、RTL、布线的分列数字见 [WEIGHT_LOADING](../experiments/WEIGHT_LOADING.md) 与 [ARCH_SUMMARY](../experiments/ARCH_SUMMARY.md)；下文第 1 节保留开工时的历史基线。没有板端验收，缺 comic 的精度结论仍为暂定。
+
 开工前按顺序读：两份 `AGENTS.md`（父目录和本项目）、[0002](0002-overnight-experiments.md)、[0003](0003-architecture-exploration.md)、[ARCH_SUMMARY](../experiments/ARCH_SUMMARY.md)、[PROGRESS](../experiments/PROGRESS.md)、[REPRODUCE](../experiments/REPRODUCE.md)。
 
 ## 1. 现状
@@ -312,6 +314,7 @@ WS0–WS4 收尾使用 `python3 exp/close_weight_loading.py`。恢复状态需�
 | [W19](../experiments/W19_streamed_winograd_T8/W19.md) | unknown | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 645.0 | 146.0 | 83623.0 | 3170.0 | 130843.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | infeasible |
 | [W20](../experiments/W20_ws_impl_W17/W20.md) | W17 | 8 | 4 | 3.239 | 532562.0 | 532563.0 | 2.130248 | 648.0 | 146.0 | 93166.0 | unknown | 122399.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | impl_complete |
 | [W21](../experiments/W21_subkernel_raw_cache_T8/W21.md) | unknown | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 644.0 | 146.0 | 81086.0 | 3170.0 | 130057.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | provisional |
+| [W22](../experiments/W22_ws_clock_4p95_W21/W22.md) | W21 | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 644.0 | 146.0 | 81086.0 | unknown | 130057.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | impl_complete |
 
 | id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_TNS_ns | route_period_from_slack_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | timing_met | rtl_frame_ms_at_route_target | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -322,6 +325,7 @@ WS0–WS4 收尾使用 `python3 exp/close_weight_loading.py`。恢复状态需�
 | [F97](../experiments/F97_ws_cosim_W21/F97.md) | W21 | unknown | 558758.0 | 558787.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
 | [F98](../experiments/F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 558787.0 | 5.0 | 0.14 | 0.0 | 4.86 | 644.0 | 109.0 | 42594.0 | 88806.0 | True | 2.79379 | impl_complete |
 | [W20](../experiments/W20_ws_impl_W17/W20.md) | W17 | unknown | unknown | unknown | 5.0 | 0.188 | 0.0 | 4.812 | 696.0 | 109.0 | 42812.0 | 89690.0 | True | unknown | impl_complete |
+| [W22](../experiments/W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 558787.0 | 4.95 | 0.047 | 0.0 | 4.9030000000000005 | 644.0 | 109.0 | 42592.0 | 88806.0 | True | 2.7658521 | impl_complete |
 
 负 WNS 对应的周期只作估计，不能当作时序通过；缺失值为 unknown。
 

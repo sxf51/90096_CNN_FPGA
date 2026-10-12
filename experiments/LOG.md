@@ -435,7 +435,11 @@
 
 - 2026-10-12T02:56:23+00:00: W22: ws_clock_4p95_W21; status=impl_complete; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-12T03:00:07+00:00: W22: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
+
 ## Pending Human Decisions / 待人工决策
+
+- 2026-10-12 W22: 最后一个 WS4 探针已完成，4.95 ns 下 WNS +0.047 ns / WHS +0.032 ns，IP 推导帧时间 2.7658521 ms，比 F98 5 ns 低 1%，但 setup 余量从 140 ps 降至 47 ps。按最小延迟目标保留 W22 为当前最快已验证时钟点，同时保留 F98 为更保守的集成起点，板端团队可在系统时钟验收时选择。不得把 4.903 ns 的 slack 推导值当作已验证时钟；缺 comic、资源口径、常量 ROM 和大内存主机仍按第 6 节待复核。
 
 - 2026-10-11T18:56:00+00:00: WS2/WS3 preparation: F94 independently passed all13-image exactness and mean deltaPSNR=-0.069514dB. F31 independent changed-parameter C preflight passed, with every second output bit equal104/256 and unchanged first-frame borders; this is not RTL evidence. W19/F29/F30 paper plans are committed and conditional on measured loader selection; no parent design is modified. F92 remains in placement and F28 synthesis waits for its lock.
 

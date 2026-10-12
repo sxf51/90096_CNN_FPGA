@@ -48,6 +48,7 @@ HLS estimates (verification rows inherit their parent and are not new synthesis 
 | [W19](W19_streamed_winograd_T8/W19.md) | unknown | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 645.0 | 146.0 | 83623.0 | 3170.0 | 130843.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | infeasible |
 | [W20](W20_ws_impl_W17/W20.md) | W17 | 8 | 4 | 3.239 | 532562.0 | 532563.0 | 2.130248 | 648.0 | 146.0 | 93166.0 | unknown | 122399.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | impl_complete |
 | [W21](W21_subkernel_raw_cache_T8/W21.md) | unknown | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 644.0 | 146.0 | 81086.0 | 3170.0 | 130057.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | provisional |
+| [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 644.0 | 146.0 | 81086.0 | unknown | 130057.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | impl_complete |
 
 RTL and routed results, kept separate:
 
@@ -60,6 +61,7 @@ RTL and routed results, kept separate:
 | [F97](F97_ws_cosim_W21/F97.md) | W21 | unknown | 558758.0 | 558787.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
 | [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 558787.0 | 5.0 | 0.14 | 0.0 | 4.86 | 644.0 | 109.0 | 42594.0 | 88806.0 | True | 2.79379 | impl_complete |
 | [W20](W20_ws_impl_W17/W20.md) | W17 | unknown | unknown | unknown | 5.0 | 0.188 | 0.0 | 4.812 | 696.0 | 109.0 | 42812.0 | 89690.0 | True | unknown | impl_complete |
+| [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 558787.0 | 4.95 | 0.047 | 0.0 | 4.9030000000000005 | 644.0 | 109.0 | 42592.0 | 88806.0 | True | 2.7658521 | impl_complete |
 
 Times derived from RTL cycles at a routed target are conditional on `timing_met=true`. Target minus negative WNS is a slack-derived period estimate, not a proven closed clock. Missing values remain unknown. No board validation has run.
 
@@ -71,9 +73,10 @@ Host utilization from archived CPU/memory CSV files (short snapshots are labeled
 
 ![Remote host utilization](figs/host_utilization.png)
 
-Current recovery state: W22 is active in Vivado synthesis, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Preserve queue session74996 and its independent workspace; do not restart it. Then export its own routed paths if available, audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.
+Current recovery state: All hardware and read-only path exports are complete; no active exec session. Run close_weight_loading.py to audit local/remote protected checksums and report SHA256, regenerate all figures/summaries and commit F99. Selected W21/F96/F97/W22 remains provisional13-image acceptance with898HLS-LUT margin. F98 is5ns fallback; W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.
 
 <!-- AUTO: WORKSTREAM END -->
+
 
 
 
