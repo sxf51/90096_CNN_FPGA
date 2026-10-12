@@ -445,6 +445,8 @@
 
 - 2026-10-12T03:13:41+00:00: F99: WS0-WS4 operations archived and audited; 20 workstream records, local/remote protected checksums and report SHA256 verified; all plots regenerated. Failures remain explicit; no board acceptance or push.
 
+- 2026-10-12T03:59:19+00:00: F34: ws0_memory_control_F96; status=csim_pass; latency_ms_est=unknown; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 收尾展示材料：最终两地 checksum 与全部报告 SHA256 已通过。修复 CPU 图例颜色，折行样本作用域标签，增大资源校准图以容纳实验 ID；等价离线 G2 归档补入 `winograd_param_stream` 和 `winograd_subkernel_cache`，原始权重及运行时接口不变。以上均为归档/展示更新，不新增硬件运行。
