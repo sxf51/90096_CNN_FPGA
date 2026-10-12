@@ -18,7 +18,7 @@ class RomClockSummaryTests(unittest.TestCase):
                 archive.mkdir(parents=True)
                 (archive / "config.json").write_text(json.dumps({
                     "id": exp_id, "operation": "cosim", "verify_parent": "W21",
-                    "verification": {"rtl_latency_max": 558758}}))
+                    "verification": {"rtl_latency_max": 558758, "rtl_status": "Pass"}}))
                 (archive / "metrics.json").write_text(json.dumps({"status": status}))
             with patch.object(summarize_rom_clock, "ROOT", root):
                 self.assertEqual(summarize_rom_clock.completed_rtl_matches("W21"), [("F44", 558758)])

@@ -5,6 +5,7 @@ import json
 from analyze_arch import dsp_composition, write_csv
 from run_exp import ROOT, number
 from route_gates import archive_route_evidence
+from rtl_acceptance import accepted_cosim, acceptance_basis
 
 CONTROL_STAGES = {"rom_clock_ws0", "rom_clock_wsB_equivalence", "rom_clock_wsB_banks"}
 
@@ -39,7 +40,7 @@ def main():
     rtl_by_parent = {}
     for archive, row, config in records:
         measured = number(config.get("verification", {}).get("rtl_latency_max"))
-        if config.get("operation") == "cosim" and row["status"] == "cosim_complete" and measured is not None:
+        if accepted_cosim(row, config) and measured is not None:
             rtl_by_parent.setdefault(config["verify_parent"], []).append((row["id"], measured))
     configs = {row["id"]: config for _, row, config in records}
     comparisons, estimates, composition, fifos, memory = [], [], [], [], []
@@ -63,6 +64,8 @@ def main():
                       "image_count": config.get("validation", {}).get("image_count"),
                       "delta_psnr": number(row["delta_psnr"]),
                       "rtl_cycles": number(physical.get("rtl_latency_max")), "rtl_source": None,
+                      "rtl_accepted": accepted_cosim(row, config) if operation == "cosim" else None,
+                      "rtl_acceptance_basis": acceptance_basis(row, config) if operation == "cosim" else None,
                       "route_feasible": route.get("route_feasible"),
                       "route_clock_ns": number(physical.get("impl_target_clock_ns")),
                       "route_WNS_ns": route.get("impl_WNS_ns"), "route_WHS_ns": route.get("impl_WHS_ns"),
@@ -73,7 +76,7 @@ def main():
                 record["rtl_source"], record["rtl_cycles"] = rtl_by_parent[matching_parent][0]
                 if record["route_feasible"] is True and record["route_clock_ns"] is not None:
                     record["rtl_frame_ms"] = record["rtl_cycles"]*record["route_clock_ns"]/1e6
-            accepted_rtl = record["rtl_cycles"] if record["rtl_source"] or row["status"] == "cosim_complete" else None
+            accepted_rtl = record["rtl_cycles"] if record["rtl_source"] or accepted_cosim(row, config) else None
             record.update(rtl_excess(record["HLS_cycles"], accepted_rtl))
             stage = config.get("stage", "") if operation != "cosim" else configs.get(parent, {}).get("stage", "")
             record["wsD_goal_met"] = record["rtl_within_2pct"] if str(stage).startswith("rom_clock_wsD") else None

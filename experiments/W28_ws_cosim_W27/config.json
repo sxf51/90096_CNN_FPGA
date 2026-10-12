@@ -1,5 +1,12 @@
 {
   "T": 8,
+  "acceptance_override": {
+    "authorized_by": "user",
+    "policy": "upper_latency_bound_only",
+    "max_cycles": 564345,
+    "decision_reference": "docs/0005-rom-clock-t4-plan.md section6.2; user explicitly requested accepting faster W28 and launching W30 on2026-10-12",
+    "original_status_preserved": "fail"
+  },
   "changes": "Use frozen parent W27 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Override only verification C++ testbench, archive its SHA256/source commit and preserve identical parent RTL.",
   "clock": 3.33,
   "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",

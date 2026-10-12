@@ -7,6 +7,7 @@ import re
 from analyze_arch import write_csv
 from host_memory import cpu_summary
 from route_gates import evaluate_route
+from rtl_acceptance import accepted_cosim
 from run_exp import ROOT, markdown_table, number
 
 
@@ -79,9 +80,7 @@ def analyze(archive):
         candidate = json.loads(path.read_text())
         if candidate.get("operation") == "cosim" and candidate.get("verify_parent") == config["verify_parent"]:
             verdict_path = path.parent / "metrics.json"
-            if (not verdict_path.is_file() or
-                    json.loads(verdict_path.read_text()).get("status") != "cosim_complete" or
-                    candidate.get("verification", {}).get("rtl_status") != "Pass"):
+            if not verdict_path.is_file() or not accepted_cosim(json.loads(verdict_path.read_text()), candidate):
                 continue
             rtl = number(candidate.get("verification", {}).get("rtl_latency_max"))
             if rtl is not None:

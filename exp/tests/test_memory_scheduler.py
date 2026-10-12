@@ -15,6 +15,23 @@ def task(kind):
 
 
 class AdmissionTests(unittest.TestCase):
+    def test_one_heavy_policy_refuses_both_heavy_pairings(self):
+        for active in ("impl", "cosim"):
+            for requested in ("impl", "cosim"):
+                self.assertIn("one-heavy", admission_reason([task(active)], requested, 30,
+                                                             one_heavy=True))
+        self.assertIsNone(admission_reason([], "impl", 13.4, {**BUDGETS, "impl": 15},
+                                          one_heavy=True, floor_gib=.5))
+
+    def test_one_heavy_policy_allows_only_light_jobs_with_actual_headroom(self):
+        self.assertIsNone(admission_reason([task("cosim")], "csynth", 6, one_heavy=True))
+        self.assertIn("below2GiB", admission_reason([task("cosim")], "csynth", 4,
+                                                   one_heavy=True))
+        self.assertIn("reservations", admission_reason([task("impl")], "csim", 5,
+                                                       one_heavy=True))
+        self.assertIn("light-task cap", admission_reason([task("csim")]*3, "csim", 12,
+                                                         one_heavy=True))
+
     def test_explicit_two_job_policy_bypasses_predicted_reservations(self):
         self.assertIsNone(admission_reason([task("cosim")], "cosim", 6.5,
                                           parallel=True, floor_gib=.5, user_two_jobs=True))

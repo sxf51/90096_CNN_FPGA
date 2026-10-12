@@ -120,7 +120,7 @@ measured = [row for row in comparison if row["operation"] == "cosim" and present
 fig, ax = plt.subplots(figsize=(11, 5), layout="constrained")
 if measured:
     bars = ax.bar(range(len(measured)), [float(row["rtl_cycles"]) for row in measured],
-                  color=["#287e8e" if row["status"] == "cosim_complete" else "#b65352" for row in measured],
+                  color=["#287e8e" if row["rtl_accepted"] == "True" else "#b65352" for row in measured],
                   label="Two-frame RTL maximum latency (red: rejected verification)")
     ax.bar_label(bars, labels=[format(int(float(row["rtl_cycles"])), ",") for row in measured], fontsize=8, padding=3)
     ax.margins(y=.12)

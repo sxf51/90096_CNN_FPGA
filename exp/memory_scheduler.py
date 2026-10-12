@@ -14,10 +14,23 @@ BUDGETS = {"impl": 12.5, "cosim": 7.5, "csynth": 2.5, "csynth_t4": 4.0, "csim": 
 
 
 def admission_reason(tasks, kind, available_gib, budgets=None, parallel=False,
-                     total_gib=13.0, floor_gib=2.0, user_two_jobs=False):
+                     total_gib=13.0, floor_gib=2.0, user_two_jobs=False, one_heavy=False):
     budgets = budgets or BUDGETS
     if kind not in budgets:
         raise ValueError("Unknown memory task class: " + kind)
+    if one_heavy:
+        heavy = {"impl", "cosim"}
+        if kind in heavy and any(task["kind"] in heavy for task in tasks):
+            return "one-heavy-task cap reached"
+        if kind not in heavy and sum(task["kind"] not in heavy for task in tasks) >= 3:
+            return "three-light-task cap reached"
+        if not tasks and kind in heavy:
+            return "actual MemAvailable is below the available-memory floor" if available_gib < floor_gib else None
+        if sum(task["budget_gib"] for task in tasks) + budgets[kind] > total_gib:
+            return "registered light/heavy reservations exceed memory budget"
+        if available_gib - budgets[kind] < 2:
+            return "MemAvailable minus new light/heavy reservation is below2GiB"
+        return None
     if user_two_jobs:
         if len(tasks) >= 2:
             return "user-authorized two-task concurrency cap reached"
@@ -116,13 +129,14 @@ class Scheduler:
                                           (state["parallel_validated"] or controlled) and
                                           not state["serial_after_oom"],
                                           state["total_gib"], state["floor_gib"],
-                                          state.get("user_two_jobs", False))
+                                          state.get("user_two_jobs", False), state.get("one_heavy", False))
                 if reason is None:
                     state["tasks"][token] = {"id": exp_id, "kind": kind, "pid": os.getpid(),
                                               "process_start": process_start(os.getpid()),
                                               "budget_gib": state["budgets"][kind],
                                               "available_gib_at_start": current, "started": time.time(),
-                                              "admission_policy": ("user_two_jobs" if state.get("user_two_jobs")
+                                              "admission_policy": ("one_heavy_with_light" if state.get("one_heavy")
+                                                                   else "user_two_jobs" if state.get("user_two_jobs")
                                                                    else "reserved_memory")}
                     record = dict(state["tasks"][token])
             if reason is None:
@@ -159,7 +173,11 @@ class Lease:
             floor = 2.0
             with self.scheduler.state() as state:
                 floor = state["floor_gib"]
-                newest = max(state["tasks"].values(), key=lambda task: task["started"], default=None)
+                candidates = list(state["tasks"].values())
+                if state.get("one_heavy"):
+                    light = [task for task in candidates if task["kind"] not in {"impl", "cosim"}]
+                    candidates = light or candidates
+                newest = max(candidates, key=lambda task: task["started"], default=None)
                 stop_this_task = not state.get("user_two_jobs") or newest == state["tasks"].get(self.token)
             current = available_gib()
             if current < floor and self.group and stop_this_task:

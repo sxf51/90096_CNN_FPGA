@@ -5,6 +5,7 @@ import json
 from analyze_arch import write_csv
 from run_exp import ROOT, markdown_table, number, utc
 from route_gates import archive_route_evidence
+from rtl_acceptance import accepted_cosim, acceptance_basis
 
 
 def pending_experiments(state):
@@ -35,7 +36,7 @@ def completed_rtl_matches(parent):
             continue
         metrics = json.loads(cp.with_name("metrics.json").read_text())
         cycles = number(candidate.get("verification", {}).get("rtl_latency_max"))
-        if metrics["status"] == "cosim_complete" and cycles is not None:
+        if accepted_cosim(metrics, candidate) and cycles is not None:
             matches.append((candidate["id"], cycles))
     return matches
 
@@ -65,6 +66,8 @@ def main():
                   "route_WNS_ns": route.get("impl_WNS_ns"), "route_WHS_ns": route.get("impl_WHS_ns"),
                   **{key: route.get("impl_" + key) for key in ("DSP", "BRAM18K", "URAM", "LUT", "FF")},
                   "rtl_cycles": physical.get("rtl_latency_max"), "rtl_source": None,
+                  "rtl_accepted": accepted_cosim(row, config) if config.get("operation") == "cosim" else None,
+                  "rtl_acceptance_basis": acceptance_basis(row, config) if config.get("operation") == "cosim" else None,
                   "rtl_hls_excess_pct": comparison_by_id.get(exp_id, {}).get("rtl_hls_excess_pct"),
                   "wsD_goal_met": comparison_by_id.get(exp_id, {}).get("wsD_goal_met"),
                   "rtl_cycles_x_route_clock_ms": None}
@@ -83,12 +86,13 @@ def main():
     text += "Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.\n\n"
     text += "## Current state\n\n" + state["phase"] + ". " + state["next"] + "\n\n"
     display_columns = ["id", "parent", "operation", "status", "bit_exact", "delta_psnr", "HLS_cycles",
-                       "HLS_DSP", "HLS_LUT", "rtl_cycles", "route_clock_ns", "route_feasible",
+                       "HLS_DSP", "HLS_LUT", "rtl_cycles", "rtl_acceptance_basis", "route_clock_ns", "route_feasible",
                        "rtl_cycles_x_route_clock_ms", "rtl_hls_excess_pct", "wsD_goal_met"]
     text += markdown_table([{**row, "id": "[" + row["id"] + "](" + row["md_path"] + ")"} for row in rows], display_columns)
     text += "\nMissing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.\n"
     text += "\nWS-D performance is separate from a successful functional cosimulation. With the525237-cycle HLS bound, "
     text += "the2% goal allows at most535741 integer RTL cycles (535741.74 before flooring); never round the threshold upward.\n"
+    text += "User revision in docs/0005 section6.2 accepts F48 as the new mainline basis despite its30-cycle diagnostic miss, and accepts faster W28 under the original upper bound only. Original result statuses and paper plans remain unchanged; the explicit acceptance basis records this authorization.\n"
     pending = pending_experiments(state)
     text += "\n## Unmeasured plans\n\n"
     text += markdown_table([{**row, "id": "[" + row["id"] + "](" + row["md_path"] + ")"} for row in pending],
@@ -143,7 +147,8 @@ def main():
         old = old.split(marker, 2)[-1].lstrip("\n")
     block = marker + "\n\n## Active docs/0005 workstream\n\n" + state["phase"] + ". " + state["next"]
     block += "\n\nSee [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). "
-    policy = ("serial hardware fallback after measured OOM; two-task policy retained" if state.get("hardware_serial_after_oom")
+    policy = ("one heavy task with light jobs admitted by measured headroom" if state.get("concurrency_policy") == "one_heavy_with_light"
+              else "serial hardware fallback after measured OOM; two-task policy retained" if state.get("hardware_serial_after_oom")
               else "explicit two-task scheduling with actual memory telemetry" if state.get("concurrency_policy") == "user_two_jobs"
               else "budgeted after WS-0 validation")
     block += "Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=" + policy + ".\n\n" + marker + "\n\n"
