@@ -236,6 +236,10 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 
 同 0004 第 8 节的表格；另加 `route_feasible` 和 `rtl_cycles × route_clock` 两列。没有测到的写 unknown。
 
+新布线结果的路径分析同样采用本工作流的布线门限。只关联 `cosim_complete` 且 RTL 报告为 PASS 的同父设计周期；失败、超时或周期门槛未通过的仿真不能进入已验证帧时间。布线未收敛时，目标时钟乘周期不能标为已验证时间。
+
+从已有 routed checkpoint 导出五条路径也属于 Vivado 任务，使用双任务调度和独立 `setup_paths` 内存采样，避免在两个硬件任务之外另起一个 Vivado。导出仅打开 checkpoint 并读报告，不重新布线；其失败不改写已有实现结果，保留诊断后再重试。ROM 的模块资源报告按实际顶层 `srcnn_rom` 归档，不能套用运行时版本的文件名。
+
 `python3 exp/audit_rom_clock.py --snapshot` 可在任务运行时校验两地原始文件、冻结设计、已归档报告及未测量计划；去掉 `--snapshot` 则要求远程无实验进程。审计结果写到 `experiments/rom_clock_audit.json`，明确保留未启动计划和未完成状态。审计通过本身不代表布线或上板验收完成。
 
 ## 8. 进展记录
