@@ -312,6 +312,15 @@ def run(config):
         from verify_exp import run_verification
         return run_verification(config)
     check_protected()
+    if config.get("required_bank_validation"):
+        prerequisite = next((ROOT / "experiments").glob(config["required_bank_validation"] + "_*/config.json"))
+        validated = json.loads(prerequisite.read_text())
+        probe = validated.get("validation", {})
+        digest = hashlib.sha256((ROOT / config["design"] / "rom_constants.h").read_bytes()).hexdigest()
+        if (probe.get("csim_pass") is not True or probe.get("rom_bank_exact") is not True or
+                probe.get("rom_values_checked") != 12161 or
+                validated.get("source_sha256", {}).get("rom_constants.h") != digest):
+            raise RuntimeError("ROM bank equivalence prerequisite failed or ROM contents changed")
     exp_id, name = config["id"], config["name"]
     if not re.fullmatch(EXPERIMENT_ID, exp_id) or not re.fullmatch(r"[a-zA-Z0-9_]+", name):
         raise ValueError("Unsafe experiment ID or name")
@@ -482,7 +491,9 @@ def run(config):
         archive_logs(work, archive)
         compact(archive)
         # Reports and model output can be located beneath csim/build, version-dependent.
-        for filename in ("quality.csv", "butterfly_output.bin"):
+        for filename in ("quality.csv", "butterfly_output.bin", "rom_banks.csv",
+                         "runtime_bank_W1.bin", "runtime_bank_B1.bin", "runtime_bank_W2.bin",
+                         "runtime_bank_B2.bin", "runtime_bank_W3.bin", "runtime_bank_B3.bin"):
             paths = [p for p in work.rglob(filename)
                      if p.parent.name == "build" and "csim" in p.parts]
             if paths:

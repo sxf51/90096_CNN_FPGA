@@ -1,6 +1,7 @@
 #include "types.h"
 #include "winograd_math.h"
 #include "srcnn.h"
+#include "rom_constants.h"
 #ifndef __SYNTHESIS__
 #include <cassert>
 #endif
@@ -8,6 +9,8 @@ using namespace numeric;
 #ifndef EXP_ALL_CONTINUOUS
 #define EXP_ALL_CONTINUOUS 0
 #endif
+static_assert(EXP_ALL_CONTINUOUS && EXP_W_BITS == 10 && EXP_A_BITS == 10,
+              "ROM content preserves the W21 continuous w10a10 precision contract");
 
 #ifndef EXP_ONLINE_PAD
 #define EXP_ONLINE_PAD 0
@@ -108,116 +111,6 @@ constexpr int WOC = N1/(4*T);
 using transformed_weight = wino::Word<EXP_W_BITS+4>;
 using transformed_input = wino::Word<EXP_A_BITS+2>;
 using inverse = wino::Word<EXP_W_BITS+EXP_A_BITS+14>;
-struct transformed_params1 { transformed_weight v[16]; };
-
-static void read_raw_params(param_t weights1[N1][N0][F1][F1], param_t biases1[N1],
-                            param_t weights2[N2][N1][F2][F2], param_t biases2[N2],
-                            param_t weights3[N3][N2][F3][F3], param_t biases3[N3],
-                            hls::stream<weight> &raw1, hls::stream<weight> &params2,
-                            hls::stream<weight> &params3) {
-    int oc1 = 0, ky1 = 0, kx1 = 0;
-    int ic3 = 0, ky3 = 0, kx3 = 0;
-    read_all_params: for (int i = 0; i < 8129; ++i) {
-#pragma HLS PIPELINE II=1
-        param_t value;
-        if (i < 5184) {
-            value = weights1[oc1][0][ky1][kx1];
-            if (kx1 == F1-1) {
-                kx1 = 0;
-                if (ky1 == F1-1) { ky1 = 0; ++oc1; }
-                else ++ky1;
-            } else ++kx1;
-        } else if (i < 5248) value = biases1[i-5184];
-        else if (i < 7296) value = weights2[(i-5248)/N1][(i-5248)%N1][0][0];
-        else if (i < 7328) value = biases2[i-7296];
-        else if (i < 8128) {
-            value = weights3[0][ic3][ky3][kx3];
-            if (kx3 == F3-1) {
-                kx3 = 0;
-                if (ky3 == F3-1) { ky3 = 0; ++ic3; }
-                else ++ky3;
-            } else ++kx3;
-        } else value = biases3[0];
-        const weight encoded = encode_weight(value);
-        if (i < 5248) raw1.write(encoded);
-        else if (i < 7328) params2.write(encoded);
-        else params3.write(encoded);
-    }
-}
-
-static void transform_params1(hls::stream<weight> &raw1, hls::stream<transformed_params1> &params1) {
-    weight raw[9][9];
-#pragma HLS ARRAY_PARTITION variable=raw complete dim=0
-    transform_channels: for (int oc = 0; oc < N1; ++oc) {
-        transform_read_rows: for (int row = 0; row < 9; ++row)
-            transform_read_columns: for (int column = 0; column < 9; ++column) {
-#pragma HLS LOOP_FLATTEN off
-#pragma HLS PIPELINE II=1
-                const int group = (row/3)*3+column/3;
-                const int tap = (row%3)*3+column%3;
-                raw[group][tap] = raw1.read();
-            }
-        transform_groups: for (int group = 0; group < 9; ++group) {
-#pragma HLS PIPELINE II=1
-            wino::Word<EXP_W_BITS> kernel[9];
-            transformed_params1 packet;
-#pragma HLS ARRAY_PARTITION variable=kernel complete
-#pragma HLS ARRAY_PARTITION variable=packet.v complete
-            for (int tap = 0; tap < 9; ++tap) {
-#pragma HLS UNROLL
-                kernel[tap] = raw[group][tap];
-            }
-            wino::weight_transform<EXP_W_BITS>(kernel,packet.v);
-            params1.write(packet);
-        }
-    }
-    transform_bias: for (int oc = 0; oc < N1; ++oc) {
-#pragma HLS PIPELINE II=1
-        transformed_params1 packet;
-        for (int field = 0; field < 16; ++field) {
-#pragma HLS UNROLL
-            packet.v[field] = 0;
-        }
-        packet.v[0] = raw1.read();
-        params1.write(packet);
-    }
-}
-
-static void read_params(param_t weights1[N1][N0][F1][F1], param_t biases1[N1],
-                        param_t weights2[N2][N1][F2][F2], param_t biases2[N2],
-                        param_t weights3[N3][N2][F3][F3], param_t biases3[N3],
-                        hls::stream<transformed_params1> &params1,
-                        hls::stream<weight> &params2, hls::stream<weight> &params3) {
-#pragma HLS DATAFLOW
-    hls::stream<weight> raw1("raw_conv1_params");
-#pragma HLS STREAM variable=raw1 depth=16
-#pragma HLS BIND_STORAGE variable=raw1 type=fifo impl=lutram
-    read_raw_params(weights1,biases1,weights2,biases2,weights3,biases3,raw1,params2,params3);
-    transform_params1(raw1,params1);
-#ifndef __SYNTHESIS__
-    assert(raw1.empty());
-#endif
-}
-
-template<int Outputs, int Taps, int BiasCount>
-static void load_local(hls::stream<weight> &params, weight (&weights)[Outputs][Taps],
-                        bias (&biases)[BiasCount]) {
-#pragma HLS INLINE
-    local_load_channels: for (int oc = 0; oc < Outputs; ++oc)
-        local_load_taps: for (int tap = 0; tap < Taps; ++tap) {
-#pragma HLS LOOP_FLATTEN off
-#pragma HLS PIPELINE II=1
-            weights[oc][tap] = params.read();
-        }
-    local_load_bias: for (int i = 0; i < BiasCount; ++i) {
-#pragma HLS PIPELINE II=1
-        for (int c = 0; c < BiasCount-1; ++c) {
-#pragma HLS UNROLL
-            biases[c] = biases[c+1];
-        }
-        biases[BiasCount-1] = params.read();
-    }
-}
 
 
 struct transformed_window { transformed_input v[9][16]; };
@@ -280,34 +173,14 @@ static void wino_windows(hls::stream<input> &in, hls::stream<transformed_window>
 #endif
 }
 
-static void wino_engine(hls::stream<transformed_window> &in, hls::stream<tile_block> &out,
-                         hls::stream<transformed_params1> &params) {
-    static transformed_weight weights[N1][9][16];
-    static bias biases[N1];
+static void wino_engine(hls::stream<transformed_window> &in, hls::stream<tile_block> &out) {
+    static const transformed_weight weights[N1][9][16] = EXP_ROM_W1;
+    static const bias biases[N1] = EXP_ROM_B1;
 #pragma HLS ARRAY_PARTITION variable=weights cyclic factor=WOC dim=1
 #pragma HLS ARRAY_PARTITION variable=weights complete dim=2
 #pragma HLS ARRAY_PARTITION variable=weights complete dim=3
-#pragma HLS BIND_STORAGE variable=weights type=ram_s2p impl=lutram
+#pragma HLS BIND_STORAGE variable=weights type=rom_1p impl=lutram
 #pragma HLS ARRAY_PARTITION variable=biases complete
-    wino_local_load_channels: for (int oc = 0; oc < N1; ++oc)
-        wino_local_load_groups: for (int group = 0; group < 9; ++group) {
-#pragma HLS LOOP_FLATTEN off
-#pragma HLS PIPELINE II=1
-            const transformed_params1 packet = params.read();
-            for (int tap = 0; tap < 16; ++tap) {
-#pragma HLS UNROLL
-                weights[oc][group][tap] = packet.v[tap];
-            }
-        }
-    wino_local_load_bias: for (int oc = 0; oc < N1; ++oc) {
-#pragma HLS PIPELINE II=1
-        const transformed_params1 packet = params.read();
-        for (int c = 0; c < N1-1; ++c) {
-#pragma HLS UNROLL
-            biases[c] = biases[c+1];
-        }
-        biases[N1-1] = bias(packet.v[0]);
-    }
     transformed_window value;
     tile_block tile;
 #pragma HLS ARRAY_PARTITION variable=value.v complete dim=0
@@ -398,8 +271,7 @@ static void reorder_rows(hls::stream<pixel1> &top, hls::stream<pixel1> &bottom,
         }
 }
 
-static void conv1_stream(hls::stream<input> &in, hls::stream<pixel1> &out,
-                         hls::stream<transformed_params1> &params) {
+static void conv1_stream(hls::stream<input> &in, hls::stream<pixel1> &out) {
 #pragma HLS DATAFLOW
     hls::stream<transformed_window> windows("wino_windows");
     hls::stream<tile_block> tiles("wino_tile_blocks");
@@ -415,21 +287,19 @@ static void conv1_stream(hls::stream<input> &in, hls::stream<pixel1> &out,
 #pragma HLS BIND_STORAGE variable=bottom type=fifo impl=lutram
 #endif
     wino_windows(in,windows);
-    wino_engine(windows,tiles,params);
+    wino_engine(windows,tiles);
     distribute_tiles(tiles,top,bottom);
     reorder_rows(top,bottom,out);
 }
 #if EXP_ALL_CONTINUOUS
 
-static void conv2_stream(hls::stream<pixel1> &in, hls::stream<pixel2> &out,
-                         hls::stream<weight> &params) {
-    static weight weights[N2][N1];
-    static bias biases[N2];
+static void conv2_stream(hls::stream<pixel1> &in, hls::stream<pixel2> &out) {
+    static const weight weights[N2][N1] = EXP_ROM_W2;
+    static const bias biases[N2] = EXP_ROM_B2;
 #pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C2_OC dim=1
 #pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C2_IC dim=2
-#pragma HLS BIND_STORAGE variable=weights type=ram_s2p impl=lutram
+#pragma HLS BIND_STORAGE variable=weights type=rom_1p impl=lutram
 #pragma HLS ARRAY_PARTITION variable=biases complete
-    load_local(params, weights, biases);
     pixel1 value;
     pixel2 result;
 #pragma HLS ARRAY_PARTITION variable=value.v complete
@@ -526,16 +396,15 @@ static void conv2_stream(hls::stream<pixel1> &in, hls::stream<pixel2> &out,
 
 #endif
 
-static void conv12(hls::stream<input> &in, hls::stream<pixel2> &out,
-                   hls::stream<transformed_params1> &params1, hls::stream<weight> &params2) {
+static void conv12(hls::stream<input> &in, hls::stream<pixel2> &out) {
 #pragma HLS DATAFLOW
     hls::stream<pixel1> features("conv1_features");
 #pragma HLS STREAM variable=features depth=4
 #if EXP_ALL_CONTINUOUS
 #pragma HLS BIND_STORAGE variable=features type=fifo impl=lutram
 #endif
-    conv1_stream(in, features, params1);
-    conv2_stream(features, out, params2);
+    conv1_stream(in, features);
+    conv2_stream(features, out);
 }
 
 #if EXP_ALL_CONTINUOUS
@@ -588,14 +457,12 @@ static void windows3(hls::stream<pixel2> &in, hls::stream<window3> &out0, hls::s
     }
 }
 
-static void engine3(hls::stream<window3> &in0, hls::stream<window3> &in1, hls::stream<output> &out,
-                     hls::stream<weight> &params) {
-    static weight weights[N2][25];
-    static bias biases[N3];
+static void engine3(hls::stream<window3> &in0, hls::stream<window3> &in1, hls::stream<output> &out) {
+    static const weight weights[N2][25] = EXP_ROM_W3;
+    static const bias biases[N3] = EXP_ROM_B3;
 #pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C3_IC dim=1
 #pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C3_TAP dim=2
-#pragma HLS BIND_STORAGE variable=weights type=ram_s2p impl=lutram
-    load_local(params, weights, biases);
+#pragma HLS BIND_STORAGE variable=weights type=rom_1p impl=lutram
     constexpr int COUNT = power2(C3_IC*25);
     window3 value0, value1;
     acc3 sum = 0;
@@ -624,8 +491,7 @@ static void engine3(hls::stream<window3> &in0, hls::stream<window3> &in1, hls::s
     }
 }
 
-static void conv3_stream(hls::stream<pixel2> &in, hls::stream<output> &out,
-                         hls::stream<weight> &params) {
+static void conv3_stream(hls::stream<pixel2> &in, hls::stream<output> &out) {
 #pragma HLS DATAFLOW
 
     hls::stream<window3> windows0("windows3_low_channels"), windows1("windows3_high_channels");
@@ -634,7 +500,7 @@ static void conv3_stream(hls::stream<pixel2> &in, hls::stream<output> &out,
 #pragma HLS BIND_STORAGE variable=windows0 type=fifo impl=lutram
 #pragma HLS BIND_STORAGE variable=windows1 type=fifo impl=lutram
     windows3(in,windows0,windows1);
-    engine3(windows0,windows1,out,params);
+    engine3(windows0,windows1,out);
 }
 #else
 static void conv3_stream(hls::stream<pixel2> &in, hls::stream<output> &out,
@@ -712,23 +578,11 @@ static void write_output(hls::stream<output> &stream, ftmap_t out[N3][H][W]) {
     }
 }
 
-static void dataflow_region(ftmap_t in[N0][H][W], ftmap_t out[N3][H][W],
-                            param_t weights1[N1][N0][F1][F1], param_t biases1[N1],
-                            param_t weights2[N2][N1][F2][F2], param_t biases2[N2],
-                            param_t weights3[N3][N2][F3][F3], param_t biases3[N3]) {
+static void dataflow_region(ftmap_t in[N0][H][W], ftmap_t out[N3][H][W]) {
 #pragma HLS DATAFLOW
     hls::stream<input> raw("raw"), padded1("padded1");
     hls::stream<pixel2> features2("features2"), padded3("padded3");
     hls::stream<output> result("result");
-    hls::stream<transformed_params1> params1("params1");
-    hls::stream<weight> params2("params2"), params3("params3");
-#pragma HLS AGGREGATE variable=params1 compact=bit
-#pragma HLS STREAM variable=params1 depth=4
-#pragma HLS STREAM variable=params2 depth=16
-#pragma HLS STREAM variable=params3 depth=16
-#pragma HLS BIND_STORAGE variable=params1 type=fifo impl=lutram
-#pragma HLS BIND_STORAGE variable=params2 type=fifo impl=lutram
-#pragma HLS BIND_STORAGE variable=params3 type=fifo impl=lutram
 #pragma HLS STREAM variable=raw depth=512
 #pragma HLS STREAM variable=padded1 depth=16
 #pragma HLS STREAM variable=features2 depth=4
@@ -741,44 +595,26 @@ static void dataflow_region(ftmap_t in[N0][H][W], ftmap_t out[N3][H][W],
 #endif
 #pragma HLS STREAM variable=result depth=16
     read_input(in, raw);
-    read_params(weights1,biases1,weights2,biases2,weights3,biases3,params1,params2,params3);
     #if EXP_ONLINE_PAD
     online_pad<input,4>(raw,padded1);
 #else
     replicate_pad<input, 4>(raw, padded1);
 #endif
-    conv12(padded1, features2, params1, params2);
+    conv12(padded1, features2);
     #if EXP_ONLINE_PAD
     online_pad<pixel2,2>(features2,padded3);
 #else
     replicate_pad<pixel2, 2>(features2, padded3);
 #endif
-    conv3_stream(padded3, result, params3);
+    conv3_stream(padded3, result);
     write_output(result, out);
-#ifndef __SYNTHESIS__
-    assert(params1.empty() && params2.empty() && params3.empty());
-#endif
 }
 
-void srcnn(ftmap_t in[N0][H][W], param_t weights1[N1][N0][F1][F1], param_t biases1[N1],
-           param_t weights2[N2][N1][F2][F2], param_t biases2[N2],
-           param_t weights3[N3][N2][F3][F3], param_t biases3[N3], ftmap_t out[N3][H][W]) {
+void srcnn_rom(ftmap_t in[N0][H][W], ftmap_t out[N3][H][W]) {
 #pragma HLS INTERFACE mode=m_axi port=in offset=slave bundle=image_in depth=65025 max_read_burst_length=256
 #pragma HLS INTERFACE mode=m_axi port=out offset=slave bundle=image_out depth=65025 max_write_burst_length=256
-#pragma HLS INTERFACE mode=m_axi port=weights1 offset=slave bundle=parameters depth=5184 max_read_burst_length=256
-#pragma HLS INTERFACE mode=m_axi port=biases1 offset=slave bundle=parameters depth=64
-#pragma HLS INTERFACE mode=m_axi port=weights2 offset=slave bundle=parameters depth=2048 max_read_burst_length=256
-#pragma HLS INTERFACE mode=m_axi port=biases2 offset=slave bundle=parameters depth=32
-#pragma HLS INTERFACE mode=m_axi port=weights3 offset=slave bundle=parameters depth=800 max_read_burst_length=256
-#pragma HLS INTERFACE mode=m_axi port=biases3 offset=slave bundle=parameters depth=1
 #pragma HLS INTERFACE mode=s_axilite port=in bundle=control
 #pragma HLS INTERFACE mode=s_axilite port=out bundle=control
-#pragma HLS INTERFACE mode=s_axilite port=weights1 bundle=control
-#pragma HLS INTERFACE mode=s_axilite port=biases1 bundle=control
-#pragma HLS INTERFACE mode=s_axilite port=weights2 bundle=control
-#pragma HLS INTERFACE mode=s_axilite port=biases2 bundle=control
-#pragma HLS INTERFACE mode=s_axilite port=weights3 bundle=control
-#pragma HLS INTERFACE mode=s_axilite port=biases3 bundle=control
 #pragma HLS INTERFACE mode=s_axilite port=return bundle=control
-    dataflow_region(in, out, weights1, biases1, weights2, biases2, weights3, biases3);
+    dataflow_region(in, out);
 }

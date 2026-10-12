@@ -13,6 +13,7 @@
 #define F3 5
 typedef float ftmap_t;
 typedef float param_t;
+void srcnn_rom(ftmap_t [N0][H][W], ftmap_t [N3][H][W]);
 void srcnn(ftmap_t [N0][H][W], param_t [N1][N0][F1][F1], param_t [N1],
            param_t [N2][N1][F2][F2], param_t [N2],
            param_t [N3][N2][F3][F3], param_t [N3], ftmap_t [N3][H][W]);

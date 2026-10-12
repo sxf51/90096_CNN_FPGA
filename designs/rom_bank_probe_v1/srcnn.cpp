@@ -3,8 +3,21 @@
 #include "srcnn.h"
 #ifndef __SYNTHESIS__
 #include <cassert>
+#include <fstream>
+#include <stdexcept>
 #endif
 using namespace numeric;
+#ifndef __SYNTHESIS__
+template<class Value>
+static void export_bank(const char *filename, const Value *values, int count) {
+    std::ofstream stream(filename, std::ios::binary);
+    for (int index = 0; index < count; ++index) {
+        const int16_t value = static_cast<int16_t>(values[index]);
+        stream.write(reinterpret_cast<const char *>(&value), sizeof(value));
+    }
+    if (!stream) throw std::runtime_error("Runtime bank export failed");
+}
+#endif
 #ifndef EXP_ALL_CONTINUOUS
 #define EXP_ALL_CONTINUOUS 0
 #endif
@@ -308,6 +321,10 @@ static void wino_engine(hls::stream<transformed_window> &in, hls::stream<tile_bl
         }
         biases[N1-1] = bias(packet.v[0]);
     }
+#ifndef __SYNTHESIS__
+    export_bank("runtime_bank_W1.bin", &weights[0][0][0], N1*9*16);
+    export_bank("runtime_bank_B1.bin", biases, N1);
+#endif
     transformed_window value;
     tile_block tile;
 #pragma HLS ARRAY_PARTITION variable=value.v complete dim=0
@@ -430,6 +447,10 @@ static void conv2_stream(hls::stream<pixel1> &in, hls::stream<pixel2> &out,
 #pragma HLS BIND_STORAGE variable=weights type=ram_s2p impl=lutram
 #pragma HLS ARRAY_PARTITION variable=biases complete
     load_local(params, weights, biases);
+#ifndef __SYNTHESIS__
+    export_bank("runtime_bank_W2.bin", &weights[0][0], N2*N1);
+    export_bank("runtime_bank_B2.bin", biases, N2);
+#endif
     pixel1 value;
     pixel2 result;
 #pragma HLS ARRAY_PARTITION variable=value.v complete
@@ -596,6 +617,10 @@ static void engine3(hls::stream<window3> &in0, hls::stream<window3> &in1, hls::s
 #pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C3_TAP dim=2
 #pragma HLS BIND_STORAGE variable=weights type=ram_s2p impl=lutram
     load_local(params, weights, biases);
+#ifndef __SYNTHESIS__
+    export_bank("runtime_bank_W3.bin", &weights[0][0], N2*25);
+    export_bank("runtime_bank_B3.bin", biases, N3);
+#endif
     constexpr int COUNT = power2(C3_IC*25);
     window3 value0, value1;
     acc3 sum = 0;
