@@ -2,7 +2,7 @@
 
 本文是接手 agent 的工作文档，2026-10-12 根据已归档证据整理。所有数字来自 `experiments/` 下的报告；标注“假设”或“估计”的内容还没有实验证据。
 
-WS0-WS4 的硬件运行和路径导出已完成，正在做最终完整性审计。当前候选和 HLS、RTL、布线的分列数字见 [WEIGHT_LOADING](../experiments/WEIGHT_LOADING.md) 与 [ARCH_SUMMARY](../experiments/ARCH_SUMMARY.md)；下文第 1 节保留开工时的历史基线。没有板端验收，缺 comic 的精度结论仍为暂定。
+WS0-WS4 的硬件运行、路径导出和最终完整性审计已完成。当前候选和 HLS、RTL、布线的分列数字见 [WEIGHT_LOADING](../experiments/WEIGHT_LOADING.md) 与 [ARCH_SUMMARY](../experiments/ARCH_SUMMARY.md)，两地校验和及报告来源见 [weight_loading_audit.json](../experiments/weight_loading_audit.json)；下文第 1 节保留开工时的历史基线。没有板端验收，缺 comic 的精度结论仍为暂定。
 
 开工前按顺序读：两份 `AGENTS.md`（父目录和本项目）、[0002](0002-overnight-experiments.md)、[0003](0003-architecture-exploration.md)、[ARCH_SUMMARY](../experiments/ARCH_SUMMARY.md)、[PROGRESS](../experiments/PROGRESS.md)、[REPRODUCE](../experiments/REPRODUCE.md)。
 

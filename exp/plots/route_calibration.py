@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 root = Path(__file__).resolve().parents[2]
 rows = list(csv.DictReader((root / "experiments/route_calibration.csv").open(newline="")))
 rows = [row for row in rows if row["route_LUT"] not in {"", "None"}]
-fig, ax = plt.subplots(figsize=(9, 5), layout="constrained")
+fig, ax = plt.subplots(figsize=(12, 6), layout="constrained")
 metrics = ["DSP", "LUT", "FF", "BRAM18K"]
 width = 0.8/max(1, len(rows))
 for i, row in enumerate(rows):

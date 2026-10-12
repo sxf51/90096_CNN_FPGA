@@ -6,6 +6,7 @@ import sys
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
 
 root = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(root / "exp"))
@@ -36,13 +37,14 @@ for axis, metric, ylabel, title in zip(axes, ("cpu_busy_pct", "min_available_GiB
         axis.bar(index, value, color=color)
         axis.annotate(row["id"]+f"\n{value:.2f}", (index, value), xytext=(0, 4),
                       textcoords="offset points", ha="center", fontsize=8)
-    axis.set_xticks(range(len(available)), [row["id"]+"\n"+row["scope"] for row in available], fontsize=8)
+    axis.set_xticks(range(len(available)), [row["id"]+"\n"+(
+        "full\noperation" if row["scope"] == "full operation" else "30 s\nsnapshot")
+        for row in available], fontsize=8)
     axis.set_xlabel("Experiment and measurement scope")
     axis.set_ylabel(ylabel)
     axis.set_title(title)
     axis.set_ylim(0, 100 if metric == "cpu_busy_pct" else max(float(row[metric]) for row in available)*1.3)
-    axis.bar([], [], color="#c56745", label="Implementation limit: 1 thread")
-    axis.bar([], [], color="#008f7a", label="Implementation limit: >1 thread")
-    axis.legend(fontsize=8)
+    axis.legend(handles=[Patch(facecolor="#c56745", label="Implementation limit: 1 thread"),
+                         Patch(facecolor="#008f7a", label="Implementation limit: >1 thread")], fontsize=8)
 fig.savefig(root / "experiments/figs/host_utilization.png", dpi=180)
 plt.close(fig)
