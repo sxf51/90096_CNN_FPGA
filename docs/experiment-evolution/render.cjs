@@ -37,7 +37,8 @@ const colors = {
   candidate: ['#f0f8f3', '#458365'], warning: ['#fff7e8', '#ac7b24'],
   failure: ['#fcf0f0', '#b16868'], infeasible: ['#fcf0f0', '#b16868'],
   planned: ['#ffffff', '#939b9b'], analysis: ['#edf7f8', '#49838a'],
-  context: ['#f4f5f5', '#b7bfbf']
+  context: ['#f4f5f5', '#b7bfbf'],
+  ...(fullGraph ? { auxiliary: ['#f4f5f5', '#939f9b'] } : {})
 };
 const solid = new Set(['source', 'retry', 'integrate']);
 const nodeWidth = english ? 420 : 354;
@@ -103,7 +104,7 @@ function number(value, decimals = 4) {
   return value == null ? '?' : Number(value).toLocaleString('en-US', { maximumFractionDigits: decimals });
 }
 
-function frameMetric(record) {
+function reportedFrameMetric(record) {
   if (record.scope !== 'frame' || ['planned', 'fail', 'timeout', 'invalid_config'].includes(record.status)) return null;
   const rtl = record.verification;
   const source = rtl.rtl_status === 'Pass' && Number.isFinite(rtl.rtl_latency_max) && rtl.rtl_latency_max > 0
@@ -113,10 +114,69 @@ function frameMetric(record) {
   return { source, latency_cycles: cycles, time_ms: cycles * referenceClockNs / 1e6 };
 }
 
-function compactMetricText(metric) {
-  if (!metric) return english ? 'No frame result' : '暂无整网结果';
-  return metric.time_ms.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-    + (english ? ' ms/frame' : ' ms/张');
+function frameMetric(record) {
+  const metric = reportedFrameMetric(record);
+  if (metric) return metric;
+  if (record.scope !== 'frame' || ['planned', 'fail', 'timeout', 'invalid_config'].includes(record.status)) return null;
+  const completed = record.functional?.csim_pass === true || record.verification.rtl_status === 'Pass'
+    || (record.run_kind === 'impl' && record.verification.impl_WNS_ns != null);
+  if (!completed) return null;
+  // Only explicit same-design checks may cite an existing top-level report.
+  const references = record.parents.filter(parent => parent.kind === 'verify')
+    .map(parent => ({ id: parent.id, metric: reportedFrameMetric(byId.get(parent.id)) }))
+    .filter(parent => parent.metric);
+  if (references.length > 1) throw new Error('Ambiguous same-design latency: ' + record.id);
+  return references.length ? { ...references[0].metric, reference_id: references[0].id } : null;
+}
+
+function compactMetricText(record, metric) {
+  if (metric) return (metric.reference_id ? '~' : '')
+    + metric.time_ms.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    + (english ? ' ms/frame' : ' ms/张') + (metric.reference_id ? ' (' + metric.reference_id + ')' : '');
+  if (record.status === 'planned') return english ? 'Not run' : '未运行';
+  if (record.status === 'invalid_config') return english ? 'Invalid configuration' : '配置无效';
+  if (record.status === 'timeout') return english ? 'Timed out' : '运行超时';
+  if (record.status === 'fail') return record.run_kind === 'impl'
+    ? english ? 'No routed result' : '未得到布线结果'
+    : english ? 'Run failed' : '运行失败';
+  if (record.verification.impl_WNS_ns != null) return record.verification.timing_met
+    ? record.scope === 'PE' ? english ? 'PE only; routed timing passes' : '仅 PE，布线时序通过'
+      : english ? 'Routed timing passes; latency unmeasured' : '布线时序通过，延迟未测'
+    : english ? 'Routed timing failed' : '布线时序未通过';
+  if (record.scope === 'PE') return english ? 'PE only; no network latency' : '仅 PE，未测整网延迟';
+  if (record.scope === 'layer') return english ? 'Layer only; no network latency' : '仅单层，未测整网延迟';
+  if (record.scope === 'boundary') return english ? 'Boundary check; no network latency' : '边界验证，无整网延迟';
+  if (record.functional?.csim_pass === true) return english ? 'C passes; latency unmeasured' : 'C 仿真通过，延迟未测';
+  return english ? 'No network latency recorded' : '无整网延迟记录';
+}
+
+const problemLabels = new Map([
+  [['E023', 'E024', 'E025'], ['指令配置键被忽略', 'Directive key ignored']],
+  [['S01'], ['未导出 DDR scratch AXI 端口', 'AXI scratch ports not exported']],
+  [['E014'], ['C 仿真超时', 'C simulation timed out']],
+  [['E046'], ['综合锁阻止运行', 'Synthesis lock blocked run']],
+  [['W04', 'W05', 'W06', 'C01', 'C02', 'C03'], ['尺寸宏与头文件冲突', 'Dimension macro/header clash']],
+  [['W11', 'W12', 'W13', 'C08', 'C09', 'F03', 'F04', 'F05', 'F06', 'F07'],
+    ['流位宽 8000 > 4096 bit 上限', 'Stream 8000 > 4096-bit limit']],
+  [['F16', 'F17'], ['SDK / 数据类型编译失败', 'SDK/type compilation failure']],
+  [['F18', 'F19'], ['目标文件重名，链接失败', 'Duplicate objects; link failed']],
+  [['E011', 'E012', 'E018', 'E034', 'E035', 'C07'], ['C 编译或仿真失败', 'C compilation/simulation failed']]
+].flatMap(([ids, labels]) => ids.map(id => [id, labels])));
+
+function compactProblem(record) {
+  if (!['failure', 'infeasible'].includes(record.graph.tone)) return null;
+  const curated = problemLabels.get(record.id);
+  if (curated) return curated[english ? 1 : 0];
+  if (record.flags.some(flag => flag.includes('OOM'))) return english ? 'Host OOM; no routed report' : '主机 OOM，无布线报告';
+  if (record.verification.timing_met === false) return english ? 'Routed timing failed' : '布线时序未通过';
+  const budget = record.flags.find(flag => /^(Over budget: |超预算: )/.test(flag));
+  if (budget) {
+    const resources = budget.slice(budget.indexOf(': ') + 2);
+    return resources + (english ? ' over budget' : ' 超预算')
+      + (record.hls?.ii_ok === false ? english ? '; II missed' : '；II 未达目标' : '');
+  }
+  if (record.hls?.ii_ok === false) return english ? 'II target missed' : 'II 未达目标';
+  throw new Error('Missing specific problem label: ' + record.id);
 }
 
 function mainEdges() {
@@ -146,30 +206,41 @@ function compactNode(record, titles) {
   const failed = ['fail', 'timeout', 'invalid_config'].includes(record.status);
   const faded = failed || record.status === 'planned' || (!simulationPassed && record.run_kind !== 'analysis');
   const metric = frameMetric(record);
-  const metricText = compactMetricText(metric);
+  const metricText = compactMetricText(record, metric);
   const stage = verification.impl_WNS_ns != null ? verification.timing_met ? 'routed-pass' : 'routed-fail'
     : record.run_kind === 'cosim' ? 'rtl' : record.hls ? 'hls' : record.run_kind;
+  const tone = record.graph.tone === 'candidate' && !metric ? 'auxiliary' : record.graph.tone;
+  const problem = compactProblem(record);
   const title = titles.get(record.id)[english ? 2 : 1];
   const provenance = metric
-    ? (metric.source === 'rtl' ? english ? 'Current RTL maximum latency: ' : '本实验 RTL 最大延迟：'
-      : english ? 'Current HLS top-level latency estimate: ' : '本实验 HLS 顶层延迟估计：')
+    ? (metric.reference_id
+      ? (english ? 'Same-design reference from ' : '引用同设计 ') + metric.reference_id
+        + (english ? ' (not a new measurement): ' : '（非本实验新测量）：')
+      : english ? 'Current experiment: ' : '本实验：')
+      + (metric.source === 'rtl' ? english ? 'RTL maximum latency ' : 'RTL 最大延迟 '
+        : english ? 'HLS top-level latency estimate ' : 'HLS 顶层延迟估计 ')
       + number(metric.latency_cycles) + (english ? ' cycles.' : ' 周期。')
     : english ? 'No valid network latency recorded in this experiment.' : '本实验没有有效的整网延迟记录。';
+  const referenceWarning = metric?.reference_id && byId.get(metric.reference_id).hls_timing_warnings.length
+    ? english ? 'The referenced design still has HLS timing warnings; this functional check does not resolve them.'
+      : '引用设计仍有 HLS 时序告警；本次功能验证未解决这些告警。' : '';
   const routed = verification.impl_WNS_ns == null ? ''
     : (verification.timing_met ? english ? 'Routed timing passes; ' : '布线时序通过；'
       : english ? 'Routed timing fails; ' : '布线时序未通过；')
       + 'WNS ' + (verification.impl_WNS_ns >= 0 ? '+' : '') + number(verification.impl_WNS_ns) + ' ns';
   const parents = record.parents.map(parent => parent.id + ' (' + data.edge_kinds[parent.kind] + ')').join('; ');
   const tooltip = [record.id + ': ' + record.title, record.change, record.issue, record.graph.flags, routed,
-    metricText, provenance, (english ? 'All archive parents: ' : '全部档案来源：') + (parents || (english ? 'None' : '无')),
+    metricText, provenance, referenceWarning, (english ? 'All archive parents: ' : '全部档案来源：') + (parents || (english ? 'None' : '无')),
     english ? 'Reference: existing cycles at 100 MHz (10 ns), excluding host/DMA transfers. No 10 ns synthesis rerun or board measurement. C/RTL passes do not establish routed timing.'
       : '参考口径：现有周期数按 100 MHz（10 ns）折算，不含主机/DMA 传输。未按 10 ns 重新综合，未板端实测；C/RTL 通过不代表布线时序通过。'
   ].filter(Boolean).join('\n');
-  return block({ id: record.id, tone: record.graph.tone, width: english ? 340 : 320,
-    opacity: faded ? 0.4 : 1, faded, stage, simulationPassed, tooltip, metric,
+  return block({ id: record.id, tone, width: english ? 340 : 320,
+    opacity: faded ? 0.4 : 1, faded, stage, simulationPassed, tooltip, metric, problem,
     href: 'records' + suffix + '.md#' + record.id.toLowerCase(),
     lines: [[record.id, 19, true], [title, 17, false],
-      [metricText, metric ? 18 : 14, !!metric, metric ? '#243031' : '#687570']] });
+      ...(problem ? [[problem, 14, false, '#955555']] : []),
+      ...(metric || !problem ? [[metricText, metric && !problem ? 18 : 14,
+        !!metric && !problem, metric && !problem ? '#243031' : '#687570']] : [])] });
 }
 
 function experimentNode(record, context = false) {
@@ -310,13 +381,15 @@ function render(key, title, subtitle, nodes, edges) {
         : english ? 'Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.'
           : '实线：基线、修复、集成；虚线：参考、对照、同设计验证、复现。', 16, '400', '#526461'],
       [fullGraph
-        ? english ? 'Green: current stage passes (C/RTL is not routed timing); amber: HLS timing warning; red: budget/II/configuration/routing failure; teal: analysis.'
-          : '绿：当前阶段通过（C/RTL 不代表布线时序）；琥珀：HLS 时序告警；红：资源、II、配置或实现失败；青：软件分析。'
+        ? english ? 'Green: current stage passes with network latency; amber: HLS timing warning; red: specific problem shown; gray: auxiliary; teal: analysis.'
+          : '绿：当前阶段通过且有整网耗时；琥珀：HLS 时序告警；红：注明具体问题；灰：辅助实验；青：分析。'
         : 'Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.', 16, '400', '#526461'],
-      ...(fullGraph ? [[english ? 'Bold: network ms/frame at a 100 MHz reference clock, from existing HLS/RTL cycles. No synthesis rerun or board measurement; host/DMA excluded.'
-        : '加粗：整网 ms/张，现有 HLS/RTL 周期按 100 MHz 参考时钟折算；未重新综合或板端实测，不含主机/DMA 传输。', 16, '400', '#526461'],
-      [english ? 'No frame result: no valid network latency. Faded: failed/unrun/no passing functionality. Hover for metric provenance and verification status.'
-        : '暂无整网结果：缺少有效整网延迟；淡化：运行失败、未运行或无功能通过记录。测量来源与验证状态见悬停提示。', 16, '400', '#526461']] : [])
+      ...(fullGraph ? [[english ? 'Bold: comparable network ms/frame at 100 MHz; red times are not bold. ~ plus ID: estimate cited from the same design.'
+        : '加粗：100 MHz 参考整网 ms/张；红色耗时不加粗。~ 和编号：引用同一设计的报告估计。', 16, '400', '#526461'],
+      [english ? 'Existing HLS/RTL cycles only; no 10 ns synthesis rerun or board measurement; host/DMA excluded. Green does not establish routed timing.'
+        : '现有 HLS/RTL 周期折算；未按 10 ns 重新综合或板端实测，不含主机/DMA。绿色不代表布线时序通过。', 16, '400', '#526461'],
+      [english ? 'Faded: failed/unrun/no passing functionality. Auxiliary labels state C/PE/layer scope; hover for provenance and verification status.'
+        : '淡化：失败、未运行或无功能通过记录。辅助节点注明 C/PE/单层范围；来源与验证状态见悬停提示。', 16, '400', '#526461']] : [])
     ]) {
       for (const line of wrap(text, size, fullGraph ? 650 : width - 96)) {
         headerTexts.push('<text x="48" y="' + (y + size) + '" font-size="' + size + '" font-weight="' + weight + '" fill="' + fill + '">' + xml(line) + '</text>');
@@ -376,7 +449,8 @@ function render(key, title, subtitle, nodes, edges) {
     pieces.push('</g>');
     layout.nodes.push({ id, context: !!node.context, x, y, width: node.width, height: node.height, texts });
     if (fullGraph) Object.assign(layout.nodes[layout.nodes.length - 1], {
-      tone: node.tone, faded: node.faded, stage: node.stage, simulationPassed: node.simulationPassed, metric: node.metric });
+      tone: node.tone, faded: node.faded, stage: node.stage, simulationPassed: node.simulationPassed,
+      metric: node.metric, problem: node.problem });
   }
   pieces.push('</svg>');
   return { svg: pieces.join('\n') + '\n', layout, mmd: mermaid(nodes, edges, title) };

@@ -26,6 +26,7 @@
     .legend span { display: inline-flex; align-items: center; gap: 6px; }
     .swatch { width: 9px; height: 9px; display: inline-block; border-radius: 50%; border: 1px solid; }
     .green { background: #f0f8f3; border-color: #458365; }
+    .gray { background: #f4f5f5; border-color: #939f9b; }
     .amber { background: #fff7e8; border-color: #ac7b24; }
     .red { background: #fcf0f0; border-color: #b16868; }
     .teal { background: #edf7f8; border-color: #49838a; }
@@ -71,6 +72,7 @@
     <div class="legend">
       <span data-text="metric"></span>
       <span><i class="swatch green"></i><span data-text="pass"></span></span>
+      <span><i class="swatch gray"></i><span data-text="auxiliary"></span></span>
       <span><i class="swatch amber"></i><span data-text="timing"></span></span>
       <span><i class="swatch red"></i><span data-text="failure"></span></span>
       <span><i class="swatch teal"></i><span data-text="analysis"></span></span>
@@ -85,14 +87,14 @@
     const english = document.documentElement.lang === 'en';
     const text = english ? {
       metric: '100 MHz reference / ms per image',
-      pass: 'Stage passes; C/RTL does not establish routing', timing: 'HLS timing warning',
-      failure: 'Budget / II / configuration / routing fails', analysis: 'Software analysis', faded: 'Failed / unrun',
+      pass: 'Stage passes + network estimate', auxiliary: 'Auxiliary; no network latency', timing: 'HLS timing warning',
+      failure: 'Problem shown; time not bold', analysis: 'Software analysis', faded: 'Failed / unrun',
       query: 'Experiment ID', out: 'Zoom out', in: 'Zoom in', fit: 'Fit complete graph', clear: 'Clear selection',
       download: 'Download SVG', missing: 'Experiment not found'
     } : {
       metric: '100 MHz 参考 / ms/张',
-      pass: '本阶段通过；C/RTL 不代表布线', timing: 'HLS 时序告警',
-      failure: '资源 / II / 配置 / 实现失败', analysis: '软件分析', faded: '失败 / 未运行',
+      pass: '阶段通过 + 整网估算', auxiliary: '辅助实验，无整网耗时', timing: 'HLS 时序告警',
+      failure: '注明问题，耗时不加粗', analysis: '软件分析', faded: '失败 / 未运行',
       query: '实验编号', out: '缩小', in: '放大', fit: '显示全图', clear: '清除定位',
       download: '下载 SVG', missing: '没有该实验记录'
     };
