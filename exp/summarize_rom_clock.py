@@ -1,9 +1,41 @@
 #!/usr/bin/env python3
 """Current docs/0005 workstream evidence, preserving historical experiment rows."""
+import csv
 import json
 from analyze_arch import write_csv
 from run_exp import ROOT, markdown_table, number, utc
 from route_gates import archive_route_evidence
+
+
+def pending_experiments(state):
+    records = []
+    for exp_id in state["experiment_ids"]:
+        if list((ROOT / "experiments").glob(exp_id + "_*/metrics.json")):
+            continue
+        plans = list((ROOT / "experiments").glob(exp_id + "_*/plan.json"))
+        if len(plans) != 1:
+            raise RuntimeError("Expected one unmeasured plan for " + exp_id)
+        config = json.loads(plans[0].read_text())["configuration"]
+        waiting = exp_id in state.get("waiting_for_memory", [])
+        records.append({"id": exp_id, "parent": config.get("verify_parent", config.get("control_experiment")),
+                        "operation": config.get("operation", "csim/csynth"),
+                        "status": "unlaunched_memory" if waiting else "queued_or_running",
+                        "condition": state.get("planned_conditions", {}).get(exp_id),
+                        "md_path": plans[0].parent.name + "/" + exp_id + ".md"})
+    return records
+
+
+def completed_rtl_matches(parent):
+    matches = []
+    for cp in (ROOT / "experiments").glob("*_*/config.json"):
+        candidate = json.loads(cp.read_text())
+        if candidate.get("operation") != "cosim" or candidate.get("verify_parent") != parent:
+            continue
+        metrics = json.loads(cp.with_name("metrics.json").read_text())
+        cycles = number(candidate.get("verification", {}).get("rtl_latency_max"))
+        if metrics["status"] == "cosim_complete" and cycles is not None:
+            matches.append((candidate["id"], cycles))
+    return matches
 
 
 def main():
@@ -31,12 +63,7 @@ def main():
                   "rtl_cycles_x_route_clock_ms": None}
         if config.get("operation") == "impl" and route.get("route_feasible") is True:
             parent = config["verify_parent"]
-            matches = []
-            for cp in (ROOT / "experiments").glob("*_*/config.json"):
-                candidate = json.loads(cp.read_text())
-                cycles = number(candidate.get("verification", {}).get("rtl_latency_max"))
-                if candidate.get("operation") == "cosim" and candidate.get("verify_parent") == parent and cycles is not None:
-                    matches.append((candidate["id"], cycles))
+            matches = completed_rtl_matches(parent)
             if len(matches) == 1:
                 record["rtl_source"], record["rtl_cycles"] = matches[0]
                 record["rtl_cycles_x_route_clock_ms"] = record["rtl_cycles"] * record["route_clock_ns"] / 1e6
@@ -48,11 +75,50 @@ def main():
     text += "Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. "
     text += "Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.\n\n"
     text += "## Current state\n\n" + state["phase"] + ". " + state["next"] + "\n\n"
-    text += markdown_table([{**row, "id": "[" + row["id"] + "](" + row["md_path"] + ")"} for row in rows], columns)
+    display_columns = ["id", "parent", "operation", "status", "bit_exact", "delta_psnr", "HLS_cycles",
+                       "HLS_DSP", "HLS_LUT", "rtl_cycles", "route_clock_ns", "route_feasible",
+                       "rtl_cycles_x_route_clock_ms"]
+    text += markdown_table([{**row, "id": "[" + row["id"] + "](" + row["md_path"] + ")"} for row in rows], display_columns)
     text += "\nMissing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.\n"
+    pending = pending_experiments(state)
+    text += "\n## Unmeasured plans\n\n"
+    text += markdown_table([{**row, "id": "[" + row["id"] + "](" + row["md_path"] + ")"} for row in pending],
+                           ["id", "parent", "operation", "status", "condition"])
+    text += "\nThese plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.\n"
+    comparison_path = ROOT / "experiments/rom_clock_comparison.csv"
+    if comparison_path.is_file():
+        comparisons = list(csv.DictReader(comparison_path.open(newline="")))
+        accepted = [row for row in comparisons if row["route_feasible"] == "True" and
+                    number(row["rtl_frame_ms"]) is not None]
+        accepted.sort(key=lambda row: number(row["rtl_frame_ms"]))
+        text += "\n## Verified IP timing\n\n"
+        text += markdown_table([{**row, "id": "[" + row["id"] + "](" + row["md_path"] + ")"} for row in accepted],
+                               ["id", "parent", "rtl_source", "rtl_cycles", "route_clock_ns", "route_WNS_ns",
+                                "route_DSP", "route_BRAM18K", "route_LUT", "route_FF", "rtl_frame_ms"])
+        text += "\nIP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded integration fallback.\n"
+    text += "\n## Figures\n\n"
+    for filename, label in (("rom_clock_pareto", "HLS screening"), ("rom_clock_dsp", "DSP composition"),
+                            ("rom_clock_estimate_DSP", "DSP estimates and measurements"),
+                            ("rom_clock_estimate_latency_cycles", "Cycle estimates and measurements"),
+                            ("rom_clock_rtl_cycles", "Two-frame RTL cycles")):
+        if (ROOT / "experiments/figs" / (filename + ".png")).exists():
+            text += "![" + label + "](figs/" + filename + ".png)\n\n"
     text += "\n## Pending human decisions / 待人工决策\n\n"
     text += "\n".join("- " + decision for decision in state.get("pending_decisions", [])) + "\n"
     (ROOT / "experiments/ROM_CLOCK.md").write_text(text)
+    plan_path = ROOT / state["plan"]
+    plan_text = plan_path.read_text()
+    marker = "<!-- ROM_CLOCK_MEASUREMENTS -->"
+    if marker in plan_text:
+        plan_text = plan_text.split(marker, 1)[0].rstrip() + "\n"
+    section = "\n" + marker + "\n\n### 自动归档的进展\n\n"
+    section += "完整指标和解读见 [ROM_CLOCK.md](../experiments/ROM_CLOCK.md)；下表数字由报告解析生成。\n\n"
+    section += markdown_table([{**row, "id": "[" + row["id"] + "](../experiments/" + row["md_path"] + ")"}
+                               for row in rows if row["id"] not in {"F32", "F33", "F34", "F36", "F37", "F38"}],
+                              ["id", "parent", "status", "HLS_cycles", "HLS_DSP", "HLS_LUT", "rtl_cycles",
+                               "route_feasible", "rtl_cycles_x_route_clock_ms"])
+    section += "\n未测量的计划：\n\n" + markdown_table(pending, ["id", "parent", "status", "condition"])
+    plan_path.write_text(plan_text + section)
     progress = ROOT / "experiments/PROGRESS.md"
     old = progress.read_text()
     marker = "<!-- ROM_CLOCK_CURRENT -->"

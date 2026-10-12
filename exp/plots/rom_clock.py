@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Plot the ROM/clock/FIFO/T4 workstream using derived CSV files only."""
 import csv
+import textwrap
 from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib.text import Text
 
 ROOT = Path(__file__).resolve().parents[2]
 FIGS = ROOT/"experiments/figs"
@@ -20,6 +22,36 @@ def present(value):
     return value not in {"", "None", "unknown"}
 
 
+def annotate_groups(ax, points, x_key, y_key, include_t=False):
+    grouped = {}
+    for row in points:
+        coordinate = (float(row[x_key]), float(row[y_key]))
+        label = row["id"] + (" T" + row["T"] if include_t else "")
+        grouped.setdefault(coordinate, []).append(label)
+    ax.figure.canvas.draw()
+    renderer = ax.figure.canvas.get_renderer()
+    occupied = [ax.get_legend().get_window_extent(renderer)] if ax.get_legend() else []
+    for coordinate, labels in grouped.items():
+        annotation = ax.annotate(textwrap.fill(", ".join(labels), width=27), coordinate,
+                                 xytext=(6, 8), textcoords="offset points", fontsize=8,
+                                 arrowprops={"arrowstyle": "-", "color": "#777777", "linewidth": .5})
+        for distance in range(20):
+            offsets = ((6, 8 + 22*distance), (6, -14 - 22*distance),
+                       (-6, 8 + 22*distance), (-6, -14 - 22*distance))
+            for offset in offsets:
+                annotation.set_position(offset)
+                annotation.set_ha("left" if offset[0] > 0 else "right")
+                annotation.update_positions(renderer)
+                box = Text.get_window_extent(annotation, renderer).expanded(1.06, 1.12)
+                if (ax.bbox.contains(box.x0, box.y0) and ax.bbox.contains(box.x1, box.y1) and
+                        not any(box.overlaps(previous) for previous in occupied)):
+                    break
+            else:
+                continue
+            break
+        occupied.append(box)
+
+
 comparison = rows("rom_clock_comparison.csv")
 designs = [row for row in comparison if row["operation"] == "csim/csynth" and present(row["HLS_DSP"])]
 fig, ax = plt.subplots(figsize=(8, 5), layout="constrained")
@@ -29,13 +61,15 @@ for series, color in colors.items():
     if group:
         ax.scatter([float(row["HLS_DSP"]) for row in group],
                    [float(row["HLS_latency_ms_est"]) for row in group], color=color, label=series, s=48)
-for index, row in enumerate(designs):
-    ax.annotate(row["id"]+" T"+row["T"], (float(row["HLS_DSP"]), float(row["HLS_latency_ms_est"])),
-                xytext=(5, 5+12*(index%3)), textcoords="offset points", fontsize=8)
+if designs:
+    dsp = [float(row["HLS_DSP"]) for row in designs]
+    ax.set_xlim(min(dsp)*.94, max(dsp)*1.08)
+    ax.margins(y=.35)
 ax.set(xlabel="HLS estimated DSP count", ylabel="HLS latency estimate (ms)",
        title="ROM, clock and FIFO controls: HLS screening only")
 if designs:
     ax.legend(title="Series")
+annotate_groups(ax, designs, "HLS_DSP", "HLS_latency_ms_est", include_t=True)
 fig.savefig(FIGS/"rom_clock_pareto.png", dpi=180)
 plt.close(fig)
 
@@ -62,9 +96,6 @@ for metric, unit in (("DSP", "DSP count"), ("latency_cycles", "cycles")):
         if group:
             ax.scatter([float(row["estimate"]) for row in group], [float(row["actual"]) for row in group],
                        color=color, label=domain)
-    for index, row in enumerate(points):
-        ax.annotate(row["id"], (float(row["estimate"]), float(row["actual"])),
-                    xytext=(5, 5+10*(index%3)), textcoords="offset points", fontsize=8)
     extent = max([1]+[float(row[key]) for row in points for key in ("estimate", "actual")])*1.12
     ax.plot([0, extent], [0, extent], linestyle="--", color="#777777", label="Estimate = actual")
     ax.set(xlabel="Paper estimate ("+unit+")", ylabel="Reported actual ("+unit+")",
@@ -72,6 +103,7 @@ for metric, unit in (("DSP", "DSP count"), ("latency_cycles", "cycles")):
     if metric == "latency_cycles":
         ax.set_title("Cycle estimates versus HLS lower bounds and measured RTL")
     ax.legend()
+    annotate_groups(ax, points, "estimate", "actual")
     fig.savefig(FIGS/("rom_clock_estimate_"+metric+".png"), dpi=180)
     plt.close(fig)
 
@@ -83,6 +115,7 @@ if measured:
 ax.axhline(558758, linestyle="--", color="#b65352", label="F97 / W21 baseline")
 ax.set(xlabel="Verification experiment / hardware parent", ylabel="Measured latency (cycles)",
        title="Finite-FIFO frame latency: changed input or parameters")
+ax.tick_params(axis="x", labelrotation=25)
 ax.legend()
 fig.savefig(FIGS/"rom_clock_rtl_cycles.png", dpi=180)
 plt.close(fig)

@@ -57,7 +57,7 @@ def main():
                 if record["route_feasible"] is True and record["route_clock_ns"] is not None:
                     record["rtl_frame_ms"] = record["rtl_cycles"]*record["route_clock_ns"]/1e6
             comparisons.append(record)
-        if not baseline:
+        if not baseline and config.get("stage") not in {"rom_clock_ws0", "rom_clock_wsB_equivalence"}:
             paper = config.get("estimates", {})
             for key in ("DSP", "BRAM18K", "URAM", "LUT", "FF", "latency_cycles"):
                 expected = number(paper.get(key))

@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'engine3_Pipeline_local_load_taps'
+================================================================
+* Date:           Mon Oct 12 16:49:30 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        C13
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|  2.137 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+-------------------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval |      Pipeline     |
+    |   min   |   max   |    min   |    max   | min | max |        Type       |
+    +---------+---------+----------+----------+-----+-----+-------------------+
+    |       27|       27|  0.108 us|  0.108 us|    0|    0|  loop pipeline stp|
+    +---------+---------+----------+----------+-----+-----+-------------------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +-------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                   |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |     Loop Name     |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +-------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- local_load_taps  |       25|       25|         2|          1|          1|    25|       yes|
+        +-------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      28|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|      45|    -|
+|Register         |        -|     -|      15|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|      15|      73|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +---------------------------+----------+----+---+----+------------+------------+
+    |       Variable Name       | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +---------------------------+----------+----+---+----+------------+------------+
+    |add_ln217_fu_4204_p2       |         +|   0|  0|  12|           5|           1|
+    |ap_block_pp0_stage0_11001  |       and|   0|  0|   2|           1|           1|
+    |icmp_ln217_fu_4198_p2      |      icmp|   0|  0|  12|           5|           4|
+    |ap_enable_pp0              |       xor|   0|  0|   2|           1|           2|
+    +---------------------------+----------+----+---+----+------------+------------+
+    |Total                      |          |   0|  0|  28|          12|           8|
+    +---------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-------------------------+----+-----------+-----+-----------+
+    |           Name          | LUT| Input Size| Bits| Total Bits|
+    +-------------------------+----+-----------+-----+-----------+
+    |ap_done_int              |   9|          2|    1|          2|
+    |ap_enable_reg_pp0_iter1  |   9|          2|    1|          2|
+    |ap_sig_allocacmp_tap_1   |   9|          2|    5|         10|
+    |params3_blk_n            |   9|          2|    1|          2|
+    |tap_fu_512               |   9|          2|    5|         10|
+    +-------------------------+----+-----------+-----+-----------+
+    |Total                    |  45|         10|   13|         26|
+    +-------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +--------------------------+---+----+-----+-----------+
+    |           Name           | FF| LUT| Bits| Const Bits|
+    +--------------------------+---+----+-----+-----------+
+    |ap_CS_fsm                 |  1|   0|    1|          0|
+    |ap_done_reg               |  1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1   |  1|   0|    1|          0|
+    |tap_1_reg_4448            |  5|   0|    5|          0|
+    |tap_fu_512                |  5|   0|    5|          0|
+    |zext_ln216_cast_reg_4244  |  2|   0|   64|         62|
+    +--------------------------+---+----+-----+-----------+
+    |Total                     | 15|   0|   77|         62|
+    +--------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------------------------------------------------------------------------------------------------------------------+-----+-----+------------+--------------------------------------------------------------------------------------------------------------+--------------+
+|                                                       RTL Ports                                                       | Dir | Bits|  Protocol  |                                                 Source Object                                                |    C Type    |
++-----------------------------------------------------------------------------------------------------------------------+-----+-----+------------+--------------------------------------------------------------------------------------------------------------+--------------+
+|ap_clk                                                                                                                 |   in|    1|  ap_ctrl_hs|                                                                              engine3_Pipeline_local_load_taps|  return value|
+|ap_rst                                                                                                                 |   in|    1|  ap_ctrl_hs|                                                                              engine3_Pipeline_local_load_taps|  return value|
+|ap_start                                                                                                               |   in|    1|  ap_ctrl_hs|                                                                              engine3_Pipeline_local_load_taps|  return value|
+|ap_done                                                                                                                |  out|    1|  ap_ctrl_hs|                                                                              engine3_Pipeline_local_load_taps|  return value|
+|ap_idle                                                                                                                |  out|    1|  ap_ctrl_hs|                                                                              engine3_Pipeline_local_load_taps|  return value|
+|ap_ready                                                                                                               |  out|    1|  ap_ctrl_hs|                                                                              engine3_Pipeline_local_load_taps|  return value|
+|params3_dout                                                                                                           |   in|   10|     ap_fifo|                                                                                                       params3|       pointer|
+|params3_empty_n                                                                                                        |   in|    1|     ap_fifo|                                                                                                       params3|       pointer|
+|params3_read                                                                                                           |  out|    1|     ap_fifo|                                                                                                       params3|       pointer|
+|params3_num_data_valid                                                                                                 |   in|    5|     ap_fifo|                                                                                                       params3|       pointer|
+|params3_fifo_cap                                                                                                       |   in|    5|     ap_fifo|                                                                                                       params3|       pointer|
+|zext_ln216                                                                                                             |   in|    2|     ap_none|                                                                                                    zext_ln216|        scalar|
+|empty                                                                                                                  |   in|    3|     ap_none|                                                                                                         empty|        scalar|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_824_address1  |  out|    2|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_824|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_824_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_824|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_824_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_824|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_824_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_824|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_821_address1  |  out|    2|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_821|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_821_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_821|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_821_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_821|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_821_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_821|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_809_address1  |  out|    2|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_809|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_809_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_809|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_809_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_809|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_809_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_809|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_803_address1  |  out|    2|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_803|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_803_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_803|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_803_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_803|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_803_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_803|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_802_address1  |  out|    2|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_802|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_802_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_802|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_802_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_802|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_802_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_802|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_801_address1  |  out|    2|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_801|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_801_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_801|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_801_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_801|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_801_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_801|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_799_address1  |  out|    2|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_799|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_799_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_799|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_799_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_799|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_799_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_799|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_798_address1  |  out|    2|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_798|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_798_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_798|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_798_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_798|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_798_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_798|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_797_address1  |  out|    2|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_797|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_797_ce1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_797|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_797_we1       |  out|    1|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_797|         array|
+|engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_797_d1        |  out|   10|   ap_memory|  engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_weight_s_797|         array|
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.

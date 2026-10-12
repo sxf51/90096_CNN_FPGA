@@ -1,16 +1,29 @@
 {
   "plan": "docs/0005-rom-clock-t4-plan.md",
   "phase": "WS-0 complete; WS-B RTL running; WS-C/D independent controls running; WS-C1 awaiting memory admission",
-  "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F45", "F47"],
+  "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F45", "F47", "W28", "W29", "W30", "F48", "F46"],
   "complete_test_set": "Set14 (13 course-provided images)",
   "resource_policy": "routed",
   "next": "W24 passed all13 course images exactly and HLS II checks:630DSP,138BRAM18K,53316LUT,103695FF,524330cycles. W25 runs same-ROM/changed-input two-frame RTL. F41 FIFO32 passed all13/II1; F45 queues its changed-parameter RTL. W27 FRP, F39 registered Conv3 operands, F40 FIFO16, F42 reordered-raster buffer and F47 transformed-window FIFO16 are independent mainline controls. F47 tests the F97 window-read stalls45974 over two frames and22995 excess foldcycles per frame. C13 early T4 prepacked Conv2 HLS screen is queued. W26 retains preparation-failure evidence. W23 identical-RTL4.5ns remains unlaunched:12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve memory gates. F98 board handoff, IP SHA256 and authoritative drivers are archived in BOARD_HANDOFF.md; actual board measurements are pending.",
   "completed_workstreams": ["WS-0", "WS-A agent handoff (board measurements pending)"],
-  "waiting_for_memory": ["W23"],
+  "waiting_for_memory": ["W23", "W29", "W30"],
+  "planned_conditions": {
+    "W29": "W25 same-ROM/changed-input two-frame RTL must pass before implementation",
+    "W30": "W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation"
+  },
   "pending_decisions": [
     "Initial remote MemAvailable=14091148 KiB (13.438 GiB), below 14.5 GiB required by the 12.5 GiB implementation reservation plus 2 GiB floor. Keep both stated memory gates; if unchanged after WS-0, record W23 as waiting for memory and continue independent coding/C simulations/syntheses."
   ],
-  "local_exec_sessions": [42923, 95021, 52510, 10109, 4554, 71531, 49366, 27760],
+  "local_exec_sessions": [42923, 52510, 10109, 71531, 49366, 45211, 56420],
+  "session_jobs": {
+    "42923": ["W25"],
+    "52510": ["F39"],
+    "10109": ["F40"],
+    "71531": ["C13"],
+    "49366": ["F45"],
+    "45211": ["W28"],
+    "56420": ["F48", "F46"]
+  },
   "board_handoff": "experiments/BOARD_HANDOFF.md",
   "wsE": "C13 early HLS screen running; independent runtime-loaded T4 with once-per-frame Conv2 signed8 prepacking; E065 mixed-precision references, no routed feasibility claim."
 }
