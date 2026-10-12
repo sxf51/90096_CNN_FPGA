@@ -1,0 +1,53 @@
+{
+  "T": 16,
+  "changes": "Only the runner scheduling and telemetry change; reuse the immutable parent design and flags.",
+  "clock": 2.5,
+  "conclusion": "Enable budgeted concurrency only after both syntheses and C simulation pass, measured peaks fit their budgets and host available memory stays at least 2 GiB.",
+  "control_experiment": "F28",
+  "controlled_parallel_validation": true,
+  "csim_only": false,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 1,
+    "EXP_STORAGE": 1,
+    "EXP_T": 16,
+    "EXP_TREE_ADD_LATENCY": 1,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/continuous_param_noflat_v1",
+  "estimates": {
+    "BRAM18K": 73.0,
+    "DSP": 502.0,
+    "FF": 122061.0,
+    "LUT": 61553.0,
+    "T": 16,
+    "URAM": 0.0,
+    "basis": "Measured unchanged parent HLS counts; registered synth budget 2.5 GiB each, C simulation 1 GiB. Total trial reservation 6 GiB, below 13 GiB with a 2 GiB available-memory floor.",
+    "latency_cycles": 1046029.0
+  },
+  "fixed": true,
+  "id": "F32",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare reports with the parent and observed peak RSS with the registered budget. Overlap must be measured; numerical, II and timeout checks remain unchanged.",
+  "memory_scheduler": true,
+  "name": "ws0_memory_control_F28",
+  "precision": "w10a10acc23",
+  "purpose": "Controlled WS-0 memory admission validation using unchanged F28 source/arithmetic. Run F32 and F33 synthesis concurrently with F34 C simulation. Measure individual process-tree RSS, overlapping task timestamps, MemAvailable and CPU. Do not enable general hardware concurrency until this trial passes. No architecture speedup is claimed.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "require_weight_predecessor_free": true,
+  "required_image_count": 13,
+  "resource_policy": "routed",
+  "scope": "frame",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "rom_clock_ws0",
+  "storage": "local_lutram_s2p",
+  "unroll": "Cout/Cout/tap"
+}
