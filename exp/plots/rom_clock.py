@@ -83,7 +83,7 @@ fig.savefig(FIGS/"rom_clock_pareto.png", dpi=180)
 plt.close(fig)
 
 parts = rows("rom_clock_dsp.csv")
-fig, ax = plt.subplots(figsize=(9, 5), layout="constrained")
+fig, ax = plt.subplots(figsize=(max(9, 0.5*len(parts)), 5), layout="constrained")
 bottom = [0.0]*len(parts)
 for field, color in (("Conv1_DSP", "#287e8e"), ("Conv2_DSP", "#b65352"),
                      ("Conv3_DSP", "#668b3c"), ("other_DSP", "#797979")):
@@ -91,6 +91,10 @@ for field, color in (("Conv1_DSP", "#287e8e"), ("Conv2_DSP", "#b65352"),
     ax.bar(range(len(parts)), values, bottom=bottom, label=field.removesuffix("_DSP"), color=color)
     bottom = [first+second for first, second in zip(bottom, values)]
 ax.set_xticks(range(len(parts)), [row["id"] for row in parts])
+ax.set_ylim(0, max([1]+bottom)*1.22)
+for index, total in enumerate(bottom):
+    ax.annotate(f"{total:,.0f}", (index, total), xytext=(0, 4),
+                textcoords="offset points", ha="center", fontsize=8)
 ax.set(xlabel="Experiment ID", ylabel="HLS estimated DSP count", title="DSP composition of independent mainline controls")
 ax.legend()
 fig.savefig(FIGS/"rom_clock_dsp.png", dpi=180)
@@ -113,11 +117,11 @@ for metric, unit in (("DSP", "DSP count"), ("latency_cycles", "cycles")):
         ax.set_title("Cycle estimates versus HLS lower bounds and measured RTL")
     ax.legend()
     annotate_groups(ax, points, "estimate", "actual", outside=True)
-    fig.savefig(FIGS/("rom_clock_estimate_"+metric+".png"), dpi=180)
+    fig.savefig(FIGS/("rom_clock_estimate_"+metric+".png"), dpi=180, bbox_inches="tight")
     plt.close(fig)
 
 measured = [row for row in comparison if row["operation"] == "cosim" and present(row["rtl_cycles"])]
-fig, ax = plt.subplots(figsize=(11, 5), layout="constrained")
+fig, ax = plt.subplots(figsize=(max(11, 0.8*len(measured)), 5), layout="constrained")
 if measured:
     bars = ax.bar(range(len(measured)), [float(row["rtl_cycles"]) for row in measured],
                   color=["#287e8e" if row["rtl_accepted"] == "True" else "#b65352" for row in measured],
