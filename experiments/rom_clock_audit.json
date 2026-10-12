@@ -939,6 +939,13 @@
       "csv_matches_archive": true,
       "id": "W23",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C15",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2072,6 +2079,7 @@
   "measured_workstream_ids": [
     "C13",
     "C14",
+    "C15",
     "F32",
     "F33",
     "F34",
@@ -2103,26 +2111,52 @@
   "remote_jobs_active": true,
   "remote_processes": [
     "72894 python3 exp/run_exp.py --config exp/configs/F50.json",
-    "74426 python3 exp/run_exp.py --config exp/configs/C15.json",
-    "78406 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_vivado.tcl -notrace -nojournal",
-    "78560 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -log bd_0_hls_inst_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source bd_0_hls_inst_0.tcl",
     "79191 python3 exp/run_exp.py --config exp/configs/F51.json",
     "80120 python3 exp/run_exp.py --config exp/configs/F52.json",
     "80160 python3 exp/run_exp.py --config exp/configs/W31.json",
-    "80234 python3 exp/run_exp.py --config exp/configs/W32.json"
+    "80234 python3 exp/run_exp.py --config exp/configs/W32.json",
+    "82711 python3 exp/run_exp.py --config exp/configs/W30.json",
+    "83469 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_vivado.tcl -notrace -nojournal",
+    "83622 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -log bd_0_hls_inst_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source bd_0_hls_inst_0.tcl",
+    "83740 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -notrace -mode batch -source /home/lipuze/amdfpga/2026.1/Vivado/scripts/rt/data/task_worker.tcl -nolog -nojournal -tclargs SYNTH_DESIGN_PARENT83622_0_1791802631_cfg SYNTH_DESIGN_PARENT83622_0_1791802631_buf SYNTH_DESIGN_PARENT83622_1791802631 xck26-sfvc784-2LV-c",
+    "84220 python3 exp/run_exp.py --config exp/configs/C16.json",
+    "84221 python3 exp/run_exp.py --config exp/configs/C17.json",
+    "84656 python3 exp/run_exp.py --config exp/configs/C18.json"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-12T10:25:23+00:00",
+  "time": "2026-10-12T11:04:00+00:00",
   "unmeasured_plans": [
     {
-      "condition": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
+      "condition": null,
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "C15",
+      "id": "C16",
+      "not_run_condition_failed": false,
+      "operation": "csim/csynth",
+      "plan_sha256": "e8aefd7461b7b720cfe036d4850c94d8384823d9825b7cbb4a82837ff72a4ac0",
+      "prerequisite_metrics_sha256": null,
+      "unlaunched_for_memory": false
+    },
+    {
+      "condition": null,
+      "failure_reason": null,
+      "has_measured_result": false,
+      "id": "C17",
+      "not_run_condition_failed": false,
+      "operation": "csim/csynth",
+      "plan_sha256": "f88325155734d7021341c869262da5a7b95908e294e206cc3e28c42e196a379c",
+      "prerequisite_metrics_sha256": null,
+      "unlaunched_for_memory": false
+    },
+    {
+      "condition": null,
+      "failure_reason": null,
+      "has_measured_result": false,
+      "id": "C18",
       "not_run_condition_failed": false,
       "operation": "impl",
-      "plan_sha256": "e6cacc8137e3eabd159d82759f0c92c66b3bb66db1124342cd9946ea20252884",
+      "plan_sha256": "20c2086f6f726820e0ffb36719bcc01341db826a65885376934b325e400a060b",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     },
@@ -2160,14 +2194,14 @@
       "unlaunched_for_memory": false
     },
     {
-      "condition": "W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation",
-      "failure_reason": "W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result.",
+      "condition": "User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override",
+      "failure_reason": null,
       "has_measured_result": false,
       "id": "W30",
-      "not_run_condition_failed": true,
+      "not_run_condition_failed": false,
       "operation": "impl",
       "plan_sha256": "601443380b8e5796bc2acd7da442373159546dfc590ba4bd58e676db73f8960e",
-      "prerequisite_metrics_sha256": "651757674df3260553130d558260cadba8d6d71160db0c9af6f0eb467c44d3f2",
+      "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     },
     {
@@ -2429,9 +2463,18 @@
       "status": "fail"
     },
     {
-      "additional_evidence_files_checked": 10,
+      "additional_evidence_files_checked": 11,
       "git_visible_and_tracked": true,
       "id": "W23",
+      "operation": "impl",
+      "reports_checked": 0,
+      "sha256_pass": true,
+      "status": "fail"
+    },
+    {
+      "additional_evidence_files_checked": 14,
+      "git_visible_and_tracked": true,
+      "id": "C15",
       "operation": "impl",
       "reports_checked": 0,
       "sha256_pass": true,
