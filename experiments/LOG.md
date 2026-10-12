@@ -503,7 +503,13 @@
 
 - 2026-10-12T10:08:40+00:00: W29: ws_impl_W24; status=fail; latency_ms_est=1.7460189000000002; impl of W24; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.4664421081542969, "floor_gib": 0.5}
 
+- 2026-10-12T10:18 UTC: Live process and scheduler inspection confirms W23 and C15 independent implementations are active, not merely queued. F50 rasterFIFO RTL and newly launched wrapper F51 windowFIFO16 route await a free task slot. Persisted F48's measured535771/535800cycles,22987-cycle improvement and strict30-cycle WS-D miss. F49/W29 both stopped at the actual0.5GiB guard with unchanged OOM1; preserve host failures and prepare F52/W31 fresh-workspace retries. Reconciled recovery state; no completed workspace or frozen threshold is modified.
+
 ## Pending Human Decisions / 待人工决策
+
+- 2026-10-12T10:18 UTC F49/W29: 两次独立实现均被实际可用内存0.5GiB保护终止，分别为0.382919/0.466442GiB，exit-15，OOM计数均1→1；不是RTL、时序或FPGA资源不可行。自行决定保留失败并以F52/W31新ID补跑，继续用户授权的两项并行及实际内存监测，不恢复预留预算拦截、不改swap。若同一方向反复内存失败达到45分钟问题上限，记录后先完成其他方向，再依据实际空槽安排重试。
+
+- 2026-10-12T10:18 UTC F48: windowFIFO16逐位PASS，实测535771周期比F97少22987（4.113943%），但严格WS-D上限535741仍差30周期，目标未达。自行决定对最快已测FIFO候选另立F51做5ns独立实现；不放宽2%门槛。F51已冻结计划中的条件收益百分比存在算术勘误，正确为3.145399568%，在持久解读说明，保留原计划指纹。
 
 - 2026-10-12T09:07 UTC W28: FRP 两帧数值与换参数检查均 PASS，实测549438周期比F97少9320（约1.668%）；超出预先提交的±1%门槛553171..564345，按原规则记fail，W30不启动。原计划和全部RTL/FIFO证据保留；明日复核是否另立新实验评估更快FRP，不改本次门槛或历史状态。C14已逐位PASS，300632latency/300661interval；其前置条件满足，C15独立5ns布线已排队。
 
