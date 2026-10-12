@@ -251,6 +251,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F35](../experiments/F35_runtime_rom_bank_equivalence/F35.md) | W19 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W24](../experiments/W24_constant_rom_T8/W24.md) | W19 | pass | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown |
+| [W25](../experiments/W25_rom_changed_input_cosim_W24/W25.md) | W24 | cosim_complete | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | unknown |
 | [W26](../experiments/W26_frp_W21_T8/W26.md) | W21 | fail | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W27](../experiments/W27_frp_W21_T8/W27.md) | W21 | pass | 525237.0 | 644.0 | 81484.0 | unknown | unknown | unknown |
 | [F41](../experiments/F41_fifo32_W21_T8/F41.md) | W21 | pass | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown |
@@ -263,7 +264,6 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | W23 | W21 | unlaunched_memory | unknown |
-| W25 | W24 | queued_or_running | unknown |
 | F39 | W21 | queued_or_running | unknown |
 | F40 | W21 | queued_or_running | unknown |
 | F45 | F41 | queued_or_running | unknown |
@@ -272,3 +272,5 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | W30 | W27 | unlaunched_memory | W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
 | F48 | F47 | queued_or_running | unknown |
 | F46 | F42 | queued_or_running | unknown |
+| C14 | C13 | queued_or_running | unknown |
+| C15 | C13 | unlaunched_memory | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
