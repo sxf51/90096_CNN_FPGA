@@ -321,6 +321,7 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [F47](../experiments/F47_windows16_W21_T8/F47.md) | W21 | pass | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown |
 | [W28](../experiments/W28_ws_cosim_W27/W28.md) | W27 | fail | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | unknown |
 | [W29](../experiments/W29_ws_impl_W24/W29.md) | W24 | fail | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown |
+| [W30](../experiments/W30_ws_impl_W27/W30.md) | W27 | impl_complete | 525237.0 | 644.0 | 81484.0 | 549438.0 | True | 2.472471 |
 | [F48](../experiments/F48_ws_cosim_F47/F48.md) | F47 | cosim_complete | 525237.0 | 644.0 | 81086.0 | 535771.0 | unknown | unknown |
 | [F46](../experiments/F46_ws_cosim_F42/F46.md) | F42 | fail | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown |
 | [C14](../experiments/C14_ws_cosim_C13/C14.md) | C13 | cosim_complete | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | unknown |
@@ -334,7 +335,6 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| W30 | W27 | queued_or_running | User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override |
 | F50 | F42 | queued_or_running | unknown |
 | F51 | F47 | queued_or_running | unknown |
 | W31 | W24 | queued_or_running | unknown |

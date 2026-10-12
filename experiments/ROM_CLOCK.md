@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T14:15:51+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T14:22:22+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -33,6 +33,7 @@ C18 priority completed; T4 closes5ns and verifies1.503160ms IP latency. C18 comp
 | [F47](F47_windows16_W21_T8/F47.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | 2.0055708185066967 | False |
 | [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | 549438.0 | user_authorized_upper_only | unknown | unknown | unknown | 4.6076342679590265 | unknown |
 | [W29](W29_ws_impl_W24/W29.md) | W24 | impl | fail | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | unknown | 5.701752712986097 | unknown |
+| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | 4.5 | True | 2.472471 | unknown | unknown |
 | [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 535771.0 | original_verification_pass | unknown | unknown | unknown | 2.0055708185066967 | False |
 | [F46](F46_ws_cosim_F42/F46.md) | F42 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | rejected_or_unmeasured | unknown | unknown | unknown | unknown | unknown |
 | [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | original_verification_pass | unknown | unknown | unknown | 14.269641567524417 | unknown |
@@ -51,7 +52,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | queued_or_running | User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override |
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
 | [F51](F51_ws_impl_F47/F51.md) | F47 | impl | queued_or_running | unknown |
 | [W31](W31_ws_impl_W24/W31.md) | W24 | impl | queued_or_running | unknown |
