@@ -553,10 +553,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--settings")
+    parser.add_argument("--resume-waiting", action="store_true",
+                        help="Recover an unlaunched cosimulation after its waiting worker has stopped")
     args = parser.parse_args()
     config = json.loads(args.config.read_text())
     if args.settings:
         config["settings"] = args.settings
+    if args.resume_waiting:
+        from verify_exp import run_verification
+        return run_verification(config, resume_waiting=True)
     return run(config)
 
 

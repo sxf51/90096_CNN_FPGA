@@ -19,7 +19,8 @@ def pending_experiments(state):
         waiting = exp_id in state.get("waiting_for_memory", [])
         records.append({"id": exp_id, "parent": config.get("verify_parent", config.get("control_experiment")),
                         "operation": config.get("operation", "csim/csynth"),
-                        "status": "unlaunched_memory" if waiting else "queued_or_running",
+                        "status": ("unlaunched_memory" if waiting else "unlaunched_conditional"
+                                   if exp_id in state.get("unlaunched_ids", []) else "queued_or_running"),
                         "condition": state.get("planned_conditions", {}).get(exp_id),
                         "md_path": plans[0].parent.name + "/" + exp_id + ".md"})
     return records
@@ -131,7 +132,9 @@ def main():
         old = old.split(marker, 2)[-1].lstrip("\n")
     block = marker + "\n\n## Active docs/0005 workstream\n\n" + state["phase"] + ". " + state["next"]
     block += "\n\nSee [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). "
-    block += "Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=budgeted after WS-0 validation.\n\n" + marker + "\n\n"
+    policy = ("explicit two-task scheduling with actual memory telemetry" if state.get("concurrency_policy") == "user_two_jobs"
+              else "budgeted after WS-0 validation")
+    block += "Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=" + policy + ".\n\n" + marker + "\n\n"
     progress.write_text("# Current progress\n\n" + block + old.removeprefix("# Current progress\n\n"))
 
 

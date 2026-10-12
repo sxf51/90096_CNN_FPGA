@@ -43,7 +43,10 @@ def main():
         rom = json.loads(rom_path.read_text())
         final_pending = list(dict.fromkeys(final_pending + [exp_id for exp_id in rom["experiment_ids"] if exp_id not in ids]))
         state.update(full_set14=True, complete_image_count=13, resource_policy="routed",
-                     hardware_parallelism=None, hardware_scheduler="validated memory-budget admission",
+                     hardware_parallelism=2 if rom.get("concurrency_policy") == "user_two_jobs" else None,
+                     hardware_scheduler=("user-authorized two-task scheduling with actual memory telemetry"
+                                         if rom.get("concurrency_policy") == "user_two_jobs"
+                                         else "validated memory-budget admission"),
                      pending_final_verification_ids=final_pending, rom_clock_workstream=rom, next=rom["next"])
     write_json(ROOT / "experiments/arch_state.json",state)
     text = "# Current progress\n\nUpdated "+state["time"]+" from archived measurements.\n\n"

@@ -1,29 +1,30 @@
 {
   "plan": "docs/0005-rom-clock-t4-plan.md",
-  "phase": "WS-0 complete; WS-B HLS/RTL passed; WS-C/D and T4 RTL controls running; implementation awaiting memory admission",
+  "phase": "WS-0 complete; eight HLS designs passed; two concurrent RTL simulations active under explicit user authorization",
   "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F43", "F44", "F45", "F47", "W28", "W29", "W30", "F48", "F46", "C14", "C15"],
   "complete_test_set": "Set14 (13 course-provided images)",
   "resource_policy": "routed",
-  "next": "Eight independent designs have complete13-image exactness and HLS results: W24 ROM, W27 FRP, F39 registeredConv3 operands, F40 featureFIFO16, F41 featureFIFO32, F42 reordered-raster buffer, F47 windowFIFO16 and C13 prepackedConv2 T4. W25 ROM two-frame RTL passed at554226cycles,4532cycles/0.81pct below W21; parameter load duration is not an additive frame penalty. F45 runs; W28/F48/F46/C14/F44/F43 queue for independent two-frame finite-FIFO checks. F43/W28 use the preplanned553171..564345cycle gate. WS-D functional PASS is separate from the2percent performance goal535741cycles. C13 uses E065 mixed precision and passes the routed-policy HLS screen at1032DSP/127966LUT/192308FF/263090cycles, preserving its historical HLS-infeasible status. W26 preparation failure remains archived. W23/W29/W30/C15 routing plans remain unlaunched:12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve memory gates. F98 board handoff is archived; board measurements are pending.",
+  "next": "F43 registeredConv3 and F46 rasterFIFO cosim run concurrently. W28/F48/C14/F44 waiting workers have been migrated without changing plans or prepared RTL and now use the two-task scheduler. Collect each finished remote archive with --collect-only. F45 featureFIFO32 passed changed-parameter RTL at558758cycles, identical to F97; reduced producer write blocking did not meet the WS-D535741-cycle goal. W25 ROM passed at554226cycles. F43/W28 retain the553171..564345 gate. C13 remains E065-exact on all13 images, with1032DSP/127966LUT/192308FF/263090HLS cycles; C14 must pass before C15 routing. Run W23/W29/W30/C15 and an independent registeredConv3 route after their prerequisites; the prior impossible12.5+2GiB admission is superseded by explicit user authorization for two concurrent tasks. Keep actual memory sampling, newest-task pressure termination at0.5GiB, OOM evidence and serial fallback. F98 board handoff is archived; board measurements remain pending.",
   "completed_workstreams": ["WS-0", "WS-A agent handoff (board measurements pending)"],
-  "waiting_for_memory": ["W23", "W29", "W30", "C15"],
+  "waiting_for_memory": [],
+  "deferred": ["W23", "W29", "W30", "C15"],
+  "unlaunched_ids": ["W23", "W29", "W30", "C15"],
+  "concurrency_policy": "user_two_jobs",
   "planned_conditions": {
     "W29": "W25 same-ROM/changed-input two-frame RTL must pass before implementation",
     "W30": "W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation",
     "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22"
   },
-  "pending_decisions": [
-    "Initial remote MemAvailable=14091148 KiB (13.438 GiB), below 14.5 GiB required by the 12.5 GiB implementation reservation plus 2 GiB floor. Keep both stated memory gates; if unchanged after WS-0, record W23 as waiting for memory and continue independent coding/C simulations/syntheses."
-  ],
-  "local_exec_sessions": [49366, 45211, 56420, 60396, 18338, 88402],
+  "pending_decisions": [],
+  "local_exec_sessions": [88402, 88091, 27651, 60610, 90781, 25067],
   "session_jobs": {
-    "49366": ["F45"],
-    "45211": ["W28"],
-    "56420": ["F48", "F46"],
-    "60396": ["C14"],
-    "18338": ["F44"],
+    "88091": ["F46"],
+    "27651": ["W28"],
+    "60610": ["F48"],
+    "90781": ["C14"],
+    "25067": ["F44"],
     "88402": ["F43"]
   },
   "board_handoff": "experiments/BOARD_HANDOFF.md",
-  "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL queued; C15 independent5ns route planned but unlaunched for memory. Preserve the old HLS infeasible row; final feasibility is routed."
+  "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL queued; C15 independent5ns route planned conditional on C14. Preserve the old HLS infeasible row; final feasibility is routed."
 }

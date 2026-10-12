@@ -270,13 +270,13 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| W23 | W21 | unlaunched_memory | unknown |
+| W23 | W21 | unlaunched_conditional | unknown |
 | F43 | F39 | queued_or_running | unknown |
 | F44 | F40 | queued_or_running | unknown |
 | W28 | W27 | queued_or_running | unknown |
-| W29 | W24 | unlaunched_memory | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
-| W30 | W27 | unlaunched_memory | W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
+| W29 | W24 | unlaunched_conditional | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
+| W30 | W27 | unlaunched_conditional | W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
 | F48 | F47 | queued_or_running | unknown |
 | F46 | F42 | queued_or_running | unknown |
 | C14 | C13 | queued_or_running | unknown |
-| C15 | C13 | unlaunched_memory | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
+| C15 | C13 | unlaunched_conditional | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |

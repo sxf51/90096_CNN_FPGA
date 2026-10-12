@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-WS-0 complete; WS-B HLS/RTL passed; WS-C/D and T4 RTL controls running; implementation awaiting memory admission. Eight independent designs have complete13-image exactness and HLS results: W24 ROM, W27 FRP, F39 registeredConv3 operands, F40 featureFIFO16, F41 featureFIFO32, F42 reordered-raster buffer, F47 windowFIFO16 and C13 prepackedConv2 T4. W25 ROM two-frame RTL passed at554226cycles,4532cycles/0.81pct below W21; parameter load duration is not an additive frame penalty. F45 runs; W28/F48/F46/C14/F44/F43 queue for independent two-frame finite-FIFO checks. F43/W28 use the preplanned553171..564345cycle gate. WS-D functional PASS is separate from the2percent performance goal535741cycles. C13 uses E065 mixed precision and passes the routed-policy HLS screen at1032DSP/127966LUT/192308FF/263090cycles, preserving its historical HLS-infeasible status. W26 preparation failure remains archived. W23/W29/W30/C15 routing plans remain unlaunched:12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve memory gates. F98 board handoff is archived; board measurements are pending.
+WS-0 complete; eight HLS designs passed; two concurrent RTL simulations active under explicit user authorization. F43 registeredConv3 and F46 rasterFIFO cosim run concurrently. W28/F48/C14/F44 waiting workers have been migrated without changing plans or prepared RTL and now use the two-task scheduler. Collect each finished remote archive with --collect-only. F45 featureFIFO32 passed changed-parameter RTL at558758cycles, identical to F97; reduced producer write blocking did not meet the WS-D535741-cycle goal. W25 ROM passed at554226cycles. F43/W28 retain the553171..564345 gate. C13 remains E065-exact on all13 images, with1032DSP/127966LUT/192308FF/263090HLS cycles; C14 must pass before C15 routing. Run W23/W29/W30/C15 and an independent registeredConv3 route after their prerequisites; the prior impossible12.5+2GiB admission is superseded by explicit user authorization for two concurrent tasks. Keep actual memory sampling, newest-task pressure termination at0.5GiB, OOM evidence and serial fallback. F98 board handoff is archived; board measurements remain pending.
 
-See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=budgeted after WS-0 validation.
+See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=explicit two-task scheduling with actual memory telemetry.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T06:52:37+00:00 from archived measurements.
+Updated 2026-10-12T07:05:37+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 

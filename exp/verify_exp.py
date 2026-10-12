@@ -3,6 +3,7 @@
 import csv
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -10,7 +11,7 @@ import subprocess
 import sys
 from contextlib import nullcontext
 import xml.etree.ElementTree as ET
-from run_exp import (ROOT, FIELDS, archive_logs, append_log, check_protected,
+from run_exp import (ROOT, FIELDS, archive_logs, append_log, check_protected, check_plan,
                      ensure_results_schema, invoke, lock, markdown_table, number,
                      prepare_run_directory, utc, write_json)
 from compact_archive import compact
@@ -377,7 +378,7 @@ def check_image_validation(parent_config, validation_config):
         raise RuntimeError("Full-image validation arithmetic flags differ from the frozen candidate")
 
 
-def prepare_verification_testbench(text, config, work, archive):
+def prepare_verification_testbench(text, config, work, archive, write_files=True):
     if not config.get("verification_testbench"):
         if config.get("reload_params"):
             raise RuntimeError("Changed-parameter verification requires an independent testbench")
@@ -394,12 +395,16 @@ def prepare_verification_testbench(text, config, work, archive):
     elif not str(Path(config["verification_testbench"])).startswith("exp/tb/"):
         raise RuntimeError("New verification testbenches must be under exp/tb")
     target = work / "testbench" / source.name
-    target.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(source, target)
     dest = archive / "testbench" / source.name
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(source, dest)
-    config["testbench_sha256"] = {source.name: hashlib.sha256(dest.read_bytes()).hexdigest()}
+    if write_files:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, dest)
+    else:
+        if target.read_bytes() != source.read_bytes() or dest.read_bytes() != source.read_bytes():
+            raise RuntimeError("Waiting verification testbench differs from its frozen copies")
+    config["testbench_sha256"] = {source.name: hashlib.sha256(source.read_bytes()).hexdigest()}
     # Keep binary inputs and design flags; only the verification translation units change.
     lines = [line for line in text.splitlines() if not (
         line.startswith("tb.file=") and Path(line.split("=", 1)[1]).suffix.lower() in
@@ -435,7 +440,34 @@ def rom_measurement(logfile, parent):
     return json.loads(matches[-1])
 
 
-def run_verification(config):
+def resume_waiting_verification(config, work, archive):
+    if config.get("operation") != "cosim" or not config.get("memory_scheduler"):
+        raise RuntimeError("Waiting recovery is restricted to scheduled cosimulation")
+    plan = check_plan(config, archive)
+    if not work.is_dir() or (work / "cosim.console.log").exists():
+        raise RuntimeError("Waiting recovery requires a prepared workspace with no launched tool")
+    events = [json.loads(line) for line in (archive / "scheduler_events.jsonl").read_text().splitlines()]
+    if not events or any(item["event"] != "waiting" for item in events):
+        raise RuntimeError("Waiting recovery rejects admitted, completed or unrecorded tasks")
+    run_lock = work / ".run.lock"
+    pid = int(run_lock.read_text().split()[0])
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        pass
+    else:
+        raise RuntimeError("Waiting worker is still alive; refuse concurrent recovery")
+    if (archive / "hls_config.cfg").read_bytes() != (work / "hls_config.cfg").read_bytes():
+        raise RuntimeError("Prepared verification configuration changed")
+    check_template_rtl(ROOT / "workspace/exp_runs" / config["verify_parent"], work)
+    run_lock.unlink()
+    record = {"time": utc(), "retired_waiting_pid": pid, "tool_previously_launched": False,
+              "workspace_preserved": True, "plan_sha256": plan["config_sha256"]}
+    write_json(archive / "waiting_recovery.json", record)
+    return plan
+
+
+def run_verification(config, resume_waiting=False):
     check_protected()
     exp_id, name, operation = config["id"], config["name"], config["operation"]
     if not re.fullmatch(r"(?:E\d{3,}|[SGPWCF]\d{2,})", exp_id) or not re.fullmatch(r"[a-zA-Z0-9_]+", name):
@@ -449,22 +481,30 @@ def run_verification(config):
         raise RuntimeError("Verification parent is not numerically and resource accepted")
     work = ROOT / "workspace/exp_runs" / exp_id
     archive = ROOT / "experiments" / (exp_id + "_" + name)
-    plan = prepare_run_directory(config, work, archive)
     source_work = ROOT / "workspace/exp_runs" / parent_row["id"]
-    shutil.copytree(source_work, work, dirs_exist_ok=True,
-                    ignore=shutil.ignore_patterns("*.console.log", "*.zip", "*.wdb", ".run.lock"))
+    if resume_waiting:
+        plan = resume_waiting_verification(config, work, archive)
+    else:
+        plan = prepare_run_directory(config, work, archive)
+        shutil.copytree(source_work, work, dirs_exist_ok=True,
+                        ignore=shutil.ignore_patterns("*.console.log", "*.zip", "*.wdb", ".run.lock"))
     cfg = work / "hls_config.cfg"
-    cfg_text = cfg.read_text().replace(str(source_work), str(work))
+    cfg_text = (source_work / "hls_config.cfg").read_text().replace(str(source_work), str(work))
     if operation == "cosim":
-        cfg_text = prepare_verification_testbench(cfg_text, config, work, archive)
+        cfg_text = prepare_verification_testbench(cfg_text, config, work, archive,
+                                                 write_files=not resume_waiting)
         cfg_text = re.sub(r"^(tb\.cflags=)(.*)$", lambda match: match[1] +
                           re.sub(r"(?:^|\s)-DEXP_FRAMES=\d+", "", match[2]) + " -DEXP_FRAMES=2",
                           cfg_text, flags=re.MULTILINE)
         cfg_text += "cosim.rtl=verilog\ncosim.trace_level=none\ncosim.enable_dataflow_profiling=true\n"
     else:
         cfg_text += "vivado.flow=impl\n"
-    cfg.write_text(cfg_text)
-    shutil.copyfile(cfg, archive / "hls_config.cfg")
+    if resume_waiting:
+        if cfg.read_text() != cfg_text:
+            raise RuntimeError("Prepared verification flags differ from the frozen parent and plan")
+    else:
+        cfg.write_text(cfg_text)
+        shutil.copyfile(cfg, archive / "hls_config.cfg")
     config.update(time=utc(), parent_config=parent_config, parent_metrics=parent_row,
                   source_commit=config.get("source_commit", parent_row["git_commit"]),
                   precision=parent_config.get("precision"), T=parent_config.get("T"),

@@ -8,12 +8,62 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config, check_template_rtl, prepare_packaged_driver, check_image_validation, prepare_verification_testbench, reload_measurement, rom_measurement
 from run_exp import ROOT
+from run_exp import plan_digest
 from unittest.mock import patch
 import hashlib
 import verify_exp
 
 
 class VerificationTests(unittest.TestCase):
+    def waiting_fixture(self, root):
+        config = {"id": "F49", "name": "waiting", "operation": "cosim",
+                  "memory_scheduler": True, "verify_parent": "F39"}
+        work, archive = root / "workspace/exp_runs/F49", root / "experiments/F49_waiting"
+        archive.mkdir(parents=True)
+        work.mkdir(parents=True)
+        purpose = "Unchanged paper plan"
+        (archive / "plan.json").write_text(json.dumps({"config_sha256": plan_digest(config),
+                                                      "purpose_section": purpose}))
+        (archive / "F49.md").write_text("## 1. Purpose and hypothesis / 目的与假设\n\n" +
+                                        purpose + "\n\n## 2. Changes\n")
+        for directory in (work, root / "workspace/exp_runs/F39"):
+            rtl = directory / "hls/syn/verilog/srcnn.v"
+            rtl.parent.mkdir(parents=True)
+            rtl.write_text("module srcnn; endmodule\n")
+        for path in (work / "hls_config.cfg", archive / "hls_config.cfg"):
+            path.write_text("frozen flags\n")
+        (work / ".run.lock").write_text("1234 original_start\n")
+        (archive / "scheduler_events.jsonl").write_text('{"event":"waiting"}\n')
+        return config, work, archive
+
+    def test_waiting_recovery_preserves_prepared_files_and_plan(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            config, work, archive = self.waiting_fixture(root)
+            before = (archive / "plan.json").read_bytes()
+            with patch.object(verify_exp, "ROOT", root), \
+                    patch("verify_exp.os.kill", side_effect=ProcessLookupError):
+                verify_exp.resume_waiting_verification(config, work, archive)
+            self.assertFalse((work / ".run.lock").exists())
+            self.assertEqual((archive / "plan.json").read_bytes(), before)
+            self.assertFalse(json.loads((archive / "waiting_recovery.json").read_text())["tool_previously_launched"])
+            self.assertEqual((work / "hls_config.cfg").read_text(), "frozen flags\n")
+
+    def test_waiting_recovery_rejects_live_launched_or_admitted_tasks(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            config, work, archive = self.waiting_fixture(root)
+            with patch.object(verify_exp, "ROOT", root), patch("verify_exp.os.kill"):
+                with self.assertRaisesRegex(RuntimeError, "still alive"):
+                    verify_exp.resume_waiting_verification(config, work, archive)
+            (archive / "scheduler_events.jsonl").write_text('{"event":"admitted"}\n')
+            with self.assertRaisesRegex(RuntimeError, "rejects admitted"):
+                verify_exp.resume_waiting_verification(config, work, archive)
+            (work / "cosim.console.log").touch()
+            with self.assertRaisesRegex(RuntimeError, "no launched tool"):
+                verify_exp.resume_waiting_verification(config, work, archive)
+            self.assertTrue((work / ".run.lock").exists())
+
     def test_rom_requires_exact_c_and_rtl_changed_input_checks(self):
         parent = {"border_mse": .00001661846957728205}
         result = {"csim_pass": True, "bit_exact": True, "same_weights_changed_input": True,

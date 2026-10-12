@@ -487,6 +487,10 @@
 
 ## Pending Human Decisions / 待人工决策
 
+- 2026-10-12T07:05 UTC 用户明确授权覆盖原预留预算规则：“我觉得不用担心，直接干进去，同时跑两项”。06:58:29 UTC F46 已在 F43 仍运行时准入，两项分别验证 rasterFIFO 与 Conv3 操作数寄存器；不是仅有两个排队任务。调度改为最多两项，预算保留作观察，不再用预算相加拦截第二项，实际可用内存0.5GiB以下中止最近启动项，OOM仍退回串行。W28/F48/C14/F44 的原 Python 等待进程确认未获准入、未启动 Vitis 后迁移到新调度，保留 ID、原计划 SHA256、RTL/init、配置和冻结 testbench；旧 SSH 包装器因任务未完成而退出并报缺 metrics.json，此为等待进程迁移退出，不是 RTL 失败，新进程完成后使用 collect-only 归档。原等待期全局 host_memory 会由恢复进程重新开始采样；它不是工具峰值或性能测量，工具启动后的逐任务 telemetry 单独保存。此前 W23 空闲主机也无法准入的问题已由该授权解决，无需人工重复确认。
+
+- 2026-10-12 F45: FIFO32 的两帧 RTL 功能通过，但558758周期与F97完全相同，未达到535741周期的 WS-D 门槛。feature FIFO 写阻塞903830→801394、峰值深度4→32，消费者读阻塞仍46990，说明缓冲改变背压但未缩短整帧关键调度。详见F45 interpretation 和原始FIFO计数器；不将功能PASS当作加速成功。
+
 - 2026-10-12 HLS FIFO accounting: F47's1728-bit transformed-window FIFO reports67LUT at both depth2 and16; F42's163840-bit raster FIFO reports347LUT. The logical capacities require much more storage under a naive64bits/LUT model. Preserve these raw estimates and require routed utilization to resolve the discrepancy; do not claim near-zero physical storage cost or alter any resource gate.
 
 - 2026-10-12T04:24 UTC，0005 内存准入：远程 MemTotal=15724196 KiB（14.996 GiB），空闲 MemAvailable 约13.4 GiB；WS-C1 的12.5 GiB登记预算加2 GiB保留要求至少14.5 GiB可用，因此空闲时也不能准入。保守保留0005的总预算13 GiB、2 GiB可用内存保留和实现12.5 GiB登记，不通过关闭调度或改swap启动W23。其W21/F98同RTL、4.5ns、Performance_Explore、综合1/布线4线程计划已提交；工具探针确认策略与布线后phys_opt属性支持。继续独立ROM编码/功能验证/综合；实际启动实现需要人工澄清登记口径或调整内存规则。当前不宣称W23已经启动、超时或时序失败。
