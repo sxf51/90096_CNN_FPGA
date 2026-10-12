@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T14:22:22+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T14:31:54+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C18 priority completed; T4 closes5ns and verifies1.503160ms IP latency. C18 completes independently at5ns with WNS+0.047ns/WHS+0.031ns,1032DSP/58529LUT/102072FF/109BRAM18K, all route gates passed. Matching C14 RTL300632/300661cycles and C13 all13-image E065 exactness give1.503160ms IP latency, currently fastest. Staged synthesis/report and implementation/report use peak task-tree RSS10.640743/8.169937GiB; minimum available4.822098GiB,70.538872tool minutes. Preserve C15's host failure. Both priority supervisors released at13:32:30UTC and all six waiters resumed; W30 now runs. Finish F50/F51/W31/W30 and C16/C17 all13-image C/HLS, then prepare fresh changed-parameter RTL and staged implementation IDs for screened combinations. Queue final checkpoint paths for C18/F52/W32; W32 requires postroute_physopt. Current routed resources do not require T4 ROM. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. Stage telemetry lacksSwapTotal; supplementary zram observations cannot establish full-run swap usage. No board results exist.
+C18 remains fastest verified IP; W30 closes4.5ns and F51 runs. C18/C14 remains the verified1.503160ms mixed T4 leader at5ns; its package/register map and precision references are archived without replacing F98. W30/W28 independently passes4.5ns routing and authorized exact RTL, giving2.472471ms uniform T8. W30's five generated-final paths locate Conv1 coefficient LUTRAM addressing, not a DSP cascade; F52's five checkpoint paths are also archived. F51 currently runs, while F50/W31 and C16/C17 wait. Finish those five planned experiments; after combination C/HLS screening, prepare new changed-parameter RTL and staged implementation IDs. C18/W32 checkpoint exports remain queued; W32 requires postroute_physopt. No immediate resource-driven T4 ROM retry is needed. Keep one heavy plus budgeted light tasks and preserve18GiB implementation registration/serial_after_oom while legacy workers exist. Precision, runtime interfaces and all physical gates remain strict. Old telemetry lacksSwapTotal; full-run swap usage remains unknown. No board results exist.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -33,7 +33,7 @@ C18 priority completed; T4 closes5ns and verifies1.503160ms IP latency. C18 comp
 | [F47](F47_windows16_W21_T8/F47.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | 2.0055708185066967 | False |
 | [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | 549438.0 | user_authorized_upper_only | unknown | unknown | unknown | 4.6076342679590265 | unknown |
 | [W29](W29_ws_impl_W24/W29.md) | W24 | impl | fail | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | unknown | 5.701752712986097 | unknown |
-| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | 4.5 | True | 2.472471 | unknown | unknown |
+| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | 4.5 | True | 2.472471 | 4.6076342679590265 | unknown |
 | [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 535771.0 | original_verification_pass | unknown | unknown | unknown | 2.0055708185066967 | False |
 | [F46](F46_ws_cosim_F42/F46.md) | F42 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | rejected_or_unmeasured | unknown | unknown | unknown | unknown | unknown |
 | [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | original_verification_pass | unknown | unknown | unknown | 14.269641567524417 | unknown |
@@ -65,6 +65,7 @@ These plans have no result row. In particular, unlaunched implementation is neit
 | id | parent | rtl_source | rtl_cycles | route_clock_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [C18](C18_ws_impl_C13/C18.md) | C13 | C14 | 300632.0 | 5.0 | 0.047 | 1032.0 | 109.0 | 58529.0 | 102072.0 | 1.50316 |
+| [W30](W30_ws_impl_W27/W30.md) | W27 | W28 | 549438.0 | 4.5 | 0.027 | 644.0 | 109.0 | 54091.0 | 77784.0 | 2.472471 |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 |
 | [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | F97 | 558758.0 | 4.5 | 0.144 | 644.0 | 109.0 | 45030.0 | 89096.0 | 2.514411 |
 | [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 |

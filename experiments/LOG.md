@@ -531,6 +531,10 @@
 
 - 2026-10-12T14:22:21+00:00: W30: ws_impl_W27; status=impl_complete; latency_ms_est=1.74903921; impl of W27; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-12T14:25:11+00:00: F52: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
+
+- 2026-10-12T14:31:55+00:00: W30: independent4.5ns route passes all physical gates; W28 authorized exact549438cycles gives2.472471ms uniform T8. Five generated-final setup paths and physical hierarchy archived, first slack matches final summary; F52 checkpoint paths archived too. F51 is now the sole running implementation. Preserve18GiB registration, serial-after-OOM and old W28 fail. C18 remains fastest1.503160ms; five queued experiments remain before conditional combination RTL/routing.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。

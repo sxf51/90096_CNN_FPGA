@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C18 priority completed; T4 closes5ns and verifies1.503160ms IP latency. C18 completes independently at5ns with WNS+0.047ns/WHS+0.031ns,1032DSP/58529LUT/102072FF/109BRAM18K, all route gates passed. Matching C14 RTL300632/300661cycles and C13 all13-image E065 exactness give1.503160ms IP latency, currently fastest. Staged synthesis/report and implementation/report use peak task-tree RSS10.640743/8.169937GiB; minimum available4.822098GiB,70.538872tool minutes. Preserve C15's host failure. Both priority supervisors released at13:32:30UTC and all six waiters resumed; W30 now runs. Finish F50/F51/W31/W30 and C16/C17 all13-image C/HLS, then prepare fresh changed-parameter RTL and staged implementation IDs for screened combinations. Queue final checkpoint paths for C18/F52/W32; W32 requires postroute_physopt. Current routed resources do not require T4 ROM. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. Stage telemetry lacksSwapTotal; supplementary zram observations cannot establish full-run swap usage. No board results exist.
+C18 remains fastest verified IP; W30 closes4.5ns and F51 runs. C18/C14 remains the verified1.503160ms mixed T4 leader at5ns; its package/register map and precision references are archived without replacing F98. W30/W28 independently passes4.5ns routing and authorized exact RTL, giving2.472471ms uniform T8. W30's five generated-final paths locate Conv1 coefficient LUTRAM addressing, not a DSP cascade; F52's five checkpoint paths are also archived. F51 currently runs, while F50/W31 and C16/C17 wait. Finish those five planned experiments; after combination C/HLS screening, prepare new changed-parameter RTL and staged implementation IDs. C18/W32 checkpoint exports remain queued; W32 requires postroute_physopt. No immediate resource-driven T4 ROM retry is needed. Keep one heavy plus budgeted light tasks and preserve18GiB implementation registration/serial_after_oom while legacy workers exist. Precision, runtime interfaces and all physical gates remain strict. Old telemetry lacksSwapTotal; full-run swap usage remains unknown. No board results exist.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T14:22:21+00:00 from archived measurements.
+Updated 2026-10-12T14:31:54+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
