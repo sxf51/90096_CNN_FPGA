@@ -6,6 +6,8 @@ from analyze_arch import dsp_composition, write_csv
 from run_exp import ROOT, number
 from route_gates import archive_route_evidence
 
+CONTROL_STAGES = {"rom_clock_ws0", "rom_clock_wsB_equivalence", "rom_clock_wsB_banks"}
+
 
 def load(exp_id):
     paths = list((ROOT/"experiments").glob(exp_id + "_*/metrics.json"))
@@ -47,7 +49,7 @@ def main():
         physical = config.get("verification", {})
         route = archive_route_evidence(archive) if operation == "impl" else {}
         baseline = row["id"] in {"W21", "F97", "F98", "W22"}
-        if baseline or config.get("stage") not in {"rom_clock_ws0", "rom_clock_wsB_equivalence"}:
+        if baseline or config.get("stage") not in CONTROL_STAGES:
             record = {"id": row["id"], "series": row["series"], "parent": parent,
                       "operation": operation, "status": row["status"], "md_path": row["md_path"],
                       "precision": row["precision_w_a_acc"], "T": row["T_target"],
@@ -76,7 +78,7 @@ def main():
             stage = config.get("stage", "") if operation != "cosim" else configs.get(parent, {}).get("stage", "")
             record["wsD_goal_met"] = record["rtl_within_2pct"] if str(stage).startswith("rom_clock_wsD") else None
             comparisons.append(record)
-        if not baseline and config.get("stage") not in {"rom_clock_ws0", "rom_clock_wsB_equivalence"}:
+        if not baseline and config.get("stage") not in CONTROL_STAGES:
             paper = config.get("estimates", {})
             for key in ("DSP", "BRAM18K", "URAM", "LUT", "FF", "latency_cycles"):
                 expected = number(paper.get(key))

@@ -268,6 +268,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | W23 | W21 | unlaunched_memory | unknown |
+| F43 | F39 | queued_or_running | unknown |
 | F44 | F40 | queued_or_running | unknown |
 | F45 | F41 | queued_or_running | unknown |
 | W28 | W27 | queued_or_running | unknown |

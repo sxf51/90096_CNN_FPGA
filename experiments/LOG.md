@@ -481,6 +481,8 @@
 
 - 2026-10-12T06:12:09+00:00: F39: c3_select_W21_T8; status=pass; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
 
+- 2026-10-12T06:18 UTC: F39 synthesis collected and committed; all13 images E017-exact, foldsII1,644DSP/146BRAM18K/81518LUT/130422FF/525237cycles. F43 changed-parameter RTL plan committed before queuing; retain553171..564345cycle acceptance. Reconciled live sessions and addedF44. Derived comparisons now use matching successful RTL cycles for architecture paper estimates (W24 estimate547500 versus W25 actual554226) and separately report the WS-D2% performance goal with maximum integer535741cycles.95 infrastructure tests pass; arithmetic/deadlock PASS cannot silently establish the performance goal.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 HLS FIFO accounting: F47's1728-bit transformed-window FIFO reports67LUT at both depth2 and16; F42's163840-bit raster FIFO reports347LUT. The logical capacities require much more storage under a naive64bits/LUT model. Preserve these raw estimates and require routed utilization to resolve the discrepancy; do not claim near-zero physical storage cost or alter any resource gate.
