@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T04:22:30+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T04:25:46+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-WS-0 controlled retry. F32/F33/F34 numerical/II checks passed, but csynth tree RSS3.119/3.430GiB exceeds initial2.5GiB registration. Raise csynth to4GiB and csim to1.25GiB, validate F36/F37/F38 overlap before enabling ordinary concurrency. W23 remains waiting for the unchanged12.5GiB implementation admission gate; prepare ROM equivalence independently.
+WS-0 complete; WS-B validation; WS-C1 awaiting memory admission. F36/F37/F38 corrected trial passed with77.827s triple overlap, peak synth3.430GiB, minimum10.706GiB available and no OOM. Remote budgeted concurrency is enabled with csynth4GiB/csim1.25GiB. F35 validates all12161 ROM carriers exactly. Run W24 complete13-image C validation and synthesis, then same-weight/changed-input two-frame RTL. W23 same-RTL4.5ns strategy/threads are prepared but unlaunched:12.5GiB reservation requires14.5GiB available, while idle host has about13.4GiB. Keep the2GiB floor and13GiB total cap; report the decision before any implementation.
 
 | id | parent | operation | status | md_path | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | route_feasible | route_clock_ns | route_WNS_ns | route_WHS_ns | DSP | BRAM18K | URAM | LUT | FF | rtl_cycles | rtl_source | rtl_cycles_x_route_clock_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |

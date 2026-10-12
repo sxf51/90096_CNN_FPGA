@@ -4,7 +4,7 @@
 
 ## Active docs/0005 workstream
 
-WS-0 controlled retry. F32/F33/F34 numerical/II checks passed, but csynth tree RSS3.119/3.430GiB exceeds initial2.5GiB registration. Raise csynth to4GiB and csim to1.25GiB, validate F36/F37/F38 overlap before enabling ordinary concurrency. W23 remains waiting for the unchanged12.5GiB implementation admission gate; prepare ROM equivalence independently.
+WS-0 complete; WS-B validation; WS-C1 awaiting memory admission. F36/F37/F38 corrected trial passed with77.827s triple overlap, peak synth3.430GiB, minimum10.706GiB available and no OOM. Remote budgeted concurrency is enabled with csynth4GiB/csim1.25GiB. F35 validates all12161 ROM carriers exactly. Run W24 complete13-image C validation and synthesis, then same-weight/changed-input two-frame RTL. W23 same-RTL4.5ns strategy/threads are prepared but unlaunched:12.5GiB reservation requires14.5GiB available, while idle host has about13.4GiB. Keep the2GiB floor and13GiB total cap; report the decision before any implementation.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=budgeted after WS-0 validation.
 
