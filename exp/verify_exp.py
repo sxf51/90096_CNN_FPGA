@@ -521,7 +521,8 @@ def run_verification(config, resume_waiting=False):
         row["notes"] += "; diagnostic only: parent remains HLS-resource-infeasible and cannot enter accepted rankings"
     observed, detail, errors = {}, [], []
     impl_cwd = None
-    package_serial = config.get("implementation_backend") == "serial_packaged_flow"
+    staged = config.get("implementation_backend") == "staged_packaged_flow"
+    package_serial = staged or config.get("implementation_backend") == "serial_packaged_flow"
     if package_serial and operation != "impl":
         raise RuntimeError("Serial packaged flow is only valid for implementation")
     settings = Path(config.get("settings", parent_config["settings"]))
@@ -585,6 +586,9 @@ def run_verification(config, resume_waiting=False):
                 config["implementation_files"] = records
                 config["original_generated_driver_sha256"] = original_digest
                 config["implementation_work_root"] = str(work)
+                if staged:
+                    from staged_implementation import prepare_staged_driver
+                    config["implementation_files"].extend(prepare_staged_driver(work, archive, impl_cwd))
             if impl_cwd:
                 args = ["vivado","-mode","batch","-source","run_vivado.tcl","-notrace","-nojournal"]
                 cwd = impl_cwd
@@ -593,7 +597,17 @@ def run_verification(config, resume_waiting=False):
                         "--config", str(cfg), "--work_dir", str(work)]
                 cwd = ROOT
             with MemoryMonitor(archive / "host_memory.csv"):
-                if config.get("memory_scheduler"):
+                if staged:
+                    from staged_implementation import run_staged_implementation
+                    def invoke_phase(phase_args, phase_cwd, logfile, remaining, phase):
+                        if config.get("memory_scheduler"):
+                            from memory_scheduler import scheduled_invoke
+                            return scheduled_invoke(config, archive, "impl", phase_args, settings,
+                                                    phase_cwd, logfile, remaining, telemetry_name=phase)
+                        with MemoryMonitor(archive / (phase + "_host_memory.csv")):
+                            return invoke(phase_args, settings, phase_cwd, logfile, remaining)
+                    code, seconds = run_staged_implementation(config, impl_cwd, work, timeout, invoke_phase)
+                elif config.get("memory_scheduler"):
                     from memory_scheduler import scheduled_invoke
                     code, seconds = scheduled_invoke(config, archive, operation, args, settings, cwd,
                                                      work / (operation + ".console.log"), timeout)

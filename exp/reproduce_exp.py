@@ -158,13 +158,15 @@ def main():
             raise RuntimeError("Frozen HLS parent replay failed")
         parent_metrics = json.loads((archived(parent_new) / "metrics.json").read_text())
         if parent_metrics["status"] not in {"pass", "provisional"}:
-            raise RuntimeError("Replayed parent is not numerically/resource accepted; verification is ineligible")
+            from verify_exp import screened_parent
+            if not screened_parent(config, parent_metrics, json.loads((archived(parent_new) / "config.json").read_text())):
+                raise RuntimeError("Replayed parent is not numerically/resource accepted; verification is ineligible")
         config["verify_parent"] = parent_new
         config["design"] = parent_config["design"]
         if config.get("implementation_backend") == "serial_generated_flow":
             config["implementation_template"] = parent_new
             config["implementation_template_archive"] = str(archived(args.parent).relative_to(ROOT))
-        elif config.get("implementation_backend") == "serial_packaged_flow":
+        elif config.get("implementation_backend") in {"serial_packaged_flow", "staged_packaged_flow"}:
             config["implementation_driver_archive"] = str(archived(args.parent).relative_to(ROOT))
     prepare(config, source)
     print("Prepared", exp_id, "from", args.parent, flush=True)

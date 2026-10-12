@@ -221,10 +221,10 @@ class Lease:
 def scheduled_invoke(config, archive, kind, args, settings, cwd, logfile, timeout, telemetry_name=None):
     from run_exp import ROOT, invoke, utc, write_json
     from host_memory import MemoryMonitor
-    if telemetry_name not in {None, "package", "setup_paths"}:
+    if telemetry_name not in {None, "package", "setup_paths", "impl_synth", "impl_route"}:
         raise ValueError("Unsupported memory telemetry phase")
-    if telemetry_name == "setup_paths" and kind != "impl":
-        raise ValueError("Setup-path export requires an implementation lease")
+    if telemetry_name in {"setup_paths", "impl_synth", "impl_route"} and kind != "impl":
+        raise ValueError("Vivado report and staged phases require an implementation lease")
     name = telemetry_name or kind
     scheduler = Scheduler(ROOT)
     event_path = archive / "scheduler_events.jsonl"
