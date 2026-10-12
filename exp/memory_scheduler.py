@@ -187,23 +187,26 @@ class Lease:
                                      "after": self.oom_after, "new_budget_gib": state["budgets"][self.record["kind"]]}
 
 
-def scheduled_invoke(config, archive, kind, args, settings, cwd, logfile, timeout):
+def scheduled_invoke(config, archive, kind, args, settings, cwd, logfile, timeout, telemetry_name=None):
     from run_exp import ROOT, invoke, utc, write_json
     from host_memory import MemoryMonitor
+    if telemetry_name not in {None, "package"}:
+        raise ValueError("Unsupported memory telemetry phase")
+    name = telemetry_name or kind
     scheduler = Scheduler(ROOT)
     event_path = archive / "scheduler_events.jsonl"
     def event(record):
         with event_path.open("a") as stream:
-            stream.write(json.dumps({"time": utc(), **record}, sort_keys=True) + "\n")
+            stream.write(json.dumps({"time": utc(), "phase": name, **record}, sort_keys=True) + "\n")
     lease = scheduler.acquire(config["id"], kind,
                               config.get("controlled_parallel_validation", False),
                               config.get("memory_wait_timeout", 86400), event)
-    destination = archive / (kind + "_host_memory.csv")
+    destination = archive / (name + "_host_memory.csv")
     with lease, MemoryMonitor(destination, interval=2, root_pid=os.getpid()):
         result = invoke(args, settings, cwd, logfile, timeout, on_start=lease.register_process)
-    record = {**lease.record, "finished": time.time(), "oom_before": lease.oom_before,
+    record = {**lease.record, "phase": name, "finished": time.time(), "oom_before": lease.oom_before,
               "oom_after": lease.oom_after, "memory_pressure": lease.pressure, "exit_code": result[0]}
-    write_json(archive / (kind + "_admission.json"), record)
+    write_json(archive / (name + "_admission.json"), record)
     event({"event": "released", **record})
     if lease.pressure:
         raise RuntimeError("Task terminated to preserve 2 GiB MemAvailable: " + json.dumps(lease.pressure))

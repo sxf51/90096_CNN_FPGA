@@ -516,10 +516,17 @@ def run_verification(config):
             if package_serial:
                 package_cfg = package_only_config(cfg, work / "package_config.cfg")
                 shutil.copyfile(package_cfg, archive / "package_config.cfg")
-                with MemoryMonitor(archive / "package_host_memory.csv"):
-                    package_code, package_seconds = invoke(
-                        ["vitis-run", "--mode", "hls", "--package", "--config", str(package_cfg), "--work_dir", str(work)],
-                        settings, ROOT, work / "package.console.log", 600)
+                with (nullcontext() if config.get("memory_scheduler") else
+                      MemoryMonitor(archive / "package_host_memory.csv")):
+                    package_args = ["vitis-run", "--mode", "hls", "--package", "--config", str(package_cfg), "--work_dir", str(work)]
+                    if config.get("memory_scheduler"):
+                        from memory_scheduler import scheduled_invoke
+                        package_code, package_seconds = scheduled_invoke(
+                            config, archive, "impl", package_args, settings, ROOT,
+                            work / "package.console.log", 600, telemetry_name="package")
+                    else:
+                        package_code, package_seconds = invoke(
+                            package_args, settings, ROOT, work / "package.console.log", 600)
                 config["package_minutes"] = package_seconds / 60
                 if package_code:
                     raise RuntimeError(f"Package-only export failed (exit={package_code})")
@@ -636,7 +643,7 @@ def run_verification(config):
             md += " The second frame uses changed runtime weights/biases and constant0.5 input, requiring exact104/256 at every output; the first frame retains E017 butterfly and border checks. Independent testbench source is frozen in testbench/ at verification commit `" + config["source_commit"] + "`."
         if config.get("same_weights_changed_input"):
             md += " Both frames use the same compile-time ROM weights; the second input changes from butterfly to lenna. "
-            md += "Every output bit matches the independent w10a10 reference. There is no runtime parameter port, so changed-parameter verification is inapplicable."
+            md += "Every output bit is required to match the independent w10a10 reference. There is no runtime parameter port, so changed-parameter verification is inapplicable."
         md += "\n\n"
         md += "## 3. Configuration / 配置\n\n" + markdown_table([{"parameter": k, "value": v} for k, v in config.items() if k not in {"parent_config", "parent_metrics"}], ["parameter", "value"])
         md += f"\n## 4. Reproduction / 复现\n\n```sh\npython3 exp/reproduce_exp.py {exp_id} --run\n```\n\nThis rebuilds a fresh frozen parent before verification; see [reproduction guide](../REPRODUCE.md). Original reserved invocation:\n\n```sh\npython3 exp/run_exp.py --config exp/configs/{exp_id}.json\n```\n\nNo parent directory is overwritten.\n\n"
