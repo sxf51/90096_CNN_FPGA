@@ -549,6 +549,8 @@
 
 - 2026-10-12T15:27:50+00:00: C17: t4_fifo; status=infeasible; latency_ms_est=1.05236; ; HLS status retained; final feasibility requires independent routed gates
 
+- 2026-10-12T15:29:09+00:00: F51: independently route-feasible at5ns with535771 matching F48 RTL cycles,2.678855ms IP frame time and644DSP/43617LUT/87203FF/109BRAM18K. Archive all five final paths and physical hierarchy. C18 checkpoint export completed after it had already admitted; leave the active export intact. W32 unadmitted export was deliberately cancelled under the scheduler lock at15:10UTC and replaced by the matching final postroute_physopted report; preserve original console and cancellation SHA256 proof. The generated-report archive path passes13 focused tests. F50 RTL and C17 HLS now actually overlap; C16 waits for synthesis budget and W31 is auto-resuming after F50. Four planned experiment results remain, followed by conditional combination RTL/routing and any justified clock probe. No gate, source interface, protected file or existing workspace is changed.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。
