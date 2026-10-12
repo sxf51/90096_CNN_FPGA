@@ -222,13 +222,22 @@ def deviation_explanation(row, config, comparisons):
 
 def main():
     rows = list(csv.DictReader((ROOT / "experiments/results.csv").open(newline="")))
+    configs, rtl_by_parent = {}, {}
+    for row in rows:
+        path = ROOT / "experiments" / Path(row["md_path"]).parent / "config.json"
+        if path.is_file():
+            config = json.loads(path.read_text())
+            configs[row["id"]] = config
+            cycles = number(config.get("verification", {}).get("rtl_latency_max"))
+            if config.get("operation") == "cosim" and row["status"] == "cosim_complete" and cycles is not None:
+                rtl_by_parent.setdefault(config["verify_parent"], []).append((row["id"], cycles))
     structures, estimates, composition, bursts, conv3, warnings, int16, int16_area = [], [], [], [], [], [], [], []
     for row in rows:
         archive = ROOT / "experiments" / Path(row["md_path"]).parent
         path = archive / "config.json"
         if not path.is_file():
             continue
-        config = json.loads(path.read_text())
+        config = configs[row["id"]]
         pe_area = []
         if config.get("design") == "designs/packing_int16_pe":
             int16.append({**row, **config.get("validation", {}),
@@ -275,9 +284,16 @@ def main():
         for key in ("DSP", "BRAM18K", "URAM", "LUT", "FF", "latency_cycles"):
             paper = number(config.get("estimates",{}).get(key))
             actual = actual_measurement(row,config,key)
+            domain = {"cosim": "RTL", "impl": "routed"}.get(config.get("operation"), "HLS")
+            actual_source = row["id"]
+            if (config.get("resource_policy") == "routed" and not config.get("operation") and
+                    key == "latency_cycles" and len(rtl_by_parent.get(row["id"], [])) == 1):
+                actual_source, actual = rtl_by_parent[row["id"]][0]
+                domain = "RTL"
             deviation = 100*(actual/paper-1) if actual is not None and paper else None
             item = {"id":row["id"], "series":row["series"], "scope":derived["scope"],
                     "metric":key, "estimate":paper, "actual":actual, "deviation_pct":deviation,
+                    "actual_domain": domain, "actual_source": actual_source,
                     "over20pct": actual is not None and paper is not None and
                                  (actual != 0 if paper == 0 else abs(deviation) > 20),
                     "status":row["status"], "md_path":row["md_path"]}
@@ -313,7 +329,8 @@ def main():
         text = text[:result_end] + summary + text[result_end:]
         narrative = archive / "interpretation.md"
         human = (narrative.read_text().strip() if narrative.is_file() else config.get("interpretation", ""))
-        human += "\n\n"+SERIES_NOTES.get(row["series"], "")
+        if config.get("resource_policy") != "routed":
+            human += "\n\n"+SERIES_NOTES.get(row["series"], "")
         if config.get("operation") == "cosim":
             measured = config.get("verification", {})
             if measured.get("rtl_status") == "Pass":
@@ -328,7 +345,10 @@ def main():
             if config.get("profiling_archive_error"):
                 human += "\n\nRTL counter archive unavailable: "+config["profiling_archive_error"]
         human += "\n\nEstimate audit (parsed values; zero estimates have no percentage denominator):\n\n"
-        human += markdown_table(comparisons,["metric","estimate","actual","deviation_pct","over20pct"])
+        comparison_columns = ["metric", "estimate", "actual", "deviation_pct", "over20pct"]
+        if config.get("resource_policy") == "routed":
+            comparison_columns = ["metric", "estimate", "actual", "actual_domain", "actual_source", "deviation_pct", "over20pct"]
+        human += markdown_table(comparisons, comparison_columns)
         human += deviation_explanation(row,config,comparisons)
         if pe_area:
             human += "\nUtilization categories parsed from csynth.rpt; Total is not added to its component rows:\n\n"
@@ -363,7 +383,9 @@ def main():
         if dataflow_warnings:
             human += "\nDATAFLOW scheduling warnings parsed from csynth.log.txt:\n\n"
             human += markdown_table([{"warning":message} for message in dataflow_warnings],["warning"])
-            human += "\nCaller inputs are read-only weights loaded before DATAFLOW; their start synchronization may limit overlap. C simulation uses unbounded software streams, so only finite-FIFO RTL profiling can establish the resulting throughput and absence of deadlock.\n"
+            human += ("\nCaller/interface start synchronization may limit overlap. " if config.get("resource_policy") == "routed"
+                      else "\nCaller inputs are read-only weights loaded before DATAFLOW; their start synchronization may limit overlap. ")
+            human += "C simulation uses unbounded software streams, so only finite-FIFO RTL profiling can establish the resulting throughput and absence of deadlock.\n"
         if config.get("primitive_probe"):
             probe = config["primitive_probe"]
             human += "\nRouted DSP48E2 inspection (dsp_primitives.csv):\n\n"+markdown_table([probe],[
@@ -392,7 +414,7 @@ def main():
     extra = ["scope","operation","validation_only","eligible_provisional","failure_reason","dataflow_warning_count","ddr_bytes_per_frame","feature_recompute_ratio","cache_bits",
              "inferred_image_read_bursts","inferred_image_write_bursts","ddr_theoretical_lower_bound_ms","ddr_50pct_lower_bound_ms"]
     write_csv(ROOT / "experiments/architecture_data.csv",structures,list(rows[0])+extra)
-    write_csv(ROOT / "experiments/estimate_actual.csv",estimates,["id","series","scope","metric","estimate","actual","deviation_pct","over20pct","status","md_path"])
+    write_csv(ROOT / "experiments/estimate_actual.csv",estimates,["id","series","scope","metric","estimate","actual","actual_domain","actual_source","deviation_pct","over20pct","status","md_path"])
     write_csv(ROOT / "experiments/dsp_composition.csv",composition,["id","series","Conv1_DSP","Conv2_DSP","Conv3_DSP","other_DSP","total_DSP","status"])
     write_csv(ROOT / "experiments/bursts.csv",bursts,["id","direction","bundle","inferred_words","word_bits","loop","note"])
     write_csv(ROOT / "experiments/conv3_comparison.csv",conv3,["id","variant","kernel_DSP","kernel_BRAM18K","kernel_LUT","kernel_FF","kernel_latency_cycles",

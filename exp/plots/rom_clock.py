@@ -108,11 +108,20 @@ for metric, unit in (("DSP", "DSP count"), ("latency_cycles", "cycles")):
     plt.close(fig)
 
 measured = [row for row in comparison if row["operation"] == "cosim" and present(row["rtl_cycles"])]
-fig, ax = plt.subplots(figsize=(9, 5), layout="constrained")
+fig, ax = plt.subplots(figsize=(11, 5), layout="constrained")
 if measured:
-    ax.bar(range(len(measured)), [float(row["rtl_cycles"]) for row in measured], color="#287e8e", label="Two-frame RTL maximum latency")
+    bars = ax.bar(range(len(measured)), [float(row["rtl_cycles"]) for row in measured],
+                  color=["#287e8e" if row["status"] == "cosim_complete" else "#b65352" for row in measured],
+                  label="Two-frame RTL maximum latency (red: rejected verification)")
+    ax.bar_label(bars, labels=[format(int(float(row["rtl_cycles"])), ",") for row in measured], fontsize=8, padding=3)
+    ax.margins(y=.12)
     ax.set_xticks(range(len(measured)), [row["id"]+" / "+row["parent"] for row in measured])
-ax.axhline(558758, linestyle="--", color="#b65352", label="F97 / W21 baseline")
+baseline = next((row for row in measured if row["id"] == "F97"), None)
+if baseline:
+    ax.axhline(float(baseline["rtl_cycles"]), linestyle="--", color="#b65352", label="F97 / W21 baseline")
+goal = next((row for row in comparison if row.get("wsD_goal_met") in {"True", "False"} and present(row["rtl_2pct_limit_cycles"])), None)
+if goal:
+    ax.axhline(float(goal["rtl_2pct_limit_cycles"]), linestyle=":", color="#668b3c", label="WS-D: HLS +2% goal")
 ax.set(xlabel="Verification experiment / hardware parent", ylabel="Measured latency (cycles)",
        title="Finite-FIFO frame latency: changed input or parameters")
 ax.tick_params(axis="x", labelrotation=25)

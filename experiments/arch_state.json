@@ -38,6 +38,7 @@
     "weight_storage": "constant_lutram_rom"
   },
   "branch": "exp/explore-arch",
+  "complete_image_count": 13,
   "completed_architecture_ids": [
     "P01",
     "P02",
@@ -166,12 +167,112 @@
   ],
   "first_phase_head": "2fa7249eaecdfdc360d8d452fcbf52171c35abd2",
   "frozen_design_files": 45,
-  "full_set14": false,
-  "hardware_parallelism": 1,
-  "next": "Review section6 decisions, missing comic and any failed route/RTL gates; use measured physical bottlenecks for the next independent design. No board acceptance or push.",
+  "full_set14": true,
+  "hardware_parallelism": null,
+  "hardware_scheduler": "validated memory-budget admission",
+  "next": "Eight independent designs have complete13-image exactness and HLS results: W24 ROM, W27 FRP, F39 registeredConv3 operands, F40 featureFIFO16, F41 featureFIFO32, F42 reordered-raster buffer, F47 windowFIFO16 and C13 prepackedConv2 T4. W25 ROM two-frame RTL passed at554226cycles,4532cycles/0.81pct below W21; parameter load duration is not an additive frame penalty. F45 runs; W28/F48/F46/C14/F44/F43 queue for independent two-frame finite-FIFO checks. F43/W28 use the preplanned553171..564345cycle gate. WS-D functional PASS is separate from the2percent performance goal535741cycles. C13 uses E065 mixed precision and passes the routed-policy HLS screen at1032DSP/127966LUT/192308FF/263090cycles, preserving its historical HLS-infeasible status. W26 preparation failure remains archived. W23/W29/W30/C15 routing plans remain unlaunched:12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve memory gates. F98 board handoff is archived; board measurements are pending.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
-  "pending_final_verification_ids": [],
+  "pending_final_verification_ids": [
+    "W23",
+    "F43",
+    "F44",
+    "F45",
+    "W28",
+    "W29",
+    "W30",
+    "F48",
+    "F46",
+    "C14",
+    "C15"
+  ],
+  "resource_policy": "routed",
+  "rom_clock_workstream": {
+    "board_handoff": "experiments/BOARD_HANDOFF.md",
+    "complete_test_set": "Set14 (13 course-provided images)",
+    "completed_workstreams": [
+      "WS-0",
+      "WS-A agent handoff (board measurements pending)"
+    ],
+    "experiment_ids": [
+      "F32",
+      "F33",
+      "F34",
+      "F36",
+      "F37",
+      "F38",
+      "F35",
+      "W23",
+      "W24",
+      "W25",
+      "W26",
+      "W27",
+      "F39",
+      "F40",
+      "F41",
+      "F42",
+      "C13",
+      "F43",
+      "F44",
+      "F45",
+      "F47",
+      "W28",
+      "W29",
+      "W30",
+      "F48",
+      "F46",
+      "C14",
+      "C15"
+    ],
+    "local_exec_sessions": [
+      49366,
+      45211,
+      56420,
+      60396,
+      18338,
+      88402
+    ],
+    "next": "Eight independent designs have complete13-image exactness and HLS results: W24 ROM, W27 FRP, F39 registeredConv3 operands, F40 featureFIFO16, F41 featureFIFO32, F42 reordered-raster buffer, F47 windowFIFO16 and C13 prepackedConv2 T4. W25 ROM two-frame RTL passed at554226cycles,4532cycles/0.81pct below W21; parameter load duration is not an additive frame penalty. F45 runs; W28/F48/F46/C14/F44/F43 queue for independent two-frame finite-FIFO checks. F43/W28 use the preplanned553171..564345cycle gate. WS-D functional PASS is separate from the2percent performance goal535741cycles. C13 uses E065 mixed precision and passes the routed-policy HLS screen at1032DSP/127966LUT/192308FF/263090cycles, preserving its historical HLS-infeasible status. W26 preparation failure remains archived. W23/W29/W30/C15 routing plans remain unlaunched:12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve memory gates. F98 board handoff is archived; board measurements are pending.",
+    "pending_decisions": [
+      "Initial remote MemAvailable=14091148 KiB (13.438 GiB), below 14.5 GiB required by the 12.5 GiB implementation reservation plus 2 GiB floor. Keep both stated memory gates; if unchanged after WS-0, record W23 as waiting for memory and continue independent coding/C simulations/syntheses."
+    ],
+    "phase": "WS-0 complete; WS-B HLS/RTL passed; WS-C/D and T4 RTL controls running; implementation awaiting memory admission",
+    "plan": "docs/0005-rom-clock-t4-plan.md",
+    "planned_conditions": {
+      "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
+      "W29": "W25 same-ROM/changed-input two-frame RTL must pass before implementation",
+      "W30": "W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation"
+    },
+    "resource_policy": "routed",
+    "session_jobs": {
+      "18338": [
+        "F44"
+      ],
+      "45211": [
+        "W28"
+      ],
+      "49366": [
+        "F45"
+      ],
+      "56420": [
+        "F48",
+        "F46"
+      ],
+      "60396": [
+        "C14"
+      ],
+      "88402": [
+        "F43"
+      ]
+    },
+    "waiting_for_memory": [
+      "W23",
+      "W29",
+      "W30",
+      "C15"
+    ],
+    "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL queued; C15 independent5ns route planned but unlaunched for memory. Preserve the old HLS infeasible row; final feasibility is routed."
+  },
   "selected": [
     {
       "DSP": "502.0",
@@ -204,7 +305,7 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-12T06:12:09+00:00",
+  "time": "2026-10-12T06:23:06+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",

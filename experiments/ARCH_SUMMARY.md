@@ -1,39 +1,59 @@
 # SRCNN K26 architecture exploration
 
-The fastest resource-feasible supplied-image point is [W21](W21_subkernel_raw_cache_T8/W21.md) at 1.74903921ms HLS-estimated latency. Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.
+Current follow-up: [ROM_CLOCK.md](ROM_CLOCK.md), following [docs/0005](../docs/0005-rom-clock-t4-plan.md). The complete course Set14 has13 images; final feasibility now uses independently routed resource/timing gates. Historical HLS statuses and earlier provisional wording below remain original records.
+
+The lowest HLS estimate satisfying the original HLS resource screen is [W24](W24_constant_rom_T8/W24.md) at 1.7460189000000002ms HLS-estimated latency. Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Routed timing, measured RTL cycles and board validation remain distinct; the HLS leader cannot establish final feasibility.
 
 Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.
 
 Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). Review section6 decisions, missing comic and any failed route/RTL gates; use measured physical bottlenecks for the next independent design. No board acceptance or push.
 
-## Current Best
+## HLS Screening Leader
 
 | id | design | precision_w_a_acc | T_target | clock_target_ns | clock_est_ns | latency_cycles | interval_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | delta_psnr | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [W21](W21_subkernel_raw_cache_T8/W21.md) | designs/winograd_subkernel_cache_v1 | w10a10acc23 | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81086.0 | 130057.0 | -0.0695141811880653 | provisional |
+| [W24](W24_constant_rom_T8/W24.md) | designs/winograd_rom_v1 | w10a10acc23 | 8 | 3.33 | 2.431 | 524330.0 | 524331.0 | 1.7460189000000002 | 630.0 | 138.0 | 0.0 | 53316.0 | 103695.0 | -0.0695141811880653 | pass |
 
-HLS-estimate improvement over first-phase E043: 3.9675x. This ratio is not a measured board speedup.
+HLS-estimate improvement over first-phase E043: 3.9743x. This ratio is not a measured board speedup.
 
 Actual verification of the current HLS winner:
 
 | id | operation | status | impl_target_clock_ns | impl_WNS_ns | timing_met | impl_DSP | impl_LUT | impl_FF | impl_BRAM36 | impl_URAM | rtl_status | rtl_latency_max | rtl_interval_max | cycle_deviation_pct |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [F97](F97_ws_cosim_W21/F97.md) | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 558758.0 | 558787.0 | 6.382071331608397 |
-| [F98](F98_ws_impl_W21/F98.md) | impl | impl_complete | 5.0 | 0.14 | True | 644.0 | 42594.0 | 88806.0 | 54.5 | 0.0 | unknown | unknown | unknown | unknown |
-| [W22](W22_ws_clock_4p95_W21/W22.md) | impl | impl_complete | 4.95 | 0.047 | True | 644.0 | 42592.0 | 88806.0 | 54.5 | 0.0 | unknown | unknown | unknown | unknown |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 554226.0 | 554237.0 | 5.701752712986097 |
 
-## Verified IP Timing
+## ROM, Clock, FIFO And T4
 
-Matching-source RTL cycles multiplied by independently closed implementation targets. These times exclude board/DDR/driver overhead, and all image-quality acceptance remains provisional until comic is supplied. The routed resources do not replace the original HLS acceptance gates.
+Measured follow-up records from docs/0005; their routed acceptance remains separate from historical HLS statuses. WS-D functional cosimulation and its2% latency goal are separate columns. See [ROM_CLOCK.md](ROM_CLOCK.md) for counters and memory evidence.
 
-| id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms_at_route_target |
+| id | parent | status | T | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_hls_excess_pct | wsD_goal_met | route_feasible | rtl_frame_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 558787.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 |
-| [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 558787.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
-| [F95](F95_ws_impl_F28/F95.md) | F28 | F93 | 1059506.0 | 1059535.0 | 5.0 | 0.282 | 591.0 | 72.0 | 30140.0 | 76498.0 | 5.29753 |
-| [F92](F92_ws_impl_F25/F92.md) | F25 | F82 | 1068183.0 | 1068212.0 | 5.0 | 0.568 | 592.0 | 72.0 | 32400.0 | 77757.0 | 5.340915 |
+| [W24](W24_constant_rom_T8/W24.md) | W19 | pass | 8 | 524330.0 | 630.0 | 53316.0 | 554226.0 | 5.701752712986097 | unknown | unknown | unknown |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | W24 | cosim_complete | 8 | 524330.0 | 630.0 | 53316.0 | 554226.0 | 5.701752712986097 | unknown | unknown | unknown |
+| [W26](W26_frp_W21_T8/W26.md) | W21 | fail | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [W27](W27_frp_W21_T8/W27.md) | W21 | pass | 8 | 525237.0 | 644.0 | 81484.0 | unknown | unknown | unknown | unknown | unknown |
+| [F39](F39_c3_select_W21_T8/F39.md) | W21 | pass | 8 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | unknown |
+| [F40](F40_fifo16_W21_T8/F40.md) | W21 | pass | 8 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown |
+| [F41](F41_fifo32_W21_T8/F41.md) | W21 | pass | 8 | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown | unknown | unknown |
+| [F42](F42_reorder_W21_T8/F42.md) | W21 | pass | 8 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown |
+| [C13](C13_runtime_prepacked_conv2_T4/C13.md) | W21 | infeasible | 4 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | unknown |
+| [F47](F47_windows16_W21_T8/F47.md) | W21 | pass | 8 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown |
 
-Target minus WNS is a slack-derived estimate; only each implemented target above is accepted. Actual first-five-path and hierarchy reports are linked from each experiment.
+Unmeasured plans have no actual result and do not enter rankings:
+
+| id | parent | operation | status | condition |
+| --- | --- | --- | --- | --- |
+| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | unlaunched_memory | unknown |
+| [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim | queued_or_running | unknown |
+| [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim | queued_or_running | unknown |
+| [F45](F45_ws_cosim_F41/F45.md) | F41 | cosim | queued_or_running | unknown |
+| [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | queued_or_running | unknown |
+| [W29](W29_ws_impl_W24/W29.md) | W24 | impl | unlaunched_memory | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
+| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | unlaunched_memory | W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
+| [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim | queued_or_running | unknown |
+| [F46](F46_ws_cosim_F42/F46.md) | F42 | cosim | queued_or_running | unknown |
+| [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | queued_or_running | unknown |
+| [C15](C15_ws_impl_C13/C15.md) | C13 | impl | unlaunched_memory | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
 
 ## P Direction
 
@@ -78,7 +98,7 @@ At equal II1 and one DSP, overlap repair does not beat the ordinary mixed contro
 
 G2=2G makes the F2 inverse exactly divisible by4 before the ordinary layer cast. W01/W03 confirm one DSP per transformed product at10/16-bit operands. The layer and network designs retain complete transform precision, split9x9 into nine3x3 pieces, generate128x128 tiles and reorder two rows into raster streams. Equivalent offline tensors are archived; runtime transforms preserve the fixed incoming-weight contract. Header-order compilation failures and independent retries remain visible.
 
-Measured direction result: [W21](W21_subkernel_raw_cache_T8/W21.md) is its fastest provisional resource-feasible point at 1.74903921ms, with 644.0 DSP and 81086.0 LUT. RTL and routing must be assessed separately.
+Measured direction result: [W24](W24_constant_rom_T8/W24.md) is its fastest provisional resource-feasible point at 1.7460189000000002ms, with 630.0 DSP and 53316.0 LUT. RTL and routing must be assessed separately.
 
 | id | scope | T_target | latency_cycles | latency_ms_est | DSP | BRAM18K | URAM | LUT | FF | bit_exact | border_mse | ii_ok | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -102,6 +122,9 @@ Measured direction result: [W21](W21_subkernel_raw_cache_T8/W21.md) is its faste
 | [W16](W16_fixed_tiles_T8_allcontinuous_3p33ns_split4000/W16.md) | frame | 8 | 532569.0 | 1.77345477 | 648.0 | 146.0 | 0.0 | 145767.0 | 192756.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [W19](W19_streamed_winograd_T8/W19.md) | frame | 8 | 525237.0 | 1.74903921 | 645.0 | 146.0 | 0.0 | 83623.0 | 130843.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [W21](W21_subkernel_raw_cache_T8/W21.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81086.0 | 130057.0 | True | 1.661846957728205e-05 | True | provisional |
+| [W24](W24_constant_rom_T8/W24.md) | frame | 8 | 524330.0 | 1.7460189000000002 | 630.0 | 138.0 | 0.0 | 53316.0 | 103695.0 | True | 1.661846957728205e-05 | True | pass |
+| [W26](W26_frp_W21_T8/W26.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [W27](W27_frp_W21_T8/W27.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81484.0 | 130117.0 | True | 1.661846957728205e-05 | True | pass |
 
 ## G Direction
 
@@ -165,12 +188,13 @@ An unimplemented raw-bank combination follow-up would still need about 96004.0 L
 | [C06](C06_wino_packing_T8_all_header_retry/C06.md) | frame | 8 | 3493579.0 | 13.974316 | 470.0 | 169.0 | 0.0 | 170165.0 | 153644.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | frame | 8 | 532562.0 | 2.130248 | 520.0 | 146.0 | 0.0 | 150851.0 | 179452.0 | True | 1.405191888267716e-05 | True | infeasible |
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | frame | 4 | 270418.0 | 1.081672 | 1036.0 | 146.0 | 0.0 | 248797.0 | 307525.0 | True | 1.405191888267716e-05 | True | infeasible |
+| [C13](C13_runtime_prepacked_conv2_T4/C13.md) | frame | 4 | 263090.0 | 1.05236 | 1032.0 | 146.0 | 0.0 | 127966.0 | 192308.0 | True | 1.405191888267716e-05 | True | infeasible |
 
 ## F Direction
 
 Storage controls map shallow wide FIFOs to LUTRAM and Conv3 line banks to20 URAM. Continuous engines separate window generation, flatten pixel/fold iterations, shift fixed channel registers and register balanced fabric reductions. Old padding versus online read/emit padding isolates finite-FIFO row serialization. Clock/T controls test actual II, resource and timing limits; final RTL and routed measurements are separate from HLS estimates.
 
-Measured direction result: [F27](F27_local_streamed_params_T16/F27.md) is its fastest provisional resource-feasible point at 2.6142825ms, with 502.0 DSP and 61656.0 LUT. RTL and routing must be assessed separately.
+Measured direction result: [F33](F33_ws0_memory_control_W21/F33.md) is its fastest provisional resource-feasible point at 1.74903921ms, with 644.0 DSP and 81086.0 LUT. RTL and routing must be assessed separately.
 
 The exact IEEE output encoder [F20](F20_ieee_decode_bit_exact_sdk_retry_unique_object/F20.md) uses 0.0 DSP, 242.0 LUT and 52.0 FF at 2.051ns estimated clock; its legacy control [F21](F21_ieee_decode_legacy_control_sdk_retry_unique_object/F21.md) uses 3.0 DSP at 3.239ns. The independent network copy [F23](F23_continuous_ieee_T16_2p5ns/F23.md) keeps the same quantization and weights, reaches 2.822ns estimated clock and removes the legacy output scaling DSPs. Continuous folds reduce the repeated per-pixel pipeline fill/drain; assess finite-FIFO RTL cycles and routed timing in the final verification table independently of that HLS estimate.
 
@@ -220,6 +244,18 @@ Loader controls preserve all inference engines, precision and runtime parameters
 | [F29](F29_streamed_direct_T8_tree1/F29.md) | frame | 8 | 525761.0 | 1.7507841300000002 | 1004.0 | 73.0 | 0.0 | 87869.0 | 194668.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [F30](F30_streamed_direct_T8_tree0/F30.md) | frame | 8 | 525757.0 | 1.7507708100000001 | 1004.0 | 73.0 | 0.0 | 93631.0 | 104834.0 | True | 1.661846957728205e-05 | True | infeasible |
 | [F96](F96_ws_all_W21/F96.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
+| [F34](F34_ws0_memory_control_F96/F34.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
+| [F32](F32_ws0_memory_control_F28/F32.md) | frame | 16 | 1046029.0 | 2.6150725 | 502.0 | 73.0 | 0.0 | 61553.0 | 122061.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F33](F33_ws0_memory_control_W21/F33.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81086.0 | 130057.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F38](F38_ws0_memory_control_F96/F38.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
+| [F35](F35_runtime_rom_bank_equivalence/F35.md) | frame | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | unknown | csim_pass |
+| [F36](F36_ws0_memory_control_F28/F36.md) | frame | 16 | 1046029.0 | 2.6150725 | 502.0 | 73.0 | 0.0 | 61553.0 | 122061.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F37](F37_ws0_memory_control_W21/F37.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81086.0 | 130057.0 | True | 1.661846957728205e-05 | True | provisional |
+| [F41](F41_fifo32_W21_T8/F41.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81105.0 | 130057.0 | True | 1.661846957728205e-05 | True | pass |
+| [F42](F42_reorder_W21_T8/F42.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81550.0 | 130176.0 | True | 1.661846957728205e-05 | True | pass |
+| [F47](F47_windows16_W21_T8/F47.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81086.0 | 130057.0 | True | 1.661846957728205e-05 | True | pass |
+| [F40](F40_fifo16_W21_T8/F40.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81086.0 | 130057.0 | True | 1.661846957728205e-05 | True | pass |
+| [F39](F39_c3_select_W21_T8/F39.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81518.0 | 130422.0 | True | 1.661846957728205e-05 | True | pass |
 
 ## All Architectures
 
@@ -227,9 +263,19 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 
 | id | series | design | T_target | latency_ms_est | DSP | BRAM18K | LUT | FF | delta_psnr | status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [C13](C13_runtime_prepacked_conv2_T4/C13.md) | C | designs/winograd_prepacked_t4_v1 | 4 | 1.05236 | 1032.0 | 146.0 | 127966.0 | 192308.0 | -0.07589037644656216 | infeasible |
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | C | designs/winograd_mixed_packing_r2 | 4 | 1.081672 | 1036.0 | 146.0 | 248797.0 | 307525.0 | -0.07589037644656216 | infeasible |
+| [W24](W24_constant_rom_T8/W24.md) | W | designs/winograd_rom_v1 | 8 | 1.7460189000000002 | 630.0 | 138.0 | 53316.0 | 103695.0 | -0.0695141811880653 | pass |
 | [W19](W19_streamed_winograd_T8/W19.md) | W | designs/winograd_param_stream_v1 | 8 | 1.74903921 | 645.0 | 146.0 | 83623.0 | 130843.0 | -0.0695141811880653 | infeasible |
 | [W21](W21_subkernel_raw_cache_T8/W21.md) | W | designs/winograd_subkernel_cache_v1 | 8 | 1.74903921 | 644.0 | 146.0 | 81086.0 | 130057.0 | -0.0695141811880653 | provisional |
+| [F33](F33_ws0_memory_control_W21/F33.md) | F | designs/winograd_subkernel_cache_v1 | 8 | 1.74903921 | 644.0 | 146.0 | 81086.0 | 130057.0 | -0.0695141811880653 | provisional |
+| [F37](F37_ws0_memory_control_W21/F37.md) | F | designs/winograd_subkernel_cache_v1 | 8 | 1.74903921 | 644.0 | 146.0 | 81086.0 | 130057.0 | -0.0695141811880653 | provisional |
+| [F41](F41_fifo32_W21_T8/F41.md) | F | designs/winograd_feature_fifo32_v1 | 8 | 1.74903921 | 644.0 | 146.0 | 81105.0 | 130057.0 | -0.0695141811880653 | pass |
+| [W27](W27_frp_W21_T8/W27.md) | W | designs/winograd_frp_v1 | 8 | 1.74903921 | 644.0 | 146.0 | 81484.0 | 130117.0 | -0.0695141811880653 | pass |
+| [F42](F42_reorder_W21_T8/F42.md) | F | designs/winograd_reorder_buffer_v1 | 8 | 1.74903921 | 644.0 | 146.0 | 81550.0 | 130176.0 | -0.0695141811880653 | pass |
+| [F47](F47_windows16_W21_T8/F47.md) | F | designs/winograd_window_fifo16_v1 | 8 | 1.74903921 | 644.0 | 146.0 | 81086.0 | 130057.0 | -0.0695141811880653 | pass |
+| [F40](F40_fifo16_W21_T8/F40.md) | F | designs/winograd_feature_fifo16_v1 | 8 | 1.74903921 | 644.0 | 146.0 | 81086.0 | 130057.0 | -0.0695141811880653 | pass |
+| [F39](F39_c3_select_W21_T8/F39.md) | F | designs/winograd_c3_select_reg_v1 | 8 | 1.74903921 | 644.0 | 146.0 | 81518.0 | 130422.0 | -0.0695141811880653 | pass |
 | [F30](F30_streamed_direct_T8_tree0/F30.md) | F | designs/continuous_param_T8_tree0_v1 | 8 | 1.7507708100000001 | 1004.0 | 73.0 | 93631.0 | 104834.0 | -0.0695141811880653 | infeasible |
 | [F29](F29_streamed_direct_T8_tree1/F29.md) | F | designs/continuous_param_T8_tree1_v1 | 8 | 1.7507841300000002 | 1004.0 | 73.0 | 87869.0 | 194668.0 | -0.0695141811880653 | infeasible |
 | [F12](F12_continuous_T8_online_3p33ns_split4000/F12.md) | F | designs/continuous_direct_r2 | 8 | 1.75990833 | 1007.0 | 73.0 | 97112.0 | 196314.0 | -0.0695141811880653 | infeasible |
@@ -242,6 +288,8 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [C10](C10_wino_conv2w8_continuous_T8_split4000/C10.md) | C | designs/winograd_mixed_packing_r2 | 8 | 2.130248 | 520.0 | 146.0 | 150851.0 | 179452.0 | -0.07589037644656216 | infeasible |
 | [F27](F27_local_streamed_params_T16/F27.md) | F | designs/continuous_param_stream_v1 | 16 | 2.6142825 | 502.0 | 73.0 | 61656.0 | 122055.0 | -0.0695141811880653 | provisional |
 | [F28](F28_local_load_no_flatten_T16/F28.md) | F | designs/continuous_param_noflat_v1 | 16 | 2.6150725 | 502.0 | 73.0 | 61553.0 | 122061.0 | -0.0695141811880653 | provisional |
+| [F32](F32_ws0_memory_control_F28/F32.md) | F | designs/continuous_param_noflat_v1 | 16 | 2.6150725 | 502.0 | 73.0 | 61553.0 | 122061.0 | -0.0695141811880653 | provisional |
+| [F36](F36_ws0_memory_control_F28/F36.md) | F | designs/continuous_param_noflat_v1 | 16 | 2.6150725 | 502.0 | 73.0 | 61553.0 | 122061.0 | -0.0695141811880653 | provisional |
 | [F25](F25_nested_weight_loader_T16_2p5ns/F25.md) | F | designs/continuous_nested_load_v1 | 16 | 2.64226 | 502.0 | 73.0 | 69976.0 | 125404.0 | -0.0695141811880653 | provisional |
 | [F26](F26_s2p_bias_shift_T16/F26.md) | F | designs/continuous_s2p_load_v1 | 16 | 2.64227 | 502.0 | 73.0 | 70808.0 | 126285.0 | -0.0695141811880653 | provisional |
 | [F24](F24_affine_weight_loader_T16_2p5ns/F24.md) | F | designs/continuous_affine_load_v1 | 16 | 2.830503377 | 502.0 | 73.0 | 69290.0 | 124577.0 | -0.0695141811880653 | provisional |
@@ -318,6 +366,8 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [F06](F06_continuous_T16_online_3p33ns/F06.md) | F | designs/continuous_direct | 16 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
 | [F07](F07_continuous_T8_online_3p33ns/F07.md) | F | designs/continuous_direct | 8 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | fail |
 | [F31](F31_reload_testbench_csim_F28/F31.md) | F | designs/ws_reload_F31 | 16 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
+| [F35](F35_runtime_rom_bank_equivalence/F35.md) | F | designs/rom_bank_probe_v1 | 8 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | csim_pass |
+| [W26](W26_frp_W21_T8/W26.md) | W | designs/winograd_frp_v1 | 8 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
 
 ## Estimates And Actuals
 
@@ -432,6 +482,23 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F97](F97_ws_cosim_W21/F97.md) | frame | 644.0 | unknown | unknown | 525237.0 | 558758.0 | 6.382071331608397 | cosim_complete |
 | [F98](F98_ws_impl_W21/F98.md) | frame | 644.0 | 644.0 | 0.0 | 525237.0 | unknown | unknown | impl_complete |
 | [W22](W22_ws_clock_4p95_W21/W22.md) | frame | 644.0 | 644.0 | 0.0 | 558758.0 | unknown | unknown | impl_complete |
+| [F34](F34_ws0_memory_control_F96/F34.md) | frame | 644.0 | unknown | unknown | 525237.0 | unknown | unknown | csim_pass |
+| [F32](F32_ws0_memory_control_F28/F32.md) | frame | 502.0 | 502.0 | 0.0 | 1046029.0 | 1046029.0 | 0.0 | provisional |
+| [F33](F33_ws0_memory_control_W21/F33.md) | frame | 644.0 | 644.0 | 0.0 | 525237.0 | 525237.0 | 0.0 | provisional |
+| [F38](F38_ws0_memory_control_F96/F38.md) | frame | 644.0 | unknown | unknown | 525237.0 | unknown | unknown | csim_pass |
+| [F35](F35_runtime_rom_bank_equivalence/F35.md) | frame | 644.0 | unknown | unknown | 525237.0 | unknown | unknown | csim_pass |
+| [F36](F36_ws0_memory_control_F28/F36.md) | frame | 502.0 | 502.0 | 0.0 | 1046029.0 | 1046029.0 | 0.0 | provisional |
+| [F37](F37_ws0_memory_control_W21/F37.md) | frame | 644.0 | 644.0 | 0.0 | 525237.0 | 525237.0 | 0.0 | provisional |
+| [W24](W24_constant_rom_T8/W24.md) | frame | 644.0 | 630.0 | -2.1739130434782594 | 547500.0 | 554226.0 | 1.2284931506849395 | pass |
+| [W26](W26_frp_W21_T8/W26.md) | frame | 644.0 | unknown | unknown | 558758.0 | unknown | unknown | fail |
+| [F41](F41_fifo32_W21_T8/F41.md) | frame | 644.0 | 644.0 | 0.0 | 543000.0 | 525237.0 | -3.2712707182320444 | pass |
+| [W27](W27_frp_W21_T8/W27.md) | frame | 644.0 | 644.0 | 0.0 | 558758.0 | 525237.0 | -5.999198221770429 | pass |
+| [F42](F42_reorder_W21_T8/F42.md) | frame | 644.0 | 644.0 | 0.0 | 540000.0 | 525237.0 | -2.7338888888888913 | pass |
+| [F47](F47_windows16_W21_T8/F47.md) | frame | 644.0 | 644.0 | 0.0 | 535500.0 | 525237.0 | -1.9165266106442536 | pass |
+| [C13](C13_runtime_prepacked_conv2_T4/C13.md) | frame | 1032.0 | 1032.0 | 0.0 | 292000.0 | 263090.0 | -9.900684931506854 | infeasible |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | frame | 630.0 | unknown | unknown | 547500.0 | 554226.0 | 1.2284931506849395 | cosim_complete |
+| [F40](F40_fifo16_W21_T8/F40.md) | frame | 644.0 | 644.0 | 0.0 | 550000.0 | 525237.0 | -4.502363636363638 | pass |
+| [F39](F39_c3_select_W21_T8/F39.md) | frame | 644.0 | 644.0 | 0.0 | 558760.0 | 525237.0 | -5.99953468394302 | pass |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -474,6 +541,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [F97](F97_ws_cosim_W21/F97.md) | frame | W21 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 558758.0 | 558787.0 | 6.382071331608397 |
 | [F98](F98_ws_impl_W21/F98.md) | frame | W21 | impl | impl_complete | 644.0 | 54.5 | 42594.0 | 88806.0 | 0.0 | 0.14 | True | unknown | unknown | unknown | unknown |
 | [W22](W22_ws_clock_4p95_W21/W22.md) | frame | W21 | impl | impl_complete | 644.0 | 54.5 | 42592.0 | 88806.0 | 0.0 | 0.047 | True | unknown | unknown | unknown | unknown |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | frame | W24 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 554226.0 | 554237.0 | 5.701752712986097 |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -525,6 +593,18 @@ Finite-FIFO RTL counters span both transactions, including startup/inactive cycl
 | [F97](F97_ws_cosim_W21/F97.md) | result_U | 1 | 0.0 | 88.34931997136721 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
 | [F97](F97_ws_cosim_W21/F97.md) | windows0_U | 2 | 0.8192555476020043 | 4.881531853972799 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
 | [F97](F97_ws_cosim_W21/F97.md) | windows1_U | 2 | 0.8192555476020043 | 4.881531853972799 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | raw_U | 512 | 82.33800819499099 | 0.01822311954546849 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | padded1_U | 16 | 86.52968654430113 | 0.06621668191274192 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | features2_U | 4 | 0.13550062157076073 | 87.190409948019 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | features_U | 4 | 80.6912516396297 | 5.252047394544972 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | windows_U | 2 | 86.58182992597084 | 4.644549934053958 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | tiles_U | 1 | 0.0 | 87.41792830194807 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | top_U | 172 | 0.0 | 7.086267526220543 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | bottom_U | 293 | 0.0 | 0.0 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | padded3_U | 16 | 0.6194056376197358 | 87.10290288881552 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | result_U | 1 | 0.0 | 88.26016119341585 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | windows0_U | 2 | 0.825994468110443 | 6.131989513587049 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | windows1_U | 2 | 0.825994468110443 | 6.131989513587049 | [counters](W25_rom_changed_input_cosim_W24/profiling/channels.csv) |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -574,6 +654,17 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [F29](F29_streamed_direct_T8_tree1/F29.md) | 5 | infeasible |
 | [F30](F30_streamed_direct_T8_tree0/F30.md) | 5 | infeasible |
 | [W21](W21_subkernel_raw_cache_T8/W21.md) | 7 | provisional |
+| [F32](F32_ws0_memory_control_F28/F32.md) | 5 | provisional |
+| [F33](F33_ws0_memory_control_W21/F33.md) | 7 | provisional |
+| [F36](F36_ws0_memory_control_F28/F36.md) | 5 | provisional |
+| [F37](F37_ws0_memory_control_W21/F37.md) | 7 | provisional |
+| [F41](F41_fifo32_W21_T8/F41.md) | 7 | pass |
+| [W27](W27_frp_W21_T8/W27.md) | 7 | pass |
+| [F42](F42_reorder_W21_T8/F42.md) | 7 | pass |
+| [F47](F47_windows16_W21_T8/F47.md) | 7 | pass |
+| [C13](C13_runtime_prepacked_conv2_T4/C13.md) | 7 | infeasible |
+| [F40](F40_fifo16_W21_T8/F40.md) | 7 | pass |
+| [F39](F39_c3_select_W21_T8/F39.md) | 7 | pass |
 
 Selected candidates were ranked globally across both phases before validation. Mandatory full-supplied-image C simulation:
 
@@ -641,6 +732,8 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 | [W19](W19_streamed_winograd_T8/W19.md) | W | infeasible | LUT=83623.0 exceeds 81984 | unknown |
 | [F29](F29_streamed_direct_T8_tree1/F29.md) | F | infeasible | LUT=87869.0 exceeds 81984; FF=194668.0 exceeds 163968 | unknown |
 | [F30](F30_streamed_direct_T8_tree0/F30.md) | F | infeasible | LUT=93631.0 exceeds 81984 | unknown |
+| [W26](W26_frp_W21_T8/W26.md) | W | fail | ; Design not found: /home/lipuze/amdprojects/90096_CNN_FPGA/designs/winograd_frp_v1 | ; Design not found: /home/lipuze/amdprojects/90096_CNN_FPGA/designs/winograd_frp_v1 |
+| [C13](C13_runtime_prepacked_conv2_T4/C13.md) | C | infeasible | LUT=127966.0 exceeds 81984; FF=192308.0 exceeds 163968 | ; HLS status retained; final feasibility requires independent routed gates |
 
 ## Pending Human Decisions
 
@@ -681,4 +774,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T03:13:30+00:00.
+Generated from archived evidence at 2026-10-12T06:29:41+00:00.

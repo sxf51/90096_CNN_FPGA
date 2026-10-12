@@ -43,19 +43,27 @@ def main():
     eligible = [row for row in frames if row["eligible_provisional"] == "True"]
     best = eligible[0] if eligible else None
     text = "# SRCNN K26 architecture exploration\n\n"
-    if (ROOT / "experiments/rom_clock_state.json").exists():
+    rom_current = (ROOT / "experiments/rom_clock_state.json").exists()
+    if rom_current:
         text += "Current follow-up: [ROM_CLOCK.md](ROM_CLOCK.md), following [docs/0005](../docs/0005-rom-clock-t4-plan.md). "
         text += "The complete course Set14 has13 images; final feasibility now uses independently routed resource/timing gates. "
         text += "Historical HLS statuses and earlier provisional wording below remain original records.\n\n"
-    text += ("The fastest resource-feasible supplied-image point is ["+best["id"]+"]("+best["md_path"]+") at "+best["latency_ms_est"]+"ms HLS-estimated latency. " if best else "No resource-feasible exact frame point is currently available. ")
-    text += "Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.\n\n"
+    if best:
+        text += ("The lowest HLS estimate satisfying the original HLS resource screen is " if rom_current else
+                 "The fastest resource-feasible supplied-image point is ")
+        text += "["+best["id"]+"]("+best["md_path"]+") at "+best["latency_ms_est"]+"ms HLS-estimated latency. "
+    else:
+        text += "No exact frame point satisfies the original HLS resource screen. "
+    text += "Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. "
+    text += ("Routed timing, measured RTL cycles and board validation remain distinct; the HLS leader cannot establish final feasibility.\n\n"
+             if rom_current else "Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.\n\n")
     text += "Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.\n\n"
     ws_path = ROOT / "experiments/weight_loading_state.json"
     ws = json.loads(ws_path.read_text()) if ws_path.is_file() else None
     if ws:
         text += "Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). " + ws["next"] + "\n\n"
     if best:
-        text += "## Current Best\n\n"+markdown_table(linked([best]),[
+        text += ("## HLS Screening Leader\n\n" if rom_current else "## Current Best\n\n")+markdown_table(linked([best]),[
             "id","design","precision_w_a_acc","T_target","clock_target_ns","clock_est_ns","latency_cycles",
             "interval_cycles","latency_ms_est","DSP","BRAM18K","URAM","LUT","FF","delta_psnr","status"])
         baseline = next((row for row in rows if row["id"] == "E043"),None)
@@ -87,6 +95,19 @@ def main():
                 "route_target_ns","route_WNS_ns","route_DSP","route_BRAM18K","route_LUT",
                 "route_FF","route_feasible","rtl_frame_ms_at_route_target"])
             text += "\nTarget minus WNS is a slack-derived estimate; only each implemented target above is accepted. Actual first-five-path and hierarchy reports are linked from each experiment.\n"
+    current_path = ROOT / "experiments/rom_clock_comparison.csv"
+    if rom_current and current_path.is_file():
+        current = list(csv.DictReader(current_path.open(newline="")))
+        text += "\n## ROM, Clock, FIFO And T4\n\n"
+        text += "Measured follow-up records from docs/0005; their routed acceptance remains separate from historical HLS statuses. "
+        text += "WS-D functional cosimulation and its2% latency goal are separate columns. See [ROM_CLOCK.md](ROM_CLOCK.md) for counters and memory evidence.\n\n"
+        text += markdown_table(linked([row for row in current if row["id"] not in {"W21", "F97", "F98", "W22"}]),
+                               ["id", "parent", "status", "T", "HLS_cycles", "HLS_DSP", "HLS_LUT", "rtl_cycles",
+                                "rtl_hls_excess_pct", "wsD_goal_met", "route_feasible", "rtl_frame_ms"])
+        from summarize_rom_clock import pending_experiments
+        pending = pending_experiments(json.loads((ROOT / "experiments/rom_clock_state.json").read_text()))
+        text += "\nUnmeasured plans have no actual result and do not enter rankings:\n\n"
+        text += markdown_table(linked(pending), ["id", "parent", "operation", "status", "condition"])
     for series in ("P","W","G","S","C","F"):
         points = [row for row in arch if row["series"] == series and not row["operation"]]
         text += "\n## "+series+" Direction\n\n"+DESCRIPTIONS[series]+"\n\n"
