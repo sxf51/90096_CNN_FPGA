@@ -63,6 +63,7 @@ def main():
     parser.add_argument("waiters", nargs="+")
     parser.add_argument("--timeout", type=float, default=18000)
     parser.add_argument("--record-name", default="priority_waiters.json")
+    parser.add_argument("--basis", help="Record the decision authorizing this queue order")
     args = parser.parse_args()
     if args.priority in args.waiters or len(set(args.waiters)) != len(args.waiters) or args.timeout <= 0:
         raise RuntimeError("Require a separate priority job and distinct waiting jobs")
@@ -86,7 +87,7 @@ def main():
         raise RuntimeError("Priority hold already recorded; inspect it before repeating")
     record = {"priority": args.priority, "started": utc(), "pid": os.getpid(),
               "timeout_seconds": args.timeout, "waiters": [],
-              "basis": "User requested C18 priority; retain the active heavy task and pause only unadmitted workers. Resume automatically when the priority worker finishes or this supervisor exits."}
+              "basis": args.basis or "User requested C18 priority; retain the active heavy task and pause only unadmitted workers. Resume automatically when the priority worker finishes or this supervisor exits."}
     def interrupted(signum, _frame):
         raise RuntimeError("Priority supervisor interrupted: " + str(signum))
     for signum in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP):
