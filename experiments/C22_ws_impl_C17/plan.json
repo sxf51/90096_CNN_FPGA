@@ -1,0 +1,42 @@
+{
+  "config_sha256": "d42a10107d572d2a4ccbbf29d8c1e887636bc0e9c8c85c8d24fc2af2601e6416",
+  "configuration": {
+    "changes": "Use frozen parent C17 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Limit per-run placement/routing to 4 threads while synthesis remains single-threaded; preserve the serial hardware lock. Exit Vivado after synthesis/report, then reopen the new project in a fresh process for implementation/report; retain the cumulative three-hour tool timeout and one-heavy scheduling. Change only the implementation clock constraint; preserve parent HLS RTL.",
+    "clock": 4,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/winograd_t4_windows32_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "DSP": 1032.0,
+      "FF": 192308.0,
+      "LUT": 127985.0,
+      "T": 4.0,
+      "URAM": 0.0,
+      "basis": "Frozen C17 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: C17 has all13 E065-exact images and passes the approved HLS screen at1032DSP/127985LUT/192308FF/146BRAM18K with II1. C18 independently closes the same T4 arithmetic and runtime interface at5ns, WNS+0.047ns,1032DSP/58529LUT/102072FF/109BRAM18K; C17 changes only transformed-window FIFO depth2 to32. Keep its HLS infeasible status and verify physical resources and setup/hold independently. Use synthesis/report and implementation/report in separate processes as validated by C18, with synthesis1 and implementation4 threads, a cumulative3h timeout and one-heavy admission. Do not launch until C20 passes both exact changed-parameter RTL transactions. Combine only matching-parent accepted RTL cycles with the closed clock; do not infer board performance or a faster target from slack arithmetic.",
+      "latency_cycles": 263090.0
+    },
+    "id": "C22",
+    "implementation_backend": "staged_packaged_flow",
+    "implementation_clock_ns": 5.0,
+    "implementation_driver_template": "F89",
+    "implementation_threads": 4,
+    "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+    "memory_scheduler": true,
+    "name": "ws_impl_C17",
+    "operation": "impl",
+    "purpose": "Verify frozen C17 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: C17 has all13 E065-exact images and passes the approved HLS screen at1032DSP/127985LUT/192308FF/146BRAM18K with II1. C18 independently closes the same T4 arithmetic and runtime interface at5ns, WNS+0.047ns,1032DSP/58529LUT/102072FF/109BRAM18K; C17 changes only transformed-window FIFO depth2 to32. Keep its HLS infeasible status and verify physical resources and setup/hold independently. Use synthesis/report and implementation/report in separate processes as validated by C18, with synthesis1 and implementation4 threads, a cumulative3h timeout and one-heavy admission. Do not launch until C20 passes both exact changed-parameter RTL transactions. Combine only matching-parent accepted RTL cycles with the closed clock; do not infer board performance or a faster target from slack arithmetic.",
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "C",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 10800,
+    "validation_parent": "C17",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "C17"
+  },
+  "created_at": "2026-10-12T15:33:25+00:00",
+  "created_from_commit": "5d8931f765800049525499fa8fc9e5a98489dbab",
+  "purpose_section": "Verify frozen C17 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: C17 has all13 E065-exact images and passes the approved HLS screen at1032DSP/127985LUT/192308FF/146BRAM18K with II1. C18 independently closes the same T4 arithmetic and runtime interface at5ns, WNS+0.047ns,1032DSP/58529LUT/102072FF/109BRAM18K; C17 changes only transformed-window FIFO depth2 to32. Keep its HLS infeasible status and verify physical resources and setup/hold independently. Use synthesis/report and implementation/report in separate processes as validated by C18, with synthesis1 and implementation4 threads, a cumulative3h timeout and one-heavy admission. Do not launch until C20 passes both exact changed-parameter RTL transactions. Combine only matching-parent accepted RTL cycles with the closed clock; do not infer board performance or a faster target from slack arithmetic.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 1032.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 127985.0 |\n| FF | 192308.0 |\n| latency_cycles | 263090.0 |\n| T | 4.0 |\n| basis | Frozen C17 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: C17 has all13 E065-exact images and passes the approved HLS screen at1032DSP/127985LUT/192308FF/146BRAM18K with II1. C18 independently closes the same T4 arithmetic and runtime interface at5ns, WNS+0.047ns,1032DSP/58529LUT/102072FF/109BRAM18K; C17 changes only transformed-window FIFO depth2 to32. Keep its HLS infeasible status and verify physical resources and setup/hold independently. Use synthesis/report and implementation/report in separate processes as validated by C18, with synthesis1 and implementation4 threads, a cumulative3h timeout and one-heavy admission. Do not launch until C20 passes both exact changed-parameter RTL transactions. Combine only matching-parent accepted RTL cycles with the closed clock; do not infer board performance or a faster target from slack arithmetic. |\n\nPlanned at 2026-10-12T15:33:25+00:00; estimates are hypotheses, not tool measurements."
+}
