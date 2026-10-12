@@ -535,6 +535,8 @@
 
 - 2026-10-12T14:31:55+00:00: W30: independent4.5ns route passes all physical gates; W28 authorized exact549438cycles gives2.472471ms uniform T8. Five generated-final setup paths and physical hierarchy archived, first slack matches final summary; F52 checkpoint paths archived too. F51 is now the sole running implementation. Preserve18GiB registration, serial-after-OOM and old W28 fail. C18 remains fastest1.503160ms; five queued experiments remain before conditional combination RTL/routing.
 
+- 2026-10-12T14:39 UTC W30 supplemental plots: regenerated the ROM/clock and routed calibration plots from the current CSV files and inspected the two changed figures. F51 has completed Vivado synthesis and is the sole heavy task; F50/W31/C16/C17 remain queued. C19-C22 are unused in both locations. After C16/C17 pass all13-image and HLS screening, plan changed-parameter cosim C19/C20 and staged implementation C21/C22, then run them under the existing one-heavy admission policy. First physical targets are4.5ns forT8 and5ns forT4, backed by W30/W32 and C18 respectively; faster RTL remains allowed. These four follow-ups are conditional preparation, not measured or launched experiments. Final path exports, plots and integrity audit remain pending.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。
