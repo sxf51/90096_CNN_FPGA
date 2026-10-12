@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T05:58:13+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T06:01:27+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-WS-0 complete; WS-B RTL running; WS-C/D independent controls running; WS-C1 awaiting memory admission. Six independent designs have complete13-image exactness and HLS results: W24 ROM, W27 FRP, F41 featureFIFO32, F42 reordered-raster buffer, F47 windowFIFO16 and C13 prepackedConv2 T4. C13 uses E065 mixed precision, passes the routed-policy HLS screen at1032DSP/127966LUT/192308FF/263090cycles, and preserves its historical HLS-infeasible status. W25 ROM RTL runs; F45/W28/F48/F46/C14 are queued for two-frame finite-FIFO checks. F39 registeredConv3 operands and F40 featureFIFO16 await synthesis completion, then independent RTL plans. W26 preparation failure remains archived. W23/W29/W30/C15 routing plans remain unlaunched:12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve memory gates. F98 board handoff, IP SHA256 and generated drivers are archived in BOARD_HANDOFF.md; actual board measurements are pending.
+WS-0 complete; WS-B HLS/RTL passed; WS-C/D and T4 RTL controls running; implementation awaiting memory admission. Six independent designs have complete13-image exactness and HLS results: W24 ROM, W27 FRP, F41 featureFIFO32, F42 reordered-raster buffer, F47 windowFIFO16 and C13 prepackedConv2 T4. C13 uses E065 mixed precision, passes the routed-policy HLS screen at1032DSP/127966LUT/192308FF/263090cycles, and preserves its historical HLS-infeasible status. W25 ROM RTL runs; F45/W28/F48/F46/C14 are queued for two-frame finite-FIFO checks. F39 registeredConv3 operands and F40 featureFIFO16 await synthesis completion, then independent RTL plans. W26 preparation failure remains archived. W23/W29/W30/C15 routing plans remain unlaunched:12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve memory gates. F98 board handoff, IP SHA256 and generated drivers are archived in BOARD_HANDOFF.md; actual board measurements are pending.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -21,6 +21,7 @@ WS-0 complete; WS-B RTL running; WS-C/D independent controls running; WS-C1 awai
 | [W25](W25_rom_changed_input_cosim_W24/W25.md) | W24 | cosim | cosim_complete | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | unknown | unknown |
 | [W26](W26_frp_W21_T8/W26.md) | W21 | csim/csynth | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W27](W27_frp_W21_T8/W27.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | unknown | unknown | unknown | unknown |
+| [F40](F40_fifo16_W21_T8/F40.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown |
 | [F41](F41_fifo32_W21_T8/F41.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown | unknown |
 | [F42](F42_reorder_W21_T8/F42.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown |
 | [C13](C13_runtime_prepacked_conv2_T4/C13.md) | W21 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown |
@@ -34,7 +35,6 @@ Missing measurements are unknown. A frame time is shown only for independently c
 | --- | --- | --- | --- | --- |
 | [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | unlaunched_memory | unknown |
 | [F39](F39_c3_select_W21_T8/F39.md) | W21 | csim/csynth | queued_or_running | unknown |
-| [F40](F40_fifo16_W21_T8/F40.md) | W21 | csim/csynth | queued_or_running | unknown |
 | [F45](F45_ws_cosim_F41/F45.md) | F41 | cosim | queued_or_running | unknown |
 | [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | queued_or_running | unknown |
 | [W29](W29_ws_impl_W24/W29.md) | W24 | impl | unlaunched_memory | W25 same-ROM/changed-input two-frame RTL must pass before implementation |

@@ -1,0 +1,292 @@
+
+
+================================================================
+== Vitis HLS Report for 'transform_params1_Pipeline_transform_groups'
+================================================================
+* Date:           Mon Oct 12 17:00:09 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        F40
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.33 ns|  2.394 ns|     0.90 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval |      Pipeline     |
+    |   min   |   max   |    min    |    max    | min | max |        Type       |
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+    |       12|       12|  39.960 ns|  39.960 ns|    0|    0|  loop pipeline stp|
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                    |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |      Loop Name     |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- transform_groups  |       10|       10|         3|          1|          1|     9|       yes|
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     570|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       0|     441|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|      45|    -|
+|Register         |        -|     -|     283|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|     283|    1056|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +----------------------------+-----------------------+---------+----+---+----+-----+
+    |          Instance          |         Module        | BRAM_18K| DSP| FF| LUT| URAM|
+    +----------------------------+-----------------------+---------+----+---+----+-----+
+    |sparsemux_19_4_10_1_1_U114  |sparsemux_19_4_10_1_1  |        0|   0|  0|  49|    0|
+    |sparsemux_19_4_10_1_1_U115  |sparsemux_19_4_10_1_1  |        0|   0|  0|  49|    0|
+    |sparsemux_19_4_10_1_1_U116  |sparsemux_19_4_10_1_1  |        0|   0|  0|  49|    0|
+    |sparsemux_19_4_10_1_1_U117  |sparsemux_19_4_10_1_1  |        0|   0|  0|  49|    0|
+    |sparsemux_19_4_10_1_1_U118  |sparsemux_19_4_10_1_1  |        0|   0|  0|  49|    0|
+    |sparsemux_19_4_10_1_1_U119  |sparsemux_19_4_10_1_1  |        0|   0|  0|  49|    0|
+    |sparsemux_19_4_10_1_1_U120  |sparsemux_19_4_10_1_1  |        0|   0|  0|  49|    0|
+    |sparsemux_19_4_10_1_1_U121  |sparsemux_19_4_10_1_1  |        0|   0|  0|  49|    0|
+    |sparsemux_19_4_10_1_1_U122  |sparsemux_19_4_10_1_1  |        0|   0|  0|  49|    0|
+    +----------------------------+-----------------------+---------+----+---+----+-----+
+    |Total                       |                       |        0|   0|  0| 441|    0|
+    +----------------------------+-----------------------+---------+----+---+----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +--------------------------------+----------+----+---+----+------------+------------+
+    |          Variable Name         | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +--------------------------------+----------+----+---+----+------------+------------+
+    |add_ln160_fu_811_p2             |         +|   0|  0|  12|           4|           1|
+    |result_564_fu_1481_p2           |         +|   0|  0|  20|          13|          13|
+    |result_566_fu_1490_p2           |         +|   0|  0|  20|          13|          13|
+    |result_569_fu_1511_p2           |         +|   0|  0|  21|          14|          14|
+    |result_571_fu_1530_p2           |         +|   0|  0|  21|          14|          14|
+    |result_573_fu_1539_p2           |         +|   0|  0|  21|          14|          14|
+    |result_575_fu_1566_p2           |         +|   0|  0|  20|          13|          13|
+    |result_577_fu_1575_p2           |         +|   0|  0|  20|          13|          13|
+    |result_578_fu_1231_p2           |         +|   0|  0|  18|          11|          11|
+    |result_579_fu_1244_p2           |         +|   0|  0|  19|          12|          12|
+    |result_581_fu_1260_p2           |         +|   0|  0|  19|          12|          12|
+    |result_582_fu_1286_p2           |         +|   0|  0|  18|          11|          11|
+    |result_583_fu_1299_p2           |         +|   0|  0|  19|          12|          12|
+    |result_585_fu_1315_p2           |         +|   0|  0|  19|          12|          12|
+    |result_586_fu_1334_p2           |         +|   0|  0|  18|          11|          11|
+    |result_587_fu_1347_p2           |         +|   0|  0|  19|          12|          12|
+    |result_589_fu_1363_p2           |         +|   0|  0|  19|          12|          12|
+    |result_590_fu_1377_p2           |         +|   0|  0|  19|          12|          12|
+    |result_592_fu_1397_p2           |         +|   0|  0|  20|          13|          13|
+    |result_594_fu_1417_p2           |         +|   0|  0|  20|          13|          13|
+    |result_596_fu_1437_p2           |         +|   0|  0|  19|          12|          12|
+    |result_fu_1502_p2               |         +|   0|  0|  21|          14|          14|
+    |result_580_fu_1250_p2           |         -|   0|  0|  18|          11|          11|
+    |result_584_fu_1305_p2           |         -|   0|  0|  18|          11|          11|
+    |result_588_fu_1353_p2           |         -|   0|  0|  18|          11|          11|
+    |result_591_fu_1383_p2           |         -|   0|  0|  19|          12|          12|
+    |result_593_fu_1403_p2           |         -|   0|  0|  20|          13|          13|
+    |result_595_fu_1423_p2           |         -|   0|  0|  20|          13|          13|
+    |result_597_fu_1443_p2           |         -|   0|  0|  19|          12|          12|
+    |ap_block_pp0_stage0_01001_grp1  |       and|   0|  0|   2|           1|           1|
+    |icmp_ln160_fu_805_p2            |      icmp|   0|  0|  12|           4|           4|
+    |ap_enable_pp0                   |       xor|   0|  0|   2|           1|           2|
+    +--------------------------------+----------+----+---+----+------------+------------+
+    |Total                           |          |   0|  0| 570|         356|         354|
+    +--------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +--------------------------+----+-----------+-----+-----------+
+    |           Name           | LUT| Input Size| Bits| Total Bits|
+    +--------------------------+----+-----------+-----+-----------+
+    |ap_done_int               |   9|          2|    1|          2|
+    |ap_enable_reg_pp0_iter1   |   9|          2|    1|          2|
+    |ap_sig_allocacmp_group_2  |   9|          2|    4|          8|
+    |group_fu_300              |   9|          2|    4|          8|
+    |params1_blk_n             |   9|          2|    1|          2|
+    +--------------------------+----+-----------+-----+-----------+
+    |Total                     |  45|         10|   11|         22|
+    +--------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +----------------------------------+----+----+-----+-----------+
+    |               Name               | FF | LUT| Bits| Const Bits|
+    +----------------------------------+----+----+-----+-----------+
+    |a_1_reg_1708                      |  10|   0|   10|          0|
+    |a_1_reg_1708_pp0_iter1_reg        |  10|   0|   10|          0|
+    |a_217_reg_1702                    |  10|   0|   10|          0|
+    |a_reg_1695                        |  10|   0|   10|          0|
+    |a_reg_1695_pp0_iter1_reg          |  10|   0|   10|          0|
+    |ap_CS_fsm                         |   1|   0|    1|          0|
+    |ap_done_reg                       |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1           |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter2           |   1|   0|    1|          0|
+    |ap_loop_exit_ready_pp0_iter1_reg  |   1|   0|    1|          0|
+    |b_1_reg_1743                      |  10|   0|   10|          0|
+    |b_1_reg_1743_pp0_iter1_reg        |  10|   0|   10|          0|
+    |b_423_reg_1737                    |  10|   0|   10|          0|
+    |b_reg_1730                        |  10|   0|   10|          0|
+    |b_reg_1730_pp0_iter1_reg          |  10|   0|   10|          0|
+    |group_fu_300                      |   4|   0|    4|          0|
+    |result_579_reg_1750               |  12|   0|   12|          0|
+    |result_581_reg_1755               |  12|   0|   12|          0|
+    |result_587_reg_1760               |  12|   0|   12|          0|
+    |result_589_reg_1766               |  12|   0|   12|          0|
+    |result_590_reg_1772               |  11|   0|   12|          1|
+    |result_591_reg_1777               |  11|   0|   12|          1|
+    |result_592_reg_1782               |  13|   0|   13|          0|
+    |result_593_reg_1787               |  13|   0|   13|          0|
+    |result_594_reg_1792               |  13|   0|   13|          0|
+    |result_595_reg_1797               |  13|   0|   13|          0|
+    |result_596_reg_1802               |  11|   0|   12|          1|
+    |result_597_reg_1807               |  11|   0|   12|          1|
+    |tmp_6_reg_1715                    |  10|   0|   10|          0|
+    |tmp_7_reg_1720                    |  10|   0|   10|          0|
+    |tmp_8_reg_1725                    |  10|   0|   10|          0|
+    +----------------------------------+----+----+-----+-----------+
+    |Total                             | 283|   0|  287|          4|
+    +----------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------------+-----+-----+------------+---------------------------------------------+--------------+
+|        RTL Ports       | Dir | Bits|  Protocol  |                Source Object                |    C Type    |
++------------------------+-----+-----+------------+---------------------------------------------+--------------+
+|ap_clk                  |   in|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_groups|  return value|
+|ap_rst                  |   in|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_groups|  return value|
+|ap_start                |   in|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_groups|  return value|
+|ap_done                 |  out|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_groups|  return value|
+|ap_idle                 |  out|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_groups|  return value|
+|ap_ready                |  out|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_groups|  return value|
+|params1_din             |  out|  224|     ap_fifo|                                      params1|       pointer|
+|params1_full_n          |   in|    1|     ap_fifo|                                      params1|       pointer|
+|params1_write           |  out|    1|     ap_fifo|                                      params1|       pointer|
+|params1_num_data_valid  |   in|   32|     ap_fifo|                                      params1|       pointer|
+|params1_fifo_cap        |   in|   32|     ap_fifo|                                      params1|       pointer|
+|raw_81                  |   in|   10|     ap_none|                                       raw_81|        scalar|
+|raw_90                  |   in|   10|     ap_none|                                       raw_90|        scalar|
+|raw_99                  |   in|   10|     ap_none|                                       raw_99|        scalar|
+|raw_108                 |   in|   10|     ap_none|                                      raw_108|        scalar|
+|raw_117                 |   in|   10|     ap_none|                                      raw_117|        scalar|
+|raw_126                 |   in|   10|     ap_none|                                      raw_126|        scalar|
+|raw_135                 |   in|   10|     ap_none|                                      raw_135|        scalar|
+|raw_144                 |   in|   10|     ap_none|                                      raw_144|        scalar|
+|raw_153                 |   in|   10|     ap_none|                                      raw_153|        scalar|
+|raw_82                  |   in|   10|     ap_none|                                       raw_82|        scalar|
+|raw_91                  |   in|   10|     ap_none|                                       raw_91|        scalar|
+|raw_100                 |   in|   10|     ap_none|                                      raw_100|        scalar|
+|raw_109                 |   in|   10|     ap_none|                                      raw_109|        scalar|
+|raw_118                 |   in|   10|     ap_none|                                      raw_118|        scalar|
+|raw_127                 |   in|   10|     ap_none|                                      raw_127|        scalar|
+|raw_136                 |   in|   10|     ap_none|                                      raw_136|        scalar|
+|raw_145                 |   in|   10|     ap_none|                                      raw_145|        scalar|
+|raw_154                 |   in|   10|     ap_none|                                      raw_154|        scalar|
+|raw_83                  |   in|   10|     ap_none|                                       raw_83|        scalar|
+|raw_92                  |   in|   10|     ap_none|                                       raw_92|        scalar|
+|raw_101                 |   in|   10|     ap_none|                                      raw_101|        scalar|
+|raw_110                 |   in|   10|     ap_none|                                      raw_110|        scalar|
+|raw_119                 |   in|   10|     ap_none|                                      raw_119|        scalar|
+|raw_128                 |   in|   10|     ap_none|                                      raw_128|        scalar|
+|raw_137                 |   in|   10|     ap_none|                                      raw_137|        scalar|
+|raw_146                 |   in|   10|     ap_none|                                      raw_146|        scalar|
+|raw_155                 |   in|   10|     ap_none|                                      raw_155|        scalar|
+|raw_84                  |   in|   10|     ap_none|                                       raw_84|        scalar|
+|raw_93                  |   in|   10|     ap_none|                                       raw_93|        scalar|
+|raw_102                 |   in|   10|     ap_none|                                      raw_102|        scalar|
+|raw_111                 |   in|   10|     ap_none|                                      raw_111|        scalar|
+|raw_120                 |   in|   10|     ap_none|                                      raw_120|        scalar|
+|raw_129                 |   in|   10|     ap_none|                                      raw_129|        scalar|
+|raw_138                 |   in|   10|     ap_none|                                      raw_138|        scalar|
+|raw_147                 |   in|   10|     ap_none|                                      raw_147|        scalar|
+|raw_156                 |   in|   10|     ap_none|                                      raw_156|        scalar|
+|raw_85                  |   in|   10|     ap_none|                                       raw_85|        scalar|
+|raw_94                  |   in|   10|     ap_none|                                       raw_94|        scalar|
+|raw_103                 |   in|   10|     ap_none|                                      raw_103|        scalar|
+|raw_112                 |   in|   10|     ap_none|                                      raw_112|        scalar|
+|raw_121                 |   in|   10|     ap_none|                                      raw_121|        scalar|
+|raw_130                 |   in|   10|     ap_none|                                      raw_130|        scalar|
+|raw_139                 |   in|   10|     ap_none|                                      raw_139|        scalar|
+|raw_148                 |   in|   10|     ap_none|                                      raw_148|        scalar|
+|raw_157                 |   in|   10|     ap_none|                                      raw_157|        scalar|
+|raw_86                  |   in|   10|     ap_none|                                       raw_86|        scalar|
+|raw_95                  |   in|   10|     ap_none|                                       raw_95|        scalar|
+|raw_104                 |   in|   10|     ap_none|                                      raw_104|        scalar|
+|raw_113                 |   in|   10|     ap_none|                                      raw_113|        scalar|
+|raw_122                 |   in|   10|     ap_none|                                      raw_122|        scalar|
+|raw_131                 |   in|   10|     ap_none|                                      raw_131|        scalar|
+|raw_140                 |   in|   10|     ap_none|                                      raw_140|        scalar|
+|raw_149                 |   in|   10|     ap_none|                                      raw_149|        scalar|
+|raw_158                 |   in|   10|     ap_none|                                      raw_158|        scalar|
+|raw_87                  |   in|   10|     ap_none|                                       raw_87|        scalar|
+|raw_96                  |   in|   10|     ap_none|                                       raw_96|        scalar|
+|raw_105                 |   in|   10|     ap_none|                                      raw_105|        scalar|
+|raw_114                 |   in|   10|     ap_none|                                      raw_114|        scalar|
+|raw_123                 |   in|   10|     ap_none|                                      raw_123|        scalar|
+|raw_132                 |   in|   10|     ap_none|                                      raw_132|        scalar|
+|raw_141                 |   in|   10|     ap_none|                                      raw_141|        scalar|
+|raw_150                 |   in|   10|     ap_none|                                      raw_150|        scalar|
+|raw_159                 |   in|   10|     ap_none|                                      raw_159|        scalar|
+|raw_88                  |   in|   10|     ap_none|                                       raw_88|        scalar|
+|raw_97                  |   in|   10|     ap_none|                                       raw_97|        scalar|
+|raw_106                 |   in|   10|     ap_none|                                      raw_106|        scalar|
+|raw_115                 |   in|   10|     ap_none|                                      raw_115|        scalar|
+|raw_124                 |   in|   10|     ap_none|                                      raw_124|        scalar|
+|raw_133                 |   in|   10|     ap_none|                                      raw_133|        scalar|
+|raw_142                 |   in|   10|     ap_none|                                      raw_142|        scalar|
+|raw_151                 |   in|   10|     ap_none|                                      raw_151|        scalar|
+|raw_160                 |   in|   10|     ap_none|                                      raw_160|        scalar|
+|raw_89                  |   in|   10|     ap_none|                                       raw_89|        scalar|
+|raw_98                  |   in|   10|     ap_none|                                       raw_98|        scalar|
+|raw_107                 |   in|   10|     ap_none|                                      raw_107|        scalar|
+|raw_116                 |   in|   10|     ap_none|                                      raw_116|        scalar|
+|raw_125                 |   in|   10|     ap_none|                                      raw_125|        scalar|
+|raw_134                 |   in|   10|     ap_none|                                      raw_134|        scalar|
+|raw_143                 |   in|   10|     ap_none|                                      raw_143|        scalar|
+|raw_152                 |   in|   10|     ap_none|                                      raw_152|        scalar|
+|raw_161                 |   in|   10|     ap_none|                                      raw_161|        scalar|
++------------------------+-----+-----+------------+---------------------------------------------+--------------+
+
