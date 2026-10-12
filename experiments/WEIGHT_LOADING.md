@@ -40,6 +40,7 @@ HLS estimates (verification rows inherit their parent and are not new synthesis 
 | [F92](F92_ws_impl_F25/F92.md) | F25 | 16 | 2.5 | 2.377 | 1056904.0 | 1056905.0 | 2.64226 | 502.0 | 73.0 | 69976.0 | unknown | 125404.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | impl_complete |
 | [F93](F93_ws_reload_cosim_F28/F93.md) | F28 | 16 | 2.5 | 2.377 | 1046029.0 | 1046030.0 | 2.6150725 | 502.0 | 73.0 | 61553.0 | unknown | 122061.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | cosim_complete |
 | [F94](F94_ws_all_F28/F94.md) | unknown | 16 | 2.5 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | csim_pass |
+| [F95](F95_ws_impl_F28/F95.md) | F28 | 16 | 2.5 | 2.377 | 1046029.0 | 1046030.0 | 2.6150725 | 502.0 | 73.0 | 61553.0 | unknown | 122061.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | impl_complete |
 | [F96](F96_ws_all_W21/F96.md) | unknown | 8 | 3.33 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | csim_pass |
 | [W17](W17_narrow_raw_banks_T8/W17.md) | unknown | 8 | 4 | 3.239 | 532562.0 | 532563.0 | 2.130248 | 648.0 | 146.0 | 93166.0 | 42289.0 | 122399.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | infeasible |
 | [W19](W19_streamed_winograd_T8/W19.md) | unknown | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 645.0 | 146.0 | 83623.0 | 3170.0 | 130843.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | infeasible |
@@ -53,6 +54,7 @@ RTL and routed results, kept separate:
 | [F89](F89_serial_vivado_impl_F25/F89.md) | F25 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | timeout |
 | [F92](F92_ws_impl_F25/F92.md) | F25 | F82 | 1068183.0 | 1068212.0 | 5.0 | 0.568 | 0.0 | 4.432 | 592.0 | 72.0 | 32400.0 | 77757.0 | True | 5.340915 | impl_complete |
 | [F93](F93_ws_reload_cosim_F28/F93.md) | F28 | unknown | 1059506.0 | 1059535.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
+| [F95](F95_ws_impl_F28/F95.md) | F28 | F93 | 1059506.0 | 1059535.0 | 5.0 | 0.282 | 0.0 | 4.718 | 591.0 | 72.0 | 30140.0 | 76498.0 | True | 5.29753 | impl_complete |
 | [W20](W20_ws_impl_W17/W20.md) | W17 | unknown | unknown | unknown | 5.0 | 0.188 | 0.0 | 4.812 | 696.0 | 109.0 | 42812.0 | 89690.0 | True | unknown | impl_complete |
 
 Times derived from RTL cycles at a routed target are conditional on `timing_met=true`. Target minus negative WNS is a slack-derived period estimate, not a proven closed clock. Missing values remain unknown. No board validation has run.
@@ -65,8 +67,9 @@ Host utilization from archived CPU/memory CSV files (short snapshots are labeled
 
 ![Remote host utilization](figs/host_utilization.png)
 
-Current recovery state: F96 has passed every supplied-image check for W21. Session29428 runs F95 F28 implementation; session37202 queues F97 changed-parameter RTL then F98 independent5ns W21 implementation. Preserve these jobs. After their own routed-path exports, run one independent WS4 same-RTL clock probe with bounded implementation threads, then local/remote checksums, report provenance, plots and summaries before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
+Current recovery state: Three hardware operations remain: active F97 changed-parameter RTL, queued F98 independent5ns W21 implementation, and one WS4 same-RTL physical-clock probe chosen from F98's own paths. Preserve session37202; F95 is complete and session25954 waits to export its existing checkpoint paths. Do not add further exploration. Then finish local/remote checksums, report provenance, plots and summaries before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
 
 <!-- AUTO: WORKSTREAM END -->
+
 
 

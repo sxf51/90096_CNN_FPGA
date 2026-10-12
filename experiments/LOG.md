@@ -419,6 +419,8 @@
 
 - 2026-10-11T23:56:15+00:00: F95: ws_impl_F28; status=impl_complete; latency_ms_est=2.6150725; impl of F28; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-12T00:03 UTC: F95 route calibration and manual interpretation archived:5ns target passes with WNS+0.282ns/TNS0,591DSP/30140LUT/76498FF/72BRAM18K. F93 measured RTL latency gives5.29753ms at that closed target, not board time. Its initial worst path is Conv1 local-load address to LUTRAM WADR1; five-path export waits behind active F97. Updated recovery state to three remaining hardware operations: F97, F98 and one WS4 clock/thread probe; no further exploration will be added.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-11T18:56:00+00:00: WS2/WS3 preparation: F94 independently passed all13-image exactness and mean deltaPSNR=-0.069514dB. F31 independent changed-parameter C preflight passed, with every second output bit equal104/256 and unchanged first-frame borders; this is not RTL evidence. W19/F29/F30 paper plans are committed and conditional on measured loader selection; no parent design is modified. F92 remains in placement and F28 synthesis waits for its lock.

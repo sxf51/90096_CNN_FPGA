@@ -4,7 +4,7 @@ The fastest resource-feasible supplied-image point is [W21](W21_subkernel_raw_ca
 
 Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.
 
-Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). F96 has passed every supplied-image check for W21. Session29428 runs F95 F28 implementation; session37202 queues F97 changed-parameter RTL then F98 independent5ns W21 implementation. Preserve these jobs. After their own routed-path exports, run one independent WS4 same-RTL clock probe with bounded implementation threads, then local/remote checksums, report provenance, plots and summaries before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
+Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). Three hardware operations remain: active F97 changed-parameter RTL, queued F98 independent5ns W21 implementation, and one WS4 same-RTL physical-clock probe chosen from F98's own paths. Preserve session37202; F95 is complete and session25954 waits to export its existing checkpoint paths. Do not add further exploration. Then finish local/remote checksums, report provenance, plots and summaries before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
 
 ## Current Best
 
@@ -412,6 +412,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [W20](W20_ws_impl_W17/W20.md) | frame | 648.0 | 696.0 | 7.407407407407418 | 532562.0 | unknown | unknown | impl_complete |
 | [W21](W21_subkernel_raw_cache_T8/W21.md) | frame | 645.0 | 644.0 | -0.15503875968991832 | 527000.0 | 525237.0 | -0.33453510436433076 | provisional |
 | [F96](F96_ws_all_W21/F96.md) | frame | 644.0 | unknown | unknown | 525237.0 | unknown | unknown | csim_pass |
+| [F95](F95_ws_impl_F28/F95.md) | frame | 502.0 | 591.0 | 17.729083665338653 | 1046029.0 | unknown | unknown | impl_complete |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -450,6 +451,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [F92](F92_ws_impl_F25/F92.md) | frame | F25 | impl | impl_complete | 592.0 | 36.0 | 32400.0 | 77757.0 | 0.0 | 0.568 | True | unknown | unknown | unknown | unknown |
 | [F93](F93_ws_reload_cosim_F28/F93.md) | frame | F28 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1059506.0 | 1059535.0 | 1.2883964020117933 |
 | [W20](W20_ws_impl_W17/W20.md) | frame | W17 | impl | impl_complete | 696.0 | 54.5 | 42812.0 | 89690.0 | 0.0 | 0.188 | True | unknown | unknown | unknown | unknown |
+| [F95](F95_ws_impl_F28/F95.md) | frame | F28 | impl | impl_complete | 591.0 | 36.0 | 30140.0 | 76498.0 | 0.0 | 0.282 | True | unknown | unknown | unknown | unknown |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -630,4 +632,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-11T23:24:08+00:00.
+Generated from archived evidence at 2026-10-12T00:03:47+00:00.
