@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T04:53:13+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T04:55:31+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-WS-0 complete; WS-B validation; WS-C1 awaiting memory admission. F36/F37/F38 corrected trial passed with77.827s triple overlap, peak synth3.430GiB, minimum10.706GiB available and no OOM. Remote budgeted concurrency is enabled with csynth4GiB/csim1.25GiB. F35 validates all12161 ROM carriers exactly. Run W24 complete13-image C validation and synthesis, then same-weight/changed-input two-frame RTL. W23 same-RTL4.5ns strategy/threads are prepared but unlaunched:12.5GiB reservation requires14.5GiB available, while idle host has about13.4GiB. Keep the2GiB floor and13GiB total cap; report the decision before any implementation.
+WS-0 complete; WS-B RTL running; WS-C/D independent controls running; WS-C1 awaiting memory admission. W24 passed all13 course images exactly and HLS II checks:630DSP,138BRAM18K,53316LUT,103695FF,524330cycles. W25 is running same-ROM/changed-input two-frame RTL. Mainline controls W27 FRP, F39 registered Conv3 operands, F40/F41 feature FIFO16/32 and F42 reordered-raster buffer run all-image C validation then budgeted synthesis. W26 retains preparation-failure evidence; W27 is its independent retry. W23 identical-RTL4.5ns remains unlaunched because12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve all memory gates and continue independent work. Prepare F98 board handoff; T4 follows measured clock/FIFO evidence.
 
 | id | parent | operation | status | md_path | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | route_feasible | route_clock_ns | route_WNS_ns | route_WHS_ns | DSP | BRAM18K | URAM | LUT | FF | rtl_cycles | rtl_source | rtl_cycles_x_route_clock_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -18,6 +18,7 @@ WS-0 complete; WS-B validation; WS-C1 awaiting memory admission. F36/F37/F38 cor
 | [F38](F38_ws0_memory_control_F96/F38.md) | F96 | csim | csim_pass | F38_ws0_memory_control_F96/F38.md | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F35](F35_runtime_rom_bank_equivalence/F35.md) | W19 | csim | csim_pass | F35_runtime_rom_bank_equivalence/F35.md | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W24](W24_constant_rom_T8/W24.md) | W19 | csim/csynth | pass | W24_constant_rom_T8/W24.md | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [W26](W26_frp_W21_T8/W26.md) | W21 | csim/csynth | fail | W26_frp_W21_T8/W26.md | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 

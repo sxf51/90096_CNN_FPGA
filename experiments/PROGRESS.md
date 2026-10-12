@@ -4,7 +4,7 @@
 
 ## Active docs/0005 workstream
 
-WS-0 complete; WS-B validation; WS-C1 awaiting memory admission. F36/F37/F38 corrected trial passed with77.827s triple overlap, peak synth3.430GiB, minimum10.706GiB available and no OOM. Remote budgeted concurrency is enabled with csynth4GiB/csim1.25GiB. F35 validates all12161 ROM carriers exactly. Run W24 complete13-image C validation and synthesis, then same-weight/changed-input two-frame RTL. W23 same-RTL4.5ns strategy/threads are prepared but unlaunched:12.5GiB reservation requires14.5GiB available, while idle host has about13.4GiB. Keep the2GiB floor and13GiB total cap; report the decision before any implementation.
+WS-0 complete; WS-B RTL running; WS-C/D independent controls running; WS-C1 awaiting memory admission. W24 passed all13 course images exactly and HLS II checks:630DSP,138BRAM18K,53316LUT,103695FF,524330cycles. W25 is running same-ROM/changed-input two-frame RTL. Mainline controls W27 FRP, F39 registered Conv3 operands, F40/F41 feature FIFO16/32 and F42 reordered-raster buffer run all-image C validation then budgeted synthesis. W26 retains preparation-failure evidence; W27 is its independent retry. W23 identical-RTL4.5ns remains unlaunched because12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve all memory gates and continue independent work. Prepare F98 board handoff; T4 follows measured clock/FIFO evidence.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=budgeted after WS-0 validation.
 
