@@ -112,6 +112,8 @@ def main():
               "route_clock_ns": period, "max_ooc_clock_mhz": 1000/period,
               "ideal_ip_frame_ms": cycles*period/1e6, "route": verification,
               "precision": parent_config["precision"], "validation_parent": config.get("validation_parent", parent),
+              "butterfly_reference": parent_config["reference"],
+              "all_image_reference_directory": parent_config.get("numpy_reference"),
               "image_count": validation_config["validation"]["image_count"],
               "delta_psnr": validation_config["validation"]["delta_psnr"],
               "registers": registers, "drivers": records, "board_validation": "unknown"}
@@ -134,6 +136,9 @@ def main():
                              "board_validation")], ["metric", "value"])
     text += "\nThe OOC clock above comes from an independently closed implementation. "
     text += "HLS packaging frequency metadata is not physical timing approval.\n"
+    text += "\nButterfly bit comparison uses `" + record["butterfly_reference"] + "`. "
+    text += "All-image references are in `" + str(record["all_image_reference_directory"]) + "`. "
+    text += "Use this candidate's precision reference when checking output bits.\n"
     text += "\n## Interface\n\n"
     text += "The unchanged srcnn float32 signature exports image_in and image_out m_axi bundles, "
     text += "one shared parameters m_axi bundle, and control s_axilite. Images contain65025 row-major floats "

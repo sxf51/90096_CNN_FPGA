@@ -35,6 +35,8 @@ Matching-parent successful RTL latency times an independently closed, resource-f
 | [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 |
 | [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
 
+Verified candidate IP packages and register maps: [C18](board_handoff/C18/HANDOFF.md). The [F98 handoff](BOARD_HANDOFF.md) remains available; board performance is unmeasured.
+
 ## ROM, Clock, FIFO And T4
 
 Measured follow-up records from docs/0005; their routed acceptance remains separate from historical HLS statuses. WS-D functional cosimulation and its2% latency goal are separate columns. See [ROM_CLOCK.md](ROM_CLOCK.md) for counters and memory evidence.
@@ -926,4 +928,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T13:52:43+00:00.
+Generated from archived evidence at 2026-10-12T14:15:51+00:00.

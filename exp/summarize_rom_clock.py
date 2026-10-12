@@ -108,6 +108,12 @@ def main():
                                ["id", "parent", "rtl_source", "rtl_cycles", "route_clock_ns", "route_WNS_ns",
                                 "route_DSP", "route_BRAM18K", "route_LUT", "route_FF", "rtl_frame_ms"])
         text += "\nIP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded integration fallback.\n"
+    handoffs = state.get("candidate_board_handoffs", {})
+    if handoffs:
+        text += "\nVerified candidate IP packages and register maps: "
+        text += ", ".join("["+exp_id+"]("+str((ROOT/path).relative_to(ROOT/"experiments"))+")"
+                          for exp_id, path in handoffs.items())
+        text += ". Retain the [F98 integration handoff](BOARD_HANDOFF.md); board verification is pending.\n"
     text += "\n## Figures\n\n"
     for filename, label in (("rom_clock_pareto", "HLS screening"), ("rom_clock_dsp", "DSP composition"),
                             ("rom_clock_estimate_DSP", "DSP estimates and measurements"),

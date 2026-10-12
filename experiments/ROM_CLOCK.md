@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T14:06:24+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T14:15:51+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -71,6 +71,8 @@ These plans have no result row. In particular, unlaunched implementation is neit
 | [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
 
 IP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded integration fallback.
+
+Verified candidate IP packages and register maps: [C18](board_handoff/C18/HANDOFF.md). Retain the [F98 integration handoff](BOARD_HANDOFF.md); board verification is pending.
 
 ## Figures
 

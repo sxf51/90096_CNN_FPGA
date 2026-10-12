@@ -27,6 +27,8 @@ SHA256: `fbd7798fc94e04840bf6d79f0201f25fcd81ed448418842b2ff66771cf2a6184`.
 
 The OOC clock above comes from an independently closed implementation. HLS packaging frequency metadata is not physical timing approval.
 
+Butterfly bit comparison uses `experiments/E065_apfixed_mixed_conv2w8/butterfly_output.bin`. All-image references are in `exp/numeric_reference/mixed_conv2w8/numpy_reference`. Use this candidate's precision reference when checking output bits.
+
 ## Interface
 
 The unchanged srcnn float32 signature exports image_in and image_out m_axi bundles, one shared parameters m_axi bundle, and control s_axilite. Images contain65025 row-major floats (260100bytes). Weights follow Cout/Cin/kernel-row/kernel-column: Conv1=5184, Conv2=2048, Conv3=800 floats, and biases=64/32/1 floats. Parameters load on every invocation. The generated control pointers are64-bit; offsets below are their low words and the high word is offset+4.

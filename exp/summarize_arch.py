@@ -108,6 +108,12 @@ def main():
         text += markdown_table(linked(verified), ["id", "parent", "rtl_source", "rtl_cycles", "route_clock_ns",
                                                  "route_WNS_ns", "route_DSP", "route_BRAM18K", "route_LUT",
                                                  "route_FF", "rtl_frame_ms"])
+        handoffs = json.loads((ROOT / "experiments/rom_clock_state.json").read_text()).get("candidate_board_handoffs", {})
+        if handoffs:
+            text += "\nVerified candidate IP packages and register maps: "
+            text += ", ".join("["+exp_id+"]("+str((ROOT/path).relative_to(ROOT/"experiments"))+")"
+                              for exp_id, path in handoffs.items())
+            text += ". The [F98 handoff](BOARD_HANDOFF.md) remains available; board performance is unmeasured.\n"
         text += "\n## ROM, Clock, FIFO And T4\n\n"
         text += "Measured follow-up records from docs/0005; their routed acceptance remains separate from historical HLS statuses. "
         text += "WS-D functional cosimulation and its2% latency goal are separate columns. See [ROM_CLOCK.md](ROM_CLOCK.md) for counters and memory evidence.\n\n"
