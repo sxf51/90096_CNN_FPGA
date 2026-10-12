@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T13:01:41+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T13:32:31+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -40,6 +40,7 @@ C18 prioritized placement/routing active; W32 and F52 close4.5ns. C18 acquired t
 | [F49](F49_ws_impl_F39/F49.md) | F39 | impl | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
 | [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
+| [C18](C18_ws_impl_C13/C18.md) | C13 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | 5.0 | True | 1.50316 | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -56,7 +57,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | [W31](W31_ws_impl_W24/W31.md) | W24 | impl | queued_or_running | unknown |
 | [C16](C16_t8_fifo_frp/C16.md) | F47 | csim/csynth | queued_or_running | unknown |
 | [C17](C17_t4_fifo/C17.md) | C13 | csim/csynth | queued_or_running | unknown |
-| [C18](C18_ws_impl_C13/C18.md) | C13 | impl | queued_or_running | unknown |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 

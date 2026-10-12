@@ -519,6 +519,8 @@
 
 - 2026-10-12T13:00 UTC C18：swap采样新增容量和实际使用量，汇总明确旧样本字段缺失，不根据SwapFree推断历史使用；12项内存/分阶段/并行测试和11项路径测试通过。C18正在运行的原逐阶段CSV保持原schema，另存runtime_host_environment.csv作当前主机观测，不能充当整次工具峰值。外部已授权的zram/清理记录保持原文，调度仍最多一项重任务。
 
+- 2026-10-12T13:32:31+00:00: C18: ws_impl_C13; status=impl_complete; latency_ms_est=1.05236; impl of C13; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。
