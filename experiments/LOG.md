@@ -475,6 +475,10 @@
 
 ## Pending Human Decisions / 待人工决策
 
+- 2026-10-12T05:54 UTC: ROM/clock/FIFO progress recovered without rerunning active jobs. F48 (window FIFO16) and F46 (reorder output FIFO256) paper plans committed and queued for changed-parameter two-frame RTL. State now includes W28/W29/W30 and removes completed sessions. Summary includes unmeasured plans separately and refuses to attach a failed cosim cycle gate to an accepted routed frame time;89 infrastructure tests pass. CSV-only plots group overlapping IDs, and interpretations compare the actual HLS reports with paper estimates. Implementation W23/W29/W30 remains unlaunched under the unchanged12.5+2GiB admission requirement.
+
+- 2026-10-12 HLS FIFO accounting: F47's1728-bit transformed-window FIFO reports67LUT at both depth2 and16; F42's163840-bit raster FIFO reports347LUT. The logical capacities require much more storage under a naive64bits/LUT model. Preserve these raw estimates and require routed utilization to resolve the discrepancy; do not claim near-zero physical storage cost or alter any resource gate.
+
 - 2026-10-12T04:24 UTC，0005 内存准入：远程 MemTotal=15724196 KiB（14.996 GiB），空闲 MemAvailable 约13.4 GiB；WS-C1 的12.5 GiB登记预算加2 GiB保留要求至少14.5 GiB可用，因此空闲时也不能准入。保守保留0005的总预算13 GiB、2 GiB可用内存保留和实现12.5 GiB登记，不通过关闭调度或改swap启动W23。其W21/F98同RTL、4.5ns、Performance_Explore、综合1/布线4线程计划已提交；工具探针确认策略与布线后phys_opt属性支持。继续独立ROM编码/功能验证/综合；实际启动实现需要人工澄清登记口径或调整内存规则。当前不宣称W23已经启动、超时或时序失败。
 
 - 2026-10-12T04:24 UTC，WS-0登记修正：初次F32/F33进程树RSS3.119/3.430 GiB高于2.5 GiB登记；工具报告的1.460/1.779 GB是allocated memory，并非完整进程树RSS。F36/F37/F38以csynth4 GiB、csim1.25 GiB重验，实际三任务重叠77.827秒、最低可用10.706 GiB、无OOM且功能/II与冻结父实验相同，已启用按预算准入。这会使13 GiB总预算下的csynth实际最多3个，并使7.5 GiB cosim最多同时容纳1个4 GiB csynth；规则中的4/2个为上限，不保证全部能同时准入。原失败登记证据保留。
