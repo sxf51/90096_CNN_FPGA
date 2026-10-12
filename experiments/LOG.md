@@ -585,6 +585,8 @@
 
 ## Pending Human Decisions / 待人工决策
 
+- 2026-10-12 23:58:38 UTC C23: intermediate snapshot audit verifies original46files and45frozen phase-one design files at both locations, immutable paper plans, archived source/report SHA256 and Git tracking. Six requested plans remain unmeasured; idle closure is not claimed. Add SHA256-protected copies of generated run_sim/check_sim/dataflow-monitor/run_xsim drivers and verify they remain unchanged during monitored execution;161 infrastructure tests pass. The monitoring backend still requires actual HLS/RTL execution.
+
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。
 
 - 2026-10-12T12:12 UTC C18优先执行补充：C16/C17仍未准入、未启动C仿真，已在调度锁内核实后暂时暂停，防止W32释放时先启动轻任务而占据预算、拖后C18。独立监督会话18976和priority_light_waiters.json保证C18完成或监督退出时自动恢复这两项。原95744监督继续管理四项重任务等待进程；当前只有W32实际运行工具。此为队列优先级调整，无新增实验或改变原计划。

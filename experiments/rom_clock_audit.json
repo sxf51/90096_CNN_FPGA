@@ -1002,6 +1002,34 @@
       "csv_matches_archive": true,
       "id": "F50",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 1,
+      "csv_matches_archive": true,
+      "id": "C20",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 1,
+      "csv_matches_archive": true,
+      "id": "C19",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 9,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "W31",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C22",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2139,6 +2167,9 @@
     "C16",
     "C17",
     "C18",
+    "C19",
+    "C20",
+    "C22",
     "F32",
     "F33",
     "F34",
@@ -2168,45 +2199,21 @@
     "W28",
     "W29",
     "W30",
+    "W31",
     "W32"
   ],
   "mode": "snapshot",
   "pushed": false,
   "remote_jobs_active": true,
   "remote_processes": [
-    "80160 python3 exp/run_exp.py --config exp/configs/W31.json",
-    "112655 python3 exp/run_exp.py --config exp/configs/C20.json",
-    "113344 python3 exp/run_exp.py --config exp/configs/C19.json",
-    "113752 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20",
-    "113781 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/loader -exec vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20",
-    "113813 /home/lipuze/amdfpga/2026.1/Vitis/bin/unwrapped/lnx64.o/vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20"
+    "125370 python3 exp/run_exp.py --config exp/configs/C21.json",
+    "129351 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_implementation.tcl -notrace -nojournal",
+    "129485 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -log bd_0_wrapper.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source bd_0_wrapper.tcl -notrace"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-12T16:06:21+00:00",
+  "time": "2026-10-12T23:53:33+00:00",
   "unmeasured_plans": [
-    {
-      "condition": null,
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "C19",
-      "not_run_condition_failed": false,
-      "operation": "cosim",
-      "plan_sha256": "83c5675bf749025dcf38784e5f30afb295cd10508f863ea6c017d6dc42505cd4",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": null,
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "C20",
-      "not_run_condition_failed": false,
-      "operation": "cosim",
-      "plan_sha256": "ddf80544b176f9a34443df4efcf55554b1add7e8a5513bdce77ebf74f1b191dc",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
     {
       "condition": "C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30",
       "failure_reason": null,
@@ -2219,13 +2226,13 @@
       "unlaunched_for_memory": false
     },
     {
-      "condition": "C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18",
+      "condition": null,
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "C22",
+      "id": "C23",
       "not_run_condition_failed": false,
-      "operation": "impl",
-      "plan_sha256": "b3222f7f0ee6c6f9800893d0240f09e53997962c9abda0e6886a354bcc615bcf",
+      "operation": "csim/csynth",
+      "plan_sha256": "2318a48b6e26a4c484fcda0f79310f09b71ef2869c7f5e22a85aa95973fa7215",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     },
@@ -2233,10 +2240,43 @@
       "condition": null,
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "W31",
+      "id": "C24",
+      "not_run_condition_failed": false,
+      "operation": "csim/csynth",
+      "plan_sha256": "efeb1ce4f16632a9622cf9e2432fb12b8881bcdece0e1768a836aa0f9aefcc8c",
+      "prerequisite_metrics_sha256": null,
+      "unlaunched_for_memory": false
+    },
+    {
+      "condition": null,
+      "failure_reason": null,
+      "has_measured_result": false,
+      "id": "C25",
+      "not_run_condition_failed": false,
+      "operation": "csim/csynth",
+      "plan_sha256": "710b711a978d7575e6938b5914ab172aedbd14c39d3fb2ffd788f87962d95490",
+      "prerequisite_metrics_sha256": null,
+      "unlaunched_for_memory": false
+    },
+    {
+      "condition": null,
+      "failure_reason": null,
+      "has_measured_result": false,
+      "id": "F53",
+      "not_run_condition_failed": false,
+      "operation": "csim/csynth",
+      "plan_sha256": "49e905ad12a53893b9a0ce73f5e5a0e7976faba08eaa3ea44da2154d734b83c5",
+      "prerequisite_metrics_sha256": null,
+      "unlaunched_for_memory": false
+    },
+    {
+      "condition": null,
+      "failure_reason": null,
+      "has_measured_result": false,
+      "id": "W33",
       "not_run_condition_failed": false,
       "operation": "impl",
-      "plan_sha256": "f579b2a61b9924faae12c141fb0bacde91e59fc031c996bc12388afc690b4ca9",
+      "plan_sha256": "aba6d2cbb16ad1381e53fb027c6d11415e396ae6b1fa59ee0ddb03262a4695dd",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     }
@@ -2547,6 +2587,42 @@
       "reports_checked": 4,
       "sha256_pass": true,
       "status": "cosim_complete"
+    },
+    {
+      "additional_evidence_files_checked": 60,
+      "git_visible_and_tracked": true,
+      "id": "C20",
+      "operation": "cosim",
+      "reports_checked": 4,
+      "sha256_pass": true,
+      "status": "cosim_complete"
+    },
+    {
+      "additional_evidence_files_checked": 59,
+      "git_visible_and_tracked": true,
+      "id": "C19",
+      "operation": "cosim",
+      "reports_checked": 4,
+      "sha256_pass": true,
+      "status": "cosim_complete"
+    },
+    {
+      "additional_evidence_files_checked": 14,
+      "git_visible_and_tracked": true,
+      "id": "W31",
+      "operation": "impl",
+      "reports_checked": 6,
+      "sha256_pass": true,
+      "status": "impl_complete"
+    },
+    {
+      "additional_evidence_files_checked": 16,
+      "git_visible_and_tracked": true,
+      "id": "C22",
+      "operation": "impl",
+      "reports_checked": 6,
+      "sha256_pass": true,
+      "status": "impl_complete"
     }
   ]
 }

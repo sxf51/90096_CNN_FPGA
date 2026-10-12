@@ -33,6 +33,8 @@ class MonitoredCosimTests(unittest.TestCase):
         self.rtl.write_text("module srcnn_reload; endmodule\n")
         self.cfg = self.work / "hls_config.cfg"
         self.cfg.write_text("[hls]\nsyn.top=srcnn_reload\n")
+        for name in ("run_sim.tcl", "check_sim.tcl", "dataflow_monitor_API.tcl", "run_xsim.sh"):
+            (self.sim / name).write_text("# generated driver fixture\n")
 
     def test_only_generated_harness_changes_and_hashes_are_archived(self):
         rtl = self.rtl.read_bytes()
@@ -91,6 +93,10 @@ class MonitoredCosimTests(unittest.TestCase):
         self.assertEqual((self.work / "cosim.console.log").read_text(),
                          "cosim_setup evidence\ncosim_execute evidence\n")
         self.assertTrue(config["parameter_axi_monitor"]["instrumented_sha256"])
+        self.assertEqual(len(config["generated_cosim_driver"]), 4)
+        for record in config["generated_cosim_driver"]:
+            self.assertEqual((self.work / record["raw_file"]).read_bytes(),
+                             (self.archive / record["archived_file"]).read_bytes())
         self.assertEqual(self.cfg.read_bytes(), base)
         self.assertEqual(self.rtl.read_bytes(), rtl)
 
@@ -106,6 +112,18 @@ class MonitoredCosimTests(unittest.TestCase):
         self.assertEqual(calls, ["cosim_setup"])
         self.assertFalse((self.work / "cosim_execute.console.log").exists())
         self.assertEqual((self.work / "cosim.console.log").read_text(), "setup completed\n")
+
+    def test_modified_generated_postcheck_driver_cannot_report_success(self):
+        def invoke(args, cwd, log, remaining, phase):
+            log.write_text(phase + " completed\n")
+            if phase == "cosim_execute":
+                (self.sim / "check_sim.tcl").write_text("# changed validation\n")
+            return 0, 1
+
+        with self.assertRaisesRegex(RuntimeError, "driver changed"):
+            run_monitored({}, self.work, self.archive, 100, invoke)
+        self.assertEqual((self.archive / "simulation_driver/check_sim.tcl").read_text(),
+                         "# generated driver fixture\n")
 
 
 if __name__ == "__main__":

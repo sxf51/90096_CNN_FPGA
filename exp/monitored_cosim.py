@@ -46,6 +46,17 @@ def run_monitored(config, work, archive, timeout, invoke_phase):
     if code:
         shutil.copyfile(work / "cosim_setup.console.log", work / "cosim.console.log")
         return code, first_seconds
+    generated = []
+    driver_archive = archive / "simulation_driver"
+    driver_archive.mkdir(parents=True, exist_ok=True)
+    for name in ("run_sim.tcl", "check_sim.tcl", "dataflow_monitor_API.tcl", "run_xsim.sh"):
+        source = work / "hls/sim/verilog" / name
+        destination = driver_archive / name
+        shutil.copyfile(source, destination)
+        generated.append({"raw_file": str(source.relative_to(work)),
+                          "archived_file": str(destination.relative_to(archive)),
+                          "sha256": hashlib.sha256(source.read_bytes()).hexdigest()})
+    config["generated_cosim_driver"] = generated
     config["parameter_axi_monitor"] = install_monitor(work, archive)
     driver = work / "cosim_execute.tcl"
     # The generated driver retains vector checks, dataflow profiling and RTL post-checking.
@@ -64,6 +75,9 @@ def run_monitored(config, work, archive, timeout, invoke_phase):
         for path in (work / "cosim_setup.console.log", work / "cosim_execute.console.log"):
             with path.open("rb") as source:
                 shutil.copyfileobj(source, output)
+    for record in generated:
+        if hashlib.sha256((work / record["raw_file"]).read_bytes()).hexdigest() != record["sha256"]:
+            raise RuntimeError("HLS-generated simulation/post-check driver changed during execution")
     return code, first_seconds + second_seconds
 
 
