@@ -467,6 +467,8 @@
 
 - 2026-10-12T05:16:32+00:00: W27: frp_W21_T8; status=pass; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
 
+- 2026-10-12T05:25:53+00:00: F42: reorder_W21_T8; status=pass; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T04:24 UTC，0005 内存准入：远程 MemTotal=15724196 KiB（14.996 GiB），空闲 MemAvailable 约13.4 GiB；WS-C1 的12.5 GiB登记预算加2 GiB保留要求至少14.5 GiB可用，因此空闲时也不能准入。保守保留0005的总预算13 GiB、2 GiB可用内存保留和实现12.5 GiB登记，不通过关闭调度或改swap启动W23。其W21/F98同RTL、4.5ns、Performance_Explore、综合1/布线4线程计划已提交；工具探针确认策略与布线后phys_opt属性支持。继续独立ROM编码/功能验证/综合；实际启动实现需要人工澄清登记口径或调整内存规则。当前不宣称W23已经启动、超时或时序失败。
