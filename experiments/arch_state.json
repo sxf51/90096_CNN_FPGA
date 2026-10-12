@@ -173,18 +173,21 @@
     "F49",
     "F48",
     "W29",
-    "W23"
+    "W23",
+    "C15"
   ],
   "first_phase_head": "2fa7249eaecdfdc360d8d452fcbf52171c35abd2",
   "frozen_design_files": 45,
   "full_set14": true,
-  "hardware_parallelism": 1,
-  "hardware_scheduler": "serial hardware fallback after measured OOM; two-task policy retained",
-  "next": "C15 T4 independent5ns implementation remains active. W23 was kernel OOM-killed at10:19:41UTC, exit137 and OOM1->2; the scheduler correctly activates the agreed serial hardware fallback. F50 rasterFIFO RTL and F51 windowFIFO16 route wait; F52 registeredConv34.5ns, W31 ROM5ns and W32 same-RTL strategy4.5ns retries use fresh immutable workspaces. F48 exact535771/535800cycles recovers22987cycles but misses the strict535741-cycle WS-D limit by30. Original F49/W29 memory-protection failures remain without timing/resource verdicts. Preserve user two-task policy, actual0.5GiB guard and serial-after-OOM state. Conditional clocks require independently converged timing/resources. W28 remains fail and W30 unlaunched. No board results exist.",
+  "hardware_parallelism": 4,
+  "hardware_scheduler": "one heavy task plus memory-bounded light jobs",
+  "max_heavy_tasks": 1,
+  "max_light_tasks": 3,
+  "next": "C15 T4 independent5ns placement remains active. User now accepts F48 as the T8 mainline basis and W28 faster RTL under the original upper bound only; retain all historical verdicts and append explicit authorization. Launch W30 FRP4.5ns route. F50 rasterFIFO RTL, F51 windowFIFO16 route, F52 registeredConv34.5ns, W31 ROM5ns and W32 strategy4.5ns retries remain queued. Enforce one heavy impl/cosim plus budgeted light jobs, preserving currentC15 actual0.5GiB guard. After C15 completes, implement independent T8 windows16+FRP and T4 windows32 combinations; consider T4 ROM only from physical pressure evidence. Original memory failures and OOM1->2 remain. No board results exist.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
-    "C15",
+    "W30",
     "F50",
     "F51",
     "F52",
@@ -199,7 +202,7 @@
       "WS-0",
       "WS-A agent handoff (board measurements pending)"
     ],
-    "concurrency_policy": "user_two_jobs",
+    "concurrency_policy": "one_heavy_with_light",
     "deferred": [],
     "experiment_ids": [
       "F32",
@@ -251,23 +254,28 @@
       80070,
       2370,
       99126,
-      18016
+      18016,
+      12166
     ],
-    "next": "C15 T4 independent5ns implementation remains active. W23 was kernel OOM-killed at10:19:41UTC, exit137 and OOM1->2; the scheduler correctly activates the agreed serial hardware fallback. F50 rasterFIFO RTL and F51 windowFIFO16 route wait; F52 registeredConv34.5ns, W31 ROM5ns and W32 same-RTL strategy4.5ns retries use fresh immutable workspaces. F48 exact535771/535800cycles recovers22987cycles but misses the strict535741-cycle WS-D limit by30. Original F49/W29 memory-protection failures remain without timing/resource verdicts. Preserve user two-task policy, actual0.5GiB guard and serial-after-OOM state. Conditional clocks require independently converged timing/resources. W28 remains fail and W30 unlaunched. No board results exist.",
+    "mainline_basis": "F47",
+    "next": "C15 T4 independent5ns placement remains active. User now accepts F48 as the T8 mainline basis and W28 faster RTL under the original upper bound only; retain all historical verdicts and append explicit authorization. Launch W30 FRP4.5ns route. F50 rasterFIFO RTL, F51 windowFIFO16 route, F52 registeredConv34.5ns, W31 ROM5ns and W32 strategy4.5ns retries remain queued. Enforce one heavy impl/cosim plus budgeted light jobs, preserving currentC15 actual0.5GiB guard. After C15 completes, implement independent T8 windows16+FRP and T4 windows32 combinations; consider T4 ROM only from physical pressure evidence. Original memory failures and OOM1->2 remain. No board results exist.",
     "pending_decisions": [
-      "W28 FRP is exact and1.667985% faster, but exceeds the preplanned plus/minus1% cycle bound. W28 remains fail and W30 stays unlaunched; review a new independently planned FRP throughput study tomorrow without changing this gate.",
-      "F49/W29 actual-memory protection interrupted both independent routes without new OOM; preserve failures and retry under new IDs with explicit two-task scheduling. F48 misses the strict2percent WS-D target by30cycles despite4.113943percent measured speedup; no gate adjustment."
+      "Board validation remains unavailable to the agent; F98 handoff is archived.",
+      "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."
     ],
-    "phase": "C15 T4 implementation active; actual W23 OOM triggers agreed serial hardware fallback",
+    "phase": "C15 T4 placement active; user accepts F48 mainline basis and faster W28; one-heavy policy",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
       "F49": "F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation",
       "W29": "W25 same-ROM/changed-input two-frame RTL must pass before implementation",
-      "W30": "W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation"
+      "W30": "User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override"
     },
     "resource_policy": "routed",
     "session_jobs": {
+      "12166": [
+        "W30"
+      ],
       "18016": [
         "W32"
       ],
@@ -287,15 +295,14 @@
         "W31"
       ]
     },
-    "skipped_plans": {
-      "W30": {
-        "prerequisite": "W28",
-        "reason": "W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result."
-      }
+    "skipped_plans": {},
+    "unlaunched_ids": [],
+    "user_cycle_revision": {
+      "F48_two_percent_target": "diagnostic_only",
+      "W28_max_cycles": 564345,
+      "W30_authorized": true,
+      "reference": "docs/0005 section6.2"
     },
-    "unlaunched_ids": [
-      "W30"
-    ],
     "waiting_for_memory": [],
     "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL PASS at300632/300661cycles; queue C15 independent5ns route. Preserve the old HLS infeasible row; final feasibility is routed."
   },
@@ -331,13 +338,8 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "skipped_conditional_plans": {
-    "W30": {
-      "prerequisite": "W28",
-      "reason": "W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result."
-    }
-  },
-  "time": "2026-10-12T10:23:58+00:00",
+  "skipped_conditional_plans": {},
+  "time": "2026-10-12T10:55:15+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",

@@ -1,53 +1,54 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T10:23:58+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T10:55:15+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C15 T4 implementation active; actual W23 OOM triggers agreed serial hardware fallback. C15 T4 independent5ns implementation remains active. W23 was kernel OOM-killed at10:19:41UTC, exit137 and OOM1->2; the scheduler correctly activates the agreed serial hardware fallback. F50 rasterFIFO RTL and F51 windowFIFO16 route wait; F52 registeredConv34.5ns, W31 ROM5ns and W32 same-RTL strategy4.5ns retries use fresh immutable workspaces. F48 exact535771/535800cycles recovers22987cycles but misses the strict535741-cycle WS-D limit by30. Original F49/W29 memory-protection failures remain without timing/resource verdicts. Preserve user two-task policy, actual0.5GiB guard and serial-after-OOM state. Conditional clocks require independently converged timing/resources. W28 remains fail and W30 unlaunched. No board results exist.
+C15 T4 placement active; user accepts F48 mainline basis and faster W28; one-heavy policy. C15 T4 independent5ns placement remains active. User now accepts F48 as the T8 mainline basis and W28 faster RTL under the original upper bound only; retain all historical verdicts and append explicit authorization. Launch W30 FRP4.5ns route. F50 rasterFIFO RTL, F51 windowFIFO16 route, F52 registeredConv34.5ns, W31 ROM5ns and W32 strategy4.5ns retries remain queued. Enforce one heavy impl/cosim plus budgeted light jobs, preserving currentC15 actual0.5GiB guard. After C15 completes, implement independent T8 windows16+FRP and T4 windows32 combinations; consider T4 ROM only from physical pressure evidence. Original memory failures and OOM1->2 remain. No board results exist.
 
-| id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [F32](F32_ws0_memory_control_F28/F32.md) | F28 | csim/csynth | provisional | True | -0.0695141811880653 | 1046029.0 | 502.0 | 61553.0 | unknown | unknown | unknown | unknown | unknown | unknown |
-| [F33](F33_ws0_memory_control_W21/F33.md) | W21 | csim/csynth | provisional | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown |
-| [F34](F34_ws0_memory_control_F96/F34.md) | F96 | csim | csim_pass | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
-| [F36](F36_ws0_memory_control_F28/F36.md) | F28 | csim/csynth | provisional | True | -0.0695141811880653 | 1046029.0 | 502.0 | 61553.0 | unknown | unknown | unknown | unknown | unknown | unknown |
-| [F37](F37_ws0_memory_control_W21/F37.md) | W21 | csim/csynth | provisional | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown |
-| [F38](F38_ws0_memory_control_F96/F38.md) | F96 | csim | csim_pass | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
-| [F35](F35_runtime_rom_bank_equivalence/F35.md) | W19 | csim | csim_pass | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
-| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
-| [W24](W24_constant_rom_T8/W24.md) | W19 | csim/csynth | pass | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | 5.701752712986097 | unknown |
-| [W25](W25_rom_changed_input_cosim_W24/W25.md) | W24 | cosim | cosim_complete | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | unknown | unknown | 5.701752712986097 | unknown |
-| [W26](W26_frp_W21_T8/W26.md) | W21 | csim/csynth | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
-| [W27](W27_frp_W21_T8/W27.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | unknown | unknown | unknown | unknown | unknown | unknown |
-| [F39](F39_c3_select_W21_T8/F39.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
-| [F40](F40_fifo16_W21_T8/F40.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
-| [F41](F41_fifo32_W21_T8/F41.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
-| [F42](F42_reorder_W21_T8/F42.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | unknown |
-| [C13](C13_runtime_prepacked_conv2_T4/C13.md) | W21 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | 14.269641567524417 | unknown |
-| [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | unknown | unknown | 6.382071331608397 | unknown |
-| [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | unknown | unknown | 6.382071331608397 | False |
-| [F45](F45_ws_cosim_F41/F45.md) | F41 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | 558758.0 | unknown | unknown | unknown | 6.382071331608397 | False |
-| [F47](F47_windows16_W21_T8/F47.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | 2.0055708185066967 | False |
-| [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | unknown | unknown | unknown | unknown |
-| [W29](W29_ws_impl_W24/W29.md) | W24 | impl | fail | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | 5.701752712986097 | unknown |
-| [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 535771.0 | unknown | unknown | unknown | 2.0055708185066967 | False |
-| [F46](F46_ws_cosim_F42/F46.md) | F42 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | unknown |
-| [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | unknown | unknown | 14.269641567524417 | unknown |
-| [F49](F49_ws_impl_F39/F49.md) | F39 | impl | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
+| id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F32](F32_ws0_memory_control_F28/F32.md) | F28 | csim/csynth | provisional | True | -0.0695141811880653 | 1046029.0 | 502.0 | 61553.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F33](F33_ws0_memory_control_W21/F33.md) | W21 | csim/csynth | provisional | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F34](F34_ws0_memory_control_F96/F34.md) | F96 | csim | csim_pass | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F36](F36_ws0_memory_control_F28/F36.md) | F28 | csim/csynth | provisional | True | -0.0695141811880653 | 1046029.0 | 502.0 | 61553.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F37](F37_ws0_memory_control_W21/F37.md) | W21 | csim/csynth | provisional | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F38](F38_ws0_memory_control_F96/F38.md) | F96 | csim | csim_pass | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F35](F35_runtime_rom_bank_equivalence/F35.md) | W19 | csim | csim_pass | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
+| [W24](W24_constant_rom_T8/W24.md) | W19 | csim/csynth | pass | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | unknown | 5.701752712986097 | unknown |
+| [W25](W25_rom_changed_input_cosim_W24/W25.md) | W24 | cosim | cosim_complete | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | 554226.0 | original_verification_pass | unknown | unknown | unknown | 5.701752712986097 | unknown |
+| [W26](W26_frp_W21_T8/W26.md) | W21 | csim/csynth | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [W27](W27_frp_W21_T8/W27.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F39](F39_c3_select_W21_T8/F39.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
+| [F40](F40_fifo16_W21_T8/F40.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
+| [F41](F41_fifo32_W21_T8/F41.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
+| [F42](F42_reorder_W21_T8/F42.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C13](C13_runtime_prepacked_conv2_T4/C13.md) | W21 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | unknown | 14.269641567524417 | unknown |
+| [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | original_verification_pass | unknown | unknown | unknown | 6.382071331608397 | unknown |
+| [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | original_verification_pass | unknown | unknown | unknown | 6.382071331608397 | False |
+| [F45](F45_ws_cosim_F41/F45.md) | F41 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | 558758.0 | original_verification_pass | unknown | unknown | unknown | 6.382071331608397 | False |
+| [F47](F47_windows16_W21_T8/F47.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | 2.0055708185066967 | False |
+| [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | 549438.0 | user_authorized_upper_only | unknown | unknown | unknown | unknown | unknown |
+| [W29](W29_ws_impl_W24/W29.md) | W24 | impl | fail | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | unknown | 5.701752712986097 | unknown |
+| [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 535771.0 | original_verification_pass | unknown | unknown | unknown | 2.0055708185066967 | False |
+| [F46](F46_ws_cosim_F42/F46.md) | F42 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | rejected_or_unmeasured | unknown | unknown | unknown | unknown | unknown |
+| [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | original_verification_pass | unknown | unknown | unknown | 14.269641567524417 | unknown |
+| [C15](C15_ws_impl_C13/C15.md) | C13 | impl | fail | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F49](F49_ws_impl_F39/F49.md) | F39 | impl | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
 WS-D performance is separate from a successful functional cosimulation. With the525237-cycle HLS bound, the2% goal allows at most535741 integer RTL cycles (535741.74 before flooring); never round the threshold upward.
+User revision in docs/0005 section6.2 accepts F48 as the new mainline basis despite its30-cycle diagnostic miss, and accepts faster W28 under the original upper bound only. Original result statuses and paper plans remain unchanged; the explicit acceptance basis records this authorization.
 
 ## Unmeasured plans
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | not_run_condition_failed | W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result. |
-| [C15](C15_ws_impl_C13/C15.md) | C13 | impl | queued_or_running | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
+| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | queued_or_running | User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override |
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
 | [F51](F51_ws_impl_F47/F51.md) | F47 | impl | queued_or_running | unknown |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | impl | queued_or_running | unknown |
@@ -101,5 +102,5 @@ Process-tree RSS sums include shared mappings; minimum MemAvailable is measured 
 
 ## Pending human decisions / 待人工决策
 
-- W28 FRP is exact and1.667985% faster, but exceeds the preplanned plus/minus1% cycle bound. W28 remains fail and W30 stays unlaunched; review a new independently planned FRP throughput study tomorrow without changing this gate.
-- F49/W29 actual-memory protection interrupted both independent routes without new OOM; preserve failures and retry under new IDs with explicit two-task scheduling. F48 misses the strict2percent WS-D target by30cycles despite4.113943percent measured speedup; no gate adjustment.
+- Board validation remains unavailable to the agent; F98 handoff is archived.
+- T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned.

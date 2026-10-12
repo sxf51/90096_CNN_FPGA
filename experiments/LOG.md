@@ -509,6 +509,8 @@
 
 - 2026-10-12T10:28:12+00:00: W23: kernel confirms host OOM killed Vivado; archived subrun/kernel evidence, numerical measurements unchanged. Preserve the failed workspace and use separately planned retry IDs.
 
+- 2026-10-12T10:55:15+00:00: C15: ws_impl_C13; status=fail; latency_ms_est=1.05236; impl of C13; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.43378448486328125, "floor_gib": 0.5}
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T10:43 UTC 用户更新决定（已授权执行）：F48作为新T8主线基础，原2%差30周期只保留诊断；W28按单边上限564345接受变快的549438周期，原fail、±1%计划和报告不改，追加用户授权元数据后启动W30。并行改为最多一个重任务，轻任务按13GiB登记预算及2GiB可用余量准入；当前C15保持既有0.5GiB保护，避免运行中改计划。C15结束后实施T8窗口16+FRP和T4窗口32两条独立组合；T4 ROM依据实际布线压力再决定。本条明确替代下面较早的门槛与两重任务决策。

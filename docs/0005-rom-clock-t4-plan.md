@@ -289,14 +289,14 @@ C15结束后，先提交纸面估算，再实现两个独立组合：T8=W21+16�
 | [F48](../experiments/F48_ws_cosim_F47/F48.md) | F47 | cosim_complete | 525237.0 | 644.0 | 81086.0 | 535771.0 | unknown | unknown |
 | [F46](../experiments/F46_ws_cosim_F42/F46.md) | F42 | fail | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown |
 | [C14](../experiments/C14_ws_cosim_C13/C14.md) | C13 | cosim_complete | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | unknown |
+| [C15](../experiments/C15_ws_impl_C13/C15.md) | C13 | fail | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown |
 | [F49](../experiments/F49_ws_impl_F39/F49.md) | F39 | fail | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown |
 
 未测量的计划：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| W30 | W27 | not_run_condition_failed | W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result. |
-| C15 | C13 | queued_or_running | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
+| W30 | W27 | queued_or_running | User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override |
 | F50 | F42 | queued_or_running | unknown |
 | F51 | F47 | queued_or_running | unknown |
 | F52 | F39 | queued_or_running | unknown |

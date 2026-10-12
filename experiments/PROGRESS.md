@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C15 T4 implementation active; actual W23 OOM triggers agreed serial hardware fallback. C15 T4 independent5ns implementation remains active. W23 was kernel OOM-killed at10:19:41UTC, exit137 and OOM1->2; the scheduler correctly activates the agreed serial hardware fallback. F50 rasterFIFO RTL and F51 windowFIFO16 route wait; F52 registeredConv34.5ns, W31 ROM5ns and W32 same-RTL strategy4.5ns retries use fresh immutable workspaces. F48 exact535771/535800cycles recovers22987cycles but misses the strict535741-cycle WS-D limit by30. Original F49/W29 memory-protection failures remain without timing/resource verdicts. Preserve user two-task policy, actual0.5GiB guard and serial-after-OOM state. Conditional clocks require independently converged timing/resources. W28 remains fail and W30 unlaunched. No board results exist.
+C15 T4 placement active; user accepts F48 mainline basis and faster W28; one-heavy policy. C15 T4 independent5ns placement remains active. User now accepts F48 as the T8 mainline basis and W28 faster RTL under the original upper bound only; retain all historical verdicts and append explicit authorization. Launch W30 FRP4.5ns route. F50 rasterFIFO RTL, F51 windowFIFO16 route, F52 registeredConv34.5ns, W31 ROM5ns and W32 strategy4.5ns retries remain queued. Enforce one heavy impl/cosim plus budgeted light jobs, preserving currentC15 actual0.5GiB guard. After C15 completes, implement independent T8 windows16+FRP and T4 windows32 combinations; consider T4 ROM only from physical pressure evidence. Original memory failures and OOM1->2 remain. No board results exist.
 
-See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=serial hardware fallback after measured OOM; two-task policy retained.
+See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T10:23:58+00:00 from archived measurements.
+Updated 2026-10-12T10:55:15+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -18,7 +18,7 @@ Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and
 
 First phase stages0-6 closed in E099. The current complete course Set14 has13 images and final feasibility uses independently routed gates. Historical provisional statuses remain unchanged. No board validation has run.
 
-134 architecture records completed: P01, P02, W01, P03, W02, P04, W03, P05, P06, P07, G01, G02, S01, G03, S02, P10, C01, C02, C03, S03, P11, S04, W07, S05, P12, W04, W05, W06, S06, F01, W10, F02, W11, C08, W12, P08, F03, W08, C09, W09, F08, F16, F17, F18, F19, C04, F04, W13, C07, F13, F05, C12, F06, F14, F07, W17, C05, P09, F09, C06, F15, W18, F10, F20, F11, F21, F22, F12, F23, W14, W15, W16, F24, C10, F25, C11, F80, F81, F82, F83, F84, F85, P13, P14, P15, P16, F86, F87, F88, F89, F26, F27, F94, F31, F92, F28, F93, W19, F29, F30, W20, W21, F96, F95, F97, F98, W22, F34, F32, F33, F38, F35, F36, F37, W24, W26, F41, W27, F42, F47, C13, W25, F40, F39, F45, F46, F43, C14, W28, F44, F49, F48, W29, W23.
+135 architecture records completed: P01, P02, W01, P03, W02, P04, W03, P05, P06, P07, G01, G02, S01, G03, S02, P10, C01, C02, C03, S03, P11, S04, W07, S05, P12, W04, W05, W06, S06, F01, W10, F02, W11, C08, W12, P08, F03, W08, C09, W09, F08, F16, F17, F18, F19, C04, F04, W13, C07, F13, F05, C12, F06, F14, F07, W17, C05, P09, F09, C06, F15, W18, F10, F20, F11, F21, F22, F12, F23, W14, W15, W16, F24, C10, F25, C11, F80, F81, F82, F83, F84, F85, P13, P14, P15, P16, F86, F87, F88, F89, F26, F27, F94, F31, F92, F28, F93, W19, F29, F30, W20, W21, F96, F95, F97, F98, W22, F34, F32, F33, F38, F35, F36, F37, W24, W26, F41, W27, F42, F47, C13, W25, F40, F39, F45, F46, F43, C14, W28, F44, F49, F48, W29, W23, C15.
 
 Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md); 1.7460189000000002ms, T=8, DSP=630.0, BRAM18K=138.0, LUT=53316.0, deltaPSNR=-0.0695141811880653dB. HLS estimates are distinct from route/RTL results.
 
@@ -26,11 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: C15, F50, F51, F52, W31, W32.
-
-Conditional plans not run (failed prerequisite, no fabricated result):
-
-- W30: W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result.
+Final verification: W30, F50, F51, F52, W31, W32.
 
 ## Weight Loading Workstream
 
@@ -38,7 +34,7 @@ Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Archived. Current gat
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 
-Current user decisions supersede the initial WS0 defaults: complete course set=13 images; final resources=routed; ROM=exploratory; scheduling=explicit two-task mode with actual memory telemetry and the agreed serial hardware fallback after measured OOM. Runtime parameter interfaces, strict precision and no-push rules remain.
+Current user decisions supersede the initial WS0 defaults: complete course set=13 images; final resources=routed; ROM=exploratory; scheduling=one heavy task with memory-bounded light jobs under docs/0005 section6.1. Runtime parameter interfaces, strict precision and no-push rules remain.
 
 P08 routed DSP48E2 inspection confirms one cell, AMULTSEL=AD and ADREG=1. W10-W13/C07 split transformed-window generation from a fixed16384*(4*T) MAC loop to remove W07's conditional264x264 bound inflation. C08/C09 use independently verified Conv2-only8-bit weights, retain ten-bit activations, and omit coefficient residual repair. Vitis rejects the original8000-bit Conv3 stream at its4096-bit limit; F08-F12/W14-W16/C10-C11 use independent two4000-bit-stream retries with identical arithmetic. F13-F15 isolate Conv3 window rotation and tree-register overhead using F08's measured7013 multiplexer LUT. All new designs are independent; source and paper plans are committed before runs. Re-run CSV analyses, equivalent offline-weight archives and all plots after all evidence arrives. Finalize ARCH_SUMMARY.md, both checksum audits and final F99 commit.
 
