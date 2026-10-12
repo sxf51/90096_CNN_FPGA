@@ -507,6 +507,8 @@
 
 - 2026-10-12T10:19:42+00:00: W23: ws_clock_strategy_4p5_W21; status=fail; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv; impl failed (exit=137)
 
+- 2026-10-12T10:28:12+00:00: W23: kernel confirms host OOM killed Vivado; archived subrun/kernel evidence, numerical measurements unchanged. Preserve the failed workspace and use separately planned retry IDs.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T10:22 UTC W23: 实际同时运行两项实现时，21:19:41本地/10:19:41UTC内核杀掉Vivado77025，anon-RSS5946660KiB，exit137，OOM1→2。调度按原规则自动置serial_after_oom=true、实现登记15GiB（仍仅作观察），C15继续，后续硬件串行回退；不擅自重新启用会重复OOM的并行、不改swap。另立W32保留同一RTL、4.5ns、Performance_Explore、综合1/布局布线4线程补跑。完整待跑仍6项，当前估计5–7小时，条件时钟探针另计。规则及保护未放宽。
