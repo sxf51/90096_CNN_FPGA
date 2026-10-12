@@ -40,6 +40,9 @@ def completed_rtl_matches(parent):
 
 def main():
     state = json.loads((ROOT / "experiments/rom_clock_state.json").read_text())
+    comparison_path = ROOT / "experiments/rom_clock_comparison.csv"
+    comparisons = list(csv.DictReader(comparison_path.open(newline=""))) if comparison_path.is_file() else []
+    comparison_by_id = {row["id"]: row for row in comparisons}
     rows = []
     for exp_id in state["experiment_ids"]:
         paths = list((ROOT / "experiments").glob(exp_id + "_*/metrics.json"))
@@ -60,6 +63,8 @@ def main():
                   "route_WNS_ns": route.get("impl_WNS_ns"), "route_WHS_ns": route.get("impl_WHS_ns"),
                   **{key: route.get("impl_" + key) for key in ("DSP", "BRAM18K", "URAM", "LUT", "FF")},
                   "rtl_cycles": physical.get("rtl_latency_max"), "rtl_source": None,
+                  "rtl_hls_excess_pct": comparison_by_id.get(exp_id, {}).get("rtl_hls_excess_pct"),
+                  "wsD_goal_met": comparison_by_id.get(exp_id, {}).get("wsD_goal_met"),
                   "rtl_cycles_x_route_clock_ms": None}
         if config.get("operation") == "impl" and route.get("route_feasible") is True:
             parent = config["verify_parent"]
@@ -77,17 +82,17 @@ def main():
     text += "## Current state\n\n" + state["phase"] + ". " + state["next"] + "\n\n"
     display_columns = ["id", "parent", "operation", "status", "bit_exact", "delta_psnr", "HLS_cycles",
                        "HLS_DSP", "HLS_LUT", "rtl_cycles", "route_clock_ns", "route_feasible",
-                       "rtl_cycles_x_route_clock_ms"]
+                       "rtl_cycles_x_route_clock_ms", "rtl_hls_excess_pct", "wsD_goal_met"]
     text += markdown_table([{**row, "id": "[" + row["id"] + "](" + row["md_path"] + ")"} for row in rows], display_columns)
     text += "\nMissing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.\n"
+    text += "\nWS-D performance is separate from a successful functional cosimulation. With the525237-cycle HLS bound, "
+    text += "the2% goal allows at most535741 integer RTL cycles (535741.74 before flooring); never round the threshold upward.\n"
     pending = pending_experiments(state)
     text += "\n## Unmeasured plans\n\n"
     text += markdown_table([{**row, "id": "[" + row["id"] + "](" + row["md_path"] + ")"} for row in pending],
                            ["id", "parent", "operation", "status", "condition"])
     text += "\nThese plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.\n"
-    comparison_path = ROOT / "experiments/rom_clock_comparison.csv"
     if comparison_path.is_file():
-        comparisons = list(csv.DictReader(comparison_path.open(newline="")))
         accepted = [row for row in comparisons if row["route_feasible"] == "True" and
                     number(row["rtl_frame_ms"]) is not None]
         accepted.sort(key=lambda row: number(row["rtl_frame_ms"]))

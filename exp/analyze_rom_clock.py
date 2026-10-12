@@ -17,6 +17,19 @@ def load(exp_id):
     return archive, json.loads(paths[0].read_text()), json.loads((archive/"config.json").read_text())
 
 
+def rtl_excess(hls_cycles, rtl_cycles):
+    hls, rtl = number(hls_cycles), number(rtl_cycles)
+    if hls is None or rtl is None:
+        return {"rtl_hls_excess_cycles": None, "rtl_hls_excess_pct": None,
+                "rtl_2pct_limit_cycles": None, "rtl_within_2pct": None}
+    if hls <= 0 or rtl <= 0 or not hls.is_integer() or not rtl.is_integer():
+        raise ValueError("Latency comparisons require positive integer cycle measurements")
+    limit = int(hls)*102//100
+    return {"rtl_hls_excess_cycles": int(rtl)-int(hls),
+            "rtl_hls_excess_pct": 100*(rtl/hls-1),
+            "rtl_2pct_limit_cycles": limit, "rtl_within_2pct": int(rtl) <= limit}
+
+
 def main():
     state = json.loads((ROOT/"experiments/rom_clock_state.json").read_text())
     records = [item for exp_id in dict.fromkeys(["W21", "F97", "F98", "W22"] + state["experiment_ids"])
@@ -26,6 +39,7 @@ def main():
         measured = number(config.get("verification", {}).get("rtl_latency_max"))
         if config.get("operation") == "cosim" and row["status"] == "cosim_complete" and measured is not None:
             rtl_by_parent.setdefault(config["verify_parent"], []).append((row["id"], measured))
+    configs = {row["id"]: config for _, row, config in records}
     comparisons, estimates, composition, fifos, memory = [], [], [], [], []
     for archive, row, config in records:
         operation = config.get("operation", "csim" if config.get("csim_only") else "csim/csynth")
@@ -52,10 +66,15 @@ def main():
                       "route_WNS_ns": route.get("impl_WNS_ns"), "route_WHS_ns": route.get("impl_WHS_ns"),
                       **{"route_"+key: route.get("impl_"+key) for key in ("DSP", "BRAM18K", "URAM", "LUT", "FF")},
                       "rtl_frame_ms": None, "notes": row.get("notes", "")}
-            if operation == "impl" and len(rtl_by_parent.get(parent, [])) == 1:
-                record["rtl_source"], record["rtl_cycles"] = rtl_by_parent[parent][0]
+            matching_parent = parent if operation == "impl" else row["id"]
+            if operation != "cosim" and len(rtl_by_parent.get(matching_parent, [])) == 1:
+                record["rtl_source"], record["rtl_cycles"] = rtl_by_parent[matching_parent][0]
                 if record["route_feasible"] is True and record["route_clock_ns"] is not None:
                     record["rtl_frame_ms"] = record["rtl_cycles"]*record["route_clock_ns"]/1e6
+            accepted_rtl = record["rtl_cycles"] if record["rtl_source"] or row["status"] == "cosim_complete" else None
+            record.update(rtl_excess(record["HLS_cycles"], accepted_rtl))
+            stage = config.get("stage", "") if operation != "cosim" else configs.get(parent, {}).get("stage", "")
+            record["wsD_goal_met"] = record["rtl_within_2pct"] if str(stage).startswith("rom_clock_wsD") else None
             comparisons.append(record)
         if not baseline and config.get("stage") not in {"rom_clock_ws0", "rom_clock_wsB_equivalence"}:
             paper = config.get("estimates", {})
@@ -70,13 +89,19 @@ def main():
                 else:
                     actual = number(row.get(key))
                     domain = "HLS"
+                    if key == "latency_cycles" and len(rtl_by_parent.get(row["id"], [])) == 1:
+                        _, actual = rtl_by_parent[row["id"]][0]
+                        domain = "RTL"
+                source = (rtl_by_parent[row["id"]][0][0] if domain == "RTL" and operation != "cosim"
+                          else row["id"])
                 deviation = 100*(actual/expected-1) if actual is not None and expected else None
                 estimates.append({"id": row["id"], "metric": key, "estimate": expected,
                                   "actual": actual, "actual_domain": domain, "deviation_pct": deviation,
+                                  "actual_source": source,
                                   "over20pct": abs(deviation) > 20 if deviation is not None else None,
                                   "md_path": row["md_path"],
                                   "caveat": "Paper architecture cycles predict RTL; HLS is a component lower bound"
-                                  if key == "latency_cycles" and not operation.startswith(("cosim", "impl")) else ""})
+                                  if key == "latency_cycles" and domain == "HLS" else ""})
         parts = dsp_composition(row, config)
         if parts and config.get("stage") != "rom_clock_ws0":
             composition.append(parts)
