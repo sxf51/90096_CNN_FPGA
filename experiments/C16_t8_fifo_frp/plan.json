@@ -1,0 +1,63 @@
+{
+  "config_sha256": "f37118ad3dbedbed6612b47d4c962e79faa6199e124505c390d1c9c549759241",
+  "configuration": {
+    "T": 8,
+    "changes": "Copy the frozen measured F47 source after committing this plan; keep its16-entry FIFO and change only three continuous fold pipelines to FRP.",
+    "clock": 3.33,
+    "clock_variant": "windows16",
+    "combination_variant": "t8_fifo_frp",
+    "conclusion": "Run13-image exact/precision screening, then changed-parameter two-frame RTL and an independent implementation. Keep the validated integration fallback until the new design independently passes all physical gates.",
+    "control_experiment": "F47",
+    "defines": {
+      "EXP_ALL_CONTINUOUS": 1,
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 8,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/winograd_windows16_frp_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "Conv1_DSP": 288,
+      "Conv2_DSP": 256,
+      "Conv3_DSP": 100,
+      "DSP": 644.0,
+      "FF": 131000,
+      "LUT": 82050,
+      "T": 8,
+      "URAM": 0.0,
+      "basis": "F47/F48 windowFIFO16 exact535771 RTL cycles; W27/W28 FRP exact549438. Both remove transformed-window stalls, so savings cannot be added as proven benefit. Conservatively predict535771cycles; additive526451 is only an optimistic comparison. Keep644DSP/146BRAM18K/zeroURAM. Three FRP folds added398HLS LUT and60FF in W27; budget82050LUT/131000FF for combined control. 16*1728bits window FIFO covers512 compute cycles at4*T=32 per tile. Physical resource/timing and finite-FIFO behavior require new measurements.",
+      "latency_cycles": 535771
+    },
+    "fixed": true,
+    "id": "C16",
+    "ii_targets": {
+      "c2_fold": 1,
+      "c3_fold": 1,
+      "wino_fold": 1
+    },
+    "interpretation": "Compare parsed HLS/RTL/routed measurements with paper estimates, explain deviations above20%, and use FIFO/process counters rather than summing overlapping stall totals. HLS estimates cannot prove physical closure.",
+    "memory_scheduler": true,
+    "name": "t8_fifo_frp",
+    "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+    "precision": "w10a10acc23",
+    "purpose": "Combine the user-accepted F48 deep-window basis with W27's three FRP MAC folds in an independent T8 runtime-weight design. Require E017 exactness on all13 images and both changed-parameter RTL transactions; measure whether FIFO and FRP benefits overlap before routing. User requested implementation only after C15 has a recorded result. Use one heavy task with budgeted light work. Runtime srcnn signature, source weights, quantization, original tests and physical gates stay fixed.",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "require_weight_predecessor_free": true,
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "C",
+    "set14": true,
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "rom_clock_ws_combo8",
+    "storage": "local_lutram_s2p",
+    "unroll": "G2 F2 nine subkernels/Cout/Cin"
+  },
+  "created_at": "2026-10-12T10:51:19+00:00",
+  "created_from_commit": "e4de002efcfc627520965a2f35d854074c772509",
+  "purpose_section": "Combine the user-accepted F48 deep-window basis with W27's three FRP MAC folds in an independent T8 runtime-weight design. Require E017 exactness on all13 images and both changed-parameter RTL transactions; measure whether FIFO and FRP benefits overlap before routing. User requested implementation only after C15 has a recorded result. Use one heavy task with budgeted light work. Runtime srcnn signature, source weights, quantization, original tests and physical gates stay fixed.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 82050 |\n| FF | 131000 |\n| T | 8 |\n| latency_cycles | 535771 |\n| Conv1_DSP | 288 |\n| Conv2_DSP | 256 |\n| Conv3_DSP | 100 |\n| basis | F47/F48 windowFIFO16 exact535771 RTL cycles; W27/W28 FRP exact549438. Both remove transformed-window stalls, so savings cannot be added as proven benefit. Conservatively predict535771cycles; additive526451 is only an optimistic comparison. Keep644DSP/146BRAM18K/zeroURAM. Three FRP folds added398HLS LUT and60FF in W27; budget82050LUT/131000FF for combined control. 16*1728bits window FIFO covers512 compute cycles at4*T=32 per tile. Physical resource/timing and finite-FIFO behavior require new measurements. |\n\nPlanned at 2026-10-12T10:51:19+00:00; estimates are hypotheses, not tool measurements."
+}
