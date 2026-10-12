@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config, check_template_rtl, prepare_packaged_driver, check_image_validation, prepare_verification_testbench, reload_measurement
+from verify_exp import archive_verification_reports, parse_verification, prepare_serial_implementation, vivado_diagnostic_excerpt, diagnostic_parent, package_only_config, check_template_rtl, prepare_packaged_driver, check_image_validation, prepare_verification_testbench, reload_measurement, rom_measurement
 from run_exp import ROOT
 from unittest.mock import patch
 import hashlib
@@ -14,6 +14,23 @@ import verify_exp
 
 
 class VerificationTests(unittest.TestCase):
+    def test_rom_requires_exact_c_and_rtl_changed_input_checks(self):
+        parent = {"border_mse": .00001661846957728205}
+        result = {"csim_pass": True, "bit_exact": True, "same_weights_changed_input": True,
+                  "changed_input_pass": True, "frame_count": 2, "border_mse": parent["border_mse"]}
+        with tempfile.TemporaryDirectory() as temp:
+            log = Path(temp) / "rom.log"
+            marker = "EXP_METRICS " + json.dumps(result) + "\n"
+            log.write_text(marker)
+            with self.assertRaisesRegex(RuntimeError, "Missing C and RTL"):
+                rom_measurement(log, parent)
+            log.write_text(marker + marker)
+            self.assertEqual(rom_measurement(log, parent), result)
+            bad = "EXP_METRICS " + json.dumps({**result, "changed_input_pass": False}) + "\n"
+            log.write_text(bad + marker)
+            with self.assertRaisesRegex(RuntimeError, "exact frame/border"):
+                rom_measurement(log, parent)
+
     def test_changed_parameter_override_preserves_design_and_binary_inputs(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

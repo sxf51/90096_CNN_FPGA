@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T04:25:46+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T04:35:46+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -17,6 +17,7 @@ WS-0 complete; WS-B validation; WS-C1 awaiting memory admission. F36/F37/F38 cor
 | [F37](F37_ws0_memory_control_W21/F37.md) | W21 | csim/csynth | provisional | F37_ws0_memory_control_W21/F37.md | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F38](F38_ws0_memory_control_F96/F38.md) | F96 | csim | csim_pass | F38_ws0_memory_control_F96/F38.md | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F35](F35_runtime_rom_bank_equivalence/F35.md) | W19 | csim | csim_pass | F35_runtime_rom_bank_equivalence/F35.md | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [W24](W24_constant_rom_T8/W24.md) | W19 | csim/csynth | pass | W24_constant_rom_T8/W24.md | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 

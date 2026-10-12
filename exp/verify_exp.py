@@ -401,6 +401,20 @@ def reload_measurement(logfile, parent):
     return result
 
 
+def rom_measurement(logfile, parent):
+    matches = re.findall(r"EXP_METRICS (\{[^\r\n]+\})", logfile.read_text(errors="replace"))
+    if len(matches) < 2:
+        raise RuntimeError("Missing C and RTL ROM changed-input checks")
+    for match in matches:
+        result = json.loads(match)
+        if (result.get("csim_pass") is not True or result.get("bit_exact") is not True or
+                result.get("same_weights_changed_input") is not True or
+                result.get("changed_input_pass") is not True or result.get("frame_count") != 2 or
+                result.get("border_mse") != number(parent.get("border_mse"))):
+            raise RuntimeError("ROM changed-input testbench failed exact frame/border gates")
+    return json.loads(matches[-1])
+
+
 def run_verification(config):
     check_protected()
     exp_id, name, operation = config["id"], config["name"], config["operation"]
@@ -538,6 +552,12 @@ def run_verification(config):
         if operation == "cosim" and config.get("reload_params"):
             config["reload_validation"] = reload_measurement(work / "cosim.console.log", parent_row)
             observed["changed_params_bit_exact"] = True
+        if operation == "cosim" and config.get("same_weights_changed_input"):
+            config["rom_validation"] = rom_measurement(work / "cosim.console.log", parent_row)
+            observed["same_weights_changed_input_bit_exact"] = True
+        if operation == "cosim" and config.get("rtl_max_cycles") is not None:
+            if observed["rtl_latency_max"] > config["rtl_max_cycles"]:
+                raise RuntimeError("Measured RTL cycles exceed the preplanned acceptance bound")
         row["status"] = operation + "_complete"
         if operation == "impl":
             if not config.get("resource_policy") == "routed":
@@ -591,6 +611,9 @@ def run_verification(config):
         md += f"## 2. Changes / 改动\n\nIndependent workspace copy of `{parent_row['id']}`, source commit `{parent_row['git_commit']}`. Cosimulation requests two complete frames to check state reset and transaction interval."
         if config.get("reload_params"):
             md += " The second frame uses changed runtime weights/biases and constant0.5 input, requiring exact104/256 at every output; the first frame retains E017 butterfly and border checks. Independent testbench source is frozen in testbench/ at verification commit `" + config["source_commit"] + "`."
+        if config.get("same_weights_changed_input"):
+            md += " Both frames use the same compile-time ROM weights; the second input changes from butterfly to lenna. "
+            md += "Every output bit matches the independent w10a10 reference. There is no runtime parameter port, so changed-parameter verification is inapplicable."
         md += "\n\n"
         md += "## 3. Configuration / 配置\n\n" + markdown_table([{"parameter": k, "value": v} for k, v in config.items() if k not in {"parent_config", "parent_metrics"}], ["parameter", "value"])
         md += f"\n## 4. Reproduction / 复现\n\n```sh\npython3 exp/reproduce_exp.py {exp_id} --run\n```\n\nThis rebuilds a fresh frozen parent before verification; see [reproduction guide](../REPRODUCE.md). Original reserved invocation:\n\n```sh\npython3 exp/run_exp.py --config exp/configs/{exp_id}.json\n```\n\nNo parent directory is overwritten.\n\n"
