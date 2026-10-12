@@ -946,6 +946,13 @@
       "csv_matches_archive": true,
       "id": "C15",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "F52",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2098,6 +2105,7 @@
     "F47",
     "F48",
     "F49",
+    "F52",
     "W23",
     "W24",
     "W25",
@@ -2112,20 +2120,18 @@
   "remote_processes": [
     "72894 python3 exp/run_exp.py --config exp/configs/F50.json",
     "79191 python3 exp/run_exp.py --config exp/configs/F51.json",
-    "80120 python3 exp/run_exp.py --config exp/configs/F52.json",
     "80160 python3 exp/run_exp.py --config exp/configs/W31.json",
     "80234 python3 exp/run_exp.py --config exp/configs/W32.json",
     "82711 python3 exp/run_exp.py --config exp/configs/W30.json",
-    "83469 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_vivado.tcl -notrace -nojournal",
-    "83622 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -log bd_0_hls_inst_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source bd_0_hls_inst_0.tcl",
-    "83740 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -notrace -mode batch -source /home/lipuze/amdfpga/2026.1/Vivado/scripts/rt/data/task_worker.tcl -nolog -nojournal -tclargs SYNTH_DESIGN_PARENT83622_0_1791802631_cfg SYNTH_DESIGN_PARENT83622_0_1791802631_buf SYNTH_DESIGN_PARENT83622_1791802631 xck26-sfvc784-2LV-c",
     "84220 python3 exp/run_exp.py --config exp/configs/C16.json",
     "84221 python3 exp/run_exp.py --config exp/configs/C17.json",
-    "84656 python3 exp/run_exp.py --config exp/configs/C18.json"
+    "84656 python3 exp/run_exp.py --config exp/configs/C18.json",
+    "88500 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_vivado.tcl -notrace -nojournal",
+    "88730 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -log bd_0_hls_inst_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source bd_0_hls_inst_0.tcl"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-12T11:04:00+00:00",
+  "time": "2026-10-12T11:49:52+00:00",
   "unmeasured_plans": [
     {
       "condition": null,
@@ -2179,17 +2185,6 @@
       "not_run_condition_failed": false,
       "operation": "impl",
       "plan_sha256": "87ed73d4eb7f2b3aaee7de818bb8d5b1c5835a6c5464ceefce3ef724a694a6a2",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": null,
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "F52",
-      "not_run_condition_failed": false,
-      "operation": "impl",
-      "plan_sha256": "22602ff26ea208aa14304efb4a8e39aa3301cba4e1e5056ae13a945e741e85a4",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     },
@@ -2479,6 +2474,15 @@
       "reports_checked": 0,
       "sha256_pass": true,
       "status": "fail"
+    },
+    {
+      "additional_evidence_files_checked": 14,
+      "git_visible_and_tracked": true,
+      "id": "F52",
+      "operation": "impl",
+      "reports_checked": 3,
+      "sha256_pass": true,
+      "status": "impl_complete"
     }
   ]
 }
