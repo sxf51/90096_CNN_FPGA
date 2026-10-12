@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T15:07:00+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T15:27:51+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C18 is the verified leader; F51 runs with five experiment results pending. C18/C14 is the verified mixed T4 leader at 5 ns and 1.503160 ms. Its IP handoff is archived alongside F98. W30/W28 independently closes 4.5 ns at 2.472471 ms for uniform T8. F51 is running; F50, W31, C16 and C17 are waiting. Finish these five results. Once C16/C17 pass all 13 images and HLS screening, plan fresh changed-parameter cosim C19/C20 and staged implementation C21/C22; these IDs are currently unused locally and remotely and have not been launched. Use 4.5 ns for T8 and 5 ns for T4 based on independent routed evidence, with no lower RTL cycle bound. Recheck IDs before planning. C18/W32 checkpoint exports are queued; W32 requires its final postroute_physopt checkpoint. No resource-driven T4 ROM retry is currently needed. Preserve one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses and plots after each result, then perform the final two-location integrity audit. Precision, runtime interfaces and physical gates remain strict. No board results exist.
+C18 leads; F51 verified; F50 RTL and C17 HLS run concurrently. C18/C14 is the verified mixed T4 leader at 5 ns and 1.503160 ms, with an archived IP handoff. W30/W28 closes 4.5 ns at 2.472471 ms for uniform T8. F51/F48 independently passes 5 ns at 2.678855 ms; its five paths and physical hierarchy are archived. C18 checkpoint paths and W32 final post-route-optimization generated paths are also archived. F50 RTL and C17 HLS are running concurrently; C16 has completed C simulation and waits for synthesis budget. W31 is temporarily held by the auto-resuming F50 priority supervisor. Finish these four results. Once C16/C17 pass all 13 images and HLS screening, plan fresh changed-parameter cosim C19/C20 and staged implementation C21/C22; recheck unused IDs before planning. Initial physical targets are 4.5 ns for T8 and 5 ns for T4, with no lower RTL cycle bound. W31 closing 5 ns can trigger a separate ROM 4.5 ns probe, which is not yet planned or running. No resource-driven T4 ROM retry is currently needed. Keep one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses and plots, then perform the final two-location audit. Precision, runtime interfaces and physical gates stay strict. No board results exist.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -39,9 +39,10 @@ C18 is the verified leader; F51 runs with five experiment results pending. C18/C
 | [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | original_verification_pass | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [C15](C15_ws_impl_C13/C15.md) | C13 | impl | fail | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [F49](F49_ws_impl_F39/F49.md) | F39 | impl | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
-| [F51](F51_ws_impl_F47/F51.md) | F47 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 535771.0 | unknown | 5.0 | True | 2.678855 | unknown | unknown |
+| [F51](F51_ws_impl_F47/F51.md) | F47 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 535771.0 | unknown | 5.0 | True | 2.678855 | 2.0055708185066967 | unknown |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
 | [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
+| [C17](C17_t4_fifo/C17.md) | C13 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C18](C18_ws_impl_C13/C18.md) | C13 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | 5.0 | True | 1.50316 | 14.269641567524417 | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
@@ -56,7 +57,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
 | [W31](W31_ws_impl_W24/W31.md) | W24 | impl | queued_or_running | unknown |
 | [C16](C16_t8_fifo_frp/C16.md) | F47 | csim/csynth | queued_or_running | unknown |
-| [C17](C17_t4_fifo/C17.md) | C13 | csim/csynth | queued_or_running | unknown |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 
@@ -68,6 +68,7 @@ These plans have no result row. In particular, unlaunched implementation is neit
 | [W30](W30_ws_impl_W27/W30.md) | W27 | W28 | 549438.0 | 4.5 | 0.027 | 644.0 | 109.0 | 54091.0 | 77784.0 | 2.472471 |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 |
 | [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | F97 | 558758.0 | 4.5 | 0.144 | 644.0 | 109.0 | 45030.0 | 89096.0 | 2.514411 |
+| [F51](F51_ws_impl_F47/F51.md) | F47 | F48 | 535771.0 | 5.0 | 0.055 | 644.0 | 109.0 | 43617.0 | 87203.0 | 2.678855 |
 | [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 |
 | [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
 

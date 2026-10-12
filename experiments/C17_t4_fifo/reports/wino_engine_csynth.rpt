@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'wino_engine'
+================================================================
+* Date:           Tue Oct 13 02:26:31 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        C17
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|  2.847 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+--------+--------+---------+
+    |  Latency (cycles) |  Latency (absolute) |     Interval    | Pipeline|
+    |   min   |   max   |    min   |    max   |   min  |   max  |   Type  |
+    +---------+---------+----------+----------+--------+--------+---------+
+    |   263056|   263056|  1.052 ms|  1.052 ms|  263056|  263056|       no|
+    +---------+---------+----------+----------+--------+--------+---------+
+
+    + Detail: 
+        * Instance: 
+        +---------------------------------------------------------+---------------------------------------------+---------+---------+-----------+-----------+-----+-----+-------------------+
+        |                                                         |                                             |  Latency (cycles) |   Latency (absolute)  |  Interval |      Pipeline     |
+        |                         Instance                        |                    Module                   |   min   |   max   |    min    |    max    | min | max |        Type       |
+        +---------------------------------------------------------+---------------------------------------------+---------+---------+-----------+-----------+-----+-----+-------------------+
+        |grp_wino_engine_Pipeline_wino_local_load_groups_fu_1598  |wino_engine_Pipeline_wino_local_load_groups  |       11|       11|  44.000 ns|  44.000 ns|    0|    0|  loop pipeline stp|
+        |grp_wino_engine_Pipeline_wino_local_load_bias_fu_2758    |wino_engine_Pipeline_wino_local_load_bias    |       67|       67|   0.268 us|   0.268 us|    0|    0|  loop pipeline stp|
+        |grp_wino_engine_Pipeline_continuous_wino_fold_fu_2891    |wino_engine_Pipeline_continuous_wino_fold    |   262153|   262153|   1.049 ms|   1.049 ms|    0|    0|  loop pipeline stp|
+        +---------------------------------------------------------+---------------------------------------------+---------+---------+-----------+-----------+-----+-----+-------------------+
+
+        * Loop: 
+        +----------------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                            |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |          Loop Name         |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +----------------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- wino_local_load_channels  |      832|      832|        13|          -|          -|    64|        no|
+        +----------------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      31|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|   576|   24525|   20449|    -|
+|Memory           |        -|     -|   16128|    2304|    -|
+|Multiplexer      |        -|     -|       0|   15630|    -|
+|Register         |        -|     -|     654|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|   576|   41307|   38414|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|    46|      17|      32|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +---------------------------------------------------------+---------------------------------------------+---------+-----+-------+-------+-----+
+    |                         Instance                        |                    Module                   | BRAM_18K| DSP |   FF  |  LUT  | URAM|
+    +---------------------------------------------------------+---------------------------------------------+---------+-----+-------+-------+-----+
+    |grp_wino_engine_Pipeline_continuous_wino_fold_fu_2891    |wino_engine_Pipeline_continuous_wino_fold    |        0|  576|  23858|  19738|    0|
+    |grp_wino_engine_Pipeline_wino_local_load_bias_fu_2758    |wino_engine_Pipeline_wino_local_load_bias    |        0|    0|    652|    638|    0|
+    |grp_wino_engine_Pipeline_wino_local_load_groups_fu_1598  |wino_engine_Pipeline_wino_local_load_groups  |        0|    0|     15|     73|    0|
+    +---------------------------------------------------------+---------------------------------------------+---------+-----+-------+-------+-----+
+    |Total                                                    |                                             |        0|  576|  24525|  20449|    0|
+    +---------------------------------------------------------+---------------------------------------------+---------+-----+-------+-------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------+---------+-----+----+-----+------+-----+------+-------------+
+    |                                          Memory                                          |                                      Module                                      | BRAM_18K|  FF | LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------+---------+-----+----+-----+------+-----+------+-------------+
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_683_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_684_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_691_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_692_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_693_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_694_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_695_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_696_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_697_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_698_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_685_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_686_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_687_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_688_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_689_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_690_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_699_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_700_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_707_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_708_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_709_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_710_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_711_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_712_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_713_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_714_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_701_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_702_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_703_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_704_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_705_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_706_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_715_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_716_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_723_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_724_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_725_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_726_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_727_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_728_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_729_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_730_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_717_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_718_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_719_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_720_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_721_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_722_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_731_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_732_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_739_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_740_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_741_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_742_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_743_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_744_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_745_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_746_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_733_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_734_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_735_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_736_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_737_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_738_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_747_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_748_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_755_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_756_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_757_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_758_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_759_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_760_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_761_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_762_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_749_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_750_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_751_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_752_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_753_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_754_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_763_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_764_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_771_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+    |p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I10tile_blockLi0EE_772_U   |wino_engine_p_ZZL11wino_engineRN3hls6streamI18transformed_windowLi0EEERNS0_I1kbM  |        0|   28|   4|    0|    16|   14|     1|          224|
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.

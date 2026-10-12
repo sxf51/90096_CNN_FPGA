@@ -346,6 +346,7 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [F51](../experiments/F51_ws_impl_F47/F51.md) | F47 | impl_complete | 525237.0 | 644.0 | 81086.0 | 535771.0 | True | 2.678855 |
 | [F52](../experiments/F52_ws_impl_F39/F52.md) | F39 | impl_complete | 525237.0 | 644.0 | 81518.0 | 558758.0 | True | 2.514411 |
 | [W32](../experiments/W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl_complete | 525237.0 | 644.0 | 81086.0 | 558758.0 | True | 2.514411 |
+| [C17](../experiments/C17_t4_fifo/C17.md) | C13 | infeasible | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | unknown |
 | [C18](../experiments/C18_ws_impl_C13/C18.md) | C13 | impl_complete | 263090.0 | 1032.0 | 127966.0 | 300632.0 | True | 1.50316 |
 
 未测量的计划：
@@ -355,4 +356,3 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | F50 | F42 | queued_or_running | unknown |
 | W31 | W24 | queued_or_running | unknown |
 | C16 | F47 | queued_or_running | unknown |
-| C17 | C13 | queued_or_running | unknown |

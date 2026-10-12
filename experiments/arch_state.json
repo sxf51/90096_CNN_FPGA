@@ -179,7 +179,8 @@
     "W32",
     "C18",
     "W30",
-    "F51"
+    "F51",
+    "C17"
   ],
   "first_phase_head": "2fa7249eaecdfdc360d8d452fcbf52171c35abd2",
   "frozen_design_files": 45,
@@ -188,14 +189,13 @@
   "hardware_scheduler": "one heavy task plus memory-bounded light jobs",
   "max_heavy_tasks": 1,
   "max_light_tasks": 3,
-  "next": "C18/C14 is the verified mixed T4 leader at 5 ns and 1.503160 ms. Its IP handoff is archived alongside F98. W30/W28 independently closes 4.5 ns at 2.472471 ms for uniform T8. F51 is running; F50, W31, C16 and C17 are waiting. Finish these five results. Once C16/C17 pass all 13 images and HLS screening, plan fresh changed-parameter cosim C19/C20 and staged implementation C21/C22; these IDs are currently unused locally and remotely and have not been launched. Use 4.5 ns for T8 and 5 ns for T4 based on independent routed evidence, with no lower RTL cycle bound. Recheck IDs before planning. C18/W32 checkpoint exports are queued; W32 requires its final postroute_physopt checkpoint. No resource-driven T4 ROM retry is currently needed. Preserve one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses and plots after each result, then perform the final two-location integrity audit. Precision, runtime interfaces and physical gates remain strict. No board results exist.",
+  "next": "C18/C14 is the verified mixed T4 leader at 5 ns and 1.503160 ms, with an archived IP handoff. W30/W28 closes 4.5 ns at 2.472471 ms for uniform T8. F51/F48 independently passes 5 ns at 2.678855 ms; its five paths and physical hierarchy are archived. C18 checkpoint paths and W32 final post-route-optimization generated paths are also archived. F50 RTL and C17 HLS are running concurrently; C16 has completed C simulation and waits for synthesis budget. W31 is temporarily held by the auto-resuming F50 priority supervisor. Finish these four results. Once C16/C17 pass all 13 images and HLS screening, plan fresh changed-parameter cosim C19/C20 and staged implementation C21/C22; recheck unused IDs before planning. Initial physical targets are 4.5 ns for T8 and 5 ns for T4, with no lower RTL cycle bound. W31 closing 5 ns can trigger a separate ROM 4.5 ns probe, which is not yet planned or running. No resource-driven T4 ROM retry is currently needed. Keep one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses and plots, then perform the final two-location audit. Precision, runtime interfaces and physical gates stay strict. No board results exist.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
     "F50",
     "W31",
-    "C16",
-    "C17"
+    "C16"
   ],
   "resource_policy": "routed",
   "rom_clock_workstream": {
@@ -261,16 +261,13 @@
     },
     "local_exec_sessions": [
       91661,
-      80070,
       99126,
       9972,
       89193,
-      6645,
-      14188,
       1570
     ],
     "mainline_basis": "F47",
-    "next": "C18/C14 is the verified mixed T4 leader at 5 ns and 1.503160 ms. Its IP handoff is archived alongside F98. W30/W28 independently closes 4.5 ns at 2.472471 ms for uniform T8. F51 is running; F50, W31, C16 and C17 are waiting. Finish these five results. Once C16/C17 pass all 13 images and HLS screening, plan fresh changed-parameter cosim C19/C20 and staged implementation C21/C22; these IDs are currently unused locally and remotely and have not been launched. Use 4.5 ns for T8 and 5 ns for T4 based on independent routed evidence, with no lower RTL cycle bound. Recheck IDs before planning. C18/W32 checkpoint exports are queued; W32 requires its final postroute_physopt checkpoint. No resource-driven T4 ROM retry is currently needed. Preserve one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses and plots after each result, then perform the final two-location integrity audit. Precision, runtime interfaces and physical gates remain strict. No board results exist.",
+    "next": "C18/C14 is the verified mixed T4 leader at 5 ns and 1.503160 ms, with an archived IP handoff. W30/W28 closes 4.5 ns at 2.472471 ms for uniform T8. F51/F48 independently passes 5 ns at 2.678855 ms; its five paths and physical hierarchy are archived. C18 checkpoint paths and W32 final post-route-optimization generated paths are also archived. F50 RTL and C17 HLS are running concurrently; C16 has completed C simulation and waits for synthesis budget. W31 is temporarily held by the auto-resuming F50 priority supervisor. Finish these four results. Once C16/C17 pass all 13 images and HLS screening, plan fresh changed-parameter cosim C19/C20 and staged implementation C21/C22; recheck unused IDs before planning. Initial physical targets are 4.5 ns for T8 and 5 ns for T4, with no lower RTL cycle bound. W31 closing 5 ns can trigger a separate ROM 4.5 ns probe, which is not yet planned or running. No resource-driven T4 ROM retry is currently needed. Keep one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses and plots, then perform the final two-location audit. Precision, runtime interfaces and physical gates stay strict. No board results exist.",
     "paused_waiter_ids": [
       "W31"
     ],
@@ -278,7 +275,7 @@
       "Board validation remains unavailable to the agent; F98 handoff is archived.",
       "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."
     ],
-    "phase": "C18 is the verified leader; F51 runs with five experiment results pending",
+    "phase": "C18 leads; F51 verified; F50 RTL and C17 HLS run concurrently",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
@@ -302,18 +299,9 @@
     "resource_policy": "routed",
     "runtime_environment_evidence": "C18_ws_impl_C13/runtime_host_environment.csv",
     "session_jobs": {
-      "14188": [
-        "W32"
-      ],
       "1570": [
         "F50",
         "W31"
-      ],
-      "6645": [
-        "C18"
-      ],
-      "80070": [
-        "F51"
       ],
       "89193": [
         "C17"
@@ -372,7 +360,7 @@
     }
   ],
   "skipped_conditional_plans": {},
-  "time": "2026-10-12T15:07:00+00:00",
+  "time": "2026-10-12T15:27:50+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",
