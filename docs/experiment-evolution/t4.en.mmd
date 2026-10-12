@@ -1,0 +1,31 @@
+%% T4: runtime-prepacked Conv2 and independent routing
+flowchart TB
+  C13["C13<br/>T4 with runtime-prepacked Conv2 weights<br/>Use T=4, 8-bit weights and 21-bit accumulators only in Conv2, prepacking each coefficient pair into 27 bits during parameter loading and decoding each product.<br/>HLS estimate 1.0524 ms / DSP 1032<br/>Over budget: LUT/FF"]
+  C14["C14<br/>T4 two-frame RTL with parameter reload<br/>Freeze the mixed-precision reference and check finite FIFOs, deadlocks, and second-frame parameter reload.<br/>RTL Pass / 300632 cycles<br/>RTL co-simulation complete"]
+  C15["C15<br/>First independent T4 implementation at 5 ns<br/>Validate C13 under routed gates with unchanged RTL, target, and numerical acceptance.<br/>Physical implementation incomplete<br/>Host memory guard stopped the job"]
+  C18["C18<br/>T4 5 ns retry with staged processes<br/>Complete synthesis/report in one Vivado process, exit it, then reopen the same C13 project in a fresh implementation process. Preserve target, threads, and cumulative timeout.<br/>Routed WNS 0.047 ns<br/>Independent route gates pass"]
+  C17["C17<br/>T4 transformed-window FIFO depth 32<br/>Change only C13's transformed-window FIFO from depth 2 to 32, retaining runtime parameters and E065 mixed precision.<br/>Queued/running; no archived measurements<br/>No archived measurements"]
+  E065["E065 / external parent<br/>Conv2 8-bit-weight boundary validation<br/>C simulation / avg delta PSNR -0.0759 dB"]
+  W21["W21 / external parent<br/>Reorder the raw cache by subkernel<br/>HLS estimate 1.749 ms / DSP 644"]
+  W21 -->|Design or parameter baseline| C13
+  E065 -.->|Numerical reference or research motivation| C13
+  C13 -.->|Verify the same design| C14
+  C13 -.->|Verify the same design| C15
+  C14 -.->|Verify the same design| C15
+  C13 -.->|Verify the same design| C18
+  C14 -.->|Verify the same design| C18
+  C15 -->|Retry after a fix| C18
+  C13 -->|Design or parameter baseline| C17
+  C14 -.->|Numerical reference or research motivation| C17
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class C14,C18 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class C15 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class C13 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  class C17 planned
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E065,W21 context

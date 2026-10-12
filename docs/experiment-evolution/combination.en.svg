@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" width="2372" height="2668" viewBox="0 0 2372 2668">
+<title>Combinations: can Winograd and packing savings add up?</title>
+<desc>After local multiplier savings, are enough LUTs, FFs, and buffers left for the whole network?. Snapshot 653ceb9. Experiment relationships are not Git ancestry.</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="2372" height="2668" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">Combinations: can Winograd and packing savings add up?</text>
+<text x="48" y="81.5" font-size="17" font-weight="400" fill="#435654">After local multiplier savings, are enough LUTs, FFs, and buffers left for the whole network?</text>
+<text x="48" y="114" font-size="16" font-weight="400" fill="#526461">Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.</text>
+<text x="48" y="146" font-size="16" font-weight="400" fill="#526461">Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.</text>
+<path d="M490.00 366.00 L490.00 433.00 L658.67 433.00 L658.67 461.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M954.00 381.00 L954.00 433.00 L785.33 433.00 L785.33 461.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M532.00 750.00 L532.00 790.00 L258.00 790.00 L258.00 838.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M722.00 750.00 L722.00 838.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M912.00 750.00 L912.00 790.00 L1186.00 790.00 L1186.00 830.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M258.00 1103.50 L258.00 1192.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M722.00 1103.50 L722.00 1219.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1186.00 1112.00 L1186.00 1164.00 L1354.67 1164.00 L1354.67 1192.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1650.00 1062.50 L1650.00 1164.00 L1481.33 1164.00 L1481.33 1192.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1410.60 1481.00 L1410.60 1521.00 L1408.00 1521.00 L1408.00 1585.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1589.64 1481.00 L1589.64 1521.00 L1650.00 1521.00 L1650.00 1533.00 L1818.67 1533.00 L1818.67 1561.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1892.00 1440.00 L1892.00 1533.00 L1945.33 1533.00 L1945.33 1561.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1706.67 1874.00 L1706.67 1914.00 L1650.00 1914.00 L1650.00 1965.50" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2057.33 1874.00 L2057.33 1914.00 L2114.00 1914.00 L2114.00 1954.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1650.00 2254.50 L1650.00 2346.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<g data-id="C01">
+<rect x="512.00" y="469.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="536.00" y="496.00" font-size="17" font-weight="700" fill="#243031">C01</text>
+<text x="536.00" y="527.50" font-size="20" font-weight="700" fill="#243031">Winograd plus Conv2/3</text>
+<text x="536.00" y="557.50" font-size="20" font-weight="700" fill="#243031">packing, T4</text>
+<text x="536.00" y="593.50" font-size="16" font-weight="400" fill="#243031">Combine Conv1 Winograd with exact</text>
+<text x="536.00" y="617.50" font-size="16" font-weight="400" fill="#243031">10-bit packing in both later</text>
+<text x="536.00" y="641.50" font-size="16" font-weight="400" fill="#243031">layers.</text>
+<text x="536.00" y="671.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="536.00" y="701.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+</g>
+<g data-id="C02">
+<rect x="48.00" y="846.50" width="420" height="249" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="873.50" font-size="17" font-weight="700" fill="#243031">C02</text>
+<text x="72.00" y="905.00" font-size="20" font-weight="700" fill="#243031">Winograd plus Conv3 packing</text>
+<text x="72.00" y="935.00" font-size="20" font-weight="700" fill="#243031">only, T4</text>
+<text x="72.00" y="971.00" font-size="16" font-weight="400" fill="#243031">Keep Conv2 direct to isolate its</text>
+<text x="72.00" y="995.00" font-size="16" font-weight="400" fill="#243031">packing cost.</text>
+<text x="72.00" y="1025.00" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="72.00" y="1055.00" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+</g>
+<g data-id="C03">
+<rect x="512.00" y="846.50" width="420" height="249" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="536.00" y="873.50" font-size="17" font-weight="700" fill="#243031">C03</text>
+<text x="536.00" y="905.00" font-size="20" font-weight="700" fill="#243031">Winograd plus Conv2/3</text>
+<text x="536.00" y="935.00" font-size="20" font-weight="700" fill="#243031">packing, T8</text>
+<text x="536.00" y="971.00" font-size="16" font-weight="400" fill="#243031">Lower parallelism to control</text>
+<text x="536.00" y="995.00" font-size="16" font-weight="400" fill="#243031">resource use.</text>
+<text x="536.00" y="1025.00" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="536.00" y="1055.00" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+</g>
+<g data-id="C04">
+<rect x="976.00" y="838.00" width="420" height="266" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1000.00" y="865.00" font-size="17" font-weight="700" fill="#243031">C04</text>
+<text x="1000.00" y="896.50" font-size="20" font-weight="700" fill="#243031">Two-layer packing header fix</text>
+<text x="1000.00" y="932.50" font-size="16" font-weight="400" fill="#243031">Fix only include order, retaining</text>
+<text x="1000.00" y="956.50" font-size="16" font-weight="400" fill="#243031">mathematics, precision, and</text>
+<text x="1000.00" y="980.50" font-size="16" font-weight="400" fill="#243031">parameters.</text>
+<text x="1000.00" y="1010.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 9.5138 ms / DSP 936</text>
+<text x="1000.00" y="1040.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT/FF; HLS timing</text>
+<text x="1000.00" y="1063.00" font-size="15" font-weight="400" fill="#5c6160">warning</text>
+</g>
+<g data-id="C05">
+<rect x="48.00" y="1200.50" width="420" height="272" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="1227.50" font-size="17" font-weight="700" fill="#243031">C05</text>
+<text x="72.00" y="1259.00" font-size="20" font-weight="700" fill="#243031">Conv3-only packing header</text>
+<text x="72.00" y="1289.00" font-size="20" font-weight="700" fill="#243031">fix</text>
+<text x="72.00" y="1325.00" font-size="16" font-weight="400" fill="#243031">Run the valid control with one</text>
+<text x="72.00" y="1349.00" font-size="16" font-weight="400" fill="#243031">fewer packed layer.</text>
+<text x="72.00" y="1379.00" font-size="16" font-weight="700" fill="#243031">HLS estimate 9.5138 ms / DSP 1192</text>
+<text x="72.00" y="1409.00" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT/FF; HLS timing</text>
+<text x="72.00" y="1431.50" font-size="15" font-weight="400" fill="#5c6160">warning</text>
+</g>
+<g data-id="C06">
+<rect x="512.00" y="1227.00" width="420" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="536.00" y="1254.00" font-size="17" font-weight="700" fill="#243031">C06</text>
+<text x="536.00" y="1285.50" font-size="20" font-weight="700" fill="#243031">T8 combination header fix</text>
+<text x="536.00" y="1321.50" font-size="16" font-weight="400" fill="#243031">Validly measure the combination at</text>
+<text x="536.00" y="1345.50" font-size="16" font-weight="400" fill="#243031">lower parallelism.</text>
+<text x="536.00" y="1375.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 13.9743 ms / DSP 470</text>
+<text x="536.00" y="1405.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT; HLS timing warning</text>
+</g>
+<g data-id="C07">
+<rect x="1208.00" y="1200.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1232.00" y="1227.00" font-size="17" font-weight="700" fill="#243031">C07</text>
+<text x="1232.00" y="1258.50" font-size="20" font-weight="700" fill="#243031">Continuously scheduled</text>
+<text x="1232.00" y="1288.50" font-size="20" font-weight="700" fill="#243031">10-bit combination</text>
+<text x="1232.00" y="1324.50" font-size="16" font-weight="400" fill="#243031">Separate window generation from</text>
+<text x="1232.00" y="1348.50" font-size="16" font-weight="400" fill="#243031">fixed MAC loops in the combined</text>
+<text x="1232.00" y="1372.50" font-size="16" font-weight="400" fill="#243031">architecture.</text>
+<text x="1232.00" y="1402.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="1232.00" y="1432.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+</g>
+<g data-id="C12">
+<rect x="1198.00" y="1593.00" width="420" height="249" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1222.00" y="1620.00" font-size="17" font-weight="700" fill="#243031">C12</text>
+<text x="1222.00" y="1651.50" font-size="20" font-weight="700" fill="#243031">Continuous-combination guard</text>
+<text x="1222.00" y="1681.50" font-size="20" font-weight="700" fill="#243031">fix</text>
+<text x="1222.00" y="1717.50" font-size="16" font-weight="400" fill="#243031">Fix control/representation while</text>
+<text x="1222.00" y="1741.50" font-size="16" font-weight="400" fill="#243031">preserving the arithmetic contract.</text>
+<text x="1222.00" y="1771.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 7.5772 ms / DSP 470</text>
+<text x="1222.00" y="1801.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT; HLS timing warning</text>
+</g>
+<g data-id="C08">
+<rect x="1672.00" y="1569.00" width="420" height="297" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1696.00" y="1596.00" font-size="17" font-weight="700" fill="#243031">C08</text>
+<text x="1696.00" y="1627.50" font-size="20" font-weight="700" fill="#243031">Conv2 8-bit-weight</text>
+<text x="1696.00" y="1657.50" font-size="20" font-weight="700" fill="#243031">combination, T8</text>
+<text x="1696.00" y="1693.50" font-size="16" font-weight="400" fill="#243031">Use validated 8-bit weights only in</text>
+<text x="1696.00" y="1717.50" font-size="16" font-weight="400" fill="#243031">Conv2 to remove its 10-bit</text>
+<text x="1696.00" y="1741.50" font-size="16" font-weight="400" fill="#243031">coefficient residual recovery.</text>
+<text x="1696.00" y="1771.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="1696.00" y="1795.50" font-size="16" font-weight="700" fill="#243031">-0.0759 dB</text>
+<text x="1696.00" y="1825.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+</g>
+<g data-id="C09">
+<rect x="1440.00" y="1973.50" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1464.00" y="2000.50" font-size="17" font-weight="700" fill="#243031">C09</text>
+<text x="1464.00" y="2032.00" font-size="20" font-weight="700" fill="#243031">Conv2 8-bit-weight</text>
+<text x="1464.00" y="2062.00" font-size="20" font-weight="700" fill="#243031">combination, T4</text>
+<text x="1464.00" y="2098.00" font-size="16" font-weight="400" fill="#243031">Scan greater parallelism with the</text>
+<text x="1464.00" y="2122.00" font-size="16" font-weight="400" fill="#243031">same mixed precision.</text>
+<text x="1464.00" y="2152.00" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="1464.00" y="2176.00" font-size="16" font-weight="700" fill="#243031">-0.0759 dB</text>
+<text x="1464.00" y="2206.00" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+</g>
+<g data-id="C10">
+<rect x="1904.00" y="1962.00" width="420" height="296" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1928.00" y="1989.00" font-size="17" font-weight="700" fill="#243031">C10</text>
+<text x="1928.00" y="2020.50" font-size="20" font-weight="700" fill="#243031">T8 mixed combination with</text>
+<text x="1928.00" y="2050.50" font-size="20" font-weight="700" fill="#243031">split windows</text>
+<text x="1928.00" y="2086.50" font-size="16" font-weight="400" fill="#243031">Use two synchronized 4000-bit</text>
+<text x="1928.00" y="2110.50" font-size="16" font-weight="400" fill="#243031">channels while retaining</text>
+<text x="1928.00" y="2134.50" font-size="16" font-weight="400" fill="#243031">quantization and MAC arithmetic.</text>
+<text x="1928.00" y="2164.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.1302 ms / DSP 520</text>
+<text x="1928.00" y="2194.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT/FF; HLS timing</text>
+<text x="1928.00" y="2217.00" font-size="15" font-weight="400" fill="#5c6160">warning</text>
+</g>
+<g data-id="C11">
+<rect x="1440.00" y="2354.00" width="420" height="248" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1464.00" y="2381.00" font-size="17" font-weight="700" fill="#243031">C11</text>
+<text x="1464.00" y="2412.50" font-size="20" font-weight="700" fill="#243031">T4 mixed combination with</text>
+<text x="1464.00" y="2442.50" font-size="20" font-weight="700" fill="#243031">split windows</text>
+<text x="1464.00" y="2478.50" font-size="16" font-weight="400" fill="#243031">Fix window representation at T4.</text>
+<text x="1464.00" y="2508.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.0817 ms / DSP 1036</text>
+<text x="1464.00" y="2538.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT/FF; HLS timing</text>
+<text x="1464.00" y="2561.00" font-size="15" font-weight="400" fill="#5c6160">warning</text>
+</g>
+<g data-id="E065">
+<rect x="1682.00" y="1241.00" width="420" height="191" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1706.00" y="1268.00" font-size="17" font-weight="700" fill="#243031">E065 / external parent</text>
+<text x="1706.00" y="1299.50" font-size="20" font-weight="700" fill="#243031">Conv2 8-bit-weight boundary</text>
+<text x="1706.00" y="1329.50" font-size="20" font-weight="700" fill="#243031">validation</text>
+<text x="1706.00" y="1365.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="1706.00" y="1389.50" font-size="16" font-weight="700" fill="#243031">-0.0759 dB</text>
+</g>
+<g data-id="P07">
+<rect x="744.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="768.00" y="233.00" font-size="17" font-weight="700" fill="#243031">P07 / external parent</text>
+<text x="768.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Exact 10-bit coefficient</text>
+<text x="768.00" y="294.50" font-size="20" font-weight="700" fill="#243031">residual recovery</text>
+<text x="768.00" y="330.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 454</text>
+</g>
+<g data-id="W05">
+<rect x="280.00" y="221.00" width="420" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="304.00" y="248.00" font-size="17" font-weight="700" fill="#243031">W05 / external parent</text>
+<text x="304.00" y="279.50" font-size="20" font-weight="700" fill="#243031">Winograd network, T16</text>
+<text x="304.00" y="315.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+</g>
+<g data-id="W10">
+<rect x="1440.00" y="887.50" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1464.00" y="914.50" font-size="17" font-weight="700" fill="#243031">W10 / external parent</text>
+<text x="1464.00" y="946.00" font-size="20" font-weight="700" fill="#243031">Fixed tile loops, continuous</text>
+<text x="1464.00" y="976.00" font-size="20" font-weight="700" fill="#243031">Conv1 only</text>
+<text x="1464.00" y="1012.00" font-size="16" font-weight="700" fill="#243031">HLS estimate 7.5482 ms / DSP 326</text>
+</g>
+</svg>

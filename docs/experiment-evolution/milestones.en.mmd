@@ -1,0 +1,32 @@
+%% SRCNN / Key milestones
+flowchart TB
+  E020["E020<br/>Original golden synthesis<br/>11,064 BRAM18K; only 288 available"]
+  E017["E010-E019<br/>Freeze precision<br/>Delta PSNR -0.0695 dB"]
+  E033["E033<br/>Whole-network DATAFLOW<br/>136,868 LUTs; 17% over capacity"]
+  E039["E039 / E070<br/>Bind multiplication to DSPs<br/>HLS 29.83 ms/frame"]
+  E043["E043<br/>Increase parallelism to T16<br/>HLS 6.94 ms/frame"]
+  F25["F08 -> F25<br/>Continuous folding<br/>HLS 2.64 ms/frame"]
+  F28["F27 / F28<br/>Rebuild weight loading<br/>HLS 2.62 ms/frame"]
+  W22["W21 -> W22<br/>Winograd T8<br/>Routed 2.77 ms/frame"]
+  W32["W32 / F52<br/>Close timing at 4.5 ns<br/>Routed 2.51 ms/frame"]
+  C18["C13 -> C14 -> C18<br/>T4: Winograd + 8-bit Conv2 packing<br/>Routed 1.50 ms/frame"]
+  E020 -->|Design or parameter baseline| E017
+  E017 -->|Design or parameter baseline| E033
+  E033 -->|Design or parameter baseline| E039
+  E039 -->|Design or parameter baseline| E043
+  E043 -->|Design or parameter baseline| F25
+  F25 -->|Design or parameter baseline| F28
+  F28 -->|Design or parameter baseline| W22
+  W22 -->|Design or parameter baseline| W32
+  W32 -->|Design or parameter baseline| C18
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E039,W22,W32,C18 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  class E043,F25,F28 warning
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E020,E033 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  class E017 analysis
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031

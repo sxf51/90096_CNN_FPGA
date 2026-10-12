@@ -1,0 +1,28 @@
+%% 存储路线：整网数据流、外存探针和分块融合
+flowchart TB
+  S01["S01<br/>全局数组 DDR 接口探针<br/>尝试给全局 scratch 数组导出 AXI 端口，研究层间外存组织。<br/>HLS 估计 167.3047 ms / DSP 254<br/>超预算: BRAM18K；配置无效"]
+  S02["S02<br/>整网数据流对照<br/>复用统一 gather 设计，作为分块融合的整网对照。<br/>HLS 估计 29.8302 ms / DSP 254<br/>候选，仍需验收"]
+  S03["S03<br/>三层融合输出块 B8<br/>每块重算所需 halo，局部融合 Conv1/2 并缓存 Conv2 小块。<br/>HLS 估计 228.0354 ms / DSP 296<br/>超预算: LUT"]
+  S04["S04<br/>三层融合输出块 B16<br/>扩大块，减少相对 halo 重算量。<br/>HLS 估计 167.5398 ms / DSP 296<br/>超预算: LUT"]
+  S05["S05<br/>三层融合输出块 B32<br/>继续扩大输出块，比较缓存与重算。<br/>HLS 估计 141.6638 ms / DSP 296<br/>超预算: LUT"]
+  S06["S06<br/>三层融合输出块 B64<br/>扫描中最大输出块，含真实图像边缘复制与不完整块。<br/>HLS 估计 129.8187 ms / DSP 296<br/>超预算: LUT"]
+  E048["E048 / 外部来源<br/>整数承载的定点运算<br/>HLS 估计 29.1386 ms / DSP 254"]
+  G01["G01 / 外部来源<br/>Gather 统一控制<br/>HLS 估计 29.8302 ms / DSP 254"]
+  E048 -->|设计或参数基线| S01
+  G01 -->|设计或参数基线| S02
+  E048 -->|设计或参数基线| S03
+  S02 -.->|对照实验| S03
+  S03 -->|设计或参数基线| S04
+  S03 -->|设计或参数基线| S05
+  S03 -->|设计或参数基线| S06
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class S02 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class S01 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class S03,S04,S05,S06 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E048,G01 context

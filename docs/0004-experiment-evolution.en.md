@@ -1,0 +1,247 @@
+# SRCNN Experiment Ideas and Evolution
+
+[中文版](0004-experiment-evolution.md)
+
+One-graph entry: [complete compact SVG](experiment-evolution/full.en.svg) / [local viewer with zoom, lookup, and relationship highlighting](experiment-evolution/full.en.html). All 207 experiments appear together, with 217 thick solid arrows for the main progression; 11 essential nodes retain two parents. Nodes show IDs, short ideas, and network ms/frame at a 100 MHz reference clock. Every green node has comparable latency. Red nodes add one specific problem line and use regular-weight latency; local or C-only exploration without network cycles uses gray scope labels. All 307 archive relationships remain in the ledger and route diagrams.
+
+The complete graph converts existing cycles with `network latency cycles x 10 ns / 1,000,000` to milliseconds, using a valid current-experiment RTL maximum latency or HLS top-level latency, excluding host/DMA transfers. Completed checks of the same design may reference an actual design report: F80 shows `~10.57 ms/frame (F25)`, with `~` and the source ID marking the reference; design timing warnings still apply. This reference-clock conversion is neither synthesis rerun at 10 ns nor board measurement. PE, layer-only, and C checks without an explicit same-design network report do not supply latency. Green still indicates the current stage passes, rather than routed timing closure. Red reasons distinguish resource budgets, compilation, host OOM, and routed timing failures. See the [generation guide](experiment-evolution/README.en.md) for the metric definition and edge selection.
+
+This guide explains what each experiment builds on, why its design changed, and how its results motivated the next step. The [complete ledger](experiment-evolution/records.en.md) covers all 207 experiments.
+
+The archive snapshot is source commit `653ceb9`: 200 experiments have result records and seven do not, adding 37 experiments since `a3d78b7`. C18 T4 independently closes 5 ns; C14 RTL cycles give 1.503160 ms/frame. W32/F52 T8 close 4.5 ns, giving 2.514411 ms/frame, while W30 FRP gives 2.472471 ms/frame. These times use closed targets, distinct from the graph's fixed 100 MHz metric, and are not board measurements. The user accepts F47/F48 as the new T8 basis; W21/W22/F98 remain integration fallbacks. Set14 acceptance now means the complete 13-image course set. Original historical statuses and reports remain unchanged. This edition is frozen through W30 and excludes later results. IDs name experiment archives, not layers, clocks, or IP blocks.
+
+## Reading Order
+
+1. Start with the [overview](experiment-evolution/overview.en.svg) to see branches and combinations.
+2. Follow the [continuous pipeline route](experiment-evolution/continuous.en.svg) from F25 to the private loader F28.
+3. Read the [Winograd route](experiment-evolution/winograd.en.svg) and [verification graph](experiment-evolution/verification.en.svg) to distinguish W21's design, F97 RTL verification, and W22 physical-clock experiment.
+4. Read the new [T8 clocks/FIFOs](experiment-evolution/clock-fifo.en.svg), [T4](experiment-evolution/t4.en.svg), [ROM](experiment-evolution/rom.en.svg), and [host controls](experiment-evolution/host.en.svg) to distinguish completed evidence, host failures/retries, and pending combinations.
+5. Explore the routes below, then use the ledger to check individual settings, evidence, and failure states.
+
+![Experiment overview](experiment-evolution/overview.en.svg)
+
+The route diagrams below show complete dependencies between designs, parameters, integrated modules, and verification steps, rather than Git commit ancestry. Their solid edges show design or parameter evolution; dashed edges show numerical references, controls, or verification of the same design. The complete compact graph selects main relationships and uses thick solid arrows throughout. Combined experiments have several parents, so the structure is a directed graph rather than a strict tree.
+
+The text below and the route diagrams retain the original registry formula: `cycles * max(target period, HLS estimated period) / 10^6` milliseconds, which differs from the complete compact graph's common 100 MHz normalization. This original calculation does not establish timing closure after clock uncertainty, routed timing, or measured board performance.
+
+## Names and Parameters
+
+| Name | Meaning | Common source of confusion |
+| --- | --- | --- |
+| E series | First round: baseline, precision, compiler controls, streaming, and parameter scans | Includes CPU analysis, synthesis, and implementation; their latencies cannot all be ranked together |
+| P series | Packing primitives and full-network controls | A passing PE does not establish full-network feasibility |
+| G series | Matched Conv3 gather/scatter controls | Less BRAM can require more control, coefficient storage, and cycles |
+| S series | DDR probe, streaming control, and fused spatial tiles | S01 did not export scratch ports and is not a valid DDR design |
+| W series | Winograd PEs, single-layer/network designs, scheduling, and banking | W03's 16-bit Winograd is not INT16 packing |
+| C series | Winograd combined with packing or mixed precision | A paper DSP budget says nothing about meeting LUT/FF budgets |
+| F01-F31 | Pipeline, FIFO, window selection, conversion, parameter loading, and reload prechecks | F28 changes parameter ownership; F31 checks the testbench without a new inference algorithm |
+| F80-F98 / W20 / W22 | Numerical, RTL, resource diagnostics, and independent routing | F97 verifies W21 RTL; W22 only changes the physical clock and this run's thread settings |
+| F32-F52 / W23-W32 / C13-C18 | Host controls, ROM, strategies, FRP, FIFOs, and T4 | Host memory failures do not establish FPGA infeasibility; same-design RTL and independent routing must match |
+| T=16 | Sixteen computation rounds per output pixel | It does not mean 16-bit quantization; F25 weights and activations remain 10-bit |
+| B=32 | Output tile side length of 32 pixels | It is neither DSP count nor data width |
+
+The original A/B/C/D labels name ideas, not ID prefixes: A = packing -> P; B = whole-network dataflow -> E/F; C = Conv3 scatter -> G; D = Winograd -> W. Experiment IDs beginning with C describe combinations.
+
+## 1. Baseline and Precision: Establish the Numerical Contract
+
+The original network requires approximately 522,280,800 MACs per frame; Conv1 accounts for 64.54%. Two complete floating-point intermediate maps occupy about 23.81 MiB. Baseline synthesis estimates 11,064 BRAM18K blocks against the device's 288. Floating-point C simulation is correct, but this on-chip storage organization cannot fit.
+
+E010 begins with measured image ranges and software quantization scans. E017/E019 then use AMD data types to validate rounding, saturation, and complete arithmetic. With 10-bit weights and activations, average PSNR drops about 0.0695 dB across the 13 supplied Set14 pairs, within the 0.1 dB average-loss gate. Using 8 bits throughout loses about 5.18 dB and is rejected. E062/E065/E066 identify a narrower exception: 8-bit Conv2 weights with 10-bit activations lose about 0.07589 dB on average.
+
+These records supply the shared numerical reference for later routes. Bit-exact fixed-point results match an independent fixed-point reference, not floating-point golden output. PSNR measures quality against high-resolution ground truth; delta PSNR compares fixed-point and float outputs on the same inputs. Golden-output MSE is a different comparison. Current user policy accepts the complete 13-image course set without a provisional comic requirement; quality on untested inputs is not inferred.
+
+![Baseline and precision](experiment-evolution/precision.en.svg)
+
+## 2. Compiler Controls: Directives Do Not Remove Full Maps
+
+E020-E029/E032 investigate default optimization, target clock, automatic pipelining, inner-MAC or pixel-loop pipelining, array partitioning, and floating-point reassociation. E023/E024/E025 use configuration keys ignored by the tool; E028/E029/E032 are the valid retries. E027 tests 16-bit fixed point while retaining full-frame maps.
+
+The fastest valid float control, E029, estimates about 3.811 seconds but needs approximately 11,114 BRAM18K blocks. The computation and storage organization must change. An ignored directive and a valid synthesis result with excessive resources are different outcomes.
+
+![Compiler controls](experiment-evolution/compiler.en.svg)
+
+## 3. Initial Streaming: Storage Improves, Mapping Becomes the Limit
+
+E030 first validates floating-point line buffers, streams, and boundary behavior. E031/E033 convert this architecture to 10-bit arithmetic and remove full intermediate maps, reducing BRAM18K to 168. Default mapping of narrow multipliers and type logic nevertheless consumes 136,868 LUTs, with an estimated 31.822 ns path.
+
+E047 explicitly binds multipliers to DSPs. E048 carries fixed-point raw bits in integers and explicitly implements layer-boundary rounding. E057/E058 replace fully partitioned weight registers with LUTRAM banks matched to parallel read ports, producing a resource-feasible baseline. An inner II of 1 still permits pipeline restart/drain overhead per pixel, serial padding phases, and FIFO stalls.
+
+![Initial streaming](experiment-evolution/streaming.en.svg)
+
+## 4. Parameter Scans: More Parallelism Can Cost More Time
+
+Scans vary T, each layer's unroll direction, weight storage, and target period independently. T32 -> T16 -> T8 increases parallel multipliers, but LUTs, FFs, memory ports, and critical paths may worsen. E040/E067 waste BRAM on many shallow weight banks; full partitioning in E064 increases registers and selectors. E036 is marked provisional, yet its actual II misses the target; that failure remains visible.
+
+E043 is the first round's fastest estimate within the resource and precision budgets: about 6.9392 ms, 505 DSPs, and 168 BRAM18K blocks. It is a comparison baseline, not a measured board rate.
+
+E043 and the later W18 both have HLS 200-871 timing warnings. Resource feasibility does not establish the requested clock. The ledger extracts the effective logic budget from original logs, rather than comparing only estimated and nominal periods.
+
+![Parameter scans](experiment-evolution/scans.en.svg)
+
+## 5. A: Packing From Primitive Savings to Network Cost
+
+P01-P07 validate operand packing, negative low-field borrow correction, safe accumulation groups, DSP builtins, and exact 10-bit residual recovery. P08 checks actual DSP pre-adder attributes; P09 reproduces a frozen archive. P10/P11/P12 integrate exact 10-bit packing into the network. DSP use decreases, but decoding, residual recovery, selectors, and pipeline logic push LUTs beyond the project budget.
+
+P13-P16 now have completed C simulation and synthesis with exact full INT16 products. The direct P13 control uses 2 DSPs, 57 LUTs, and 16 FFs. Byte-limb packing P14 uses 4 DSPs, 453 LUTs, and 276 FFs, increasing cost. Overlap/fabric recovery P15 uses 1 DSP, 747 LUTs, 200 FFs, and a 3.392 ns estimated path. At the same 1 DSP, ordinary mixed mapping P16 uses only 330 LUTs and 16 FFs with a 2.48 ns estimate. These experiments do not show a benefit for full INT16 packing over mixed mapping, so it has not been integrated into the network. These are PE costs, not inferred network latency.
+
+![Packing](experiment-evolution/packing.en.svg)
+
+## 6. C: Scatter Trades Buffer Capacity for More Work
+
+The matched gather control G01 estimates 29.83 ms and 168 BRAM18K blocks. G02 reduces channels before buffering partial sums, lowering BRAM18K to 137 but increasing time to about 37.70 ms. G03 merges replicated-edge taps into kernels for nine boundary classes, reducing BRAM18K to 87. Wider/more coefficients, kernel selection, and loader control increase time to about 44.14 ms.
+
+This route confirms the benefit of buffering the side with fewer channels and measures its cost. It provides a storage tradeoff but does not outperform the best continuous direct-convolution candidate.
+
+![Gather and scatter](experiment-evolution/scatter.en.svg)
+
+## 7. DDR and Fused Tiles: The Interface Must Exist
+
+S01 attempts to place global scratch arrays in DDR. The tool exports no scratch1/2 AXI ports and instead synthesizes enormous on-chip storage, so the run is invalid_config. S02 is a whole-network dataflow control. S03-S06 scan B8/B16/B32/B64, fuse local computation, and recompute halos. They reduce BRAM but lose whole-network overlap and incur high LUT costs for banking/address selection plus additional cycles.
+
+19.2 GB/s is a theoretical K26 DDR bandwidth derived from specifications; 9.6 GB/s assumes 50% efficiency. Transfer lower bounds are not board measurements and cannot establish feasibility when the interface is invalid or compute resources exceed capacity.
+
+![Storage and fused tiles](experiment-evolution/memory.en.svg)
+
+## 8. D: Winograd Also Requires Transform and Control Optimization
+
+W01-W03 validate exact integer F(2x2,3x3) transforms and multiplier mapping. W04-W09 obtain valid layer/network results after fixing header macro collisions, but conditional tile loops and raster reordering are expensive. W10 separates window generation from a fixed-count MAC loop. W11-W16 extend continuous scheduling across all three layers and split an unsupported 8000-bit window stream into two 4000-bit channels.
+
+Runtime weight-transform loading then exposes high banking/selector costs. W17/W18 narrow the raw-weight banks used only by sequential transforms while preserving transformed banks serving MACs. W18 estimates 4.2274 ms, 326 DSPs, and 74,480 LUTs, meeting the resource budget for this route. It saves DSPs but has a higher network time estimate than F25 and lacks equivalent final RTL/implementation evidence.
+
+W19 later integrates F28 private parameter streams, and W21 changes the raw-coefficient cache layout to bring Winograd T8 within HLS resource gates. F96/F97/F98/W22 now provide multi-image, parameter-reload RTL, and independent routing evidence; see section 12.
+
+![Winograd](experiment-evolution/winograd.en.svg)
+
+## 9. Combinations Also Combine Control Costs
+
+C01-C06 combine Winograd and exact 10-bit packing. After header fixes, all exceed LUT/FF budgets. C07/C12 investigate continuous organization. C08/C09 use the Conv2 8-bit weights validated in E065 to remove that layer's residual recovery. C10/C11 fix the window-stream representation and obtain small HLS time estimates, but remain far above resource budgets.
+
+C11's 1.0817 ms estimate is not a better feasible design than F25: it requires 248,797 LUTs and 307,525 FFs. Failed nodes remain in the graph to explain why this route did not produce a qualified candidate.
+
+![Combined architectures](experiment-evolution/combination.en.svg)
+
+## 10. Continuing B: How F25 Developed
+
+| Step | Motivation and change | Effect or next bottleneck |
+| --- | --- | --- |
+| E042/E043 | Fixed-point whole-network dataflow still has per-pixel pipeline and shallow wide-FIFO costs | Establish a resource-feasible control and investigate scheduling/storage |
+| F01/F02 | LUTRAM FIFOs and a separate URAM line-buffer control | F01 reduces BRAM without reducing cycles; F02 wastes URAM depth |
+| F03 -> F08 | Separate windows and MACs, continuously schedule pixels/groups, register a balanced adder tree, fix wide streams | About 4.1947 ms; variable channel selectors and padding stalls need attention |
+| F04 -> F09 | Online padding and legal split-window streams | BRAM18K falls to 73; HLS cycles alone cannot establish FIFO benefits |
+| F09 -> F13 | Rotate Conv3 channels each round so multipliers read fixed locations | Smaller dynamic selectors; float output conversion remains on the global timing path |
+| F16 -> F18 -> F20 | Construct exact float bits; fix SDK types and duplicate object names | Output PE uses zero DSPs and matches all encodings exactly |
+| F13 + F20 -> F22/F23 | Integrate only output encoding; compare 3/2.5 ns targets | DSPs fall from 505 to 502; Conv1 loader addressing becomes critical |
+| F23 -> F24 | Explicit channel/kernel-row/kernel-column indices remove address multiplication | Estimate improves from 2.822 to 2.699 ns; flattened counter control remains long |
+| F24 -> F25 | Add only LOOP_FLATTEN off to the Conv1 weight-loader inner loop | More loading cycles, but global estimated path falls to 2.377 ns; time estimate is 2.64226 ms |
+
+F24 has 1,048,723 cycles converted at 2.699 ns to 2.830503377 ms. F25 has 1,056,904 cycles converted at 2.5 ns to 2.64226 ms. If both could run at the same physical 2.5 ns period, F24 would have fewer cycles. This selection uses the stated HLS estimate formula; physical timing and measurements must confirm the outcome.
+
+F25 preserves the three-layer SRCNN, replicated edges, external float32 parameters/input/output, and tensor order. Internally it uses 10-bit values, 23-bit accumulators, line buffers, FIFOs, continuous direct convolution, partial parallelism, and registered adder trees. At T16, MAC DSP allocation is 324/128/50, totaling 502. Root `src/` remains the floating-point baseline and is not the F25 entry point.
+
+![Continuous pipeline and F25](experiment-evolution/continuous.en.svg)
+
+## 11. Separate Functional, RTL, and Physical Evidence
+
+![Candidate verification](experiment-evolution/verification.en.svg)
+
+| Design | C simulation | Physical implementation | C/RTL co-simulation | Snapshot conclusion |
+| --- | --- | --- | --- | --- |
+| First-round E043 | E069 | E070 verifies E039, not E043 | No completed report | Numerical checks pass on 13 images |
+| F25 | F80 | F81: OOM; F89: timeout; F92: 5 ns passes | F82: two frames Pass | RTL latency 1,068,183 cycles; routed timing passes, board pending |
+| F24 | F83 | F84: OOM; F90: deferred plan | F85: two frames Pass | RTL latency 1,061,153 cycles; no passing routed report |
+| F23 | F86: 13 images pass | F87: OOM; F91: deferred plan | F88: SIGTERM interruption | Numerical checks pass; RTL/physical evidence incomplete |
+| F28 | F94; F31 reload preflight | F95: 5 ns passes | F93: changed-parameter two frames Pass | RTL latency 1,059,506 cycles; T16 fallback |
+| W21 | F96: 13 images pass | F98: 5 ns; W22: 4.95 ns; W32: 4.5 ns pass | F97: changed-parameter two-frame Pass | 558,758 RTL cycles; W21 remains an integration fallback |
+| F39 | Design: 13 images pass | F49: memory guard; F52: 4.5 ns pass | F43: changed-parameter two-frame Pass | 558,758 cycles; 2.514411 ms/frame, matching W32 |
+| C13 | Design: 13 images E065-exact | C15: memory guard; C18: 5 ns pass | C14: changed-parameter two-frame Pass | 300,632 cycles; 1.503160 ms/frame, no board result |
+| W17 | Original design's C checks | W20: 5 ns passes, diagnostic only | No independent completed record | Original HLS LUT budget is exceeded; excluded from rankings |
+
+F82 takes about 1 hour 42 minutes 40 seconds of wall time. Its progress log reports only 0/2, 1/2, and 2/2 transactions. A long interval without output does not itself prove deadlock. Simulation wall time also differs from the approximately million-cycle RTL hardware latency.
+
+**F25 has a real HLS timing warning at its 2.5 ns configuration.** The 2.500 ns target minus 0.675 ns clock uncertainty leaves a 1.825 ns logic budget, exceeded by estimated 2.377 ns paths. The 2.64226 ms number is a candidate HLS estimate at the nominal target, not evidence of 400 MHz timing closure. Passing RTL functional simulation does not remove this warning or replace placement/routing. Changing the target to 10 ns requires new synthesis/co-simulation and evaluation of the resulting reports; the earlier cycles, resources, and time estimates must not simply be reused.
+
+E070 completes actual implementation but has WNS = -1.277 ns. F81/F84 host OOM failures produce no routed results. These are distinct outcomes. There is no completed board acceptance record in this snapshot.
+
+## 12. After F25: Parameter Ownership, T8, and Physical Clock
+
+| Evolution | Idea and effect | Problem or next step |
+| --- | --- | --- |
+| F25 -> F26 | Change only S2P banks and bias shift loading | Total LUTs rise to 70,808; shared load/compute ownership still needs selectors |
+| F25/F26 -> F27 | Convert parameters once, then send three FIFOs into private engine banks | Outside LUTs fall from 32,294 to 3,170; the 2.419 ns estimate misses the loader gate |
+| F27 -> F28 | Disable flattening inside private loading | Restore 2.377 ns, 1,046,029 HLS cycles, and all WS2 gates |
+| W17 + F28 -> W19 | Add private parameter streams to Winograd T8 | 83,623 LUTs, exceeding the gate by 1,639 |
+| W19 -> W21 | Replace the flat 81-coefficient cache with nine subkernels by nine taps | 81,086 LUTs, only 898 spare; 525,237 HLS cycles and resource feasibility |
+| F28 -> F29/F30 | Compare direct T8 with registered and unregistered trees | F29 exceeds LUT/FF budgets; F30 saves FFs but increases LUTs; both remain infeasible |
+| F28/W21 -> F93/F97 | Change input, weights, and biases on frame two, checking finite FIFOs and reload | Both RTL checks pass; cycles exceed HLS by 1.2884% / 6.3821% |
+| W21 -> F98 -> W22 | Route independently at 5 ns, then tighten to 4.95 ns | W22 has 47 ps setup margin; retain F98's 140 ps fallback |
+
+W20 is a calibration prompted by F92's small physical/HLS LUT ratio. Its passing 5 ns timing neither cancels W17's HLS budget failure nor replaces independent implementation of W21.
+
+The following times combine measured same-design RTL cycles with each passing routed target. Host/DMA are excluded, and no board measurement exists. They are listed separately from the graph's fixed 100 MHz reference:
+
+| Implementation | RTL cycle source | Routed target | WNS | 100 MHz reference ms/frame | Compute ms/frame at passing target |
+| --- | --- | --- | --- | --- | --- |
+| F92 / F25 | F82: 1,068,183 | 5 ns | +0.568 ns | 10.68183 | 5.340915 |
+| F95 / F28 | F93: 1,059,506 | 5 ns | +0.282 ns | 10.59506 | 5.29753 |
+| F98 / W21 | F97: 558,758 | 5 ns | +0.140 ns | 5.58758 | 2.79379 |
+| W22 / W21 | F97: 558,758 | 4.95 ns | +0.047 ns | 5.58758 | 2.7658521 |
+| W32 / W21 | F97: 558,758 | 4.5 ns | +0.144 ns | 5.58758 | 2.514411 |
+| F52 / F39 | F43: 558,758 | 4.5 ns | +0.072 ns | 5.58758 | 2.514411 |
+| W30 / W27 | W28: 549,438 | 4.5 ns | +0.027 ns | 5.49438 | 2.472471 |
+| C18 / C13 | C14: 300,632 | 5 ns | +0.047 ns | 3.00632 | 1.503160 |
+
+W22 and F98 have identical RTL cycles, so their normalized graph latency is identical. W22's actual target period is 1% shorter, giving 1% less compute time. Its report also has WHS +0.032 ns, zero THS, and no unrouted nets; all 93 RTL/init file hashes match W21/F98. The measured limits now involve Conv3 control/parameter distribution, routing, and fanout rather than DSP cascades. Board integration, data movement, and actual end-to-end latency remain pending.
+
+See the original [weight-loading plan](0004-t8-weight-loading-plan.md), [separate measurement tables](../experiments/WEIGHT_LOADING.md), and [archive audit](../experiments/weight_loading_audit.json).
+
+## 13. Current Progress: ROM, Control Fanout, Window Supply, and T4
+
+The user changes final resource acceptance in [0005](0005-rom-clock-t4-plan.md) to independent routed reports, using HLS only for screening and preserving historical statuses. C13 therefore retains its red HLS `infeasible` node while C18 shows physical acceptance separately. W20's original diagnostic exclusion also remains.
+
+### Host Controls and Constant Weights
+
+F32-F38 retain F28/W21 hardware while measuring concurrent synthesis/C simulation and correcting underestimated memory registrations. They are not FPGA acceleration changes. Later W23 is actually killed by kernel OOM; F46/F49/W29/C15 are stopped by available-memory guards, without final hardware verdicts. Current policy permits one heavy task plus budgeted light jobs, and retries preserve the original failures under separate IDs.
+
+F35 proves loaded banks equal generated ROM before W24 removes parameter AXI, reader/transformer processes, and write ports. W25 uses identical ROM weights and a different second input, passing RTL at 554226 cycles, 4532 fewer than F97. W29 routing hits the memory guard and W31 lacks a result. ROM cannot yet be described as physically accepted or as replacing the runtime-parameter mainline.
+
+![Constant ROM](experiment-evolution/rom.en.svg)
+
+### T8 Control Paths and Finite FIFOs
+
+| Branch | Measured result | Current interpretation |
+| --- | --- | --- |
+| W23 -> W32 | Same RTL, Performance_Explore, final postroute_physopt; all 4.5 ns gates pass | F97 cycles give 2.514411 ms/frame; preserve original OOM |
+| F39 -> F43 -> F49 -> F52 | Registered Conv3 operands; RTL still 558758; 4.5 ns passes | Routed LUT 43468, WNS +0.072 ns; preserve guard failure |
+| F40/F41 -> F44/F45 | Feature FIFO16/32 both take 558758 RTL cycles | Function passes without frame-latency gain |
+| F42 -> F46 -> F50 | Reorder-output FIFO256; memory guard stops F46 | F50 has no archive, so its benefit is unknown |
+| F47 -> F48 -> F51 | Window FIFO16: 535771 cycles, saving 22987; read stalls fall to zero | Original 2% goal misses by 30 cycles; user accepts mainline basis, F51 routing unarchived |
+| W26 -> W27 -> W28 -> W30 | FRP numerical/reload Pass at 549438 cycles; W30 independently closes 4.5 ns | Preserve raw `fail`; later upper-only 564345-cycle acceptance authorizes 2.472471 ms/frame |
+
+The complete graph keeps W28 red, with a problem line and regular-weight 5.49 ms/frame, while noting later acceptance and retaining full visibility because numerical validation passes. This exception requires explicit archived authorization and actual RTL Pass; ordinary failed records cannot use it. F48's original target miss is also preserved.
+
+W30's final routing has WNS +0.027 ns, WHS +0.030 ns, 644 DSPs, 54091 LUTs, 77784 FFs, and 109 BRAM18K, passing every independent route gate. W28 cycles at 4.5 ns give 2.472471 ms/frame, the fastest verified uniform 10-bit T8 branch in this snapshot.
+
+![T8 clocks and FIFOs](experiment-evolution/clock-fifo.en.svg)
+
+### T4 Parameter Prepacking and Physical Acceptance
+
+C13 changes W21 to T4 and uses E065's Conv2-only 8-bit weights, retaining the other numerical contracts. Parameter loading prepacks coefficient pairs instead of repeating packing for every pixel. All 13 images match E065, with mean delta PSNR -0.075890 dB. This differs from T8's E017 reference, so the performance change cannot be attributed solely to parallelism.
+
+C14 passes both changed-parameter RTL frames at 300632 latency and 300661 interval cycles. The guard stops C15 while the parent's synthesis database overlaps the implementation child. C18 uses two sequentially exiting Vivado processes for the same C13 RTL, preserving 5 ns, threads, and cumulative timeout. Final WNS +0.047 ns, WHS +0.031 ns, 1032 DSPs, 58529 LUTs, 102072 FFs, and 109 BRAM18K pass every route gate. C14 cycles at 5 ns give 1.503160 ms/frame, the fastest verified IP compute time, excluding integration, DDR, drivers, and board measurements.
+
+C16 combines F47 window FIFO16 with W27 FRP; C17 only deepens C13's window FIFO to 32. These and F50/F51/W31 total five without result rows, appearing queued/running without archived measurements. F90/F91 remain separate deferred plans. Single-change gains cannot be added and C18/W32/W30 physical acceptance cannot be inherited.
+
+![T4](experiment-evolution/t4.en.svg)
+
+See [ROM_CLOCK](../experiments/ROM_CLOCK.md) for detailed measurements and state.
+
+## Complete Ledger and Reproduction
+
+- [All 207 experiments: parents, changes, effects, issues, and original evidence](experiment-evolution/records.en.md)
+- [Multiplier controls](experiment-evolution/micro.en.svg)
+- [Machine-readable English metadata and shared results](experiment-evolution/data.en.json)
+- [Mermaid overview source](experiment-evolution/overview.en.mmd)
+- [Regeneration and diagram checks](experiment-evolution/README.en.md)
+- [Frozen experiment reproduction](../experiments/REPRODUCE.md)
+
+E099 is the first-round archive/audit closure event, not another synthesis design. F99 weight-loading closure and archive auditing are now complete, recorded in workflow state and audit files; they are not a separate synthesis point. F90/F91 remain deferred plans, and F88 retains its interrupted result. The ledger includes actual records and plans without inventing missing IDs.

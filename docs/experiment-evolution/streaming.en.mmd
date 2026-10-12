@@ -1,0 +1,42 @@
+%% Initial streaming: remove full intermediate maps
+flowchart TB
+  E030["E030<br/>Floating-point streaming functional control<br/>Connect read/pad/Conv1/Conv2/pad/Conv3/write by streams and reuse windows in line buffers.<br/>C simulation passed<br/>C simulation passed"]
+  E031["E031<br/>10-bit streaming, T32<br/>Convert the validated stream organization to 10-bit fixed point and T=32 partial unrolling.<br/>HLS estimate 123.54 ms / DSP 9<br/>Over budget: LUT; HLS timing warning"]
+  E033["E033<br/>T32 single-image synthesis control<br/>Shorten the C-simulation workload while retaining the same streaming hardware organization.<br/>HLS estimate 123.54 ms / DSP 9<br/>Over budget: LUT; HLS timing warning"]
+  E046["E046<br/>Remove redundant accumulator saturation<br/>Use archived range bounds to retain complete product precision and quantize only at layer boundaries.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>Run failed"]
+  E063["E063<br/>Accumulator-control retry<br/>Measure removal of redundant saturation in a separate run.<br/>HLS estimate 29.1386 ms / DSP 148<br/>Over budget: LUT"]
+  E047["E047<br/>Explicit DSP multiplier binding<br/>Bind the T32 design's 162/64/25 parallel multipliers to DSPs.<br/>HLS estimate 29.1386 ms / DSP 251<br/>Over budget: LUT"]
+  E048["E048<br/>Integer carriers for fixed-point arithmetic<br/>Store fixed-point raw bits in integers and implement layer rounding explicitly without changing numerical boundaries.<br/>HLS estimate 29.1386 ms / DSP 254<br/>Over budget: LUT"]
+  E050["E050<br/>Initial Conv3 scatter<br/>Reduce across channels before buffering partial sums on the side with fewer channels.<br/>HLS estimate 38.8222 ms / DSP 34<br/>Over budget: LUT"]
+  E060["E060<br/>Integer Conv3 scatter<br/>Retain explicit padding and use 32-bit partial sums with rotating line buffers.<br/>HLS estimate 37.7021 ms / DSP 254<br/>Candidate; final acceptance pending"]
+  E056["E056<br/>T4 mixed DSP/fabric computation<br/>Move some Conv1/Conv3 multipliers into fabric when DSP capacity limits greater parallelism.<br/>HLS estimate 10.4629 ms / DSP 1160<br/>Over budget: LUT"]
+  E000["E000 / external parent<br/>Original floating-point baseline<br/>HLS estimate 19601.1385 ms / DSP 10"]
+  E010["E010 / external parent<br/>Layer ranges and bit-width scan<br/>Analysis complete"]
+  E017["E017 / external parent<br/>10-bit boundaries and integer reference<br/>C simulation / avg delta PSNR -0.0695 dB"]
+  E053["E053 / external parent<br/>8x8 fabric multiplier<br/>PE: DSP 0 / LUT 119"]
+  E000 -->|Design or parameter baseline| E030
+  E030 -->|Design or parameter baseline| E031
+  E017 -.->|Numerical reference or research motivation| E031
+  E031 -->|Design or parameter baseline| E033
+  E033 -->|Design or parameter baseline| E046
+  E010 -.->|Numerical reference or research motivation| E046
+  E046 -->|Retry after a fix| E063
+  E033 -->|Design or parameter baseline| E047
+  E047 -->|Design or parameter baseline| E048
+  E017 -.->|Numerical reference or research motivation| E048
+  E031 -->|Design or parameter baseline| E050
+  E048 -->|Design or parameter baseline| E060
+  E050 -.->|Numerical reference or research motivation| E060
+  E048 -->|Design or parameter baseline| E056
+  E053 -.->|Numerical reference or research motivation| E056
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E030,E060 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E046 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E031,E033,E063,E047,E048,E050,E056 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E000,E010,E017,E053 context

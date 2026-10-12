@@ -59,6 +59,12 @@
 
 这些数值反映单精度计算与参考输出基本一致；它们不是与高分辨率真值图像比较的超分辨率质量指标。图像质量可通过 Set14 测试中的 MSE 和 PSNR 评估。
 
+## 实验记录与演进图
+
+[完整 SVG](docs/experiment-evolution/full.svg) / [本地查看器](docs/experiment-evolution/full.html) 收录快照 `653ceb9` 的 207 项实验与 217 条主要演进关系，节点耗时统一按 100 MHz 参考时钟折算。[思路说明](docs/0004-experiment-evolution.md) 和[逐项记录](docs/experiment-evolution/records.md) 给出全部 307 条依赖与原始证据。
+
+本快照的独立布线结果：C18 的 T4 在 5 ns 通过，结合 C14 的 RTL 周期为 1.503160 ms/张；W32/F52 的 T8 在 4.5 ns 通过，为 2.514411 ms/张，W30 的 FRP 分支为 2.472471 ms/张。这些是已收敛目标下的 IP 计算时间，口径与主图不同，未包含 DDR、驱动及板端实测。C16/C17 等 5 项后续计划尚无归档结果，F90/F91 继续暂缓。本版固定到 W30，后续结果不纳入。根目录 `src/` 仍为原始浮点基线。
+
 ## 参考
 
 - [sharc-lab FPGA_ECE8893 Lab2](https://github.com/sharc-lab/FPGA_ECE8893/tree/main/2023_Spring/Lab2)：卷积及 HLS 实现方法参考。该 Lab2 的网络与本项目的三层 SRCNN 不相同。

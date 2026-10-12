@@ -1,0 +1,52 @@
+%% 基线与精度：先确定可以改变什么
+flowchart TB
+  E000["E000<br/>原始浮点基线<br/>保持 src/、网络结构及边缘复制不变，测量功能和综合规模。<br/>HLS 估计 19601.1385 ms / DSP 10<br/>超预算: BRAM18K"]
+  E010["E010<br/>逐层范围与位宽扫描<br/>在 13 张输入上统计范围，并扫描 16/12/10/8 位权重与激活组合。<br/>分析完成<br/>分析完成"]
+  E011["E011<br/>实际 ap_fixed：16/16 位<br/>用 AMD 数据类型复核软件量化模型，计划覆盖所有已有图像。<br/>运行失败<br/>运行失败"]
+  E012["E012<br/>实际 ap_fixed：10/10 位<br/>验证完整定点卷积的 butterfly 输出。<br/>运行失败<br/>运行失败"]
+  E013["E013<br/>实际 ap_fixed：8/8 位<br/>验证量化模型与真实定点运算是否一致，即使质量门槛已失败。<br/>C 仿真通过<br/>C 仿真通过"]
+  E014["E014<br/>16/16 位完整数据重试<br/>再次尝试全图像的完整 ap_fixed 仿真。<br/>超时<br/>超时"]
+  E018["E018<br/>16/16 位单图控制<br/>把完整 ap_fixed 运算检查缩到 butterfly；多图质量由 E010 单独评估。<br/>运行失败<br/>运行失败"]
+  E015["E015<br/>16/16 位单图有效重试<br/>修正运行配置，验证完整 ap_fixed butterfly 算术。<br/>C 仿真通过<br/>C 仿真通过"]
+  E016["E016<br/>8/8 位单图重试<br/>以独立配置再次检查低位宽算术。<br/>C 仿真通过<br/>C 仿真通过"]
+  E017["E017<br/>10 位边界与整数参考<br/>真实 ap_fixed 负责输入、参数及层间舍入/饱和，整数保留完整乘积与累加小数。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>C 仿真通过"]
+  E019["E019<br/>10/10 位完整 ap_fixed 重试<br/>在 butterfly 上验证完整 ap_fixed 网络与独立整数参考逐位相同。<br/>C 仿真通过<br/>C 仿真通过"]
+  E049["E049<br/>层边界舍入穷举<br/>穷举三个层边界共 25,165,824 个 23 位累加器状态。<br/>C 仿真通过<br/>C 仿真通过"]
+  E062["E062<br/>逐层 INT8 可用性<br/>分别尝试单层 8 位权重/激活，而不是把整个网络直接降到 INT8。<br/>分析完成<br/>分析完成"]
+  E065["E065<br/>Conv2 权重 8 位边界复核<br/>保留 10 位激活，使用真实 ap_fixed 检查混合精度的 13 张图。<br/>C 仿真 / 平均 ΔPSNR -0.0759 dB<br/>C 仿真通过"]
+  E066["E066<br/>混合精度完整 ap_fixed 单图<br/>完整 ap_fixed 网络验证混合精度 butterfly 输出。<br/>C 仿真 / 平均 ΔPSNR -0.0759 dB<br/>C 仿真通过"]
+  E071["E071<br/>Packing/Winograd 前置范围<br/>统计原始整数系数、变换位宽、低字段累加上限和纸面 DSP 预算。<br/>分析完成<br/>分析完成"]
+  E048["E048 / 外部来源<br/>整数承载的定点运算<br/>HLS 估计 29.1386 ms / DSP 254"]
+  E000 -.->|数值依据或研究启发| E010
+  E010 -.->|数值依据或研究启发| E011
+  E010 -.->|数值依据或研究启发| E012
+  E010 -.->|数值依据或研究启发| E013
+  E011 -->|修复后重试| E014
+  E014 -->|修复后重试| E018
+  E018 -->|修复后重试| E015
+  E013 -->|修复后重试| E016
+  E010 -.->|数值依据或研究启发| E017
+  E012 -->|修复后重试| E019
+  E017 -.->|对照实验| E019
+  E017 -.->|数值依据或研究启发| E049
+  E048 -.->|验证同一设计| E049
+  E010 -.->|数值依据或研究启发| E062
+  E017 -.->|数值依据或研究启发| E062
+  E062 -.->|数值依据或研究启发| E065
+  E017 -->|设计或参数基线| E065
+  E065 -.->|对照实验| E066
+  E019 -->|设计或参数基线| E066
+  E017 -.->|数值依据或研究启发| E071
+  E065 -.->|数值依据或研究启发| E071
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E013,E015,E016,E017,E019,E049,E065,E066 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E011,E012,E014,E018 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E000 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  class E010,E062,E071 analysis
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E048 context

@@ -1,0 +1,37 @@
+%% Compiler controls: retaining full feature maps
+flowchart TB
+  E020["E020<br/>Default automatic optimization, 10 ns<br/>Copy the original and add loop labels without changing computation or full-map storage.<br/>HLS estimate 19601.1385 ms / DSP 10<br/>Over budget: BRAM18K"]
+  E021["E021<br/>Default automatic optimization, 4 ns<br/>Tighten only the target period and inspect default scheduling changes.<br/>HLS estimate 17179.0874 ms / DSP 10<br/>Over budget: BRAM18K"]
+  E022["E022<br/>Disable automatic pipelining<br/>Measure whether default pipeline behavior helps.<br/>HLS estimate 44822.2301 ms / DSP 5<br/>Over budget: BRAM18K"]
+  E023["E023<br/>Inner-loop pipeline: invalid configuration<br/>Attempt to pipeline the innermost MAC loops through configuration.<br/>HLS estimate 19601.1385 ms / DSP 10<br/>Over budget: BRAM18K; II target missed; Invalid configuration"]
+  E024["E024<br/>Pixel-loop pipeline: invalid configuration<br/>Attempt to pipeline the outer pixel loops.<br/>HLS estimate 19601.1385 ms / DSP 10<br/>Over budget: BRAM18K; II target missed; Invalid configuration"]
+  E025["E025<br/>Array partition: invalid configuration<br/>Attempt to improve scheduling by adding array ports.<br/>HLS estimate 19601.1385 ms / DSP 10<br/>Over budget: BRAM18K; II target missed; Invalid configuration"]
+  E026["E026<br/>Allow floating-point reassociation<br/>Investigate unsafe-math effects on floating-point accumulation scheduling.<br/>HLS estimate 19601.1367 ms / DSP 10<br/>Over budget: BRAM18K"]
+  E027["E027<br/>Change only to 16-bit fixed point<br/>Retain the full-map architecture and measure changing data types alone.<br/>HLS estimate 3912.5609 ms / DSP 66<br/>Over budget: BRAM18K/LUT"]
+  E028["E028<br/>Valid inner-loop pipeline retry<br/>Correct the directive key and measure actual innermost pipelining.<br/>HLS estimate 12170.2585 ms / DSP 12<br/>Over budget: BRAM18K; HLS timing warning"]
+  E029["E029<br/>Valid pixel-loop pipeline retry<br/>Correct the key and apply the intended pixel-loop pipeline directives.<br/>HLS estimate 3811.2172 ms / DSP 320<br/>Over budget: BRAM18K; II target missed"]
+  E032["E032<br/>Valid array-partition retry<br/>Correct partition directives and inspect memory-port and pipeline effects.<br/>HLS estimate 12170.2585 ms / DSP 12<br/>Over budget: BRAM18K; HLS timing warning"]
+  E000["E000 / external parent<br/>Original floating-point baseline<br/>HLS estimate 19601.1385 ms / DSP 10"]
+  E015["E015 / external parent<br/>Valid 16/16-bit single-image retry<br/>C simulation passed"]
+  E000 -->|Design or parameter baseline| E020
+  E020 -->|Design or parameter baseline| E021
+  E020 -->|Design or parameter baseline| E022
+  E020 -->|Design or parameter baseline| E023
+  E020 -->|Design or parameter baseline| E024
+  E020 -->|Design or parameter baseline| E025
+  E020 -->|Design or parameter baseline| E026
+  E015 -->|Design or parameter baseline| E027
+  E020 -.->|Control experiment| E027
+  E023 -->|Retry after a fix| E028
+  E024 -->|Retry after a fix| E029
+  E025 -->|Retry after a fix| E032
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E023,E024,E025 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E020,E021,E022,E026,E027,E028,E029,E032 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E000,E015 context

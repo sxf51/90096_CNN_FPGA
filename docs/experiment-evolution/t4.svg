@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="983" height="1733" viewBox="0 0 983 1733">
+<title>T4：运行时预拼 Conv2 参数与独立布线</title>
+<desc>将 Packing 移到加载阶段后，T4 能否通过数值、RTL 和物理门限？。数据快照 653ceb9。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="983" height="1733" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">T4：运行时预拼 Conv2 参数与独立布线</text>
+<text x="48" y="76" font-size="17" fill="#435654">将 Packing 移到加载阶段后，T4 能否通过数值、RTL 和物理门限？</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M225.00 343.00 L225.00 395.00 L371.67 395.00 L371.67 423.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M623.00 343.00 L623.00 395.00 L476.33 395.00 L476.33 423.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M498.91 682.00 L498.91 722.00 L528.50 722.00 L528.50 762.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M581.00 682.00 L581.00 722.00 L737.50 722.00 L737.50 1061.00 L705.17 1061.00 L705.17 1089.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M685.50 997.00 L685.50 1037.00 L757.50 1037.00 L757.50 1061.00 L809.83 1061.00 L809.83 1089.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M267.00 682.00 L267.00 722.00 L110.50 722.00 L110.50 1388.00 L460.00 1388.00 L460.00 1416.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M528.50 997.00 L528.50 1388.00 L538.50 1388.00 L538.50 1416.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M757.50 1324.00 L757.50 1388.00 L617.00 1388.00 L617.00 1416.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M281.35 682.00 L281.35 722.00 L225.00 722.00 L225.00 1049.00 L267.17 1049.00 L267.17 1077.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M448.90 997.00 L448.90 1037.00 L414.00 1037.00 L414.00 1049.00 L371.83 1049.00 L371.83 1077.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<g data-id="C13">
+<rect x="247.00" y="431.00" width="354" height="243" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="271.00" y="458.00" font-size="17" font-weight="700" fill="#243031">C13</text>
+<text x="271.00" y="489.50" font-size="20" font-weight="700" fill="#243031">运行时预拼 Conv2 权重的 T4</text>
+<text x="271.00" y="525.50" font-size="16" font-weight="400" fill="#243031">T=4；仅 Conv2 使用 8 位权重和 21</text>
+<text x="271.00" y="549.50" font-size="16" font-weight="400" fill="#243031">位累加器，在参数加载时把每对系数预拼为</text>
+<text x="271.00" y="573.50" font-size="16" font-weight="400" fill="#243031"> 27 位，计算时逐乘积解码。</text>
+<text x="271.00" y="603.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.0524 ms / DSP 1032</text>
+<text x="271.00" y="633.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT/FF</text>
+</g>
+<g data-id="C14">
+<rect x="351.50" y="770.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="375.50" y="797.00" font-size="17" font-weight="700" fill="#243031">C14</text>
+<text x="375.50" y="828.50" font-size="20" font-weight="700" fill="#243031">T4 换参数双帧 RTL</text>
+<text x="375.50" y="864.50" font-size="16" font-weight="400" fill="#243031">冻结混合精度参考，检查两帧有限 FIFO</text>
+<text x="375.50" y="888.50" font-size="16" font-weight="400" fill="#243031">、死锁和第二帧重新加载参数。</text>
+<text x="375.50" y="918.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 300632 cycles</text>
+<text x="375.50" y="948.50" font-size="15" font-weight="400" fill="#5c6160">RTL 协仿完成</text>
+</g>
+<g data-id="C15">
+<rect x="580.50" y="1097.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="604.50" y="1124.00" font-size="17" font-weight="700" fill="#243031">C15</text>
+<text x="604.50" y="1155.50" font-size="20" font-weight="700" fill="#243031">T4 首次独立 5 ns 实现</text>
+<text x="604.50" y="1191.50" font-size="16" font-weight="400" fill="#243031">依据新布线门限验证 C13；保持 RTL、目</text>
+<text x="604.50" y="1215.50" font-size="16" font-weight="400" fill="#243031">标与数值验收。</text>
+<text x="604.50" y="1245.50" font-size="16" font-weight="700" fill="#243031">物理实现未完成</text>
+<text x="604.50" y="1275.50" font-size="15" font-weight="400" fill="#5c6160">主机内存保护中止</text>
+</g>
+<g data-id="C18">
+<rect x="361.50" y="1424.00" width="354" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="385.50" y="1451.00" font-size="17" font-weight="700" fill="#243031">C18</text>
+<text x="385.50" y="1482.50" font-size="20" font-weight="700" fill="#243031">T4 分阶段进程的 5 ns 补跑</text>
+<text x="385.50" y="1518.50" font-size="16" font-weight="400" fill="#243031">相同 C13 RTL 先完成综合报告并退出</text>
+<text x="385.50" y="1542.50" font-size="16" font-weight="400" fill="#243031">Vivado，再由新进程重开项目做实现；目</text>
+<text x="385.50" y="1566.50" font-size="16" font-weight="400" fill="#243031">标、线程与总限时不变。</text>
+<text x="385.50" y="1596.50" font-size="16" font-weight="700" fill="#243031">Routed WNS 0.047 ns</text>
+<text x="385.50" y="1626.50" font-size="15" font-weight="400" fill="#5c6160">独立布线门限通过</text>
+</g>
+<g data-id="C17">
+<rect x="142.50" y="1085.00" width="354" height="243" rx="4" fill="#ffffff" stroke="#939b9b" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="166.50" y="1112.00" font-size="17" font-weight="700" fill="#243031">C17</text>
+<text x="166.50" y="1143.50" font-size="20" font-weight="700" fill="#243031">T4 变换窗口 FIFO 深度 32</text>
+<text x="166.50" y="1179.50" font-size="16" font-weight="400" fill="#243031">只把 C13 的变换窗口 FIFO 从 2 加深</text>
+<text x="166.50" y="1203.50" font-size="16" font-weight="400" fill="#243031">到 32，保持运行时参数与 E065 混合精</text>
+<text x="166.50" y="1227.50" font-size="16" font-weight="400" fill="#243031">度。</text>
+<text x="166.50" y="1257.50" font-size="16" font-weight="700" fill="#243031">已排队/运行，暂无归档测量</text>
+<text x="166.50" y="1287.50" font-size="15" font-weight="400" fill="#5c6160">未归档测量</text>
+</g>
+<g data-id="E065">
+<rect x="446.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="470.00" y="225.00" font-size="17" font-weight="700" fill="#243031">E065 / 外部来源</text>
+<text x="470.00" y="256.50" font-size="20" font-weight="700" fill="#243031">Conv2 权重 8 位边界复核</text>
+<text x="470.00" y="292.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0759 dB</text>
+</g>
+<g data-id="W21">
+<rect x="48.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="225.00" font-size="17" font-weight="700" fill="#243031">W21 / 外部来源</text>
+<text x="72.00" y="256.50" font-size="20" font-weight="700" fill="#243031">权重缓存按子卷积重排</text>
+<text x="72.00" y="292.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+</g>
+</svg>

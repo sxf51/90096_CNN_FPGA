@@ -1,0 +1,57 @@
+{
+  "source_commit": "653ceb9",
+  "title": { "zh": "SRCNN / 关键优化里程碑", "en": "SRCNN / Key milestones" },
+  "subtitle": { "zh": "10 个关键节点", "en": "10 key nodes" },
+  "nodes": [
+    {
+      "id": "E020", "tone": "infeasible", "evidence_ids": ["E020"],
+      "zh": { "label": "E020", "title": "golden 原样综合", "result": "BRAM18K 11,064，容量仅 288" },
+      "en": { "label": "E020", "title": "Original golden synthesis", "result": "11,064 BRAM18K; only 288 available" }
+    },
+    {
+      "id": "E017", "tone": "analysis", "evidence_ids": ["E010", "E017", "E019"],
+      "zh": { "label": "E010-E019", "title": "精度定版", "result": "ΔPSNR -0.0695 dB" },
+      "en": { "label": "E010-E019", "title": "Freeze precision", "result": "Delta PSNR -0.0695 dB" }
+    },
+    {
+      "id": "E033", "tone": "infeasible", "evidence_ids": ["E033"],
+      "zh": { "label": "E033", "title": "整网流式 DATAFLOW", "result": "LUT 136,868，超量 17%" },
+      "en": { "label": "E033", "title": "Whole-network DATAFLOW", "result": "136,868 LUTs; 17% over capacity" }
+    },
+    {
+      "id": "E039", "tone": "candidate", "evidence_ids": ["E039", "E070"],
+      "zh": { "label": "E039 / E070", "title": "乘法强制绑定 DSP", "result": "HLS 29.83 ms/张" },
+      "en": { "label": "E039 / E070", "title": "Bind multiplication to DSPs", "result": "HLS 29.83 ms/frame" }
+    },
+    {
+      "id": "E043", "tone": "warning", "evidence_ids": ["E043"],
+      "zh": { "label": "E043", "title": "并行度提高到 T16", "result": "HLS 6.94 ms/张" },
+      "en": { "label": "E043", "title": "Increase parallelism to T16", "result": "HLS 6.94 ms/frame" }
+    },
+    {
+      "id": "F25", "tone": "warning", "evidence_ids": ["F08", "F25"],
+      "zh": { "label": "F08 -> F25", "title": "连续折叠", "result": "HLS 2.64 ms/张" },
+      "en": { "label": "F08 -> F25", "title": "Continuous folding", "result": "HLS 2.64 ms/frame" }
+    },
+    {
+      "id": "F28", "tone": "warning", "evidence_ids": ["F27", "F28"],
+      "zh": { "label": "F27 / F28", "title": "权重加载重构", "result": "HLS 2.62 ms/张" },
+      "en": { "label": "F27 / F28", "title": "Rebuild weight loading", "result": "HLS 2.62 ms/frame" }
+    },
+    {
+      "id": "W22", "tone": "candidate", "evidence_ids": ["W21", "W22"],
+      "zh": { "label": "W21 -> W22", "title": "Winograd T8", "result": "布线 2.77 ms/张" },
+      "en": { "label": "W21 -> W22", "title": "Winograd T8", "result": "Routed 2.77 ms/frame" }
+    },
+    {
+      "id": "W32", "tone": "candidate", "evidence_ids": ["W32", "F52"],
+      "zh": { "label": "W32 / F52", "title": "时钟收敛到 4.5 ns", "result": "布线 2.51 ms/张" },
+      "en": { "label": "W32 / F52", "title": "Close timing at 4.5 ns", "result": "Routed 2.51 ms/frame" }
+    },
+    {
+      "id": "C18", "tone": "candidate", "evidence_ids": ["C13", "C14", "C18"],
+      "zh": { "label": "C13 -> C14 -> C18", "title": "T4：Winograd + Conv2 八位 Packing", "result": "布线 1.50 ms/张" },
+      "en": { "label": "C13 -> C14 -> C18", "title": "T4: Winograd + 8-bit Conv2 packing", "result": "Routed 1.50 ms/frame" }
+    }
+  ]
+}

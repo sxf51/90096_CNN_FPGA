@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" width="1250" height="2476" viewBox="0 0 1250 2476">
+<title>Constant ROM: measure the parameter-path cost</title>
+<desc>How many resources and cycles can fixed weights save, and is losing runtime parameters worthwhile?. Snapshot 653ceb9. Experiment relationships are not Git ancestry.</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="1250" height="2476" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">Constant ROM: measure the parameter-path cost</text>
+<text x="48" y="81.5" font-size="17" font-weight="400" fill="#435654">How many resources and cycles can fixed weights save, and is losing runtime parameters worthwhile?</text>
+<text x="48" y="114" font-size="16" font-weight="400" fill="#526461">Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.</text>
+<text x="48" y="146" font-size="16" font-weight="400" fill="#526461">Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray:</text>
+<text x="48" y="170" font-size="16" font-weight="400" fill="#526461">external parent.</text>
+<path d="M398.97 405.00 L398.97 445.00 L480.00 445.00 L480.00 457.00 L648.67 457.00 L648.67 485.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M722.00 405.00 L722.00 457.00 L775.33 457.00 L775.33 485.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M251.65 405.00 L251.65 445.00 L248.00 445.00 L248.00 874.00 L426.67 874.00 L426.67 902.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M712.00 822.00 L712.00 874.00 L553.33 874.00 L553.33 902.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M490.00 1239.00 L490.00 1319.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M676.29 1239.00 L676.29 1279.00 L732.00 1279.00 L732.00 1684.00 L678.67 1684.00 L678.67 1712.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M680.00 1632.00 L680.00 1672.00 L752.00 1672.00 L752.00 1684.00 L805.33 1684.00 L805.33 1712.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M303.71 1239.00 L303.71 1279.00 L248.00 1279.00 L248.00 2053.00 L395.00 2053.00 L395.00 2081.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M490.00 1632.00 L490.00 2081.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M742.00 2001.00 L742.00 2053.00 L585.00 2053.00 L585.00 2081.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<g data-id="F35">
+<rect x="502.00" y="493.00" width="420" height="321" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="526.00" y="520.00" font-size="17" font-weight="700" fill="#243031">F35</text>
+<text x="526.00" y="551.50" font-size="20" font-weight="700" fill="#243031">Runtime-bank and ROM</text>
+<text x="526.00" y="581.50" font-size="20" font-weight="700" fill="#243031">equivalence</text>
+<text x="526.00" y="617.50" font-size="16" font-weight="400" fill="#243031">Export loaded integer banks and</text>
+<text x="526.00" y="641.50" font-size="16" font-weight="400" fill="#243031">compare every element with ROM</text>
+<text x="526.00" y="665.50" font-size="16" font-weight="400" fill="#243031">using identical quantization and G2</text>
+<text x="526.00" y="689.50" font-size="16" font-weight="400" fill="#243031">transforms.</text>
+<text x="526.00" y="719.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="526.00" y="743.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
+<text x="526.00" y="773.50" font-size="15" font-weight="400" fill="#5c6160">C simulation passed</text>
+</g>
+<g data-id="W24">
+<rect x="280.00" y="910.00" width="420" height="321" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="304.00" y="937.00" font-size="17" font-weight="700" fill="#243031">W24</text>
+<text x="304.00" y="968.50" font-size="20" font-weight="700" fill="#243031">T8 network with constant ROM</text>
+<text x="304.00" y="998.50" font-size="20" font-weight="700" fill="#243031">weights</text>
+<text x="304.00" y="1034.50" font-size="16" font-weight="400" fill="#243031">Introduce srcnn_rom with fixed</text>
+<text x="304.00" y="1058.50" font-size="16" font-weight="400" fill="#243031">training parameters, removing</text>
+<text x="304.00" y="1082.50" font-size="16" font-weight="400" fill="#243031">parameter AXI, reader/transformer</text>
+<text x="304.00" y="1106.50" font-size="16" font-weight="400" fill="#243031">processes, and private-bank write</text>
+<text x="304.00" y="1130.50" font-size="16" font-weight="400" fill="#243031">ports.</text>
+<text x="304.00" y="1160.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.746 ms / DSP 630</text>
+<text x="304.00" y="1190.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="W25">
+<rect x="280.00" y="1327.00" width="420" height="297" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="304.00" y="1354.00" font-size="17" font-weight="700" fill="#243031">W25</text>
+<text x="304.00" y="1385.50" font-size="20" font-weight="700" fill="#243031">ROM two-frame RTL with</text>
+<text x="304.00" y="1415.50" font-size="20" font-weight="700" fill="#243031">changed input</text>
+<text x="304.00" y="1451.50" font-size="16" font-weight="400" fill="#243031">Keep ROM weights identical and use</text>
+<text x="304.00" y="1475.50" font-size="16" font-weight="400" fill="#243031">lenna for the second frame,</text>
+<text x="304.00" y="1499.50" font-size="16" font-weight="400" fill="#243031">retaining finite-FIFO, deadlock,</text>
+<text x="304.00" y="1523.50" font-size="16" font-weight="400" fill="#243031">and bit-exact checks.</text>
+<text x="304.00" y="1553.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 554226 cycles</text>
+<text x="304.00" y="1583.50" font-size="15" font-weight="400" fill="#5c6160">RTL co-simulation complete</text>
+</g>
+<g data-id="W29">
+<rect x="532.00" y="1720.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="556.00" y="1747.00" font-size="17" font-weight="700" fill="#243031">W29</text>
+<text x="556.00" y="1778.50" font-size="20" font-weight="700" fill="#243031">First ROM implementation at</text>
+<text x="556.00" y="1808.50" font-size="20" font-weight="700" fill="#243031">5 ns</text>
+<text x="556.00" y="1844.50" font-size="16" font-weight="400" fill="#243031">Independently measure ROM</text>
+<text x="556.00" y="1868.50" font-size="16" font-weight="400" fill="#243031">timing/resources without inferring</text>
+<text x="556.00" y="1892.50" font-size="16" font-weight="400" fill="#243031">implementation from HLS clocks.</text>
+<text x="556.00" y="1922.50" font-size="16" font-weight="700" fill="#243031">Physical implementation incomplete</text>
+<text x="556.00" y="1952.50" font-size="15" font-weight="400" fill="#5c6160">Host memory guard stopped the job</text>
+</g>
+<g data-id="W31">
+<rect x="280.00" y="2089.00" width="420" height="321" rx="4" fill="#ffffff" stroke="#939b9b" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="304.00" y="2116.00" font-size="17" font-weight="700" fill="#243031">W31</text>
+<text x="304.00" y="2147.50" font-size="20" font-weight="700" fill="#243031">Independent ROM retry after</text>
+<text x="304.00" y="2177.50" font-size="20" font-weight="700" fill="#243031">memory failure</text>
+<text x="304.00" y="2213.50" font-size="16" font-weight="400" fill="#243031">Retry identical ROM RTL in a fresh</text>
+<text x="304.00" y="2237.50" font-size="16" font-weight="400" fill="#243031">workspace with the original</text>
+<text x="304.00" y="2261.50" font-size="16" font-weight="400" fill="#243031">numerical, timing, and resource</text>
+<text x="304.00" y="2285.50" font-size="16" font-weight="400" fill="#243031">gates.</text>
+<text x="304.00" y="2315.50" font-size="16" font-weight="700" fill="#243031">Queued/running; no archived</text>
+<text x="304.00" y="2339.50" font-size="16" font-weight="700" fill="#243031">measurements</text>
+<text x="304.00" y="2369.50" font-size="15" font-weight="400" fill="#5c6160">No archived measurements</text>
+</g>
+<g data-id="W19">
+<rect x="512.00" y="230.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="536.00" y="257.00" font-size="17" font-weight="700" fill="#243031">W19 / external parent</text>
+<text x="536.00" y="288.50" font-size="20" font-weight="700" fill="#243031">Private parameter streams</text>
+<text x="536.00" y="318.50" font-size="20" font-weight="700" fill="#243031">for Winograd T8</text>
+<text x="536.00" y="354.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 645</text>
+</g>
+<g data-id="W21">
+<rect x="48.00" y="230.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="257.00" font-size="17" font-weight="700" fill="#243031">W21 / external parent</text>
+<text x="72.00" y="288.50" font-size="20" font-weight="700" fill="#243031">Reorder the raw cache by</text>
+<text x="72.00" y="318.50" font-size="20" font-weight="700" fill="#243031">subkernel</text>
+<text x="72.00" y="354.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+</g>
+</svg>

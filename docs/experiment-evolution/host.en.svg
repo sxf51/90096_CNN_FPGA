@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" width="1605" height="1225" viewBox="0 0 1605 1225">
+<title>Host scheduling: admission and memory controls</title>
+<desc>Can unchanged hardware jobs overlap safely, and do measured peaks fit their registrations?. Snapshot 653ceb9. Experiment relationships are not Git ancestry.</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="1605" height="1225" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">Host scheduling: admission and memory controls</text>
+<text x="48" y="81.5" font-size="17" font-weight="400" fill="#435654">Can unchanged hardware jobs overlap safely, and do measured peaks fit their registrations?</text>
+<text x="48" y="114" font-size="16" font-weight="400" fill="#526461">Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.</text>
+<text x="48" y="146" font-size="16" font-weight="400" fill="#526461">Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.</text>
+<path d="M334.83 381.00 L334.83 421.00 L379.00 421.00 L379.00 461.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1302.83 381.00 L1302.83 421.00 L1347.00 421.00 L1347.00 473.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M816.07 378.00 L816.07 421.00 L863.00 421.00 L863.00 461.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M181.17 381.00 L181.17 421.00 L137.00 421.00 L137.00 838.00 L194.67 838.00 L194.67 866.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M379.00 774.00 L379.00 838.00 L321.33 838.00 L321.33 866.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1149.17 381.00 L1149.17 421.00 L1105.00 421.00 L1105.00 850.00 L1162.67 850.00 L1162.67 878.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1347.00 762.00 L1347.00 850.00 L1289.33 850.00 L1289.33 878.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M667.93 378.00 L667.93 421.00 L621.00 421.00 L621.00 826.00 L678.67 826.00 L678.67 854.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M863.00 774.00 L863.00 826.00 L805.33 826.00 L805.33 854.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<g data-id="F32">
+<rect x="169.00" y="469.00" width="420" height="297" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="193.00" y="496.00" font-size="17" font-weight="700" fill="#243031">F32</text>
+<text x="193.00" y="527.50" font-size="20" font-weight="700" fill="#243031">F28 concurrent synthesis</text>
+<text x="193.00" y="557.50" font-size="20" font-weight="700" fill="#243031">memory control</text>
+<text x="193.00" y="593.50" font-size="16" font-weight="400" fill="#243031">Keep F28 unchanged; overlap</text>
+<text x="193.00" y="617.50" font-size="16" font-weight="400" fill="#243031">synthesis with F33 and F34 C</text>
+<text x="193.00" y="641.50" font-size="16" font-weight="400" fill="#243031">simulation while recording</text>
+<text x="193.00" y="665.50" font-size="16" font-weight="400" fill="#243031">task-tree RSS and available memory.</text>
+<text x="193.00" y="695.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.6151 ms / DSP 502</text>
+<text x="193.00" y="725.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+</g>
+<g data-id="F33">
+<rect x="1137.00" y="481.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1161.00" y="508.00" font-size="17" font-weight="700" fill="#243031">F33</text>
+<text x="1161.00" y="539.50" font-size="20" font-weight="700" fill="#243031">W21 concurrent synthesis</text>
+<text x="1161.00" y="569.50" font-size="20" font-weight="700" fill="#243031">memory control</text>
+<text x="1161.00" y="605.50" font-size="16" font-weight="400" fill="#243031">Reproduce W21 arithmetic and HLS</text>
+<text x="1161.00" y="629.50" font-size="16" font-weight="400" fill="#243031">cycles while measuring concurrent</text>
+<text x="1161.00" y="653.50" font-size="16" font-weight="400" fill="#243031">host load.</text>
+<text x="1161.00" y="683.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+<text x="1161.00" y="713.50" font-size="15" font-weight="400" fill="#5c6160">Candidate; final acceptance pending</text>
+</g>
+<g data-id="F34">
+<rect x="653.00" y="469.00" width="420" height="297" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="677.00" y="496.00" font-size="17" font-weight="700" fill="#243031">F34</text>
+<text x="677.00" y="527.50" font-size="20" font-weight="700" fill="#243031">Concurrent W21 multi-image C</text>
+<text x="677.00" y="557.50" font-size="20" font-weight="700" fill="#243031">simulation</text>
+<text x="677.00" y="593.50" font-size="16" font-weight="400" fill="#243031">Run all 13 course images alongside</text>
+<text x="677.00" y="617.50" font-size="16" font-weight="400" fill="#243031">F32/F33 without changing arithmetic</text>
+<text x="677.00" y="641.50" font-size="16" font-weight="400" fill="#243031">or references.</text>
+<text x="677.00" y="671.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="677.00" y="695.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
+<text x="677.00" y="725.50" font-size="15" font-weight="400" fill="#5c6160">C simulation passed</text>
+</g>
+<g data-id="F36">
+<rect x="48.00" y="874.00" width="420" height="273" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="72.00" y="901.00" font-size="17" font-weight="700" fill="#243031">F36</text>
+<text x="72.00" y="932.50" font-size="20" font-weight="700" fill="#243031">F28 synthesis with corrected</text>
+<text x="72.00" y="962.50" font-size="20" font-weight="700" fill="#243031">registration</text>
+<text x="72.00" y="998.50" font-size="16" font-weight="400" fill="#243031">Use measured memory registrations</text>
+<text x="72.00" y="1022.50" font-size="16" font-weight="400" fill="#243031">for another two-synthesis plus</text>
+<text x="72.00" y="1046.50" font-size="16" font-weight="400" fill="#243031">multi-image C simulation trial.</text>
+<text x="72.00" y="1076.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.6151 ms / DSP 502</text>
+<text x="72.00" y="1106.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+</g>
+<g data-id="F37">
+<rect x="1016.00" y="886.00" width="420" height="249" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1040.00" y="913.00" font-size="17" font-weight="700" fill="#243031">F37</text>
+<text x="1040.00" y="944.50" font-size="20" font-weight="700" fill="#243031">W21 synthesis with corrected</text>
+<text x="1040.00" y="974.50" font-size="20" font-weight="700" fill="#243031">registration</text>
+<text x="1040.00" y="1010.50" font-size="16" font-weight="400" fill="#243031">Reproduce the same W21 design under</text>
+<text x="1040.00" y="1034.50" font-size="16" font-weight="400" fill="#243031">corrected scheduling budgets.</text>
+<text x="1040.00" y="1064.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+<text x="1040.00" y="1094.50" font-size="15" font-weight="400" fill="#5c6160">Candidate; final acceptance pending</text>
+</g>
+<g data-id="F38">
+<rect x="532.00" y="862.00" width="420" height="297" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="556.00" y="889.00" font-size="17" font-weight="700" fill="#243031">F38</text>
+<text x="556.00" y="920.50" font-size="20" font-weight="700" fill="#243031">Multi-image simulation with</text>
+<text x="556.00" y="950.50" font-size="20" font-weight="700" fill="#243031">corrected registration</text>
+<text x="556.00" y="986.50" font-size="16" font-weight="400" fill="#243031">Retain the complete F96 13-image</text>
+<text x="556.00" y="1010.50" font-size="16" font-weight="400" fill="#243031">check while overlapping F36/F37</text>
+<text x="556.00" y="1034.50" font-size="16" font-weight="400" fill="#243031">synthesis.</text>
+<text x="556.00" y="1064.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="556.00" y="1088.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
+<text x="556.00" y="1118.50" font-size="15" font-weight="400" fill="#5c6160">C simulation passed</text>
+</g>
+<g data-id="F28">
+<rect x="48.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="233.00" font-size="17" font-weight="700" fill="#243031">F28 / external parent</text>
+<text x="72.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Disable private-loader loop</text>
+<text x="72.00" y="294.50" font-size="20" font-weight="700" fill="#243031">flattening</text>
+<text x="72.00" y="330.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 2.6151 ms / DSP 502</text>
+</g>
+<g data-id="F96">
+<rect x="532.00" y="209.00" width="420" height="161" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="556.00" y="236.00" font-size="17" font-weight="700" fill="#243031">F96 / external parent</text>
+<text x="556.00" y="267.50" font-size="20" font-weight="700" fill="#243031">All supplied images on W21</text>
+<text x="556.00" y="303.50" font-size="16" font-weight="700" fill="#243031">C simulation / avg delta PSNR</text>
+<text x="556.00" y="327.50" font-size="16" font-weight="700" fill="#243031">-0.0695 dB</text>
+</g>
+<g data-id="W21">
+<rect x="1016.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1040.00" y="233.00" font-size="17" font-weight="700" fill="#243031">W21 / external parent</text>
+<text x="1040.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Reorder the raw cache by</text>
+<text x="1040.00" y="294.50" font-size="20" font-weight="700" fill="#243031">subkernel</text>
+<text x="1040.00" y="330.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+</g>
+</svg>

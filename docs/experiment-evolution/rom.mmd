@@ -1,0 +1,30 @@
+%% 常量 ROM：单独量化参数通路的代价
+flowchart TB
+  F35["F35<br/>运行时权重银行与 ROM 等价<br/>导出运行时加载后的整数银行，逐元素与同量化、同 G2 变换的 ROM 内容比较。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>C 仿真通过"]
+  W24["W24<br/>T8 常量 ROM 整网<br/>新顶层 srcnn_rom 固定训练参数，移除参数 AXI、读取/变换进程和私有银行写端口。<br/>HLS 估计 1.746 ms / DSP 630<br/>局部实验通过"]
+  W25["W25<br/>ROM 换输入双帧 RTL<br/>使用相同 ROM 权重，第二帧改为 lenna；保留有限 FIFO、死锁和逐位输出检查。<br/>RTL Pass / 554226 cycles<br/>RTL 协仿完成"]
+  W29["W29<br/>ROM 首次 5 ns 实现<br/>在独立工作区验证 ROM 的物理时序和资源，不用 HLS 时钟推断实现结果。<br/>物理实现未完成<br/>主机内存保护中止"]
+  W31["W31<br/>ROM 内存失败后独立重试<br/>同一 ROM RTL 在新工作区补跑，沿用原数值、时序和资源门限。<br/>已排队/运行，暂无归档测量<br/>未归档测量"]
+  W19["W19 / 外部来源<br/>Winograd T8 接入私有参数流<br/>HLS 估计 1.749 ms / DSP 645"]
+  W21["W21 / 外部来源<br/>权重缓存按子卷积重排<br/>HLS 估计 1.749 ms / DSP 644"]
+  W21 -.->|验证同一设计| F35
+  W19 -.->|对照实验| F35
+  W21 -->|设计或参数基线| W24
+  F35 -.->|数值依据或研究启发| W24
+  W24 -.->|验证同一设计| W25
+  W24 -.->|验证同一设计| W29
+  W25 -.->|验证同一设计| W29
+  W24 -.->|验证同一设计| W31
+  W25 -.->|验证同一设计| W31
+  W29 -->|修复后重试| W31
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class F35,W24,W25 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class W29 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  class W31 planned
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class W19,W21 context

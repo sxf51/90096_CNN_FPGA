@@ -57,6 +57,12 @@ Local C simulation with the supplied butterfly input, weights, and golden output
 
 These values indicate close agreement with the floating-point reference; they are not image-quality scores against high-resolution ground truth. Use the Set14 MSE and PSNR test for image-quality evaluation.
 
+## Experiment Records and Evolution
+
+The [complete SVG](docs/experiment-evolution/full.en.svg) / [local viewer](docs/experiment-evolution/full.en.html) cover 207 experiments and 217 main relationships in snapshot `653ceb9`, with node latency normalized to a 100 MHz reference clock. The [guide](docs/0004-experiment-evolution.en.md) and [ledger](docs/experiment-evolution/records.en.md) retain all 307 dependencies and original evidence.
+
+Independent routing in this snapshot: C18 T4 closes 5 ns, giving 1.503160 ms/frame with C14 RTL cycles; W32/F52 T8 close 4.5 ns, giving 2.514411 ms/frame, while W30 FRP gives 2.472471 ms/frame. These are IP compute times at closed targets, distinct from the graph metric and excluding DDR, driver, and board measurements. Five follow-up plans including C16/C17 lack archived results; F90/F91 remain deferred. This edition is frozen through W30 and excludes later results. Root `src/` stays the original floating-point baseline.
+
 ## FPGA optimization plan
 
 The following is a **plan, not an implemented feature list**. It follows the lecture material on tiled convolution, model quantization, dataflow, and overlapping load/compute/store, while using the actual 255 × 255 dimensions in this code. Each change must preserve the current edge-replication behavior and be checked against the golden reference before performance is compared.

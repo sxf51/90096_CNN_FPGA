@@ -1,0 +1,73 @@
+%% T8 后续：物理时钟、FRP 与 FIFO 等待
+flowchart TB
+  W23["W23<br/>相同 W21 RTL 的 4.5 ns 策略<br/>不改 RTL，使用 Performance_Explore 和布线后物理优化，综合 1、布局布线 4 线程。<br/>主机 OOM；无 routed 结果<br/>主机 OOM"]
+  W32["W32<br/>4.5 ns 策略的 OOM 后重试<br/>保留相同 W21 RTL、策略和目标，以新工作区独立补跑，保留 W23 失败。<br/>Routed WNS 0.144 ns<br/>独立布线门限通过"]
+  W26["W26<br/>三个 MAC fold 的 FRP 初试<br/>只将三个连续 MAC fold 改为 free-running 流水，尝试减少全局使能分发。<br/>运行失败<br/>运行失败"]
+  W27["W27<br/>FRP 有效设计重试<br/>构建正确的独立设计副本，保持数值、接口和流 token，启用三个 FRP fold。<br/>HLS 估计 1.749 ms / DSP 644<br/>局部实验通过"]
+  W28["W28<br/>FRP 换参数双帧 RTL<br/>两帧数值和换参数检查保持不变，实测有限 FIFO 下的 FRP 周期。<br/>RTL Pass / 549438 cycles<br/>原周期门限失败；后获用户授权"]
+  W30["W30<br/>FRP 的独立 4.5 ns 物理实现<br/>依据 W28 明确的单边周期授权，在独立工作区验证相同 FRP RTL 的布线门限。<br/>Routed WNS 0.027 ns<br/>独立布线门限通过"]
+  F39["F39<br/>Conv3 选择路径加操作数寄存器<br/>在 100 个 Conv3 DSP 输入前各增加一周期操作数寄存器，其他层与原流水风格不变。<br/>HLS 估计 1.749 ms / DSP 644<br/>局部实验通过"]
+  F43["F43<br/>Conv3 寄存控制双帧 RTL<br/>保留全部换参数、有限 FIFO、profiling 和数值检查，测量寄存控制的真实周期。<br/>RTL Pass / 558758 cycles<br/>RTL 协仿完成"]
+  F49["F49<br/>Conv3 寄存设计 4.5 ns 实现<br/>独立验证操作数寄存器是否改善物理路径，保留同设计 RTL 前提。<br/>物理实现未完成<br/>主机内存保护中止"]
+  F52["F52<br/>Conv3 寄存设计独立补跑<br/>在新工作区补跑同一 F39 RTL 的 4.5 ns 实现，保留 F49 原失败。<br/>Routed WNS 0.072 ns<br/>独立布线门限通过"]
+  F40["F40<br/>层间特征 FIFO 深度 16<br/>只将 Conv1 到 Conv2 的 640-bit 特征 FIFO 从 4 加深到 16。<br/>HLS 估计 1.749 ms / DSP 644<br/>局部实验通过"]
+  F44["F44<br/>深度 16 特征 FIFO 双帧 RTL<br/>两帧换参数和有限 FIFO 计数器对照 F97。<br/>RTL Pass / 558758 cycles<br/>RTL 协仿完成"]
+  F41["F41<br/>层间特征 FIFO 深度 32<br/>只将相同层间特征 FIFO 从 4 加深到 32，与 16 深度控制比较。<br/>HLS 估计 1.749 ms / DSP 644<br/>局部实验通过"]
+  F45["F45<br/>深度 32 特征 FIFO 双帧 RTL<br/>实测两帧换参数结果、延迟和有限 FIFO 等待。<br/>RTL Pass / 558758 cycles<br/>RTL 协仿完成"]
+  F42["F42<br/>重排输出加 256 深度缓冲<br/>保留原 4 深度特征 FIFO，在 reorder_rows 后增加独立转发和 256 深度 LUTRAM 缓冲。<br/>HLS 估计 1.749 ms / DSP 644<br/>局部实验通过"]
+  F46["F46<br/>重排缓冲首次双帧 RTL<br/>保留标准 profiling、死锁检查及换参数测试，测量 raster FIFO 效果。<br/>RTL 未完成 / 未知 cycles<br/>主机内存保护中止"]
+  F50["F50<br/>重排缓冲双帧 RTL 补跑计划<br/>保留原设计、标准计数器和逐位门限，在新工作区重试。<br/>已排队/运行，暂无归档测量<br/>未归档测量"]
+  F47["F47<br/>变换窗口 FIFO 从 2 加深到 16<br/>针对 F97 的窗口读阻塞，仅增加 Winograd 变换窗口 lookahead，不改变算术。<br/>HLS 估计 1.749 ms / DSP 644<br/>局部实验通过"]
+  F48["F48<br/>窗口 FIFO16 换参数双帧 RTL<br/>测量更深窗口 FIFO 的有限流等待、逐位输出和实际周期。<br/>RTL Pass / 535771 cycles<br/>RTL 协仿完成"]
+  F51["F51<br/>窗口 FIFO16 独立布线计划<br/>对同一 F47 RTL 独立做 5 ns 物理实现，保留 F48 实测与所有布线门限。<br/>已排队/运行，暂无归档测量<br/>未归档测量"]
+  C16["C16<br/>T8 组合：窗口 FIFO16 与 FRP<br/>复制 F47 的 16 深度窗口设计，只集成 W27 的三个 FRP fold；保持运行时参数和 E017 精度。<br/>已排队/运行，暂无归档测量<br/>未归档测量"]
+  F97["F97 / 外部来源<br/>W21 更换参数的双帧 RTL 验证<br/>RTL Pass / 558758 cycles"]
+  W21["W21 / 外部来源<br/>权重缓存按子卷积重排<br/>HLS 估计 1.749 ms / DSP 644"]
+  W22["W22 / 外部来源<br/>相同 W21 RTL 的 4.95 ns 布线<br/>Routed WNS 0.047 ns"]
+  W21 -.->|验证同一设计| W23
+  F97 -.->|验证同一设计| W23
+  W22 -.->|对照实验| W23
+  W21 -.->|验证同一设计| W32
+  F97 -.->|验证同一设计| W32
+  W23 -->|修复后重试| W32
+  W21 -->|设计或参数基线| W26
+  W21 -->|设计或参数基线| W27
+  W26 -->|修复后重试| W27
+  W27 -.->|验证同一设计| W28
+  W27 -.->|验证同一设计| W30
+  W28 -.->|验证同一设计| W30
+  W21 -->|设计或参数基线| F39
+  F39 -.->|验证同一设计| F43
+  F39 -.->|验证同一设计| F49
+  F43 -.->|验证同一设计| F49
+  F39 -.->|验证同一设计| F52
+  F43 -.->|验证同一设计| F52
+  F49 -->|修复后重试| F52
+  W21 -->|设计或参数基线| F40
+  F40 -.->|验证同一设计| F44
+  W21 -->|设计或参数基线| F41
+  F40 -.->|对照实验| F41
+  F41 -.->|验证同一设计| F45
+  W21 -->|设计或参数基线| F42
+  F42 -.->|验证同一设计| F46
+  F42 -.->|验证同一设计| F50
+  F46 -->|修复后重试| F50
+  W21 -->|设计或参数基线| F47
+  F97 -.->|数值依据或研究启发| F47
+  F47 -.->|验证同一设计| F48
+  F47 -.->|验证同一设计| F51
+  F48 -.->|验证同一设计| F51
+  F47 -->|设计或参数基线| C16
+  W27 -->|集成已有模块| C16
+  F48 -.->|数值依据或研究启发| C16
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class W32,W27,W30,F39,F43,F52,F40,F44,F41,F45,F42,F47,F48 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class W23,W26,W28,F49,F46 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  class F50,F51,C16 planned
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class F97,W21,W22 context

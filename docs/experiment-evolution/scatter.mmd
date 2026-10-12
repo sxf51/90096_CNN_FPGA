@@ -1,0 +1,20 @@
+%% C：Gather 与 Scatter 的存储/控制取舍
+flowchart TB
+  G01["G01<br/>Gather 统一控制<br/>独立复测相同 T32、10 ns、十位精度的 Conv3 行缓存组织。<br/>HLS 估计 29.8302 ms / DSP 254<br/>候选，仍需验收"]
+  G02["G02<br/>显式补边 Scatter<br/>存五行 32 位部分和，保留原来的 32 通道补边。<br/>HLS 估计 37.7021 ms / DSP 254<br/>候选，仍需验收"]
+  G03["G03<br/>合并边界核 Scatter<br/>把九种边界位置的重复 taps 合并，移除宽通道补边缓存。<br/>HLS 估计 44.1393 ms / DSP 254<br/>候选，仍需验收"]
+  E057["E057 / 外部来源<br/>整数 T32 + LUTRAM 权重银行<br/>HLS 估计 29.8302 ms / DSP 254"]
+  E060["E060 / 外部来源<br/>整数版 Conv3 Scatter<br/>HLS 估计 37.7021 ms / DSP 254"]
+  E057 -->|设计或参数基线| G01
+  E060 -->|设计或参数基线| G02
+  G01 -.->|对照实验| G02
+  G02 -->|设计或参数基线| G03
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class G01,G02,G03 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E057,E060 context

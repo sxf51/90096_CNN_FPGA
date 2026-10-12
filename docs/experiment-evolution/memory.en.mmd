@@ -1,0 +1,28 @@
+%% Storage routes: dataflow, DDR probe, and fused tiles
+flowchart TB
+  S01["S01<br/>Global-array DDR interface probe<br/>Attempt to export AXI ports for global scratch arrays and examine layer-to-layer external storage.<br/>HLS estimate 167.3047 ms / DSP 254<br/>Over budget: BRAM18K; Invalid configuration"]
+  S02["S02<br/>Whole-network dataflow control<br/>Reuse the matched gather design as the network control for tile fusion.<br/>HLS estimate 29.8302 ms / DSP 254<br/>Candidate; final acceptance pending"]
+  S03["S03<br/>Three-layer fused output tiles, B8<br/>Recompute each tile's halo, fuse local Conv1/2 computation, and buffer a small Conv2 tile.<br/>HLS estimate 228.0354 ms / DSP 296<br/>Over budget: LUT"]
+  S04["S04<br/>Three-layer fused output tiles, B16<br/>Increase tile size to reduce relative halo recomputation.<br/>HLS estimate 167.5398 ms / DSP 296<br/>Over budget: LUT"]
+  S05["S05<br/>Three-layer fused output tiles, B32<br/>Increase output tile size again to compare buffer and recomputation costs.<br/>HLS estimate 141.6638 ms / DSP 296<br/>Over budget: LUT"]
+  S06["S06<br/>Three-layer fused output tiles, B64<br/>Scan the largest tile, including actual replicated edges and incomplete boundary tiles.<br/>HLS estimate 129.8187 ms / DSP 296<br/>Over budget: LUT"]
+  E048["E048 / external parent<br/>Integer carriers for fixed-point arithmetic<br/>HLS estimate 29.1386 ms / DSP 254"]
+  G01["G01 / external parent<br/>Matched gather control<br/>HLS estimate 29.8302 ms / DSP 254"]
+  E048 -->|Design or parameter baseline| S01
+  G01 -->|Design or parameter baseline| S02
+  E048 -->|Design or parameter baseline| S03
+  S02 -.->|Control experiment| S03
+  S03 -->|Design or parameter baseline| S04
+  S03 -->|Design or parameter baseline| S05
+  S03 -->|Design or parameter baseline| S06
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class S02 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class S01 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class S03,S04,S05,S06 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E048,G01 context

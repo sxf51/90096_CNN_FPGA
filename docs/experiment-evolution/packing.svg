@@ -1,0 +1,206 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="4430" height="1691" viewBox="0 0 4430 1691">
+<title>A：Packing，从局部精确性到整网成本</title>
+<desc>一个 DSP 做两个共享操作数乘法，省下的 DSP 是否抵得过修复逻辑？。数据快照 653ceb9。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="4430" height="1691" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">A：Packing，从局部精确性到整网成本</text>
+<text x="48" y="76" font-size="17" fill="#435654">一个 DSP 做两个共享操作数乘法，省下的 DSP 是否抵得过修复逻辑？</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M1618.00 343.00 L1618.00 395.00 L1575.67 395.00 L1575.67 423.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2332.56 343.00 L2332.56 383.00 L2289.50 383.00 L2289.50 395.00 L1680.33 395.00 L1680.33 423.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1471.00 658.00 L1471.00 698.00 L225.00 698.00 L225.00 765.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1471.00 658.00 L1471.00 698.00 L623.00 698.00 L623.00 753.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1471.00 658.00 L1471.00 698.00 L1021.00 698.00 L1021.00 753.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1482.70 658.00 L1482.70 698.00 L1419.00 698.00 L1419.00 753.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1738.54 658.00 L1738.54 698.00 L1787.00 698.00 L1787.00 725.00 L1764.67 725.00 L1764.67 753.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2399.88 343.00 L2399.88 383.00 L2404.00 383.00 L2404.00 725.00 L1869.33 725.00 L1869.33 753.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1785.00 658.00 L1785.00 698.00 L1986.00 698.00 L1986.00 725.00 L2560.67 725.00 L2560.67 753.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2613.00 617.00 L2613.00 725.00 L2665.33 725.00 L2665.33 753.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1419.00 988.00 L1419.00 1083.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1785.00 658.00 L1785.00 698.00 L2185.00 698.00 L2185.00 725.00 L2215.00 725.00 L2215.00 753.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M4205.00 947.00 L4205.00 1055.00 L3461.33 1055.00 L3461.33 1083.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2613.00 988.00 L2613.00 1055.00 L3356.67 1055.00 L3356.67 1083.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3270.65 1318.00 L3270.65 1358.00 L3210.00 1358.00 L3210.00 1410.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3547.35 1318.00 L3547.35 1358.00 L3608.00 1358.00 L3608.00 1398.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3608.00 343.00 L3608.00 423.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3451.00 658.00 L3451.00 698.00 L3011.00 698.00 L3011.00 725.00 L3063.33 725.00 L3063.33 753.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1785.00 658.00 L1785.00 698.00 L2269.50 698.00 L2269.50 725.00 L2958.67 725.00 L2958.67 753.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3469.65 658.00 L3469.65 698.00 L3409.00 698.00 L3409.00 710.00 L3461.33 710.00 L3461.33 738.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1785.00 658.00 L1785.00 698.00 L2289.50 698.00 L2289.50 710.00 L3356.67 710.00 L3356.67 738.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3746.35 658.00 L3746.35 698.00 L3807.00 698.00 L3807.00 738.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<g data-id="P01">
+<rect x="1451.00" y="431.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1475.00" y="458.00" font-size="17" font-weight="700" fill="#243031">P01</text>
+<text x="1475.00" y="489.50" font-size="20" font-weight="700" fill="#243031">共享输入的双 INT8 乘法</text>
+<text x="1475.00" y="525.50" font-size="16" font-weight="400" fill="#243031">以 gap18 拼接两个系数，修正低字段为</text>
+<text x="1475.00" y="549.50" font-size="16" font-weight="400" fill="#243031">负时的借位；穷举 signed8 三元组。</text>
+<text x="1475.00" y="579.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 132</text>
+<text x="1475.00" y="609.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="P02">
+<rect x="48.00" y="773.00" width="354" height="195" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="72.00" y="800.00" font-size="17" font-weight="700" fill="#243031">P02</text>
+<text x="72.00" y="831.50" font-size="20" font-weight="700" fill="#243031">两路直接乘法控制</text>
+<text x="72.00" y="867.50" font-size="16" font-weight="400" fill="#243031">相同接口和输入，分别计算两个乘积。</text>
+<text x="72.00" y="897.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 2 / LUT 57</text>
+<text x="72.00" y="927.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="P03">
+<rect x="446.00" y="761.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="470.00" y="788.00" font-size="17" font-weight="700" fill="#243031">P03</text>
+<text x="470.00" y="819.50" font-size="20" font-weight="700" fill="#243031">七项后再拆包</text>
+<text x="470.00" y="855.50" font-size="16" font-weight="400" fill="#243031">在 signed8 安全界内累加七个打包乘积</text>
+<text x="470.00" y="879.50" font-size="16" font-weight="400" fill="#243031">，再解码。</text>
+<text x="470.00" y="909.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 299</text>
+<text x="470.00" y="939.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="P04">
+<rect x="844.00" y="761.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="868.00" y="788.00" font-size="17" font-weight="700" fill="#243031">P04</text>
+<text x="868.00" y="819.50" font-size="20" font-weight="700" fill="#243031">自动识别 Packing 表达式</text>
+<text x="868.00" y="855.50" font-size="16" font-weight="400" fill="#243031">去掉显式 DSP 绑定，观察编译器是否识</text>
+<text x="868.00" y="879.50" font-size="16" font-weight="400" fill="#243031">别表达式。</text>
+<text x="868.00" y="909.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 132</text>
+<text x="868.00" y="939.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="P05">
+<rect x="1242.00" y="761.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1266.00" y="788.00" font-size="17" font-weight="700" fill="#243031">P05</text>
+<text x="1266.00" y="819.50" font-size="20" font-weight="700" fill="#243031">DSP pre-adder builtin</text>
+<text x="1266.00" y="855.50" font-size="16" font-weight="400" fill="#243031">使用 SDK 的 DSP48E2 builtin 显式</text>
+<text x="1266.00" y="879.50" font-size="16" font-weight="400" fill="#243031">表达预加和流水级。</text>
+<text x="1266.00" y="909.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 127</text>
+<text x="1266.00" y="939.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="P06">
+<rect x="1640.00" y="761.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1664.00" y="788.00" font-size="17" font-weight="700" fill="#243031">P06</text>
+<text x="1664.00" y="819.50" font-size="20" font-weight="700" fill="#243031">非负十位激活，两项拆包</text>
+<text x="1664.00" y="855.50" font-size="16" font-weight="400" fill="#243031">共享激活范围 0..511 时，低字段最多安</text>
+<text x="1664.00" y="879.50" font-size="16" font-weight="400" fill="#243031">全累加两项。</text>
+<text x="1664.00" y="909.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 274</text>
+<text x="1664.00" y="939.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="P07">
+<rect x="2436.00" y="761.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="2460.00" y="788.00" font-size="17" font-weight="700" fill="#243031">P07</text>
+<text x="2460.00" y="819.50" font-size="20" font-weight="700" fill="#243031">精确十位系数残差修复</text>
+<text x="2460.00" y="855.50" font-size="16" font-weight="400" fill="#243031">系数拆成低八位与 256 倍残差，在</text>
+<text x="2460.00" y="879.50" font-size="16" font-weight="400" fill="#243031">fabric 中精确恢复。</text>
+<text x="2460.00" y="909.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 454</text>
+<text x="2460.00" y="939.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="P08">
+<rect x="1242.00" y="1091.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1266.00" y="1118.00" font-size="17" font-weight="700" fill="#243031">P08</text>
+<text x="1266.00" y="1149.50" font-size="20" font-weight="700" fill="#243031">检查实际 DSP pre-adder</text>
+<text x="1266.00" y="1185.50" font-size="16" font-weight="400" fill="#243031">Vivado 实现后检查 DSP48E2 的</text>
+<text x="1266.00" y="1209.50" font-size="16" font-weight="400" fill="#243031">AMULTSEL、ADREG 等属性。</text>
+<text x="1266.00" y="1239.50" font-size="16" font-weight="700" fill="#243031">Routed WNS 2.805 ns</text>
+<text x="1266.00" y="1269.50" font-size="15" font-weight="400" fill="#5c6160">实现完成，另看时序</text>
+</g>
+<g data-id="P09">
+<rect x="2038.00" y="761.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="2062.00" y="788.00" font-size="17" font-weight="700" fill="#243031">P09</text>
+<text x="2062.00" y="819.50" font-size="20" font-weight="700" fill="#243031">冻结记录复现</text>
+<text x="2062.00" y="855.50" font-size="16" font-weight="400" fill="#243031">新 ID 恢复 P01 的源码、测试和参数，</text>
+<text x="2062.00" y="879.50" font-size="16" font-weight="400" fill="#243031">验证复现机制。</text>
+<text x="2062.00" y="909.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 132</text>
+<text x="2062.00" y="939.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="P10">
+<rect x="3232.00" y="1091.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="3256.00" y="1118.00" font-size="17" font-weight="700" fill="#243031">P10</text>
+<text x="3256.00" y="1149.50" font-size="20" font-weight="700" fill="#243031">精确十位 Packing 整网 T16</text>
+<text x="3256.00" y="1185.50" font-size="16" font-weight="400" fill="#243031">Conv1/2 打包输出通道，Conv3 打包相</text>
+<text x="3256.00" y="1209.50" font-size="16" font-weight="400" fill="#243031">邻输出像素。</text>
+<text x="3256.00" y="1239.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 12.1563 ms / DSP 254</text>
+<text x="3256.00" y="1269.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT；HLS 时序警告</text>
+</g>
+<g data-id="P11">
+<rect x="3033.00" y="1418.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="3057.00" y="1445.00" font-size="17" font-weight="700" fill="#243031">P11</text>
+<text x="3057.00" y="1476.50" font-size="20" font-weight="700" fill="#243031">精确十位 Packing 整网 T8</text>
+<text x="3057.00" y="1512.50" font-size="16" font-weight="400" fill="#243031">相同算术加大并行度。</text>
+<text x="3057.00" y="1542.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 7.5772 ms / DSP 505</text>
+<text x="3057.00" y="1572.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT；HLS 时序警告</text>
+</g>
+<g data-id="P12">
+<rect x="3431.00" y="1406.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="3455.00" y="1433.00" font-size="17" font-weight="700" fill="#243031">P12</text>
+<text x="3455.00" y="1464.50" font-size="20" font-weight="700" fill="#243031">精确十位 Packing 整网 T4</text>
+<text x="3455.00" y="1500.50" font-size="16" font-weight="400" fill="#243031">进一步提高并行度，比较时间与资源的取舍</text>
+<text x="3455.00" y="1524.50" font-size="16" font-weight="400" fill="#243031">。</text>
+<text x="3455.00" y="1554.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 5.4223 ms / DSP 1007</text>
+<text x="3455.00" y="1584.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT；HLS 时序警告</text>
+</g>
+<g data-id="P13">
+<rect x="3431.00" y="431.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="3455.00" y="458.00" font-size="17" font-weight="700" fill="#243031">P13</text>
+<text x="3455.00" y="489.50" font-size="20" font-weight="700" fill="#243031">完整 INT16 双乘法控制</text>
+<text x="3455.00" y="525.50" font-size="16" font-weight="400" fill="#243031">在相同输入/输出和吞吐率下直接计算两路</text>
+<text x="3455.00" y="549.50" font-size="16" font-weight="400" fill="#243031"> signed16x16，作为新研究基线。</text>
+<text x="3455.00" y="579.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 2 / LUT 57</text>
+<text x="3455.00" y="609.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="P14">
+<rect x="2834.00" y="761.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="2858.00" y="788.00" font-size="17" font-weight="700" fill="#243031">P14</text>
+<text x="2858.00" y="819.50" font-size="20" font-weight="700" fill="#243031">INT16 拆肢 Packing</text>
+<text x="2858.00" y="855.50" font-size="16" font-weight="400" fill="#243031">拆分十六位操作数，组合小位宽打包乘积，</text>
+<text x="2858.00" y="879.50" font-size="16" font-weight="400" fill="#243031">完整恢复两个 32 位结果。</text>
+<text x="2858.00" y="909.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 4 / LUT 453</text>
+<text x="2858.00" y="939.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="P15">
+<rect x="3232.00" y="746.00" width="354" height="249" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="3256.00" y="773.00" font-size="17" font-weight="700" fill="#243031">P15</text>
+<text x="3256.00" y="804.50" font-size="20" font-weight="700" fill="#243031">INT16 重叠字段与 fabric 修</text>
+<text x="3256.00" y="834.50" font-size="20" font-weight="700" fill="#243031">复</text>
+<text x="3256.00" y="870.50" font-size="16" font-weight="400" fill="#243031">允许字段重叠，再用精确 fabric 算术恢</text>
+<text x="3256.00" y="894.50" font-size="16" font-weight="400" fill="#243031">复两路完整乘积。</text>
+<text x="3256.00" y="924.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 747</text>
+<text x="3256.00" y="954.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="P16">
+<rect x="3630.00" y="746.00" width="354" height="249" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="3654.00" y="773.00" font-size="17" font-weight="700" fill="#243031">P16</text>
+<text x="3654.00" y="804.50" font-size="20" font-weight="700" fill="#243031">INT16 一 DSP 加一 fabric</text>
+<text x="3654.00" y="834.50" font-size="20" font-weight="700" fill="#243031">控制</text>
+<text x="3654.00" y="870.50" font-size="16" font-weight="400" fill="#243031">直接把一条乘法放在 DSP、一条放在 LUT</text>
+<text x="3654.00" y="894.50" font-size="16" font-weight="400" fill="#243031">，匹配 P15 的资源类型。</text>
+<text x="3654.00" y="924.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 330</text>
+<text x="3654.00" y="954.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="E017">
+<rect x="2436.00" y="472.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="2460.00" y="499.00" font-size="17" font-weight="700" fill="#243031">E017 / 外部来源</text>
+<text x="2460.00" y="530.50" font-size="20" font-weight="700" fill="#243031">10 位边界与整数参考</text>
+<text x="2460.00" y="566.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+</g>
+<g data-id="E048">
+<rect x="4028.00" y="802.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="4052.00" y="829.00" font-size="17" font-weight="700" fill="#243031">E048 / 外部来源</text>
+<text x="4052.00" y="860.50" font-size="20" font-weight="700" fill="#243031">整数承载的定点运算</text>
+<text x="4052.00" y="896.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 29.1386 ms / DSP 254</text>
+</g>
+<g data-id="E051">
+<rect x="1441.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1465.00" y="225.00" font-size="17" font-weight="700" fill="#243031">E051 / 外部来源</text>
+<text x="1465.00" y="256.50" font-size="20" font-weight="700" fill="#243031">16x16 普通乘法</text>
+<text x="1465.00" y="292.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 62</text>
+</g>
+<g data-id="E054">
+<rect x="3431.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="3455.00" y="225.00" font-size="17" font-weight="700" fill="#243031">E054 / 外部来源</text>
+<text x="3455.00" y="256.50" font-size="20" font-weight="700" fill="#243031">16x16，4 ns 控制</text>
+<text x="3455.00" y="292.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 62</text>
+</g>
+<g data-id="E071">
+<rect x="2217.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="2241.00" y="225.00" font-size="17" font-weight="700" fill="#243031">E071 / 外部来源</text>
+<text x="2241.00" y="256.50" font-size="20" font-weight="700" fill="#243031">Packing/Winograd 前置范围</text>
+<text x="2241.00" y="292.50" font-size="16" font-weight="700" fill="#243031">分析完成</text>
+</g>
+</svg>

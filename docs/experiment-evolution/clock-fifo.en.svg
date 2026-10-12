@@ -1,0 +1,310 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" width="4550" height="2035" viewBox="0 0 4550 2035">
+<title>T8 follow-up: routed clocks, FRP, and FIFO waits</title>
+<desc>Can control fanout and window waits be reduced in measured RTL cycles and closed physical clocks?. Snapshot 653ceb9. Experiment relationships are not Git ancestry.</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="4550" height="2035" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">T8 follow-up: routed clocks, FRP, and FIFO waits</text>
+<text x="48" y="81.5" font-size="17" font-weight="400" fill="#435654">Can control fanout and window waits be reduced in measured RTL cycles and closed physical clocks?</text>
+<text x="48" y="114" font-size="16" font-weight="400" fill="#526461">Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.</text>
+<text x="48" y="146" font-size="16" font-weight="400" fill="#526461">Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.</text>
+<path d="M2065.00 381.00 L2065.00 421.00 L500.00 421.00 L500.00 433.00 L363.00 433.00 L363.00 461.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M855.00 381.00 L855.00 421.00 L480.00 421.00 L480.00 433.00 L268.00 433.00 L268.00 461.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M258.00 381.00 L258.00 433.00 L173.00 433.00 L173.00 461.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2065.00 381.00 L2065.00 421.00 L641.00 421.00 L641.00 826.00 L484.00 826.00 L484.00 854.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M855.00 381.00 L855.00 421.00 L621.00 421.00 L621.00 826.00 L389.00 826.00 L389.00 854.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M268.00 774.00 L268.00 826.00 L294.00 826.00 L294.00 854.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2445.00 381.00 L2445.00 421.00 L2729.00 421.00 L2729.00 473.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2445.00 381.00 L2445.00 421.00 L2971.00 421.00 L2971.00 841.00 L2786.67 841.00 L2786.67 869.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2729.00 762.00 L2729.00 841.00 L2913.33 841.00 L2913.33 869.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2660.00 1152.00 L2660.00 1207.00 L389.00 1207.00 L389.00 1259.50" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2660.00 1152.00 L2660.00 1207.00 L631.00 1207.00 L631.00 1636.00 L573.33 1636.00 L573.33 1664.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M389.00 1571.50 L389.00 1636.00 L446.67 1636.00 L446.67 1664.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2445.00 381.00 L2445.00 421.00 L4292.00 421.00 L4292.00 461.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M4200.56 774.00 L4200.56 814.00 L4171.00 814.00 L4171.00 854.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M4102.00 774.00 L4102.00 814.00 L3929.00 814.00 L3929.00 1243.00 L3992.33 1243.00 L3992.33 1271.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3981.00 1167.00 L3981.00 1207.00 L3707.00 1207.00 L3707.00 1243.00 L3865.67 1243.00 L3865.67 1271.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M4383.44 774.00 L4383.44 814.00 L4413.00 814.00 L4413.00 1648.00 L4387.00 1648.00 L4387.00 1676.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M4171.00 1167.00 L4171.00 1648.00 L4292.00 1648.00 L4292.00 1676.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3929.00 1560.00 L3929.00 1648.00 L4197.00 1648.00 L4197.00 1676.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2065.00 381.00 L2065.00 421.00 L1801.00 421.00 L1801.00 473.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1801.00 762.00 L1801.00 866.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2065.00 381.00 L2065.00 421.00 L1095.00 421.00 L1095.00 838.00 L936.33 838.00 L936.33 866.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1611.00 762.00 L1611.00 814.00 L661.00 814.00 L661.00 838.00 L809.67 838.00 L809.67 866.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M873.00 1155.00 L873.00 1283.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2261.35 381.00 L2261.35 421.00 L2265.00 421.00 L2265.00 461.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2075.00 774.00 L2075.00 814.00 L1337.00 814.00 L1337.00 854.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2265.00 774.00 L2265.00 1231.00 L2106.33 1231.00 L2106.33 1259.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1337.00 1167.00 L1337.00 1231.00 L1979.67 1231.00 L1979.67 1259.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2445.00 381.00 L2445.00 421.00 L3818.00 421.00 L3818.00 445.00 L3528.33 445.00 L3528.33 473.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1235.00 381.00 L1235.00 421.00 L3112.00 421.00 L3112.00 445.00 L3401.67 445.00 L3401.67 473.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3380.95 762.00 L3380.95 814.00 L3344.00 814.00 L3344.00 866.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3275.00 762.00 L3275.00 814.00 L3102.00 814.00 L3102.00 1219.00 L3054.33 1219.00 L3054.33 1247.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3154.00 1155.00 L3154.00 1207.00 L2527.00 1207.00 L2527.00 1219.00 L2927.67 1219.00 L2927.67 1247.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3619.21 762.00 L3619.21 814.00 L3687.00 814.00 L3687.00 1219.00 L3560.00 1219.00 L3560.00 1247.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3040.00 1152.00 L3040.00 1207.00 L3667.00 1207.00 L3667.00 1219.00 L3370.00 1219.00 L3370.00 1247.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3344.00 1155.00 L3344.00 1219.00 L3465.00 1219.00 L3465.00 1247.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<g data-id="W23">
+<rect x="58.00" y="469.00" width="420" height="297" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="82.00" y="496.00" font-size="17" font-weight="700" fill="#243031">W23</text>
+<text x="82.00" y="527.50" font-size="20" font-weight="700" fill="#243031">Same W21 RTL with a 4.5 ns</text>
+<text x="82.00" y="557.50" font-size="20" font-weight="700" fill="#243031">strategy</text>
+<text x="82.00" y="593.50" font-size="16" font-weight="400" fill="#243031">Keep RTL unchanged; use</text>
+<text x="82.00" y="617.50" font-size="16" font-weight="400" fill="#243031">Performance_Explore and post-route</text>
+<text x="82.00" y="641.50" font-size="16" font-weight="400" fill="#243031">optimization with one synthesis and</text>
+<text x="82.00" y="665.50" font-size="16" font-weight="400" fill="#243031">four place/route threads.</text>
+<text x="82.00" y="695.50" font-size="16" font-weight="700" fill="#243031">Host OOM; no routed results</text>
+<text x="82.00" y="725.50" font-size="15" font-weight="400" fill="#5c6160">Host OOM</text>
+</g>
+<g data-id="W32">
+<rect x="179.00" y="862.00" width="420" height="297" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="203.00" y="889.00" font-size="17" font-weight="700" fill="#243031">W32</text>
+<text x="203.00" y="920.50" font-size="20" font-weight="700" fill="#243031">4.5 ns strategy retry after</text>
+<text x="203.00" y="950.50" font-size="20" font-weight="700" fill="#243031">OOM</text>
+<text x="203.00" y="986.50" font-size="16" font-weight="400" fill="#243031">Independently retry the same W21</text>
+<text x="203.00" y="1010.50" font-size="16" font-weight="400" fill="#243031">RTL, strategy, and target in a</text>
+<text x="203.00" y="1034.50" font-size="16" font-weight="400" fill="#243031">fresh workspace; retain W23</text>
+<text x="203.00" y="1058.50" font-size="16" font-weight="400" fill="#243031">failure.</text>
+<text x="203.00" y="1088.50" font-size="16" font-weight="700" fill="#243031">Routed WNS 0.144 ns</text>
+<text x="203.00" y="1118.50" font-size="15" font-weight="400" fill="#5c6160">Independent route gates pass</text>
+</g>
+<g data-id="W26">
+<rect x="2519.00" y="481.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2543.00" y="508.00" font-size="17" font-weight="700" fill="#243031">W26</text>
+<text x="2543.00" y="539.50" font-size="20" font-weight="700" fill="#243031">First FRP attempt for three</text>
+<text x="2543.00" y="569.50" font-size="20" font-weight="700" fill="#243031">MAC folds</text>
+<text x="2543.00" y="605.50" font-size="16" font-weight="400" fill="#243031">Change only the three continuous</text>
+<text x="2543.00" y="629.50" font-size="16" font-weight="400" fill="#243031">folds to free-running pipelines to</text>
+<text x="2543.00" y="653.50" font-size="16" font-weight="400" fill="#243031">reduce global enable distribution.</text>
+<text x="2543.00" y="683.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="2543.00" y="713.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+</g>
+<g data-id="W27">
+<rect x="2640.00" y="877.00" width="420" height="267" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="2664.00" y="904.00" font-size="17" font-weight="700" fill="#243031">W27</text>
+<text x="2664.00" y="935.50" font-size="20" font-weight="700" fill="#243031">Valid FRP design retry</text>
+<text x="2664.00" y="971.50" font-size="16" font-weight="400" fill="#243031">Build the independent design</text>
+<text x="2664.00" y="995.50" font-size="16" font-weight="400" fill="#243031">correctly, retaining arithmetic,</text>
+<text x="2664.00" y="1019.50" font-size="16" font-weight="400" fill="#243031">interfaces, and stream tokens while</text>
+<text x="2664.00" y="1043.50" font-size="16" font-weight="400" fill="#243031">enabling three FRP folds.</text>
+<text x="2664.00" y="1073.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+<text x="2664.00" y="1103.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="W28">
+<rect x="179.00" y="1267.50" width="420" height="296" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="203.00" y="1294.50" font-size="17" font-weight="700" fill="#243031">W28</text>
+<text x="203.00" y="1326.00" font-size="20" font-weight="700" fill="#243031">FRP two-frame RTL with</text>
+<text x="203.00" y="1356.00" font-size="20" font-weight="700" fill="#243031">parameter reload</text>
+<text x="203.00" y="1392.00" font-size="16" font-weight="400" fill="#243031">Retain both numerical/reload checks</text>
+<text x="203.00" y="1416.00" font-size="16" font-weight="400" fill="#243031">and measure FRP cycles with finite</text>
+<text x="203.00" y="1440.00" font-size="16" font-weight="400" fill="#243031">FIFOs.</text>
+<text x="203.00" y="1470.00" font-size="16" font-weight="700" fill="#243031">RTL Pass / 549438 cycles</text>
+<text x="203.00" y="1500.00" font-size="15" font-weight="400" fill="#5c6160">Original cycle gate failed; later</text>
+<text x="203.00" y="1522.50" font-size="15" font-weight="400" fill="#5c6160">user acceptance</text>
+</g>
+<g data-id="W30">
+<rect x="300.00" y="1672.00" width="420" height="297" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="324.00" y="1699.00" font-size="17" font-weight="700" fill="#243031">W30</text>
+<text x="324.00" y="1730.50" font-size="20" font-weight="700" fill="#243031">Independent FRP</text>
+<text x="324.00" y="1760.50" font-size="20" font-weight="700" fill="#243031">implementation at 4.5 ns</text>
+<text x="324.00" y="1796.50" font-size="16" font-weight="400" fill="#243031">Use explicit upper-bound acceptance</text>
+<text x="324.00" y="1820.50" font-size="16" font-weight="400" fill="#243031">of W28 to independently route</text>
+<text x="324.00" y="1844.50" font-size="16" font-weight="400" fill="#243031">identical FRP RTL in a separate</text>
+<text x="324.00" y="1868.50" font-size="16" font-weight="400" fill="#243031">workspace.</text>
+<text x="324.00" y="1898.50" font-size="16" font-weight="700" fill="#243031">Routed WNS 0.027 ns</text>
+<text x="324.00" y="1928.50" font-size="15" font-weight="400" fill="#5c6160">Independent route gates pass</text>
+</g>
+<g data-id="F39">
+<rect x="4082.00" y="469.00" width="420" height="297" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="4106.00" y="496.00" font-size="17" font-weight="700" fill="#243031">F39</text>
+<text x="4106.00" y="527.50" font-size="20" font-weight="700" fill="#243031">Register Conv3 selected</text>
+<text x="4106.00" y="557.50" font-size="20" font-weight="700" fill="#243031">operands</text>
+<text x="4106.00" y="593.50" font-size="16" font-weight="400" fill="#243031">Add one-cycle operand registers</text>
+<text x="4106.00" y="617.50" font-size="16" font-weight="400" fill="#243031">before 100 Conv3 DSPs, keeping</text>
+<text x="4106.00" y="641.50" font-size="16" font-weight="400" fill="#243031">other layers and pipeline style</text>
+<text x="4106.00" y="665.50" font-size="16" font-weight="400" fill="#243031">unchanged.</text>
+<text x="4106.00" y="695.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+<text x="4106.00" y="725.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="F43">
+<rect x="3961.00" y="862.00" width="420" height="297" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="3985.00" y="889.00" font-size="17" font-weight="700" fill="#243031">F43</text>
+<text x="3985.00" y="920.50" font-size="20" font-weight="700" fill="#243031">Two-frame RTL of registered</text>
+<text x="3985.00" y="950.50" font-size="20" font-weight="700" fill="#243031">Conv3</text>
+<text x="3985.00" y="986.50" font-size="16" font-weight="400" fill="#243031">Retain changed parameters, finite</text>
+<text x="3985.00" y="1010.50" font-size="16" font-weight="400" fill="#243031">FIFOs, profiling, and numerical</text>
+<text x="3985.00" y="1034.50" font-size="16" font-weight="400" fill="#243031">checks while measuring</text>
+<text x="3985.00" y="1058.50" font-size="16" font-weight="400" fill="#243031">registered-control cycles.</text>
+<text x="3985.00" y="1088.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 558758 cycles</text>
+<text x="3985.00" y="1118.50" font-size="15" font-weight="400" fill="#5c6160">RTL co-simulation complete</text>
+</g>
+<g data-id="F49">
+<rect x="3719.00" y="1279.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="3743.00" y="1306.00" font-size="17" font-weight="700" fill="#243031">F49</text>
+<text x="3743.00" y="1337.50" font-size="20" font-weight="700" fill="#243031">Registered Conv3</text>
+<text x="3743.00" y="1367.50" font-size="20" font-weight="700" fill="#243031">implementation at 4.5 ns</text>
+<text x="3743.00" y="1403.50" font-size="16" font-weight="400" fill="#243031">Independently route the</text>
+<text x="3743.00" y="1427.50" font-size="16" font-weight="400" fill="#243031">operand-register design with</text>
+<text x="3743.00" y="1451.50" font-size="16" font-weight="400" fill="#243031">matching RTL prerequisites.</text>
+<text x="3743.00" y="1481.50" font-size="16" font-weight="700" fill="#243031">Physical implementation incomplete</text>
+<text x="3743.00" y="1511.50" font-size="15" font-weight="400" fill="#5c6160">Host memory guard stopped the job</text>
+</g>
+<g data-id="F52">
+<rect x="4082.00" y="1684.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="4106.00" y="1711.00" font-size="17" font-weight="700" fill="#243031">F52</text>
+<text x="4106.00" y="1742.50" font-size="20" font-weight="700" fill="#243031">Independent registered-Conv3</text>
+<text x="4106.00" y="1772.50" font-size="20" font-weight="700" fill="#243031">retry</text>
+<text x="4106.00" y="1808.50" font-size="16" font-weight="400" fill="#243031">Retry identical F39 RTL at 4.5 ns</text>
+<text x="4106.00" y="1832.50" font-size="16" font-weight="400" fill="#243031">in a fresh workspace while</text>
+<text x="4106.00" y="1856.50" font-size="16" font-weight="400" fill="#243031">retaining F49 failure.</text>
+<text x="4106.00" y="1886.50" font-size="16" font-weight="700" fill="#243031">Routed WNS 0.072 ns</text>
+<text x="4106.00" y="1916.50" font-size="15" font-weight="400" fill="#5c6160">Independent route gates pass</text>
+</g>
+<g data-id="F40">
+<rect x="1591.00" y="481.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1615.00" y="508.00" font-size="17" font-weight="700" fill="#243031">F40</text>
+<text x="1615.00" y="539.50" font-size="20" font-weight="700" fill="#243031">Inter-layer feature FIFO</text>
+<text x="1615.00" y="569.50" font-size="20" font-weight="700" fill="#243031">depth 16</text>
+<text x="1615.00" y="605.50" font-size="16" font-weight="400" fill="#243031">Change only the 640-bit</text>
+<text x="1615.00" y="629.50" font-size="16" font-weight="400" fill="#243031">Conv1-to-Conv2 FIFO from depth 4 to</text>
+<text x="1615.00" y="653.50" font-size="16" font-weight="400" fill="#243031">16.</text>
+<text x="1615.00" y="683.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+<text x="1615.00" y="713.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="F44">
+<rect x="1591.00" y="874.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1615.00" y="901.00" font-size="17" font-weight="700" fill="#243031">F44</text>
+<text x="1615.00" y="932.50" font-size="20" font-weight="700" fill="#243031">Two-frame RTL of feature</text>
+<text x="1615.00" y="962.50" font-size="20" font-weight="700" fill="#243031">FIFO16</text>
+<text x="1615.00" y="998.50" font-size="16" font-weight="400" fill="#243031">Compare changed-parameter frames</text>
+<text x="1615.00" y="1022.50" font-size="16" font-weight="400" fill="#243031">and finite-FIFO counters against</text>
+<text x="1615.00" y="1046.50" font-size="16" font-weight="400" fill="#243031">F97.</text>
+<text x="1615.00" y="1076.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 558758 cycles</text>
+<text x="1615.00" y="1106.50" font-size="15" font-weight="400" fill="#5c6160">RTL co-simulation complete</text>
+</g>
+<g data-id="F41">
+<rect x="663.00" y="874.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="687.00" y="901.00" font-size="17" font-weight="700" fill="#243031">F41</text>
+<text x="687.00" y="932.50" font-size="20" font-weight="700" fill="#243031">Inter-layer feature FIFO</text>
+<text x="687.00" y="962.50" font-size="20" font-weight="700" fill="#243031">depth 32</text>
+<text x="687.00" y="998.50" font-size="16" font-weight="400" fill="#243031">Change the same feature FIFO from</text>
+<text x="687.00" y="1022.50" font-size="16" font-weight="400" fill="#243031">depth 4 to 32 and compare with the</text>
+<text x="687.00" y="1046.50" font-size="16" font-weight="400" fill="#243031">depth-16 control.</text>
+<text x="687.00" y="1076.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+<text x="687.00" y="1106.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="F45">
+<rect x="663.00" y="1291.00" width="420" height="249" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="687.00" y="1318.00" font-size="17" font-weight="700" fill="#243031">F45</text>
+<text x="687.00" y="1349.50" font-size="20" font-weight="700" fill="#243031">Two-frame RTL of feature</text>
+<text x="687.00" y="1379.50" font-size="20" font-weight="700" fill="#243031">FIFO32</text>
+<text x="687.00" y="1415.50" font-size="16" font-weight="400" fill="#243031">Measure changed-parameter outputs,</text>
+<text x="687.00" y="1439.50" font-size="16" font-weight="400" fill="#243031">cycles, and finite-FIFO waits.</text>
+<text x="687.00" y="1469.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 558758 cycles</text>
+<text x="687.00" y="1499.50" font-size="15" font-weight="400" fill="#5c6160">RTL co-simulation complete</text>
+</g>
+<g data-id="F42">
+<rect x="2055.00" y="469.00" width="420" height="297" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="2079.00" y="496.00" font-size="17" font-weight="700" fill="#243031">F42</text>
+<text x="2079.00" y="527.50" font-size="20" font-weight="700" fill="#243031">Add a depth-256</text>
+<text x="2079.00" y="557.50" font-size="20" font-weight="700" fill="#243031">reorder-output FIFO</text>
+<text x="2079.00" y="593.50" font-size="16" font-weight="400" fill="#243031">Keep the original depth-4 feature</text>
+<text x="2079.00" y="617.50" font-size="16" font-weight="400" fill="#243031">FIFO and add independent forwarding</text>
+<text x="2079.00" y="641.50" font-size="16" font-weight="400" fill="#243031">plus a depth-256 LUTRAM buffer</text>
+<text x="2079.00" y="665.50" font-size="16" font-weight="400" fill="#243031">after reorder_rows.</text>
+<text x="2079.00" y="695.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+<text x="2079.00" y="725.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="F46">
+<rect x="1127.00" y="862.00" width="420" height="297" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1151.00" y="889.00" font-size="17" font-weight="700" fill="#243031">F46</text>
+<text x="1151.00" y="920.50" font-size="20" font-weight="700" fill="#243031">First reorder-buffer</text>
+<text x="1151.00" y="950.50" font-size="20" font-weight="700" fill="#243031">two-frame RTL</text>
+<text x="1151.00" y="986.50" font-size="16" font-weight="400" fill="#243031">Preserve standard profiling,</text>
+<text x="1151.00" y="1010.50" font-size="16" font-weight="400" fill="#243031">deadlock detection, and reload</text>
+<text x="1151.00" y="1034.50" font-size="16" font-weight="400" fill="#243031">checks while measuring the raster</text>
+<text x="1151.00" y="1058.50" font-size="16" font-weight="400" fill="#243031">FIFO.</text>
+<text x="1151.00" y="1088.50" font-size="16" font-weight="700" fill="#243031">RTL incomplete / unknown cycles</text>
+<text x="1151.00" y="1118.50" font-size="15" font-weight="400" fill="#5c6160">Host memory guard stopped the job</text>
+</g>
+<g data-id="F50">
+<rect x="1833.00" y="1267.00" width="420" height="297" rx="4" fill="#ffffff" stroke="#939b9b" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1857.00" y="1294.00" font-size="17" font-weight="700" fill="#243031">F50</text>
+<text x="1857.00" y="1325.50" font-size="20" font-weight="700" fill="#243031">Reorder-buffer two-frame RTL</text>
+<text x="1857.00" y="1355.50" font-size="20" font-weight="700" fill="#243031">retry plan</text>
+<text x="1857.00" y="1391.50" font-size="16" font-weight="400" fill="#243031">Retain design, standard counters,</text>
+<text x="1857.00" y="1415.50" font-size="16" font-weight="400" fill="#243031">and exact gates in a fresh</text>
+<text x="1857.00" y="1439.50" font-size="16" font-weight="400" fill="#243031">workspace.</text>
+<text x="1857.00" y="1469.50" font-size="16" font-weight="700" fill="#243031">Queued/running; no archived</text>
+<text x="1857.00" y="1493.50" font-size="16" font-weight="700" fill="#243031">measurements</text>
+<text x="1857.00" y="1523.50" font-size="15" font-weight="400" fill="#5c6160">No archived measurements</text>
+</g>
+<g data-id="F47">
+<rect x="3255.00" y="481.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="3279.00" y="508.00" font-size="17" font-weight="700" fill="#243031">F47</text>
+<text x="3279.00" y="539.50" font-size="20" font-weight="700" fill="#243031">Deepen transformed-window</text>
+<text x="3279.00" y="569.50" font-size="20" font-weight="700" fill="#243031">FIFO from 2 to 16</text>
+<text x="3279.00" y="605.50" font-size="16" font-weight="400" fill="#243031">Target F97 window-read stalls by</text>
+<text x="3279.00" y="629.50" font-size="16" font-weight="400" fill="#243031">increasing Winograd lookahead</text>
+<text x="3279.00" y="653.50" font-size="16" font-weight="400" fill="#243031">without changing arithmetic.</text>
+<text x="3279.00" y="683.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+<text x="3279.00" y="713.50" font-size="15" font-weight="400" fill="#5c6160">Local experiment passed</text>
+</g>
+<g data-id="F48">
+<rect x="3134.00" y="874.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="3158.00" y="901.00" font-size="17" font-weight="700" fill="#243031">F48</text>
+<text x="3158.00" y="932.50" font-size="20" font-weight="700" fill="#243031">Window FIFO16 two-frame RTL</text>
+<text x="3158.00" y="962.50" font-size="20" font-weight="700" fill="#243031">with reload</text>
+<text x="3158.00" y="998.50" font-size="16" font-weight="400" fill="#243031">Measure finite-stream waits, exact</text>
+<text x="3158.00" y="1022.50" font-size="16" font-weight="400" fill="#243031">outputs, and actual cycles with the</text>
+<text x="3158.00" y="1046.50" font-size="16" font-weight="400" fill="#243031">deeper window FIFO.</text>
+<text x="3158.00" y="1076.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 535771 cycles</text>
+<text x="3158.00" y="1106.50" font-size="15" font-weight="400" fill="#5c6160">RTL co-simulation complete</text>
+</g>
+<g data-id="F51">
+<rect x="2781.00" y="1255.00" width="420" height="321" rx="4" fill="#ffffff" stroke="#939b9b" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="2805.00" y="1282.00" font-size="17" font-weight="700" fill="#243031">F51</text>
+<text x="2805.00" y="1313.50" font-size="20" font-weight="700" fill="#243031">Window FIFO16 independent</text>
+<text x="2805.00" y="1343.50" font-size="20" font-weight="700" fill="#243031">routing plan</text>
+<text x="2805.00" y="1379.50" font-size="16" font-weight="400" fill="#243031">Route identical F47 RTL</text>
+<text x="2805.00" y="1403.50" font-size="16" font-weight="400" fill="#243031">independently at 5 ns while</text>
+<text x="2805.00" y="1427.50" font-size="16" font-weight="400" fill="#243031">preserving F48 measurements and all</text>
+<text x="2805.00" y="1451.50" font-size="16" font-weight="400" fill="#243031">route gates.</text>
+<text x="2805.00" y="1481.50" font-size="16" font-weight="700" fill="#243031">Queued/running; no archived</text>
+<text x="2805.00" y="1505.50" font-size="16" font-weight="700" fill="#243031">measurements</text>
+<text x="2805.00" y="1535.50" font-size="15" font-weight="400" fill="#5c6160">No archived measurements</text>
+</g>
+<g data-id="C16">
+<rect x="3255.00" y="1255.00" width="420" height="321" rx="4" fill="#ffffff" stroke="#939b9b" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="3279.00" y="1282.00" font-size="17" font-weight="700" fill="#243031">C16</text>
+<text x="3279.00" y="1313.50" font-size="20" font-weight="700" fill="#243031">T8 combination: window</text>
+<text x="3279.00" y="1343.50" font-size="20" font-weight="700" fill="#243031">FIFO16 plus FRP</text>
+<text x="3279.00" y="1379.50" font-size="16" font-weight="400" fill="#243031">Copy F47&apos;s depth-16 window design</text>
+<text x="3279.00" y="1403.50" font-size="16" font-weight="400" fill="#243031">and integrate only W27&apos;s three FRP</text>
+<text x="3279.00" y="1427.50" font-size="16" font-weight="400" fill="#243031">folds, preserving runtime</text>
+<text x="3279.00" y="1451.50" font-size="16" font-weight="400" fill="#243031">parameters and E017 precision.</text>
+<text x="3279.00" y="1481.50" font-size="16" font-weight="700" fill="#243031">Queued/running; no archived</text>
+<text x="3279.00" y="1505.50" font-size="16" font-weight="700" fill="#243031">measurements</text>
+<text x="3279.00" y="1535.50" font-size="15" font-weight="400" fill="#5c6160">No archived measurements</text>
+</g>
+<g data-id="F97">
+<rect x="835.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="859.00" y="233.00" font-size="17" font-weight="700" fill="#243031">F97 / external parent</text>
+<text x="859.00" y="264.50" font-size="20" font-weight="700" fill="#243031">W21 two-frame RTL with</text>
+<text x="859.00" y="294.50" font-size="20" font-weight="700" fill="#243031">changed parameters</text>
+<text x="859.00" y="330.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 558758 cycles</text>
+</g>
+<g data-id="W21">
+<rect x="2045.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="2069.00" y="233.00" font-size="17" font-weight="700" fill="#243031">W21 / external parent</text>
+<text x="2069.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Reorder the raw cache by</text>
+<text x="2069.00" y="294.50" font-size="20" font-weight="700" fill="#243031">subkernel</text>
+<text x="2069.00" y="330.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 1.749 ms / DSP 644</text>
+</g>
+<g data-id="W22">
+<rect x="48.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="233.00" font-size="17" font-weight="700" fill="#243031">W22 / external parent</text>
+<text x="72.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Same W21 RTL routed at 4.95</text>
+<text x="72.00" y="294.50" font-size="20" font-weight="700" fill="#243031">ns</text>
+<text x="72.00" y="330.50" font-size="16" font-weight="700" fill="#243031">Routed WNS 0.047 ns</text>
+</g>
+</svg>

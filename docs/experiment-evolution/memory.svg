@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="1246" height="1346" viewBox="0 0 1246 1346">
+<title>存储路线：整网数据流、外存探针和分块融合</title>
+<desc>外存或小块缓存能否替代全图存储，且保持正确边界？。数据快照 653ceb9。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="1246" height="1346" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">存储路线：整网数据流、外存探针和分块融合</text>
+<text x="48" y="76" font-size="17" fill="#435654">外存或小块缓存能否替代全图存储，且保持正确边界？</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M225.00 617.00 L225.00 738.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M643.00 343.00 L643.00 423.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M382.00 617.00 L382.00 698.00 L623.00 698.00 L623.00 710.00 L570.67 710.00 L570.67 738.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M643.00 658.00 L643.00 710.00 L675.33 710.00 L675.33 738.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M466.00 973.00 L466.00 1013.00 L225.00 1013.00 L225.00 1065.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M623.00 973.00 L623.00 1065.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M780.00 973.00 L780.00 1013.00 L1021.00 1013.00 L1021.00 1053.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<g data-id="S01">
+<rect x="48.00" y="746.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="773.00" font-size="17" font-weight="700" fill="#243031">S01</text>
+<text x="72.00" y="804.50" font-size="20" font-weight="700" fill="#243031">全局数组 DDR 接口探针</text>
+<text x="72.00" y="840.50" font-size="16" font-weight="400" fill="#243031">尝试给全局 scratch 数组导出 AXI 端</text>
+<text x="72.00" y="864.50" font-size="16" font-weight="400" fill="#243031">口，研究层间外存组织。</text>
+<text x="72.00" y="894.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 167.3047 ms / DSP 254</text>
+<text x="72.00" y="924.50" font-size="15" font-weight="400" fill="#5c6160">超预算: BRAM18K；配置无效</text>
+</g>
+<g data-id="S02">
+<rect x="466.00" y="431.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="490.00" y="458.00" font-size="17" font-weight="700" fill="#243031">S02</text>
+<text x="490.00" y="489.50" font-size="20" font-weight="700" fill="#243031">整网数据流对照</text>
+<text x="490.00" y="525.50" font-size="16" font-weight="400" fill="#243031">复用统一 gather 设计，作为分块融合的</text>
+<text x="490.00" y="549.50" font-size="16" font-weight="400" fill="#243031">整网对照。</text>
+<text x="490.00" y="579.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 29.8302 ms / DSP 254</text>
+<text x="490.00" y="609.50" font-size="15" font-weight="400" fill="#5c6160">候选，仍需验收</text>
+</g>
+<g data-id="S03">
+<rect x="446.00" y="746.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="470.00" y="773.00" font-size="17" font-weight="700" fill="#243031">S03</text>
+<text x="470.00" y="804.50" font-size="20" font-weight="700" fill="#243031">三层融合输出块 B8</text>
+<text x="470.00" y="840.50" font-size="16" font-weight="400" fill="#243031">每块重算所需 halo，局部融合</text>
+<text x="470.00" y="864.50" font-size="16" font-weight="400" fill="#243031">Conv1/2 并缓存 Conv2 小块。</text>
+<text x="470.00" y="894.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 228.0354 ms / DSP 296</text>
+<text x="470.00" y="924.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT</text>
+</g>
+<g data-id="S04">
+<rect x="48.00" y="1073.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="1100.00" font-size="17" font-weight="700" fill="#243031">S04</text>
+<text x="72.00" y="1131.50" font-size="20" font-weight="700" fill="#243031">三层融合输出块 B16</text>
+<text x="72.00" y="1167.50" font-size="16" font-weight="400" fill="#243031">扩大块，减少相对 halo 重算量。</text>
+<text x="72.00" y="1197.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 167.5398 ms / DSP 296</text>
+<text x="72.00" y="1227.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT</text>
+</g>
+<g data-id="S05">
+<rect x="446.00" y="1073.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="470.00" y="1100.00" font-size="17" font-weight="700" fill="#243031">S05</text>
+<text x="470.00" y="1131.50" font-size="20" font-weight="700" fill="#243031">三层融合输出块 B32</text>
+<text x="470.00" y="1167.50" font-size="16" font-weight="400" fill="#243031">继续扩大输出块，比较缓存与重算。</text>
+<text x="470.00" y="1197.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 141.6638 ms / DSP 296</text>
+<text x="470.00" y="1227.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT</text>
+</g>
+<g data-id="S06">
+<rect x="844.00" y="1061.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="868.00" y="1088.00" font-size="17" font-weight="700" fill="#243031">S06</text>
+<text x="868.00" y="1119.50" font-size="20" font-weight="700" fill="#243031">三层融合输出块 B64</text>
+<text x="868.00" y="1155.50" font-size="16" font-weight="400" fill="#243031">扫描中最大输出块，含真实图像边缘复制与</text>
+<text x="868.00" y="1179.50" font-size="16" font-weight="400" fill="#243031">不完整块。</text>
+<text x="868.00" y="1209.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 129.8187 ms / DSP 296</text>
+<text x="868.00" y="1239.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT</text>
+</g>
+<g data-id="E048">
+<rect x="48.00" y="472.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="499.00" font-size="17" font-weight="700" fill="#243031">E048 / 外部来源</text>
+<text x="72.00" y="530.50" font-size="20" font-weight="700" fill="#243031">整数承载的定点运算</text>
+<text x="72.00" y="566.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 29.1386 ms / DSP 254</text>
+</g>
+<g data-id="G01">
+<rect x="466.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="490.00" y="225.00" font-size="17" font-weight="700" fill="#243031">G01 / 外部来源</text>
+<text x="490.00" y="256.50" font-size="20" font-weight="700" fill="#243031">Gather 统一控制</text>
+<text x="490.00" y="292.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 29.8302 ms / DSP 254</text>
+</g>
+</svg>

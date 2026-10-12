@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="2042" height="2333" viewBox="0 0 2042 2333">
+<title>组合路线：Winograd 与 Packing 能否叠加收益</title>
+<desc>局部节省乘法之后，是否还有足够 LUT、FF 和缓存支持整网？。数据快照 653ceb9。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="2042" height="2333" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">组合路线：Winograd 与 Packing 能否叠加收益</text>
+<text x="48" y="76" font-size="17" fill="#435654">局部节省乘法之后，是否还有足够 LUT、FF 和缓存支持整网？</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M424.00 343.00 L424.00 395.00 L570.67 395.00 L570.67 423.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M822.00 343.00 L822.00 395.00 L675.33 395.00 L675.33 423.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M466.00 688.00 L466.00 728.00 L225.00 728.00 L225.00 768.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M623.00 688.00 L623.00 780.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M780.00 688.00 L780.00 728.00 L1021.00 728.00 L1021.00 795.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M225.00 1033.00 L225.00 1113.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M623.00 1021.00 L623.00 1128.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1021.00 1006.00 L1021.00 1088.00 L1167.67 1088.00 L1167.67 1116.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1419.00 992.00 L1419.00 1088.00 L1272.33 1088.00 L1272.33 1116.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1213.18 1351.00 L1213.18 1394.00 L1210.00 1394.00 L1210.00 1434.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1355.77 1351.00 L1355.77 1394.00 L1419.00 1394.00 L1419.00 1406.00 L1565.67 1406.00 L1565.67 1434.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1628.00 1310.00 L1628.00 1406.00 L1670.33 1406.00 L1670.33 1434.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1479.65 1669.00 L1479.65 1709.00 L1419.00 1709.00 L1419.00 1761.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1756.35 1669.00 L1756.35 1709.00 L1817.00 1709.00 L1817.00 1749.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1419.00 1972.00 L1419.00 2064.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<g data-id="C01">
+<rect x="446.00" y="431.00" width="354" height="249" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="470.00" y="458.00" font-size="17" font-weight="700" fill="#243031">C01</text>
+<text x="470.00" y="489.50" font-size="20" font-weight="700" fill="#243031">Winograd + Conv2/3</text>
+<text x="470.00" y="519.50" font-size="20" font-weight="700" fill="#243031">Packing，T4</text>
+<text x="470.00" y="555.50" font-size="16" font-weight="400" fill="#243031">组合 Conv1 Winograd 和后两层精确十</text>
+<text x="470.00" y="579.50" font-size="16" font-weight="400" fill="#243031">位 Packing。</text>
+<text x="470.00" y="609.50" font-size="16" font-weight="700" fill="#243031">运行失败</text>
+<text x="470.00" y="639.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="C02">
+<rect x="48.00" y="776.00" width="354" height="249" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="803.00" font-size="17" font-weight="700" fill="#243031">C02</text>
+<text x="72.00" y="834.50" font-size="20" font-weight="700" fill="#243031">Winograd + 仅 Conv3</text>
+<text x="72.00" y="864.50" font-size="20" font-weight="700" fill="#243031">Packing，T4</text>
+<text x="72.00" y="900.50" font-size="16" font-weight="400" fill="#243031">保留直接 Conv2，隔离 Conv2</text>
+<text x="72.00" y="924.50" font-size="16" font-weight="400" fill="#243031">Packing 的代价。</text>
+<text x="72.00" y="954.50" font-size="16" font-weight="700" fill="#243031">运行失败</text>
+<text x="72.00" y="984.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="C03">
+<rect x="446.00" y="788.00" width="354" height="225" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="470.00" y="815.00" font-size="17" font-weight="700" fill="#243031">C03</text>
+<text x="470.00" y="846.50" font-size="20" font-weight="700" fill="#243031">Winograd + Conv2/3</text>
+<text x="470.00" y="876.50" font-size="20" font-weight="700" fill="#243031">Packing，T8</text>
+<text x="470.00" y="912.50" font-size="16" font-weight="400" fill="#243031">降低并行度以控制资源。</text>
+<text x="470.00" y="942.50" font-size="16" font-weight="700" fill="#243031">运行失败</text>
+<text x="470.00" y="972.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="C04">
+<rect x="844.00" y="803.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="868.00" y="830.00" font-size="17" font-weight="700" fill="#243031">C04</text>
+<text x="868.00" y="861.50" font-size="20" font-weight="700" fill="#243031">双层 Packing 头文件修复</text>
+<text x="868.00" y="897.50" font-size="16" font-weight="400" fill="#243031">只修复包含顺序，保持数学、精度和参数。</text>
+<text x="868.00" y="927.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 9.5138 ms / DSP 936</text>
+<text x="868.00" y="957.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT/FF；HLS 时序警告</text>
+</g>
+<g data-id="C05">
+<rect x="48.00" y="1121.00" width="354" height="225" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="1148.00" font-size="17" font-weight="700" fill="#243031">C05</text>
+<text x="72.00" y="1179.50" font-size="20" font-weight="700" fill="#243031">仅 Conv3 Packing 头文件修</text>
+<text x="72.00" y="1209.50" font-size="20" font-weight="700" fill="#243031">复</text>
+<text x="72.00" y="1245.50" font-size="16" font-weight="400" fill="#243031">有效运行少一个 Packing 层的控制。</text>
+<text x="72.00" y="1275.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 9.5138 ms / DSP 1192</text>
+<text x="72.00" y="1305.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT/FF；HLS 时序警告</text>
+</g>
+<g data-id="C06">
+<rect x="446.00" y="1136.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="470.00" y="1163.00" font-size="17" font-weight="700" fill="#243031">C06</text>
+<text x="470.00" y="1194.50" font-size="20" font-weight="700" fill="#243031">T8 组合头文件修复</text>
+<text x="470.00" y="1230.50" font-size="16" font-weight="400" fill="#243031">有效测量较低并行度的组合方案。</text>
+<text x="470.00" y="1260.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 13.9743 ms / DSP 470</text>
+<text x="470.00" y="1290.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT；HLS 时序警告</text>
+</g>
+<g data-id="C07">
+<rect x="1043.00" y="1124.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1067.00" y="1151.00" font-size="17" font-weight="700" fill="#243031">C07</text>
+<text x="1067.00" y="1182.50" font-size="20" font-weight="700" fill="#243031">连续调度的十位组合</text>
+<text x="1067.00" y="1218.50" font-size="16" font-weight="400" fill="#243031">把组合架构的窗口生成与固定 MAC 循环</text>
+<text x="1067.00" y="1242.50" font-size="16" font-weight="400" fill="#243031">分开。</text>
+<text x="1067.00" y="1272.50" font-size="16" font-weight="700" fill="#243031">运行失败</text>
+<text x="1067.00" y="1302.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="C12">
+<rect x="1033.00" y="1442.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1057.00" y="1469.00" font-size="17" font-weight="700" fill="#243031">C12</text>
+<text x="1057.00" y="1500.50" font-size="20" font-weight="700" fill="#243031">连续组合的 guard 修复</text>
+<text x="1057.00" y="1536.50" font-size="16" font-weight="400" fill="#243031">修正连续组织的控制/表示，保留数学契约</text>
+<text x="1057.00" y="1560.50" font-size="16" font-weight="400" fill="#243031">。</text>
+<text x="1057.00" y="1590.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 7.5772 ms / DSP 470</text>
+<text x="1057.00" y="1620.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT；HLS 时序警告</text>
+</g>
+<g data-id="C08">
+<rect x="1441.00" y="1442.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1465.00" y="1469.00" font-size="17" font-weight="700" fill="#243031">C08</text>
+<text x="1465.00" y="1500.50" font-size="20" font-weight="700" fill="#243031">Conv2 八位权重组合，T8</text>
+<text x="1465.00" y="1536.50" font-size="16" font-weight="400" fill="#243031">仅 Conv2 使用已验证的八位权重，去掉</text>
+<text x="1465.00" y="1560.50" font-size="16" font-weight="400" fill="#243031">该层十位系数残差修复。</text>
+<text x="1465.00" y="1590.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0759 dB</text>
+<text x="1465.00" y="1620.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="C09">
+<rect x="1242.00" y="1769.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1266.00" y="1796.00" font-size="17" font-weight="700" fill="#243031">C09</text>
+<text x="1266.00" y="1827.50" font-size="20" font-weight="700" fill="#243031">Conv2 八位权重组合，T4</text>
+<text x="1266.00" y="1863.50" font-size="16" font-weight="400" fill="#243031">扫描更高并行度并保留混合精度。</text>
+<text x="1266.00" y="1893.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0759 dB</text>
+<text x="1266.00" y="1923.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="C10">
+<rect x="1640.00" y="1757.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1664.00" y="1784.00" font-size="17" font-weight="700" fill="#243031">C10</text>
+<text x="1664.00" y="1815.50" font-size="20" font-weight="700" fill="#243031">T8 混合组合双窗口流</text>
+<text x="1664.00" y="1851.50" font-size="16" font-weight="400" fill="#243031">改成两个同步 4000 位通道，保持量化和</text>
+<text x="1664.00" y="1875.50" font-size="16" font-weight="400" fill="#243031"> MAC。</text>
+<text x="1664.00" y="1905.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.1302 ms / DSP 520</text>
+<text x="1664.00" y="1935.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT/FF；HLS 时序警告</text>
+</g>
+<g data-id="C11">
+<rect x="1242.00" y="2072.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1266.00" y="2099.00" font-size="17" font-weight="700" fill="#243031">C11</text>
+<text x="1266.00" y="2130.50" font-size="20" font-weight="700" fill="#243031">T4 混合组合双窗口流</text>
+<text x="1266.00" y="2166.50" font-size="16" font-weight="400" fill="#243031">在 T4 下修正窗口流表示。</text>
+<text x="1266.00" y="2196.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.0817 ms / DSP 1036</text>
+<text x="1266.00" y="2226.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT/FF；HLS 时序警告</text>
+</g>
+<g data-id="E065">
+<rect x="1451.00" y="1165.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1475.00" y="1192.00" font-size="17" font-weight="700" fill="#243031">E065 / 外部来源</text>
+<text x="1475.00" y="1223.50" font-size="20" font-weight="700" fill="#243031">Conv2 权重 8 位边界复核</text>
+<text x="1475.00" y="1259.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0759 dB</text>
+</g>
+<g data-id="P07">
+<rect x="645.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="669.00" y="225.00" font-size="17" font-weight="700" fill="#243031">P07 / 外部来源</text>
+<text x="669.00" y="256.50" font-size="20" font-weight="700" fill="#243031">精确十位系数残差修复</text>
+<text x="669.00" y="292.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 1 / LUT 454</text>
+</g>
+<g data-id="W05">
+<rect x="247.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="271.00" y="225.00" font-size="17" font-weight="700" fill="#243031">W05 / 外部来源</text>
+<text x="271.00" y="256.50" font-size="20" font-weight="700" fill="#243031">Winograd 整网 T16</text>
+<text x="271.00" y="292.50" font-size="16" font-weight="700" fill="#243031">运行失败</text>
+</g>
+<g data-id="W10">
+<rect x="1242.00" y="817.00" width="354" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1266.00" y="844.00" font-size="17" font-weight="700" fill="#243031">W10 / 外部来源</text>
+<text x="1266.00" y="875.50" font-size="20" font-weight="700" fill="#243031">固定 tile 循环，仅 Conv1 连</text>
+<text x="1266.00" y="905.50" font-size="20" font-weight="700" fill="#243031">续</text>
+<text x="1266.00" y="941.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 7.5482 ms / DSP 326</text>
+</g>
+</svg>

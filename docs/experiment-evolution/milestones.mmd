@@ -1,0 +1,32 @@
+%% SRCNN / 关键优化里程碑
+flowchart TB
+  E020["E020<br/>golden 原样综合<br/>BRAM18K 11,064，容量仅 288"]
+  E017["E010-E019<br/>精度定版<br/>ΔPSNR -0.0695 dB"]
+  E033["E033<br/>整网流式 DATAFLOW<br/>LUT 136,868，超量 17%"]
+  E039["E039 / E070<br/>乘法强制绑定 DSP<br/>HLS 29.83 ms/张"]
+  E043["E043<br/>并行度提高到 T16<br/>HLS 6.94 ms/张"]
+  F25["F08 -> F25<br/>连续折叠<br/>HLS 2.64 ms/张"]
+  F28["F27 / F28<br/>权重加载重构<br/>HLS 2.62 ms/张"]
+  W22["W21 -> W22<br/>Winograd T8<br/>布线 2.77 ms/张"]
+  W32["W32 / F52<br/>时钟收敛到 4.5 ns<br/>布线 2.51 ms/张"]
+  C18["C13 -> C14 -> C18<br/>T4：Winograd + Conv2 八位 Packing<br/>布线 1.50 ms/张"]
+  E020 -->|设计或参数基线| E017
+  E017 -->|设计或参数基线| E033
+  E033 -->|设计或参数基线| E039
+  E039 -->|设计或参数基线| E043
+  E043 -->|设计或参数基线| F25
+  F25 -->|设计或参数基线| F28
+  F28 -->|设计或参数基线| W22
+  W22 -->|设计或参数基线| W32
+  W32 -->|设计或参数基线| C18
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E039,W22,W32,C18 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  class E043,F25,F28 warning
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E020,E033 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  class E017 analysis
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
