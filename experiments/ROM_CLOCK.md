@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T05:06:45+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T05:14:22+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-WS-0 complete; WS-B RTL running; WS-C/D independent controls running; WS-C1 awaiting memory admission. W24 passed all13 course images exactly and HLS II checks:630DSP,138BRAM18K,53316LUT,103695FF,524330cycles. W25 is running same-ROM/changed-input two-frame RTL. Mainline controls W27 FRP, F39 registered Conv3 operands, F40/F41 feature FIFO16/32 and F42 reordered-raster buffer run all-image C validation then budgeted synthesis. W26 retains preparation-failure evidence; W27 is its independent retry. W23 identical-RTL4.5ns remains unlaunched because12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve all memory gates and continue independent work. Prepare F98 board handoff; T4 follows measured clock/FIFO evidence.
+WS-0 complete; WS-B RTL running; WS-C/D independent controls running; WS-C1 awaiting memory admission. W24 passed all13 course images exactly and HLS II checks:630DSP,138BRAM18K,53316LUT,103695FF,524330cycles. W25 runs same-ROM/changed-input two-frame RTL. F41 FIFO32 passed all13/II1; F45 queues its changed-parameter RTL. W27 FRP, F39 registered Conv3 operands, F40 FIFO16, F42 reordered-raster buffer and F47 transformed-window FIFO16 are independent mainline controls. F47 tests the F97 window-read stalls45974 over two frames and22995 excess foldcycles per frame. C13 early T4 prepacked Conv2 HLS screen is queued. W26 retains preparation-failure evidence. W23 identical-RTL4.5ns remains unlaunched:12.5GiB reservation plus2GiB floor requires14.5GiB available, exceeding idle host~13.4GiB. Preserve memory gates. F98 board handoff, IP SHA256 and authoritative drivers are archived in BOARD_HANDOFF.md; actual board measurements are pending.
 
 | id | parent | operation | status | md_path | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | route_feasible | route_clock_ns | route_WNS_ns | route_WHS_ns | DSP | BRAM18K | URAM | LUT | FF | rtl_cycles | rtl_source | rtl_cycles_x_route_clock_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
