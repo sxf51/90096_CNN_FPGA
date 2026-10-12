@@ -186,7 +186,7 @@
   "hardware_scheduler": "one heavy task plus memory-bounded light jobs",
   "max_heavy_tasks": 1,
   "max_light_tasks": 3,
-  "next": "C18 acquired the unique heavy slot at12:20:58UTC, package succeeded, and staged synthesis began12:21:57UTC. Synthesis/report exited successfully at12:42:08UTC; a fresh Vivado reopened the same project and started implementation without resynthesis. Collect its independent5ns timing/resources and per-stage memory; preserve C15 host-memory failure. F50/F51/W31/W30 and C16/C17 remain paused by priority supervisors and automatically resume after C18 or supervisor exit. W32 independently closes4.5ns with WNS+0.144ns,644DSP/45030LUT/89096FF/109BRAM18K; matching F97 RTL558758cycles gives2.514411ms. F52 gives the same frame time with WNS+0.072ns and43468LUT. C16/C17 all13-image C/HLS resumes after C18, followed by new changed-parameter RTL and implementation IDs if screened. Defer F52/W32 checkpoint path exports until the priority hold ends; W32 requires its final postroute_physopt checkpoint. The host now has8GiB zstd zram under user changes documented in docs/0005; at12:53UTC SwapFree equaled SwapTotal, so swap usage was zero. Attribute memory improvements only after per-stage/swap measurements. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. No board results exist.",
+  "next": "C18 completes independently at5ns with WNS+0.047ns/WHS+0.031ns,1032DSP/58529LUT/102072FF/109BRAM18K, all route gates passed. Matching C14 RTL300632/300661cycles and C13 all13-image E065 exactness give1.503160ms IP latency, currently fastest. Staged synthesis/report and implementation/report use peak task-tree RSS10.640743/8.169937GiB; minimum available4.822098GiB,70.538872tool minutes. Preserve C15's host failure. Both priority supervisors released at13:32:30UTC and all six waiters resumed; W30 now runs. Finish F50/F51/W31/W30 and C16/C17 all13-image C/HLS, then prepare fresh changed-parameter RTL and staged implementation IDs for screened combinations. Queue final checkpoint paths for C18/F52/W32; W32 requires postroute_physopt. Current routed resources do not require T4 ROM. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. Stage telemetry lacksSwapTotal; supplementary zram observations cannot establish full-run swap usage. No board results exist.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
@@ -201,6 +201,7 @@
   "rom_clock_workstream": {
     "board_handoff": "experiments/BOARD_HANDOFF.md",
     "complete_test_set": "Set14 (13 course-provided images)",
+    "completed_priority_job": "C18",
     "completed_workstreams": [
       "WS-0",
       "WS-A agent handoff (board measurements pending)"
@@ -246,7 +247,7 @@
       "C17",
       "C18"
     ],
-    "fastest_verified_implementation": "F52",
+    "fastest_verified_implementation": "C18",
     "hardware_serial_after_oom": true,
     "last_oom": {
       "after": 2,
@@ -261,26 +262,16 @@
       99126,
       12166,
       9972,
-      89193,
-      68247,
-      95744,
-      18976
+      89193
     ],
     "mainline_basis": "F47",
-    "next": "C18 acquired the unique heavy slot at12:20:58UTC, package succeeded, and staged synthesis began12:21:57UTC. Synthesis/report exited successfully at12:42:08UTC; a fresh Vivado reopened the same project and started implementation without resynthesis. Collect its independent5ns timing/resources and per-stage memory; preserve C15 host-memory failure. F50/F51/W31/W30 and C16/C17 remain paused by priority supervisors and automatically resume after C18 or supervisor exit. W32 independently closes4.5ns with WNS+0.144ns,644DSP/45030LUT/89096FF/109BRAM18K; matching F97 RTL558758cycles gives2.514411ms. F52 gives the same frame time with WNS+0.072ns and43468LUT. C16/C17 all13-image C/HLS resumes after C18, followed by new changed-parameter RTL and implementation IDs if screened. Defer F52/W32 checkpoint path exports until the priority hold ends; W32 requires its final postroute_physopt checkpoint. The host now has8GiB zstd zram under user changes documented in docs/0005; at12:53UTC SwapFree equaled SwapTotal, so swap usage was zero. Attribute memory improvements only after per-stage/swap measurements. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. No board results exist.",
-    "paused_waiter_ids": [
-      "F50",
-      "F51",
-      "W31",
-      "W30",
-      "C16",
-      "C17"
-    ],
+    "next": "C18 completes independently at5ns with WNS+0.047ns/WHS+0.031ns,1032DSP/58529LUT/102072FF/109BRAM18K, all route gates passed. Matching C14 RTL300632/300661cycles and C13 all13-image E065 exactness give1.503160ms IP latency, currently fastest. Staged synthesis/report and implementation/report use peak task-tree RSS10.640743/8.169937GiB; minimum available4.822098GiB,70.538872tool minutes. Preserve C15's host failure. Both priority supervisors released at13:32:30UTC and all six waiters resumed; W30 now runs. Finish F50/F51/W31/W30 and C16/C17 all13-image C/HLS, then prepare fresh changed-parameter RTL and staged implementation IDs for screened combinations. Queue final checkpoint paths for C18/F52/W32; W32 requires postroute_physopt. Current routed resources do not require T4 ROM. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. Stage telemetry lacksSwapTotal; supplementary zram observations cannot establish full-run swap usage. No board results exist.",
+    "paused_waiter_ids": [],
     "pending_decisions": [
       "Board validation remains unavailable to the agent; F98 handoff is archived.",
       "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."
     ],
-    "phase": "C18 prioritized placement/routing active; W32 and F52 close4.5ns",
+    "phase": "C18 priority completed; T4 closes5ns and verifies1.503160ms IP latency",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
@@ -289,21 +280,14 @@
       "W30": "User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override"
     },
     "priority_evidence": "C18_ws_impl_C13/priority_waiters.json",
-    "priority_job": "C18",
+    "priority_job": null,
     "priority_light_evidence": "C18_ws_impl_C13/priority_light_waiters.json",
-    "priority_light_supervisor_session": 18976,
-    "priority_supervisor_session": 95744,
+    "priority_released_utc": "2026-10-12T13:32:30+00:00",
     "resource_policy": "routed",
     "runtime_environment_evidence": "C18_ws_impl_C13/runtime_host_environment.csv",
     "session_jobs": {
       "12166": [
         "W30"
-      ],
-      "18976": [
-        "C18"
-      ],
-      "68247": [
-        "C18"
       ],
       "80070": [
         "F51"
@@ -313,9 +297,6 @@
       ],
       "91661": [
         "F50"
-      ],
-      "95744": [
-        "C18"
       ],
       "99126": [
         "W31"
@@ -333,7 +314,7 @@
       "reference": "docs/0005 section6.2"
     },
     "waiting_for_memory": [],
-    "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL PASS at300632/300661cycles; C15 5ns reached routing but host-memory guard stopped it without a physical verdict. Build C17 and prepare an isolated staged implementation retry. Preserve the old HLS infeasible row; final feasibility is routed."
+    "wsE": "C13 all13 E065-exact; C14 changed-parameter RTL PASS300632/300661cycles; C18 staged5ns implementation independently passes every routed gate,1.503160ms IP latency. Preserve C13 HLS infeasibility and C15 host failure. Screen C17 windowFIFO32 and validate its RTL/routing independently; no immediate resource-driven ROM retry is needed."
   },
   "selected": [
     {
@@ -368,7 +349,7 @@
     }
   ],
   "skipped_conditional_plans": {},
-  "time": "2026-10-12T13:32:31+00:00",
+  "time": "2026-10-12T13:38:34+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",
