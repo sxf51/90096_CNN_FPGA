@@ -270,6 +270,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | [F42](../experiments/F42_reorder_W21_T8/F42.md) | W21 | pass | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown |
 | [C13](../experiments/C13_runtime_prepacked_conv2_T4/C13.md) | W21 | infeasible | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown |
 | [F43](../experiments/F43_ws_cosim_F39/F43.md) | F39 | cosim_complete | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | unknown |
+| [F44](../experiments/F44_ws_cosim_F40/F44.md) | F40 | cosim_complete | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | unknown |
 | [F45](../experiments/F45_ws_cosim_F41/F45.md) | F41 | cosim_complete | 525237.0 | 644.0 | 81105.0 | 558758.0 | unknown | unknown |
 | [F47](../experiments/F47_windows16_W21_T8/F47.md) | W21 | pass | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown |
 | [W28](../experiments/W28_ws_cosim_W27/W28.md) | W27 | fail | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | unknown |
@@ -281,7 +282,6 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | W23 | W21 | queued_or_running | unknown |
-| F44 | F40 | queued_or_running | unknown |
 | W29 | W24 | queued_or_running | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
 | W30 | W27 | not_run_condition_failed | W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result. |
 | F48 | F47 | queued_or_running | unknown |

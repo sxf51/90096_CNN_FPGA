@@ -495,6 +495,8 @@
 
 - 2026-10-12T09:00:01+00:00: W28: ws_cosim_W27; status=fail; latency_ms_est=1.74903921; cosim of W27; HLS estimates inherited, real measurements in data.csv; Measured RTL cycles are below the preplanned acceptance bound
 
+- 2026-10-12T09:54:29+00:00: F44: ws_cosim_F40; status=cosim_complete; latency_ms_est=1.74903921; cosim of F40; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T09:07 UTC W28: FRP 两帧数值与换参数检查均 PASS，实测549438周期比F97少9320（约1.668%）；超出预先提交的±1%门槛553171..564345，按原规则记fail，W30不启动。原计划和全部RTL/FIFO证据保留；明日复核是否另立新实验评估更快FRP，不改本次门槛或历史状态。C14已逐位PASS，300632latency/300661interval；其前置条件满足，C15独立5ns布线已排队。
