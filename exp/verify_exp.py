@@ -578,6 +578,9 @@ def run_verification(config):
         if operation == "cosim" and config.get("rtl_max_cycles") is not None:
             if observed["rtl_latency_max"] > config["rtl_max_cycles"]:
                 raise RuntimeError("Measured RTL cycles exceed the preplanned acceptance bound")
+        if operation == "cosim" and config.get("rtl_min_cycles") is not None:
+            if observed["rtl_latency_min"] < config["rtl_min_cycles"]:
+                raise RuntimeError("Measured RTL cycles are below the preplanned acceptance bound")
         row["status"] = operation + "_complete"
         if operation == "impl":
             if not config.get("resource_policy") == "routed":

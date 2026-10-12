@@ -10,7 +10,7 @@ from analyze_arch import eligible
 from plan_arch import plan
 from reproduce_exp import archived
 from run_exp import ROOT, check_protected, number
-from verify_exp import check_image_validation, diagnostic_parent
+from verify_exp import check_image_validation, diagnostic_parent, screened_parent
 
 
 def main():
@@ -21,6 +21,8 @@ def main():
     parser.add_argument("--validation-parent")
     parser.add_argument("--implementation-clock", type=float)
     parser.add_argument("--implementation-threads", type=int, choices=(1, 2, 4))
+    parser.add_argument("--rtl-min-cycles", type=int)
+    parser.add_argument("--rtl-max-cycles", type=int)
     parser.add_argument("--template")
     parser.add_argument("--diagnostic", action="store_true")
     parser.add_argument("--reload-params", action="store_true",
@@ -32,13 +34,22 @@ def main():
     observed = json.loads((archive / "config.json").read_text())
     metrics = json.loads((archive / "metrics.json").read_text())
     base = json.loads((archive / "plan.json").read_text())["configuration"]
-    probe = {"operation": args.operation, "diagnostic_infeasible_parent": args.diagnostic}
-    if not eligible(metrics, base) and not diagnostic_parent(probe, metrics):
+    probe = {"operation": args.operation, "diagnostic_infeasible_parent": args.diagnostic,
+             "resource_policy": base.get("resource_policy")}
+    if not eligible(metrics, base) and not diagnostic_parent(probe, metrics) and not screened_parent(probe, metrics, observed):
         raise RuntimeError("Parent is not an exact resource/quality-accepted frame point")
     if args.diagnostic and args.operation != "impl":
         raise RuntimeError("Diagnostic infeasible parents are only permitted for implementation")
-    if args.reload_params and (args.operation != "cosim" or base.get("precision") != "w10a10acc23"):
-        raise RuntimeError("Changed-parameter testbench requires w10a10acc23 cosimulation")
+    if args.reload_params and (args.operation != "cosim" or base.get("precision") not in
+                              {"w10a10acc23", "w10_8_10a10acc23_21_23"}):
+        raise RuntimeError("Changed-parameter testbench requires a verified ten-bit-activation cosimulation")
+    if args.rtl_min_cycles is not None or args.rtl_max_cycles is not None:
+        if args.operation != "cosim" or any(value is not None and value < 1 for value in
+                                           (args.rtl_min_cycles, args.rtl_max_cycles)):
+            raise RuntimeError("Positive RTL cycle bounds require cosimulation")
+        if (args.rtl_min_cycles is not None and args.rtl_max_cycles is not None and
+                args.rtl_min_cycles > args.rtl_max_cycles):
+            raise RuntimeError("RTL lower bound exceeds upper bound")
     if args.operation != "impl" and (args.implementation_clock is not None or args.template or args.implementation_threads is not None):
         raise RuntimeError("Implementation options require operation=impl")
     if args.validation_parent:
@@ -56,6 +67,12 @@ def main():
               "changes": "Use frozen parent "+args.parent+" sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes.",
               "interpretation": "Keep parsed HLS, RTL and routed results separate. Missing comic prevents complete Set14 acceptance; retain failed timing, deadlock, host OOM and timeout evidence.",
               "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow."}
+    if base.get("resource_policy") == "routed":
+        config.update(resource_policy="routed", memory_scheduler=base.get("memory_scheduler", False),
+                      required_image_count=13,
+                      interpretation="Set14 is the complete13-image course-provided set. Final acceptance "
+                                     "requires independently routed setup/hold, route status and resource gates; "
+                                     "HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.")
     source = None
     if args.operation == "all":
         if base.get("precision") != "w10a10acc23":
@@ -79,6 +96,13 @@ def main():
                               ("Run two complete butterfly transactions with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout."
                                if args.operation == "cosim" else
                                "Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. HLS resource gates remain unchanged."))
+        if base.get("resource_policy") == "routed":
+            config["purpose"] = config["purpose"].replace("HLS resource gates remain unchanged.",
+                                                         "Final resource gates use the independent routed report.")
+        for key, value in (("rtl_min_cycles", args.rtl_min_cycles), ("rtl_max_cycles", args.rtl_max_cycles)):
+            if value is not None:
+                config[key] = value
+                config["purpose"] += " Require " + key + "=" + str(value) + "."
         if args.validation_parent:
             config["validation_parent"] = args.validation_parent
         if args.operation == "impl":
