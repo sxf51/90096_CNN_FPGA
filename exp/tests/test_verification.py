@@ -155,6 +155,46 @@ class VerificationTests(unittest.TestCase):
             self.assertIn("hls_project F101", (root/"F101/hls/impl/verilog/run_vivado.tcl").read_text())
             self.assertEqual((root/"F101/hls/impl/ip/component.xml").read_text(), component)
 
+    def test_rom_package_driver_uses_candidate_top_and_preserves_template(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            template, work, archive = root/"F89", root/"W26", root/"archive"
+            generated = template/"hls/impl/verilog"
+            generated.mkdir(parents=True)
+            original = ("set has_synth true\nset has_impl 1\n"
+                        "set ip_vlnv xilinx.com:hls:srcnn:1.0\n"
+                        'dict set report_options topmodule "srcnn"\n'
+                        "dict set report_options hls_project F81\n"
+                        "dict set report_options funcmodules {old_function}\n"
+                        "dict set report_options bindmodules {old_bind}\n"
+                        "hls_vivado_reports_setup $report_options\n")
+            (generated/"run_vivado.tcl").write_text(original)
+            settings = ("set top_module srcnn\nset language verilog\nset device xck26\n"
+                        "set package -sfvc784\nset speed -2LV-c\nset clock ap_clk\n")
+            (generated/"settings.tcl").write_text(settings)
+            (generated/"extraction.tcl").write_text("# report procedures\n")
+            (generated/"srcnn.xdc").write_text("create_clock -name ap_clk -period 2.500 [get_ports ap_clk]\n")
+            component = ('<component xmlns="test"><vendor>xilinx.com</vendor><library>hls</library>'
+                         '<name>srcnn_rom</name><version>1.0</version></component>')
+            ip = work/"hls/impl/ip"
+            ip.mkdir(parents=True)
+            (ip/"component.xml").write_text(component)
+            rtl = work/"hls/syn/verilog"
+            rtl.mkdir(parents=True)
+            for name in ("srcnn_rom", "srcnn_rom_engine3", "srcnn_rom_mul"):
+                (rtl/(name+".v")).write_text("module "+name+"; endmodule\n")
+            parent = {"top": "srcnn_rom", "parsed_modules": [{"module": "engine3"}]}
+            prepare_packaged_driver(work, template, archive, parent, "W26")
+            driver = (work/"hls/impl/verilog/run_vivado.tcl").read_text()
+            self.assertIn("set ip_vlnv xilinx.com:hls:srcnn_rom:1.0", driver)
+            self.assertIn('topmodule "srcnn_rom"', driver)
+            self.assertIn("funcmodules {srcnn_rom_engine3}", driver)
+            self.assertIn("bindmodules {srcnn_rom_mul}", driver)
+            self.assertIn("set top_module srcnn_rom\n", (work/"hls/impl/verilog/settings.tcl").read_text())
+            self.assertEqual((ip/"component.xml").read_text(), component)
+            self.assertEqual((generated/"run_vivado.tcl").read_text(), original)
+            self.assertEqual((generated/"settings.tcl").read_text(), settings)
+
     def test_same_interface_different_rtl_template_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

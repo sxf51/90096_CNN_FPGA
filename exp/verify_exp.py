@@ -189,6 +189,9 @@ def check_template_rtl(parent_work, template_work):
 
 
 def prepare_packaged_driver(work, template_work, archive, parent_config, exp_id, template_archive=None):
+    top = parent_config.get("top", "srcnn")
+    if top not in {"srcnn", "srcnn_rom"}:
+        raise RuntimeError("Unsupported SRCNN package top")
     target = work / "hls/impl/verilog"
     if (target / "run_vivado.tcl").is_file():
         return []
@@ -196,7 +199,7 @@ def prepare_packaged_driver(work, template_work, archive, parent_config, exp_id,
     if not component.is_file():
         raise RuntimeError("Independent candidate IP package is missing")
     fields = {node.tag.rsplit("}", 1)[-1]: node.text for node in ET.parse(component).getroot()}
-    if tuple(fields.get(key) for key in ("vendor", "library", "name", "version")) != ("xilinx.com", "hls", "srcnn", "1.0"):
+    if tuple(fields.get(key) for key in ("vendor", "library", "name", "version")) != ("xilinx.com", "hls", top, "1.0"):
         raise RuntimeError("Packaged candidate VLNV does not match this generated SRCNN flow")
     template = template_work / "hls/impl/verilog"
     old_root = str(template_work)
@@ -221,16 +224,33 @@ def prepare_packaged_driver(work, template_work, archive, parent_config, exp_id,
         shutil.copyfile(path, dest)
         records.append({"archived_file": str(dest.relative_to(archive)), "sha256": digest})
         (target / path.name).write_text(path.read_text().replace(old_root, str(work)))
+    if top != "srcnn":
+        settings_path = target / "settings.tcl"
+        text, count = re.subn(r"^set top_module srcnn$", "set top_module " + top,
+                              settings_path.read_text(), flags=re.MULTILINE)
+        if count != 1:
+            raise RuntimeError("Cannot adapt generated package settings to the ROM top")
+        settings_path.write_text(text)
+        driver_path = target / "run_vivado.tcl"
+        text = driver_path.read_text()
+        for pattern, replacement in ((r"^set ip_vlnv xilinx.com:hls:srcnn:1.0$",
+                                      "set ip_vlnv xilinx.com:hls:" + top + ":1.0"),
+                                     (r'^dict set report_options topmodule "srcnn"$',
+                                      'dict set report_options topmodule "' + top + '"')):
+            text, count = re.subn(pattern, replacement, text, flags=re.MULTILINE)
+            if count != 1:
+                raise RuntimeError("Cannot adapt generated package driver to the ROM top")
+        driver_path.write_text(text)
     settings = (target / "settings.tcl").read_text()
-    for key, value in (("top_module", "srcnn"), ("language", "verilog"), ("device", "xck26"),
+    for key, value in (("top_module", top), ("language", "verilog"), ("device", "xck26"),
                        ("package", "-sfvc784"), ("speed", "-2LV-c"), ("clock", "ap_clk")):
         if not re.search(r"^set "+key+" "+re.escape(value)+"$", settings, re.MULTILINE):
             raise RuntimeError("Generated flow template has incompatible "+key)
     available = {path.stem for path in (work / "hls/syn/verilog").glob("*.v")}
-    if "srcnn" not in available or any(not re.fullmatch(r"[A-Za-z_]\w*", name) for name in available):
+    if top not in available or any(not re.fullmatch(r"[A-Za-z_]\w*", name) for name in available):
         raise RuntimeError("Cannot determine candidate RTL modules for generated reports")
-    functions = sorted({"srcnn_"+item["module"] for item in parent_config.get("parsed_modules", [])} & available)
-    bindings = sorted(available-set(functions)-{"srcnn"})
+    functions = sorted({top+"_"+item["module"] for item in parent_config.get("parsed_modules", [])} & available)
+    bindings = sorted(available-set(functions)-{top})
     driver = target / "run_vivado.tcl"
     text = driver.read_text()
     for key, value in (("funcmodules", "{"+" ".join(functions)+"}"),
