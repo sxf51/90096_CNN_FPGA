@@ -1,0 +1,39 @@
+{
+  "config_sha256": "6bc6a94a1c0d72ffe193917e7914ba59765843c91036f889754b82f82e96e40b",
+  "configuration": {
+    "changes": "Reuse checked frozen W21 RTL and F98 generated implementation driver in a new workspace; no C/HLS arithmetic, source, parameter interface, precision, FIFO or parent-workspace changes. Change the physical implementation clock from5 to4.95ns. Per-run placement/routing uses2 threads and RTL synthesis1; host swap and global tool settings are unchanged. Preserve parent HLS clock3.33ns and original HLS resource gates.",
+    "clock": 3.33,
+    "conclusion": "Retain the fastest target with positive routed setup/hold timing, unchanged HLS resource eligibility and exact F96/F97 evidence. Preserve failed/timeout/OOM evidence, perform final checksums/report audits and plots, then F99 closure without new exploratory runs. Missing comic and section6 decisions remain for user review.",
+    "design": "designs/winograd_subkernel_cache_v1",
+    "estimates": {
+      "BRAM18K": 109,
+      "DSP": 644,
+      "FF": 88806,
+      "LUT": 42594,
+      "T": 8,
+      "URAM": 0,
+      "basis": "Physical-resource estimates use F98's measured routed644DSP/42594LUT/88806FF/109BRAM18K(46RAMB36+17RAMB18)/URAM0; these are hypotheses for the new implementation, not acceptance gates. Cycle estimate uses F97's measured558758 latency/558787 interval on identical W21 RTL, including6.382071% overhead over525237 HLS cycles. Nominal T8 lower bound is65025*8=520200cycles before startup/FIFO/AXI overhead. If timing closes4.95ns, predicted IP frame time is2.7658521ms (1% below F98's2.79379ms), not board time. F98 slack+0.140ns makes a0.05ns reduction conservative but not guaranteed. Peak RSS11.642307GiB and minimum available3.011604GiB motivate2 placement/routing threads rather than4 on the15GiB/no-swap host. HLS LUT margin remains898 and missing comic keeps precision provisional. Three-hour timeout; no further probe if this fails.",
+      "latency_cycles": 558758
+    },
+    "id": "W22",
+    "implementation_backend": "serial_generated_flow",
+    "implementation_clock_ns": 4.95,
+    "implementation_template": "F98",
+    "implementation_threads": 2,
+    "interpretation": "Compare the new routed resources and actual target/slack with the archived paper estimates and F98; explain deviations above20%. Reuse measured F97 cycles only after RTL/init hashes match. Record actual hook thread values and CPU/memory telemetry. Do not call target-WNS a validated clock or attribute elapsed-time changes solely to threads.",
+    "name": "ws_clock_4p95_W21",
+    "operation": "impl",
+    "purpose": "Test one conservative physical-clock improvement on the exact W21 RTL that independently closed5ns in F98. F98's own first five paths identify three Conv2 parameter-FIFO-to-private-LUTRAM write-data paths and two Conv3 step-control-to-DSP-input paths, with routing-dominated delay and no DSP cascade. Tighten only the design clock constraint to4.95ns and measure timing/resources in a fresh workspace; preserve the5ns fallback. Also bound placement/routing to2 threads while keeping synthesis1 and the hardware lock serial. Runtime comparison is descriptive because clock and thread count both change; no isolated thread speedup claim is possible.",
+    "scope": "frame",
+    "series": "W",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 10800,
+    "validation_parent": "F96",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "W21"
+  },
+  "created_at": "2026-10-12T02:12:11+00:00",
+  "created_from_commit": "c8ec9ed45d5aa1618a600e0d0fbafb8b355e73ea",
+  "purpose_section": "Test one conservative physical-clock improvement on the exact W21 RTL that independently closed5ns in F98. F98's own first five paths identify three Conv2 parameter-FIFO-to-private-LUTRAM write-data paths and two Conv3 step-control-to-DSP-input paths, with routing-dominated delay and no DSP cascade. Tighten only the design clock constraint to4.95ns and measure timing/resources in a fresh workspace; preserve the5ns fallback. Also bound placement/routing to2 threads while keeping synthesis1 and the hardware lock serial. Runtime comparison is descriptive because clock and thread count both change; no isolated thread speedup claim is possible.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644 |\n| BRAM18K | 109 |\n| URAM | 0 |\n| LUT | 42594 |\n| FF | 88806 |\n| T | 8 |\n| latency_cycles | 558758 |\n| basis | Physical-resource estimates use F98's measured routed644DSP/42594LUT/88806FF/109BRAM18K(46RAMB36+17RAMB18)/URAM0; these are hypotheses for the new implementation, not acceptance gates. Cycle estimate uses F97's measured558758 latency/558787 interval on identical W21 RTL, including6.382071% overhead over525237 HLS cycles. Nominal T8 lower bound is65025*8=520200cycles before startup/FIFO/AXI overhead. If timing closes4.95ns, predicted IP frame time is2.7658521ms (1% below F98's2.79379ms), not board time. F98 slack+0.140ns makes a0.05ns reduction conservative but not guaranteed. Peak RSS11.642307GiB and minimum available3.011604GiB motivate2 placement/routing threads rather than4 on the15GiB/no-swap host. HLS LUT margin remains898 and missing comic keeps precision provisional. Three-hour timeout; no further probe if this fails. |\n\nPlanned at 2026-10-12T02:12:11+00:00; estimates are hypotheses, not tool measurements."
+}

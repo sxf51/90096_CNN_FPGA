@@ -1,6 +1,6 @@
 # Current progress
 
-Updated 2026-10-12T01:54:26+00:00 from archived measurements.
+Updated 2026-10-12T02:12:11+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -20,7 +20,7 @@ Final verification: all planned operations archived, including failures/timeouts
 
 ## Weight Loading Workstream
 
-Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Two hardware operations remain: active F98 independent5ns W21 implementation and one WS4 same-RTL physical-clock probe chosen from F98's own paths. Preserve session37202. F95 own five paths/hierarchy are archived; F97 two-frame changed-parameter RTL is exact with measured558758-cycle latency/558787 interval and6.382071% HLS overhead. Do not add further exploration. Then finish local/remote checksums, report provenance, plots and summaries before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
+Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Archive F98 analysis, plan and execute W22, the only remaining hardware experiment (about one hour based on F98's62.95minutes; hard timeout3hours). Then audit local/remote protected checksums and report SHA256, regenerate all plots/summaries and commit F99. W19/F29/F30 remain infeasible, W20 diagnostic-only and F88/F90/F91 deferred.
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 
