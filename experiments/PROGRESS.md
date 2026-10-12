@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-WS-0 complete; eight HLS designs passed; two concurrent RTL simulations active under explicit user authorization. F43 registeredConv3 and F46 rasterFIFO cosim run concurrently. W28/F48/C14/F44 waiting workers have been migrated without changing plans or prepared RTL and now use the two-task scheduler. Collect each finished remote archive with --collect-only. F45 featureFIFO32 passed changed-parameter RTL at558758cycles, identical to F97; reduced producer write blocking did not meet the WS-D535741-cycle goal. W25 ROM passed at554226cycles. F43/W28 retain the553171..564345 gate. C13 remains E065-exact on all13 images, with1032DSP/127966LUT/192308FF/263090HLS cycles; C14 must pass before C15 routing. Run W23/W29/W30/C15 and an independent registeredConv3 route after their prerequisites; the prior impossible12.5+2GiB admission is superseded by explicit user authorization for two concurrent tasks. Keep actual memory sampling, newest-task pressure termination at0.5GiB, OOM evidence and serial fallback. F98 board handoff is archived; board measurements remain pending.
+WS-0 complete; F43 exact RTL passed; W28 and C14 active under two-task concurrency. F43 registeredConv3 completed changed-parameter two-frame RTL PASS at558758cycles, within553171..564345. F49 independent4.5ns routing and W29 ROM5ns routing may now launch; W28 FRP and C14 T4 mixed are currently active. F46 was stopped at actual MemAvailable0.497372GiB without a new OOM; retain fail and retry with a new ID after investigating profiling-history memory. Collect migrated W28/F48/C14/F44 archives with --collect-only after completion. F45 featureFIFO32 completed at558758cycles, identical to F97; WS-D535741-cycle goal remains unmet. W25 ROM passed at554226cycles. Start W30 only after W28 cycle-gate PASS, C15 only after C14 mixed RTL PASS, and route the best FIFO candidate based on measured cycles. Keep two concurrent tasks, actual memory telemetry and newest-task pressure termination at0.5GiB. F98 board handoff is archived; board measurements remain pending.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=explicit two-task scheduling with actual memory telemetry.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T08:04:26+00:00 from archived measurements.
+Updated 2026-10-12T08:18:14+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -26,7 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: W23, F44, W28, W29, W30, F48, C14, C15, F49.
+Final verification: W23, F44, W28, W29, W30, F48, C14, C15, F49, F50.
 
 ## Weight Loading Workstream
 

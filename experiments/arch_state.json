@@ -173,7 +173,7 @@
   "full_set14": true,
   "hardware_parallelism": 2,
   "hardware_scheduler": "user-authorized two-task scheduling with actual memory telemetry",
-  "next": "F43 registeredConv3 and F46 rasterFIFO cosim run concurrently. W28/F48/C14/F44 waiting workers have been migrated without changing plans or prepared RTL and now use the two-task scheduler. Collect each finished remote archive with --collect-only. F45 featureFIFO32 passed changed-parameter RTL at558758cycles, identical to F97; reduced producer write blocking did not meet the WS-D535741-cycle goal. W25 ROM passed at554226cycles. F43/W28 retain the553171..564345 gate. C13 remains E065-exact on all13 images, with1032DSP/127966LUT/192308FF/263090HLS cycles; C14 must pass before C15 routing. Run W23/W29/W30/C15 and an independent registeredConv3 route after their prerequisites; the prior impossible12.5+2GiB admission is superseded by explicit user authorization for two concurrent tasks. Keep actual memory sampling, newest-task pressure termination at0.5GiB, OOM evidence and serial fallback. F98 board handoff is archived; board measurements remain pending.",
+  "next": "F43 registeredConv3 completed changed-parameter two-frame RTL PASS at558758cycles, within553171..564345. F49 independent4.5ns routing and W29 ROM5ns routing may now launch; W28 FRP and C14 T4 mixed are currently active. F46 was stopped at actual MemAvailable0.497372GiB without a new OOM; retain fail and retry with a new ID after investigating profiling-history memory. Collect migrated W28/F48/C14/F44 archives with --collect-only after completion. F45 featureFIFO32 completed at558758cycles, identical to F97; WS-D535741-cycle goal remains unmet. W25 ROM passed at554226cycles. Start W30 only after W28 cycle-gate PASS, C15 only after C14 mixed RTL PASS, and route the best FIFO candidate based on measured cycles. Keep two concurrent tasks, actual memory telemetry and newest-task pressure termination at0.5GiB. F98 board handoff is archived; board measurements remain pending.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
@@ -185,7 +185,8 @@
     "F48",
     "C14",
     "C15",
-    "F49"
+    "F49",
+    "F50"
   ],
   "resource_policy": "routed",
   "rom_clock_workstream": {
@@ -197,10 +198,8 @@
     ],
     "concurrency_policy": "user_two_jobs",
     "deferred": [
-      "W29",
       "W30",
-      "C15",
-      "F49"
+      "C15"
     ],
     "experiment_ids": [
       "F32",
@@ -231,20 +230,22 @@
       "F46",
       "C14",
       "C15",
-      "F49"
+      "F49",
+      "F50"
     ],
     "local_exec_sessions": [
-      88402,
-      88091,
       27651,
       60610,
       90781,
       25067,
-      31749
+      31749,
+      61966,
+      30859,
+      91661
     ],
-    "next": "F43 registeredConv3 and F46 rasterFIFO cosim run concurrently. W28/F48/C14/F44 waiting workers have been migrated without changing plans or prepared RTL and now use the two-task scheduler. Collect each finished remote archive with --collect-only. F45 featureFIFO32 passed changed-parameter RTL at558758cycles, identical to F97; reduced producer write blocking did not meet the WS-D535741-cycle goal. W25 ROM passed at554226cycles. F43/W28 retain the553171..564345 gate. C13 remains E065-exact on all13 images, with1032DSP/127966LUT/192308FF/263090HLS cycles; C14 must pass before C15 routing. Run W23/W29/W30/C15 and an independent registeredConv3 route after their prerequisites; the prior impossible12.5+2GiB admission is superseded by explicit user authorization for two concurrent tasks. Keep actual memory sampling, newest-task pressure termination at0.5GiB, OOM evidence and serial fallback. F98 board handoff is archived; board measurements remain pending.",
+    "next": "F43 registeredConv3 completed changed-parameter two-frame RTL PASS at558758cycles, within553171..564345. F49 independent4.5ns routing and W29 ROM5ns routing may now launch; W28 FRP and C14 T4 mixed are currently active. F46 was stopped at actual MemAvailable0.497372GiB without a new OOM; retain fail and retry with a new ID after investigating profiling-history memory. Collect migrated W28/F48/C14/F44 archives with --collect-only after completion. F45 featureFIFO32 completed at558758cycles, identical to F97; WS-D535741-cycle goal remains unmet. W25 ROM passed at554226cycles. Start W30 only after W28 cycle-gate PASS, C15 only after C14 mixed RTL PASS, and route the best FIFO candidate based on measured cycles. Keep two concurrent tasks, actual memory telemetry and newest-task pressure termination at0.5GiB. F98 board handoff is archived; board measurements remain pending.",
     "pending_decisions": [],
-    "phase": "WS-0 complete; eight HLS designs passed; two concurrent RTL simulations active under explicit user authorization",
+    "phase": "WS-0 complete; F43 exact RTL passed; W28 and C14 active under two-task concurrency",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
@@ -260,27 +261,28 @@
       "27651": [
         "W28"
       ],
+      "30859": [
+        "W29"
+      ],
       "31749": [
         "W23"
       ],
       "60610": [
         "F48"
       ],
-      "88091": [
-        "F46"
-      ],
-      "88402": [
-        "F43"
+      "61966": [
+        "F49"
       ],
       "90781": [
         "C14"
+      ],
+      "91661": [
+        "F50"
       ]
     },
     "unlaunched_ids": [
-      "W29",
       "W30",
-      "C15",
-      "F49"
+      "C15"
     ],
     "waiting_for_memory": [],
     "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL queued; C15 independent5ns route planned conditional on C14. Preserve the old HLS infeasible row; final feasibility is routed."
@@ -317,7 +319,7 @@
       "md_path": "F23_continuous_ieee_T16_2p5ns/F23.md"
     }
   ],
-  "time": "2026-10-12T08:04:26+00:00",
+  "time": "2026-10-12T08:18:14+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",

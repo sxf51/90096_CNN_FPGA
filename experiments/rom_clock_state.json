@@ -7,8 +7,8 @@
   "next": "F43 registeredConv3 completed changed-parameter two-frame RTL PASS at558758cycles, within553171..564345. F49 independent4.5ns routing and W29 ROM5ns routing may now launch; W28 FRP and C14 T4 mixed are currently active. F46 was stopped at actual MemAvailable0.497372GiB without a new OOM; retain fail and retry with a new ID after investigating profiling-history memory. Collect migrated W28/F48/C14/F44 archives with --collect-only after completion. F45 featureFIFO32 completed at558758cycles, identical to F97; WS-D535741-cycle goal remains unmet. W25 ROM passed at554226cycles. Start W30 only after W28 cycle-gate PASS, C15 only after C14 mixed RTL PASS, and route the best FIFO candidate based on measured cycles. Keep two concurrent tasks, actual memory telemetry and newest-task pressure termination at0.5GiB. F98 board handoff is archived; board measurements remain pending.",
   "completed_workstreams": ["WS-0", "WS-A agent handoff (board measurements pending)"],
   "waiting_for_memory": [],
-  "deferred": ["W30", "C15", "F50"],
-  "unlaunched_ids": ["W30", "C15", "F50"],
+  "deferred": ["W30", "C15"],
+  "unlaunched_ids": ["W30", "C15"],
   "concurrency_policy": "user_two_jobs",
   "planned_conditions": {
     "W29": "W25 same-ROM/changed-input two-frame RTL must pass before implementation",
@@ -17,7 +17,7 @@
     "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22"
   },
   "pending_decisions": [],
-  "local_exec_sessions": [27651, 60610, 90781, 25067, 31749, 61966, 30859],
+  "local_exec_sessions": [27651, 60610, 90781, 25067, 31749, 61966, 30859, 91661],
   "session_jobs": {
     "27651": ["W28"],
     "60610": ["F48"],
@@ -25,7 +25,8 @@
     "25067": ["F44"],
     "31749": ["W23"],
     "61966": ["F49"],
-    "30859": ["W29"]
+    "30859": ["W29"],
+    "91661": ["F50"]
   },
   "board_handoff": "experiments/BOARD_HANDOFF.md",
   "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL queued; C15 independent5ns route planned conditional on C14. Preserve the old HLS infeasible row; final feasibility is routed."
