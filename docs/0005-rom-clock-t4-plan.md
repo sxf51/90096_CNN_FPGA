@@ -234,6 +234,8 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 
 同 0004 第 8 节的表格；另加 `route_feasible` 和 `rtl_cycles × route_clock` 两列。没有测到的写 unknown。
 
+`python3 exp/audit_rom_clock.py --snapshot` 可在任务运行时校验两地原始文件、冻结设计、已归档报告及未测量计划；去掉 `--snapshot` 则要求远程无实验进程。审计结果写到 `experiments/rom_clock_audit.json`，明确保留未启动计划和未完成状态。审计通过本身不代表布线或上板验收完成。
+
 ## 8. 进展记录
 
 | 日期 | ID | 结果 |
