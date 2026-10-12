@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T08:18:14+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T08:52:54+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -30,6 +30,7 @@ WS-0 complete; F43 exact RTL passed; W28 and C14 active under two-task concurren
 | [F45](F45_ws_cosim_F41/F45.md) | F41 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | 558758.0 | unknown | unknown | unknown | 6.382071331608397 | False |
 | [F47](F47_windows16_W21_T8/F47.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F46](F46_ws_cosim_F42/F46.md) | F42 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | unknown | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -45,7 +46,6 @@ WS-D performance is separate from a successful functional cosimulation. With the
 | [W29](W29_ws_impl_W24/W29.md) | W24 | impl | queued_or_running | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
 | [W30](W30_ws_impl_W27/W30.md) | W27 | impl | unlaunched_conditional | W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
 | [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim | queued_or_running | unknown |
-| [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | queued_or_running | unknown |
 | [C15](C15_ws_impl_C13/C15.md) | C13 | impl | unlaunched_conditional | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
 | [F49](F49_ws_impl_F39/F49.md) | F39 | impl | queued_or_running | F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
@@ -83,6 +83,8 @@ The explicit two-task policy supersedes reservation-based admission. Completed t
 | F43 | F46 | 3551.590785264969 | 1729 | 14.116714477539062 | 0.5022239685058594 | 18.49030818100524 |
 
 Process-tree RSS sums include shared mappings; minimum MemAvailable is measured for the entire host. Sampling alignment tolerance is4seconds. A hatch marks nonzero tool exit, not failed timing closure.
+
+![Measured task intervals](figs/parallel_timeline.png)
 
 ## Pending human decisions / 待人工决策
 
