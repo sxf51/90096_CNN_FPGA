@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-F50 RTL archived; C20 RTL active; W31/C19 queued; C21/C22 conditional. Five planned verification results remain: active C20 changed-parameter RTL, queued C19 RTL and W31 ROM5ns implementation, then conditional C21 T8 staged4.5ns implementation and C22 T4 staged5ns implementation. F50 passes both exact changed-parameter transactions at558760 latency/558789 interval cycles, two cycles slower than W21, so its raster output buffer gives no acceleration. Its supervisor completed and automatically resumed W31. C16/C17 all13-image precision and II1 HLS screens are complete; C17 keeps its historical HLS infeasible status. Launch C21 only after accepted C19 and C22 only after accepted C20; faster RTL has no lower cycle bound. C18/C14 remains the fastest verified runtime IP at1.503160ms, with its handoff archived; W30/W28 is the uniform T8 leader at2.472471ms. W31 closing5ns can trigger a separately planned ROM4.5ns probe. No resource-driven T4 ROM retry is required. Preserve one heavy task, budgeted light admission, the18GiB implementation registration and serial_after_oom while legacy workers exist. Complete plots, interpretations, two-location protected checksums and idle audit after runnable jobs finish. The16:06UTC snapshot audit passed with five pending plans and active remote jobs; it is not closure. No board results exist.
+C19/C20/W31 archived; surviving C22 active; C21/W33 under recovery supervisor; WS-F preparation. C19 and C20 pass both exact changed-parameter RTL transactions at535976/536005 and273023/273052 latency/interval cycles. W31 independently closes5ns with630DSP/33771LUT/82635FF/101BRAM18K and WNS+0.470/WHS+0.038; matching W25 gives2.771130ms. SSH interruption ended local46657 but remoteC22 survived; verified active119223 and noC21 workspace. Recovery supervisor33324 waits and collects C22, then launches C21 and W33 sequentially without overwriting existing workspaces. WS-F C23 paper plan is committed and its independent reload-switch source is being built; prepare C24 sequence, C25 fresh-process cold-start and F53 legacy C13 regression, then independent multi-call RTL and5ns route. Keep C18 as fastest verified runtime IP1.503160ms until new routing passes. Preserve one heavy task,18GiB impl registration, serial_after_oom and all numerical/physical gates. Refresh all CSV plots, interpretations and two-location checksum/idle audit before closure; no board results exist.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T18:05:51+00:00 from archived measurements.
+Updated 2026-10-12T22:43:28+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -26,7 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: C21, C22.
+Final verification: C21, C22, W33, C23, C24, C25, F53.
 
 ## Weight Loading Workstream
 

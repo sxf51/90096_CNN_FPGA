@@ -416,4 +416,9 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | C21 | C16 | unlaunched_conditional | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
-| C22 | C17 | unlaunched_conditional | C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18 |
+| C22 | C17 | queued_or_running | C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18 |
+| W33 | W24 | unlaunched_conditional | unknown |
+| C23 | C13 | unlaunched_conditional | unknown |
+| C24 | C13 | unlaunched_conditional | unknown |
+| C25 | C13 | unlaunched_conditional | unknown |
+| F53 | C13 | unlaunched_conditional | unknown |
