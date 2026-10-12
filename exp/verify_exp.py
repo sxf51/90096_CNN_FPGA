@@ -8,6 +8,7 @@ import re
 import shutil
 import subprocess
 import sys
+from contextlib import nullcontext
 import xml.etree.ElementTree as ET
 from run_exp import (ROOT, FIELDS, archive_logs, append_log, check_protected,
                      ensure_results_schema, invoke, lock, markdown_table, number,
@@ -15,6 +16,7 @@ from run_exp import (ROOT, FIELDS, archive_logs, append_log, check_protected,
 from compact_archive import compact
 from archive_cosim_profiles import archive_profiles, profile_results
 from host_memory import MemoryMonitor
+from route_gates import evaluate_route, parse_route_status
 
 
 def archive_verification_reports(work, archive, operation):
@@ -24,7 +26,7 @@ def archive_verification_reports(work, archive, operation):
                    path.suffix in {".rpt", ".xml"} and
                    {"report", "reports"}.intersection(path.parts) and report_kind in path.parts)
     for path in paths:
-        if operation == "impl" and not path.stem.endswith(("timing_routed", "utilization_routed")):
+        if operation == "impl" and not path.stem.endswith(("timing_routed", "utilization_routed", "status_routed")):
             continue
         dest = archive / "reports" / report_kind / path.name
         if path.resolve() == dest.resolve():
@@ -43,7 +45,8 @@ def archive_verification_reports(work, archive, operation):
 
 
 def prepare_serial_implementation(work, template_work, archive, hook_path, template_archive=None,
-                                  implementation_clock_ns=None, enable_impl=False, implementation_threads=1):
+                                  implementation_clock_ns=None, enable_impl=False, implementation_threads=1,
+                                  implementation_strategy=None):
     if type(implementation_threads) is not int or implementation_threads not in {1, 2, 4}:
         raise ValueError("Implementation thread limit must be 1, 2 or 4; synthesis remains single-threaded")
     target = work / "hls/impl"
@@ -103,6 +106,22 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
                  "}\n# EXP_IMPLEMENTATION_THREADS_END\n")
         text = text.replace(marker, block+marker)
         thread_files.append(("implementation_thread_hook", route_hook))
+    text = re.sub(r"# EXP_IMPLEMENTATION_STRATEGY_BEGIN\n.*?# EXP_IMPLEMENTATION_STRATEGY_END\n",
+                  "", text, flags=re.DOTALL)
+    if implementation_strategy:
+        if implementation_strategy != "Performance_Explore":
+            raise ValueError("Only the independently probed Performance_Explore strategy is allowed")
+        strategy_hook = driver.parent / "implementation_strategy.tcl"
+        strategy_hook.write_text(
+            'foreach exp_impl_run [get_runs -filter {IS_IMPLEMENTATION == 1}] {\n'
+            '  set_property strategy Performance_Explore $exp_impl_run\n'
+            '  set_property STEPS.POST_ROUTE_PHYS_OPT_DESIGN.IS_ENABLED true $exp_impl_run\n'
+            '  puts "EXP_VIVADO_STRATEGY run=$exp_impl_run strategy=[get_property STRATEGY $exp_impl_run] '
+            'post_route_phys_opt=[get_property STEPS.POST_ROUTE_PHYS_OPT_DESIGN.IS_ENABLED $exp_impl_run]"\n'
+            '}\n')
+        text = text.replace(marker, '# EXP_IMPLEMENTATION_STRATEGY_BEGIN\nsource ./implementation_strategy.tcl\n'
+                            '# EXP_IMPLEMENTATION_STRATEGY_END\n' + marker)
+        thread_files.append(("implementation_strategy_hook", strategy_hook))
     driver.write_text(text)
     constraints = []
     if implementation_clock_ns is not None:
@@ -283,6 +302,7 @@ def parse_verification(work, operation):
                     observed[key] = value
                     observed["impl_resource_report"] = str(path.relative_to(work))
         if operation == "impl":
+            observed.update(parse_route_status(text))
             lines = text.splitlines()
             for index, line in enumerate(lines):
                 if "WNS(ns)" in line and "TNS(ns)" in line:
@@ -291,8 +311,18 @@ def parse_verification(work, operation):
                         if values and number(values[0]) is not None:
                             observed["impl_WNS_ns"] = number(values[0])
                             observed["impl_TNS_ns"] = number(values[1]) if len(values) > 1 else None
+                            if len(values) >= 6 and "WHS(ns)" in line:
+                                observed["impl_WHS_ns"] = number(values[4])
+                                observed["impl_THS_ns"] = number(values[5])
+                            if len(values) >= 10 and "TPWS(ns)" in line:
+                                observed["impl_TPWS_ns"] = number(values[9])
                             observed["impl_timing_report"] = str(path.relative_to(work))
                             break
+    if operation == "impl":
+        logfile = work / "impl.console.log"
+        if logfile.exists():
+            observed.update(parse_route_status(logfile.read_text(errors="replace")))
+        observed = evaluate_route(observed)
     detail.extend({"file": "parsed_rpt", "metric": key, "value": value} for key, value in observed.items())
     return observed, detail
 
@@ -302,6 +332,13 @@ def diagnostic_parent(config, parent):
             parent.get("csim_pass") is True and parent["status"] == "infeasible" and
             parent.get("bit_exact") is True and number(parent.get("delta_psnr")) is not None and
             number(parent["delta_psnr"]) >= -.1)
+
+
+def screened_parent(config, parent, parent_config):
+    return (config.get("resource_policy") == "routed" and parent_config.get("hls_screen_pass") is True and
+            parent.get("csim_pass") is True and parent.get("bit_exact") is True and
+            parent.get("status") in {"pass", "provisional", "infeasible"} and
+            number(parent.get("delta_psnr")) is not None and number(parent["delta_psnr"]) >= -.1)
 
 
 def check_image_validation(parent_config, validation_config):
@@ -373,7 +410,8 @@ def run_verification(config):
     parent_config = json.loads((parent / "config.json").read_text())
     parent_row = json.loads((parent / "metrics.json").read_text())
     diagnostic = diagnostic_parent(config, parent_row)
-    if parent_row.get("csim_pass") is not True or (parent_row["status"] not in {"pass", "provisional"} and not diagnostic):
+    if parent_row.get("csim_pass") is not True or (parent_row["status"] not in {"pass", "provisional"} and
+            not diagnostic and not screened_parent(config, parent_row, parent_config)):
         raise RuntimeError("Verification parent is not numerically and resource accepted")
     work = ROOT / "workspace/exp_runs" / exp_id
     archive = ROOT / "experiments" / (exp_id + "_" + name)
@@ -425,7 +463,8 @@ def run_verification(config):
             impl_cwd, records, original_digest = prepare_serial_implementation(
                 work,template,archive,ROOT / config["verification_hook"],template_archive,
                 config.get("implementation_clock_ns"),
-                implementation_threads=config.get("implementation_threads", 1))
+                implementation_threads=config.get("implementation_threads", 1),
+                implementation_strategy=config.get("implementation_strategy"))
             config["implementation_files"] = records
             config["original_generated_driver_sha256"] = original_digest
             config["implementation_work_root"] = str(work)
@@ -437,7 +476,9 @@ def run_verification(config):
                 row["status"] = "precision_fail"
                 raise
         timeout = 21600 if operation == "cosim" else config.get("timeout", 10800)
-        with lock(work / ".run.lock"), lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=86400):
+        legacy_slot = (nullcontext() if config.get("memory_scheduler") else
+                       lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=86400))
+        with lock(work / ".run.lock"), legacy_slot:
             if package_serial:
                 package_cfg = package_only_config(cfg, work / "package_config.cfg")
                 shutil.copyfile(package_cfg, archive / "package_config.cfg")
@@ -458,7 +499,8 @@ def run_verification(config):
                 impl_cwd, records, original_digest = prepare_serial_implementation(
                     work, work, archive, ROOT / config["verification_hook"],
                     implementation_clock_ns=config.get("implementation_clock_ns", config["clock"]), enable_impl=True,
-                    implementation_threads=config.get("implementation_threads", 1))
+                    implementation_threads=config.get("implementation_threads", 1),
+                    implementation_strategy=config.get("implementation_strategy"))
                 config["implementation_files"] = records
                 config["original_generated_driver_sha256"] = original_digest
                 config["implementation_work_root"] = str(work)
@@ -470,7 +512,12 @@ def run_verification(config):
                         "--config", str(cfg), "--work_dir", str(work)]
                 cwd = ROOT
             with MemoryMonitor(archive / "host_memory.csv"):
-                code, seconds = invoke(args,settings,cwd,work / (operation + ".console.log"),timeout)
+                if config.get("memory_scheduler"):
+                    from memory_scheduler import scheduled_invoke
+                    code, seconds = scheduled_invoke(config, archive, operation, args, settings, cwd,
+                                                     work / (operation + ".console.log"), timeout)
+                else:
+                    code, seconds = invoke(args,settings,cwd,work / (operation + ".console.log"),timeout)
         config["operation_minutes"] = seconds / 60
         observed, detail = parse_verification(work, operation)
         if operation == "cosim":
@@ -493,9 +540,11 @@ def run_verification(config):
             observed["changed_params_bit_exact"] = True
         row["status"] = operation + "_complete"
         if operation == "impl":
-            observed["timing_met"] = observed["impl_WNS_ns"] >= 0
+            if not config.get("resource_policy") == "routed":
+                observed["timing_met"] = observed["impl_WNS_ns"] >= 0
             observed["impl_target_clock_ns"] = float(config.get("implementation_clock_ns", config["clock"]))
             observed["impl_clock_ns_est"] = observed["impl_target_clock_ns"] - observed["impl_WNS_ns"]
+            row["route_feasible"] = observed.get("route_feasible")
         if operation == "cosim":
             actual = observed.get("rtl_latency_max")
             estimate = number(parent_row.get("latency_cycles"))
@@ -504,7 +553,7 @@ def run_verification(config):
         config["verification"] = observed
         detail.extend({"file": "derived", "metric": key, "value": value}
                       for key, value in observed.items()
-                      if key in {"cycle_deviation_pct", "timing_met", "impl_clock_ns_est"})
+                      if key in {"cycle_deviation_pct", "timing_met", "impl_clock_ns_est", "route_feasible"})
     except Exception as exc:
         errors.append(str(exc))
         row["notes"] += "; " + str(exc)
@@ -557,7 +606,12 @@ def run_verification(config):
         if config["verification_diagnostics"]:
             md += "\nVivado subrun diagnostic excerpts:\n\n"
             md += markdown_table(config["verification_diagnostics"],["raw_file","archived_file","raw_sha256","sha256","excerpt"])
-        md += "\n## 6. Interpretation / 解读\n\n" + ("; ".join(errors) if errors else "Actual verification results are parsed from reports in data.csv. Implementation completion alone does not prove timing closure or board operation. Supplied-image precision remains provisional until comic is available.") + "\n"
+        default = "Actual verification results are parsed from reports in data.csv. Implementation completion alone does not prove timing closure or board operation."
+        if config.get("required_image_count") == 13:
+            default += " The complete course-provided Set14 set contains 13 images under docs/0005."
+        else:
+            default += " Supplied-image precision remains provisional until comic is available."
+        md += "\n## 6. Interpretation / 解读\n\n" + ("; ".join(errors) if errors else default) + "\n"
         md += "\n## 7. Conclusion and next step / 结论与下一步\n\nCompare implementation slack/resources and RTL cycles with HLS estimates. No board result is inferred.\n\n"
         md += f"## 8. Raw files / 原始文件位置\n\n`workspace/exp_runs/{exp_id}/`; parent [{parent_row['id']}](../{parent_row['md_path']}).\n"
         (archive / (exp_id + ".md")).write_text(md)

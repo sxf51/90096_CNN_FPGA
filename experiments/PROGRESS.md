@@ -1,5 +1,15 @@
 # Current progress
 
+<!-- ROM_CLOCK_CURRENT -->
+
+## Active docs/0005 workstream
+
+WS-0 preparation. Implement and test route gates and memory admission; run controlled two-synthesis plus C-simulation trial before enabling concurrency. Prepare WS-B during the W23 physical run when admitted.
+
+See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=budgeted after WS-0 validation.
+
+<!-- ROM_CLOCK_CURRENT -->
+
 Updated 2026-10-12T03:13:29+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.

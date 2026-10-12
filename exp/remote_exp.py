@@ -13,6 +13,8 @@ from run_exp import ROOT, FIELDS, append_log, check_protected, check_plan, ensur
 
 def record_archive(config, archive):
     metrics = json.loads((archive / "metrics.json").read_text())
+    if set(metrics) == set(FIELDS) - {"route_feasible"}:
+        metrics["route_feasible"] = ""
     exp_id = config["id"]
     if set(metrics) != set(FIELDS) or metrics["id"] != exp_id or metrics["md_path"] != archive.name + "/" + exp_id + ".md":
         raise RuntimeError("Unexpected completed archive identity or results schema")

@@ -47,7 +47,25 @@ def cpu_summary(rows):
             "max_load1": max(loads) if loads else None}
 
 
-def sample(proc_root=Path("/proc")):
+def process_tree_rss(root_pid, proc_root=Path("/proc")):
+    processes = {}
+    for path in proc_root.glob("[0-9]*/status"):
+        try:
+            fields = dict(line.split(":", 1) for line in path.read_text().splitlines() if ":" in line)
+            processes[int(path.parent.name)] = (int(fields.get("PPid", "0").strip()),
+                                                int(fields.get("VmRSS", "0").split()[0]))
+        except (OSError, ValueError):
+            pass
+    family = {root_pid}
+    while True:
+        extra = {pid for pid, (parent, _) in processes.items() if parent in family} - family
+        if not extra:
+            break
+        family.update(extra)
+    return sum(processes[pid][1] for pid in family if pid in processes)
+
+
+def sample(proc_root=Path("/proc"), root_pid=None):
     memory = {}
     for line in (proc_root / "meminfo").read_text().splitlines():
         fields = line.split()
@@ -61,17 +79,21 @@ def sample(proc_root=Path("/proc")):
                 tools.append((path.parent.name, name, int(fields.get("VmRSS", "0").split()[0])))
         except (OSError, ValueError, KeyError):
             continue
-    return {"time": utc(), "total_kib": memory["MemTotal"],
+    result = {"time": utc(), "total_kib": memory["MemTotal"],
             "available_kib": memory["MemAvailable"], "swap_free_kib": memory["SwapFree"],
             "tool_count": len(tools), "tool_rss_kib": sum(item[2] for item in tools),
             "tools_pid_name_rss_kib": ";".join(":".join(map(str, item)) for item in sorted(tools)),
             **cpu_sample(proc_root)}
+    if root_pid is not None:
+        result["task_tree_rss_kib"] = process_tree_rss(root_pid, proc_root)
+    return result
 
 
 class MemoryMonitor:
-    def __init__(self, destination, interval=15):
+    def __init__(self, destination, interval=15, root_pid=None):
         self.destination = destination
         self.interval = interval
+        self.root_pid = root_pid
         self.stop = threading.Event()
         self.thread = None
 
@@ -86,7 +108,7 @@ class MemoryMonitor:
             writer = None
             while True:
                 try:
-                    row = sample()
+                    row = sample(root_pid=self.root_pid)
                     if writer is None:
                         writer = csv.DictWriter(stream, fieldnames=list(row))
                         writer.writeheader()

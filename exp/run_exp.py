@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from compact_archive import compact
 
 ROOT = Path(__file__).resolve().parents[1]
-FIELDS = "id,time,stage,series,design,precision_w_a_acc,T_target,unroll_split,weight_storage,clock_target_ns,clock_est_ns,latency_cycles,interval_cycles,latency_ms_est,DSP,DSP_pct,BRAM18K,BRAM_pct,URAM,LUT,LUT_pct,FF,FF_pct,csim_pass,butterfly_mse,border_mse,bit_exact,set14_psnr,delta_psnr,ii_ok,synth_minutes,status,git_commit,md_path,notes".split(",")
+FIELDS = "id,time,stage,series,design,precision_w_a_acc,T_target,unroll_split,weight_storage,clock_target_ns,clock_est_ns,latency_cycles,interval_cycles,latency_ms_est,DSP,DSP_pct,BRAM18K,BRAM_pct,URAM,LUT,LUT_pct,FF,FF_pct,csim_pass,butterfly_mse,border_mse,bit_exact,set14_psnr,delta_psnr,ii_ok,synth_minutes,status,git_commit,md_path,notes,route_feasible".split(",")
 ARCH_ID = r"[SGPWCF]\d{2,}"
 EXPERIMENT_ID = r"(?:E\d{3,}|" + ARCH_ID + ")"
 CAPACITY = {"DSP": 1248, "BRAM18K": 288, "URAM": 64, "LUT": 117120, "FF": 234240}
@@ -57,13 +57,16 @@ def ensure_results_schema(path):
         header, rows = reader.fieldnames, list(reader)
     if header == FIELDS:
         return
-    if header != [field for field in FIELDS if field != "series"]:
+    known = ([field for field in FIELDS if field != "series"],
+             [field for field in FIELDS if field != "route_feasible"],
+             [field for field in FIELDS if field not in {"series", "route_feasible"}])
+    if header not in known:
         raise RuntimeError("Unexpected results schema; refusing a lossy migration")
     temporary = path.with_suffix(".csv.migrating")
     with temporary.open("w", newline="") as out:
         writer = csv.DictWriter(out, fieldnames=FIELDS)
         writer.writeheader()
-        writer.writerows({**row, "series": ""} for row in rows)
+        writer.writerows({**dict.fromkeys(FIELDS, ""), **row} for row in rows)
     temporary.replace(path)
 
 
@@ -128,7 +131,7 @@ def command_env(args, settings):
     return ["bash", "-c", "source " + shlex.quote(str(settings)) + "\nexec " + shlex.join(args)]
 
 
-def invoke(args, settings, cwd, logfile, timeout):
+def invoke(args, settings, cwd, logfile, timeout, on_start=None):
     started = time.monotonic()
     with logfile.open("w", encoding="utf-8") as log:
         log.write("COMMAND " + json.dumps(args) + "\n")
@@ -136,6 +139,8 @@ def invoke(args, settings, cwd, logfile, timeout):
         flags = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == "nt" else {"start_new_session": True}
         proc = subprocess.Popen(command_env(args, settings), cwd=cwd, stdout=log,
                                 stderr=subprocess.STDOUT, **flags)
+        if on_start:
+            on_start(proc.pid)
         try:
             code = proc.wait(timeout=timeout)
             return code, time.monotonic() - started
@@ -336,8 +341,13 @@ def run(config):
         cfg = generate_config(config, work)
         shutil.copyfile(cfg, archive / "hls_config.cfg")
         with lock(work / ".run.lock"):
-            code, _ = invoke(["vitis-run", "--mode", "hls", "--csim", "--config", str(cfg), "--work_dir", str(work)],
-                             settings, ROOT, work / "csim.console.log", config.get("csim_timeout", 2700))
+            args = ["vitis-run", "--mode", "hls", "--csim", "--config", str(cfg), "--work_dir", str(work)]
+            if config.get("memory_scheduler"):
+                from memory_scheduler import scheduled_invoke
+                code, _ = scheduled_invoke(config, archive, "csim", args, settings, ROOT,
+                                            work / "csim.console.log", config.get("csim_timeout", 2700))
+            else:
+                code, _ = invoke(args, settings, ROOT, work / "csim.console.log", config.get("csim_timeout", 2700))
             logs = list(work.rglob("*_csim.log")) + [work / "csim.console.log"]
             for path in logs:
                 matches = re.findall(r"EXP_METRICS (\{[^\r\n]+\})", path.read_text(errors="replace"))
@@ -386,9 +396,15 @@ def run(config):
                         if time.monotonic() >= deadline:
                             raise RuntimeError("Synthesis predecessor wait exceeded24 hours")
                         time.sleep(5)
-                with lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=86400):
-                    code, seconds = invoke(["v++", "-c", "--mode", "hls", "--config", str(cfg), "--work_dir", str(work)],
-                                           settings, ROOT, work / "csynth.console.log", min(config.get("synth_timeout", 3600), 3600))
+                args = ["v++", "-c", "--mode", "hls", "--config", str(cfg), "--work_dir", str(work)]
+                timeout = min(config.get("synth_timeout", 3600), 3600)
+                if config.get("memory_scheduler"):
+                    kind = "csynth_t4" if config.get("T") == 4 else "csynth"
+                    code, seconds = scheduled_invoke(config, archive, kind, args, settings, ROOT,
+                                                    work / "csynth.console.log", timeout)
+                else:
+                    with lock(ROOT / "workspace/exp_runs/.synthesis.lock", wait_timeout=86400):
+                        code, seconds = invoke(args, settings, ROOT, work / "csynth.console.log", timeout)
                 row["synth_minutes"] = seconds / 60
                 if code:
                     row["status"] = "timeout" if code == 124 else "fail"
@@ -432,8 +448,12 @@ def run(config):
                             and number(row["latency_ms_est"]) >= 0)
                 feasible = complete and all(metrics[k] <= CAPACITY[k] * LIMIT[k] for k in CAPACITY)
                 row["status"] = "pass" if feasible else "infeasible" if complete else "report_incomplete"
-                if config.get("fixed") and validation.get("image_count", 0) < 14 and row["status"] == "pass":
+                if config.get("fixed") and validation.get("image_count", 0) < config.get("required_image_count", 14) and row["status"] == "pass":
                     row["status"] = "provisional"
+                if config.get("resource_policy") == "routed":
+                    config["hls_screen_pass"] = (complete and metrics["DSP"] <= 1100 and
+                                                 metrics["LUT"] <= 160000 and metrics["FF"] <= 230000)
+                    row["notes"] += "; HLS status retained; final feasibility requires independent routed gates"
                 if row["ii_ok"] is False:
                     row["notes"] += "; requested II missed"
                 interface_report = ((archive / "csynth.rpt").read_text()
