@@ -513,6 +513,8 @@
 
 - 2026-10-12T11:40:15+00:00: F52: ws_impl_F39; status=impl_complete; latency_ms_est=1.74903921; impl of F39; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-12T12:20:59+00:00: W32: ws_clock_strategy_4p5_retry_W21; status=impl_complete; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:12 UTC C18优先执行补充：C16/C17仍未准入、未启动C仿真，已在调度锁内核实后暂时暂停，防止W32释放时先启动轻任务而占据预算、拖后C18。独立监督会话18976和priority_light_waiters.json保证C18完成或监督退出时自动恢复这两项。原95744监督继续管理四项重任务等待进程；当前只有W32实际运行工具。此为队列优先级调整，无新增实验或改变原计划。

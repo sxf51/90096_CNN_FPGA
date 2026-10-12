@@ -304,6 +304,7 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 | [C15](../experiments/C15_ws_impl_C13/C15.md) | C13 | fail | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown |
 | [F49](../experiments/F49_ws_impl_F39/F49.md) | F39 | fail | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown |
 | [F52](../experiments/F52_ws_impl_F39/F52.md) | F39 | impl_complete | 525237.0 | 644.0 | 81518.0 | 558758.0 | True | 2.514411 |
+| [W32](../experiments/W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl_complete | 525237.0 | 644.0 | 81086.0 | 558758.0 | True | 2.514411 |
 
 未测量的计划：
 
@@ -313,7 +314,6 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 | F50 | F42 | queued_or_running | unknown |
 | F51 | F47 | queued_or_running | unknown |
 | W31 | W24 | queued_or_running | unknown |
-| W32 | W21 | queued_or_running | unknown |
 | C16 | F47 | queued_or_running | unknown |
 | C17 | C13 | queued_or_running | unknown |
 | C18 | C13 | queued_or_running | unknown |
