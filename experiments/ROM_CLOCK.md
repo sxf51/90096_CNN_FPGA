@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T07:14:21+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T07:27:04+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -72,6 +72,15 @@ IP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded 
 
 ![Two-frame RTL cycles](figs/rom_clock_rtl_cycles.png)
 
+
+## Measured Parallel Execution
+
+The explicit two-task policy supersedes reservation-based admission. Completed tool intervals and per-task telemetry are in [parallel_jobs.csv](parallel_jobs.csv) and [parallel_overlap.csv](parallel_overlap.csv). Active tasks enter these tables only after a release record is archived.
+
+| first_id | second_id | overlap_seconds | aligned_samples | peak_combined_process_tree_rss_GiB | minimum_available_GiB | cpu_busy_pct |
+| --- | --- | --- | --- | --- | --- | --- |
+
+Process-tree RSS sums include shared mappings; minimum MemAvailable is measured for the entire host. Sampling alignment tolerance is4seconds. A hatch marks nonzero tool exit, not failed timing closure.
 
 ## Pending human decisions / 待人工决策
 

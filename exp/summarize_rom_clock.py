@@ -109,6 +109,16 @@ def main():
                             ("rom_clock_rtl_cycles", "Two-frame RTL cycles")):
         if (ROOT / "experiments/figs" / (filename + ".png")).exists():
             text += "![" + label + "](figs/" + filename + ".png)\n\n"
+    overlap_path = ROOT / "experiments/parallel_overlap.csv"
+    if overlap_path.is_file():
+        overlaps = list(csv.DictReader(overlap_path.open(newline="")))
+        text += "\n## Measured Parallel Execution\n\n"
+        text += "The explicit two-task policy supersedes reservation-based admission. Completed tool intervals and per-task telemetry are in [parallel_jobs.csv](parallel_jobs.csv) and [parallel_overlap.csv](parallel_overlap.csv). Active tasks enter these tables only after a release record is archived.\n\n"
+        text += markdown_table(overlaps, ["first_id", "second_id", "overlap_seconds", "aligned_samples",
+                                          "peak_combined_process_tree_rss_GiB", "minimum_available_GiB", "cpu_busy_pct"])
+        text += "\nProcess-tree RSS sums include shared mappings; minimum MemAvailable is measured for the entire host. Sampling alignment tolerance is4seconds. A hatch marks nonzero tool exit, not failed timing closure.\n"
+        if (ROOT / "experiments/figs/parallel_timeline.png").is_file():
+            text += "\n![Measured task intervals](figs/parallel_timeline.png)\n"
     text += "\n## Pending human decisions / 待人工决策\n\n"
     text += "\n".join("- " + decision for decision in state.get("pending_decisions", [])) + "\n"
     (ROOT / "experiments/ROM_CLOCK.md").write_text(text)
