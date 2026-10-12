@@ -178,15 +178,18 @@
   "first_phase_head": "2fa7249eaecdfdc360d8d452fcbf52171c35abd2",
   "frozen_design_files": 45,
   "full_set14": true,
-  "hardware_parallelism": 2,
-  "hardware_scheduler": "user-authorized two-task scheduling with actual memory telemetry",
-  "next": "W23 same-RTL strategy4.5ns and C15 T4 independent5ns implementation are actually active. F50 rasterFIFO changed-parameter RTL and F51 windowFIFO16 independent5ns route are queued. F48 exact535771/535800cycles recovers22987cycles versus F97, but misses the unchanged WS-D535741-cycle limit by30cycles. Preserve F49/W29 memory-protection failures without new OOM or timing claims; prepare fresh F52 registeredConv34.5ns and W31 ROM5ns retries. Conditional follow-up clocks require independently converged timing/resources. W28 exact549438cycles still fails its unchanged cycle gate and W30 stays unlaunched. Keep two concurrent tasks and actual0.5GiB newest-task protection. F98 board handoff is archived; board measurements remain pending.",
+  "hardware_parallelism": 1,
+  "hardware_scheduler": "serial hardware fallback after measured OOM; two-task policy retained",
+  "next": "C15 T4 independent5ns implementation remains active. W23 was kernel OOM-killed at10:19:41UTC, exit137 and OOM1->2; the scheduler correctly activates the agreed serial hardware fallback. F50 rasterFIFO RTL and F51 windowFIFO16 route wait; F52 registeredConv34.5ns, W31 ROM5ns and W32 same-RTL strategy4.5ns retries use fresh immutable workspaces. F48 exact535771/535800cycles recovers22987cycles but misses the strict535741-cycle WS-D limit by30. Original F49/W29 memory-protection failures remain without timing/resource verdicts. Preserve user two-task policy, actual0.5GiB guard and serial-after-OOM state. Conditional clocks require independently converged timing/resources. W28 remains fail and W30 unlaunched. No board results exist.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
     "C15",
     "F50",
-    "F51"
+    "F51",
+    "F52",
+    "W31",
+    "W32"
   ],
   "resource_policy": "routed",
   "rom_clock_workstream": {
@@ -229,20 +232,33 @@
       "C15",
       "F49",
       "F50",
-      "F51"
+      "F51",
+      "F52",
+      "W31",
+      "W32"
     ],
+    "hardware_serial_after_oom": true,
+    "last_oom": {
+      "after": 2,
+      "before": 1,
+      "exit_code": 137,
+      "id": "W23",
+      "time": "2026-10-12T10:19:41+00:00"
+    },
     "local_exec_sessions": [
-      31749,
       91661,
       38233,
-      80070
+      80070,
+      2370,
+      99126,
+      18016
     ],
-    "next": "W23 same-RTL strategy4.5ns and C15 T4 independent5ns implementation are actually active. F50 rasterFIFO changed-parameter RTL and F51 windowFIFO16 independent5ns route are queued. F48 exact535771/535800cycles recovers22987cycles versus F97, but misses the unchanged WS-D535741-cycle limit by30cycles. Preserve F49/W29 memory-protection failures without new OOM or timing claims; prepare fresh F52 registeredConv34.5ns and W31 ROM5ns retries. Conditional follow-up clocks require independently converged timing/resources. W28 exact549438cycles still fails its unchanged cycle gate and W30 stays unlaunched. Keep two concurrent tasks and actual0.5GiB newest-task protection. F98 board handoff is archived; board measurements remain pending.",
+    "next": "C15 T4 independent5ns implementation remains active. W23 was kernel OOM-killed at10:19:41UTC, exit137 and OOM1->2; the scheduler correctly activates the agreed serial hardware fallback. F50 rasterFIFO RTL and F51 windowFIFO16 route wait; F52 registeredConv34.5ns, W31 ROM5ns and W32 same-RTL strategy4.5ns retries use fresh immutable workspaces. F48 exact535771/535800cycles recovers22987cycles but misses the strict535741-cycle WS-D limit by30. Original F49/W29 memory-protection failures remain without timing/resource verdicts. Preserve user two-task policy, actual0.5GiB guard and serial-after-OOM state. Conditional clocks require independently converged timing/resources. W28 remains fail and W30 unlaunched. No board results exist.",
     "pending_decisions": [
       "W28 FRP is exact and1.667985% faster, but exceeds the preplanned plus/minus1% cycle bound. W28 remains fail and W30 stays unlaunched; review a new independently planned FRP throughput study tomorrow without changing this gate.",
       "F49/W29 actual-memory protection interrupted both independent routes without new OOM; preserve failures and retry under new IDs with explicit two-task scheduling. F48 misses the strict2percent WS-D target by30cycles despite4.113943percent measured speedup; no gate adjustment."
     ],
-    "phase": "W23/C15 implementation active; F48 windowFIFO16 exact and4.1percent faster; fresh route retries planned",
+    "phase": "C15 T4 implementation active; actual W23 OOM triggers agreed serial hardware fallback",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
@@ -252,8 +268,11 @@
     },
     "resource_policy": "routed",
     "session_jobs": {
-      "31749": [
-        "W23"
+      "18016": [
+        "W32"
+      ],
+      "2370": [
+        "F52"
       ],
       "38233": [
         "C15"
@@ -263,6 +282,9 @@
       ],
       "91661": [
         "F50"
+      ],
+      "99126": [
+        "W31"
       ]
     },
     "skipped_plans": {
@@ -315,7 +337,7 @@
       "reason": "W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result."
     }
   },
-  "time": "2026-10-12T10:19:43+00:00",
+  "time": "2026-10-12T10:23:58+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",

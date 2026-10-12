@@ -21,6 +21,7 @@ Actual verification of the current HLS winner:
 | id | operation | status | impl_target_clock_ns | impl_WNS_ns | timing_met | impl_DSP | impl_LUT | impl_FF | impl_BRAM36 | impl_URAM | rtl_status | rtl_latency_max | rtl_interval_max | cycle_deviation_pct |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [W25](W25_rom_changed_input_cosim_W24/W25.md) | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 554226.0 | 554237.0 | 5.701752712986097 |
+| [W29](W29_ws_impl_W24/W29.md) | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 ## Current Verified IP Timing
 
@@ -37,6 +38,7 @@ Measured follow-up records from docs/0005; their routed acceptance remains separ
 
 | id | parent | status | T | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_hls_excess_pct | wsD_goal_met | route_feasible | rtl_frame_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | fail | 8 | 525237.0 | 644.0 | 81086.0 | 558758.0 | 6.382071331608397 | unknown | unknown | unknown |
 | [W24](W24_constant_rom_T8/W24.md) | W19 | pass | 8 | 524330.0 | 630.0 | 53316.0 | 554226.0 | 5.701752712986097 | unknown | unknown | unknown |
 | [W25](W25_rom_changed_input_cosim_W24/W25.md) | W24 | cosim_complete | 8 | 524330.0 | 630.0 | 53316.0 | 554226.0 | 5.701752712986097 | unknown | unknown | unknown |
 | [W26](W26_frp_W21_T8/W26.md) | W21 | fail | 8 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
@@ -49,22 +51,25 @@ Measured follow-up records from docs/0005; their routed acceptance remains separ
 | [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim_complete | 8 | 525237.0 | 644.0 | 81518.0 | 558758.0 | 6.382071331608397 | unknown | unknown | unknown |
 | [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim_complete | 8 | 525237.0 | 644.0 | 81086.0 | 558758.0 | 6.382071331608397 | False | unknown | unknown |
 | [F45](F45_ws_cosim_F41/F45.md) | F41 | cosim_complete | 8 | 525237.0 | 644.0 | 81105.0 | 558758.0 | 6.382071331608397 | False | unknown | unknown |
-| [F47](F47_windows16_W21_T8/F47.md) | W21 | pass | 8 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown |
+| [F47](F47_windows16_W21_T8/F47.md) | W21 | pass | 8 | 525237.0 | 644.0 | 81086.0 | 535771.0 | 2.0055708185066967 | False | unknown | unknown |
 | [W28](W28_ws_cosim_W27/W28.md) | W27 | fail | 8 | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | unknown | unknown | unknown |
+| [W29](W29_ws_impl_W24/W29.md) | W24 | fail | 8 | 524330.0 | 630.0 | 53316.0 | 554226.0 | 5.701752712986097 | unknown | unknown | unknown |
+| [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim_complete | 8 | 525237.0 | 644.0 | 81086.0 | 535771.0 | 2.0055708185066967 | False | unknown | unknown |
 | [F46](F46_ws_cosim_F42/F46.md) | F42 | fail | 8 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown |
 | [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim_complete | 4 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | 14.269641567524417 | unknown | unknown | unknown |
+| [F49](F49_ws_impl_F39/F49.md) | F39 | fail | 8 | 525237.0 | 644.0 | 81518.0 | 558758.0 | 6.382071331608397 | unknown | unknown | unknown |
 
 Unmeasured plans have no actual result and do not enter rankings:
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W21 | impl | queued_or_running | unknown |
-| [W29](W29_ws_impl_W24/W29.md) | W24 | impl | queued_or_running | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
 | [W30](W30_ws_impl_W27/W30.md) | W27 | impl | not_run_condition_failed | W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result. |
-| [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim | queued_or_running | unknown |
 | [C15](C15_ws_impl_C13/C15.md) | C13 | impl | queued_or_running | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
-| [F49](F49_ws_impl_F39/F49.md) | F39 | impl | queued_or_running | F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
+| [F51](F51_ws_impl_F47/F51.md) | F47 | impl | queued_or_running | unknown |
+| [F52](F52_ws_impl_F39/F52.md) | F39 | impl | queued_or_running | unknown |
+| [W31](W31_ws_impl_W24/W31.md) | W24 | impl | queued_or_running | unknown |
+| [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl | queued_or_running | unknown |
 
 ## P Direction
 
@@ -505,7 +510,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [F41](F41_fifo32_W21_T8/F41.md) | frame | 644.0 | 644.0 | 0.0 | 543000.0 | 558758.0 | 2.9020257826887663 | pass |
 | [W27](W27_frp_W21_T8/W27.md) | frame | 644.0 | 644.0 | 0.0 | 558758.0 | 525237.0 | -5.999198221770429 | pass |
 | [F42](F42_reorder_W21_T8/F42.md) | frame | 644.0 | 644.0 | 0.0 | 540000.0 | 525237.0 | -2.7338888888888913 | pass |
-| [F47](F47_windows16_W21_T8/F47.md) | frame | 644.0 | 644.0 | 0.0 | 535500.0 | 525237.0 | -1.9165266106442536 | pass |
+| [F47](F47_windows16_W21_T8/F47.md) | frame | 644.0 | 644.0 | 0.0 | 535500.0 | 535771.0 | 0.05060690943043955 | pass |
 | [C13](C13_runtime_prepacked_conv2_T4/C13.md) | frame | 1032.0 | 1032.0 | 0.0 | 292000.0 | 300632.0 | 2.9561643835616547 | infeasible |
 | [W25](W25_rom_changed_input_cosim_W24/W25.md) | frame | 630.0 | unknown | unknown | 547500.0 | 554226.0 | 1.2284931506849395 | cosim_complete |
 | [F40](F40_fifo16_W21_T8/F40.md) | frame | 644.0 | 644.0 | 0.0 | 550000.0 | 558758.0 | 1.5923636363636362 | pass |
@@ -516,6 +521,10 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [C14](C14_ws_cosim_C13/C14.md) | frame | 1032.0 | unknown | unknown | 263090.0 | 300632.0 | 14.269641567524417 | cosim_complete |
 | [W28](W28_ws_cosim_W27/W28.md) | frame | 644.0 | unknown | unknown | 525237.0 | 549438.0 | 4.6076342679590265 | fail |
 | [F44](F44_ws_cosim_F40/F44.md) | frame | 644.0 | unknown | unknown | 525237.0 | 558758.0 | 6.382071331608397 | cosim_complete |
+| [F49](F49_ws_impl_F39/F49.md) | frame | 644.0 | unknown | unknown | 525237.0 | unknown | unknown | fail |
+| [F48](F48_ws_cosim_F47/F48.md) | frame | 644.0 | unknown | unknown | 525237.0 | 535771.0 | 2.0055708185066967 | cosim_complete |
+| [W29](W29_ws_impl_W24/W29.md) | frame | 630.0 | unknown | unknown | 524330.0 | unknown | unknown | fail |
+| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | frame | 644.0 | unknown | unknown | 558758.0 | unknown | unknown | fail |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -565,6 +574,10 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [C14](C14_ws_cosim_C13/C14.md) | frame | C13 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 300632.0 | 300661.0 | 14.269641567524417 |
 | [W28](W28_ws_cosim_W27/W28.md) | frame | W27 | cosim | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 549438.0 | 549467.0 | unknown |
 | [F44](F44_ws_cosim_F40/F44.md) | frame | F40 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 558758.0 | 558787.0 | 6.382071331608397 |
+| [F49](F49_ws_impl_F39/F49.md) | frame | F39 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F48](F48_ws_cosim_F47/F48.md) | frame | F47 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 535771.0 | 535800.0 | 2.0055708185066967 |
+| [W29](W29_ws_impl_W24/W29.md) | frame | W24 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | frame | W21 | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -708,6 +721,22 @@ Finite-FIFO RTL counters span both transactions, including startup/inactive cycl
 | [F44](F44_ws_cosim_F40/F44.md) | result_U | 1 | 0.0 | 88.34931997136721 | [counters](F44_ws_cosim_F40/profiling/channels.csv) |
 | [F44](F44_ws_cosim_F40/F44.md) | windows0_U | 2 | 0.8192555476020043 | 4.881531853972799 | [counters](F44_ws_cosim_F40/profiling/channels.csv) |
 | [F44](F44_ws_cosim_F40/F44.md) | windows1_U | 2 | 0.8192555476020043 | 4.881531853972799 | [counters](F44_ws_cosim_F40/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | raw_U | 512 | 81.7053710902871 | 0.018849859932476443 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | params1_U | 2 | 0.0 | 1.2136696944643 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | params2_U | 4 | 0.0 | 1.490258728324994 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | params3_U | 4 | 0.0 | 1.9342569142592658 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | raw1_U | 16 | 0.010638039763872844 | 0.007092026509248562 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | padded1_U | 16 | 85.97551757796097 | 0.06868067777377555 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | features2_U | 4 | 0.1401608396959387 | 86.74257623461916 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | features_U | 4 | 85.25978279735654 | 0.09480919649205972 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | windows_U | 16 | 86.02945430588657 | 0.0 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | tiles_U | 1 | 0.0 | 86.97791953536029 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | top_U | 220 | 0.0 | 1.8885320065022686 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | bottom_U | 346 | 0.0 | 0.0 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | padded3_U | 16 | 0.6407086054276399 | 86.65243284504109 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | result_U | 1 | 0.0 | 87.84949226689162 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | windows0_U | 2 | 0.8544025620878926 | 0.80083909871541 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
+| [F48](F48_ws_cosim_F47/F48.md) | windows1_U | 2 | 0.8544025620878926 | 0.80083909871541 | [counters](F48_ws_cosim_F47/profiling/channels.csv) |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -839,6 +868,9 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 | [C13](C13_runtime_prepacked_conv2_T4/C13.md) | C | infeasible | LUT=127966.0 exceeds 81984; FF=192308.0 exceeds 163968 | ; HLS status retained; final feasibility requires independent routed gates |
 | [F46](F46_ws_cosim_F42/F46.md) | F | fail | cosim of F42; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.4973716735839844, "floor_gib": 0.5} | cosim of F42; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.4973716735839844, "floor_gib": 0.5} |
 | [W28](W28_ws_cosim_W27/W28.md) | W | fail | cosim of W27; HLS estimates inherited, real measurements in data.csv; Measured RTL cycles are below the preplanned acceptance bound | cosim of W27; HLS estimates inherited, real measurements in data.csv; Measured RTL cycles are below the preplanned acceptance bound |
+| [F49](F49_ws_impl_F39/F49.md) | F | fail | impl of F39; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.3829193115234375, "floor_gib": 0.5} | impl of F39; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.3829193115234375, "floor_gib": 0.5} |
+| [W29](W29_ws_impl_W24/W29.md) | W | fail | impl of W24; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.4664421081542969, "floor_gib": 0.5} | impl of W24; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.4664421081542969, "floor_gib": 0.5} |
+| [W23](W23_ws_clock_strategy_4p5_W21/W23.md) | W | fail | impl of W21; HLS estimates inherited, real measurements in data.csv; impl failed (exit=137) | impl of W21; HLS estimates inherited, real measurements in data.csv; impl failed (exit=137) |
 
 ## Pending Human Decisions
 
@@ -879,4 +911,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T09:56:23+00:00.
+Generated from archived evidence at 2026-10-12T10:23:58+00:00.

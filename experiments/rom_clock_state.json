@@ -20,11 +20,14 @@
   },
   "pending_decisions": ["W28 FRP is exact and1.667985% faster, but exceeds the preplanned plus/minus1% cycle bound. W28 remains fail and W30 stays unlaunched; review a new independently planned FRP throughput study tomorrow without changing this gate.", "F49/W29 actual-memory protection interrupted both independent routes without new OOM; preserve failures and retry under new IDs with explicit two-task scheduling. F48 misses the strict2percent WS-D target by30cycles despite4.113943percent measured speedup; no gate adjustment."],
   "skipped_plans": {"W30": {"prerequisite": "W28", "reason": "W28 exact RTL latency549438 is below the unchanged553171..564345-cycle acceptance range; W28 status=fail. Original W30 plan retained; no implementation or frame-time result."}},
-  "local_exec_sessions": [91661, 38233, 80070],
+  "local_exec_sessions": [91661, 38233, 80070, 2370, 99126, 18016],
   "session_jobs": {
     "91661": ["F50"],
     "38233": ["C15"],
-    "80070": ["F51"]
+    "80070": ["F51"],
+    "2370": ["F52"],
+    "99126": ["W31"],
+    "18016": ["W32"]
   },
   "board_handoff": "experiments/BOARD_HANDOFF.md",
   "wsE": "C13 all13 E065-exact and HLS screen passed; C14 changed-parameter RTL PASS at300632/300661cycles; queue C15 independent5ns route. Preserve the old HLS infeasible row; final feasibility is routed."

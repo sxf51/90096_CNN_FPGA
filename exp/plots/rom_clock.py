@@ -22,12 +22,21 @@ def present(value):
     return value not in {"", "None", "unknown"}
 
 
-def annotate_groups(ax, points, x_key, y_key, include_t=False):
+def annotate_groups(ax, points, x_key, y_key, include_t=False, outside=False):
     grouped = {}
     for row in points:
         coordinate = (float(row[x_key]), float(row[y_key]))
         label = row["id"] + (" T" + row["T"] if include_t else "")
         grouped.setdefault(coordinate, []).append(label)
+    if outside:
+        ordered = sorted(grouped.items(), key=lambda item: (-item[0][1], item[0][0]))
+        for index, (coordinate, labels) in enumerate(ordered):
+            ax.annotate(textwrap.fill(", ".join(labels), width=27), coordinate,
+                        xytext=(1.04, .94-.88*index/max(1, len(ordered)-1)),
+                        textcoords="axes fraction", ha="left", va="center", fontsize=8,
+                        annotation_clip=False,
+                        arrowprops={"arrowstyle": "-", "color": "#777777", "linewidth": .5})
+        return
     ax.figure.canvas.draw()
     renderer = ax.figure.canvas.get_renderer()
     occupied = [ax.get_legend().get_window_extent(renderer)] if ax.get_legend() else []
@@ -90,7 +99,7 @@ plt.close(fig)
 estimates = rows("rom_clock_estimates.csv")
 for metric, unit in (("DSP", "DSP count"), ("latency_cycles", "cycles")):
     points = [row for row in estimates if row["metric"] == metric and present(row["estimate"]) and present(row["actual"])]
-    fig, ax = plt.subplots(figsize=(7, 5), layout="constrained")
+    fig, ax = plt.subplots(figsize=(10, 6), layout="constrained")
     for domain, color in (("HLS", "#287e8e"), ("RTL", "#b65352"), ("routed", "#668b3c")):
         group = [row for row in points if row["actual_domain"] == domain]
         if group:
@@ -103,7 +112,7 @@ for metric, unit in (("DSP", "DSP count"), ("latency_cycles", "cycles")):
     if metric == "latency_cycles":
         ax.set_title("Cycle estimates versus HLS lower bounds and measured RTL")
     ax.legend()
-    annotate_groups(ax, points, "estimate", "actual")
+    annotate_groups(ax, points, "estimate", "actual", outside=True)
     fig.savefig(FIGS/("rom_clock_estimate_"+metric+".png"), dpi=180)
     plt.close(fig)
 

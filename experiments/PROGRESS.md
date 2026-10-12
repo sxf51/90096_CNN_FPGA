@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-W23/C15 implementation active; F48 windowFIFO16 exact and4.1percent faster; fresh route retries planned. W23 same-RTL strategy4.5ns and C15 T4 independent5ns implementation are actually active. F50 rasterFIFO changed-parameter RTL and F51 windowFIFO16 independent5ns route are queued. F48 exact535771/535800cycles recovers22987cycles versus F97, but misses the unchanged WS-D535741-cycle limit by30cycles. Preserve F49/W29 memory-protection failures without new OOM or timing claims; prepare fresh F52 registeredConv34.5ns and W31 ROM5ns retries. Conditional follow-up clocks require independently converged timing/resources. W28 exact549438cycles still fails its unchanged cycle gate and W30 stays unlaunched. Keep two concurrent tasks and actual0.5GiB newest-task protection. F98 board handoff is archived; board measurements remain pending.
+C15 T4 implementation active; actual W23 OOM triggers agreed serial hardware fallback. C15 T4 independent5ns implementation remains active. W23 was kernel OOM-killed at10:19:41UTC, exit137 and OOM1->2; the scheduler correctly activates the agreed serial hardware fallback. F50 rasterFIFO RTL and F51 windowFIFO16 route wait; F52 registeredConv34.5ns, W31 ROM5ns and W32 same-RTL strategy4.5ns retries use fresh immutable workspaces. F48 exact535771/535800cycles recovers22987cycles but misses the strict535741-cycle WS-D limit by30. Original F49/W29 memory-protection failures remain without timing/resource verdicts. Preserve user two-task policy, actual0.5GiB guard and serial-after-OOM state. Conditional clocks require independently converged timing/resources. W28 remains fail and W30 unlaunched. No board results exist.
 
-See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=explicit two-task scheduling with actual memory telemetry.
+See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=serial hardware fallback after measured OOM; two-task policy retained.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T10:19:43+00:00 from archived measurements.
+Updated 2026-10-12T10:23:58+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -26,7 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: C15, F50, F51.
+Final verification: C15, F50, F51, F52, W31, W32.
 
 Conditional plans not run (failed prerequisite, no fabricated result):
 
@@ -38,7 +38,7 @@ Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Archived. Current gat
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
 
-Current user decisions supersede the initial WS0 defaults: complete course set=13 images; final resources=routed; ROM=exploratory; scheduling=explicit two-task mode with actual memory telemetry. Runtime parameter interfaces, strict precision and no-push rules remain.
+Current user decisions supersede the initial WS0 defaults: complete course set=13 images; final resources=routed; ROM=exploratory; scheduling=explicit two-task mode with actual memory telemetry and the agreed serial hardware fallback after measured OOM. Runtime parameter interfaces, strict precision and no-push rules remain.
 
 P08 routed DSP48E2 inspection confirms one cell, AMULTSEL=AD and ADREG=1. W10-W13/C07 split transformed-window generation from a fixed16384*(4*T) MAC loop to remove W07's conditional264x264 bound inflation. C08/C09 use independently verified Conv2-only8-bit weights, retain ten-bit activations, and omit coefficient residual repair. Vitis rejects the original8000-bit Conv3 stream at its4096-bit limit; F08-F12/W14-W16/C10-C11 use independent two4000-bit-stream retries with identical arithmetic. F13-F15 isolate Conv3 window rotation and tree-register overhead using F08's measured7013 multiplexer LUT. All new designs are independent; source and paper plans are committed before runs. Re-run CSV analyses, equivalent offline-weight archives and all plots after all evidence arrives. Finalize ARCH_SUMMARY.md, both checksum audits and final F99 commit.
 

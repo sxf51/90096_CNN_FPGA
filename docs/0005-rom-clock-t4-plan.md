@@ -289,3 +289,6 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | C15 | C13 | queued_or_running | C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22 |
 | F50 | F42 | queued_or_running | unknown |
 | F51 | F47 | queued_or_running | unknown |
+| F52 | F39 | queued_or_running | unknown |
+| W31 | W24 | queued_or_running | unknown |
+| W32 | W21 | queued_or_running | unknown |
