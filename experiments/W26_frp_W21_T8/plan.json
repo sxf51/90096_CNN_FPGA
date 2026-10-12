@@ -1,0 +1,62 @@
+{
+  "config_sha256": "3723644f7c2b07306bfad5cb442179de20b84aed9cb786f2e912f77ab10c49f7",
+  "configuration": {
+    "T": 8,
+    "changes": "Independent frozen W21 copy after committing the paper plan. Change only the three continuous MAC fold pipelines to style=frp. Hypothesis: remove the global stall-enable distribution identified in W22's Conv3 956-fanout path without changing any arithmetic or FIFO token counts.",
+    "clock": 3.33,
+    "clock_variant": "frp",
+    "conclusion": "Screen at HLS DSP<=1100, LUT<=160k, FF<=230k; final acceptance requires independent routed gates and exact changed-parameter RTL. Keep W21/W22 fallback.",
+    "control_experiment": "W21",
+    "defines": {
+      "EXP_ALL_CONTINUOUS": 1,
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 8,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/winograd_frp_v1",
+    "estimates": {
+      "BRAM18K": 146,
+      "Conv1_DSP": 288,
+      "Conv2_DSP": 256,
+      "Conv3_DSP": 100,
+      "DSP": 644,
+      "FF": 140000,
+      "LUT": 85000,
+      "T": 8,
+      "URAM": 0,
+      "basis": "W21 HLS baseline644DSP/146BRAM18K/81086LUT/130057FF/525237cycles; F97 RTL558758cycles, W22 independent4.95ns route. Keep 288/256/100 DSPs and146 BRAM18K; allow approximately3914 additional LUT and9943 FF for free-running valid/flush control. RTL latency is expected within1% of F97's558758, but finite-FIFO backpressure and FRP support must be tested. Target4.5ns only in a later independent implementation, never infer clock closure from HLS.",
+      "latency_cycles": 558758
+    },
+    "fixed": true,
+    "id": "W26",
+    "ii_targets": {
+      "c2_fold": 1,
+      "c3_fold": 1,
+      "wino_fold": 1
+    },
+    "interpretation": "Compare HLS resource/II/schedule evidence and separately measured RTL cycles with the committed estimates and unchanged W21. Explain deviations above20%. No target-clock closure, finite-FIFO performance or board claim is justified before the corresponding measurements.",
+    "memory_scheduler": true,
+    "name": "frp_W21_T8",
+    "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+    "precision": "w10a10acc23",
+    "purpose": "Change only the three continuous MAC fold pipelines to style=frp. Hypothesis: remove the global stall-enable distribution identified in W22's Conv3 956-fanout path without changing any arithmetic or FIFO token counts. Runtime weights, w10a10acc23, replicate padding and srcnn signature remain the frozen W21 contract. This is a separately measurable mainline control.",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "require_weight_predecessor_free": true,
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "W",
+    "set14": true,
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "rom_clock_wsC2",
+    "storage": "local_lutram_s2p",
+    "unroll": "G2 F2 nine subkernels/Cout/Cin"
+  },
+  "created_at": "2026-10-12T04:52:57+00:00",
+  "created_from_commit": "244d5649de22dfd94d01f3941798eb485b97ad41",
+  "purpose_section": "Change only the three continuous MAC fold pipelines to style=frp. Hypothesis: remove the global stall-enable distribution identified in W22's Conv3 956-fanout path without changing any arithmetic or FIFO token counts. Runtime weights, w10a10acc23, replicate padding and srcnn signature remain the frozen W21 contract. This is a separately measurable mainline control.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644 |\n| Conv1_DSP | 288 |\n| Conv2_DSP | 256 |\n| Conv3_DSP | 100 |\n| BRAM18K | 146 |\n| URAM | 0 |\n| T | 8 |\n| LUT | 85000 |\n| FF | 140000 |\n| latency_cycles | 558758 |\n| basis | W21 HLS baseline644DSP/146BRAM18K/81086LUT/130057FF/525237cycles; F97 RTL558758cycles, W22 independent4.95ns route. Keep 288/256/100 DSPs and146 BRAM18K; allow approximately3914 additional LUT and9943 FF for free-running valid/flush control. RTL latency is expected within1% of F97's558758, but finite-FIFO backpressure and FRP support must be tested. Target4.5ns only in a later independent implementation, never infer clock closure from HLS. |\n\nPlanned at 2026-10-12T04:52:57+00:00; estimates are hypotheses, not tool measurements."
+}
