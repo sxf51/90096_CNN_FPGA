@@ -407,6 +407,7 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C16](../experiments/C16_t8_fifo_frp/C16.md) | F47 | pass | 525237.0 | 644.0 | 81485.0 | unknown | unknown | unknown |
 | [C17](../experiments/C17_t4_fifo/C17.md) | C13 | infeasible | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | unknown |
 | [C18](../experiments/C18_ws_impl_C13/C18.md) | C13 | impl_complete | 263090.0 | 1032.0 | 127966.0 | 300632.0 | True | 1.50316 |
+| [C19](../experiments/C19_ws_cosim_C16/C19.md) | C16 | cosim_complete | 525237.0 | 644.0 | 81485.0 | 535976.0 | unknown | unknown |
 | [C20](../experiments/C20_ws_cosim_C17/C20.md) | C17 | cosim_complete | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | unknown |
 
 未测量的计划：
@@ -414,6 +415,5 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | W31 | W24 | queued_or_running | unknown |
-| C19 | C16 | queued_or_running | unknown |
 | C21 | C16 | unlaunched_conditional | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
 | C22 | C17 | unlaunched_conditional | C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18 |

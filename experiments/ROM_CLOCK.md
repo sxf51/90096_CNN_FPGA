@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T16:42:53+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T17:34:52+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -46,6 +46,7 @@ F50 RTL archived; C20 RTL active; W31/C19 queued; C21/C22 conditional. Five plan
 | [C16](C16_t8_fifo_frp/C16.md) | F47 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C17](C17_t4_fifo/C17.md) | C13 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C18](C18_ws_impl_C13/C18.md) | C13 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | 5.0 | True | 1.50316 | 14.269641567524417 | unknown |
+| [C19](C19_ws_cosim_C16/C19.md) | C16 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | 535976.0 | original_verification_pass | unknown | unknown | unknown | unknown | unknown |
 | [C20](C20_ws_cosim_C17/C20.md) | C17 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | original_verification_pass | unknown | unknown | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
@@ -58,7 +59,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [W31](W31_ws_impl_W24/W31.md) | W24 | impl | queued_or_running | unknown |
-| [C19](C19_ws_cosim_C16/C19.md) | C16 | cosim | queued_or_running | unknown |
 | [C21](C21_ws_impl_C16/C21.md) | C16 | impl | unlaunched_conditional | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
 | [C22](C22_ws_impl_C17/C22.md) | C17 | impl | unlaunched_conditional | C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18 |
 
