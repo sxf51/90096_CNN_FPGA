@@ -60,7 +60,12 @@ def replace_once(text, old, new):
 
 
 def build(config, parent):
-    archive = archived(config["id"])
+    plans = list((ROOT/"experiments").glob(config["id"] + "_*/plan.json"))
+    if len(plans) != 1:
+        raise RuntimeError("Expected one committed variant plan")
+    archive = plans[0].parent
+    if (archive/"metrics.json").exists():
+        raise RuntimeError("Completed IDs cannot be implemented or rerun")
     subprocess.run(["git", "cat-file", "-e", "HEAD:" + str((archive/"plan.json").relative_to(ROOT))],
                    cwd=ROOT, check=True)
     target = ROOT/config["design"]
@@ -135,7 +140,7 @@ def main():
     check_protected()
     parent = archived("W21")
     if args.build:
-        config = json.loads((archived(args.id)/"plan.json").read_text())["configuration"]
+        config = json.loads((ROOT/"exp/configs"/(args.id + ".json")).read_text())
         build(config, parent)
         return
     if not args.variant:
