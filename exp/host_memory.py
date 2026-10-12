@@ -49,6 +49,24 @@ def cpu_summary(rows, *, segment_key=None):
             "max_load1": max(loads) if loads else None}
 
 
+def swap_summary(rows):
+    capacities, used = [], []
+    for row in rows:
+        try:
+            total, free = int(row["swap_total_kib"]), int(row["swap_free_kib"])
+        except (KeyError, ValueError, TypeError):
+            continue
+        if total < 0 or not 0 <= free <= total:
+            continue
+        capacities.append(total)
+        used.append(total-free)
+    return {"swap_samples": len(used),
+            "swap_sample_coverage_pct": 100*len(used)/len(rows) if rows else None,
+            "min_swap_capacity_GiB": min(capacities)/1048576 if capacities else None,
+            "max_swap_capacity_GiB": max(capacities)/1048576 if capacities else None,
+            "peak_host_swap_used_GiB": max(used)/1048576 if used else None}
+
+
 def process_tree_rss(root_pid, proc_root=Path("/proc")):
     processes = {}
     for path in proc_root.glob("[0-9]*/status"):
@@ -81,8 +99,11 @@ def sample(proc_root=Path("/proc"), root_pid=None):
                 tools.append((path.parent.name, name, int(fields.get("VmRSS", "0").split()[0])))
         except (OSError, ValueError, KeyError):
             continue
+    swap_total = memory.get("SwapTotal")
     result = {"time": utc(), "total_kib": memory["MemTotal"],
             "available_kib": memory["MemAvailable"], "swap_free_kib": memory["SwapFree"],
+            "swap_total_kib": swap_total,
+            "swap_used_kib": swap_total-memory["SwapFree"] if swap_total is not None else None,
             "tool_count": len(tools), "tool_rss_kib": sum(item[2] for item in tools),
             "tools_pid_name_rss_kib": ";".join(":".join(map(str, item)) for item in sorted(tools)),
             **cpu_sample(proc_root)}

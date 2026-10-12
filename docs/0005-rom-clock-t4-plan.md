@@ -65,6 +65,17 @@ DSP 在布线后可能变多：Vivado 会把一部分加法映射进 DSP。
 4. **comic 图不管。** 课程提供的数据和 `test/tb_set14.cpp` 的参考 PSNR/MSE 表都只有 13 张。
    - 这 13 张就是完整测试集，报告写“Set14（课程提供的 13 张）”。
    - 以后不再因为缺 comic 标注“暂定”（provisional）；已归档的文字不必回改。
+5. **远程主机已开 zram（2026-10-12，用户要求）。** 这一条取代各处“不修改系统 swap”的约定。
+   - 配置：8 GiB `/dev/zram0`，zstd 压缩，优先级 100；`vm.swappiness=100`、`vm.page-cluster=0`。
+   - 配置文件 `/etc/systemd/zram-generator.conf`（systemd-zram-generator 0.3.2，用 `zram-fraction`/`max-zram-size`）和 `/etc/sysctl.d/99-zram.conf`，重启后自动生效。
+   - 不使用硬盘 swap。
+   - `MemAvailable` 不包含 swap，现有内存保护照常按它判断。内存记录里新增的 swap 使用量应作为观测值归档。
+6. **远程工作区清理规则（用户批准）。**
+   - 规则：已在本地归档报告的实验，删除远程 `hls/` 下可重新生成的工程、HDL、`.autopilot` 和仿真构建，保留 `hls/*/report/`、`hls/impl/*/report/`、`hls_data.json`、`config.cmdline`，以及工作区根目录下的全部文件（源码、日志、报告、打包 IP）。工作区目录本身保留，ID 保留规则不变。
+   - 不清理：排队或运行中的任务、它们引用的父实验（两层），以及主线和上板相关的设计（W21、W22、W32、F52、F96–F98、F47/F48、W24/W25、W27/W28、F39/F42/F43、C13–C15、F28/F93–F95）。
+   - 2026-10-12 已执行：清理 148 个工作区，删除 55.4 GiB，保留报告 1.4 GiB；系统盘剩余空间从 33 GB 增到 89 GB。
+   - 每个被清理的工作区根目录有 `cleanup_2026-10-12_hls_manifest.tsv.gz`，记录删除的文件。汇总日志和脚本在远程与本地的 `workspace/exp_runs/_cleanup/`。
+   - 以后要用某个已清理实验的生成 RTL，用 `exp/reproduce_exp.py` 在新 ID 下重新综合，不要去恢复旧工作区。
 
 ## 3. 不变的约束
 
@@ -256,6 +267,8 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 
 分阶段实现的内存汇总必须使用 `impl_synth_host_memory.csv` 和 `impl_route_host_memory.csv`，另存 `host_memory_phases.csv`。总峰值取两阶段实测最大值；CPU利用率只累加各阶段内部的计数器差，排除调度等待、package和阶段之间的空隙。任一阶段缺少采样时写明缺失，不能回退到包含其他任务的全局等待期 `host_memory.csv` 并宣称该任务占用。旧的单进程实现仍使用自己的 `impl_host_memory.csv`。
 
+zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFree` 和两者之差，按阶段及整次工具运行汇总最大 swap 用量与有完整 swap 字段的样本数。旧 CSV 仅有 `SwapFree` 时不能反推总容量或宣称零使用；汇总保留 unknown 和字段覆盖率。主机 swap 用量不等于单个 Vivado 的用量，不能将它加到任务 RSS 当作峰值。正在运行的任务保持原采样模式，在新启动进程中启用新增字段；C18 的运行时主机快照单独归档。
+
 同 0004 第 8 节的表格；另加 `route_feasible` 和 `rtl_cycles × route_clock` 两列。没有测到的写 unknown。
 
 新布线结果的路径分析同样采用本工作流的布线门限。只关联 `cosim_complete` 且 RTL 报告为 PASS 的同父设计周期；失败、超时或周期门槛未通过的仿真不能进入已验证帧时间。布线未收敛时，目标时钟乘周期不能标为已验证时间。
@@ -274,6 +287,7 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 | --- | --- | --- |
 | 2026-10-12 | — | 文档建立。当前最快：W21，在 W22 的 4.95 ns 下 2.766 ms（IP 级）。用户决定见第 2 节。 |
 | 2026-10-12 | — | 用户补充决定：ROM 只作探索，主线保持运行时加载；不再追 comic，13 张即完整测试集；允许按内存预算并行和多线程（第 6.1 节）。 |
+| 2026-10-12 | — | 远程开启 8 GiB zstd zram；按清理规则清理 148 个已归档工作区的 `hls/` 生成物（55.4 GiB），系统盘剩余 89 GB。详见第 2 节第 5、6 条。 |
 
 <!-- ROM_CLOCK_MEASUREMENTS -->
 

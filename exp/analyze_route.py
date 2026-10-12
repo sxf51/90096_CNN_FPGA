@@ -5,7 +5,7 @@ import csv
 import json
 import re
 from analyze_arch import write_csv
-from host_memory import cpu_summary
+from host_memory import cpu_summary, swap_summary
 from route_gates import evaluate_route
 from rtl_acceptance import accepted_cosim
 from run_exp import ROOT, markdown_table, number
@@ -74,7 +74,7 @@ def memory_summary(archive, config):
                   "peak_tool_RSS_GiB": max(float(row["tool_rss_kib"]) for row in rows)/1048576 if rows else None,
                   "peak_process_tree_RSS_GiB": max(float(row["task_tree_rss_kib"]) for row in rows)/1048576
                   if rows and "task_tree_rss_kib" in rows[0] else None,
-                  **cpu_summary(rows)}
+                  **cpu_summary(rows), **swap_summary(rows)}
         phases.append({"telemetry_file": name, **values})
         samples.extend({**row, "telemetry_segment": name} for row in rows)
     values = {"samples": len(samples),
@@ -84,7 +84,7 @@ def memory_summary(archive, config):
               if samples and all("task_tree_rss_kib" in row for row in samples) else None,
               "telemetry_file": ";".join(names),
               "implementation_threads": config.get("implementation_threads", 1),
-              **cpu_summary(samples, segment_key="telemetry_segment")}
+              **cpu_summary(samples, segment_key="telemetry_segment"), **swap_summary(samples)}
     if staged:
         values["measurement_scope"] = "synthesis and implementation stages"
         values["missing_telemetry_files"] = [item["telemetry_file"] for item in phases if not item["samples"]]

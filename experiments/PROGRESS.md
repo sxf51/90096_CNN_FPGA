@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C18 prioritized synthesis active; W32 and F52 close4.5ns. C18 acquired the unique heavy slot at12:20:58UTC, package succeeded, and staged synthesis began12:21:57UTC. Collect its independent5ns timing/resources and per-stage memory; preserve C15 host-memory failure. F50/F51/W31/W30 and C16/C17 remain paused by priority supervisors and automatically resume after C18 or supervisor exit. W32 independently closes4.5ns with WNS+0.144ns,644DSP/45030LUT/89096FF/109BRAM18K; matching F97 RTL558758cycles gives2.514411ms. F52 gives the same frame time with WNS+0.072ns and43468LUT. C16/C17 all13-image C/HLS resumes after C18, followed by new changed-parameter RTL and implementation IDs if screened. Defer F52/W32 checkpoint path exports until the priority hold ends; W32 requires its final postroute_physopt checkpoint. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. No board results exist.
+C18 prioritized placement/routing active; W32 and F52 close4.5ns. C18 acquired the unique heavy slot at12:20:58UTC, package succeeded, and staged synthesis began12:21:57UTC. Synthesis/report exited successfully at12:42:08UTC; a fresh Vivado reopened the same project and started implementation without resynthesis. Collect its independent5ns timing/resources and per-stage memory; preserve C15 host-memory failure. F50/F51/W31/W30 and C16/C17 remain paused by priority supervisors and automatically resume after C18 or supervisor exit. W32 independently closes4.5ns with WNS+0.144ns,644DSP/45030LUT/89096FF/109BRAM18K; matching F97 RTL558758cycles gives2.514411ms. F52 gives the same frame time with WNS+0.072ns and43468LUT. C16/C17 all13-image C/HLS resumes after C18, followed by new changed-parameter RTL and implementation IDs if screened. Defer F52/W32 checkpoint path exports until the priority hold ends; W32 requires its final postroute_physopt checkpoint. The host now has8GiB zstd zram under user changes documented in docs/0005; at12:53UTC SwapFree equaled SwapTotal, so swap usage was zero. Attribute memory improvements only after per-stage/swap measurements. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. No board results exist.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T12:30:14+00:00 from archived measurements.
+Updated 2026-10-12T13:01:40+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 

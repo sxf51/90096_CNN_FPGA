@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from host_memory import cpu_sample, cpu_summary, sample
+from host_memory import cpu_sample, cpu_summary, sample, swap_summary
 
 
 class MemorySampleTests(unittest.TestCase):
@@ -21,6 +21,31 @@ class MemorySampleTests(unittest.TestCase):
             self.assertEqual(row["tool_rss_kib"], 3500)
             self.assertEqual(row["tools_pid_name_rss_kib"], "2:vivado:2000;3:vivado:1500")
             self.assertIsNone(row["cpu_total_ticks"])
+            self.assertIsNone(row["swap_used_kib"])
+
+    def test_swap_usage_uses_the_sampled_capacity(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "meminfo").write_text("MemTotal: 15000 kB\nMemAvailable: 9000 kB\n"
+                                          "SwapTotal: 8000 kB\nSwapFree: 6000 kB\n")
+            row = sample(root)
+            self.assertEqual(row["swap_total_kib"], 8000)
+            self.assertEqual(row["swap_used_kib"], 2000)
+
+    def test_swap_summary_preserves_missing_history_and_capacity_changes(self):
+        rows = [{"swap_free_kib": "0"},
+                {"swap_total_kib": "0", "swap_free_kib": "0"},
+                {"swap_total_kib": "8388608", "swap_free_kib": "6291456"},
+                {"swap_total_kib": "8388608", "swap_free_kib": "8388608"}]
+        result = swap_summary(rows)
+        self.assertEqual(result["swap_samples"], 3)
+        self.assertEqual(result["swap_sample_coverage_pct"], 75)
+        self.assertEqual(result["min_swap_capacity_GiB"], 0)
+        self.assertEqual(result["max_swap_capacity_GiB"], 8)
+        self.assertEqual(result["peak_host_swap_used_GiB"], 2)
+        missing = swap_summary([rows[0]])
+        self.assertEqual(missing["swap_sample_coverage_pct"], 0)
+        self.assertIsNone(missing["peak_host_swap_used_GiB"])
 
     def test_cpu_totals_do_not_double_count_guest_time(self):
         with tempfile.TemporaryDirectory() as temp:

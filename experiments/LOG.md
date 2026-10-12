@@ -515,6 +515,10 @@
 
 - 2026-10-12T12:20:59+00:00: W32: ws_clock_strategy_4p5_retry_W21; status=impl_complete; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-12T12:53 UTC C18：综合及综合报告已于12:42:08UTC成功退出，第二阶段重新打开原project.xpr进行5ns布局布线，无重新综合。12:53UTC检查全部六个等待worker仍为T状态、两个优先监督存活；当前唯一重任务为C18。远程实际MemAvailable=7630408KiB，SwapTotal=SwapFree=8388604KiB，/dev/zram0为8GiB zstd、优先级100；swap使用量0。docs/0005的用户新增记录说明zram与清理由外部已授权操作完成，本agent未修改系统配置。最终内存改善需同时分析分阶段和swap数据，不能全部归因于流程拆分。
+
+- 2026-10-12T13:00 UTC C18：swap采样新增容量和实际使用量，汇总明确旧样本字段缺失，不根据SwapFree推断历史使用；12项内存/分阶段/并行测试和11项路径测试通过。C18正在运行的原逐阶段CSV保持原schema，另存runtime_host_environment.csv作当前主机观测，不能充当整次工具峰值。外部已授权的zram/清理记录保持原文，调度仍最多一项重任务。
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。
