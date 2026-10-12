@@ -571,6 +571,8 @@
 
 - 2026-10-12T22:39 UTC C22 recovery / C23 preparation: SSH transient failure ended local queue46657 during archive transfer; remote C22 worker119223 and staged synthesis survived, while C21 never launched. Confirmed live process and scheduler identity, then started recovery supervisor33324 to collect C22 before launching C21 and W33. It refuses to overwrite any stopped incomplete workspace. C23-C27/F53 were unused remotely and locally; committed C23 WS-F paper estimate before copying frozen C13 to an independent reload-switch directory. Gate only parameter-read/transform/load processes, preserve static uninitialized banks, original wrapper and all arithmetic/FIFO/precision. New sequence checks cover load/reuse/reload/latest-bank retention; fresh-process fallback and all13-image reused weights remain separate mandatory checks. No protected file, existing workspace, numerical gate or physical gate changed.
 
+- 2026-10-12T23:32:35+00:00: C22: ws_impl_C17; status=impl_complete; latency_ms_est=1.05236; impl of C17; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。
