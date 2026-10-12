@@ -457,6 +457,8 @@
 
 - 2026-10-12T04:20:15+00:00: F36: ws0_memory_control_F28; status=provisional; latency_ms_est=2.6150725; ; HLS status retained; final feasibility requires independent routed gates
 
+- 2026-10-12T04:22:30+00:00: F37: ws0_memory_control_W21; status=provisional; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-12 收尾展示材料：最终两地 checksum 与全部报告 SHA256 已通过。修复 CPU 图例颜色，折行样本作用域标签，增大资源校准图以容纳实验 ID；等价离线 G2 归档补入 `winograd_param_stream` 和 `winograd_subkernel_cache`，原始权重及运行时接口不变。以上均为归档/展示更新，不新增硬件运行。

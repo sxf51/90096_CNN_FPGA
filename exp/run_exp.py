@@ -139,9 +139,9 @@ def invoke(args, settings, cwd, logfile, timeout, on_start=None):
         flags = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == "nt" else {"start_new_session": True}
         proc = subprocess.Popen(command_env(args, settings), cwd=cwd, stdout=log,
                                 stderr=subprocess.STDOUT, **flags)
-        if on_start:
-            on_start(proc.pid)
         try:
+            if on_start:
+                on_start(proc.pid)
             code = proc.wait(timeout=timeout)
             return code, time.monotonic() - started
         except subprocess.TimeoutExpired:
@@ -161,6 +161,16 @@ def invoke(args, settings, cwd, logfile, timeout, on_start=None):
             proc.wait()
             log.write(f"\nEXP_TIMEOUT after {timeout} seconds; process tree terminated\n")
             return 124, time.monotonic() - started
+        except BaseException:
+            if os.name == "nt":
+                subprocess.run(["taskkill", "/PID", str(proc.pid), "/T", "/F"], check=False, stdout=log, stderr=log)
+            else:
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+            proc.wait()
+            raise
 
 
 def number(value):

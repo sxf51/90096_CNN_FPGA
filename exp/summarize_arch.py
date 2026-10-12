@@ -43,6 +43,10 @@ def main():
     eligible = [row for row in frames if row["eligible_provisional"] == "True"]
     best = eligible[0] if eligible else None
     text = "# SRCNN K26 architecture exploration\n\n"
+    if (ROOT / "experiments/rom_clock_state.json").exists():
+        text += "Current follow-up: [ROM_CLOCK.md](ROM_CLOCK.md), following [docs/0005](../docs/0005-rom-clock-t4-plan.md). "
+        text += "The complete course Set14 has13 images; final feasibility now uses independently routed resource/timing gates. "
+        text += "Historical HLS statuses and earlier provisional wording below remain original records.\n\n"
     text += ("The fastest resource-feasible supplied-image point is ["+best["id"]+"]("+best["md_path"]+") at "+best["latency_ms_est"]+"ms HLS-estimated latency. " if best else "No resource-feasible exact frame point is currently available. ")
     text += "Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.\n\n"
     text += "Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.\n\n"
@@ -71,17 +75,17 @@ def main():
     if physical_path.is_file():
         physical = list(csv.DictReader(physical_path.open(newline="")))
         physical = [row for row in physical if row["operation"] == "impl" and
-                    row["status"] == "impl_complete" and row["timing_met"] == "True" and
-                    number(row["rtl_frame_ms_at_route_target"]) is not None and
-                    by_id.get(row["parent"], {}).get("eligible_provisional") == "True"]
+                    row["status"] == "impl_complete" and row.get("route_feasible") == "True" and
+                    number(row["rtl_frame_ms_at_route_target"]) is not None]
         physical.sort(key=lambda row: number(row["rtl_frame_ms_at_route_target"]))
         if physical:
             text += "\n## Verified IP Timing\n\n"
-            text += "Matching-source RTL cycles multiplied by independently closed implementation targets. These times exclude board/DDR/driver overhead, and all image-quality acceptance remains provisional until comic is supplied. The routed resources do not replace the original HLS acceptance gates.\n\n"
+            text += "Matching-source RTL cycles multiplied by independently closed implementation targets. These times exclude board/DDR/driver overhead. "
+            text += "Route-feasible rows satisfy setup/hold, zero unrouted nets and all routed resource caps under docs/0005.\n\n"
             text += markdown_table(linked(physical),[
                 "id","parent","rtl_source","rtl_latency_cycles","rtl_interval_cycles",
                 "route_target_ns","route_WNS_ns","route_DSP","route_BRAM18K","route_LUT",
-                "route_FF","rtl_frame_ms_at_route_target"])
+                "route_FF","route_feasible","rtl_frame_ms_at_route_target"])
             text += "\nTarget minus WNS is a slack-derived estimate; only each implemented target above is accepted. Actual first-five-path and hierarchy reports are linked from each experiment.\n"
     for series in ("P","W","G","S","C","F"):
         points = [row for row in arch if row["series"] == series and not row["operation"]]
