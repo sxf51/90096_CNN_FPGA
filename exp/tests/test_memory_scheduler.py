@@ -1,9 +1,12 @@
 import sys
+import json
 import tempfile
 import unittest
+from contextlib import nullcontext
 from pathlib import Path
+from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from memory_scheduler import admission_reason, Scheduler, BUDGETS
+from memory_scheduler import admission_reason, Scheduler, BUDGETS, scheduled_invoke
 from host_memory import process_tree_rss
 
 
@@ -12,6 +15,35 @@ def task(kind):
 
 
 class AdmissionTests(unittest.TestCase):
+    def test_package_and_implementation_share_budget_but_keep_separate_evidence(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            archive = root/"archive"
+            archive.mkdir()
+            config = {"id": "W29"}
+            with (patch("run_exp.ROOT", root),
+                  patch("memory_scheduler.Path.is_file", return_value=True),
+                  patch("memory_scheduler.available_gib", return_value=15),
+                  patch("memory_scheduler.process_start", return_value="task"),
+                  patch("memory_scheduler.oom_count", return_value=0),
+                  patch("host_memory.MemoryMonitor", side_effect=lambda *a, **k: nullcontext()) as monitor,
+                  patch("run_exp.invoke", return_value=(0, 1))):
+                scheduled_invoke(config, archive, "impl", ["vitis-run", "--package"],
+                                 root/"settings", root, root/"package.log", 600, telemetry_name="package")
+                original = (archive/"package_admission.json").read_bytes()
+                scheduled_invoke(config, archive, "impl", ["vivado"],
+                                 root/"settings", root, root/"impl.log", 10800)
+            package = json.loads(original)
+            implementation = json.loads((archive/"impl_admission.json").read_text())
+            self.assertEqual(package["kind"], "impl")
+            self.assertEqual(package["budget_gib"], BUDGETS["impl"])
+            self.assertEqual(package["phase"], "package")
+            self.assertEqual(implementation["phase"], "impl")
+            self.assertEqual((archive/"package_admission.json").read_bytes(), original)
+            self.assertEqual([call.args[0].name for call in monitor.call_args_list],
+                             ["package_host_memory.csv", "impl_host_memory.csv"])
+            self.assertEqual(json.loads(Scheduler(root).path.read_text())["tasks"], {})
+
     def test_controlled_three_job_trial_fits(self):
         tasks = [task("csynth"), task("csynth")]
         self.assertIsNone(admission_reason(tasks, "csim", 8, parallel=True))
