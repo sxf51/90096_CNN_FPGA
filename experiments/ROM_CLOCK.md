@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T17:34:52+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T18:05:52+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -42,6 +42,7 @@ F50 RTL archived; C20 RTL active; W31/C19 queued; C21/C22 conditional. Five plan
 | [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | 558760.0 | original_verification_pass | unknown | unknown | unknown | 6.382452112094161 | False |
 | [F51](F51_ws_impl_F47/F51.md) | F47 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 535771.0 | unknown | 5.0 | True | 2.678855 | 2.0055708185066967 | unknown |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
+| [W31](W31_ws_impl_W24/W31.md) | W24 | impl | impl_complete | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | 5.0 | True | 2.77113 | unknown | unknown |
 | [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
 | [C16](C16_t8_fifo_frp/C16.md) | F47 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C17](C17_t4_fifo/C17.md) | C13 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
@@ -58,7 +59,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W31](W31_ws_impl_W24/W31.md) | W24 | impl | queued_or_running | unknown |
 | [C21](C21_ws_impl_C16/C21.md) | C16 | impl | unlaunched_conditional | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
 | [C22](C22_ws_impl_C17/C22.md) | C17 | impl | unlaunched_conditional | C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18 |
 

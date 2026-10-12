@@ -403,6 +403,7 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [F50](../experiments/F50_ws_cosim_F42/F50.md) | F42 | cosim_complete | 525237.0 | 644.0 | 81550.0 | 558760.0 | unknown | unknown |
 | [F51](../experiments/F51_ws_impl_F47/F51.md) | F47 | impl_complete | 525237.0 | 644.0 | 81086.0 | 535771.0 | True | 2.678855 |
 | [F52](../experiments/F52_ws_impl_F39/F52.md) | F39 | impl_complete | 525237.0 | 644.0 | 81518.0 | 558758.0 | True | 2.514411 |
+| [W31](../experiments/W31_ws_impl_W24/W31.md) | W24 | impl_complete | 524330.0 | 630.0 | 53316.0 | 554226.0 | True | 2.77113 |
 | [W32](../experiments/W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl_complete | 525237.0 | 644.0 | 81086.0 | 558758.0 | True | 2.514411 |
 | [C16](../experiments/C16_t8_fifo_frp/C16.md) | F47 | pass | 525237.0 | 644.0 | 81485.0 | unknown | unknown | unknown |
 | [C17](../experiments/C17_t4_fifo/C17.md) | C13 | infeasible | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | unknown |
@@ -414,6 +415,5 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| W31 | W24 | queued_or_running | unknown |
 | C21 | C16 | unlaunched_conditional | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
 | C22 | C17 | unlaunched_conditional | C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18 |
