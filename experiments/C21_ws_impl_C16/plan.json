@@ -1,0 +1,42 @@
+{
+  "config_sha256": "f75de57f5baa3316f71292803568e90e0c9295f278da9c075e474d110999e37c",
+  "configuration": {
+    "changes": "Use frozen parent C16 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Limit per-run placement/routing to 4 threads while synthesis remains single-threaded; preserve the serial hardware lock. Exit Vivado after synthesis/report, then reopen the new project in a fresh process for implementation/report; retain the cumulative three-hour tool timeout and one-heavy scheduling. Change only the implementation clock constraint; preserve parent HLS RTL.",
+    "clock": 3.33,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/winograd_windows16_frp_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "DSP": 644.0,
+      "FF": 130117.0,
+      "LUT": 81485.0,
+      "T": 8.0,
+      "URAM": 0.0,
+      "basis": "Frozen C16 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: Launch only after C19 accepts both complete changed-parameter RTL transactions with exact E017-compatible outputs. C16 has passed the complete 13-image precision and HLS screen. W30 and W32 independently close 4.5 ns on the same part, providing a measured initial physical target for this new FIFO16 plus FRP combination; those prior results do not establish this candidate timing. Use fresh synthesis/report and implementation/report processes, cumulative three-hour timeout, one heavy task, 18 GiB implementation registration and serial_after_oom. Compare matching C19 measured cycles times this independently closed clock against W30 2.472471 ms, and archive all strict setup/hold/route/resource gates; no board result is inferred.",
+      "latency_cycles": 525237.0
+    },
+    "id": "C21",
+    "implementation_backend": "staged_packaged_flow",
+    "implementation_clock_ns": 4.5,
+    "implementation_driver_template": "F89",
+    "implementation_threads": 4,
+    "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+    "memory_scheduler": true,
+    "name": "ws_impl_C16",
+    "operation": "impl",
+    "purpose": "Verify frozen C16 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: Launch only after C19 accepts both complete changed-parameter RTL transactions with exact E017-compatible outputs. C16 has passed the complete 13-image precision and HLS screen. W30 and W32 independently close 4.5 ns on the same part, providing a measured initial physical target for this new FIFO16 plus FRP combination; those prior results do not establish this candidate timing. Use fresh synthesis/report and implementation/report processes, cumulative three-hour timeout, one heavy task, 18 GiB implementation registration and serial_after_oom. Compare matching C19 measured cycles times this independently closed clock against W30 2.472471 ms, and archive all strict setup/hold/route/resource gates; no board result is inferred.",
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "C",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 10800,
+    "validation_parent": "C16",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "C16"
+  },
+  "created_at": "2026-10-12T15:59:51+00:00",
+  "created_from_commit": "3a072c353452cd4ea2c01932095f7cffac9840fb",
+  "purpose_section": "Verify frozen C16 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: Launch only after C19 accepts both complete changed-parameter RTL transactions with exact E017-compatible outputs. C16 has passed the complete 13-image precision and HLS screen. W30 and W32 independently close 4.5 ns on the same part, providing a measured initial physical target for this new FIFO16 plus FRP combination; those prior results do not establish this candidate timing. Use fresh synthesis/report and implementation/report processes, cumulative three-hour timeout, one heavy task, 18 GiB implementation registration and serial_after_oom. Compare matching C19 measured cycles times this independently closed clock against W30 2.472471 ms, and archive all strict setup/hold/route/resource gates; no board result is inferred.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 81485.0 |\n| FF | 130117.0 |\n| latency_cycles | 525237.0 |\n| T | 8.0 |\n| basis | Frozen C16 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: Launch only after C19 accepts both complete changed-parameter RTL transactions with exact E017-compatible outputs. C16 has passed the complete 13-image precision and HLS screen. W30 and W32 independently close 4.5 ns on the same part, providing a measured initial physical target for this new FIFO16 plus FRP combination; those prior results do not establish this candidate timing. Use fresh synthesis/report and implementation/report processes, cumulative three-hour timeout, one heavy task, 18 GiB implementation registration and serial_after_oom. Compare matching C19 measured cycles times this independently closed clock against W30 2.472471 ms, and archive all strict setup/hold/route/resource gates; no board result is inferred. |\n\nPlanned at 2026-10-12T15:59:51+00:00; estimates are hypotheses, not tool measurements."
+}
