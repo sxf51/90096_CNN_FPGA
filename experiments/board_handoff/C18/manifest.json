@@ -1,0 +1,114 @@
+{
+  "board_validation": "unknown",
+  "cosimulation": "C14",
+  "delta_psnr": -0.07589037644656216,
+  "drivers": [
+    {
+      "file": "xsrcnn.c",
+      "sha256": "4a0b1640ecb5b9bb766c78328a649981fa90ece3ce89d56f094c8a56500d4cc6",
+      "zip_member": "drivers/srcnn_v1_0/src/xsrcnn.c"
+    },
+    {
+      "file": "xsrcnn.h",
+      "sha256": "e4a9dfcca58d8423e16f6cb8785fdeeb055205649e78109f2aee0a6c047b3863",
+      "zip_member": "drivers/srcnn_v1_0/src/xsrcnn.h"
+    },
+    {
+      "file": "xsrcnn_hw.h",
+      "sha256": "0d7fbe8369d30dd7f7bdcaed36809699c2db836f224f2f07a8bdf7da35529b36",
+      "zip_member": "drivers/srcnn_v1_0/src/xsrcnn_hw.h"
+    },
+    {
+      "file": "xsrcnn_linux.c",
+      "sha256": "0b2fbf0b26beadb42b7a18920cdea7a48fc936945fb2e4a70f4b00c7d8f8a119",
+      "zip_member": "drivers/srcnn_v1_0/src/xsrcnn_linux.c"
+    },
+    {
+      "file": "xsrcnn_sinit.c",
+      "sha256": "ab7ee237011e1c4d480dcd06fd201d42ec7a7115d0dbbad116cc3d348919368e",
+      "zip_member": "drivers/srcnn_v1_0/src/xsrcnn_sinit.c"
+    }
+  ],
+  "ideal_ip_frame_ms": 1.50316,
+  "image_count": 13,
+  "implementation": "C18",
+  "local_ip_package": "workspace/exp_runs/_handoff/C18/xilinx_com_hls_srcnn_1_0.zip",
+  "max_ooc_clock_mhz": 200.0,
+  "package_bytes": 2055948,
+  "package_sha256": "fbd7798fc94e04840bf6d79f0201f25fcd81ed448418842b2ff66771cf2a6184",
+  "parent": "C13",
+  "precision": "w10_8_10a10acc23_21_23",
+  "registers": [
+    {
+      "argument": "in_r",
+      "offset": "0x10",
+      "pointer_bits": 64
+    },
+    {
+      "argument": "weights1",
+      "offset": "0x1c",
+      "pointer_bits": 64
+    },
+    {
+      "argument": "biases1",
+      "offset": "0x28",
+      "pointer_bits": 64
+    },
+    {
+      "argument": "weights2",
+      "offset": "0x34",
+      "pointer_bits": 64
+    },
+    {
+      "argument": "biases2",
+      "offset": "0x40",
+      "pointer_bits": 64
+    },
+    {
+      "argument": "weights3",
+      "offset": "0x4c",
+      "pointer_bits": 64
+    },
+    {
+      "argument": "biases3",
+      "offset": "0x58",
+      "pointer_bits": 64
+    },
+    {
+      "argument": "out_r",
+      "offset": "0x64",
+      "pointer_bits": 64
+    }
+  ],
+  "remote_ip_package": "/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C18/hls/impl/ip/xilinx_com_hls_srcnn_1_0.zip",
+  "route": {
+    "impl_BRAM18K": 109.0,
+    "impl_BRAM36": 54.5,
+    "impl_DSP": 1032.0,
+    "impl_FF": 102072.0,
+    "impl_LUT": 58529.0,
+    "impl_THS_ns": 0.0,
+    "impl_TNS_ns": 0.0,
+    "impl_TPWS_ns": 0.0,
+    "impl_URAM": 0.0,
+    "impl_WHS_ns": 0.031,
+    "impl_WNS_ns": 0.047,
+    "impl_partial_nets": 0,
+    "impl_resource_report": "reports/impl/srcnn_utilization_routed.rpt",
+    "impl_timing_report": "reports/impl/srcnn_timing_routed.rpt",
+    "impl_unrouted_nets": 0,
+    "route_dsp_over_90pct": false,
+    "route_feasible": true,
+    "route_gate_failures": [],
+    "route_gate_missing": [],
+    "timing_met": true
+  },
+  "route_clock_ns": 5.0,
+  "rtl_interval_cycles": 300661.0,
+  "rtl_latency_cycles": 300632.0,
+  "source_commit": "fbba82c289841243d64c97f35e68d1623aa87d7d",
+  "time": "2026-10-12T14:05:16+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Mon Oct 12 15:58:42 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "validation_parent": "C13",
+  "verification_commit": "c5f5e83256d39666833c07d0e55b7a1a32230ee2"
+}

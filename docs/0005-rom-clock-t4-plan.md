@@ -124,6 +124,13 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 4. 时钟：F98 只在 5 ns 下收敛，板上 PL 时钟不能超过 200 MHz。如果板上 IOPLL 是 1000 MHz，除数 5 正好是 200 MHz。整板 block design 要重新检查时序：OOC 收敛不包含互联。
 5. 结果写进第 8 节，不做推断。
 
+后续候选交付：已独立通过布线门限和同父两帧换参数 RTL 验证的运行时加载版本，可用
+`python3 exp/prepare_board_handoff.py <implementation_ID> --cosim <cosim_ID>`
+另行归档到 `experiments/board_handoff/<implementation_ID>/HANDOFF.md`。保留原 F98
+交付物。脚本重新核对布线门限、父设计身份、换参数逐位结果、13 图验证及包的传输前后
+SHA256，只归档软件驱动和元数据，IP ZIP 保持在 Git 排除的工作区。交付明确区分 HLS
+打包元数据与独立收敛的布线时钟，板端实际 PL 时钟不得超过后者；不据此宣称上板通过。
+
 ### WS-B 常量 ROM 权重（探索，W23 起）
 
 目的：权重在编译时固定，去掉参数 AXI 口、参数读取和变换进程、参数 FIFO 和私有权重的写端口。F98/W22 的参数分发路径正是关键路径之一。
