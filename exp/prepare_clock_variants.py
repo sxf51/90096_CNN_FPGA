@@ -50,6 +50,19 @@ VARIANTS = {
                 "LUT6 at64bits/LUT plus pointers/forwarding; budget3014LUT/943FF. Estimate540000 RTL "
                 "cycles; parent33521-cycle FIFO/startup excess is the absolute upper recovery bound. "
                 "Require all13 images and changed-parameter two-frame finite-FIFO RTL evidence."),
+    "windows16": ("winograd_window_fifo16_v1", "rom_clock_wsD3", 644, 146, 81650, 130600, 535500,
+                  "Change only the transformed-window FIFO in conv1_stream from2 to16 LUTRAM entries. "
+                  "F97's windows_U records45974 read-block cycles over two frames, while wino_engine "
+                  "has zero write stalls and its fold takes547283 rather than524288 nominal cycles. "
+                  "Hypothesis: a deeper window lookahead covers the no-tile scan row between paired tile rows, "
+                  "which a deeper raster feature FIFO may not address.",
+                  "Keep288/256/100 DSPs and146 BRAM18K;14 additional9*16*12-bit windows store24192bits, "
+                  "about378LUT6 at64bits/LUT plus control. Budget564LUT/543FF. At4*T=32cycles per "
+                  "tile,16 buffered tiles cover512 compute cycles versus a roughly264-cycle row-scan "
+                  "gap, whereas2 entries cover64cycles. F97's22995 excess fold cycles closely match "
+                  "45974/2=22987 window-read blocks per frame. Predict558758-22995=535763cycles, "
+                  "rounded535500 as a testable estimate; the2% target535741.74 is deliberately marginal. "
+                  "Counter totals overlap across processes and are not independently additive."),
 }
 
 
@@ -105,6 +118,9 @@ static c3_operands register_c3_operands(act2 activation, weight coefficient) {
                     ic < N2/2 ? value0.v[tap*(N2/2)+ic] : value1.v[tap*(N2/2)+ic-N2/2], weights[ic][tap]);
                 auto product = operands.activation*operands.coefficient;'''
         text = replace_once(text, old, new)
+    elif variant == "windows16":
+        text = replace_once(text, "#pragma HLS STREAM variable=windows depth=2",
+                            "#pragma HLS STREAM variable=windows depth=16")
     elif variant in {"fifo16", "fifo32"}:
         text = replace_once(text, "#pragma HLS STREAM variable=features depth=4",
                             "#pragma HLS STREAM variable=features depth=" + variant[4:])
