@@ -4,7 +4,7 @@ The fastest resource-feasible supplied-image point is [W21](W21_subkernel_raw_ca
 
 Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.
 
-Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). Three hardware operations remain: active F97 changed-parameter RTL, queued F98 independent5ns W21 implementation, and one WS4 same-RTL physical-clock probe chosen from F98's own paths. Preserve session37202; F95 is complete and session25954 waits to export its existing checkpoint paths. Do not add further exploration. Then finish local/remote checksums, report provenance, plots and summaries before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
+Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). Two hardware operations remain: active F98 independent5ns W21 implementation and one WS4 same-RTL physical-clock probe chosen from F98's own paths. Preserve session37202. F95 own five paths/hierarchy are archived; F97 two-frame changed-parameter RTL is exact with measured558758-cycle latency/558787 interval and6.382071% HLS overhead. Do not add further exploration. Then finish local/remote checksums, report provenance, plots and summaries before F99 closure. W19/F29/F30 remain infeasible and W20 diagnostic-only.
 
 ## Current Best
 
@@ -18,6 +18,7 @@ Actual verification of the current HLS winner:
 
 | id | operation | status | impl_WNS_ns | timing_met | impl_DSP | impl_LUT | impl_FF | impl_BRAM36 | impl_URAM | rtl_status | rtl_latency_max | rtl_interval_max | cycle_deviation_pct |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F97](F97_ws_cosim_W21/F97.md) | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 558758.0 | 558787.0 | 6.382071331608397 |
 
 ## P Direction
 
@@ -413,6 +414,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [W21](W21_subkernel_raw_cache_T8/W21.md) | frame | 645.0 | 644.0 | -0.15503875968991832 | 527000.0 | 525237.0 | -0.33453510436433076 | provisional |
 | [F96](F96_ws_all_W21/F96.md) | frame | 644.0 | unknown | unknown | 525237.0 | unknown | unknown | csim_pass |
 | [F95](F95_ws_impl_F28/F95.md) | frame | 502.0 | 591.0 | 17.729083665338653 | 1046029.0 | unknown | unknown | impl_complete |
+| [F97](F97_ws_cosim_W21/F97.md) | frame | 644.0 | unknown | unknown | 525237.0 | 558758.0 | 6.382071331608397 | cosim_complete |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -452,6 +454,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [F93](F93_ws_reload_cosim_F28/F93.md) | frame | F28 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 1059506.0 | 1059535.0 | 1.2883964020117933 |
 | [W20](W20_ws_impl_W17/W20.md) | frame | W17 | impl | impl_complete | 696.0 | 54.5 | 42812.0 | 89690.0 | 0.0 | 0.188 | True | unknown | unknown | unknown | unknown |
 | [F95](F95_ws_impl_F28/F95.md) | frame | F28 | impl | impl_complete | 591.0 | 36.0 | 30140.0 | 76498.0 | 0.0 | 0.282 | True | unknown | unknown | unknown | unknown |
+| [F97](F97_ws_cosim_W21/F97.md) | frame | W21 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 558758.0 | 558787.0 | 6.382071331608397 |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -487,6 +490,22 @@ Finite-FIFO RTL counters span both transactions, including startup/inactive cycl
 | [F93](F93_ws_reload_cosim_F28/F93.md) | result_U | 1 | 0.0 | 93.85549309705648 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
 | [F93](F93_ws_reload_cosim_F28/F93.md) | windows0_U | 2 | 0.8178959329827435 | 0.7415426200606297 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
 | [F93](F93_ws_reload_cosim_F28/F93.md) | windows1_1_U | 2 | 0.8178959329827435 | 0.7415426200606297 | [counters](F93_ws_reload_cosim_F28/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | raw_U | 512 | 82.47619899785253 | 0.01807444523979957 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | params1_U | 2 | 0.0 | 1.1637437365783823 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | params2_U | 4 | 0.0 | 1.4289549033643523 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | params3_U | 4 | 0.0 | 1.854688618468146 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | raw1_U | 16 | 0.010200429491768075 | 0.006800286327845383 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | padded1_U | 16 | 86.63260558339299 | 0.0658554044380816 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | features2_U | 4 | 0.13439513242662848 | 87.28793843951324 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | features_U | 4 | 80.87240515390121 | 4.204545454545454 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | windows_U | 2 | 86.68432355046528 | 4.113636363636363 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | tiles_U | 1 | 0.0 | 87.51360057265569 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | top_U | 210 | 0.0 | 6.991410164638511 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | bottom_U | 330 | 0.0 | 0.0 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | padded3_U | 16 | 0.614352183249821 | 87.20150322118826 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | result_U | 1 | 0.0 | 88.34931997136721 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | windows0_U | 2 | 0.8192555476020043 | 4.881531853972799 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
+| [F97](F97_ws_cosim_W21/F97.md) | windows1_U | 2 | 0.8192555476020043 | 4.881531853972799 | [counters](F97_ws_cosim_W21/profiling/channels.csv) |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -632,4 +651,4 @@ Use the best exact resource-feasible architecture as the integration candidate o
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T00:03:47+00:00.
+Generated from archived evidence at 2026-10-12T00:55:40+00:00.

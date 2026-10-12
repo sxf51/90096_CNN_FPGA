@@ -304,6 +304,7 @@ WS0–WS4 收尾使用 `python3 exp/close_weight_loading.py`。恢复状态需�
 | [F94](../experiments/F94_ws_all_F28/F94.md) | unknown | 16 | 2.5 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | csim_pass |
 | [F95](../experiments/F95_ws_impl_F28/F95.md) | F28 | 16 | 2.5 | 2.377 | 1046029.0 | 1046030.0 | 2.6150725 | 502.0 | 73.0 | 61553.0 | unknown | 122061.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | impl_complete |
 | [F96](../experiments/F96_ws_all_W21/F96.md) | unknown | 8 | 3.33 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | csim_pass |
+| [F97](../experiments/F97_ws_cosim_W21/F97.md) | W21 | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 644.0 | 146.0 | 81086.0 | unknown | 130057.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | cosim_complete |
 | [W17](../experiments/W17_narrow_raw_banks_T8/W17.md) | unknown | 8 | 4 | 3.239 | 532562.0 | 532563.0 | 2.130248 | 648.0 | 146.0 | 93166.0 | 42289.0 | 122399.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | infeasible |
 | [W19](../experiments/W19_streamed_winograd_T8/W19.md) | unknown | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 645.0 | 146.0 | 83623.0 | 3170.0 | 130843.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | infeasible |
 | [W20](../experiments/W20_ws_impl_W17/W20.md) | W17 | 8 | 4 | 3.239 | 532562.0 | 532563.0 | 2.130248 | 648.0 | 146.0 | 93166.0 | unknown | 122399.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | impl_complete |
@@ -315,6 +316,7 @@ WS0–WS4 收尾使用 `python3 exp/close_weight_loading.py`。恢复状态需�
 | [F92](../experiments/F92_ws_impl_F25/F92.md) | F25 | F82 | 1068183.0 | 1068212.0 | 5.0 | 0.568 | 0.0 | 4.432 | 592.0 | 72.0 | 32400.0 | 77757.0 | True | 5.340915 | impl_complete |
 | [F93](../experiments/F93_ws_reload_cosim_F28/F93.md) | F28 | unknown | 1059506.0 | 1059535.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
 | [F95](../experiments/F95_ws_impl_F28/F95.md) | F28 | F93 | 1059506.0 | 1059535.0 | 5.0 | 0.282 | 0.0 | 4.718 | 591.0 | 72.0 | 30140.0 | 76498.0 | True | 5.29753 | impl_complete |
+| [F97](../experiments/F97_ws_cosim_W21/F97.md) | W21 | unknown | 558758.0 | 558787.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
 | [W20](../experiments/W20_ws_impl_W17/W20.md) | W17 | unknown | unknown | unknown | 5.0 | 0.188 | 0.0 | 4.812 | 696.0 | 109.0 | 42812.0 | 89690.0 | True | unknown | impl_complete |
 
 负 WNS 对应的周期只作估计，不能当作时序通过；缺失值为 unknown。
