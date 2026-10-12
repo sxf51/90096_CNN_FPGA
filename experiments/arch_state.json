@@ -266,11 +266,14 @@
       9972,
       89193,
       6645,
-      14188
+      14188,
+      1570
     ],
     "mainline_basis": "F47",
     "next": "C18/C14 is the verified mixed T4 leader at 5 ns and 1.503160 ms. Its IP handoff is archived alongside F98. W30/W28 independently closes 4.5 ns at 2.472471 ms for uniform T8. F51 is running; F50, W31, C16 and C17 are waiting. Finish these five results. Once C16/C17 pass all 13 images and HLS screening, plan fresh changed-parameter cosim C19/C20 and staged implementation C21/C22; these IDs are currently unused locally and remotely and have not been launched. Use 4.5 ns for T8 and 5 ns for T4 based on independent routed evidence, with no lower RTL cycle bound. Recheck IDs before planning. C18/W32 checkpoint exports are queued; W32 requires its final postroute_physopt checkpoint. No resource-driven T4 ROM retry is currently needed. Preserve one heavy task, budgeted light admission, the 18 GiB implementation registration and serial_after_oom while legacy workers exist. Refresh CSV analyses and plots after each result, then perform the final two-location integrity audit. Precision, runtime interfaces and physical gates remain strict. No board results exist.",
-    "paused_waiter_ids": [],
+    "paused_waiter_ids": [
+      "W31"
+    ],
     "pending_decisions": [
       "Board validation remains unavailable to the agent; F98 handoff is archived.",
       "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."
@@ -287,11 +290,24 @@
     "priority_job": null,
     "priority_light_evidence": "C18_ws_impl_C13/priority_light_waiters.json",
     "priority_released_utc": "2026-10-12T13:32:30+00:00",
+    "queue_order_supervisor": {
+      "auto_resume": true,
+      "basis": "After active F51, cosim admits memory-bounded C16/C17 screening; implementation keeps its 18 GiB registration.",
+      "evidence": "F50_ws_cosim_F42/combo_overlap_priority.json",
+      "paused": [
+        "W31"
+      ],
+      "priority": "F50"
+    },
     "resource_policy": "routed",
     "runtime_environment_evidence": "C18_ws_impl_C13/runtime_host_environment.csv",
     "session_jobs": {
       "14188": [
         "W32"
+      ],
+      "1570": [
+        "F50",
+        "W31"
       ],
       "6645": [
         "C18"
@@ -356,7 +372,7 @@
     }
   ],
   "skipped_conditional_plans": {},
-  "time": "2026-10-12T14:41:07+00:00",
+  "time": "2026-10-12T14:51:21+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",

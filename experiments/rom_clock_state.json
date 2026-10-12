@@ -16,7 +16,14 @@
   "priority_job": null,
   "completed_priority_job": "C18",
   "priority_released_utc": "2026-10-12T13:32:30+00:00",
-  "paused_waiter_ids": [],
+  "paused_waiter_ids": ["W31"],
+  "queue_order_supervisor": {
+    "priority": "F50",
+    "paused": ["W31"],
+    "basis": "After active F51, cosim admits memory-bounded C16/C17 screening; implementation keeps its 18 GiB registration.",
+    "evidence": "F50_ws_cosim_F42/combo_overlap_priority.json",
+    "auto_resume": true
+  },
   "priority_evidence": "C18_ws_impl_C13/priority_waiters.json",
   "priority_light_evidence": "C18_ws_impl_C13/priority_light_waiters.json",
   "runtime_environment_evidence": "C18_ws_impl_C13/runtime_host_environment.csv",
@@ -30,7 +37,7 @@
   },
   "pending_decisions": ["Board validation remains unavailable to the agent; F98 handoff is archived.", "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."],
   "skipped_plans": {},
-  "local_exec_sessions": [91661, 80070, 99126, 9972, 89193, 6645, 14188],
+  "local_exec_sessions": [91661, 80070, 99126, 9972, 89193, 6645, 14188, 1570],
   "session_jobs": {
     "91661": ["F50"],
     "80070": ["F51"],
@@ -38,7 +45,8 @@
     "9972": ["C16"],
     "89193": ["C17"],
     "6645": ["C18"],
-    "14188": ["W32"]
+    "14188": ["W32"],
+    "1570": ["F50", "W31"]
   },
   "board_handoff": "experiments/BOARD_HANDOFF.md",
   "candidate_board_handoffs": {"C18": "experiments/board_handoff/C18/HANDOFF.md"},
