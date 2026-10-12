@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T12:20:59+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T12:30:14+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-F52 closes4.5ns; C18 has user priority after active W32. F52 independently closes4.5ns with WNS+0.072ns,644DSP/43468LUT/89030FF/109BRAM18K; matching F43 RTL558758cycles gives2.514411ms IP latency. W32 is active. User prioritizes C18 next: unadmitted F50/F51/W31/W30 and C16/C17 workers are paused under the scheduler guard by exp/priority_waiters.py and automatically resume after C18 or supervisor exit. C18 packages frozen C13 and splits synthesis/report from routing/report into fresh Vivado processes at5ns; preserve C15 host-memory failure. C16/C17 all13-image C/HLS screening resumes after C18, followed by new changed-parameter RTL and implementation IDs if screened. Defer F52 checkpoint path export until the priority hold ends. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. No board results exist.
+C18 prioritized synthesis active; W32 and F52 close4.5ns. C18 acquired the unique heavy slot at12:20:58UTC, package succeeded, and staged synthesis began12:21:57UTC. Collect its independent5ns timing/resources and per-stage memory; preserve C15 host-memory failure. F50/F51/W31/W30 and C16/C17 remain paused by priority supervisors and automatically resume after C18 or supervisor exit. W32 independently closes4.5ns with WNS+0.144ns,644DSP/45030LUT/89096FF/109BRAM18K; matching F97 RTL558758cycles gives2.514411ms. F52 gives the same frame time with WNS+0.072ns and43468LUT. C16/C17 all13-image C/HLS resumes after C18, followed by new changed-parameter RTL and implementation IDs if screened. Defer F52/W32 checkpoint path exports until the priority hold ends; W32 requires its final postroute_physopt checkpoint. Keep one heavy plus budgeted light tasks, runtime interfaces and all numerical/physical gates. No board results exist.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -39,7 +39,7 @@ F52 closes4.5ns; C18 has user priority after active W32. F52 independently close
 | [C15](C15_ws_impl_C13/C15.md) | C13 | impl | fail | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [F49](F49_ws_impl_F39/F49.md) | F39 | impl | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
-| [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | unknown | unknown |
+| [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -65,6 +65,7 @@ These plans have no result row. In particular, unlaunched implementation is neit
 | id | parent | rtl_source | rtl_cycles | route_clock_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 |
+| [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | F97 | 558758.0 | 4.5 | 0.144 | 644.0 | 109.0 | 45030.0 | 89096.0 | 2.514411 |
 | [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 |
 | [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
 

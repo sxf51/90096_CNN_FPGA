@@ -7,13 +7,27 @@ from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from analyze_route import analyze, setup_paths, hierarchy
-from archive_setup_paths import archive_complete, register_report
+from archive_setup_paths import archive_complete, register_report, select_checkpoint
 from archive_route_progress import resources, routing_progress
 from verify_exp import parse_verification
 from run_exp import ROOT
 
 
 class RoutedPathTests(unittest.TestCase):
+    def test_final_optimized_checkpoint_is_used_instead_of_preoptimization_route(self):
+        checkpoints = ["work/impl_1/bd_0_wrapper_routed.dcp",
+                       "work/impl_1/bd_0_wrapper_postroute_physopt.dcp"]
+        self.assertEqual(select_checkpoint(checkpoints, True), checkpoints[1])
+        self.assertEqual(select_checkpoint(checkpoints), checkpoints[1])
+        self.assertEqual(select_checkpoint(checkpoints[:1]), checkpoints[0])
+
+    def test_checkpoint_selection_rejects_missing_or_ambiguous_final_state(self):
+        with self.assertRaisesRegex(RuntimeError, "optimization checkpoint is missing"):
+            select_checkpoint(["work/impl_1/top_routed.dcp"], True)
+        with self.assertRaisesRegex(RuntimeError, "unique final"):
+            select_checkpoint(["work/impl_1/top_postroute_physopt.dcp",
+                               "work/impl_2/top_postroute_physopt.dcp"], True)
+
     def route_fixture(self, root, wns=.1, accepted_cosim=True):
         archive = root / "experiments/F01_impl"
         archive.mkdir(parents=True)
@@ -101,6 +115,10 @@ class RoutedPathTests(unittest.TestCase):
             register_report(config, archive, report, "srcnn_setup5_routed.rpt")
             register_report(config, archive, report, "srcnn_setup5_routed.rpt")
             self.assertEqual(len(config["verification_reports"]), 1)
+            self.assertTrue(archive_complete(archive, config, script))
+            config["implementation_strategy"] = "Performance_Explore"
+            self.assertFalse(archive_complete(archive, config, script))
+            config["setup_paths_checkpoint"] = {"stage": "post_route_phys_opt"}
             self.assertTrue(archive_complete(archive, config, script))
             report.write_text(block*4)
             self.assertFalse(archive_complete(archive, config, script))

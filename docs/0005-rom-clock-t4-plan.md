@@ -262,6 +262,8 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 
 从已有 routed checkpoint 导出五条路径也属于 Vivado 任务，使用双任务调度和独立 `setup_paths` 内存采样，避免在两个硬件任务之外另起一个 Vivado。导出仅打开 checkpoint 并读报告，不重新布线；其失败不改写已有实现结果，保留诊断后再重试。ROM 的模块资源报告按实际顶层 `srcnn_rom` 归档，不能套用运行时版本的文件名。
 
+启用布线后物理优化的 `Performance_Explore` 实验必须从最终 `*_postroute_physopt.dcp` 导出路径，而不是优化前的 `*_routed.dcp`；归档选用的相对路径、阶段和SHA256。最终checkpoint缺失或同阶段有多个文件时明确报错，不能回退到较早状态。默认策略继续使用最终routed checkpoint。C18优先期间不另行占槽导出。
+
 `python3 exp/audit_rom_clock.py --snapshot` 可在任务运行时校验两地原始文件、冻结设计、已归档报告及未测量计划；去掉 `--snapshot` 则要求远程无实验进程。审计结果写到 `experiments/rom_clock_audit.json`，明确保留未启动计划和未完成状态。审计通过本身不代表布线或上板验收完成。
 
 条件任务的前置验收失败时，保留原计划和门槛，在状态文件中记录未运行原因及对应失败实验。汇总单独标为 `not_run_condition_failed`，不得制造 results.csv 行、周期或布线结果。收尾审计校验失败证据后可将此条件任务计为已处理；`all_operations_archived` 仍反映有没有实际结果，另用 `all_required_operations_resolved` 区分计划已处理和全部实际运行。

@@ -11,6 +11,17 @@ from analyze_route import setup_paths
 from run_exp import ROOT, append_log, check_protected, write_json
 
 
+def select_checkpoint(paths, require_post_route=False):
+    final = [path for path in paths if path.endswith("_postroute_physopt.dcp")]
+    routed = [path for path in paths if path.endswith("_routed.dcp")]
+    if require_post_route and not final:
+        raise RuntimeError("Final post-route physical optimization checkpoint is missing")
+    selected = final or routed
+    if len(selected) != 1:
+        raise RuntimeError("Require one unique final implementation checkpoint")
+    return selected[0]
+
+
 def archive_complete(archive, config, script):
     destination = archive / "reports/impl/srcnn_setup5_routed.rpt"
     if (not destination.is_file() or not (archive / "critical_paths.csv").is_file() or
@@ -18,6 +29,9 @@ def archive_complete(archive, config, script):
             config.get("setup_paths_script_sha256") != hashlib.sha256(script.read_bytes()).hexdigest()):
         return False
     if len(setup_paths(destination.read_text())) != 5:
+        return False
+    if (config.get("implementation_strategy") == "Performance_Explore" and
+            config.get("setup_paths_checkpoint", {}).get("stage") != "post_route_phys_opt"):
         return False
     records = [item for item in config.get("verification_reports", [])
                if item["archived_file"] == str(destination.relative_to(archive))]
@@ -50,9 +64,10 @@ def main():
     remote_root = "/home/lipuze/amdprojects/90096_CNN_FPGA"
     remote_work = remote_root + "/workspace/exp_runs/" + args.id
     ssh = ["ssh", "-F", str(ROOT.parent / "ssh-config"), "-o", "BatchMode=yes", "xiaoxin-ubuntu"]
-    paths = subprocess.check_output(ssh + ["find " + shlex.quote(remote_work) + " -type f -name '*_routed.dcp'"], text=True).splitlines()
-    if len(paths) != 1:
-        raise RuntimeError("Require one unique routed checkpoint")
+    paths = subprocess.check_output(ssh + ["find " + shlex.quote(remote_work)
+                                          + " -type f \\( -name '*_routed.dcp' -o -name '*_postroute_physopt.dcp' \\)"],
+                                    text=True).splitlines()
+    checkpoint = select_checkpoint(paths, config.get("implementation_strategy") == "Performance_Explore")
     subprocess.run(["scp", "-F", str(ROOT.parent / "ssh-config"), str(script),
                     "xiaoxin-ubuntu:"+remote_work+"/report_setup_paths.tcl"], check=True)
     output = remote_work+"/srcnn_setup5_routed.rpt"
@@ -62,8 +77,8 @@ def main():
             "work=Path("+repr(remote_work)+")\n"
             "archive=Path("+repr(remote_root+"/experiments/"+archive.name)+")\n"
             "config=json.loads((archive/'config.json').read_text())\n"
-            "print('CHECKPOINT_SHA256',hashlib.sha256(Path("+repr(paths[0])+").read_bytes()).hexdigest(),flush=True)\n"
-            "args=['vivado','-mode','batch','-source',str(work/'report_setup_paths.tcl'),'-notrace','-nojournal','-tclargs',"+repr(paths[0])+","+repr(output)+"]\n"
+            "print('CHECKPOINT_SHA256',hashlib.sha256(Path("+repr(checkpoint)+").read_bytes()).hexdigest(),flush=True)\n"
+            "args=['vivado','-mode','batch','-source',str(work/'report_setup_paths.tcl'),'-notrace','-nojournal','-tclargs',"+repr(checkpoint)+","+repr(output)+"]\n"
             "if config.get('memory_scheduler'):\n"
             "    from memory_scheduler import scheduled_invoke\n"
             "    result=scheduled_invoke(config,archive,'impl',args,Path(config['settings']),work,work/'setup_paths.console.log',1800,telemetry_name='setup_paths')\n"
@@ -111,6 +126,9 @@ def main():
             subprocess.run(["scp", "-F", str(ROOT.parent / "ssh-config"), "xiaoxin-ubuntu:"+source, str(target)], check=True)
             register_report(config, archive, target, raw_file)
     config["setup_paths_script_sha256"] = hashlib.sha256(script.read_bytes()).hexdigest()
+    config["setup_paths_checkpoint"] = {
+        "raw_file": str(Path(checkpoint).relative_to(Path(remote_work))),
+        "stage": "post_route_phys_opt" if checkpoint.endswith("_postroute_physopt.dcp") else "routed"}
     write_csv(archive / "critical_paths.csv", rows, list(rows[0]))
     write_json(archive / "config.json",config)
     append_log(args.id+": exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.")
