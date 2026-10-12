@@ -261,6 +261,7 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | [F41](../experiments/F41_fifo32_W21_T8/F41.md) | W21 | pass | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown |
 | [F42](../experiments/F42_reorder_W21_T8/F42.md) | W21 | pass | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown |
 | [C13](../experiments/C13_runtime_prepacked_conv2_T4/C13.md) | W21 | infeasible | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown |
+| [F45](../experiments/F45_ws_cosim_F41/F45.md) | F41 | cosim_complete | 525237.0 | 644.0 | 81105.0 | 558758.0 | unknown | unknown |
 | [F47](../experiments/F47_windows16_W21_T8/F47.md) | W21 | pass | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown |
 
 未测量的计划：
@@ -270,7 +271,6 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | W23 | W21 | unlaunched_memory | unknown |
 | F43 | F39 | queued_or_running | unknown |
 | F44 | F40 | queued_or_running | unknown |
-| F45 | F41 | queued_or_running | unknown |
 | W28 | W27 | queued_or_running | unknown |
 | W29 | W24 | unlaunched_memory | W25 same-ROM/changed-input two-frame RTL must pass before implementation |
 | W30 | W27 | unlaunched_memory | W28 FRP changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation |
