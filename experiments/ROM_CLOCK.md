@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T16:04:57+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T16:09:57+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C16/C17 screening complete; F50 RTL active; W31/C19/C20 queued; C21/C22 conditional. Six planned verification results remain: active F50 RTL, queued W31 ROM5ns implementation and C19/C20 changed-parameter RTL, then conditional C21 T8 staged4.5ns implementation and C22 T4 staged5ns implementation. C16 and C17 have completed all13-image exact/precision and II1 HLS screening; C17 keeps its historical HLS infeasible status. Launch C21 only after accepted C19 and C22 only after accepted C20; faster RTL has no lower cycle bound. W31 remains paused until the F50 supervisor automatically resumes it. C18/C14 remains the fastest verified runtime IP at1.503160ms, with its board handoff archived; W30/W28 is the uniform T8 leader at2.472471ms. W31 closing5ns can trigger a separately planned ROM4.5ns probe. No resource-driven T4 ROM retry is required. Preserve one heavy task, budgeted light admission, the18GiB implementation registration and serial_after_oom while legacy workers exist. Complete fresh report-based plots, interpretations, two-location protected checksums and idle audit after runnable jobs finish. No board results exist.
+F50 RTL archived; C20 RTL active; W31/C19 queued; C21/C22 conditional. Five planned verification results remain: active C20 changed-parameter RTL, queued C19 RTL and W31 ROM5ns implementation, then conditional C21 T8 staged4.5ns implementation and C22 T4 staged5ns implementation. F50 passes both exact changed-parameter transactions at558760 latency/558789 interval cycles, two cycles slower than W21, so its raster output buffer gives no acceleration. Its supervisor completed and automatically resumed W31. C16/C17 all13-image precision and II1 HLS screens are complete; C17 keeps its historical HLS infeasible status. Launch C21 only after accepted C19 and C22 only after accepted C20; faster RTL has no lower cycle bound. C18/C14 remains the fastest verified runtime IP at1.503160ms, with its handoff archived; W30/W28 is the uniform T8 leader at2.472471ms. W31 closing5ns can trigger a separately planned ROM4.5ns probe. No resource-driven T4 ROM retry is required. Preserve one heavy task, budgeted light admission, the18GiB implementation registration and serial_after_oom while legacy workers exist. Complete plots, interpretations, two-location protected checksums and idle audit after runnable jobs finish. The16:06UTC snapshot audit passed with five pending plans and active remote jobs; it is not closure. No board results exist.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -25,7 +25,7 @@ C16/C17 screening complete; F50 RTL active; W31/C19/C20 queued; C21/C22 conditio
 | [F39](F39_c3_select_W21_T8/F39.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
 | [F40](F40_fifo16_W21_T8/F40.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
 | [F41](F41_fifo32_W21_T8/F41.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
-| [F42](F42_reorder_W21_T8/F42.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F42](F42_reorder_W21_T8/F42.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | 6.382452112094161 | False |
 | [C13](C13_runtime_prepacked_conv2_T4/C13.md) | W21 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | original_verification_pass | unknown | unknown | unknown | 6.382071331608397 | unknown |
 | [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | original_verification_pass | unknown | unknown | unknown | 6.382071331608397 | False |
@@ -39,7 +39,7 @@ C16/C17 screening complete; F50 RTL active; W31/C19/C20 queued; C21/C22 conditio
 | [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | original_verification_pass | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [C15](C15_ws_impl_C13/C15.md) | C13 | impl | fail | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [F49](F49_ws_impl_F39/F49.md) | F39 | impl | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
-| [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | 558760.0 | original_verification_pass | unknown | unknown | unknown | unknown | unknown |
+| [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | 558760.0 | original_verification_pass | unknown | unknown | unknown | 6.382452112094161 | False |
 | [F51](F51_ws_impl_F47/F51.md) | F47 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 535771.0 | unknown | 5.0 | True | 2.678855 | 2.0055708185066967 | unknown |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
 | [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
@@ -113,6 +113,10 @@ Current policy permits one heavy task with light jobs subject to registered budg
 | W23 | W29 | 342.5068440437317 | 161 | 16.554981231689453 | 0.5088157653808594 | 31.89580124556352 |
 | W23 | C15 | 73.9129331111908 | 36 | 10.116344451904297 | 4.914371490478516 | 26.598767270810896 |
 | W23 | C15 | 587.7770907878876 | 279 | 14.542190551757812 | 0.20591354370117188 | 29.55477371313919 |
+| F50 | C17 | 121.88273620605469 | 59 | 3.2512283325195312 | 10.243728637695312 | 42.10668926993302 |
+| F50 | C16 | 123.70464706420898 | 60 | 3.2514190673828125 | 10.243728637695312 | 42.08153758938877 |
+| F50 | C17 | 901.2647974491119 | 441 | 6.877098083496094 | 8.201549530029297 | 17.577913663558654 |
+| F50 | C16 | 538.6181435585022 | 262 | 7.094631195068359 | 7.980602264404297 | 17.747602567828178 |
 | C17 | C16 | 121.87702989578247 | 59 | 1.9005126953125 | 10.32436752319336 | 42.15509217454121 |
 | C16 | C17 | 1.8211803436279297 | 1 | 0.3324623107910156 | 11.27688217163086 | 20.689655172413794 |
 

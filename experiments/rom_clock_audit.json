@@ -967,6 +967,41 @@
       "csv_matches_archive": true,
       "id": "C18",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "W30",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "F51",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C17",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C16",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 1,
+      "csv_matches_archive": true,
+      "id": "F50",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2101,6 +2136,8 @@
     "C13",
     "C14",
     "C15",
+    "C16",
+    "C17",
     "C18",
     "F32",
     "F33",
@@ -2120,6 +2157,8 @@
     "F47",
     "F48",
     "F49",
+    "F50",
+    "F51",
     "F52",
     "W23",
     "W24",
@@ -2128,55 +2167,32 @@
     "W27",
     "W28",
     "W29",
+    "W30",
     "W32"
   ],
   "mode": "snapshot",
   "pushed": false,
   "remote_jobs_active": true,
   "remote_processes": [
-    "72894 python3 exp/run_exp.py --config exp/configs/F50.json",
-    "79191 python3 exp/run_exp.py --config exp/configs/F51.json",
     "80160 python3 exp/run_exp.py --config exp/configs/W31.json",
-    "82711 python3 exp/run_exp.py --config exp/configs/W30.json",
-    "84220 python3 exp/run_exp.py --config exp/configs/C16.json",
-    "84221 python3 exp/run_exp.py --config exp/configs/C17.json",
-    "100206 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_vivado.tcl -notrace -nojournal",
-    "101329 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -log bd_0_wrapper.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source bd_0_wrapper.tcl -notrace"
+    "112655 python3 exp/run_exp.py --config exp/configs/C20.json",
+    "113344 python3 exp/run_exp.py --config exp/configs/C19.json",
+    "113752 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20",
+    "113781 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/loader -exec vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20",
+    "113813 /home/lipuze/amdfpga/2026.1/Vitis/bin/unwrapped/lnx64.o/vitis-run --mode hls --cosim --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C20"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-12T14:09:59+00:00",
+  "time": "2026-10-12T16:06:21+00:00",
   "unmeasured_plans": [
     {
       "condition": null,
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "C16",
-      "not_run_condition_failed": false,
-      "operation": "csim/csynth",
-      "plan_sha256": "e8aefd7461b7b720cfe036d4850c94d8384823d9825b7cbb4a82837ff72a4ac0",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": null,
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "C17",
-      "not_run_condition_failed": false,
-      "operation": "csim/csynth",
-      "plan_sha256": "f88325155734d7021341c869262da5a7b95908e294e206cc3e28c42e196a379c",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": null,
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "F50",
+      "id": "C19",
       "not_run_condition_failed": false,
       "operation": "cosim",
-      "plan_sha256": "d4a066f3e52d631c3b79bd203e24e84770ebecfd6595011c8841d4076a6ae3ec",
+      "plan_sha256": "83c5675bf749025dcf38784e5f30afb295cd10508f863ea6c017d6dc42505cd4",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     },
@@ -2184,21 +2200,32 @@
       "condition": null,
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "F51",
+      "id": "C20",
       "not_run_condition_failed": false,
-      "operation": "impl",
-      "plan_sha256": "87ed73d4eb7f2b3aaee7de818bb8d5b1c5835a6c5464ceefce3ef724a694a6a2",
+      "operation": "cosim",
+      "plan_sha256": "ddf80544b176f9a34443df4efcf55554b1add7e8a5513bdce77ebf74f1b191dc",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     },
     {
-      "condition": "User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override",
+      "condition": "C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30",
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "W30",
+      "id": "C21",
       "not_run_condition_failed": false,
       "operation": "impl",
-      "plan_sha256": "601443380b8e5796bc2acd7da442373159546dfc590ba4bd58e676db73f8960e",
+      "plan_sha256": "f04e92d24698be7cb6d9d931305a090669355c64850c39ff508784983a60821a",
+      "prerequisite_metrics_sha256": null,
+      "unlaunched_for_memory": false
+    },
+    {
+      "condition": "C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18",
+      "failure_reason": null,
+      "has_measured_result": false,
+      "id": "C22",
+      "not_run_condition_failed": false,
+      "operation": "impl",
+      "plan_sha256": "b3222f7f0ee6c6f9800893d0240f09e53997962c9abda0e6886a354bcc615bcf",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     },
@@ -2468,31 +2495,58 @@
       "status": "fail"
     },
     {
-      "additional_evidence_files_checked": 14,
+      "additional_evidence_files_checked": 17,
       "git_visible_and_tracked": true,
       "id": "F52",
       "operation": "impl",
-      "reports_checked": 3,
+      "reports_checked": 6,
       "sha256_pass": true,
       "status": "impl_complete"
     },
     {
-      "additional_evidence_files_checked": 11,
+      "additional_evidence_files_checked": 13,
       "git_visible_and_tracked": true,
       "id": "W32",
       "operation": "impl",
-      "reports_checked": 3,
+      "reports_checked": 6,
       "sha256_pass": true,
       "status": "impl_complete"
     },
     {
-      "additional_evidence_files_checked": 16,
+      "additional_evidence_files_checked": 19,
       "git_visible_and_tracked": true,
       "id": "C18",
       "operation": "impl",
-      "reports_checked": 3,
+      "reports_checked": 6,
       "sha256_pass": true,
       "status": "impl_complete"
+    },
+    {
+      "additional_evidence_files_checked": 14,
+      "git_visible_and_tracked": true,
+      "id": "W30",
+      "operation": "impl",
+      "reports_checked": 6,
+      "sha256_pass": true,
+      "status": "impl_complete"
+    },
+    {
+      "additional_evidence_files_checked": 14,
+      "git_visible_and_tracked": true,
+      "id": "F51",
+      "operation": "impl",
+      "reports_checked": 6,
+      "sha256_pass": true,
+      "status": "impl_complete"
+    },
+    {
+      "additional_evidence_files_checked": 61,
+      "git_visible_and_tracked": true,
+      "id": "F50",
+      "operation": "cosim",
+      "reports_checked": 4,
+      "sha256_pass": true,
+      "status": "cosim_complete"
     }
   ]
 }

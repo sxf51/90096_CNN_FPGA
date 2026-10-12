@@ -1,10 +1,10 @@
 {
   "plan": "docs/0005-rom-clock-t4-plan.md",
-  "phase": "C16/C17 screening complete; F50 RTL active; W31/C19/C20 queued; C21/C22 conditional",
+  "phase": "F50 RTL archived; C20 RTL active; W31/C19 queued; C21/C22 conditional",
   "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F43", "F44", "F45", "F47", "W28", "W29", "W30", "F48", "F46", "C14", "C15", "F49", "F50", "F51", "F52", "W31", "W32", "C16", "C17", "C18", "C19", "C20", "C21", "C22"],
   "complete_test_set": "Set14 (13 course-provided images)",
   "resource_policy": "routed",
-  "next": "Six planned verification results remain: active F50 RTL, queued W31 ROM5ns implementation and C19/C20 changed-parameter RTL, then conditional C21 T8 staged4.5ns implementation and C22 T4 staged5ns implementation. C16 and C17 have completed all13-image exact/precision and II1 HLS screening; C17 keeps its historical HLS infeasible status. Launch C21 only after accepted C19 and C22 only after accepted C20; faster RTL has no lower cycle bound. W31 remains paused until the F50 supervisor automatically resumes it. C18/C14 remains the fastest verified runtime IP at1.503160ms, with its board handoff archived; W30/W28 is the uniform T8 leader at2.472471ms. W31 closing5ns can trigger a separately planned ROM4.5ns probe. No resource-driven T4 ROM retry is required. Preserve one heavy task, budgeted light admission, the18GiB implementation registration and serial_after_oom while legacy workers exist. Complete fresh report-based plots, interpretations, two-location protected checksums and idle audit after runnable jobs finish. No board results exist.",
+  "next": "Five planned verification results remain: active C20 changed-parameter RTL, queued C19 RTL and W31 ROM5ns implementation, then conditional C21 T8 staged4.5ns implementation and C22 T4 staged5ns implementation. F50 passes both exact changed-parameter transactions at558760 latency/558789 interval cycles, two cycles slower than W21, so its raster output buffer gives no acceleration. Its supervisor completed and automatically resumed W31. C16/C17 all13-image precision and II1 HLS screens are complete; C17 keeps its historical HLS infeasible status. Launch C21 only after accepted C19 and C22 only after accepted C20; faster RTL has no lower cycle bound. C18/C14 remains the fastest verified runtime IP at1.503160ms, with its handoff archived; W30/W28 is the uniform T8 leader at2.472471ms. W31 closing5ns can trigger a separately planned ROM4.5ns probe. No resource-driven T4 ROM retry is required. Preserve one heavy task, budgeted light admission, the18GiB implementation registration and serial_after_oom while legacy workers exist. Complete plots, interpretations, two-location protected checksums and idle audit after runnable jobs finish. The16:06UTC snapshot audit passed with five pending plans and active remote jobs; it is not closure. No board results exist.",
   "completed_workstreams": ["WS-0", "WS-A agent handoff (board measurements pending)"],
   "waiting_for_memory": [],
   "deferred": ["C21", "C22"],
@@ -16,13 +16,16 @@
   "priority_job": null,
   "completed_priority_job": "C18",
   "priority_released_utc": "2026-10-12T13:32:30+00:00",
-  "paused_waiter_ids": ["W31"],
+  "paused_waiter_ids": [],
   "queue_order_supervisor": {
     "priority": "F50",
     "paused": ["W31"],
     "basis": "After active F51, cosim admits memory-bounded C16/C17 screening; implementation keeps its 18 GiB registration.",
     "evidence": "F50_ws_cosim_F42/combo_overlap_priority.json",
-    "auto_resume": true
+    "auto_resume": true,
+    "completed": true,
+    "release_reason": "priority_result_archived",
+    "released_utc": "2026-10-12T16:04:56+00:00"
   },
   "priority_evidence": "C18_ws_impl_C13/priority_waiters.json",
   "priority_light_evidence": "C18_ws_impl_C13/priority_light_waiters.json",
@@ -39,15 +42,13 @@
   },
   "pending_decisions": ["Board validation remains unavailable to the agent; F98 handoff is archived.", "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."],
   "skipped_plans": {},
-  "local_exec_sessions": [91661, 99126, 1570, 4777, 64820],
+  "local_exec_sessions": [99126, 4777, 64820],
   "session_jobs": {
-    "91661": ["F50"],
     "99126": ["W31"],
-    "1570": ["F50", "W31"],
     "4777": ["C20"],
     "64820": ["C19"]
   },
   "board_handoff": "experiments/BOARD_HANDOFF.md",
   "candidate_board_handoffs": {"C18": "experiments/board_handoff/C18/HANDOFF.md"},
-  "wsE": "C18/C14 is the verified1.503160ms T4 leader. C17 windowFIFO32 passes all13 E065-exact images and HLS screening, with1032DSP and II1; original HLS infeasibility is retained. C20 two-frame changed-parameter RTL is queued; C22 staged5ns route is planned and conditional on C20. No immediate resource-driven ROM retry is required."
+  "wsE": "C18/C14 is the verified1.503160ms T4 leader. C17 windowFIFO32 passes all13 E065-exact images and HLS screening, with1032DSP and II1; original HLS infeasibility is retained. C20 two-frame changed-parameter RTL is actually running; C22 staged5ns route is planned and conditional on C20. C16 screened, C19 RTL queued and C21 staged4.5ns route conditional on C19. No immediate resource-driven ROM retry is required."
 }
