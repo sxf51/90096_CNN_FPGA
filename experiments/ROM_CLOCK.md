@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T05:14:22+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T05:16:32+00:00.
 
 Runtime-loaded W21 remains the mainline. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -19,6 +19,7 @@ WS-0 complete; WS-B RTL running; WS-C/D independent controls running; WS-C1 awai
 | [F35](F35_runtime_rom_bank_equivalence/F35.md) | W19 | csim | csim_pass | F35_runtime_rom_bank_equivalence/F35.md | True | -0.0695141811880653 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W24](W24_constant_rom_T8/W24.md) | W19 | csim/csynth | pass | W24_constant_rom_T8/W24.md | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W26](W26_frp_W21_T8/W26.md) | W21 | csim/csynth | fail | W26_frp_W21_T8/W26.md | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [W27](W27_frp_W21_T8/W27.md) | W21 | csim/csynth | pass | W27_frp_W21_T8/W27.md | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F41](F41_fifo32_W21_T8/F41.md) | W21 | csim/csynth | pass | F41_fifo32_W21_T8/F41.md | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
