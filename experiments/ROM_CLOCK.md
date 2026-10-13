@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T10:28:42+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T10:59:15+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -68,7 +68,7 @@ W36 final timing fails; C39 monitored four-call RTL active; C40 conditional; W35
 | [C34](C34_reload_windows_cold/C34.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C35](C35_ws_cosim_C32/C35.md) | C32 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | 273025 | original_verification_pass | unknown | unknown | unknown | 3.7762742787639247 | unknown |
 | [C36](C36_ws_impl_C32/C36.md) | C32 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | unknown | unknown | 5.0 | False | unknown | 3.7762742787639247 | unknown |
-| [W36](W36_ws_impl_C17/W36.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | 4.5 | False | unknown | unknown | unknown |
+| [W36](W36_ws_impl_C17/W36.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | 4.5 | False | unknown | 3.7755140826333244 | unknown |
 | [C37](C37_t4_reload_paramreg/C37.md) | C32 | csim/csynth | infeasible | True | -0.07589037644656216 | 263154.0 | 1032.0 | 128942.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C38](C38_t4_reload_balanced/C38.md) | C32 | csim/csynth | infeasible | True | -0.07589037644656216 | 263092.0 | 1032.0 | 131780.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
