@@ -1170,6 +1170,13 @@
       "csv_matches_archive": true,
       "id": "C38",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "W36",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2360,18 +2367,18 @@
     "W31",
     "W32",
     "W33",
-    "W34"
+    "W34",
+    "W36"
   ],
   "mode": "snapshot",
   "pushed": false,
   "remote_jobs_active": true,
   "remote_processes": [
-    "174498 python3 exp/run_exp.py --config exp/configs/W36.json",
-    "174739 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_synthesis.tcl -notrace -nojournal"
+    "181861 python3 exp/run_exp.py --config exp/configs/C39.json"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-13T09:23:34+00:00",
+  "time": "2026-10-13T10:38:21+00:00",
   "unmeasured_plans": [
     {
       "condition": "C37 complete13-image quality,allfoldII1,HLS screening and224-bit clocked-data evidence pass; after W36 require four exact RTL calls,zero skipped parameter AXI,unchanged RTL and matching C35 per-call upper-only+1percent limits",
@@ -2382,7 +2389,7 @@
       "operation": "cosim",
       "plan_sha256": "4c1ed9e5438f23fbecc493e8372a976655a63d105ee4c84525f5bdad5b017b32",
       "prerequisite_metrics_sha256": null,
-      "unlaunched_for_condition": true,
+      "unlaunched_for_condition": false,
       "unlaunched_for_memory": false
     },
     {
@@ -2407,18 +2414,6 @@
       "plan_sha256": "8789d6036b83cc742faad9e93bdd99552654b9e3d1bf2788eebec17f54c1c207",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_condition": true,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": "After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings",
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "W36",
-      "not_run_condition_failed": false,
-      "operation": "impl",
-      "plan_sha256": "308d9a378da47fd90fcd980dc0e62acd12abb3040ce01386a89db2923c25f3af",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_condition": false,
       "unlaunched_for_memory": false
     }
   ],
@@ -2832,6 +2827,15 @@
       "additional_evidence_files_checked": 16,
       "git_visible_and_tracked": true,
       "id": "C36",
+      "operation": "impl",
+      "reports_checked": 6,
+      "sha256_pass": true,
+      "status": "impl_complete"
+    },
+    {
+      "additional_evidence_files_checked": 17,
+      "git_visible_and_tracked": true,
+      "id": "W36",
       "operation": "impl",
       "reports_checked": 6,
       "sha256_pass": true,
