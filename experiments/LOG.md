@@ -611,6 +611,8 @@
 
 - 2026-10-13T02:12 UTC C27: after two complete RTL transactions,the loaded call reads8129floats/32516bytes and the skipped call still makes1AR/R handshake,4bytes. The generated top passes biases3_0_0_val into dataflow_region after an unconditional top-level read; the internal do_load guard cannot suppress it. Preserve the active four-call run through the C/RTL post-check and keep the strict zero-AXI failure. Do not route C23. C28-C30 are unused and will independently copy C23,guard the scalar bias read at the non-DATAFLOW top,and repeat complete quality/HLS,sequence,cold-start and subsequent RTL/route checks. These are light-job plans subject to existing memory admission; no second heavy task or threshold change is authorized by this repair.
 
+- 2026-10-13T02:19:05+00:00: C30: reload_guard_cold; status=csim_pass; latency_ms_est=unknown; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.
