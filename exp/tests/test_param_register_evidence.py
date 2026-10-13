@@ -52,6 +52,22 @@ class ParameterRegisterEvidenceTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             register_fields(helper, caller+"\nassign bypass_d1 = params1_dout[13:0];", baseline)
 
+    def test_parent_combinational_low_field_alias(self):
+        helper, caller, baseline = fixture()
+        baseline = baseline.replace("{{params1_dout[13:0]}}", "trunc_low")
+        baseline += "\nassign trunc_low = params1_dout[13:0];"
+        self.assertEqual(len(register_fields(helper, caller, baseline)), 16)
+
+    def test_caller_concatenates_an_unchanged_field(self):
+        helper, caller, baseline = fixture()
+        caller = caller.replace("= params1_dout[27:14];", "= {{params1_dout[27:14]}};")
+        self.assertEqual(len(register_fields(helper, caller, baseline)), 16)
+
+    def test_aliased_fifo_bypass_is_rejected(self):
+        helper, caller, baseline = fixture()
+        with self.assertRaises(RuntimeError):
+            register_fields(helper, caller+"\nassign bypass_d1 = pe_value_0;", baseline)
+
 
 if __name__ == "__main__":
     unittest.main()

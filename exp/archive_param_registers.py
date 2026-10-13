@@ -11,6 +11,13 @@ from run_exp import ROOT, EXPERIMENT_ID, append_log, parse_xml, utc, write_json
 from reproduce_exp import archived
 
 
+def fifo_write_ports(text, high, low):
+    value = r"\{*params1_dout\["+str(high)+":"+str(low)+r"\]\}*"
+    aliases = re.findall(r"\bassign\s+(\w+)\s*=\s*"+value+r"\s*;", text)
+    sources = "(?:"+value+"|"+"|".join(re.escape(alias) for alias in aliases)+")" if aliases else value
+    return re.findall(r"\bassign\s+(\w+_d1)\s*=\s*"+sources+r"\s*;", text)
+
+
 def register_fields(helper, caller, baseline):
     clocked = "\n".join(re.findall(
         r"always\s*@\s*\(\s*posedge\s+ap_clk\s*\)(.*?)(?=\balways\s*@|\bassign\b|\bendmodule\b|\Z)",
@@ -36,19 +43,18 @@ def register_fields(helper, caller, baseline):
             if not re.search(r"\."+port+r"\s*\(\s*"+wire+r"\s*\)", ports):
                 raise RuntimeError("Unexpected helper port connection")
         high, low = 14*index+13, 14*index
-        if not re.search(r"\bassign\s+"+incoming+r"\s*=\s*params1_dout\["+
-                         str(high)+":"+str(low)+r"\]\s*;", caller):
+        if not re.search(r"\bassign\s+"+incoming+r"\s*=\s*\{*params1_dout\["+
+                         str(high)+":"+str(low)+r"\]\}*\s*;", caller):
             raise RuntimeError("Helper input is not the matching FIFO field")
         writes = re.findall(r"\bassign\s+(\w+_d1)\s*=\s*"+outgoing+r"\s*;", caller)
-        direct = re.findall(r"\bassign\s+(\w+_d1)\s*=\s*\{*params1_dout\["+
-                            str(high)+":"+str(low)+r"\]\}*\s*;", baseline)
+        direct = fifo_write_ports(baseline, high, low)
         if not writes or len(writes) != len(direct):
             raise RuntimeError("Registered write ports do not match the parent direct ports")
+        if fifo_write_ports(caller, high, low):
+            raise RuntimeError("Caller retains a direct FIFO-to-bank bypass")
         fields.append({"field": index, "bits": 14, "register": register,
                        "registered_write_ports": len(writes), "parent_direct_write_ports": len(direct),
                        "example_write_port": writes[0]})
-    if re.search(r"\bassign\s+\w+_d1\s*=\s*\{*params1_dout\[", caller):
-        raise RuntimeError("Caller retains a direct FIFO-to-bank bypass")
     return fields
 
 
