@@ -729,3 +729,5 @@
 
 - 2026-10-13 WS-G continuation: C32 complete13-image E065 exactness and unchanged deltaPSNR/border pass; synthesis reports1032DSP/146BRAM18K/128868LUT/193984FF,2.92ns estimate,263090cycles and allthreefoldII1. HLS screening passes; original HLS infeasible status is preserved pending physical acceptance. C33/C34 semantics pass. Committed C35 four-call monitored RTL plan and launched sole cosim task in supervisor34541; committed C36 conditional5ns staged route plan, unlaunched until strict C35 acceptance. No board time or timing closure is inferred.
 
+- 2026-10-13 W36 unattended decision: W34 did not execute the planned four-thread comparison, so commit one fresh4.5ns Performance_Explore C17 retry using repaired staged hooks after prioritized WS-G C35/C36. Preserve W34's original failure, C20 exact cycles, C22 fallback, single-heavy policy and all gates. W36 is planned and unlaunched; its actual child settings must be observed, and4ns remains conditional on independent4.5ns closure. This extra retry is explicitly recorded for later human review.
+

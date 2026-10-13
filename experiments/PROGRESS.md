@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-WS-G C32-C34 C/HLS gates pass; C35 monitored RTL running, C36 conditional route committed. C32 passes13-image E065 exactness,unchanged deltaPSNR/border,threefoldII1 and HLS screening; C33/C34 C semantics pass. C35 monitored four-call RTL is running; require strict exact/zero-AXI/latency-ordering/unchanged-manifest acceptance before launching the committed C36 staged5ns route. From accepted WS-G RTL, separately plan parameter-register and balanced-tree copies with per-call parent+1percent upper limits and actual register/path inspection. W34 failed4.5ns setup timing and retains actual one-thread evidence; fresh routes use the corrected thread replay. W35 C28 standalone5ns route remains required after prioritized WS-G/WS-H. WS-I runs last. C22 remains the verified1.365115ms fallback; no board result exists; F90/F91 remain cancelled.
+WS-G C32-C34 C/HLS gates pass; C35 monitored RTL running, C36 conditional route committed. C32 passes13-image E065 exactness,unchanged deltaPSNR/border,threefoldII1 and HLS screening; C33/C34 C semantics pass. C35 monitored four-call RTL is running; require strict exact/zero-AXI/latency-ordering/unchanged-manifest acceptance before launching the committed C36 staged5ns route. W36 is the committed fresh C17 four-thread4.5ns strategy retry after C35/C36, preserving actual one-thread failed W34. From accepted WS-G RTL, separately plan parameter-register and balanced-tree copies with per-call parent+1percent upper limits and actual register/path inspection. Fresh routes use corrected thread replay and observed child hooks. W35 C28 standalone5ns route remains required after prioritized WS-G/WS-H. WS-I runs last. C22 remains the verified1.365115ms fallback; no board result exists; F90/F91 remain cancelled.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T06:16:17+00:00 from archived measurements.
+Updated 2026-10-13T07:25:44+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -26,7 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: W35, C35, C36.
+Final verification: W35, C35, C36, W36.
 
 ## Weight Loading Workstream
 
