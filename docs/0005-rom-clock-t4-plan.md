@@ -542,6 +542,6 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | W34 | C17 | queued_or_running | User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes |
-| C32 | C17 | unlaunched_conditional | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
-| C33 | C17 | unlaunched_conditional | C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics |
-| C34 | C17 | unlaunched_conditional | C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading |
+| C32 | C17 | queued_or_running | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
+| C33 | C17 | queued_or_running | C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics |
+| C34 | C17 | queued_or_running | C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading |

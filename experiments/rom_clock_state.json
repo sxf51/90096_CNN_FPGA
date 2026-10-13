@@ -1,7 +1,9 @@
 {
   "active_phase": {
-    "C31": "cosim_execute: two transactions completed; first reuse has zero AR/R/AW/W valid cycles and handshakes; reload/retain/post-check pending",
-    "W34": "impl package waiting for the sole heavy slot"
+    "C32": "WS-G quality/HLS worker submitted; memory-budget admission alongside W34",
+    "C33": "WS-G four-call C sequence worker submitted; memory-budget admission alongside W34",
+    "C34": "WS-G fresh-process cold-start queued after C33 in supervisor36261",
+    "W34": "WS-H step1 owns the sole heavy slot after C31 strict acceptance"
   },
   "authorized_followups": {
     "WS-F-route": "Independent C28 route remains required; schedule after prioritized WS-G work",
@@ -95,17 +97,18 @@
     "time": "2026-10-12T10:19:41+00:00"
   },
   "local_exec_sessions": [
-    59926,
-    7451
+    7451,
+    9342,
+    36261
   ],
   "mainline_basis": "F47",
-  "next": "C22 remains the verified 1.365115 ms leader. Supervisor59926 owns C31, the sole active heavy task; require four exact calls, zero skipped parameter AXI, latency ordering and unchanged RTL. After its pass, execute WS-G by copying frozen C17 and transplanting only the C13-to-C28 reload guard changes; first commit its quality/sequence/cold plans, then verify complete13-image E065 exactness, four monitored RTL calls and staged5ns routing. WS-H step1 first uses frozen C17 unchanged RTL with Performance_Explore at4.5ns, queued after the current heavy task; subsequent independent parameter-register and balanced-tree variants use the measured parent and retain the upper-only1percent RTL gate. WS-I comes last: verify installed KV260 support, build a minimal PS/AXI/IP system, implement200MHz or the specified166.67MHz fallback and archive bit/hardware handoff. Preserve C28's required standalone5ns validation as separate lower-priority WS-F work. F90/F91 are user-cancelled unlaunched retries with original plans preserved. No board result exists.",
+  "next": "C31 passes four exact calls, both skipped calls have zero parameter AXI, and synthesis RTL is unchanged. Frozen C17 plus only the reviewed C13-to-C28 guard transplant is committed as the independent WS-G source. C32 quality/HLS and C33/C34 sequence/cold validation are submitted under the unchanged memory scheduler; W34 is the sole heavy task, using C17 unchanged RTL at4.5ns Performance_Explore. On all WS-G C/HLS gates, first commit fresh C35 monitored four-call RTL and C36 staged5ns route plans, then execute in order. WS-H parameter-register and balanced-tree variants remain independent copies of the measured WS-G parent, with per-call parent+1percent limits and actual register/critical-path inspection. WS-I runs last using installed KV260 support only. Preserve the required C28 standalone5ns validation as lower-priority WS-F work; F90/F91 stay cancelled. C22 remains the verified1.365115ms fallback; no board result exists.",
   "paused_waiter_ids": [],
   "pending_decisions": [
     "Board validation remains unavailable to the agent; F98 handoff is archived.",
     "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."
   ],
-  "phase": "C31 is running; user authorizes WS-G, WS-H and WS-I after cancelling obsolete F90/F91",
+  "phase": "C31 strict RTL acceptance complete; WS-G light validation and WS-H1 physical run submitted",
   "plan": "docs/0005-rom-clock-t4-plan.md",
   "planned_conditions": {
     "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
@@ -148,20 +151,20 @@
   "resource_policy": "routed",
   "runtime_environment_evidence": "C18_ws_impl_C13/runtime_host_environment.csv",
   "session_jobs": {
-    "59926": [
-      "C31"
-    ],
     "7451": [
       "W34"
+    ],
+    "9342": [
+      "C32"
+    ],
+    "36261": [
+      "C33",
+      "C34"
     ]
   },
   "skipped_plans": {},
   "submitted_waiting_for_admission": [],
-  "unlaunched_ids": [
-    "C32",
-    "C33",
-    "C34"
-  ],
+  "unlaunched_ids": [],
   "user_cycle_revision": {
     "F48_two_percent_target": "diagnostic_only",
     "W28_max_cycles": 564345,
@@ -170,5 +173,5 @@
   },
   "waiting_for_memory": [],
   "wsE": "C20 passes exact 273023 cycles, 9.18 percent lower than C14's 300632; C22 independently closes 5 ns and becomes the verified 1.365115 ms leader with all routed resources feasible. C19 passes 535976 cycles, 205 more than F48; C21 independently closes 4.5 ns, giving 2.411892 ms and improving W30 by 2.45 percent. All 13-image precision is unchanged. C18 remains the 1.503160 ms fallback. No resource-driven T4 ROM retry is required.",
-  "wsF": "C24/C25/F53 and C23 quality/HLS pass, but C27 confirms both skipped calls read4bytes despite four exact outputs. C26 pre-tool failure and C27 AXI failure remain archived with raw evidence. Independent C28 passes complete13-image quality/HLS and guarded-entry RTL inspection; C29/C30 pass C sequence/cold-start. C31 is starting the same strict four-call/zero-AXI check on repaired RTL; physical timing remains outstanding and no gate is relaxed."
+  "wsF": "C31 independently passes all four exact guarded-reload RTL outputs, zero parameter AXI on both skipped calls, latency ordering and unchanged RTL hashes. C28 quality/HLS and C29/C30 sequence/cold-start pass; standalone C28 physical timing remains outstanding at lower priority behind WS-G. C26 pre-tool failure and C27's two4byte skipped-call reads remain archived as failures. No gate is relaxed."
 }
