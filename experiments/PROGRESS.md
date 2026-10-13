@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C27 is archived as an AXI failure; repaired C28 passes quality and HLS screening, and C31 is starting monitored RTL. C22 remains the verified 1.365115 ms leader. C27's four RTL outputs pass but both skipped calls read 4 bytes; preserve fail and never route C23. Failed CSV/XML, execution-phase post-check and the unchanged 102-file RTL manifest are archived. C28 completes all 13 exact images, unchanged precision/border, HLS screening and all three fold II1 gates. C29/C30 C sequence and cold-start checks pass. Supervisor 59926 owns fresh C31, the sole heavy task. Require four exact RTL calls, zero skipped parameter valid cycles/handshakes, latency ordering and unchanged RTL hashes before allocating unused C32 for independent staged 5 ns routing. Then archive physical paths/hierarchy and reload handoff, regenerate all CSV analyses/plots/summaries and perform the final idle audit. No board result exists.
+C31 is running; user authorizes WS-G, WS-H and WS-I after cancelling obsolete F90/F91. C22 remains the verified 1.365115 ms leader. Supervisor59926 owns C31, the sole active heavy task; require four exact calls, zero skipped parameter AXI, latency ordering and unchanged RTL. After its pass, execute WS-G by copying frozen C17 and transplanting only the C13-to-C28 reload guard changes; first commit its quality/sequence/cold plans, then verify complete13-image E065 exactness, four monitored RTL calls and staged5ns routing. WS-H step1 first uses frozen C17 unchanged RTL with Performance_Explore at4.5ns, queued after the current heavy task; subsequent independent parameter-register and balanced-tree variants use the measured parent and retain the upper-only1percent RTL gate. WS-I comes last: verify installed KV260 support, build a minimal PS/AXI/IP system, implement200MHz or the specified166.67MHz fallback and archive bit/hardware handoff. Preserve C28's required standalone5ns validation as separate lower-priority WS-F work. F90/F91 are user-cancelled unlaunched retries with original plans preserved. No board result exists.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T02:38:26+00:00 from archived measurements.
+Updated 2026-10-13T02:52:54+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -33,6 +33,11 @@ Final verification: C31.
 Plan: [docs/0004](../docs/0004-t8-weight-loading-plan.md). Archived. Current gates and next tasks are in docs/0005 and the active block above.
 
 2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.
+
+User-cancelled obsolete plans (never launched, no measured result):
+
+- [F90](F90_serial_vivado_impl_F24/F90.md): Obsolete routing retry; explicitly cancelled by the user before launch.
+- [F91](F91_serial_vivado_impl_F23/F91.md): Obsolete routing retry; explicitly cancelled by the user before launch.
 
 Current user decisions supersede the initial WS0 defaults: complete course set=13 images; final resources=routed; ROM=exploratory; scheduling=one heavy task with memory-bounded light jobs under docs/0005 section6.1. Runtime parameter interfaces, strict precision and no-push rules remain.
 

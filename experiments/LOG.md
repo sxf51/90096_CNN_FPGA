@@ -623,6 +623,8 @@
 
 - 2026-10-13T02:40:30+00:00: C27: recovered raw failed reload measurements and unchanged synthesis RTL SHA256; original verdict preserved.
 
+- 2026-10-13T02:48:58+00:00 F90/F91: user cancelled obsolete unlaunched F24/F23 routing retries. Verified no corresponding local or remote workspace and no remote process; retain immutable paper/config plans and archive cancellation.json in each experiment folder. Remove both IDs from the active retry queue and deferred list; no result row, tool time or hardware verdict is fabricated. C31 repaired four-call RTL remains active under supervisor59926, and independent C32 routing remains conditional on its strict acceptance.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.

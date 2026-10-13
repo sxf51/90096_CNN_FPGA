@@ -80,6 +80,10 @@ def main():
         text += ("Archived. Current gates and next tasks are in docs/0005 and the active block above.\n\n"
                  if rom_path.exists() else ws["next"] + "\n\n")
         text += "2026-10-12 用户决定降低优先级: F88/F90/F91. F88 was deliberately interrupted with SIGTERM to release the hardware slot; no RTL verdict or measured cycles exist. P14-P16/F86/F87 already completed before the new priority and remain archived. F85/P13 were recovered without rerunning.\n\n"
+        if ws.get("cancelled_plans"):
+            text += "User-cancelled obsolete plans (never launched, no measured result):\n\n"
+            text += "\n".join("- [" + exp_id + "](" + record["md_path"] + "): " + record["reason"]
+                              for exp_id, record in ws["cancelled_plans"].items()) + "\n\n"
         text += ("Current user decisions supersede the initial WS0 defaults: complete course set=13 images; final resources=routed; ROM=exploratory; scheduling=one heavy task with memory-bounded light jobs under docs/0005 section6.1. Runtime parameter interfaces, strict precision and no-push rules remain.\n\n"
                  if rom_path.exists() else "Section 6 conservative decisions: preserve runtime float weights and HLS resource gates; keep missing comic explicitly provisional; if serial implementation OOM recurs, archive evidence and continue WS2 without changing host swap or using an unverified machine. Revisit these decisions with the user tomorrow.\n\n")
     text += ("P08 routed DSP48E2 inspection confirms one cell, AMULTSEL=AD and ADREG=1. " if state["packing_pre_adder_verified"] else "P08 needs actual DSP48E2 pre-adder/register inspection. ")

@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T02:38:27+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T02:52:55+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C27 is archived as an AXI failure; repaired C28 passes quality and HLS screening, and C31 is starting monitored RTL. C22 remains the verified 1.365115 ms leader. C27's four RTL outputs pass but both skipped calls read 4 bytes; preserve fail and never route C23. Failed CSV/XML, execution-phase post-check and the unchanged 102-file RTL manifest are archived. C28 completes all 13 exact images, unchanged precision/border, HLS screening and all three fold II1 gates. C29/C30 C sequence and cold-start checks pass. Supervisor 59926 owns fresh C31, the sole heavy task. Require four exact RTL calls, zero skipped parameter valid cycles/handshakes, latency ordering and unchanged RTL hashes before allocating unused C32 for independent staged 5 ns routing. Then archive physical paths/hierarchy and reload handoff, regenerate all CSV analyses/plots/summaries and perform the final idle audit. No board result exists.
+C31 is running; user authorizes WS-G, WS-H and WS-I after cancelling obsolete F90/F91. C22 remains the verified 1.365115 ms leader. Supervisor59926 owns C31, the sole active heavy task; require four exact calls, zero skipped parameter AXI, latency ordering and unchanged RTL. After its pass, execute WS-G by copying frozen C17 and transplanting only the C13-to-C28 reload guard changes; first commit its quality/sequence/cold plans, then verify complete13-image E065 exactness, four monitored RTL calls and staged5ns routing. WS-H step1 first uses frozen C17 unchanged RTL with Performance_Explore at4.5ns, queued after the current heavy task; subsequent independent parameter-register and balanced-tree variants use the measured parent and retain the upper-only1percent RTL gate. WS-I comes last: verify installed KV260 support, build a minimal PS/AXI/IP system, implement200MHz or the specified166.67MHz fallback and archive bit/hardware handoff. Preserve C28's required standalone5ns validation as separate lower-priority WS-F work. F90/F91 are user-cancelled unlaunched retries with original plans preserved. No board result exists.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -134,6 +134,17 @@ Current policy permits one heavy task with light jobs subject to registered budg
 | F50 | C16 | 538.6181435585022 | 262 | 7.094631195068359 | 7.980602264404297 | 17.747602567828178 |
 | C17 | C16 | 121.87702989578247 | 59 | 1.9005126953125 | 10.32436752319336 | 42.15509217454121 |
 | C16 | C17 | 1.8211803436279297 | 1 | 0.3324623107910156 | 11.27688217163086 | 20.689655172413794 |
+| C24 | C23 | 29.290664434432983 | 14 | 1.90777587890625 | 12.256977081298828 | 15.777644590949954 |
+| C23 | C25 | 18.639331340789795 | 10 | 1.8754310607910156 | 12.331581115722656 | 16.81480579568976 |
+| C23 | F53 | 38.56585335731506 | 19 | 1.8727836608886719 | 12.210433959960938 | 16.97186541624072 |
+| F53 | C23 | 67.12886714935303 | 32 | 1.8881988525390625 | 12.230640411376953 | 18.468700907037277 |
+| C27 | C28 | 128.4185767173767 | 63 | 8.668876647949219 | 5.0134735107421875 | 20.978300121466795 |
+| C27 | C29 | 31.110657930374146 | 15 | 8.662715911865234 | 5.0134735107421875 | 32.966783167107096 |
+| C27 | C30 | 25.14866542816162 | 13 | 8.668956756591797 | 5.0134735107421875 | 33.8460110168967 |
+| C27 | C28 | 891.6538236141205 | 435 | 12.732074737548828 | 1.8162078857421875 | 17.48388577917822 |
+| C28 | C29 | 31.110657930374146 | 15 | 1.8247795104980469 | 5.034660339355469 | 32.885400677691216 |
+| C28 | C30 | 25.14866542816162 | 12 | 1.9011421203613281 | 5.019691467285156 | 33.69619352543579 |
+| C29 | C30 | 25.14866542816162 | 12 | 1.859405517578125 | 5.019691467285156 | 33.67438520911865 |
 
 Process-tree RSS sums include shared mappings; minimum MemAvailable is measured for the entire host. Sampling alignment tolerance is4seconds. A hatch marks nonzero tool exit, not failed timing closure.
 

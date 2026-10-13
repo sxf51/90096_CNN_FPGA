@@ -80,6 +80,12 @@ def main():
     block += "Host utilization from archived CPU/memory CSV files (short snapshots are labeled; old runs without CPU telemetry stay unknown):\n\n"
     block += "![Remote host utilization](figs/host_utilization.png)\n\n"
     block += "Current recovery state: "+state["next"]+"\n\n"
+    if state.get("cancelled_plans"):
+        block += "User-cancelled obsolete retries (unlaunched; original plans retained):\n\n"
+        block += markdown_table([{"id": "[" + exp_id + "](" + record["md_path"] + ")", **record}
+                                 for exp_id, record in state["cancelled_plans"].items()],
+                                ["id", "parent", "status", "time", "reason"])
+        block += "\nNo measured result rows were created for these cancellations.\n\n"
     block += "<!-- AUTO: WORKSTREAM END -->\n"
     path = ROOT / "experiments/WEIGHT_LOADING.md"
     text = path.read_text()

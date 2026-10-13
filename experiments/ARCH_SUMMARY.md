@@ -25,6 +25,19 @@ Actual verification of the current HLS winner:
 | [W31](W31_ws_impl_W24/W31.md) | impl | impl_complete | 5.0 | 0.47 | True | 630.0 | 33771.0 | 82635.0 | 50.5 | 0.0 | unknown | unknown | unknown | unknown |
 | [W33](W33_ws_impl_W24/W33.md) | impl | impl_complete | 4.5 | 0.063 | True | 630.0 | 33829.0 | 82539.0 | 50.5 | 0.0 | unknown | unknown | unknown | unknown |
 
+## Verified IP Timing
+
+Matching-source RTL cycles multiplied by independently closed implementation targets. These times exclude board/DDR/driver overhead. Route-feasible rows satisfy setup/hold, zero unrouted nets and all routed resource caps under docs/0005.
+
+| id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | route_feasible | rtl_frame_ms_at_route_target |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 558787.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | True | 2.7658521 |
+| [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 558787.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | True | 2.79379 |
+| [F95](F95_ws_impl_F28/F95.md) | F28 | F93 | 1059506.0 | 1059535.0 | 5.0 | 0.282 | 591.0 | 72.0 | 30140.0 | 76498.0 | True | 5.29753 |
+| [F92](F92_ws_impl_F25/F92.md) | F25 | F82 | 1068183.0 | 1068212.0 | 5.0 | 0.568 | 592.0 | 72.0 | 32400.0 | 77757.0 | True | 5.340915 |
+
+Target minus WNS is a slack-derived estimate; only each implemented target above is accepted. Actual first-five-path and hierarchy reports are linked from each experiment.
+
 ## Current Verified IP Timing
 
 Matching-parent successful RTL latency times an independently closed, resource-feasible routed clock. No DDR, driver or board measurement is included.
@@ -1034,6 +1047,15 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 | [C27](C27_ws_cosim_C23/C27.md) | C | fail | cosim of C23; HLS estimates inherited, real measurements in data.csv; Skipped-load transaction has parameter AXI traffic | cosim of C23; HLS estimates inherited, real measurements in data.csv; Skipped-load transaction has parameter AXI traffic |
 | [C28](C28_reload_guard_quality/C28.md) | C | infeasible | LUT=128849.0 exceeds 81984; FF=193984.0 exceeds 163968 | ; HLS status retained; final feasibility requires independent routed gates |
 
+## Cancelled Plans
+
+User-cancelled obsolete retries were never launched and have no measured result. Original paper plans are preserved.
+
+| id | parent | status | time | reason |
+| --- | --- | --- | --- | --- |
+| [F90](F90_serial_vivado_impl_F24/F90.md) | F24 | cancelled_by_user | 2026-10-13T02:48:58+00:00 | Obsolete routing retry; explicitly cancelled by the user before launch. |
+| [F91](F91_serial_vivado_impl_F23/F91.md) | F23 | cancelled_by_user | 2026-10-13T02:48:58+00:00 | Obsolete routing retry; explicitly cancelled by the user before launch. |
+
 ## Pending Human Decisions
 
 - The user confirmed that the13 course-provided images are the complete test set; no comic input is pending.
@@ -1041,12 +1063,12 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 - Runtime transformed-weight loading preserves the frozen top signature; true offline-transformed input parameters require an approved new weight contract.
 - Windows settings-batch execution and board integration remain unverified. The existing Linux Vitis2026.1 SSH installation was used.
 - Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).
-- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Those original retries did not change system swap or global tool settings. The later user-configured8GiB zram and current memory observations are documented in [docs/0005](../docs/0005-rom-clock-t4-plan.md).
+- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 were cancelled by the user before launch. Those original retries did not change system swap or global tool settings. The later user-configured8GiB zram and current memory observations are documented in [docs/0005](../docs/0005-rom-clock-t4-plan.md).
 - Current decisions supersede historical docs/0004 defaults: final feasibility uses routed gates, ROM remains exploratory, and scheduling uses one heavy task with memory-bounded light jobs. Board selection and measurements remain pending.
 
 ## Next Steps
 
-Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. C22 remains the verified 1.365115 ms leader. C27's four RTL outputs pass but both skipped calls read 4 bytes; preserve fail and never route C23. Failed CSV/XML, execution-phase post-check and the unchanged 102-file RTL manifest are archived. C28 completes all 13 exact images, unchanged precision/border, HLS screening and all three fold II1 gates. C29/C30 C sequence and cold-start checks pass. Supervisor 59926 owns fresh C31, the sole heavy task. Require four exact RTL calls, zero skipped parameter valid cycles/handshakes, latency ordering and unchanged RTL hashes before allocating unused C32 for independent staged 5 ns routing. Then archive physical paths/hierarchy and reload handoff, regenerate all CSV analyses/plots/summaries and perform the final idle audit. No board result exists.
+Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. C22 remains the verified 1.365115 ms leader. Supervisor59926 owns C31, the sole active heavy task; require four exact calls, zero skipped parameter AXI, latency ordering and unchanged RTL. After its pass, execute WS-G by copying frozen C17 and transplanting only the C13-to-C28 reload guard changes; first commit its quality/sequence/cold plans, then verify complete13-image E065 exactness, four monitored RTL calls and staged5ns routing. WS-H step1 first uses frozen C17 unchanged RTL with Performance_Explore at4.5ns, queued after the current heavy task; subsequent independent parameter-register and balanced-tree variants use the measured parent and retain the upper-only1percent RTL gate. WS-I comes last: verify installed KV260 support, build a minimal PS/AXI/IP system, implement200MHz or the specified166.67MHz fallback and archive bit/hardware handoff. Preserve C28's required standalone5ns validation as separate lower-priority WS-F work. F90/F91 are user-cancelled unlaunched retries with original plans preserved. No board result exists.
 
 ## Integrity Audit
 
@@ -1075,4 +1097,4 @@ Interim local/remote original and first-phase source checksum and report-provena
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-13T02:38:27+00:00.
+Generated from archived evidence at 2026-10-13T02:52:55+00:00.

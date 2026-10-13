@@ -1,10 +1,16 @@
 {
   "plan": "docs/0005-rom-clock-t4-plan.md",
-  "phase": "C27 is archived as an AXI failure; repaired C28 passes quality and HLS screening, and C31 is starting monitored RTL",
+  "phase": "C31 is running; user authorizes WS-G, WS-H and WS-I after cancelling obsolete F90/F91",
   "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F43", "F44", "F45", "F47", "W28", "W29", "W30", "F48", "F46", "C14", "C15", "F49", "F50", "F51", "F52", "W31", "W32", "C16", "C17", "C18", "C19", "C20", "C21", "C22", "W33", "C23", "C24", "C25", "F53", "C26", "C27", "C28", "C29", "C30", "C31"],
   "complete_test_set": "Set14 (13 course-provided images)",
   "resource_policy": "routed",
-  "next": "C22 remains the verified 1.365115 ms leader. C27's four RTL outputs pass but both skipped calls read 4 bytes; preserve fail and never route C23. Failed CSV/XML, execution-phase post-check and the unchanged 102-file RTL manifest are archived. C28 completes all 13 exact images, unchanged precision/border, HLS screening and all three fold II1 gates. C29/C30 C sequence and cold-start checks pass. Supervisor 59926 owns fresh C31, the sole heavy task. Require four exact RTL calls, zero skipped parameter valid cycles/handshakes, latency ordering and unchanged RTL hashes before allocating unused C32 for independent staged 5 ns routing. Then archive physical paths/hierarchy and reload handoff, regenerate all CSV analyses/plots/summaries and perform the final idle audit. No board result exists.",
+  "next": "C22 remains the verified 1.365115 ms leader. Supervisor59926 owns C31, the sole active heavy task; require four exact calls, zero skipped parameter AXI, latency ordering and unchanged RTL. After its pass, execute WS-G by copying frozen C17 and transplanting only the C13-to-C28 reload guard changes; first commit its quality/sequence/cold plans, then verify complete13-image E065 exactness, four monitored RTL calls and staged5ns routing. WS-H step1 first uses frozen C17 unchanged RTL with Performance_Explore at4.5ns, queued after the current heavy task; subsequent independent parameter-register and balanced-tree variants use the measured parent and retain the upper-only1percent RTL gate. WS-I comes last: verify installed KV260 support, build a minimal PS/AXI/IP system, implement200MHz or the specified166.67MHz fallback and archive bit/hardware handoff. Preserve C28's required standalone5ns validation as separate lower-priority WS-F work. F90/F91 are user-cancelled unlaunched retries with original plans preserved. No board result exists.",
+  "authorized_followups": {
+    "WS-G": "C31 strict RTL pass before integration; deep-window FIFO plus guarded reload switch",
+    "WS-H": "Step1 uses C17 unchanged RTL; independent parameter-register and balanced-tree variants; no target below4ns",
+    "WS-I": "Last, installed KV260 support only; full-system200MHz then166.67MHz if needed",
+    "WS-F-route": "Independent C28 route remains required; schedule after prioritized WS-G work"
+  },
   "active_phase": {"C31": "cosim_setup / cosim_execute: repaired guarded top, four strict transactions"},
   "completed_workstreams": ["WS-0", "WS-A agent handoff (board measurements pending)", "WS-B", "WS-C", "WS-D", "WS-E"],
   "waiting_for_memory": [],

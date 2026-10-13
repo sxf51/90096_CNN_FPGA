@@ -254,6 +254,10 @@ def main():
         text += "\nRouted timing closes for "+str(sum(str(record.get("timing_met")).lower() == "true" for record in relevant))+" selected implementation runs; "+str(sum(record.get("rtl_status") == "Pass" and record["status"] == "cosim_complete" for record in relevant))+" selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.\n"
     failed = [row for row in arch if row["status"] not in {"pass","provisional","csim_pass","impl_complete","cosim_complete","analysis_complete"}]
     text += "\n## Failed Directions\n\n"+markdown_table(linked(failed),["id","series","status","failure_reason","notes"])
+    if ws and ws.get("cancelled_plans"):
+        text += "\n## Cancelled Plans\n\nUser-cancelled obsolete retries were never launched and have no measured result. Original paper plans are preserved.\n\n"
+        text += markdown_table(linked([{"id": exp_id, **record} for exp_id, record in ws["cancelled_plans"].items()]),
+                               ["id", "parent", "status", "time", "reason"])
     text += "\n## Pending Human Decisions\n\n"
     text += ("- The user confirmed that the13 course-provided images are the complete test set; no comic input is pending.\n"
              if rom_current else "- Supply the missing comic pair before complete14-image precision acceptance. All13 supplied pairs remain mandatory.\n")
@@ -263,7 +267,9 @@ def main():
     text += "- Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).\n"
     if any((ROOT / "experiments" / Path(row["md_path"]).parent / "diagnostics/kernel_oom.txt").is_file()
            for row in rows):
-        text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Those original retries did not change system swap or global tool settings. The later user-configured8GiB zram and current memory observations are documented in [docs/0005](../docs/0005-rom-clock-t4-plan.md).\n"
+        retry_state = ("F90/F91 were cancelled by the user before launch" if ws and ws.get("cancelled_plans")
+                       else "F90/F91 are deferred under the current workstream priority")
+        text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; " + retry_state + ". Those original retries did not change system swap or global tool settings. The later user-configured8GiB zram and current memory observations are documented in [docs/0005](../docs/0005-rom-clock-t4-plan.md).\n"
     if ws:
         scheduling = ("one heavy task with memory-bounded light jobs" if rom.get("concurrency_policy") == "one_heavy_with_light"
                       else "the concurrency policy and measured memory admission in docs/0005 section6.1")
