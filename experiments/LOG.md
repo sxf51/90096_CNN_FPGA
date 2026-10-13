@@ -669,6 +669,8 @@
 
 - 2026-10-13T10:27:01+00:00: W36: archived five setup paths from the matching final generated report; no additional Vivado run.
 
+- 2026-10-13T11:41:49+00:00: C39: ws_cosim_C37; status=cosim_complete; latency_ms_est=1.052616; cosim of C37; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 C38: balanced registered tree passes all13 E065-exact images andII1, but HLS FF=248672 exceeds230000 screening. Conservatively stop its RTL/route followups and retain the result. A separately planned diagnostic route might benefit from mapped/HLS FF calibration, but neither actual resources nor timing is known; review this option later without changing final routed gates.
