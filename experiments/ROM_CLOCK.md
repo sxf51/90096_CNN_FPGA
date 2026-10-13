@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T01:13:04+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T01:14:00+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C23 passes HLS screening; C26 pre-tool scheduler failure archived; monitored RTL retry next. C22 remains the verified 1.365115 ms leader; C21 and W33 independently close 4.5 ns at 2.411892 and 2.494017 ms. C23 completes all13 E065-exact loaded/reused images with unchanged deltaPSNR and all three fold loops II1; 1032 DSP/128840 LUT/193984 FF pass the current HLS screen, while the original infeasible status is retained. C24/C25/F53 C checks pass. C26 fails before any Vitis subprocess because cosim_setup/cosim_execute were absent from the scheduler telemetry whitelist. Both phases are now registered strictly as cosim heavy leases, with21 targeted scheduler/observer checks passing. Plan and run fresh C27 four-call RTL; after its exact/zero-parameter-AXI acceptance, allocate staged5ns routing of C23. Hardware reuse measurements remain unknown. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.
+C23 passes HLS screening; C27 monitored four-call RTL running after C26 pre-tool failure. C22 remains the verified 1.365115 ms leader; C21 and W33 independently close4.5ns at2.411892 and2.494017ms. All WS-F C checks and C23 HLS screening pass. C26's pre-tool telemetry registration failure is archived unchanged;21 targeted scheduler/observer checks validate the repair. C27 now actually runs cosim.setup on the sole heavy slot under supervisor31264. Collect four exact loaded/reused/reloaded/retained transactions, observed zero skipped-call parameter AXI and matching synthesis RTL hashes; only after acceptance allocate fresh staged5ns routing of C23. Hardware reuse measurements remain unknown. Preserve one heavy task,18GiB implementation registration,serial_after_oom and all gates. Complete interpretations,all plots,two-location protected checksums and the final idle audit. No board result exists.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -67,6 +67,7 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
+| [C27](C27_ws_cosim_C23/C27.md) | C23 | cosim | queued_or_running | After repairing C26's pre-tool scheduler telemetry integration, independently verify frozen C23 using four exact transactions, zero skipped-call parameter AXI and unchanged synthesis RTL under a cumulative six-hour timeout |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 

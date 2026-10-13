@@ -609,6 +609,8 @@
 
 ## Pending Human Decisions / 待人工决策
 
+- 2026-10-13 01:13 UTC C23/C26/C27: C23's complete13-image E065 exactness, unchanged deltaPSNR and three fold II1 checks pass; HLS screening permits independent hardware validation while retaining the original infeasible status. C26 is rejected before any Vitis process due to unregistered monitored telemetry phases. Preserve the original fail record, register both phases strictly as cosim heavy leases, and pass21 targeted scheduler/observer checks. Fresh C27 now actually runs setup under supervisor31264; four-call exactness, zero skipped parameter AXI and independent5ns routing remain outstanding. No numerical, memory or physical gate is relaxed.
+
 - 2026-10-13 00:05:47 UTC C23: standalone Vitis Tcl interpreter probe confirms ::AP::printMsg, ::AP::check_bin_exist and ::AESL_AUTOSIM::gDebug are available without a project or simulation. Archive the original tool log in C23/tool_probes/monitor_environment.txt and reproducible exp/hls_monitor_environment.tcl; this is an environment query, not RTL validation. C21 progresses through rerouting; C22 handoff/path completion and outstanding conditions are refreshed in the recovery state.
 
 - 2026-10-13 00:02:11 UTC C23: existing C20 logs confirm HLS executes C vector generation before creating the standalone run_sim driver. The generated driver then runs its own C vector generation and RTL C post-check. Monitored acceptance now requires exactly two successful metric blocks from cosim_execute.console.log, with setup/vector-generation evidence separately retained in the combined log. A regression test rejects missing execution-phase C/RTL checks and verifies all four cycle/AXI source measurements; seven observer checks pass. Actual WS-F execution remains outstanding.

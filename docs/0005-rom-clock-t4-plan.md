@@ -441,3 +441,4 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
+| C27 | C23 | queued_or_running | After repairing C26's pre-tool scheduler telemetry integration, independently verify frozen C23 using four exact transactions, zero skipped-call parameter AXI and unchanged synthesis RTL under a cumulative six-hour timeout |
