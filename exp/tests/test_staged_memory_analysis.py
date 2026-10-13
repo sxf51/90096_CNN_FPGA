@@ -1,11 +1,12 @@
 import csv
+import json
 from pathlib import Path
 import sys
 import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from analyze_route import memory_summary
+from analyze_route import memory_summary, observed_thread_limit
 
 
 def telemetry(path, rss, counters):
@@ -20,6 +21,42 @@ def telemetry(path, rss, counters):
 
 
 class StagedMemoryAnalysisTests(unittest.TestCase):
+    def test_planned_four_threads_are_not_used_as_an_observation(self):
+        with tempfile.TemporaryDirectory() as temp:
+            archive = Path(temp)
+            result, _ = memory_summary(archive, {"implementation_threads": 4})
+            self.assertEqual(result["implementation_threads"], 4)
+            self.assertIsNone(result["observed_implementation_thread_limit"])
+
+    def test_actual_one_thread_is_preserved_when_the_plan_requests_four(self):
+        with tempfile.TemporaryDirectory() as temp:
+            archive = Path(temp)
+            (archive / "implementation").mkdir()
+            (archive / "implementation/thread_observation.json").write_text(json.dumps({
+                "child_initial_max_threads": [1], "child_runtime_thread_reports": []}))
+            result, _ = memory_summary(archive, {"implementation_threads": 4})
+            self.assertEqual(result["implementation_threads"], 4)
+            self.assertEqual(result["observed_implementation_thread_limit"], 1)
+
+    def test_conflicting_child_limits_are_unknown(self):
+        with tempfile.TemporaryDirectory() as temp:
+            archive = Path(temp)
+            (archive / "implementation").mkdir()
+            (archive / "implementation/thread_observation.json").write_text(json.dumps({
+                "child_initial_max_threads": [1], "child_runtime_thread_reports": [{"general": 4}]}))
+            observed, reason = observed_thread_limit(archive)
+            self.assertIsNone(observed)
+            self.assertIn("Conflicting", reason)
+
+    def test_single_thread_subtasks_do_not_replace_the_observed_child_limit(self):
+        with tempfile.TemporaryDirectory() as temp:
+            archive = Path(temp)
+            (archive / "implementation").mkdir()
+            (archive / "implementation/thread_observation.json").write_text(json.dumps({
+                "child_initial_max_threads": [4], "child_runtime_thread_reports": [{"general": 4}],
+                "phys_opt_cpu_limits": [1, 4]}))
+            self.assertEqual(observed_thread_limit(archive)[0], 4)
+
     def test_stage_measurements_do_not_include_another_tasks_waiting_peak(self):
         with tempfile.TemporaryDirectory() as temp:
             archive = Path(temp)

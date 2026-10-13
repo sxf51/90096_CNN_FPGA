@@ -58,6 +58,22 @@ def hierarchy(text):
     return records
 
 
+def observed_thread_limit(archive):
+    path = archive / "implementation/thread_observation.json"
+    if not path.is_file():
+        return None, "No archived child-thread observation"
+    evidence = json.loads(path.read_text())
+    limits = evidence.get("child_initial_max_threads", []) + [
+        item.get("general") for item in evidence.get("child_runtime_thread_reports", [])]
+    if not limits:
+        return None, "Child initialization/runtime thread limit was not observed"
+    if any(type(value) is not int or value <= 0 for value in limits):
+        return None, "Invalid child-thread observation"
+    if len(set(limits)) != 1:
+        return None, "Conflicting child initialization/runtime thread limits"
+    return limits[0], "Observed child limit; actual CPU utilization is measured separately"
+
+
 def memory_summary(archive, config):
     staged = config.get("implementation_backend") == "staged_packaged_flow"
     names = (["impl_synth_host_memory.csv", "impl_route_host_memory.csv"] if staged else
@@ -77,6 +93,7 @@ def memory_summary(archive, config):
                   **cpu_summary(rows), **swap_summary(rows)}
         phases.append({"telemetry_file": name, **values})
         samples.extend({**row, "telemetry_segment": name} for row in rows)
+    threads, thread_note = observed_thread_limit(archive)
     values = {"samples": len(samples),
               "min_available_GiB": min(float(row["available_kib"]) for row in samples)/1048576 if samples else None,
               "peak_tool_RSS_GiB": max(float(row["tool_rss_kib"]) for row in samples)/1048576 if samples else None,
@@ -84,6 +101,8 @@ def memory_summary(archive, config):
               if samples and all("task_tree_rss_kib" in row for row in samples) else None,
               "telemetry_file": ";".join(names),
               "implementation_threads": config.get("implementation_threads", 1),
+              "observed_implementation_thread_limit": threads,
+              "thread_observation_note": thread_note,
               **cpu_summary(samples, segment_key="telemetry_segment"), **swap_summary(samples)}
     if staged:
         values["measurement_scope"] = "synthesis and implementation stages"

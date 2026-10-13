@@ -32,8 +32,9 @@ for axis, metric, ylabel, title in zip(axes, ("cpu_busy_pct", "min_available_GiB
                                       ("Observed remote CPU utilization", "Observed host memory headroom")):
     available = [row for row in records if row.get(metric) not in ("", None, "None")]
     for index, row in enumerate(available):
-        parallel = int(row.get("implementation_threads") or 1) > 1
-        color = "#008f7a" if parallel else "#c56745"
+        observed = row.get("observed_implementation_thread_limit")
+        color = ("#888888" if observed in ("", None, "None") else
+                 "#008f7a" if int(observed) > 1 else "#c56745")
         value = float(row[metric])
         axis.bar(index, value, color=color)
         axis.annotate(row["id"]+f"\n{value:.2f}", (index, value), xytext=(0, 4),
@@ -46,7 +47,8 @@ for axis, metric, ylabel, title in zip(axes, ("cpu_busy_pct", "min_available_GiB
     axis.set_ylabel(ylabel)
     axis.set_title(title)
     axis.set_ylim(0, 100 if metric == "cpu_busy_pct" else max(float(row[metric]) for row in available)*1.3)
-    axis.legend(handles=[Patch(facecolor="#c56745", label="Implementation limit: 1 thread"),
-                         Patch(facecolor="#008f7a", label="Implementation limit: >1 thread")], fontsize=8)
+    axis.legend(handles=[Patch(facecolor="#c56745", label="Observed limit: 1 thread"),
+                         Patch(facecolor="#008f7a", label="Observed limit: >1 thread"),
+                         Patch(facecolor="#888888", label="Thread limit: unknown")], fontsize=8)
 fig.savefig(root / "experiments/figs/host_utilization.png", dpi=180)
 plt.close(fig)
