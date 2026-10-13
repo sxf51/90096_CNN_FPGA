@@ -733,3 +733,5 @@
 
 - 2026-10-13 W36 unattended decision: W34 did not execute the planned four-thread comparison, so commit one fresh4.5ns Performance_Explore C17 retry using repaired staged hooks after prioritized WS-G C35/C36. Preserve W34's original failure, C20 exact cycles, C22 fallback, single-heavy policy and all gates. W36 is planned and unlaunched; its actual child settings must be observed, and4ns remains conditional on independent4.5ns closure. This extra retry is explicitly recorded for later human review.
 
+- 2026-10-13 WS-G acceptance: C35 strictly passes allfour RTL outputs, both zero-parameter-AXI skipped calls,latency ordering and unchanged102-file manifests. Loaded273025/interval273057; reused267022/interval267054, final interval unavailable. Measured10.3213GiB peak remains under11.5GiB reservation. C36 now owns the heavy slot for independent5ns physical acceptance. Committed C37/C38 paper plans before generating independent parameter-register and balanced-tree copies; source diffs preserve all other arithmetic,quantization andFIFO32. Hardware milliseconds remain conditional until routing closes.
+
