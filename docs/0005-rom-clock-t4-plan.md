@@ -561,12 +561,12 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C29](../experiments/C29_reload_guard_sequence/C29.md) | C23 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C30](../experiments/C30_reload_guard_cold/C30.md) | C23 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C31](../experiments/C31_ws_cosim_C28/C31.md) | C28 | cosim_complete | 263090.0 | 1032.0 | 128849.0 | 300634 | unknown | unknown |
+| [W34](../experiments/W34_t4_strategy_4p5_C17/W34.md) | C17 | impl_complete | 263090.0 | 1032.0 | 127985.0 | unknown | False | unknown |
 
 未测量的计划：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| W34 | C17 | queued_or_running | User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes |
 | C32 | C17 | queued_or_running | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
 | C33 | C17 | queued_or_running | C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics |
 | C34 | C17 | queued_or_running | C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading |
