@@ -286,6 +286,9 @@ An unimplemented raw-bank combination follow-up would still need about 96004.0 L
 | [C30](C30_reload_guard_cold/C30.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | csim_pass |
 | [C29](C29_reload_guard_sequence/C29.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | csim_pass |
 | [C28](C28_reload_guard_quality/C28.md) | frame | 4 | 263090.0 | 1.05236 | 1032.0 | 146.0 | 0.0 | 128849.0 | 193984.0 | True | 1.405191888267716e-05 | True | infeasible |
+| [C33](C33_reload_windows_sequence/C33.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | csim_pass |
+| [C34](C34_reload_windows_cold/C34.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | csim_pass |
+| [C32](C32_reload_windows_quality/C32.md) | frame | 4 | 263090.0 | 1.05236 | 1032.0 | 146.0 | 0.0 | 128868.0 | 193984.0 | True | 1.405191888267716e-05 | True | infeasible |
 
 ## F Direction
 
@@ -365,6 +368,7 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [C17](C17_t4_fifo/C17.md) | C | designs/winograd_t4_windows32_v1 | 4 | 1.05236 | 1032.0 | 146.0 | 127985.0 | 192308.0 | -0.07589037644656216 | infeasible |
 | [C23](C23_reload_switch_quality/C23.md) | C | designs/winograd_prepacked_t4_reload_v1 | 4 | 1.05236 | 1032.0 | 146.0 | 128840.0 | 193984.0 | -0.07589037644656216 | infeasible |
 | [C28](C28_reload_guard_quality/C28.md) | C | designs/winograd_prepacked_t4_reload_guard_v1 | 4 | 1.05236 | 1032.0 | 146.0 | 128849.0 | 193984.0 | -0.07589037644656216 | infeasible |
+| [C32](C32_reload_windows_quality/C32.md) | C | designs/winograd_t4_windows32_reload_v1 | 4 | 1.05236 | 1032.0 | 146.0 | 128868.0 | 193984.0 | -0.07589037644656216 | infeasible |
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | C | designs/winograd_mixed_packing_r2 | 4 | 1.081672 | 1036.0 | 146.0 | 248797.0 | 307525.0 | -0.07589037644656216 | infeasible |
 | [W24](W24_constant_rom_T8/W24.md) | W | designs/winograd_rom_v1 | 8 | 1.7460189000000002 | 630.0 | 138.0 | 53316.0 | 103695.0 | -0.0695141811880653 | pass |
 | [W19](W19_streamed_winograd_T8/W19.md) | W | designs/winograd_param_stream_v1 | 8 | 1.74903921 | 645.0 | 146.0 | 83623.0 | 130843.0 | -0.0695141811880653 | infeasible |
@@ -474,6 +478,8 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [C25](C25_reload_switch_cold/C25.md) | C | designs/winograd_prepacked_t4_reload_v1 | 4 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
 | [C30](C30_reload_guard_cold/C30.md) | C | designs/winograd_prepacked_t4_reload_guard_v1 | 4 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
 | [C29](C29_reload_guard_sequence/C29.md) | C | designs/winograd_prepacked_t4_reload_guard_v1 | 4 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
+| [C33](C33_reload_windows_sequence/C33.md) | C | designs/winograd_t4_windows32_reload_v1 | 4 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
+| [C34](C34_reload_windows_cold/C34.md) | C | designs/winograd_t4_windows32_reload_v1 | 4 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
 
 ## Estimates And Actuals
 
@@ -640,6 +646,11 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [C27](C27_ws_cosim_C23/C27.md) | frame | 1032.0 | unknown | unknown | 263090.0 | unknown | unknown | fail |
 | [C28](C28_reload_guard_quality/C28.md) | frame | 1032.0 | 1032.0 | 0.0 | 300632.0 | 300634.0 | 0.0006652651747041105 | infeasible |
 | [C31](C31_ws_cosim_C28/C31.md) | frame | 1032.0 | unknown | unknown | 263090.0 | 300634.0 | 14.270401763655016 | cosim_complete |
+| [W34](W34_t4_strategy_4p5_C17/W34.md) | frame | 1032.0 | 1032.0 | 0.0 | 273023.0 | unknown | unknown | impl_complete |
+| [C33](C33_reload_windows_sequence/C33.md) | frame | 1032.0 | unknown | unknown | 273023.0 | unknown | unknown | csim_pass |
+| [C34](C34_reload_windows_cold/C34.md) | frame | 1032.0 | unknown | unknown | 273023.0 | unknown | unknown | csim_pass |
+| [C32](C32_reload_windows_quality/C32.md) | frame | 1032.0 | 1032.0 | 0.0 | 273023.0 | 273025.0 | 0.0007325390168677615 | infeasible |
+| [C35](C35_ws_cosim_C32/C35.md) | frame | 1032.0 | unknown | unknown | 263090.0 | 273025.0 | 3.7762742787639247 | cosim_complete |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -709,6 +720,8 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [C26](C26_ws_cosim_C23/C26.md) | frame | C23 | cosim | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C27](C27_ws_cosim_C23/C27.md) | frame | C23 | cosim | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | unknown | unknown | unknown |
 | [C31](C31_ws_cosim_C28/C31.md) | frame | C28 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 300634 | 300666 | 14.270401763655016 |
+| [W34](W34_t4_strategy_4p5_C17/W34.md) | frame | C17 | impl | impl_complete | 1032.0 | 54.5 | 59893.0 | 101443.0 | 0.0 | -0.324 | False | unknown | unknown | unknown | unknown |
+| [C35](C35_ws_cosim_C32/C35.md) | frame | C32 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 273025 | 273057 | 3.7762742787639247 |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -949,6 +962,22 @@ Finite-FIFO RTL counters span both transactions, including startup/inactive cycl
 | [C31](C31_ws_cosim_C28/C31.md) | result_U | 1 | 0.0 | 78.18640921154929 | [counters](C31_ws_cosim_C28/profiling/channels.csv) |
 | [C31](C31_ws_cosim_C28/C31.md) | windows0_U | 2 | 0.8491729444250824 | 10.949773464518378 | [counters](C31_ws_cosim_C28/profiling/channels.csv) |
 | [C31](C31_ws_cosim_C28/C31.md) | windows1_U | 2 | 0.8491729444250824 | 10.949773464518378 | [counters](C31_ws_cosim_C28/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | raw_U | 512 | 66.75096829616903 | 0.03739881953033007 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | params1_U | 2 | 0.0 | 1.2026867904407137 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | params2_U | 5 | 0.0 | 1.457998533670046 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | params3_U | 4 | 0.0 | 1.8953055224355888 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | raw1_U | 16 | 0.11349245728758581 | 0.0057394227992090706 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | padded1_U | 16 | 72.79902392783879 | 0.13478386444594204 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | features2_U | 4 | 0.2840088572253779 | 74.4641971102932 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | features_U | 4 | 72.73292799431242 | 0.7492723893031971 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | windows_U | 32 | 72.85197473172828 | 0.5091423450911272 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | tiles_U | 2 | 0.0659107908554332 | 74.62230895127786 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | top_U | 397 | 0.0 | 2.411668431693463 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | bottom_U | 512 | 0.10830846250120343 | 0.0 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | padded3_U | 16 | 0.5413571698350749 | 74.18907510127305 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | result_U | 1 | 0.0 | 75.89683109804415 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | windows0_U | 2 | 0.9383030563352119 | 1.6029652450178107 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
+| [C35](C35_ws_cosim_C32/C35.md) | windows1_U | 2 | 0.9383030563352119 | 1.6029652450178107 | [counters](C35_ws_cosim_C32/profiling/channels.csv) |
 
 DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.
 
@@ -1013,6 +1042,7 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [C16](C16_t8_fifo_frp/C16.md) | 7 | pass |
 | [C23](C23_reload_switch_quality/C23.md) | 7 | infeasible |
 | [C28](C28_reload_guard_quality/C28.md) | 7 | infeasible |
+| [C32](C32_reload_windows_quality/C32.md) | 7 | infeasible |
 
 Selected candidates were ranked globally across both phases before validation. Mandatory full-supplied-image C simulation:
 
@@ -1093,6 +1123,7 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 | [C26](C26_ws_cosim_C23/C26.md) | C | fail | cosim of C23; HLS estimates inherited, real measurements in data.csv; Unsupported memory telemetry phase | cosim of C23; HLS estimates inherited, real measurements in data.csv; Unsupported memory telemetry phase |
 | [C27](C27_ws_cosim_C23/C27.md) | C | fail | cosim of C23; HLS estimates inherited, real measurements in data.csv; Skipped-load transaction has parameter AXI traffic | cosim of C23; HLS estimates inherited, real measurements in data.csv; Skipped-load transaction has parameter AXI traffic |
 | [C28](C28_reload_guard_quality/C28.md) | C | infeasible | LUT=128849.0 exceeds 81984; FF=193984.0 exceeds 163968 | ; HLS status retained; final feasibility requires independent routed gates |
+| [C32](C32_reload_windows_quality/C32.md) | C | infeasible | LUT=128868.0 exceeds 81984; FF=193984.0 exceeds 163968 | ; HLS status retained; final feasibility requires independent routed gates |
 
 ## Cancelled Plans
 
@@ -1144,4 +1175,4 @@ Interim local/remote original and first-phase source checksum and report-provena
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-13T07:51:34+00:00.
+Generated from archived evidence at 2026-10-13T07:52:58+00:00.

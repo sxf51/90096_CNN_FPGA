@@ -30,17 +30,18 @@ def main():
         for axis, key in zip(axes, (metric, "read_bytes")):
             bars = axis.bar(positions, [float(row[key]) for row in group], width=.19,
                             label=label, color=color)
-            axis.bar_label(bars, fmt="%.3f" if key == "ip_frame_ms" else "%g", fontsize=8, padding=3)
+            axis.bar_label(bars, fmt="%.3f" if key == "ip_frame_ms" else "%g",
+                           fontsize=8, padding=3, rotation=90)
     for axis in axes:
         axis.set_xticks(range(len(ids)), [exp_id + " / " + indexed[(exp_id, cases[0])]["rtl_source"]
                                          if exp_id != indexed[(exp_id, cases[0])]["rtl_source"] else exp_id
                                          for exp_id in ids])
         axis.set_xlabel("Experiment ID / RTL verification")
-        axis.margins(y=.23)
-        axis.legend(fontsize=8)
+        axis.margins(y=.28)
     axes[0].set(title="Initial loading and retained-parameter calls", ylabel=unit)
     axes[1].set(title="Observed parameter AXI read payload", ylabel="Read requests (bytes)")
     fig.suptitle("SRCNN parameter reload switch: four independently checked transactions")
+    fig.legend(*axes[0].get_legend_handles_labels(), loc="outside lower center", ncol=4, fontsize=8)
     fig.savefig(ROOT / "experiments/figs/reload_switch_transactions.png", dpi=180)
     plt.close(fig)
 
