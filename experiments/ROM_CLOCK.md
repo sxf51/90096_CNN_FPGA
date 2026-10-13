@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T05:53:09+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T05:57:49+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C31 strict RTL acceptance complete; WS-G light validation and WS-H1 physical run submitted. C31 passes four exact calls, both skipped calls have zero parameter AXI, and synthesis RTL is unchanged. Frozen C17 plus only the reviewed C13-to-C28 guard transplant is committed as the independent WS-G source. C32 quality/HLS and C33/C34 sequence/cold validation are submitted under the unchanged memory scheduler; W34 is the sole heavy task, using C17 unchanged RTL at4.5ns Performance_Explore. On all WS-G C/HLS gates, first commit fresh C35 monitored four-call RTL and C36 staged5ns route plans, then execute in order. WS-H parameter-register and balanced-tree variants remain independent copies of the measured WS-G parent, with per-call parent+1percent limits and actual register/critical-path inspection. WS-I runs last using installed KV260 support only. Preserve the required C28 standalone5ns validation as lower-priority WS-F work; F90/F91 stay cancelled. C22 remains the verified1.365115ms fallback; no board result exists.
+WS-G C33/C34 pass; C32 HLS running; WS-H1 W34 failed4.5ns setup timing. Collect and strictly screen C32; C33 four-call sequence and C34 cold-start C validation pass. W34 completed with setup failure at4.5ns and actual one-thread implementation; its final five paths are archived. After C32 gates, commit C35 monitored four-call RTL and C36 staged5ns route plans, then execute in order. From accepted WS-G RTL, separately plan parameter-register and balanced-tree copies with per-call parent+1percent upper limits and actual register/path inspection. W35 C28 standalone5ns route remains required after prioritized WS-G/WS-H. WS-I runs last. C22 remains the verified1.365115ms fallback; no board result exists; F90/F91 remain cancelled.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -62,7 +62,7 @@ C31 strict RTL acceptance complete; WS-G light validation and WS-H1 physical run
 | [C29](C29_reload_guard_sequence/C29.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C30](C30_reload_guard_cold/C30.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C31](C31_ws_cosim_C28/C31.md) | C28 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128849.0 | 300634 | original_verification_pass | unknown | unknown | unknown | 14.270401763655016 | unknown |
-| [W34](W34_t4_strategy_4p5_C17/W34.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | 4.5 | False | unknown | unknown | unknown |
+| [W34](W34_t4_strategy_4p5_C17/W34.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | 4.5 | False | unknown | 3.7755140826333244 | unknown |
 | [C33](C33_reload_windows_sequence/C33.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C34](C34_reload_windows_cold/C34.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 

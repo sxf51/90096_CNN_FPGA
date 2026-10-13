@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C31 strict RTL acceptance complete; WS-G light validation and WS-H1 physical run submitted. C31 passes four exact calls, both skipped calls have zero parameter AXI, and synthesis RTL is unchanged. Frozen C17 plus only the reviewed C13-to-C28 guard transplant is committed as the independent WS-G source. C32 quality/HLS and C33/C34 sequence/cold validation are submitted under the unchanged memory scheduler; W34 is the sole heavy task, using C17 unchanged RTL at4.5ns Performance_Explore. On all WS-G C/HLS gates, first commit fresh C35 monitored four-call RTL and C36 staged5ns route plans, then execute in order. WS-H parameter-register and balanced-tree variants remain independent copies of the measured WS-G parent, with per-call parent+1percent limits and actual register/critical-path inspection. WS-I runs last using installed KV260 support only. Preserve the required C28 standalone5ns validation as lower-priority WS-F work; F90/F91 stay cancelled. C22 remains the verified1.365115ms fallback; no board result exists.
+WS-G C33/C34 pass; C32 HLS running; WS-H1 W34 failed4.5ns setup timing. Collect and strictly screen C32; C33 four-call sequence and C34 cold-start C validation pass. W34 completed with setup failure at4.5ns and actual one-thread implementation; its final five paths are archived. After C32 gates, commit C35 monitored four-call RTL and C36 staged5ns route plans, then execute in order. From accepted WS-G RTL, separately plan parameter-register and balanced-tree copies with per-call parent+1percent upper limits and actual register/path inspection. W35 C28 standalone5ns route remains required after prioritized WS-G/WS-H. WS-I runs last. C22 remains the verified1.365115ms fallback; no board result exists; F90/F91 remain cancelled.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T05:53:08+00:00 from archived measurements.
+Updated 2026-10-13T05:57:48+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 

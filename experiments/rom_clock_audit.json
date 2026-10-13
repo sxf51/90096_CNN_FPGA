@@ -1107,6 +1107,34 @@
       "csv_matches_archive": true,
       "id": "C28",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 1,
+      "csv_matches_archive": true,
+      "id": "C31",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "W34",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C33",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C34",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2256,6 +2284,9 @@
     "C28",
     "C29",
     "C30",
+    "C31",
+    "C33",
+    "C34",
     "F32",
     "F33",
     "F34",
@@ -2288,31 +2319,22 @@
     "W30",
     "W31",
     "W32",
-    "W33"
+    "W33",
+    "W34"
   ],
   "mode": "snapshot",
   "pushed": false,
   "remote_jobs_active": true,
   "remote_processes": [
-    "152652 python3 exp/run_exp.py --config exp/configs/C31.json",
-    "154553 python3 exp/run_exp.py --config exp/configs/W34.json"
+    "157412 python3 exp/run_exp.py --config exp/configs/C32.json",
+    "161577 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/v++ -c --mode hls --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C32/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C32",
+    "161607 /bin/bash /home/lipuze/amdfpga/2026.1/Vitis/bin/loader -exec v++ -c --mode hls --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C32/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C32",
+    "161638 /home/lipuze/amdfpga/2026.1/Vitis/bin/unwrapped/lnx64.o/v++ -c --mode hls --config /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C32/hls_config.cfg --work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C32"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-13T03:59:39+00:00",
+  "time": "2026-10-13T05:58:39+00:00",
   "unmeasured_plans": [
-    {
-      "condition": "C28 exact13-image quality/HLS and C29/C30 semantics pass; require repaired four-call exact RTL, zero skipped parameter AXI, latency ordering and unchanged RTL before new routing",
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "C31",
-      "not_run_condition_failed": false,
-      "operation": "cosim",
-      "plan_sha256": "ef281c10fce7f530e2e538bf17717a35fa5c0042ba512f537cdc902aaea590c7",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_condition": false,
-      "unlaunched_for_memory": false
-    },
     {
       "condition": "C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff",
       "failure_reason": null,
@@ -2322,43 +2344,19 @@
       "operation": "csim/csynth",
       "plan_sha256": "c62e98a5be30ce5f4809555436af03845ba513406c0551f7a7357f7d4df8a29f",
       "prerequisite_metrics_sha256": null,
-      "unlaunched_for_condition": true,
+      "unlaunched_for_condition": false,
       "unlaunched_for_memory": false
     },
     {
-      "condition": "C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics",
+      "condition": "C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot",
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "C33",
-      "not_run_condition_failed": false,
-      "operation": "csim/csynth",
-      "plan_sha256": "ac29a0449775c0374363eea0e56265e1bfbf251916b3247148b9d8079b38c8ba",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_condition": true,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": "C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading",
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "C34",
-      "not_run_condition_failed": false,
-      "operation": "csim/csynth",
-      "plan_sha256": "11e4136f180689b8664772d0fd21fcb316aac2f5a5ec7e06532d022927ae3eb0",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_condition": true,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": "User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes",
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "W34",
+      "id": "W35",
       "not_run_condition_failed": false,
       "operation": "impl",
-      "plan_sha256": "0e1d223f6868ed5b7cf301b325290aad0ab654e99d4dfe70d40bea72c948e80e",
+      "plan_sha256": "8789d6036b83cc742faad9e93bdd99552654b9e3d1bf2788eebec17f54c1c207",
       "prerequisite_metrics_sha256": null,
-      "unlaunched_for_condition": false,
+      "unlaunched_for_condition": true,
       "unlaunched_for_memory": false
     }
   ],
@@ -2740,6 +2738,24 @@
       "reports_checked": 4,
       "sha256_pass": true,
       "status": "fail"
+    },
+    {
+      "additional_evidence_files_checked": 67,
+      "git_visible_and_tracked": true,
+      "id": "C31",
+      "operation": "cosim",
+      "reports_checked": 4,
+      "sha256_pass": true,
+      "status": "cosim_complete"
+    },
+    {
+      "additional_evidence_files_checked": 17,
+      "git_visible_and_tracked": true,
+      "id": "W34",
+      "operation": "impl",
+      "reports_checked": 6,
+      "sha256_pass": true,
+      "status": "impl_complete"
     }
   ]
 }

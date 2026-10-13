@@ -111,6 +111,9 @@ Measured follow-up records from docs/0005; their routed acceptance remains separ
 | [C29](C29_reload_guard_sequence/C29.md) | C23 | csim_pass | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C30](C30_reload_guard_cold/C30.md) | C23 | csim_pass | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C31](C31_ws_cosim_C28/C31.md) | C28 | cosim_complete | 4 | 263090.0 | 1032.0 | 128849.0 | 300634.0 | 14.270401763655016 | unknown | unknown | unknown |
+| [W34](W34_t4_strategy_4p5_C17/W34.md) | C17 | impl_complete | 4 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | 3.7755140826333244 | unknown | False | unknown |
+| [C33](C33_reload_windows_sequence/C33.md) | C17 | csim_pass | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C34](C34_reload_windows_cold/C34.md) | C17 | csim_pass | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 ## Parameter Reuse
 
@@ -129,10 +132,7 @@ Unmeasured plans have no actual result and do not enter rankings:
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W34](W34_t4_strategy_4p5_C17/W34.md) | C17 | impl | queued_or_running | User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes |
 | [C32](C32_reload_windows_quality/C32.md) | C17 | csim/csynth | queued_or_running | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
-| [C33](C33_reload_windows_sequence/C33.md) | C17 | csim/csynth | queued_or_running | C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics |
-| [C34](C34_reload_windows_cold/C34.md) | C17 | csim/csynth | queued_or_running | C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
 
 ## P Direction
@@ -1106,7 +1106,7 @@ User-cancelled obsolete retries were never launched and have no measured result.
 
 ## Next Steps
 
-Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. C31 passes four exact calls, both skipped calls have zero parameter AXI, and synthesis RTL is unchanged. Frozen C17 plus only the reviewed C13-to-C28 guard transplant is committed as the independent WS-G source. C32 quality/HLS and C33/C34 sequence/cold validation are submitted under the unchanged memory scheduler; W34 is the sole heavy task, using C17 unchanged RTL at4.5ns Performance_Explore. On all WS-G C/HLS gates, first commit fresh C35 monitored four-call RTL and C36 staged5ns route plans, then execute in order. WS-H parameter-register and balanced-tree variants remain independent copies of the measured WS-G parent, with per-call parent+1percent limits and actual register/critical-path inspection. WS-I runs last using installed KV260 support only. Preserve the required C28 standalone5ns validation as lower-priority WS-F work; F90/F91 stay cancelled. C22 remains the verified1.365115ms fallback; no board result exists.
+Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. Collect and strictly screen C32; C33 four-call sequence and C34 cold-start C validation pass. W34 completed with setup failure at4.5ns and actual one-thread implementation; its final five paths are archived. After C32 gates, commit C35 monitored four-call RTL and C36 staged5ns route plans, then execute in order. From accepted WS-G RTL, separately plan parameter-register and balanced-tree copies with per-call parent+1percent upper limits and actual register/path inspection. W35 C28 standalone5ns route remains required after prioritized WS-G/WS-H. WS-I runs last. C22 remains the verified1.365115ms fallback; no board result exists; F90/F91 remain cancelled.
 
 ## Integrity Audit
 
@@ -1135,4 +1135,4 @@ Interim local/remote original and first-phase source checksum and report-provena
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-13T04:53:09+00:00.
+Generated from archived evidence at 2026-10-13T05:57:49+00:00.
