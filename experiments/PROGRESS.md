@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-WS-H C37 screening/register evidence passes; C38 FF screening fails; W36 route active, C39/C40 planned. C35 strict four-call exact/zero-parameter-AXI RTL passes; C36 physical resources pass but5ns setup fails atWNS-0.102/TNS-122.006. C37 passes13-image quality,allthreefoldII1,HLS screening,and actual224-bit data-register evidence. C39 four-call RTL and conditional C40 staged4.5ns route plans are committed; run after active corrected-four-thread C17 strategy experiment W36. C38 passes quality/II but248672HLS FF exceeds230000 screening; conservatively stop this variant's RTL/route followups and log diagnostic-routing review. Only a matching closed4.5ns point can receive a fresh4ns plan. W35 C28 standalone5ns route remains required before WS-I,which runs last. C22 remains verified1.365115ms fallback; reuse improvements lack closed matching routing. No board result exists; F90/F91 remain cancelled.
+W36 final timing fails; C39 monitored four-call RTL active; C40 conditional; W35 and WS-I remain. W36 completes with confirmed general4/synth1,physical resources passing but4.5ns setup failing atWNS-0.216/TNS-16.7; five final worst paths are Winograd arithmetic/quantization with8-11logic levels. C39 is now running the four-call monitored RTL verification of C37; C40 starts only after exactness,zero skipped parameter AXI,unchanged RTL and original per-call bounds pass. C36 also failed5ns setup,so reload improvements still lack matching closure. C38 heavy followups remain stopped at248672HLS FF screening. Only a matching closed4.5ns point can receive a fresh4ns plan. Complete required W35 C28 standalone5ns routing next,then choose a strictly verified winner and commit WS-I's system plan last. C22 remains verified1.365115ms fallback. No board result exists; F90/F91 remain cancelled.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T10:22:50+00:00 from archived measurements.
+Updated 2026-10-13T10:28:41+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
