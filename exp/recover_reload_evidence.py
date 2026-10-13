@@ -36,9 +36,10 @@ def main():
         "work=Path(" + repr(work) + ")\n"
         "if (work/'.run.lock').exists(): raise RuntimeError('Run lock remains active')\n"
         "check=check_template_rtl(Path(" + repr(remote_root + "/workspace/exp_runs/" + config["verify_parent"]) + "),work)\n"
-        "names=['srcnn_reload.performance.result.transaction.xml','reload_parameter_axi.csv']\n"
-        "files=[{'raw_file':'hls/sim/verilog/'+name,'sha256':hashlib.sha256((work/'hls/sim/verilog'/name).read_bytes()).hexdigest()} "
-        "for name in names if (work/'hls/sim/verilog'/name).is_file()]\n"
+        "names=['hls/sim/verilog/srcnn_reload.performance.result.transaction.xml',"
+        "'hls/sim/verilog/reload_parameter_axi.csv','cosim_execute.console.log']\n"
+        "files=[{'raw_file':name,'sha256':hashlib.sha256((work/name).read_bytes()).hexdigest()} "
+        "for name in names if (work/name).is_file()]\n"
         "print(json.dumps({'rtl_check_after':check,'files':files}))\n")
     observed = json.loads(subprocess.check_output(
         ssh + ["cd " + shlex.quote(remote_root) + "\npython3 -c " + shlex.quote(program)], text=True))
@@ -48,7 +49,8 @@ def main():
     folder = archive / "parameter_axi_monitor"
     folder.mkdir(exist_ok=True)
     for item in observed["files"]:
-        destination = folder / item["raw_file"].rsplit("/", 1)[-1]
+        name = item["raw_file"].rsplit("/", 1)[-1]
+        destination = folder / (name + ".txt" if name.endswith(".log") else name)
         subprocess.run(["scp", "-F", str(ROOT.parent / "ssh-config"),
                         "xiaoxin-ubuntu:" + work + "/" + item["raw_file"], str(destination)], check=True)
         if hashlib.sha256(destination.read_bytes()).hexdigest() != item["sha256"]:
@@ -72,7 +74,7 @@ def main():
             row.update({key: int(value) for key, value in count.items()})
         write_csv(folder / "failed_transactions.csv", transactions, list(transactions[0]))
         diagnostic["transactions"] = transactions
-        log = archive / "cosim_execute.log"
+        log = folder / "cosim_execute.console.log.txt"
         if log.is_file():
             try:
                 diagnostic["functional_postcheck"] = check_rtl_metrics(log.read_text(), config["parent_metrics"])
