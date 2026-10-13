@@ -613,6 +613,8 @@
 
 - 2026-10-13T02:19:05+00:00: C30: reload_guard_cold; status=csim_pass; latency_ms_est=unknown; 
 
+- 2026-10-13T02:19:13+00:00: C29: reload_guard_sequence; status=csim_pass; latency_ms_est=unknown; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.
