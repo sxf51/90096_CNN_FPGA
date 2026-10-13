@@ -1,6 +1,7 @@
 """Release the synthesis design before launching Vivado implementation."""
 import hashlib
 from pathlib import Path
+import re
 import shutil
 
 
@@ -18,6 +19,14 @@ def split_driver(text):
             or "launch_runs impl_1" in synthesis or "reset_run" in route
             or "launch_runs synth_1" in route):
         raise RuntimeError("Generated flow lacks a complete, isolated synthesis/implementation boundary")
+    overrides = []
+    for name in ("STRATEGY", "THREADS"):
+        begin, end = "# EXP_IMPLEMENTATION_" + name + "_BEGIN\n", "# EXP_IMPLEMENTATION_" + name + "_END\n"
+        matches = re.findall(re.escape(begin) + r".*?" + re.escape(end), synthesis, re.DOTALL)
+        if (len(matches) > 1 or synthesis.count(begin) != len(matches) or
+                synthesis.count(end) != len(matches)):
+            raise RuntimeError("Ambiguous implementation override: " + name)
+        overrides.extend(matches)
     synth_script = (header + project + synthesis
                     + '\nputs "EXP_STAGED_SYNTH_REPORT_DONE"\nclose_design\nclose_project\nexit\n')
     route_script = (header
@@ -25,6 +34,7 @@ def split_driver(text):
                     + 'if { [get_property PROGRESS [get_runs synth_1]] ne "100%" } {\n'
                     + '  error "Staged implementation requires completed synthesis"\n}\n'
                     + 'set_param general.maxThreads 1\nset_param synth.maxThreads 1\n'
+                    + ''.join(overrides)
                     + 'puts "EXP_STAGED_PROJECT_REOPENED"\n'
                     + implementation + route + '\nclose_design\nclose_project\nexit\n')
     return synth_script, route_script

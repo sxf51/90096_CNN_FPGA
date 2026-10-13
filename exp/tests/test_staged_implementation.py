@@ -9,6 +9,7 @@ from unittest.mock import Mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from staged_implementation import prepare_staged_driver, run_staged_implementation, split_driver
+from verify_exp import prepare_serial_implementation
 from run_exp import ROOT
 
 
@@ -34,6 +35,69 @@ hls_vivado_reports_finalize $report_options
 
 
 class StagedImplementationTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which("tclsh"), "Tcl interpreter unavailable")
+    def test_strategy_reset_cannot_remove_route_threads_after_project_reopen(self):
+        stub = '''set params [dict create]
+proc open_project {path} { set ::hook {}; set ::strategy Default }
+proc get_runs {args} {
+  if {[lindex $args 0] eq "-filter"} { return impl_1 }
+  return [lindex $args 0]
+}
+proc get_property {name run} {
+  if {$name eq "PROGRESS"} { return 100% }
+  if {$name eq "STRATEGY"} { return $::strategy }
+  return true
+}
+proc set_param {name value} { dict set ::params $name $value }
+proc get_param {name} { return [dict get $::params $name] }
+proc set_property {name value run} {
+  if {$name eq "strategy"} { set ::strategy $value; set ::hook {} }
+  if {$name eq "STEPS.OPT_DESIGN.TCL.PRE"} { set ::hook $value }
+}
+proc launch_runs {run} {
+  if {$run ne "impl_1" || $::strategy ne "Performance_Explore" || $::hook eq ""} {
+    error "Missing implementation strategy or thread hook"
+  }
+  set_param general.maxThreads 1
+  source $::hook
+  puts "ACTUAL_IMPL_THREADS [get_param general.maxThreads] [get_param synth.maxThreads]"
+}
+proc wait_on_run {run} {}
+proc hls_vivado_reports_impl {args} {}
+proc hls_vivado_reports_finalize {args} {}
+proc close_design {} {}
+proc close_project {} {}
+'''
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            work, archive = root / "work", root / "archive"
+            cwd = work / "hls/impl/verilog"
+            cwd.mkdir(parents=True)
+            original = DRIVER.replace("reset_run synth_1\n", "hls_vivado_reports_setup $report_options\nreset_run synth_1\n")
+            (cwd / "run_vivado.tcl").write_text(original)
+            (cwd / "stub.tcl").write_text(stub)
+            (cwd / "settings.tcl").write_text("# fixture settings\n")
+            (cwd / "extraction.tcl").write_text("# fixture reports\n")
+            hook = root / "hook.tcl"
+            hook.write_text("set_param general.maxThreads 1\nset_param synth.maxThreads 1\n")
+            prepare_serial_implementation(work, work, archive, hook, implementation_threads=4,
+                                          implementation_strategy="Performance_Explore")
+            prepared = (cwd / "run_vivado.tcl").read_text()
+            self.assertLess(prepared.index("EXP_IMPLEMENTATION_STRATEGY_BEGIN"),
+                            prepared.index("EXP_IMPLEMENTATION_THREADS_BEGIN"))
+            _, route = split_driver(prepared)
+            (cwd / "route.tcl").write_text(route)
+            result = subprocess.run(["tclsh", "route.tcl"], cwd=cwd, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("ACTUAL_IMPL_THREADS 4 1", result.stdout)
+            self.assertNotIn("launch_runs synth_1", route)
+
+    def test_duplicate_or_unclosed_implementation_overrides_are_rejected(self):
+        block = "# EXP_IMPLEMENTATION_THREADS_BEGIN\nsource thread.tcl\n# EXP_IMPLEMENTATION_THREADS_END\n"
+        for extra in (block + block, block.replace("# EXP_IMPLEMENTATION_THREADS_END\n", "")):
+            with self.assertRaisesRegex(RuntimeError, "Ambiguous implementation override"):
+                split_driver(DRIVER.replace("reset_run synth_1\n", extra + "reset_run synth_1\n"))
+
     @unittest.skipUnless(shutil.which("tclsh"), "Tcl interpreter unavailable")
     def test_two_processes_restore_project_without_restarting_synthesis(self):
         stub = '''proc record {text} {

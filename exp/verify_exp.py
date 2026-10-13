@@ -104,16 +104,6 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
     thread_files = []
     text = re.sub(r"# EXP_IMPLEMENTATION_THREADS_BEGIN\n.*?# EXP_IMPLEMENTATION_THREADS_END\n",
                   "", driver.read_text(), flags=re.DOTALL)
-    if implementation_threads != 1:
-        route_hook = driver.parent / "bounded_implementation.tcl"
-        route_hook.write_text(f"set_param general.maxThreads {implementation_threads}\nset_param synth.maxThreads 1\n"
-                              'puts "EXP_VIVADO_IMPL_THREADS general=[get_param general.maxThreads] synth=[get_param synth.maxThreads]"\n')
-        block = ("# EXP_IMPLEMENTATION_THREADS_BEGIN\nsource ./bounded_implementation.tcl\n"
-                 "foreach exp_impl_run [get_runs -filter {IS_IMPLEMENTATION == 1}] {\n"
-                 "  set_property STEPS.OPT_DESIGN.TCL.PRE [file normalize ./bounded_implementation.tcl] $exp_impl_run\n"
-                 "}\n# EXP_IMPLEMENTATION_THREADS_END\n")
-        text = text.replace(marker, block+marker)
-        thread_files.append(("implementation_thread_hook", route_hook))
     text = re.sub(r"# EXP_IMPLEMENTATION_STRATEGY_BEGIN\n.*?# EXP_IMPLEMENTATION_STRATEGY_END\n",
                   "", text, flags=re.DOTALL)
     if implementation_strategy:
@@ -130,6 +120,17 @@ def prepare_serial_implementation(work, template_work, archive, hook_path, templ
         text = text.replace(marker, '# EXP_IMPLEMENTATION_STRATEGY_BEGIN\nsource ./implementation_strategy.tcl\n'
                             '# EXP_IMPLEMENTATION_STRATEGY_END\n' + marker)
         thread_files.append(("implementation_strategy_hook", strategy_hook))
+    # Changing a Vivado strategy resets step hooks, so install the thread hook last.
+    if implementation_threads != 1:
+        route_hook = driver.parent / "bounded_implementation.tcl"
+        route_hook.write_text(f"set_param general.maxThreads {implementation_threads}\nset_param synth.maxThreads 1\n"
+                              'puts "EXP_VIVADO_IMPL_THREADS general=[get_param general.maxThreads] synth=[get_param synth.maxThreads]"\n')
+        block = ("# EXP_IMPLEMENTATION_THREADS_BEGIN\nsource ./bounded_implementation.tcl\n"
+                 "foreach exp_impl_run [get_runs -filter {IS_IMPLEMENTATION == 1}] {\n"
+                 "  set_property STEPS.OPT_DESIGN.TCL.PRE [file normalize ./bounded_implementation.tcl] $exp_impl_run\n"
+                 "}\n# EXP_IMPLEMENTATION_THREADS_END\n")
+        text = text.replace(marker, block+marker)
+        thread_files.append(("implementation_thread_hook", route_hook))
     driver.write_text(text)
     constraints = []
     if implementation_clock_ns is not None:
