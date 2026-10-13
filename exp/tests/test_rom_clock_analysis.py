@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from analyze_rom_clock import reload_transactions, rtl_excess
+from analyze_rom_clock import add_frame_timings, reload_transactions, rtl_excess
 
 
 class RomClockAnalysisTests(unittest.TestCase):
@@ -77,6 +77,38 @@ class ReloadTransactionAnalysisTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 self.result(self.route)
             measured[key] = True
+
+    def test_reuse_ranking_keeps_first_load_and_uses_the_slower_skip(self):
+        self.config["verification"]["reload_switch_transactions"][3]["latency_cycles"] = 296000
+        route = {**self.route, "rtl_frame_ms": 1.5}
+        calls = self.result(route)
+        add_frame_timings([route], calls)
+        self.assertEqual(route["rtl_frame_ms"], 1.5)
+        self.assertEqual(route["first_load_frame_ms"], 1.5)
+        self.assertEqual(route["steady_state_frame_ms"], 1.48)
+        self.assertEqual(route["ranking_frame_ms"], 1.48)
+        self.assertEqual(route["ranking_basis"], "maximum_verified_reuse")
+
+    def test_no_closed_route_cannot_acquire_a_reuse_ranking(self):
+        route = {**self.route, "route_feasible": False, "rtl_frame_ms": 1.5}
+        add_frame_timings([route], self.result())
+        self.assertIsNone(route["ranking_frame_ms"])
+        self.assertIsNone(route["steady_state_frame_ms"])
+
+    def test_original_interface_keeps_its_maximum_transaction_ranking(self):
+        route = {**self.route, "rtl_frame_ms": 1.5}
+        add_frame_timings([route], [])
+        self.assertEqual(route["ranking_frame_ms"], 1.5)
+        self.assertEqual(route["ranking_basis"], "maximum_rtl_transaction")
+        self.assertIsNone(route["first_load_frame_ms"])
+
+    def test_reuse_ranking_rejects_incomplete_or_mismatched_calls(self):
+        for changes in ({"rtl_source": "C99"}, {"route_clock_ns": 4.5}):
+            with self.subTest(changes=changes), self.assertRaises(RuntimeError):
+                add_frame_timings([{**self.route, "rtl_frame_ms": 1.5}],
+                                  [{**call, **changes} for call in self.result(self.route)])
+        with self.assertRaises(RuntimeError):
+            add_frame_timings([{**self.route, "rtl_frame_ms": 1.5}], self.result(self.route)[:3])
 
 
 if __name__ == "__main__":

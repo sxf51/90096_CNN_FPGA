@@ -10,7 +10,7 @@ See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T04:00:10+00:00 from archived measurements.
+Updated 2026-10-13T04:52:48+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -26,7 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: W34, C32, C33, C34.
+Final verification: W34, C32, C33, C34, W35.
 
 ## Weight Loading Workstream
 

@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T04:18:35+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T04:52:49+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -82,21 +82,21 @@ These plans have no result row. In particular, unlaunched implementation is neit
 
 ## Verified IP timing
 
-| id | parent | rtl_source | rtl_cycles | route_clock_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [C22](C22_ws_impl_C17/C22.md) | C17 | C20 | 273023.0 | 5.0 | 0.013 | 1032.0 | 109.0 | 59552.0 | 100499.0 | 1.365115 |
-| [C18](C18_ws_impl_C13/C18.md) | C13 | C14 | 300632.0 | 5.0 | 0.047 | 1032.0 | 109.0 | 58529.0 | 102072.0 | 1.50316 |
-| [C21](C21_ws_impl_C16/C21.md) | C16 | C19 | 535976.0 | 4.5 | 0.053 | 644.0 | 109.0 | 54139.0 | 78445.0 | 2.411892 |
-| [W30](W30_ws_impl_W27/W30.md) | W27 | W28 | 549438.0 | 4.5 | 0.027 | 644.0 | 109.0 | 54091.0 | 77784.0 | 2.472471 |
-| [W33](W33_ws_impl_W24/W33.md) | W24 | W25 | 554226.0 | 4.5 | 0.063 | 630.0 | 101.0 | 33829.0 | 82539.0 | 2.494017 |
-| [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 |
-| [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | F97 | 558758.0 | 4.5 | 0.144 | 644.0 | 109.0 | 45030.0 | 89096.0 | 2.514411 |
-| [F51](F51_ws_impl_F47/F51.md) | F47 | F48 | 535771.0 | 5.0 | 0.055 | 644.0 | 109.0 | 43617.0 | 87203.0 | 2.678855 |
-| [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 |
-| [W31](W31_ws_impl_W24/W31.md) | W24 | W25 | 554226.0 | 5.0 | 0.47 | 630.0 | 101.0 | 33771.0 | 82635.0 | 2.77113 |
-| [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
+| id | parent | rtl_source | rtl_cycles | route_clock_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms | first_load_frame_ms | steady_state_frame_ms | ranking_frame_ms | ranking_basis |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [C22](C22_ws_impl_C17/C22.md) | C17 | C20 | 273023.0 | 5.0 | 0.013 | 1032.0 | 109.0 | 59552.0 | 100499.0 | 1.365115 | unknown | unknown | 1.365115 | maximum_rtl_transaction |
+| [C18](C18_ws_impl_C13/C18.md) | C13 | C14 | 300632.0 | 5.0 | 0.047 | 1032.0 | 109.0 | 58529.0 | 102072.0 | 1.50316 | unknown | unknown | 1.50316 | maximum_rtl_transaction |
+| [C21](C21_ws_impl_C16/C21.md) | C16 | C19 | 535976.0 | 4.5 | 0.053 | 644.0 | 109.0 | 54139.0 | 78445.0 | 2.411892 | unknown | unknown | 2.411892 | maximum_rtl_transaction |
+| [W30](W30_ws_impl_W27/W30.md) | W27 | W28 | 549438.0 | 4.5 | 0.027 | 644.0 | 109.0 | 54091.0 | 77784.0 | 2.472471 | unknown | unknown | 2.472471 | maximum_rtl_transaction |
+| [W33](W33_ws_impl_W24/W33.md) | W24 | W25 | 554226.0 | 4.5 | 0.063 | 630.0 | 101.0 | 33829.0 | 82539.0 | 2.494017 | unknown | unknown | 2.494017 | maximum_rtl_transaction |
+| [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 | unknown | unknown | 2.514411 | maximum_rtl_transaction |
+| [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | F97 | 558758.0 | 4.5 | 0.144 | 644.0 | 109.0 | 45030.0 | 89096.0 | 2.514411 | unknown | unknown | 2.514411 | maximum_rtl_transaction |
+| [F51](F51_ws_impl_F47/F51.md) | F47 | F48 | 535771.0 | 5.0 | 0.055 | 644.0 | 109.0 | 43617.0 | 87203.0 | 2.678855 | unknown | unknown | 2.678855 | maximum_rtl_transaction |
+| [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 | unknown | unknown | 2.7658521 | maximum_rtl_transaction |
+| [W31](W31_ws_impl_W24/W31.md) | W24 | W25 | 554226.0 | 5.0 | 0.47 | 630.0 | 101.0 | 33771.0 | 82635.0 | 2.77113 | unknown | unknown | 2.77113 | maximum_rtl_transaction |
+| [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 | unknown | unknown | 2.79379 | maximum_rtl_transaction |
 
-IP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded integration fallback.
+Ranking uses the slower of both exact zero-AXI reuse calls for reload designs, and maximum measured transaction latency for the original interface. First-load and maximum transaction times remain separate. IP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded integration fallback.
 
 ## Parameter Reuse
 

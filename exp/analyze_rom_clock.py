@@ -75,6 +75,32 @@ def reload_transactions(records, comparisons):
     return result
 
 
+def add_frame_timings(comparisons, transactions):
+    for row in comparisons:
+        row.update(first_load_frame_ms=None, steady_state_frame_ms=None,
+                   ranking_frame_ms=None, ranking_basis=None)
+        if row.get("route_feasible") is not True:
+            continue
+        row["ranking_frame_ms"] = number(row.get("rtl_frame_ms"))
+        if row["ranking_frame_ms"] is not None:
+            row["ranking_basis"] = "maximum_rtl_transaction"
+        calls = [call for call in transactions if call.get("implementation_id") == row["id"]]
+        if not calls:
+            continue
+        if (len(calls) != 4 or [call["case"] for call in calls] !=
+                ["first_load", "reuse", "reload", "retain"] or
+                any(call["parent"] != row["parent"] or call["rtl_source"] != row["rtl_source"] or
+                    number(call["route_clock_ns"]) != number(row["route_clock_ns"]) or
+                    number(call["ip_frame_ms"]) is None or number(call["ip_frame_ms"]) <= 0
+                    for call in calls)):
+            raise RuntimeError("Reuse ranking requires four matching verified calls and routed clock")
+        row["first_load_frame_ms"] = number(calls[0]["ip_frame_ms"])
+        row["steady_state_frame_ms"] = max(number(call["ip_frame_ms"]) for call in calls
+                                           if call["case"] in {"reuse", "retain"})
+        row["ranking_frame_ms"] = row["steady_state_frame_ms"]
+        row["ranking_basis"] = "maximum_verified_reuse"
+
+
 def main():
     state = json.loads((ROOT/"experiments/rom_clock_state.json").read_text())
     records = [item for exp_id in dict.fromkeys(["W21", "F97", "F98", "W22"] + state["experiment_ids"])
@@ -169,12 +195,13 @@ def main():
                                if "task_tree_rss_kib" in samples[0] else None,
                                "minimum_available_GiB": min(float(item["available_kib"]) for item in samples)/1048576,
                                **swap_summary(samples)})
+    reload_rows = reload_transactions(records, comparisons)
+    add_frame_timings(comparisons, reload_rows)
     outputs = (("rom_clock_comparison.csv", comparisons), ("rom_clock_estimates.csv", estimates),
                ("rom_clock_dsp.csv", composition), ("rom_clock_fifo.csv", fifos), ("rom_clock_memory.csv", memory))
     for filename, rows in outputs:
         columns = list(rows[0]) if rows else ["id"]
         write_csv(ROOT/"experiments"/filename, rows, columns)
-    reload_rows = reload_transactions(records, comparisons)
     write_csv(ROOT/"experiments/reload_switch_measurements.csv", reload_rows,
               list(reload_rows[0]) if reload_rows else ["id"])
 

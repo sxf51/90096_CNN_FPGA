@@ -95,6 +95,8 @@ def main():
                   "rtl_acceptance_basis": acceptance_basis(row, config) if config.get("operation") == "cosim" else None,
                   "rtl_hls_excess_pct": comparison_by_id.get(exp_id, {}).get("rtl_hls_excess_pct"),
                   "wsD_goal_met": comparison_by_id.get(exp_id, {}).get("wsD_goal_met"),
+                  **{key: comparison_by_id.get(exp_id, {}).get(key) for key in
+                     ("first_load_frame_ms", "steady_state_frame_ms", "ranking_frame_ms", "ranking_basis")},
                   "rtl_cycles_x_route_clock_ms": None}
         if config.get("operation") == "impl" and route.get("route_feasible") is True:
             parent = config["verify_parent"]
@@ -126,13 +128,17 @@ def main():
     text += "\nThese plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.\n"
     if comparison_path.is_file():
         accepted = [row for row in comparisons if row["route_feasible"] == "True" and
-                    number(row["rtl_frame_ms"]) is not None]
-        accepted.sort(key=lambda row: number(row["rtl_frame_ms"]))
+                    number(row.get("ranking_frame_ms", row["rtl_frame_ms"])) is not None]
+        accepted.sort(key=lambda row: number(row.get("ranking_frame_ms", row["rtl_frame_ms"])))
         text += "\n## Verified IP timing\n\n"
         text += markdown_table([{**row, "id": "[" + row["id"] + "](" + row["md_path"] + ")"} for row in accepted],
                                ["id", "parent", "rtl_source", "rtl_cycles", "route_clock_ns", "route_WNS_ns",
-                                "route_DSP", "route_BRAM18K", "route_LUT", "route_FF", "rtl_frame_ms"])
-        text += "\nIP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded integration fallback.\n"
+                                "route_DSP", "route_BRAM18K", "route_LUT", "route_FF", "rtl_frame_ms",
+                                "first_load_frame_ms", "steady_state_frame_ms", "ranking_frame_ms", "ranking_basis"])
+        text += ("\nRanking uses the slower of both exact zero-AXI reuse calls for reload designs, "
+                 "and maximum measured transaction latency for the original interface. First-load "
+                 "and maximum transaction times remain separate. IP times exclude DDR, driver and "
+                 "board overhead. W21 remains the runtime-loaded integration fallback.\n")
     text += reload_measurements_section()
     handoffs = state.get("candidate_board_handoffs", {})
     if handoffs:

@@ -48,8 +48,8 @@ def main():
     current_path = ROOT / "experiments/rom_clock_comparison.csv"
     current = list(csv.DictReader(current_path.open(newline=""))) if rom_current and current_path.is_file() else []
     verified = sorted((row for row in current if row.get("route_feasible") == "True" and
-                       number(row.get("rtl_frame_ms")) is not None),
-                      key=lambda row: number(row["rtl_frame_ms"]))
+                       number(row.get("ranking_frame_ms", row.get("rtl_frame_ms"))) is not None),
+                      key=lambda row: number(row.get("ranking_frame_ms", row["rtl_frame_ms"])))
     if rom_current:
         text += "Current follow-up: [ROM_CLOCK.md](ROM_CLOCK.md), following [docs/0005](../docs/0005-rom-clock-t4-plan.md). "
         text += "The complete course Set14 has13 images; final feasibility now uses independently routed resource/timing gates. "
@@ -57,8 +57,12 @@ def main():
     if verified:
         leader = verified[0]
         text += ("The fastest candidate with matching exact RTL and independently closed routing is ["+
-                 leader["id"]+"]("+leader["md_path"]+") at "+leader["rtl_frame_ms"]+
-                 "ms IP latency, using "+leader["route_DSP"]+" DSP at "+leader["route_clock_ns"]+"ns. ")
+                 leader["id"]+"]("+leader["md_path"]+") at "+
+                 str(leader.get("ranking_frame_ms", leader["rtl_frame_ms"]))+
+                 ("ms steady-state IP latency" if leader.get("ranking_basis") == "maximum_verified_reuse"
+                  else "ms IP latency") + ", using "+leader["route_DSP"]+" DSP at "+leader["route_clock_ns"]+"ns. ")
+        if leader.get("ranking_basis") == "maximum_verified_reuse":
+            text += "Its first-load latency is " + leader["first_load_frame_ms"] + "ms. "
     elif best:
         text += ("The lowest HLS estimate satisfying the original HLS resource screen is " if rom_current else
                  "The fastest resource-feasible supplied-image point is ")
@@ -113,7 +117,10 @@ def main():
         text += "Matching-parent successful RTL latency times an independently closed, resource-feasible routed clock. No DDR, driver or board measurement is included.\n\n"
         text += markdown_table(linked(verified), ["id", "parent", "rtl_source", "rtl_cycles", "route_clock_ns",
                                                  "route_WNS_ns", "route_DSP", "route_BRAM18K", "route_LUT",
-                                                 "route_FF", "rtl_frame_ms"])
+                                                 "route_FF", "rtl_frame_ms", "first_load_frame_ms",
+                                                 "steady_state_frame_ms", "ranking_frame_ms", "ranking_basis"])
+        text += ("\nReload candidates rank by the slower of the two accepted zero-parameter-AXI reuse "
+                 "calls; original-interface candidates rank by maximum transaction latency.\n")
         handoffs = rom.get("candidate_board_handoffs", {})
         if handoffs:
             text += "\nVerified candidate IP packages and register maps: "

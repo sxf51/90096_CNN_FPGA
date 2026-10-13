@@ -85,6 +85,7 @@ fig.savefig(FIGS/"rom_clock_pareto.png", dpi=180)
 plt.close(fig)
 
 results = {row["id"]: row for row in rows("results.csv")}
+current_by_id = {row["id"]: row for row in comparison}
 verified = []
 for row in rows("route_calibration.csv"):
     if (row.get("route_feasible") != "True" or not present(row.get("rtl_frame_ms_at_target")) or
@@ -92,7 +93,12 @@ for row in rows("route_calibration.csv"):
         continue
     parent = results.get(row["parent"], {})
     precision = parent.get("precision_w_a_acc", "unknown")
+    timing = current_by_id.get(row["id"], {})
+    frame_ms = timing.get("ranking_frame_ms", row["rtl_frame_ms_at_target"])
+    if not present(frame_ms):
+        continue
     verified.append({**row, "series": row["id"][0], "T": parent.get("T_target", "unknown"),
+                     "ranking_frame_ms": frame_ms,
                      "precision_label": {"w10a10acc23": "w10 a10",
                                          "w10_8_10a10acc23_21_23": "w10/8/10 a10"}.get(precision, precision)})
 fig, ax = plt.subplots(figsize=(9, 6), layout="constrained")
@@ -100,17 +106,17 @@ for series, color in colors.items():
     group = [row for row in verified if row["series"] == series]
     if group:
         ax.scatter([float(row["route_DSP"]) for row in group],
-                   [float(row["rtl_frame_ms_at_target"]) for row in group],
+                   [float(row["ranking_frame_ms"]) for row in group],
                    color=color, label=series, s=48)
 if verified:
     dsp = [float(row["route_DSP"]) for row in verified]
     ax.set_xlim(min(dsp)*.9, max(dsp)*1.08)
     ax.margins(y=.2)
     ax.legend(title="Series")
-annotate_groups(ax, verified, "route_DSP", "rtl_frame_ms_at_target", include_t=True,
+annotate_groups(ax, verified, "route_DSP", "ranking_frame_ms", include_t=True,
                 outside=True, include_precision=True)
 ax.set(xlabel="Routed DSP48E2 count", ylabel="Verified IP frame time (ms)",
-       title="SRCNN IP: measured RTL cycles and independently closed routing")
+       title="Verified IP timing: reload reuse maximum / original transaction maximum")
 fig.savefig(FIGS/"verified_ip_pareto.png", dpi=180, bbox_inches="tight")
 plt.close(fig)
 
