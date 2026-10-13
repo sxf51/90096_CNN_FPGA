@@ -663,6 +663,8 @@
 
 - 2026-10-13T09:27:54+00:00: W36: read-only child thread snapshot; planned=4; initialized=[4]; runtime_hook=[{'general': 4, 'synth': 1}]; phys_opt_CPU_limits=[]. See implementation/thread_observation.json.
 
+- 2026-10-13T10:22:49+00:00: W36: ws_impl_C17; status=impl_complete; latency_ms_est=1.05236; impl of C17; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 C38: balanced registered tree passes all13 E065-exact images andII1, but HLS FF=248672 exceeds230000 screening. Conservatively stop its RTL/route followups and retain the result. A separately planned diagnostic route might benefit from mapped/HLS FF calibration, but neither actual resources nor timing is known; review this option later without changing final routed gates.

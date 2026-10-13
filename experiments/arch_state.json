@@ -206,7 +206,8 @@
     "C35",
     "C36",
     "C37",
-    "C38"
+    "C38",
+    "W36"
   ],
   "first_phase_head": "2fa7249eaecdfdc360d8d452fcbf52171c35abd2",
   "frozen_design_files": 45,
@@ -220,14 +221,13 @@
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
     "W35",
-    "W36",
     "C39",
     "C40"
   ],
   "resource_policy": "routed",
   "rom_clock_workstream": {
     "active_phase": {
-      "W36": "Corrected four-thread C17 strategy comparison running in supervisor50442; C37/C38 screening is archived"
+      "W36": "Corrected four-thread C17 strategy comparison running in supervisor50442; synthesis complete and logic optimization complete. Read-only child evidence at09:27:54UTC confirms general4/synth1; C37/C38 screening is archived"
     },
     "authorized_followups": {
       "WS-F-route": "Independent C28 route remains required; schedule after prioritized WS-G work",
@@ -335,8 +335,14 @@
       "time": "2026-10-12T10:19:41+00:00"
     },
     "local_exec_sessions": [
-      50442
+      50442,
+      86350,
+      6186
     ],
+    "local_pending_supervisors": {
+      "6186": "Wait for committed C39 archive; recheck accepted RTL status, exact four-call semantics, original per-call bounds, all parameter AXI counts and identical before/after RTL manifests with existing gate helpers, then run C40 once. Stop without launching if any gate fails.",
+      "86350": "Wait for W36 local metrics/result and completed archive commit, then run C39 once through exp/run_queue.py; no remote C39 tool has launched yet. C40 remains conditional on strict C39 acceptance."
+    },
     "mainline_basis": "F47",
     "next": "C35 strict four-call exact/zero-parameter-AXI RTL passes; C36 physical resources pass but5ns setup fails atWNS-0.102/TNS-122.006. C37 passes13-image quality,allthreefoldII1,HLS screening,and actual224-bit data-register evidence. C39 four-call RTL and conditional C40 staged4.5ns route plans are committed; run after active corrected-four-thread C17 strategy experiment W36. C38 passes quality/II but248672HLS FF exceeds230000 screening; conservatively stop this variant's RTL/route followups and log diagnostic-routing review. Only a matching closed4.5ns point can receive a fresh4ns plan. W35 C28 standalone5ns route remains required before WS-I,which runs last. C22 remains verified1.365115ms fallback; reuse improvements lack closed matching routing. No board result exists; F90/F91 remain cancelled.",
     "paused_waiter_ids": [],
@@ -454,7 +460,7 @@
     }
   ],
   "skipped_conditional_plans": {},
-  "time": "2026-10-13T09:16:01+00:00",
+  "time": "2026-10-13T10:22:50+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "cancelled_plans": {

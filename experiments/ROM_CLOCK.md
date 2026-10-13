@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T09:22:21+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T10:22:50+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -68,6 +68,7 @@ WS-H C37 screening/register evidence passes; C38 FF screening fails; W36 route a
 | [C34](C34_reload_windows_cold/C34.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C35](C35_ws_cosim_C32/C35.md) | C32 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | 273025 | original_verification_pass | unknown | unknown | unknown | 3.7762742787639247 | unknown |
 | [C36](C36_ws_impl_C32/C36.md) | C32 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | unknown | unknown | 5.0 | False | unknown | 3.7762742787639247 | unknown |
+| [W36](W36_ws_impl_C17/W36.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | 4.5 | False | unknown | unknown | unknown |
 | [C37](C37_t4_reload_paramreg/C37.md) | C32 | csim/csynth | infeasible | True | -0.07589037644656216 | 263154.0 | 1032.0 | 128942.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C38](C38_t4_reload_balanced/C38.md) | C32 | csim/csynth | infeasible | True | -0.07589037644656216 | 263092.0 | 1032.0 | 131780.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
@@ -81,7 +82,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
-| [W36](W36_ws_impl_C17/W36.md) | C17 | impl | queued_or_running | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
 | [C39](C39_ws_cosim_C37/C39.md) | C37 | cosim | unlaunched_conditional | C37 complete13-image quality,allfoldII1,HLS screening and224-bit clocked-data evidence pass; after W36 require four exact RTL calls,zero skipped parameter AXI,unchanged RTL and matching C35 per-call upper-only+1percent limits |
 | [C40](C40_ws_impl_C37/C40.md) | C37 | impl | unlaunched_conditional | Launch only after strict C39 acceptance; independent4.5ns Performance_Explore staged implementation of frozen C37,observed synthesis1/route4threads and unchanged physical gates; no4ns plan until matching closure |
 
