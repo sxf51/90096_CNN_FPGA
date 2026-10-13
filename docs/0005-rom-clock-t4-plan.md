@@ -459,3 +459,4 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
+| C31 | C28 | queued_or_running | C28 exact13-image quality/HLS and C29/C30 semantics pass; require repaired four-call exact RTL, zero skipped parameter AXI, latency ordering and unchanged RTL before new routing |

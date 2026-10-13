@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T02:36:01+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T02:38:27+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C27 exposes a4byte read on reuse; guarded C29/C30 pass and C28 quality passes with synthesis active. C22 remains the verified1.365115ms leader. C27's first skipped call reads one4byte bias because HLS scalarizes and hoists biases3[0] before the inner guard; keep all four calls and the output post-check but reject zero-AXI acceptance. Independent guarded design source is committed after the C28 paper plan. C29 four-call C semantics and C30 fresh-process flag0 fallback pass exactly. C28 passes all13 E065-exact images with unchanged deltaPSNR/border and is now synthesizing beside the sole C27 heavy task; actual admission observed6.547GiB available before its4GiB registration. Supervisor80307 owns C28 and31264 owns C27. Preserve failed raw measurements and unchanged parent RTL hashes; after repaired C/HLS screening and C27 release allocate a new four-call monitored RTL ID,then independent5ns routing only after zero-AXI acceptance. Keep all MACs,FIFOdepths,quantization,interfaces and gates unchanged. Finish interpretations,all plots and the final idle audit. No board result exists.
+C27 is archived as an AXI failure; repaired C28 passes quality and HLS screening, and C31 is starting monitored RTL. C22 remains the verified 1.365115 ms leader. C27's four RTL outputs pass but both skipped calls read 4 bytes; preserve fail and never route C23. Failed CSV/XML, execution-phase post-check and the unchanged 102-file RTL manifest are archived. C28 completes all 13 exact images, unchanged precision/border, HLS screening and all three fold II1 gates. C29/C30 C sequence and cold-start checks pass. Supervisor 59926 owns fresh C31, the sole heavy task. Require four exact RTL calls, zero skipped parameter valid cycles/handshakes, latency ordering and unchanged RTL hashes before allocating unused C32 for independent staged 5 ns routing. Then archive physical paths/hierarchy and reload handoff, regenerate all CSV analyses/plots/summaries and perform the final idle audit. No board result exists.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -71,6 +71,7 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
+| [C31](C31_ws_cosim_C28/C31.md) | C28 | cosim | queued_or_running | C28 exact13-image quality/HLS and C29/C30 semantics pass; require repaired four-call exact RTL, zero skipped parameter AXI, latency ordering and unchanged RTL before new routing |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 
