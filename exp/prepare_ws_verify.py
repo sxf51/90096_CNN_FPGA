@@ -22,6 +22,7 @@ def main():
     parser.add_argument("--validation-parent")
     parser.add_argument("--implementation-clock", type=float)
     parser.add_argument("--implementation-threads", type=int, choices=(1, 2, 4))
+    parser.add_argument("--implementation-strategy", choices=("Performance_Explore",))
     parser.add_argument("--staged-implementation", action="store_true",
                         help="Run synthesis/report and implementation/report in separate Vivado processes")
     parser.add_argument("--rtl-min-cycles", type=int)
@@ -76,7 +77,8 @@ def main():
         if (args.rtl_min_cycles is not None and args.rtl_max_cycles is not None and
                 args.rtl_min_cycles > args.rtl_max_cycles):
             raise RuntimeError("RTL lower bound exceeds upper bound")
-    if args.operation != "impl" and (args.implementation_clock is not None or args.template or args.implementation_threads is not None):
+    if args.operation != "impl" and (args.implementation_clock is not None or args.template or
+                                    args.implementation_threads is not None or args.implementation_strategy):
         raise RuntimeError("Implementation options require operation=impl")
     if args.staged_implementation and (args.operation != "impl" or args.template):
         raise RuntimeError("Staged implementation requires an independently packaged implementation")
@@ -141,6 +143,10 @@ def main():
             if args.implementation_threads is not None:
                 config["implementation_threads"] = args.implementation_threads
                 config["changes"] += f" Limit per-run placement/routing to {args.implementation_threads} threads while synthesis remains single-threaded; preserve the serial hardware lock."
+            if args.implementation_strategy:
+                config["implementation_strategy"] = args.implementation_strategy
+                config["changes"] += (" Use the independently probed Performance_Explore strategy "
+                                      "and final post-route physical optimization.")
             if not args.template:
                 config["implementation_driver_template"] = "F89"
             if args.staged_implementation:

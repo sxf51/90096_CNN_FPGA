@@ -170,7 +170,7 @@ def main():
                            "matching parent latency*101//100; faster results remain accepted.")
     config = {**base, "id": args.id, "name": "t4_reload_" + args.variant,
               "series": args.id[0], "stage": "rom_clock_wsH2" if args.variant == "paramreg" else "rom_clock_wsH3",
-              "design": "designs/winograd_t4_reload_" + args.variant + "_v1",
+              "design": "designs/winograd_t4_reload_" + args.variant + "_" + args.id.lower() + "_v1",
               "control_experiment": args.parent, "parent_rtl": args.parent_rtl,
               "timing_variant": args.variant, "set14": True, "csim_only": False,
               "estimates": estimates,
