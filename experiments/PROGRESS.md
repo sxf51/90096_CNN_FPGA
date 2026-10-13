@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-W33 archived at 4.5 ns; all WS-F C checks pass; C23 HLS screening running. C22 remains the verified 1.365115 ms leader and C21 is a verified 2.411892 ms lower-DSP alternative; both IP handoffs are archived. W33 independently closes 4.5 ns with WNS +0.063/WHS +0.032, zero TNS/THS, no unrouted/partial nets and 630 DSP/33829 LUT/82539 FF/101 BRAM18K. Matching W25 exact 554226 cycles gives 2.494017 ms; ROM stays exploratory. C24 four-call reuse/reload/retain, C25 fresh-process first-call load=0 and F53 frozen C13 13-image regression all pass exactly. C23 completes all 13 loaded/reused images with unchanged -0.07589037644656216 dB deltaPSNR and is now synthesizing; its complete archive remains pending under supervisor 65418. After actual passing HLS screening arrives, allocate independent monitored four-call RTL and staged 5 ns routing. The standalone monitor/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.
+C23 passes HLS screening; C26 pre-tool scheduler failure archived; monitored RTL retry next. C22 remains the verified 1.365115 ms leader; C21 and W33 independently close 4.5 ns at 2.411892 and 2.494017 ms. C23 completes all13 E065-exact loaded/reused images with unchanged deltaPSNR and all three fold loops II1; 1032 DSP/128840 LUT/193984 FF pass the current HLS screen, while the original infeasible status is retained. C24/C25/F53 C checks pass. C26 fails before any Vitis subprocess because cosim_setup/cosim_execute were absent from the scheduler telemetry whitelist. Both phases are now registered strictly as cosim heavy leases, with21 targeted scheduler/observer checks passing. Plan and run fresh C27 four-call RTL; after its exact/zero-parameter-AXI acceptance, allocate staged5ns routing of C23. Hardware reuse measurements remain unknown. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T01:11:15+00:00 from archived measurements.
+Updated 2026-10-13T01:13:03+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 

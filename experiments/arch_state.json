@@ -202,7 +202,7 @@
   "hardware_scheduler": "one heavy task plus memory-bounded light jobs",
   "max_heavy_tasks": 1,
   "max_light_tasks": 3,
-  "next": "C22 remains the verified 1.365115 ms leader and C21 is a verified 2.411892 ms lower-DSP alternative; both IP handoffs are archived. W33 independently closes 4.5 ns with WNS +0.063/WHS +0.032, zero TNS/THS, no unrouted/partial nets and 630 DSP/33829 LUT/82539 FF/101 BRAM18K. Matching W25 exact 554226 cycles gives 2.494017 ms; ROM stays exploratory. C24 four-call reuse/reload/retain, C25 fresh-process first-call load=0 and F53 frozen C13 13-image regression all pass exactly. C23 completes all 13 loaded/reused images with unchanged -0.07589037644656216 dB deltaPSNR and is now synthesizing; its complete archive remains pending under supervisor 65418. After actual passing HLS screening arrives, allocate independent monitored four-call RTL and staged 5 ns routing. The standalone monitor/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.",
+  "next": "C22 remains the verified 1.365115 ms leader; C21 and W33 independently close 4.5 ns at 2.411892 and 2.494017 ms. C23 completes all13 E065-exact loaded/reused images with unchanged deltaPSNR and all three fold loops II1; 1032 DSP/128840 LUT/193984 FF pass the current HLS screen, while the original infeasible status is retained. C24/C25/F53 C checks pass. C26 fails before any Vitis subprocess because cosim_setup/cosim_execute were absent from the scheduler telemetry whitelist. Both phases are now registered strictly as cosim heavy leases, with21 targeted scheduler/observer checks passing. Plan and run fresh C27 four-call RTL; after its exact/zero-parameter-AXI acceptance, allocate staged5ns routing of C23. Hardware reuse measurements remain unknown. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [],
@@ -268,7 +268,8 @@
       "C23",
       "C24",
       "C25",
-      "F53"
+      "F53",
+      "C26"
     ],
     "fastest_verified_implementation": "C22",
     "hardware_serial_after_oom": true,
@@ -279,17 +280,15 @@
       "id": "W23",
       "time": "2026-10-12T10:19:41+00:00"
     },
-    "local_exec_sessions": [
-      65418
-    ],
+    "local_exec_sessions": [],
     "mainline_basis": "F47",
-    "next": "C22 remains the verified 1.365115 ms leader and C21 is a verified 2.411892 ms lower-DSP alternative; both IP handoffs are archived. W33 independently closes 4.5 ns with WNS +0.063/WHS +0.032, zero TNS/THS, no unrouted/partial nets and 630 DSP/33829 LUT/82539 FF/101 BRAM18K. Matching W25 exact 554226 cycles gives 2.494017 ms; ROM stays exploratory. C24 four-call reuse/reload/retain, C25 fresh-process first-call load=0 and F53 frozen C13 13-image regression all pass exactly. C23 completes all 13 loaded/reused images with unchanged -0.07589037644656216 dB deltaPSNR and is now synthesizing; its complete archive remains pending under supervisor 65418. After actual passing HLS screening arrives, allocate independent monitored four-call RTL and staged 5 ns routing. The standalone monitor/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.",
+    "next": "C22 remains the verified 1.365115 ms leader; C21 and W33 independently close 4.5 ns at 2.411892 and 2.494017 ms. C23 completes all13 E065-exact loaded/reused images with unchanged deltaPSNR and all three fold loops II1; 1032 DSP/128840 LUT/193984 FF pass the current HLS screen, while the original infeasible status is retained. C24/C25/F53 C checks pass. C26 fails before any Vitis subprocess because cosim_setup/cosim_execute were absent from the scheduler telemetry whitelist. Both phases are now registered strictly as cosim heavy leases, with21 targeted scheduler/observer checks passing. Plan and run fresh C27 four-call RTL; after its exact/zero-parameter-AXI acceptance, allocate staged5ns routing of C23. Hardware reuse measurements remain unknown. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.",
     "paused_waiter_ids": [],
     "pending_decisions": [
       "Board validation remains unavailable to the agent; F98 handoff is archived.",
       "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."
     ],
-    "phase": "W33 archived at 4.5 ns; all WS-F C checks pass; C23 HLS screening running",
+    "phase": "C23 passes HLS screening; C26 pre-tool scheduler failure archived; monitored RTL retry next",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
@@ -322,11 +321,7 @@
     },
     "resource_policy": "routed",
     "runtime_environment_evidence": "C18_ws_impl_C13/runtime_host_environment.csv",
-    "session_jobs": {
-      "65418": [
-        "C23"
-      ]
-    },
+    "session_jobs": {},
     "skipped_plans": {},
     "submitted_waiting_for_admission": [],
     "unlaunched_ids": [],
@@ -338,7 +333,7 @@
     },
     "waiting_for_memory": [],
     "wsE": "C20 passes exact 273023 cycles, 9.18 percent lower than C14's 300632; C22 independently closes 5 ns and becomes the verified 1.365115 ms leader with all routed resources feasible. C19 passes 535976 cycles, 205 more than F48; C21 independently closes 4.5 ns, giving 2.411892 ms and improving W30 by 2.45 percent. All 13-image precision is unchanged. C18 remains the 1.503160 ms fallback. No resource-driven T4 ROM retry is required.",
-    "wsF": "C24 independently passes exact load/reuse/reload/retain with flags [1,0,1,0], ignored incoming parameters and both constructed outputs equal to 104/256. C25 independently passes first-call load=0 in a fresh C process. F53's frozen C13 legacy regression passes both butterfly calls and all 13 images with the new shared macro disabled. C23 completes all 13 E065-exact images with 12 reused calls and unchanged mean deltaPSNR; its HLS result is pending. Monitored four-call RTL and staged 5 ns routing require actual passing HLS screening; no WS-F hardware result exists yet."
+    "wsF": "C24 passes four exact load/reuse/reload/retain calls; C25 passes fresh-process flag0 forced loading; F53 passes frozen C13 legacy regression. C23 passes13 E065-exact images, unchanged deltaPSNR and current HLS screening with all folds II1. C26 fails before tool launch due to an unregistered telemetry phase; the scheduler/observer integration is repaired and21 checks pass. Fresh C27 four-call RTL precedes independent5ns routing; zero skipped-call parameter AXI and actual per-call cycles remain unmeasured."
   },
   "selected": [
     {
@@ -373,7 +368,7 @@
     }
   ],
   "skipped_conditional_plans": {},
-  "time": "2026-10-13T01:11:15+00:00",
+  "time": "2026-10-13T01:13:03+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",

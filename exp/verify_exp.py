@@ -742,7 +742,7 @@ def run_verification(config, resume_waiting=False):
         md += "\nArchived verification source reports (neutral paths preserve Git tracking):\n\n"
         md += markdown_table(config["verification_reports"],["raw_file","archived_file","sha256"])
         md += profile_results(archive)
-        if config.get("reload_switch_validation"):
+        if config.get("reload_switch_validation") and observed.get("reload_switch_transactions"):
             md += "\nReload-switch per-transaction evidence: [cycles and AXI counts](reload_transactions.csv). "
             md += "The read-only observer is confined to the generated simulation testbench; "
             md += "synthesis RTL hashes are checked before and after simulation. "
@@ -750,6 +750,8 @@ def run_verification(config, resume_waiting=False):
             md += markdown_table(observed.get("reload_switch_transactions", []),
                                  ["transaction", "load_params", "latency_cycles", "interval_cycles",
                                   "ar_requests", "r_beats", "read_bytes", "parameter_axi_zero"])
+        elif config.get("reload_switch_validation"):
+            md += "\nNo validated per-transaction RTL cycles or parameter AXI counts are available.\n"
         if config.get("implementation_files"):
             md += "\nIndependent generated-flow retry files:\n\n"
             md += markdown_table(config["implementation_files"],["kind","archived_file","sha256"])

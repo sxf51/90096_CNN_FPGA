@@ -243,6 +243,12 @@ SHA256，只归档软件驱动和元数据，IP ZIP 保持在 Git 排除的工�
 
 WS-F 的参数 AXI 证据采用工具 help 确认的 `cosim.setup=true`：先生成仿真工程，在生成的 testbench 中加入只读计数器，再通过 HLS Tcl 解释器运行工具原有 `run_sim.tcl`，保留输入向量检查、死锁检测、dataflow profiling 和 RTL 输出的 C 后校验。只观察 `parameters` 的 AR/R/AW/W 有效周期、握手与请求字节数，不修改综合 RTL；运行前后核对综合 RTL 的 SHA256。累计工具时间仍限 6 小时。归档四个事务（装载、复用、重装、保留）的独立周期与计数，复用时包括 ARVALID/RVALID 在内必须全为零；没有计数或 C/RTL 后校验就不能标为通过。原有两帧换参数门限继续单独保留。
 
+2026-10-13 C26 在启动任何 Vitis 工具前因调度器的采样阶段白名单缺少
+`cosim_setup` / `cosim_execute` 而失败，保留原 ID 和原始失败证据。
+两个阶段都必须申请 `cosim` 重任务预算，并分别保留准入和内存记录；禁止使用轻任务
+预算绕过保护。新增检查覆盖真实调度入口的阶段注册、独立记录、释放和错误预算拒绝。
+修复后用新的 C27 验证同一 C23 RTL，所有数值、AXI、六小时累计时限和物理门槛保持原样。
+
 **ID 与估计。** 计划用下一个可用的 C 编号（C19–C22 已占用，开工前再确认）。纸面估计：
 
 - DSP 1,032，BRAM18K 146（HLS），URAM 0，T 4；
@@ -429,6 +435,7 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C24](../experiments/C24_reload_switch_sequence/C24.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C25](../experiments/C25_reload_switch_cold/C25.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F53](../experiments/F53_legacy_C13_regression/F53.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C26](../experiments/C26_ws_cosim_C23/C26.md) | C23 | fail | 263090.0 | 1032.0 | 128840.0 | unknown | unknown | unknown |
 
 未测量的计划：
 
