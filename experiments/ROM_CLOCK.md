@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T06:09:59+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T06:16:18+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-WS-G C33/C34 pass; C32 HLS running; WS-H1 W34 failed4.5ns setup timing. Collect and strictly screen C32; C33 four-call sequence and C34 cold-start C validation pass. W34 completed with setup failure at4.5ns and actual one-thread implementation; its final five paths are archived. After C32 gates, commit C35 monitored four-call RTL and C36 staged5ns route plans, then execute in order. From accepted WS-G RTL, separately plan parameter-register and balanced-tree copies with per-call parent+1percent upper limits and actual register/path inspection. W35 C28 standalone5ns route remains required after prioritized WS-G/WS-H. WS-I runs last. C22 remains the verified1.365115ms fallback; no board result exists; F90/F91 remain cancelled.
+WS-G C32-C34 C/HLS gates pass; C35 monitored RTL running, C36 conditional route committed. C32 passes13-image E065 exactness,unchanged deltaPSNR/border,threefoldII1 and HLS screening; C33/C34 C semantics pass. C35 monitored four-call RTL is running; require strict exact/zero-AXI/latency-ordering/unchanged-manifest acceptance before launching the committed C36 staged5ns route. From accepted WS-G RTL, separately plan parameter-register and balanced-tree copies with per-call parent+1percent upper limits and actual register/path inspection. W34 failed4.5ns setup timing and retains actual one-thread evidence; fresh routes use the corrected thread replay. W35 C28 standalone5ns route remains required after prioritized WS-G/WS-H. WS-I runs last. C22 remains the verified1.365115ms fallback; no board result exists; F90/F91 remain cancelled.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -77,6 +77,8 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
+| [C35](C35_ws_cosim_C32/C35.md) | C32 | cosim | queued_or_running | C32 all13 E065-exact quality and threefoldII1/HLS screening plus C33/C34 C semantics pass; require four exact RTL calls,zero reuse parameter AXI,latency ordering and unchanged synthesis manifests |
+| [C36](C36_ws_impl_C32/C36.md) | C32 | impl | unlaunched_conditional | Launch only after strict C35 acceptance; independent default-strategy5ns staged implementation of frozen C32 with observed synthesis1/route4threads and all routed gates |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 

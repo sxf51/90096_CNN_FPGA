@@ -727,3 +727,5 @@
 
 - 2026-10-13 W34 recovery: archived five paths from the existing final post-route report without launching Vivado. All five are inside continuous_wino_fold with8-11logic levels; worst4.822ns includes3.485ns routing. Final WNS-0.324/TNS-51.194 rejects4.5ns despite feasible resources. C33 four-call and C34 fresh-process C checks pass; C32 synthesis remains active. Removed finished supervisors7451/36261 from current state. Continue WS-G before independent WS-H variants, keep C22 fallback and prohibit an unqualified4ns probe.
 
+- 2026-10-13 WS-G continuation: C32 complete13-image E065 exactness and unchanged deltaPSNR/border pass; synthesis reports1032DSP/146BRAM18K/128868LUT/193984FF,2.92ns estimate,263090cycles and allthreefoldII1. HLS screening passes; original HLS infeasible status is preserved pending physical acceptance. C33/C34 semantics pass. Committed C35 four-call monitored RTL plan and launched sole cosim task in supervisor34541; committed C36 conditional5ns staged route plan, unlaunched until strict C35 acceptance. No board time or timing closure is inferred.
+
