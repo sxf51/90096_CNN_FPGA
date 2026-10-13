@@ -117,6 +117,7 @@ Measured follow-up records from docs/0005; their routed acceptance remains separ
 | [C34](C34_reload_windows_cold/C34.md) | C17 | csim_pass | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C35](C35_ws_cosim_C32/C35.md) | C32 | cosim_complete | 4 | 263090.0 | 1032.0 | 128868.0 | 273025.0 | 3.7762742787639247 | unknown | unknown | unknown |
 | [C36](C36_ws_impl_C32/C36.md) | C32 | impl_complete | 4 | 263090.0 | 1032.0 | 128868.0 | 273025.0 | 3.7762742787639247 | unknown | False | unknown |
+| [W36](W36_ws_impl_C17/W36.md) | C17 | impl_complete | 4 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | 3.7755140826333244 | unknown | False | unknown |
 | [C37](C37_t4_reload_paramreg/C37.md) | C32 | infeasible | 4 | 263154.0 | 1032.0 | 128942.0 | unknown | unknown | unknown | unknown | unknown |
 | [C38](C38_t4_reload_balanced/C38.md) | C32 | infeasible | 4 | 263092.0 | 1032.0 | 131780.0 | unknown | unknown | unknown | unknown | unknown |
 
@@ -144,8 +145,7 @@ Unmeasured plans have no actual result and do not enter rankings:
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
-| [W36](W36_ws_impl_C17/W36.md) | C17 | impl | queued_or_running | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
-| [C39](C39_ws_cosim_C37/C39.md) | C37 | cosim | unlaunched_conditional | C37 complete13-image quality,allfoldII1,HLS screening and224-bit clocked-data evidence pass; after W36 require four exact RTL calls,zero skipped parameter AXI,unchanged RTL and matching C35 per-call upper-only+1percent limits |
+| [C39](C39_ws_cosim_C37/C39.md) | C37 | cosim | queued_or_running | C37 complete13-image quality,allfoldII1,HLS screening and224-bit clocked-data evidence pass; after W36 require four exact RTL calls,zero skipped parameter AXI,unchanged RTL and matching C35 per-call upper-only+1percent limits |
 | [C40](C40_ws_impl_C37/C40.md) | C37 | impl | unlaunched_conditional | Launch only after strict C39 acceptance; independent4.5ns Performance_Explore staged implementation of frozen C37,observed synthesis1/route4threads and unchanged physical gates; no4ns plan until matching closure |
 
 ## P Direction
@@ -662,6 +662,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [C36](C36_ws_impl_C32/C36.md) | frame | 1032.0 | 1032.0 | 0.0 | 263090.0 | unknown | unknown | impl_complete |
 | [C37](C37_t4_reload_paramreg/C37.md) | frame | 1032.0 | 1032.0 | 0.0 | 273153.0 | 263154.0 | -3.6605858255263524 | infeasible |
 | [C38](C38_t4_reload_balanced/C38.md) | frame | 1032.0 | 1032.0 | 0.0 | 273029.0 | 263092.0 | -3.639540122111573 | infeasible |
+| [W36](W36_ws_impl_C17/W36.md) | frame | 1032.0 | 1032.0 | 0.0 | 263090.0 | unknown | unknown | impl_complete |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -734,6 +735,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [W34](W34_t4_strategy_4p5_C17/W34.md) | frame | C17 | impl | impl_complete | 1032.0 | 54.5 | 59893.0 | 101443.0 | 0.0 | -0.324 | False | unknown | unknown | unknown | unknown |
 | [C35](C35_ws_cosim_C32/C35.md) | frame | C32 | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 273025 | 273057 | 3.7762742787639247 |
 | [C36](C36_ws_impl_C32/C36.md) | frame | C32 | impl | impl_complete | 1032.0 | 54.5 | 59891.0 | 102084.0 | 0.0 | -0.102 | False | unknown | unknown | unknown | unknown |
+| [W36](W36_ws_impl_C17/W36.md) | frame | C17 | impl | impl_complete | 1032.0 | 54.5 | 59894.0 | 101443.0 | 0.0 | -0.216 | False | unknown | unknown | unknown | unknown |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -1162,7 +1164,7 @@ User-cancelled obsolete retries were never launched and have no measured result.
 
 ## Next Steps
 
-Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. C35 strict four-call exact/zero-parameter-AXI RTL passes; C36 physical resources pass but5ns setup fails atWNS-0.102/TNS-122.006. C37 passes13-image quality,allthreefoldII1,HLS screening,and actual224-bit data-register evidence. C39 four-call RTL and conditional C40 staged4.5ns route plans are committed; run after active corrected-four-thread C17 strategy experiment W36. C38 passes quality/II but248672HLS FF exceeds230000 screening; conservatively stop this variant's RTL/route followups and log diagnostic-routing review. Only a matching closed4.5ns point can receive a fresh4ns plan. W35 C28 standalone5ns route remains required before WS-I,which runs last. C22 remains verified1.365115ms fallback; reuse improvements lack closed matching routing. No board result exists; F90/F91 remain cancelled.
+Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. W36 completes with confirmed general4/synth1,physical resources passing but4.5ns setup failing atWNS-0.216/TNS-16.7; five final worst paths are Winograd arithmetic/quantization with8-11logic levels. C39 is now running the four-call monitored RTL verification of C37; C40 starts only after exactness,zero skipped parameter AXI,unchanged RTL and original per-call bounds pass. C36 also failed5ns setup,so reload improvements still lack matching closure. C38 heavy followups remain stopped at248672HLS FF screening. Only a matching closed4.5ns point can receive a fresh4ns plan. Complete required W35 C28 standalone5ns routing next,then choose a strictly verified winner and commit WS-I's system plan last. C22 remains verified1.365115ms fallback. No board result exists; F90/F91 remain cancelled.
 
 ## Integrity Audit
 
@@ -1191,4 +1193,4 @@ Interim local/remote original and first-phase source checksum and report-provena
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-13T09:22:22+00:00.
+Generated from archived evidence at 2026-10-13T10:31:09+00:00.
