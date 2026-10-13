@@ -593,6 +593,10 @@
 
 - 2026-10-13T00:53:10+00:00: W33: ws_impl_W24; status=impl_complete; latency_ms_est=1.7460189000000002; impl of W24; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-13T00:53:39+00:00: C24: reload_switch_sequence; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-13T00:53:39+00:00: W33: archived five setup paths from the matching final generated report; no additional Vivado run.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 00:05:47 UTC C23: standalone Vitis Tcl interpreter probe confirms ::AP::printMsg, ::AP::check_bin_exist and ::AESL_AUTOSIM::gDebug are available without a project or simulation. Archive the original tool log in C23/tool_probes/monitor_environment.txt and reproducible exp/hls_monitor_environment.tcl; this is an environment query, not RTL validation. C21 progresses through rerouting; C22 handoff/path completion and outstanding conditions are refreshed in the recovery state.
