@@ -627,6 +627,8 @@
 
 - 2026-10-13T03:31:56+00:00: C32/W34: committed WS-G quality/sequence/cold plans and C17 same-RTL4.5ns Performance_Explore plan before implementation. C31 alone executes RTL; W34 is an unadmitted heavy-slot waiter. Snapshot audit at03:30UTC verifies both-location protected hashes and plan/report provenance, records51 archived workstream operations and five unmeasured plans.17 targeted audit/summary/analysis tests pass; conditional plans remain unmeasured. F90/F91 cancellation records preserve original plans and no result rows. WS-G source copy is gated by accepted exact/zero-AXI C31; WS-I remains last.
 
+- 2026-10-13T03:37:46+00:00: C31: first two monitored RTL calls complete. Loaded call reads8129parameters/32516bytes with zero writes; skipped call has zero AR/R/AW/W handshakes and valid cycles. This is partial observer evidence, not four-call acceptance. The reviewed frozen C13-to-C28 patch is archived in C32/source_patch.diff and git-apply dry-run succeeds on unchanged C17. Actual WS-G source copying/integration remains gated by final accepted C31. W34 remains queued for the sole heavy slot.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.
