@@ -7,6 +7,7 @@
 | [实验思路与演进图](0004-experiment-evolution.md) | 207 项实验、307 条档案依赖；更新到 C18 的 T4、W32/F52 的 4.5 ns、ROM/FRP/FIFO 与待验收组合 |
 | [单张完整演进图](experiment-evolution/full.svg) / [本地查看器](experiment-evolution/full.html) | 207 个节点、217 条主要实线、统一整网 ms/张；箭头留白与实际像素检查 |
 | [关键里程碑图](experiment-evolution/milestones.svg) / [本地查看器](experiment-evolution/milestones.html) | 10 个紧凑节点：编号、标题、一行结果；失败节点只写具体问题 |
+| [最终交付：C17（T4 Winograd）](../final/C17/README.md) | 源码、打包 IP、驱动、关键报告和使用说明；IP 级 1.365 ms/张（5 ns 布线收敛） |
 | [第一轮实验设计](0002-overnight-experiments.md) | 从 golden 到精度、编译指令和流式参数扫描的验收约束 |
 | [第二轮架构探索](0003-architecture-exploration.md) | Packing、Scatter、Winograd、组合和连续调度的设计与验收流程 |
 | [T8 与权重加载计划](0004-t8-weight-loading-plan.md) | 私有参数银行、Winograd T8、参数重载与独立布线的阶段门槛；收尾见 [工作流结果](../experiments/WEIGHT_LOADING.md) |

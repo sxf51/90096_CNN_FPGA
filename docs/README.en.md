@@ -7,6 +7,7 @@
 | [Experiment ideas and evolution](0004-experiment-evolution.en.md) | 207 experiments and 307 dependencies through C18 T4, W32/F52 4.5 ns, ROM/FRP/FIFOs, and pending combinations |
 | [One complete evolution graph](experiment-evolution/full.en.svg) / [Local viewer](experiment-evolution/full.en.html) | 207 nodes, 217 main arrows, common network ms/frame; arrow clearance and rendered-pixel checks |
 | [Key milestones](experiment-evolution/milestones.en.svg) / [Local viewer](experiment-evolution/milestones.en.html) | Ten compact nodes: IDs, title, one result; failed nodes show only the specific problem |
+| [Final deliverable: C17 (T4 Winograd)](../final/C17/README.en.md) | Sources, packaged IP, driver, key reports and usage; 1.365 ms/frame at IP level (routed at 5 ns) |
 | [First-round experiment design](0002-overnight-experiments.md) | Acceptance constraints for golden, precision, compiler controls, and streaming scans |
 | [Second-round architecture exploration](0003-architecture-exploration.md) | Packing, scatter, Winograd, combinations, continuous scheduling, and verification workflow |
 | [T8 and weight-loading plan](0004-t8-weight-loading-plan.md) | Stage gates for private parameter banks, Winograd T8, parameter reload, and independent routing; closure in the [workflow results](../experiments/WEIGHT_LOADING.md) |
