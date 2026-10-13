@@ -26,7 +26,9 @@ for path in sorted((root / "experiments").glob("*_*/host_utilization_baseline.cs
 if not records:
     raise RuntimeError("No archived host telemetry CSV files")
 
-fig, axes = plt.subplots(1, 2, figsize=(12, 5), layout="constrained")
+fig, axes = plt.subplots(1, 2, figsize=(max(14, 0.85*len(records)), 6), layout="constrained")
+scope_codes = {"full operation": "all", "synthesis and implementation stages": "S+R",
+               "30 s snapshot": "30s"}
 for axis, metric, ylabel, title in zip(axes, ("cpu_busy_pct", "min_available_GiB"),
                                       ("All logical CPUs busy (%)", "Minimum available memory (GiB)"),
                                       ("Observed remote CPU utilization", "Observed host memory headroom")):
@@ -37,18 +39,19 @@ for axis, metric, ylabel, title in zip(axes, ("cpu_busy_pct", "min_available_GiB
                  "#008f7a" if int(observed) > 1 else "#c56745")
         value = float(row[metric])
         axis.bar(index, value, color=color)
-        axis.annotate(row["id"]+f"\n{value:.2f}", (index, value), xytext=(0, 4),
+        axis.annotate(f"{value:.2f}", (index, value), xytext=(0, 4),
                       textcoords="offset points", ha="center", fontsize=8)
-    axis.set_xticks(range(len(available)), [row["id"]+"\n"+(
-        "full\noperation" if row["scope"] == "full operation" else
-        "synth+\nroute" if row["scope"] == "synthesis and implementation stages" else "30 s\nsnapshot")
-        for row in available], fontsize=8)
-    axis.set_xlabel("Experiment and measurement scope")
+    axis.set_xticks(range(len(available)),
+                   [row["id"]+" ["+scope_codes[row["scope"]]+"]" for row in available],
+                   fontsize=8, rotation=45, ha="right")
+    axis.set_xlabel("Experiment [measurement scope]")
     axis.set_ylabel(ylabel)
     axis.set_title(title)
     axis.set_ylim(0, 100 if metric == "cpu_busy_pct" else max(float(row[metric]) for row in available)*1.3)
     axis.legend(handles=[Patch(facecolor="#c56745", label="Observed limit: 1 thread"),
                          Patch(facecolor="#008f7a", label="Observed limit: >1 thread"),
                          Patch(facecolor="#888888", label="Thread limit: unknown")], fontsize=8)
+fig.supxlabel("Scope: all = full operation; S+R = synthesis and routing stages; 30s = 30-second snapshot",
+              fontsize=9)
 fig.savefig(root / "experiments/figs/host_utilization.png", dpi=180)
 plt.close(fig)
