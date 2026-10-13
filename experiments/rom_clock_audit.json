@@ -2294,11 +2294,12 @@
   "pushed": false,
   "remote_jobs_active": true,
   "remote_processes": [
-    "152652 python3 exp/run_exp.py --config exp/configs/C31.json"
+    "152652 python3 exp/run_exp.py --config exp/configs/C31.json",
+    "154553 python3 exp/run_exp.py --config exp/configs/W34.json"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-13T02:40:26+00:00",
+  "time": "2026-10-13T03:30:14+00:00",
   "unmeasured_plans": [
     {
       "condition": "C28 exact13-image quality/HLS and C29/C30 semantics pass; require repaired four-call exact RTL, zero skipped parameter AXI, latency ordering and unchanged RTL before new routing",
@@ -2309,6 +2310,55 @@
       "operation": "cosim",
       "plan_sha256": "ef281c10fce7f530e2e538bf17717a35fa5c0042ba512f537cdc902aaea590c7",
       "prerequisite_metrics_sha256": null,
+      "unlaunched_for_condition": false,
+      "unlaunched_for_memory": false
+    },
+    {
+      "condition": "C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff",
+      "failure_reason": null,
+      "has_measured_result": false,
+      "id": "C32",
+      "not_run_condition_failed": false,
+      "operation": "csim/csynth",
+      "plan_sha256": "c62e98a5be30ce5f4809555436af03845ba513406c0551f7a7357f7d4df8a29f",
+      "prerequisite_metrics_sha256": null,
+      "unlaunched_for_condition": true,
+      "unlaunched_for_memory": false
+    },
+    {
+      "condition": "C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics",
+      "failure_reason": null,
+      "has_measured_result": false,
+      "id": "C33",
+      "not_run_condition_failed": false,
+      "operation": "csim/csynth",
+      "plan_sha256": "ac29a0449775c0374363eea0e56265e1bfbf251916b3247148b9d8079b38c8ba",
+      "prerequisite_metrics_sha256": null,
+      "unlaunched_for_condition": true,
+      "unlaunched_for_memory": false
+    },
+    {
+      "condition": "C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading",
+      "failure_reason": null,
+      "has_measured_result": false,
+      "id": "C34",
+      "not_run_condition_failed": false,
+      "operation": "csim/csynth",
+      "plan_sha256": "11e4136f180689b8664772d0fd21fcb316aac2f5a5ec7e06532d022927ae3eb0",
+      "prerequisite_metrics_sha256": null,
+      "unlaunched_for_condition": true,
+      "unlaunched_for_memory": false
+    },
+    {
+      "condition": "User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes",
+      "failure_reason": null,
+      "has_measured_result": false,
+      "id": "W34",
+      "not_run_condition_failed": false,
+      "operation": "impl",
+      "plan_sha256": "0e1d223f6868ed5b7cf301b325290aad0ab654e99d4dfe70d40bea72c948e80e",
+      "prerequisite_metrics_sha256": null,
+      "unlaunched_for_condition": false,
       "unlaunched_for_memory": false
     }
   ],

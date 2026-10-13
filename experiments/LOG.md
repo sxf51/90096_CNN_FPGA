@@ -625,6 +625,8 @@
 
 - 2026-10-13T02:48:58+00:00 F90/F91: user cancelled obsolete unlaunched F24/F23 routing retries. Verified no corresponding local or remote workspace and no remote process; retain immutable paper/config plans and archive cancellation.json in each experiment folder. Remove both IDs from the active retry queue and deferred list; no result row, tool time or hardware verdict is fabricated. C31 repaired four-call RTL remains active under supervisor59926, and independent C32 routing remains conditional on its strict acceptance.
 
+- 2026-10-13T03:31:56+00:00: C32/W34: committed WS-G quality/sequence/cold plans and C17 same-RTL4.5ns Performance_Explore plan before implementation. C31 alone executes RTL; W34 is an unadmitted heavy-slot waiter. Snapshot audit at03:30UTC verifies both-location protected hashes and plan/report provenance, records51 archived workstream operations and five unmeasured plans.17 targeted audit/summary/analysis tests pass; conditional plans remain unmeasured. F90/F91 cancellation records preserve original plans and no result rows. WS-G source copy is gated by accepted exact/zero-AXI C31; WS-I remains last.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.
