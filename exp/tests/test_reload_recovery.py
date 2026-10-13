@@ -27,6 +27,7 @@ class ReloadRecoveryTests(unittest.TestCase):
                       verification={})
         (archive / "config.json").write_text(json.dumps(config))
         (archive / "metrics.json").write_text(json.dumps({"status": "fail"}))
+        (archive / "C27.md").write_text("## 5. Results / 结果\n\nOriginal fail.\n\n## 6. Interpretation / 解读\n\nKeep fail.\n")
         return archive, rtl
 
     def test_active_run_is_rejected_without_collecting_or_changing_metadata(self):
@@ -88,6 +89,8 @@ class ReloadRecoveryTests(unittest.TestCase):
             self.assertFalse(accepted_cosim({"status": "fail"}, config))
             self.assertEqual(config["verification"], {})
             self.assertEqual(config["verification_rtl_check_after"], rtl)
+            self.assertIn("Raw failed-run diagnostics", (archive / "C27.md").read_text())
+            self.assertIn("| 1 | 0 | 295000 | 295029 | 1 | 1 |", (archive / "C27.md").read_text())
             for record in config["verification_diagnostics"]:
                 self.assertEqual(hashlib.sha256((archive / record["archived_file"]).read_bytes()).hexdigest(), record["sha256"])
 

@@ -1079,6 +1079,34 @@
       "csv_matches_archive": true,
       "id": "C26",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C30",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C29",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 1,
+      "csv_matches_archive": true,
+      "id": "C27",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C28",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2224,6 +2252,10 @@
     "C24",
     "C25",
     "C26",
+    "C27",
+    "C28",
+    "C29",
+    "C30",
     "F32",
     "F33",
     "F34",
@@ -2262,20 +2294,20 @@
   "pushed": false,
   "remote_jobs_active": true,
   "remote_processes": [
-    "147003 python3 exp/run_exp.py --config exp/configs/C27.json"
+    "152652 python3 exp/run_exp.py --config exp/configs/C31.json"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-13T01:34:31+00:00",
+  "time": "2026-10-13T02:40:26+00:00",
   "unmeasured_plans": [
     {
-      "condition": "After repairing C26's pre-tool scheduler telemetry integration, independently verify frozen C23 using four exact transactions, zero skipped-call parameter AXI and unchanged synthesis RTL under a cumulative six-hour timeout",
+      "condition": "C28 exact13-image quality/HLS and C29/C30 semantics pass; require repaired four-call exact RTL, zero skipped parameter AXI, latency ordering and unchanged RTL before new routing",
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "C27",
+      "id": "C31",
       "not_run_condition_failed": false,
       "operation": "cosim",
-      "plan_sha256": "5452ecee32585be77e90b79368ed3887e56d00562c84a2ed72950bebc8c1ef76",
+      "plan_sha256": "ef281c10fce7f530e2e538bf17717a35fa5c0042ba512f537cdc902aaea590c7",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     }
@@ -2647,6 +2679,15 @@
       "id": "C26",
       "operation": "cosim",
       "reports_checked": 0,
+      "sha256_pass": true,
+      "status": "fail"
+    },
+    {
+      "additional_evidence_files_checked": 70,
+      "git_visible_and_tracked": true,
+      "id": "C27",
+      "operation": "cosim",
+      "reports_checked": 4,
       "sha256_pass": true,
       "status": "fail"
     }

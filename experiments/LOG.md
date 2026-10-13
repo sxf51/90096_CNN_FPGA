@@ -621,6 +621,8 @@
 
 - 2026-10-13T02:36:23+00:00: C27: recovered raw failed reload measurements and unchanged synthesis RTL SHA256; original verdict preserved.
 
+- 2026-10-13T02:40:30+00:00: C27: recovered raw failed reload measurements and unchanged synthesis RTL SHA256; original verdict preserved.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.

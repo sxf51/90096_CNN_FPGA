@@ -10,7 +10,7 @@ from analyze_arch import write_csv
 from recover_remote_queue import inspect_remote
 from reload_switch_evidence import check_rtl_metrics, parse_transactions
 from reproduce_exp import archived
-from run_exp import ROOT, append_log, check_protected, utc, write_json
+from run_exp import ROOT, append_log, check_protected, markdown_table, utc, write_json
 
 
 def main():
@@ -92,6 +92,22 @@ def main():
     existing[:] = [item for item in existing if item["archived_file"] not in replaced] + records
     config["verification_rtl_check_after"] = observed["rtl_check_after"]
     write_json(archive / "config.json", config)
+    explanation = archive / (args.id + ".md")
+    marker = "<!-- FAILED_RELOAD_MEASUREMENTS -->"
+    text = explanation.read_text()
+    if marker in text:
+        first, _, last = text.split(marker, 2)
+        text = first + last
+    table = marker + "\n\nRaw failed-run diagnostics; the zero-parameter-AXI gate did not pass. "
+    table += "These measurements never enter the accepted performance table. "
+    table += "[Raw evidence and hashes](parameter_axi_monitor/failed_evidence.json).\n\n"
+    table += markdown_table(diagnostic.get("transactions", []),
+                            ["transaction", "load_params", "latency_cycles", "interval_cycles",
+                             "ar_requests", "r_beats", "aw_requests", "w_beats", "read_bytes",
+                             "ar_valid_cycles", "r_valid_cycles", "aw_valid_cycles", "w_valid_cycles"])
+    table += "\n" + marker + "\n\n"
+    before, after = text.split("## 6. Interpretation / 解读", 1)
+    explanation.write_text(before.rstrip() + "\n\n" + table + "## 6. Interpretation / 解读" + after)
     append_log(args.id + ": recovered raw failed reload measurements and unchanged synthesis RTL SHA256; original verdict preserved.")
     print(json.dumps(diagnostic, indent=2))
 
