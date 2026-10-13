@@ -661,6 +661,8 @@
 
 - 2026-10-13T09:10:55+00:00: C37: confirmed all224parameter data bits are clocked before bank writes; helper latency/II1; generated RTL hashes and excerpts in register_evidence.json. Physical benefit remains unverified.
 
+- 2026-10-13T09:27:54+00:00: W36: read-only child thread snapshot; planned=4; initialized=[4]; runtime_hook=[{'general': 4, 'synth': 1}]; phys_opt_CPU_limits=[]. See implementation/thread_observation.json.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 C38: balanced registered tree passes all13 E065-exact images andII1, but HLS FF=248672 exceeds230000 screening. Conservatively stop its RTL/route followups and retain the result. A separately planned diagnostic route might benefit from mapped/HLS FF calibration, but neither actual resources nor timing is known; review this option later without changing final routed gates.
