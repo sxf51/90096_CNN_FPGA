@@ -145,7 +145,7 @@ def main():
                             ("rom_clock_pareto", "HLS screening"), ("rom_clock_dsp", "DSP composition"),
                             ("rom_clock_estimate_DSP", "DSP estimates and measurements"),
                             ("rom_clock_estimate_latency_cycles", "Cycle estimates and measurements"),
-                            ("rom_clock_rtl_cycles", "Two-frame RTL cycles")):
+                            ("rom_clock_rtl_cycles", "RTL transaction cycles")):
         if (ROOT / "experiments/figs" / (filename + ".png")).exists():
             text += "![" + label + "](figs/" + filename + ".png)\n\n"
     overlap_path = ROOT / "experiments/parallel_overlap.csv"

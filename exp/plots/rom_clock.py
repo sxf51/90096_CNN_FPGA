@@ -157,7 +157,7 @@ fig, ax = plt.subplots(figsize=(max(11, 0.8*len(measured)), 5), layout="constrai
 if measured:
     bars = ax.bar(range(len(measured)), [float(row["rtl_cycles"]) for row in measured],
                   color=["#287e8e" if row["rtl_accepted"] == "True" else "#b65352" for row in measured],
-                  label="Two-frame RTL maximum latency (red: rejected verification)")
+                  label="RTL maximum transaction latency (red: rejected verification)")
     ax.bar_label(bars, labels=[format(int(float(row["rtl_cycles"])), ",") for row in measured], fontsize=8, padding=3)
     ax.margins(y=.12)
     ax.set_xticks(range(len(measured)), [row["id"]+" / "+row["parent"] for row in measured])
