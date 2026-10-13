@@ -14,6 +14,10 @@
 | [T4](experiment-evolution/t4.en.svg) / [T8 clocks and FIFOs](experiment-evolution/clock-fifo.en.svg) / [ROM](experiment-evolution/rom.en.svg) / [Host controls](experiment-evolution/host.en.svg) | 37 new experiments, independent verification, host failures, and retries |
 | [Complete experiment ledger](experiment-evolution/records.en.md) | Each experiment's parents, configuration, measured results, limitations, and original evidence |
 | [Diagram/data generation](experiment-evolution/README.en.md) | Snapshot scope, translation synchronization, regeneration, and layout checks |
+| [KV260 tile fusion and INT8 trial](0004-kv260-tiled-int8.md) | Implementation and validation of the root `src/` tile-fusion baseline (board-tested, 2.2 s/frame) and the optional INT8 variant (Chinese) |
+| [KV260 board clock and latency diagnosis](0005-kv260-board-clock.md) | Runtime PL clock 66.666 MHz versus the 100 MHz design value, and the latency gap analysis (Chinese) |
+| [Hardware acceleration review](0006-hardware-acceleration-review.md) | Presentation record for the tile-fusion baseline (Chinese) |
+| [Summary](re.md) / [Lecture script](srcnn-presentation-lecture-script.md) | Report text and lecture-based talk script for the tile-fusion baseline (Chinese) |
 | [Frozen experiment reproduction](../experiments/REPRODUCE.md) | Restore archived design, tests, and settings under a fresh ID |
 
-Root `src/` and `script.py` remain the original floating-point baseline. Optimized sources and frozen archives live in `designs/` and `experiments/`. Read HLS estimates, RTL simulation, routed timing, and board measurements as separate evidence.
+Root `src/` and `script.py` hold the KV260 tile-fusion baseline (see [0004-kv260-tiled-int8](0004-kv260-tiled-int8.md)). Architecture-exploration sources and frozen archives live in `designs/` and `experiments/`. Numbers 0004 and 0005 each cover two or three documents because two parallel lines of work were merged; distinguish them by file name. Read HLS estimates, RTL simulation, routed timing, and board measurements as separate evidence.
