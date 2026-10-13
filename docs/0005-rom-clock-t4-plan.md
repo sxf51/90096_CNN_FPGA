@@ -450,6 +450,7 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C25](../experiments/C25_reload_switch_cold/C25.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F53](../experiments/F53_legacy_C13_regression/F53.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C26](../experiments/C26_ws_cosim_C23/C26.md) | C23 | fail | 263090.0 | 1032.0 | 128840.0 | unknown | unknown | unknown |
+| [C27](../experiments/C27_ws_cosim_C23/C27.md) | C23 | fail | 263090.0 | 1032.0 | 128840.0 | unknown | unknown | unknown |
 | [C29](../experiments/C29_reload_guard_sequence/C29.md) | C23 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C30](../experiments/C30_reload_guard_cold/C30.md) | C23 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 
@@ -457,5 +458,4 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| C27 | C23 | queued_or_running | After repairing C26's pre-tool scheduler telemetry integration, independently verify frozen C23 using four exact transactions, zero skipped-call parameter AXI and unchanged synthesis RTL under a cumulative six-hour timeout |
 | C28 | C23 | queued_or_running | Independent guarded scalar-bias design; require complete13-image E065 exactness,unchanged border/deltaPSNR and all HLS screening/II gates before new RTL |
