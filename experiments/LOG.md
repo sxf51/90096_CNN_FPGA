@@ -753,3 +753,5 @@
 
 - 2026-10-13 WS-I preparation only: read installed official KV260 SOM2.0 board/preset and matching K26 part files without launching Vivado. Recorded the minimal PS/control-AXI/data-AXI/PL0/reset system, actual-clock checks, separate5ns/6ns plans and artifact provenance requirements in docs/0005. Candidate selection, system creation and hardware runs remain last, after WS-G/WS-H and the required C28 route. The installed-file observation is not a Vivado board/IP validation or system timing result.
 
+- 2026-10-13T09:21 UTC C39 scheduling: live W36 synthesis completed and report generation remains active; sole heavy slot is unchanged. Local supervisor86350 waits for W36 metrics/results and committed archive before launching the already committed C39 four-call monitored RTL plan once. C40 remains unlaunched until strict C39 acceptance; W35 still precedes WS-I. Preserve C22's independently verified1.365115ms fallback and all protected/user changes.
+

@@ -1191,4 +1191,4 @@ Interim local/remote original and first-phase source checksum and report-provena
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-13T09:16:02+00:00.
+Generated from archived evidence at 2026-10-13T09:22:22+00:00.

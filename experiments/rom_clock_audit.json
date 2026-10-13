@@ -1149,6 +1149,27 @@
       "csv_matches_archive": true,
       "id": "C35",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C36",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C37",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C38",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2303,6 +2324,9 @@
     "C33",
     "C34",
     "C35",
+    "C36",
+    "C37",
+    "C38",
     "F32",
     "F33",
     "F34",
@@ -2342,46 +2366,33 @@
   "pushed": false,
   "remote_jobs_active": true,
   "remote_processes": [
-    "165556 python3 exp/run_exp.py --config exp/configs/C36.json",
-    "165798 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_synthesis.tcl -notrace -nojournal",
-    "165952 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -log bd_0_hls_inst_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source bd_0_hls_inst_0.tcl"
+    "174498 python3 exp/run_exp.py --config exp/configs/W36.json",
+    "174739 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_synthesis.tcl -notrace -nojournal"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-13T07:54:09+00:00",
+  "time": "2026-10-13T09:23:34+00:00",
   "unmeasured_plans": [
     {
-      "condition": "Launch only after strict C35 acceptance; independent default-strategy5ns staged implementation of frozen C32 with observed synthesis1/route4threads and all routed gates",
+      "condition": "C37 complete13-image quality,allfoldII1,HLS screening and224-bit clocked-data evidence pass; after W36 require four exact RTL calls,zero skipped parameter AXI,unchanged RTL and matching C35 per-call upper-only+1percent limits",
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "C36",
+      "id": "C39",
       "not_run_condition_failed": false,
-      "operation": "impl",
-      "plan_sha256": "8c1bd8ddcd7801a274d442f084a6bffd1f20aa82242a9385bba1ea9a298ac80c",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_condition": false,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": "Accepted C32/C35 parent; independent224-bit parameter-write register helper with one-cycle latency andII1; require13-image quality,HLS screening and actual datapath-register evidence",
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "C37",
-      "not_run_condition_failed": false,
-      "operation": "csim/csynth",
-      "plan_sha256": "5f3d5b61d33783cc765810b52e85da6db5b11afa145d6813e82ecc037e348fbe",
+      "operation": "cosim",
+      "plan_sha256": "4c1ed9e5438f23fbecc493e8372a976655a63d105ee4c84525f5bdad5b017b32",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_condition": true,
       "unlaunched_for_memory": false
     },
     {
-      "condition": "Accepted C32/C35 parent; independent full34-bit nine-product balanced registered tree; preserve inverse/shift/quantization and require13-image quality/HLS before new four-call RTL",
+      "condition": "Launch only after strict C39 acceptance; independent4.5ns Performance_Explore staged implementation of frozen C37,observed synthesis1/route4threads and unchanged physical gates; no4ns plan until matching closure",
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "C38",
+      "id": "C40",
       "not_run_condition_failed": false,
-      "operation": "csim/csynth",
-      "plan_sha256": "74c4fb1c616777973067f76c907202686a9f06c228511e9af9e9e218acfe5c45",
+      "operation": "impl",
+      "plan_sha256": "dd179d0e5457ba2138d110aa55057b4eee994f07813f38215e2ebd31509ea772",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_condition": true,
       "unlaunched_for_memory": false
@@ -2407,7 +2418,7 @@
       "operation": "impl",
       "plan_sha256": "308d9a378da47fd90fcd980dc0e62acd12abb3040ce01386a89db2923c25f3af",
       "prerequisite_metrics_sha256": null,
-      "unlaunched_for_condition": true,
+      "unlaunched_for_condition": false,
       "unlaunched_for_memory": false
     }
   ],
@@ -2816,6 +2827,15 @@
       "reports_checked": 4,
       "sha256_pass": true,
       "status": "cosim_complete"
+    },
+    {
+      "additional_evidence_files_checked": 16,
+      "git_visible_and_tracked": true,
+      "id": "C36",
+      "operation": "impl",
+      "reports_checked": 6,
+      "sha256_pass": true,
+      "status": "impl_complete"
     }
   ]
 }
