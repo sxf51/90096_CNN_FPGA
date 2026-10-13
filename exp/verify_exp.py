@@ -635,14 +635,14 @@ def run_verification(config, resume_waiting=False):
                 else:
                     code, seconds = invoke(args,settings,cwd,work / (operation + ".console.log"),timeout)
         config["operation_minutes"] = seconds / 60
+        if operation == "cosim":
+            config["verification_rtl_check_after"] = check_template_rtl(source_work, work)
         observed, detail = parse_verification(work, operation)
         if operation == "cosim" and config.get("parameter_axi_monitor") and code == 0:
             from monitored_cosim import measured_result
             observed.update(measured_result(work, archive, parent_row))
             detail.extend({"file": "monitored_rtl", "metric": key, "value": value}
                           for key, value in observed.items())
-        if operation == "cosim":
-            config["verification_rtl_check_after"] = check_template_rtl(source_work, work)
         if code:
             row["status"] = "timeout" if code == 124 else "fail"
             raise RuntimeError(f"{operation} failed (exit={code})")
