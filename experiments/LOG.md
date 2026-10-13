@@ -735,3 +735,5 @@
 
 - 2026-10-13 WS-G acceptance: C35 strictly passes allfour RTL outputs, both zero-parameter-AXI skipped calls,latency ordering and unchanged102-file manifests. Loaded273025/interval273057; reused267022/interval267054, final interval unavailable. Measured10.3213GiB peak remains under11.5GiB reservation. C36 now owns the heavy slot for independent5ns physical acceptance. Committed C37/C38 paper plans before generating independent parameter-register and balanced-tree copies; source diffs preserve all other arithmetic,quantization andFIFO32. Hardware milliseconds remain conditional until routing closes.
 
+- 2026-10-13 WS-I preparation only: read installed official KV260 SOM2.0 board/preset and matching K26 part files without launching Vivado. Recorded the minimal PS/control-AXI/data-AXI/PL0/reset system, actual-clock checks, separate5ns/6ns plans and artifact provenance requirements in docs/0005. Candidate selection, system creation and hardware runs remain last, after WS-G/WS-H and the required C28 route. The installed-file observation is not a Vivado board/IP validation or system timing result.
+
