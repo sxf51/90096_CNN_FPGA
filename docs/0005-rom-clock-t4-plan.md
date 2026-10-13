@@ -459,6 +459,16 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 
 分阶段实现的内存汇总必须使用 `impl_synth_host_memory.csv` 和 `impl_route_host_memory.csv`，另存 `host_memory_phases.csv`。总峰值取两阶段实测最大值；CPU利用率只累加各阶段内部的计数器差，排除调度等待、package和阶段之间的空隙。任一阶段缺少采样时写明缺失，不能回退到包含其他任务的全局等待期 `host_memory.csv` 并宣称该任务占用。旧的单进程实现仍使用自己的 `impl_host_memory.csv`。
 
+2026-10-13 W34 运行中发现线程设置未生效：计划为布局布线 4 线程，实际实现子进程
+初始化 `general.maxThreads=1`，物理优化也报告最多 1 CPU。保存的 project.xpr
+有 `Performance_Explore`，但没有预期的 `OPT_DESIGN.TCL.PRE`。原因是先设置线程
+hook 再换 strategy，后者重置了步骤属性；分阶段重新打开工程也只设置了默认 1。
+修复计划：新驱动先设置 strategy，再设置线程 hook；重新打开已完成综合的工程后
+按同样顺序重放这两项设置，并输出实际参数。用 Tcl 行为测试模拟 strategy 清除
+步骤属性，确认实现启动时 hook 和线程数仍正确；保持综合单线程、三小时累计限制、
+单重任务与所有数值/物理门槛。W34 继续原任务，归档其实际单线程证据，不修改运行中
+脚本，不据此重写历史耗时或制造四线程测量。
+
 zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFree` 和两者之差，按阶段及整次工具运行汇总最大 swap 用量与有完整 swap 字段的样本数。旧 CSV 仅有 `SwapFree` 时不能反推总容量或宣称零使用；汇总保留 unknown 和字段覆盖率。主机 swap 用量不等于单个 Vivado 的用量，不能将它加到任务 RSS 当作峰值。正在运行的任务保持原采样模式，在新启动进程中启用新增字段；C18 的运行时主机快照单独归档。
 
 同 0004 第 8 节的表格；另加 `route_feasible` 和 `rtl_cycles × route_clock` 两列。没有测到的写 unknown。
