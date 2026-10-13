@@ -117,6 +117,8 @@ Measured follow-up records from docs/0005; their routed acceptance remains separ
 | [C34](C34_reload_windows_cold/C34.md) | C17 | csim_pass | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C35](C35_ws_cosim_C32/C35.md) | C32 | cosim_complete | 4 | 263090.0 | 1032.0 | 128868.0 | 273025.0 | 3.7762742787639247 | unknown | unknown | unknown |
 | [C36](C36_ws_impl_C32/C36.md) | C32 | impl_complete | 4 | 263090.0 | 1032.0 | 128868.0 | 273025.0 | 3.7762742787639247 | unknown | False | unknown |
+| [C37](C37_t4_reload_paramreg/C37.md) | C32 | infeasible | 4 | 263154.0 | 1032.0 | 128942.0 | unknown | unknown | unknown | unknown | unknown |
+| [C38](C38_t4_reload_balanced/C38.md) | C32 | infeasible | 4 | 263092.0 | 1032.0 | 131780.0 | unknown | unknown | unknown | unknown | unknown |
 
 ## Parameter Reuse
 
@@ -142,9 +144,9 @@ Unmeasured plans have no actual result and do not enter rankings:
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
-| [W36](W36_ws_impl_C17/W36.md) | C17 | impl | unlaunched_conditional | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
-| [C37](C37_t4_reload_paramreg/C37.md) | C32 | csim/csynth | queued_or_running | Accepted C32/C35 parent; independent224-bit parameter-write register helper with one-cycle latency andII1; require13-image quality,HLS screening and actual datapath-register evidence |
-| [C38](C38_t4_reload_balanced/C38.md) | C32 | csim/csynth | queued_or_running | Accepted C32/C35 parent; independent full34-bit nine-product balanced registered tree; preserve inverse/shift/quantization and require13-image quality/HLS before new four-call RTL |
+| [W36](W36_ws_impl_C17/W36.md) | C17 | impl | queued_or_running | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
+| [C39](C39_ws_cosim_C37/C39.md) | C37 | cosim | unlaunched_conditional | C37 complete13-image quality,allfoldII1,HLS screening and224-bit clocked-data evidence pass; after W36 require four exact RTL calls,zero skipped parameter AXI,unchanged RTL and matching C35 per-call upper-only+1percent limits |
+| [C40](C40_ws_impl_C37/C40.md) | C37 | impl | unlaunched_conditional | Launch only after strict C39 acceptance; independent4.5ns Performance_Explore staged implementation of frozen C37,observed synthesis1/route4threads and unchanged physical gates; no4ns plan until matching closure |
 
 ## P Direction
 
@@ -291,6 +293,8 @@ An unimplemented raw-bank combination follow-up would still need about 96004.0 L
 | [C33](C33_reload_windows_sequence/C33.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | csim_pass |
 | [C34](C34_reload_windows_cold/C34.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | csim_pass |
 | [C32](C32_reload_windows_quality/C32.md) | frame | 4 | 263090.0 | 1.05236 | 1032.0 | 146.0 | 0.0 | 128868.0 | 193984.0 | True | 1.405191888267716e-05 | True | infeasible |
+| [C37](C37_t4_reload_paramreg/C37.md) | frame | 4 | 263154.0 | 1.052616 | 1032.0 | 146.0 | 0.0 | 128942.0 | 194250.0 | True | 1.405191888267716e-05 | True | infeasible |
+| [C38](C38_t4_reload_balanced/C38.md) | frame | 4 | 263092.0 | 1.052368 | 1032.0 | 146.0 | 0.0 | 131780.0 | 248672.0 | True | 1.405191888267716e-05 | True | infeasible |
 
 ## F Direction
 
@@ -371,6 +375,8 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [C23](C23_reload_switch_quality/C23.md) | C | designs/winograd_prepacked_t4_reload_v1 | 4 | 1.05236 | 1032.0 | 146.0 | 128840.0 | 193984.0 | -0.07589037644656216 | infeasible |
 | [C28](C28_reload_guard_quality/C28.md) | C | designs/winograd_prepacked_t4_reload_guard_v1 | 4 | 1.05236 | 1032.0 | 146.0 | 128849.0 | 193984.0 | -0.07589037644656216 | infeasible |
 | [C32](C32_reload_windows_quality/C32.md) | C | designs/winograd_t4_windows32_reload_v1 | 4 | 1.05236 | 1032.0 | 146.0 | 128868.0 | 193984.0 | -0.07589037644656216 | infeasible |
+| [C38](C38_t4_reload_balanced/C38.md) | C | designs/winograd_t4_reload_balanced_c38_v1 | 4 | 1.052368 | 1032.0 | 146.0 | 131780.0 | 248672.0 | -0.07589037644656216 | infeasible |
+| [C37](C37_t4_reload_paramreg/C37.md) | C | designs/winograd_t4_reload_paramreg_c37_v1 | 4 | 1.052616 | 1032.0 | 146.0 | 128942.0 | 194250.0 | -0.07589037644656216 | infeasible |
 | [C11](C11_wino_conv2w8_continuous_T4_split4000/C11.md) | C | designs/winograd_mixed_packing_r2 | 4 | 1.081672 | 1036.0 | 146.0 | 248797.0 | 307525.0 | -0.07589037644656216 | infeasible |
 | [W24](W24_constant_rom_T8/W24.md) | W | designs/winograd_rom_v1 | 8 | 1.7460189000000002 | 630.0 | 138.0 | 53316.0 | 103695.0 | -0.0695141811880653 | pass |
 | [W19](W19_streamed_winograd_T8/W19.md) | W | designs/winograd_param_stream_v1 | 8 | 1.74903921 | 645.0 | 146.0 | 83623.0 | 130843.0 | -0.0695141811880653 | infeasible |
@@ -654,6 +660,8 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [C32](C32_reload_windows_quality/C32.md) | frame | 1032.0 | 1032.0 | 0.0 | 273023.0 | 273025.0 | 0.0007325390168677615 | infeasible |
 | [C35](C35_ws_cosim_C32/C35.md) | frame | 1032.0 | unknown | unknown | 263090.0 | 273025.0 | 3.7762742787639247 | cosim_complete |
 | [C36](C36_ws_impl_C32/C36.md) | frame | 1032.0 | 1032.0 | 0.0 | 263090.0 | unknown | unknown | impl_complete |
+| [C37](C37_t4_reload_paramreg/C37.md) | frame | 1032.0 | 1032.0 | 0.0 | 273153.0 | 263154.0 | -3.6605858255263524 | infeasible |
+| [C38](C38_t4_reload_balanced/C38.md) | frame | 1032.0 | 1032.0 | 0.0 | 273029.0 | 263092.0 | -3.639540122111573 | infeasible |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -1047,6 +1055,8 @@ DATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv)
 | [C23](C23_reload_switch_quality/C23.md) | 7 | infeasible |
 | [C28](C28_reload_guard_quality/C28.md) | 7 | infeasible |
 | [C32](C32_reload_windows_quality/C32.md) | 7 | infeasible |
+| [C37](C37_t4_reload_paramreg/C37.md) | 7 | infeasible |
+| [C38](C38_t4_reload_balanced/C38.md) | 7 | infeasible |
 
 Selected candidates were ranked globally across both phases before validation. Mandatory full-supplied-image C simulation:
 
@@ -1128,6 +1138,8 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 | [C27](C27_ws_cosim_C23/C27.md) | C | fail | cosim of C23; HLS estimates inherited, real measurements in data.csv; Skipped-load transaction has parameter AXI traffic | cosim of C23; HLS estimates inherited, real measurements in data.csv; Skipped-load transaction has parameter AXI traffic |
 | [C28](C28_reload_guard_quality/C28.md) | C | infeasible | LUT=128849.0 exceeds 81984; FF=193984.0 exceeds 163968 | ; HLS status retained; final feasibility requires independent routed gates |
 | [C32](C32_reload_windows_quality/C32.md) | C | infeasible | LUT=128868.0 exceeds 81984; FF=193984.0 exceeds 163968 | ; HLS status retained; final feasibility requires independent routed gates |
+| [C37](C37_t4_reload_paramreg/C37.md) | C | infeasible | LUT=128942.0 exceeds 81984; FF=194250.0 exceeds 163968 | ; HLS status retained; final feasibility requires independent routed gates |
+| [C38](C38_t4_reload_balanced/C38.md) | C | infeasible | LUT=131780.0 exceeds 81984; FF=248672.0 exceeds 163968 | ; HLS status retained; final feasibility requires independent routed gates |
 
 ## Cancelled Plans
 
@@ -1150,7 +1162,7 @@ User-cancelled obsolete retries were never launched and have no measured result.
 
 ## Next Steps
 
-Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. C35 strictly passes four exact RTL calls,zero parameter AXI on both skipped calls and unchanged102-file manifests:273025loaded/267022reused cycles. C36 completes with observed4threads,feasible1032DSP/59891LUT/102084FF/109BRAM18K but fails5ns setup WNS-0.102/TNS-122.006; five final paths show Conv3 window backpressure-to-enable routing. C37 parameter-register and C38 balanced-tree complete13-image quality/HLS screening now runs concurrently; inspect actual register stages,then plan matching four-call RTL and independent4.5ns routes under C35 per-call+1percent limits. W36 supplements actual one-thread failed W34 with a fresh corrected C17 four-thread4.5ns strategy comparison after screening; no4ns probe until a matching4.5ns point closes. W35 C28 standalone5ns route remains required before WS-I. WS-I runs last. C22 remains the verified1.365115ms fallback; C35 reuse speed is conditional without closed matching routing. No board result exists; F90/F91 remain cancelled.
+Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. C35 strict four-call exact/zero-parameter-AXI RTL passes; C36 physical resources pass but5ns setup fails atWNS-0.102/TNS-122.006. C37 passes13-image quality,allthreefoldII1,HLS screening,and actual224-bit data-register evidence. C39 four-call RTL and conditional C40 staged4.5ns route plans are committed; run after active corrected-four-thread C17 strategy experiment W36. C38 passes quality/II but248672HLS FF exceeds230000 screening; conservatively stop this variant's RTL/route followups and log diagnostic-routing review. Only a matching closed4.5ns point can receive a fresh4ns plan. W35 C28 standalone5ns route remains required before WS-I,which runs last. C22 remains verified1.365115ms fallback; reuse improvements lack closed matching routing. No board result exists; F90/F91 remain cancelled.
 
 ## Integrity Audit
 
@@ -1179,4 +1191,4 @@ Interim local/remote original and first-phase source checksum and report-provena
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-13T08:48:16+00:00.
+Generated from archived evidence at 2026-10-13T09:16:02+00:00.

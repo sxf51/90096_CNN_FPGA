@@ -622,4 +622,6 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | W35 | C28 | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
-| W36 | C17 | unlaunched_conditional | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
+| W36 | C17 | queued_or_running | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
+| C39 | C37 | unlaunched_conditional | C37 complete13-image quality,allfoldII1,HLS screening and224-bit clocked-data evidence pass; after W36 require four exact RTL calls,zero skipped parameter AXI,unchanged RTL and matching C35 per-call upper-only+1percent limits |
+| C40 | C37 | unlaunched_conditional | Launch only after strict C39 acceptance; independent4.5ns Performance_Explore staged implementation of frozen C37,observed synthesis1/route4threads and unchanged physical gates; no4ns plan until matching closure |

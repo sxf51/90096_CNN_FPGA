@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T09:05:04+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T09:16:02+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-WS-G C35 strict RTL pass and C36 physical timing fail; WS-H C37/C38 screening active. C35 strictly passes four exact RTL calls,zero parameter AXI on both skipped calls and unchanged102-file manifests:273025loaded/267022reused cycles. C36 completes with observed4threads,feasible1032DSP/59891LUT/102084FF/109BRAM18K but fails5ns setup WNS-0.102/TNS-122.006; five final paths show Conv3 window backpressure-to-enable routing. C37 parameter-register and C38 balanced-tree complete13-image quality/HLS screening now runs concurrently; inspect actual register stages,then plan matching four-call RTL and independent4.5ns routes under C35 per-call+1percent limits. W36 supplements actual one-thread failed W34 with a fresh corrected C17 four-thread4.5ns strategy comparison after screening; no4ns probe until a matching4.5ns point closes. W35 C28 standalone5ns route remains required before WS-I. WS-I runs last. C22 remains the verified1.365115ms fallback; C35 reuse speed is conditional without closed matching routing. No board result exists; F90/F91 remain cancelled.
+WS-H C37 screening/register evidence passes; C38 FF screening fails; W36 route active, C39/C40 planned. C35 strict four-call exact/zero-parameter-AXI RTL passes; C36 physical resources pass but5ns setup fails atWNS-0.102/TNS-122.006. C37 passes13-image quality,allthreefoldII1,HLS screening,and actual224-bit data-register evidence. C39 four-call RTL and conditional C40 staged4.5ns route plans are committed; run after active corrected-four-thread C17 strategy experiment W36. C38 passes quality/II but248672HLS FF exceeds230000 screening; conservatively stop this variant's RTL/route followups and log diagnostic-routing review. Only a matching closed4.5ns point can receive a fresh4ns plan. W35 C28 standalone5ns route remains required before WS-I,which runs last. C22 remains verified1.365115ms fallback; reuse improvements lack closed matching routing. No board result exists; F90/F91 remain cancelled.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -81,7 +81,9 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
-| [W36](W36_ws_impl_C17/W36.md) | C17 | impl | unlaunched_conditional | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
+| [W36](W36_ws_impl_C17/W36.md) | C17 | impl | queued_or_running | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
+| [C39](C39_ws_cosim_C37/C39.md) | C37 | cosim | unlaunched_conditional | C37 complete13-image quality,allfoldII1,HLS screening and224-bit clocked-data evidence pass; after W36 require four exact RTL calls,zero skipped parameter AXI,unchanged RTL and matching C35 per-call upper-only+1percent limits |
+| [C40](C40_ws_impl_C37/C40.md) | C37 | impl | unlaunched_conditional | Launch only after strict C39 acceptance; independent4.5ns Performance_Explore staged implementation of frozen C37,observed synthesis1/route4threads and unchanged physical gates; no4ns plan until matching closure |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 
@@ -184,3 +186,4 @@ Process-tree RSS sums include shared mappings; minimum MemAvailable is measured 
 - Board validation remains unavailable to the agent; F98 handoff is archived.
 - T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned.
 - C31 measured10.4066GiB four-call process-tree RSS; future cosim budget raised to11.5GiB without changing admission/protection policy. Review whether two/four-call classes should later be separated; use the conservative unified budget now.
+- C38 HLS FF248672 exceeds230000 screening despite13-image exactness andII1. Conservatively stop this variant's heavy followups; review whether a separately planned diagnostic route is justified by mapped/HLS FF calibration,without changing final routed gates.

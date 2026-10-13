@@ -663,6 +663,8 @@
 
 ## Pending Human Decisions / 待人工决策
 
+- 2026-10-13 C38: balanced registered tree passes all13 E065-exact images andII1, but HLS FF=248672 exceeds230000 screening. Conservatively stop its RTL/route followups and retain the result. A separately planned diagnostic route might benefit from mapped/HLS FF calibration, but neither actual resources nor timing is known; review this option later without changing final routed gates.
+
 - 2026-10-13 C31 四帧 RTL 仿真的进程树峰值为 10.4066 GiB，超过历史两帧任务的 7.5 GiB 登记。已按实测峰值加 10% 并向上取整，将后续 cosim 登记提高到 11.5 GiB；原 C31 准入、实现 18 GiB、保护线和单重任务规则不变。证据在 C31 的 cosim_memory_budget_revision.json。明日复核是否需要把两帧与四帧细分为独立预算类别；本轮先用较保守的统一值继续。
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.

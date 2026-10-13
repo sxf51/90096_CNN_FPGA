@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-WS-G C35 strict RTL pass and C36 physical timing fail; WS-H C37/C38 screening active. C35 strictly passes four exact RTL calls,zero parameter AXI on both skipped calls and unchanged102-file manifests:273025loaded/267022reused cycles. C36 completes with observed4threads,feasible1032DSP/59891LUT/102084FF/109BRAM18K but fails5ns setup WNS-0.102/TNS-122.006; five final paths show Conv3 window backpressure-to-enable routing. C37 parameter-register and C38 balanced-tree complete13-image quality/HLS screening now runs concurrently; inspect actual register stages,then plan matching four-call RTL and independent4.5ns routes under C35 per-call+1percent limits. W36 supplements actual one-thread failed W34 with a fresh corrected C17 four-thread4.5ns strategy comparison after screening; no4ns probe until a matching4.5ns point closes. W35 C28 standalone5ns route remains required before WS-I. WS-I runs last. C22 remains the verified1.365115ms fallback; C35 reuse speed is conditional without closed matching routing. No board result exists; F90/F91 remain cancelled.
+WS-H C37 screening/register evidence passes; C38 FF screening fails; W36 route active, C39/C40 planned. C35 strict four-call exact/zero-parameter-AXI RTL passes; C36 physical resources pass but5ns setup fails atWNS-0.102/TNS-122.006. C37 passes13-image quality,allthreefoldII1,HLS screening,and actual224-bit data-register evidence. C39 four-call RTL and conditional C40 staged4.5ns route plans are committed; run after active corrected-four-thread C17 strategy experiment W36. C38 passes quality/II but248672HLS FF exceeds230000 screening; conservatively stop this variant's RTL/route followups and log diagnostic-routing review. Only a matching closed4.5ns point can receive a fresh4ns plan. W35 C28 standalone5ns route remains required before WS-I,which runs last. C22 remains verified1.365115ms fallback; reuse improvements lack closed matching routing. No board result exists; F90/F91 remain cancelled.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T09:05:03+00:00 from archived measurements.
+Updated 2026-10-13T09:16:01+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -26,7 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: W35, W36.
+Final verification: W35, W36, C39, C40.
 
 ## Weight Loading Workstream
 
