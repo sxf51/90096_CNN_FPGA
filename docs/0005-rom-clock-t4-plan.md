@@ -475,6 +475,12 @@ hook 再换 strategy，后者重置了步骤属性；分阶段重新打开工程
 W34 的实际证据见 `experiments/W34_t4_strategy_4p5_C17/implementation/thread_observation.json`。
 后续实现必须核对新的子进程日志，不能只根据配置里的线程数宣称多线程已生效。
 
+W34 最终在实际单线程下完成，但4.5ns 的 WNS=-0.324ns，没有收敛。
+用新 ID W36 对冻结 C17 RTL 补做原计划的四线程策略对照；保留 W34 原结果和
+线程诊断，不覆盖其工作区。W36 先提交独立纸面计划，排在优先 WS-G 的 C35/C36
+验证之后，使用已修复的 strategy-before-thread 和分阶段重放驱动。
+不因这次重试允许两个重任务；只有实际4.5ns 收敛才另立4ns计划。
+
 zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFree` 和两者之差，按阶段及整次工具运行汇总最大 swap 用量与有完整 swap 字段的样本数。旧 CSV 仅有 `SwapFree` 时不能反推总容量或宣称零使用；汇总保留 unknown 和字段覆盖率。主机 swap 用量不等于单个 Vivado 的用量，不能将它加到任务 RSS 当作峰值。正在运行的任务保持原采样模式，在新启动进程中启用新增字段；C18 的运行时主机快照单独归档。
 
 同 0004 第 8 节的表格；另加 `route_feasible` 和 `rtl_cycles × route_clock` 两列。没有测到的写 unknown。
