@@ -10,7 +10,7 @@ See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T00:53:39+00:00 from archived measurements.
+Updated 2026-10-13T00:53:40+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
