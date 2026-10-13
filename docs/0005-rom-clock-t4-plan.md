@@ -607,6 +607,7 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C34](../experiments/C34_reload_windows_cold/C34.md) | C17 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C35](../experiments/C35_ws_cosim_C32/C35.md) | C32 | cosim_complete | 263090.0 | 1032.0 | 128868.0 | 273025 | unknown | unknown |
 | [C36](../experiments/C36_ws_impl_C32/C36.md) | C32 | impl_complete | 263090.0 | 1032.0 | 128868.0 | unknown | False | unknown |
+| [C37](../experiments/C37_t4_reload_paramreg/C37.md) | C32 | infeasible | 263154.0 | 1032.0 | 128942.0 | unknown | unknown | unknown |
 
 未测量的计划：
 
@@ -614,5 +615,4 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | --- | --- | --- | --- |
 | W35 | C28 | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
 | W36 | C17 | unlaunched_conditional | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
-| C37 | C32 | queued_or_running | Accepted C32/C35 parent; independent224-bit parameter-write register helper with one-cycle latency andII1; require13-image quality,HLS screening and actual datapath-register evidence |
 | C38 | C32 | queued_or_running | Accepted C32/C35 parent; independent full34-bit nine-product balanced registered tree; preserve inverse/shift/quantization and require13-image quality/HLS before new four-call RTL |

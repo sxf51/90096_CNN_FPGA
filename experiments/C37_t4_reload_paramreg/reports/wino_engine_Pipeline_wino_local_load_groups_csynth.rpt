@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'wino_engine_Pipeline_wino_local_load_groups'
+================================================================
+* Date:           Tue Oct 13 20:01:07 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        C37
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|  1.651 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval |      Pipeline     |
+    |   min   |   max   |    min    |    max    | min | max |        Type       |
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+    |       12|       12|  48.000 ns|  48.000 ns|    0|    0|  loop pipeline stp|
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+
+    + Detail: 
+        * Instance: 
+        +-------------------------------------+------------------------+---------+---------+----------+----------+-----+-----+---------+
+        |                                     |                        |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |               Instance              |         Module         |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +-------------------------------------+------------------------+---------+---------+----------+----------+-----+-----+---------+
+        |grp_params1_write_register_fu_11100  |params1_write_register  |        1|        1|  4.000 ns|  4.000 ns|    1|    1|      yes|
+        +-------------------------------------+------------------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        +--------------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                          |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |         Loop Name        |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +--------------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- wino_local_load_groups  |       10|       10|         3|          1|          1|     9|       yes|
+        +--------------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     100|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|     226|       2|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|      45|    -|
+|Register         |        -|     -|      55|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|     281|     147|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +-------------------------------------+------------------------+---------+----+-----+----+-----+
+    |               Instance              |         Module         | BRAM_18K| DSP|  FF | LUT| URAM|
+    +-------------------------------------+------------------------+---------+----+-----+----+-----+
+    |grp_params1_write_register_fu_11100  |params1_write_register  |        0|   0|  226|   2|    0|
+    +-------------------------------------+------------------------+---------+----+-----+----+-----+
+    |Total                                |                        |        0|   0|  226|   2|    0|
+    +-------------------------------------+------------------------+---------+----+-----+----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +------------------------------+----------+----+---+----+------------+------------+
+    |         Variable Name        | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +------------------------------+----------+----+---+----+------------+------------+
+    |add_ln314_fu_11158_p2         |         +|   0|  0|  12|           4|           1|
+    |ap_block_pp0_stage0_11001     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred4794_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred4944_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred5078_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred5212_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred5346_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred5480_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred5614_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred5747_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred5894_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred6028_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred6160_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred6292_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred6424_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred6556_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred6688_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred6820_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred6952_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred7091_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred7225_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred7357_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred7489_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred7621_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred7753_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred7885_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred8017_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred8149_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred8288_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred8422_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred8554_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred8686_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred8818_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred8950_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred9082_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred9214_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred9346_state3  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_pred9485_state3  |       and|   0|  0|   2|           1|           1|
+    |icmp_ln314_fu_11152_p2        |      icmp|   0|  0|  12|           4|           4|
+    |ap_enable_pp0                 |       xor|   0|  0|   2|           1|           2|
+    +------------------------------+----------+----+---+----+------------+------------+
+    |Total                         |          |   0|  0| 100|          46|          44|
+    +------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +--------------------------+----+-----------+-----+-----------+
+    |           Name           | LUT| Input Size| Bits| Total Bits|
+    +--------------------------+----+-----------+-----+-----------+
+    |ap_done_int               |   9|          2|    1|          2|
+    |ap_enable_reg_pp0_iter1   |   9|          2|    1|          2|
+    |ap_sig_allocacmp_group_1  |   9|          2|    4|          8|
+    |group_fu_1286             |   9|          2|    4|          8|
+    |params1_blk_n             |   9|          2|    1|          2|
+    +--------------------------+----+-----------+-----+-----------+
+    |Total                     |  45|         10|   11|         22|
+    +--------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +--------------------------------------------------+---+----+-----+-----------+
+    |                       Name                       | FF| LUT| Bits| Const Bits|
+    +--------------------------------------------------+---+----+-----+-----------+
+    |ap_CS_fsm                                         |  1|   0|    1|          0|
+    |ap_done_reg                                       |  1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1                           |  1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter2                           |  1|   0|    1|          0|
+    |ap_loop_exit_ready_pp0_iter1_reg                  |  1|   0|    1|          0|
+    |ap_predicate_pred4794_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred4944_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred5078_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred5212_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred5346_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred5480_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred5614_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred5747_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred5894_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred6028_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred6160_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred6292_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred6424_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred6556_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred6688_state3                      |  1|   0|    1|          0|
+    |ap_predicate_pred6820_state3                      |  1|   0|    1|          0|
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.
