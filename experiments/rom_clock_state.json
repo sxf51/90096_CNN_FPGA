@@ -3,7 +3,7 @@
     "C32": "WS-G quality/HLS worker submitted; memory-budget admission alongside W34",
     "C33": "WS-G four-call C sequence worker submitted; memory-budget admission alongside W34",
     "C34": "WS-G fresh-process cold-start queued after C33 in supervisor36261",
-    "W34": "WS-H step1 owns the sole heavy slot after C31 strict acceptance"
+    "W34": "WS-H step1 owns the sole heavy slot; original child actually uses1thread, left unchanged; strategy/thread hook ordering and staged replay fixed only for future runs"
   },
   "authorized_followups": {
     "WS-F-route": "Independent C28 route remains required; schedule after prioritized WS-G work",
@@ -91,6 +91,11 @@
   ],
   "fastest_verified_implementation": "C22",
   "hardware_serial_after_oom": true,
+  "implementation_thread_repair": {
+    "source_commit": "e684bbb",
+    "evidence": "experiments/W34_t4_strategy_4p5_C17/implementation/thread_observation.json",
+    "scope": "New generated drivers only; current W34 preserved. Reapply strategy before thread hooks after project reopen; verify actual child logs."
+  },
   "last_oom": {
     "after": 2,
     "before": 1,

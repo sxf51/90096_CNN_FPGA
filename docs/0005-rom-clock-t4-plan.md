@@ -469,6 +469,12 @@ hook 再换 strategy，后者重置了步骤属性；分阶段重新打开工程
 单重任务与所有数值/物理门槛。W34 继续原任务，归档其实际单线程证据，不修改运行中
 脚本，不据此重写历史耗时或制造四线程测量。
 
+修复已在 `e684bbb` 提交，177 项脚本检查通过。用
+`python3 exp/observe_implementation_threads.py <ID>` 读取并归档已生成的子进程 Tcl、
+保存工程的 strategy/hook 和运行日志；只做 SSH 文件读取，不启动另一项 Vivado。
+W34 的实际证据见 `experiments/W34_t4_strategy_4p5_C17/implementation/thread_observation.json`。
+后续实现必须核对新的子进程日志，不能只根据配置里的线程数宣称多线程已生效。
+
 zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFree` 和两者之差，按阶段及整次工具运行汇总最大 swap 用量与有完整 swap 字段的样本数。旧 CSV 仅有 `SwapFree` 时不能反推总容量或宣称零使用；汇总保留 unknown 和字段覆盖率。主机 swap 用量不等于单个 Vivado 的用量，不能将它加到任务 RSS 当作峰值。正在运行的任务保持原采样模式，在新启动进程中启用新增字段；C18 的运行时主机快照单独归档。
 
 同 0004 第 8 节的表格；另加 `route_feasible` 和 `rtl_cycles × route_clock` 两列。没有测到的写 unknown。
