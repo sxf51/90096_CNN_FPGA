@@ -1,0 +1,549 @@
+COMMAND ["v++", "-c", "--mode", "hls", "--config", "/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls_config.cfg", "--work_dir", "/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027"]
+
+****** v++ v2026.1 (64-bit)
+  **** SW Build 6497934 on 2026-06-16-10:22:25
+  **** Start of session at: Sun Oct 11 04:00:50 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+  **** HLS Build v2026.1 6493734
+INFO: [HLS 200-2005] Using work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027 
+INFO: [HLS 200-2006] Changing directory to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs
+INFO: [HLS 200-2176] Writing Vitis IDE component file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/vitis-comp.json
+INFO: [HLS 200-10] Creating and opening component '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027'.
+INFO: [HLS 200-2174] Applying component config ini file E027/hls_config.cfg
+INFO: [HLS 200-1465] Applying config ini 'syn.file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/source/srcnn.cpp' from E027/hls_config.cfg(10)
+INFO: [HLS 200-10] Adding design file '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/source/srcnn.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'syn.cflags=-std=c++14 -ffp-contract=off -DEXP_A_BITS=16 -DEXP_W_BITS=16 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src' from E027/hls_config.cfg(8)
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/validate.cpp' from E027/hls_config.cfg(11)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/validate.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/golden.cpp' from E027/hls_config.cfg(12)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/golden.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_conv1.cpp' from E027/hls_config.cfg(13)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_conv1.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_srcnn.cpp' from E027/hls_config.cfg(14)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/tb_srcnn.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/util.cpp' from E027/hls_config.cfg(15)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/util.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/src/weights' from E027/hls_config.cfg(16)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/src/weights' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/set5' from E027/hls_config.cfg(17)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/set5' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/set14' from E027/hls_config.cfg(18)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/set14' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/numpy_reference' from E027/hls_config.cfg(19)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/numpy_reference' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.cflags=-std=c++14 -ffp-contract=off -DEXP_A_BITS=16 -DEXP_W_BITS=16 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src' from E027/hls_config.cfg(9)
+INFO: [HLS 200-1465] Applying config ini 'syn.top=srcnn' from E027/hls_config.cfg(6)
+INFO: [HLS 200-1465] Applying config ini 'flow_target=vivado' from E027/hls_config.cfg(3)
+INFO: [HLS 200-1505] Using flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=200-1505.html
+WARNING: [HLS 200-2149] The 'flow_target' option is deprecated and will be removed in a future release. For 'vivado' value you may simply remove the option for equivalent behavior.
+INFO: [HLS 200-1465] Applying config ini 'part=xck26-sfvc784-2LV-c' from E027/hls_config.cfg(1)
+INFO: [HLS 200-1611] Setting target device to 'xck26-sfvc784-2LV-c'
+INFO: [HLS 200-1465] Applying config ini 'clock=10ns' from E027/hls_config.cfg(4)
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1465] Applying config ini 'csim.O=true' from E027/hls_config.cfg(7)
+INFO: [HLS 200-1907] Replacing 'config_csim -O=1' with 'config_sim -O=1' in current solution file
+INFO: [HLS 200-1465] Applying config ini 'package.output.format=ip_catalog' from E027/hls_config.cfg(5)
+INFO: [HLS 200-2176] Writing Vitis IDE component file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/vitis-comp.json
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 2.47 seconds. CPU system time: 0.59 seconds. Elapsed time: 2.99 seconds; current allocated memory: 249.828 MB.
+INFO: [HLS 200-2191] C-Synthesis will use clang-16 as the compiler
+INFO: [HLS 200-10] Analyzing design file 'E027/source/srcnn.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 6.74 seconds. CPU system time: 0.92 seconds. Elapsed time: 7.72 seconds; current allocated memory: 252.051 MB.
+INFO: [HLS 200-1995] There were 9,174 instructions in the design after the 'Compile/Link' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 2,568 instructions in the design after the 'Unroll/Inline' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 1,684 instructions in the design after the 'Unroll/Inline (step 2)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 1,630 instructions in the design after the 'Unroll/Inline (step 3)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 1,516 instructions in the design after the 'Unroll/Inline (step 4)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 1,515 instructions in the design after the 'Array/Struct' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 1,515 instructions in the design after the 'Array/Struct (step 2)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 1,515 instructions in the design after the 'Array/Struct (step 3)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 1,515 instructions in the design after the 'Array/Struct (step 4)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 1,521 instructions in the design after the 'Array/Struct (step 5)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 1,521 instructions in the design after the 'Performance' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 214-376] Pipelining loop< c1_kx> at E027/source/srcnn.cpp:13:32 due to pipeline_loops threshold
+INFO: [HLS 214-376] Pipelining loop< VITIS_LOOP_53_3> at E027/source/srcnn.cpp:53:30 due to pipeline_loops threshold
+INFO: [HLS 214-376] Pipelining loop< VITIS_LOOP_55_4> at E027/source/srcnn.cpp:55:22 due to pipeline_loops threshold
+INFO: [HLS 214-376] Pipelining loop< VITIS_LOOP_62_8> at E027/source/srcnn.cpp:62:30 due to pipeline_loops threshold
+INFO: [HLS 214-376] Pipelining loop< VITIS_LOOP_64_10> at E027/source/srcnn.cpp:64:27 due to pipeline_loops threshold
+INFO: [HLS 214-376] Pipelining loop< c2_x> at E027/source/srcnn.cpp:68:19 due to pipeline_loops threshold
+INFO: [HLS 214-376] Pipelining loop< c3_kx> at E027/source/srcnn.cpp:78:28 due to pipeline_loops threshold
+INFO: [HLS 214-291] Loop 'c2_ic' is marked as complete unroll implied by the pipeline pragma (E027/source/srcnn.cpp:70:24)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_57_5' is marked as complete unroll implied by the pipeline pragma (E027/source/srcnn.cpp:57:26)
+INFO: [HLS 214-186] Unrolling loop 'c2_ic' (E027/source/srcnn.cpp:70:24) in function 'srcnn' completely with a factor of 64 (E027/source/srcnn.cpp:44:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_57_5' (E027/source/srcnn.cpp:57:26) in function 'srcnn' completely with a factor of 64 (E027/source/srcnn.cpp:44:0)
+INFO: [HLS 200-1995] There were 12,781 instructions in the design after the 'Performance (step 2)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 25,593 instructions in the design after the 'Performance (step 3)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 214-449] Partitioning array 'srcnn(float (*) [255][255], float (*) [1][9][9], float*, float (*) [64][1][1], float*, float (*) [32][5][5], float*, float (*) [255][255])::qin' dimension 1 due to constant index. (E027/source/srcnn.cpp:45:0)
+INFO: [HLS 214-449] Partitioning array 'w1' dimension 2 due to constant index. (E027/source/srcnn.cpp:48:12)
+INFO: [HLS 214-449] Partitioning array 'w2' dimension 2 due to constant index. (E027/source/srcnn.cpp:48:29)
+INFO: [HLS 214-449] Partitioning array 'w2' dimension 3 due to constant index. (E027/source/srcnn.cpp:48:29)
+INFO: [HLS 214-449] Partitioning array 'w2' dimension 4 due to constant index. (E027/source/srcnn.cpp:48:29)
+INFO: [HLS 214-449] Partitioning array 'w3' dimension 1 due to constant index. (E027/source/srcnn.cpp:48:47)
+INFO: [HLS 214-270] Inferring pragma 'array_partition type=complete dim=1' for array 'srcnn(float (*) [255][255], float (*) [1][9][9], float*, float (*) [64][1][1], float*, float (*) [32][5][5], float*, float (*) [255][255])::a1' due to pipeline pragma (E027/source/srcnn.cpp:46:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E3qin': Complete partitioning on dimension 1. (E027/source/srcnn.cpp:45:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1': Complete partitioning on dimension 1. (E027/source/srcnn.cpp:46:0)
+INFO: [HLS 214-248] Applying array_partition to 'w1': Complete partitioning on dimension 2. (E027/source/srcnn.cpp:48:12)
+INFO: [HLS 214-248] Applying array_partition to 'w2': Complete partitioning on dimension 2. Complete partitioning on dimension 3. Complete partitioning on dimension 4. (E027/source/srcnn.cpp:48:29)
+INFO: [HLS 214-248] Applying array_partition to 'w3': Complete partitioning on dimension 1. (E027/source/srcnn.cpp:48:47)
+INFO: [HLS 200-1995] There were 13,497 instructions in the design after the 'Performance (step 4)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 13,583 instructions in the design after the 'HW Transforms' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 13,657 instructions in the design after the 'HW Transforms (step 2)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 8.92 seconds. CPU system time: 1.16 seconds. Elapsed time: 13.16 seconds; current allocated memory: 254.555 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 254.555 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.71 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.72 seconds; current allocated memory: 268.555 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+WARNING: [SYNCHK 200-23] E027/source/srcnn.cpp:51: variable-indexed range selection may cause suboptimal QoR.
+INFO: [SYNCHK 200-10] 0 error(s), 1 warning(s).
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.69 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.7 seconds; current allocated memory: 280.938 MB.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (E027/source/srcnn.cpp:53:39) to (E027/source/srcnn.cpp:53:30) in function 'srcnn'... converting 29 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (E027/source/srcnn.cpp:50:31) to (E027/source/srcnn.cpp:52:26) in function 'srcnn'... converting 29 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (E027/source/srcnn.cpp:55:31) to (E027/source/srcnn.cpp:55:22) in function 'srcnn'... converting 1821 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (E027/source/srcnn.cpp:62:39) to (E027/source/srcnn.cpp:62:30) in function 'srcnn'... converting 29 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (E027/source/srcnn.cpp:64:36) to (E027/source/srcnn.cpp:64:27) in function 'srcnn'... converting 29 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (E027/source/srcnn.cpp:68:28) to (E027/source/srcnn.cpp:68:19) in function 'srcnn'... converting 4 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (E027/source/srcnn.cpp:84:28) to (E027/source/srcnn.cpp:74:15) in function 'srcnn'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (E027/source/srcnn.cpp:59:13) to (E027/source/srcnn.cpp:60:22) in function 'srcnn'... converting 29 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (E027/source/srcnn.cpp:10:22) to (E027/source/srcnn.cpp:19:31) in function 'first_layer'... converting 4 basic blocks.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 4.72 seconds. CPU system time: 0.02 seconds. Elapsed time: 4.75 seconds; current allocated memory: 313.312 MB.
+INFO: [HLS 200-2061] Successfully converted nested loops 'VITIS_LOOP_52_2'(E027/source/srcnn.cpp:52:26) and 'VITIS_LOOP_53_3'(E027/source/srcnn.cpp:53:30) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'VITIS_LOOP_50_1'(E027/source/srcnn.cpp:50:22) and 'VITIS_LOOP_52_2'(E027/source/srcnn.cpp:52:26) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'VITIS_LOOP_61_7'(E027/source/srcnn.cpp:61:26) and 'VITIS_LOOP_62_8'(E027/source/srcnn.cpp:62:30) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'VITIS_LOOP_60_6'(E027/source/srcnn.cpp:60:22) and 'VITIS_LOOP_61_7'(E027/source/srcnn.cpp:61:26) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'VITIS_LOOP_63_9'(E027/source/srcnn.cpp:63:22) and 'VITIS_LOOP_64_10'(E027/source/srcnn.cpp:64:27) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'c2_y'(E027/source/srcnn.cpp:67:15) and 'c2_x'(E027/source/srcnn.cpp:68:19) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'c2_oc'(E027/source/srcnn.cpp:66:12) and 'c2_y'(E027/source/srcnn.cpp:67:15) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'c3_ky'(E027/source/srcnn.cpp:77:24) and 'c3_kx'(E027/source/srcnn.cpp:78:28) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'c3_ic'(E027/source/srcnn.cpp:76:20) and 'c3_ky'(E027/source/srcnn.cpp:77:24) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'c3_x'(E027/source/srcnn.cpp:74:15) and 'c3_ic'(E027/source/srcnn.cpp:76:20) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'c3_y'(E027/source/srcnn.cpp:73:11) and 'c3_x'(E027/source/srcnn.cpp:74:15) in function 'srcnn' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'c1_ky'(E027/source/srcnn.cpp:12:28) and 'c1_kx'(E027/source/srcnn.cpp:13:32) in function 'first_layer' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'c1_x'(E027/source/srcnn.cpp:9:19) and 'c1_ky'(E027/source/srcnn.cpp:12:28) in function 'first_layer' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'c1_y'(E027/source/srcnn.cpp:8:15) and 'c1_x'(E027/source/srcnn.cpp:9:19) in function 'first_layer' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'c1_oc'(E027/source/srcnn.cpp:7:12) and 'c1_y'(E027/source/srcnn.cpp:8:15) in function 'first_layer' into perfectly nested loops.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'VITIS_LOOP_53_3' (E027/source/srcnn.cpp:53:30) and outer loop 'VITIS_LOOP_52_2' (E027/source/srcnn.cpp:52:26) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'VITIS_LOOP_52_2_VITIS_LOOP_53_3'  and outer loop 'VITIS_LOOP_50_1' (E027/source/srcnn.cpp:50:22) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'VITIS_LOOP_62_8' (E027/source/srcnn.cpp:62:30) and outer loop 'VITIS_LOOP_61_7' (E027/source/srcnn.cpp:61:26) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'VITIS_LOOP_61_7_VITIS_LOOP_62_8'  and outer loop 'VITIS_LOOP_60_6' (E027/source/srcnn.cpp:60:22) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'VITIS_LOOP_64_10' (E027/source/srcnn.cpp:64:27) and outer loop 'VITIS_LOOP_63_9' (E027/source/srcnn.cpp:63:22) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'c2_x' (E027/source/srcnn.cpp:68:19) and outer loop 'c2_y' (E027/source/srcnn.cpp:67:15) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'c2_y_c2_x'  and outer loop 'c2_oc' (E027/source/srcnn.cpp:66:12) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'c3_kx' (E027/source/srcnn.cpp:78:28) and outer loop 'c3_ky' (E027/source/srcnn.cpp:77:24) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'c3_ky_c3_kx'  and outer loop 'c3_ic' (E027/source/srcnn.cpp:76:20) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'c3_ic_c3_ky_c3_kx'  and outer loop 'c3_x' (E027/source/srcnn.cpp:74:15) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'c3_x_c3_ic_c3_ky_c3_kx'  and outer loop 'c3_y' (E027/source/srcnn.cpp:73:11) in function 'srcnn' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'c1_kx' (E027/source/srcnn.cpp:13:32) and outer loop 'c1_ky' (E027/source/srcnn.cpp:12:28) in function 'first_layer' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'c1_ky_c1_kx'  and outer loop 'c1_x' (E027/source/srcnn.cpp:9:19) in function 'first_layer' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'c1_x_c1_ky_c1_kx'  and outer loop 'c1_y' (E027/source/srcnn.cpp:8:15) in function 'first_layer' successfully.
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 7.41 seconds. CPU system time: 0.06 seconds. Elapsed time: 7.47 seconds; current allocated memory: 418.258 MB.
+INFO: [HLS 200-2255] Checking Wire Delay Status: Wire Delay Mode is ON
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'srcnn' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'srcnn_Pipeline_VITIS_LOOP_50_1_VITIS_LOOP_52_2_VITIS_LOOP_53_3' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'VITIS_LOOP_50_1_VITIS_LOOP_52_2_VITIS_LOOP_53_3'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 5, loop 'VITIS_LOOP_50_1_VITIS_LOOP_52_2_VITIS_LOOP_53_3'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.29 seconds. CPU system time: 0.05 seconds. Elapsed time: 0.35 seconds; current allocated memory: 424.141 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 424.141 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'srcnn_Pipeline_VITIS_LOOP_55_4' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'VITIS_LOOP_55_4'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 32, Depth = 35, loop 'VITIS_LOOP_55_4'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 5.84 seconds. CPU system time: 0.07 seconds. Elapsed time: 5.91 seconds; current allocated memory: 502.797 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 3.19 seconds. CPU system time: 0.03 seconds. Elapsed time: 3.21 seconds; current allocated memory: 502.797 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'srcnn_Pipeline_VITIS_LOOP_60_6_VITIS_LOOP_61_7_VITIS_LOOP_62_8' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'VITIS_LOOP_60_6_VITIS_LOOP_61_7_VITIS_LOOP_62_8'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 4, loop 'VITIS_LOOP_60_6_VITIS_LOOP_61_7_VITIS_LOOP_62_8'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 2.68 seconds. CPU system time: 0.04 seconds. Elapsed time: 2.72 seconds; current allocated memory: 502.797 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 502.797 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'srcnn_Pipeline_VITIS_LOOP_63_9_VITIS_LOOP_64_10' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'VITIS_LOOP_63_9_VITIS_LOOP_64_10'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 4, loop 'VITIS_LOOP_63_9_VITIS_LOOP_64_10'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.08 seconds. CPU system time: 0 seconds. Elapsed time: 0.08 seconds; current allocated memory: 502.797 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.02 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.02 seconds; current allocated memory: 502.797 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'first_layer_Pipeline_c1_y_c1_x_c1_ky_c1_kx' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln17) to 3 in order to utilize available DSP registers.
+INFO: [SCHED 204-61] Pipelining loop 'c1_y_c1_x_c1_ky_c1_kx'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 6, loop 'c1_y_c1_x_c1_ky_c1_kx'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.2 seconds. CPU system time: 0 seconds. Elapsed time: 0.21 seconds; current allocated memory: 502.797 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.05 seconds; current allocated memory: 502.797 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'first_layer' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.04 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.05 seconds; current allocated memory: 502.797 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 502.797 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'srcnn_Pipeline_c2_oc_c2_y_c2_x' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_62) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_61) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_60) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_59) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_58) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_57) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_56) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_55) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_54) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_53) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_52) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_51) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_50) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_49) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_48) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_47) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_46) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_45) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_44) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_43) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_42) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_41) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_40) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_39) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_38) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_37) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_36) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_35) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_34) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_33) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_32) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_31) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_30) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_29) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_28) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_27) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_26) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_25) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_24) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_23) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_22) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_21) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_20) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_19) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_18) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_17) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_16) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_15) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_14) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_13) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_12) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_11) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_10) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_9) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_8) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_7) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_6) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_5) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_4) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_3) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_2) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln70_1) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=sum_5) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=sum) to 3 in order to utilize available DSP registers.
+INFO: [SCHED 204-61] Pipelining loop 'c2_oc_c2_y_c2_x'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 69, loop 'c2_oc_c2_y_c2_x'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.69 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.7 seconds; current allocated memory: 509.457 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.17 seconds. CPU system time: 0 seconds. Elapsed time: 0.17 seconds; current allocated memory: 509.535 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'srcnn_Pipeline_c3_y_c3_x_c3_ic_c3_ky_c3_kx' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln82) to 3 in order to utilize available DSP registers.
+INFO: [SCHED 204-61] Pipelining loop 'c3_y_c3_x_c3_ic_c3_ky_c3_kx'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 8, loop 'c3_y_c3_x_c3_ic_c3_ky_c3_kx'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.25 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.26 seconds; current allocated memory: 512.879 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 512.879 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'srcnn' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.1 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.1 seconds; current allocated memory: 514.133 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.07 seconds. CPU system time: 0 seconds. Elapsed time: 0.08 seconds; current allocated memory: 515.121 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'srcnn_Pipeline_VITIS_LOOP_50_1_VITIS_LOOP_52_2_VITIS_LOOP_53_3' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'srcnn_Pipeline_VITIS_LOOP_50_1_VITIS_LOOP_52_2_VITIS_LOOP_53_3' pipeline 'VITIS_LOOP_50_1_VITIS_LOOP_52_2_VITIS_LOOP_53_3' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Generating core module 'bitselect_1ns_54ns_6ns_1_1_1': 4 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'fpext_32ns_64_2_no_dsp_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_16_1_1': 4 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_1_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'srcnn_Pipeline_VITIS_LOOP_50_1_VITIS_LOOP_52_2_VITIS_LOOP_53_3'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.22 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.22 seconds; current allocated memory: 516.500 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'srcnn_Pipeline_VITIS_LOOP_55_4' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'srcnn_Pipeline_VITIS_LOOP_55_4' pipeline 'VITIS_LOOP_55_4' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Generating core module 'bitselect_1ns_54ns_6ns_1_1_1': 130 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'fpext_32ns_64_2_no_dsp_1': 3 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_16_1_1': 130 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_1_1_1': 65 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'srcnn_Pipeline_VITIS_LOOP_55_4'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 2.52 seconds. CPU system time: 0.09 seconds. Elapsed time: 2.62 seconds; current allocated memory: 603.480 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'srcnn_Pipeline_VITIS_LOOP_60_6_VITIS_LOOP_61_7_VITIS_LOOP_62_8' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'srcnn_Pipeline_VITIS_LOOP_60_6_VITIS_LOOP_61_7_VITIS_LOOP_62_8' pipeline 'VITIS_LOOP_60_6_VITIS_LOOP_61_7_VITIS_LOOP_62_8' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Generating core module 'bitselect_1ns_54ns_6ns_1_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'fpext_32ns_64_2_no_dsp_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_16_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_1_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'srcnn_Pipeline_VITIS_LOOP_60_6_VITIS_LOOP_61_7_VITIS_LOOP_62_8'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 7.53 seconds. CPU system time: 0.47 seconds. Elapsed time: 8.01 seconds; current allocated memory: 771.500 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'srcnn_Pipeline_VITIS_LOOP_63_9_VITIS_LOOP_64_10' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'srcnn_Pipeline_VITIS_LOOP_63_9_VITIS_LOOP_64_10' pipeline 'VITIS_LOOP_63_9_VITIS_LOOP_64_10' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Generating core module 'bitselect_1ns_54ns_6ns_1_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'fpext_32ns_64_2_no_dsp_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_16_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_1_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'srcnn_Pipeline_VITIS_LOOP_63_9_VITIS_LOOP_64_10'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.23 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.27 seconds; current allocated memory: 793.074 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'first_layer_Pipeline_c1_y_c1_x_c1_ky_c1_kx' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'first_layer_Pipeline_c1_y_c1_x_c1_ky_c1_kx' pipeline 'c1_y_c1_x_c1_ky_c1_kx' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_16s_16s_35s_36_4_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'first_layer_Pipeline_c1_y_c1_x_c1_ky_c1_kx'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.25 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.28 seconds; current allocated memory: 798.258 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'first_layer' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'first_layer'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.33 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.35 seconds; current allocated memory: 810.023 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'srcnn_Pipeline_c2_oc_c2_y_c2_x' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'srcnn_Pipeline_c2_oc_c2_y_c2_x' pipeline 'c2_oc_c2_y_c2_x' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-104] Estimated max fanout for 'srcnn_Pipeline_c2_oc_c2_y_c2_x' is 9387 from HDL expression: (1'b0 == ap_block_pp0_stage0_11001)
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_16s_16s_30s_32_4_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_16s_16s_32s_33_4_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_16s_16s_35s_36_4_1': 62 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'srcnn_Pipeline_c2_oc_c2_y_c2_x'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.41 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.43 seconds; current allocated memory: 814.418 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'srcnn_Pipeline_c3_y_c3_x_c3_ic_c3_ky_c3_kx' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'srcnn_Pipeline_c3_y_c3_x_c3_ic_c3_ky_c3_kx' pipeline 'c3_y_c3_x_c3_ic_c3_ky_c3_kx' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Generating core module 'ctlz_16_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_16s_16s_35s_36_4_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'srcnn_Pipeline_c3_y_c3_x_c3_ic_c3_ky_c3_kx'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.69 seconds. CPU system time: 0.09 seconds. Elapsed time: 0.78 seconds; current allocated memory: 835.500 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'srcnn' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'srcnn/in_r' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'srcnn/weights1' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'srcnn/biases1' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'srcnn/weights2' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'srcnn/biases2' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'srcnn/weights3' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'srcnn/biases3' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'srcnn/out_r' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'srcnn' to 'ap_ctrl_hs'.
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_62_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_62_Rbkb' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_61_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_61_Rcud' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_60_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_60_RdEe' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_59_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_59_ReOg' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_58_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_58_RfYi' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_57_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_57_Rg8j' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_56_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_56_Rhbi' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_55_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_55_Ribs' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_54_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_54_RjbC' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_53_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_53_RkbM' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_52_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_52_RlbW' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_51_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_51_Rmb6' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_50_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_50_Rncg' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_49_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_49_Rocq' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_48_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_48_RpcA' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_47_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_47_RqcK' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_46_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_46_RrcU' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_45_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_45_Rsc4' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_44_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_44_Rtde' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_43_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_43_Rudo' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_42_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_42_Rvdy' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_41_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_41_RwdI' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_40_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_40_RxdS' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_39_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_39_Ryd2' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_38_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_38_Rzec' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_37_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_37_RAem' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_36_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_36_RBew' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_35_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_35_RCeG' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_34_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_34_RDeQ' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_33_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_33_REe0' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_32_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_32_RFfa' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_31_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_31_RGfk' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_30_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_30_RHfu' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_29_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_29_RIfE' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_28_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_28_RJfO' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_27_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_27_RKfY' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_26_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_26_RLf8' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_25_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_25_RMgi' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_24_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_24_RNgs' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_23_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_23_ROgC' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_22_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_22_RPgM' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_21_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_21_RQgW' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_20_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_20_RRg6' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_19_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_19_RShg' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_18_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_18_RThq' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_17_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_17_RUhA' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_16_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_16_RVhK' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_15_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_15_RWhU' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_14_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_14_RXh4' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_13_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_13_RYie' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_12_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_12_RZio' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_11_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_11_R0iy' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_10_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_10_R1iI' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_63_RAM_AUTO_1R1W' to 'p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2a1_63_R2iS' due to the length limit 80
+INFO: [RTGEN 206-100] Generating core module 'bitselect_1ns_54ns_6ns_1_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'fpext_32ns_64_2_no_dsp_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_16_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_1_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'srcnn'.
+INFO: [RTMG 210-278] Implementing memory 'srcnn_srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_RAM_AUTO_1R1W' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'srcnn_a2_RAM_AUTO_1R1W' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'srcnn_w1_RAM_AUTO_1R1W' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'srcnn_w2_RAM_AUTO_1R1W' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'srcnn_w3_RAM_AUTO_1R1W' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'srcnn_b1_RAM_AUTO_1R1W' using auto RAMs.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.42 seconds. CPU system time: 0.07 seconds. Elapsed time: 0.49 seconds; current allocated memory: 835.500 MB.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 1.17 seconds. CPU system time: 0.12 seconds. Elapsed time: 1.3 seconds; current allocated memory: 835.500 MB.
+INFO: [HLS 200-2225] Wrote inferred directives to file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/syn/inferred_directives.ini
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 3.7 seconds. CPU system time: 0.2 seconds. Elapsed time: 3.91 seconds; current allocated memory: 963.094 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for srcnn.
+INFO: [VLOG 209-307] Generating Verilog RTL for srcnn.
+INFO: [HLS 200-790] **** Loop Constraint Status: All loop constraints were satisfied.
+INFO: [HLS 200-789] **** Estimated Fmax: 139.33 MHz
+INFO: [IMPL 213-8] Exporting RTL as a Vivado IP.
+INFO: [Common 17-3922] A valid Vivado Design Suite BASIC license has been detected. Your current license is active and will expire on 02-aug-2027.
+
+****** Vivado v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Sun Oct 11 04:02:08 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source run_ippack.tcl -notrace
+INFO: calling package_hls_ip ip_types=vitis sysgen json_file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/hls_data.json outdir=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/impl/ip srcdir=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls ippack_options_dict= ippack_options_dict=
+INFO: Copied 1 ipmisc file(s) to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/impl/ip/misc
+INFO: Copied 26 verilog file(s) to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/impl/ip/hdl/verilog
+INFO: Copied 24 vhdl file(s) to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/impl/ip/hdl/vhdl
+Generating 1 subcores in /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/impl/ip/subcore_prj:
+impl/misc/srcnn_fpext_32ns_64_2_no_dsp_1_ip.tcl
+INFO: Using COE_DIR=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/impl/ip/hdl/verilog
+INFO: Generating srcnn_fpext_32ns_64_2_no_dsp_1_ip via file impl/misc/srcnn_fpext_32ns_64_2_no_dsp_1_ip.tcl
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/lipuze/amdfpga/2026.1/data/ip'.
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'srcnn_fpext_32ns_64_2_no_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'srcnn_fpext_32ns_64_2_no_dsp_1_ip'...
+INFO: Done generating srcnn_fpext_32ns_64_2_no_dsp_1_ip via file impl/misc/srcnn_fpext_32ns_64_2_no_dsp_1_ip.tcl
+INFO: Found 1 unique subcore IP: xilinx.com:ip:floating_point:7.1
+INFO: Copied 1 subcore files: /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/impl/ip/hdl/ip/srcnn_fpext_32ns_64_2_no_dsp_1_ip/srcnn_fpext_32ns_64_2_no_dsp_1_ip.xci
+INFO: Import ports from HDL: /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/impl/ip/hdl/vhdl/srcnn.vhd (srcnn)
+INFO: Add clock interface ap_clk
+INFO: Add reset interface ap_rst
+INFO: Add ap_ctrl interface ap_ctrl
+INFO: Add data interface in_r_address0
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/lipuze/amdfpga/2026.1/data/ip'.
+INFO: Add data interface in_r_q0
+INFO: Add data interface weights1_address0
+INFO: Add data interface weights1_q0
+INFO: Add data interface biases1_address0
+INFO: Add data interface biases1_q0
+INFO: Add data interface weights2_address0
+INFO: Add data interface weights2_q0
+INFO: Add data interface weights2_address1
+INFO: Add data interface weights2_q1
+INFO: Add data interface biases2_address0
+INFO: Add data interface biases2_q0
+INFO: Add data interface weights3_address0
+INFO: Add data interface weights3_q0
+INFO: Add data interface biases3
+INFO: Add data interface out_r_address0
+INFO: Add data interface out_r_d0
+INFO: Calling post_process_vitis to specialize IP
+INFO: Calling post_process_sysgen to specialize IP
+Generating sysgen info xml from json file
+INFO: Created IP /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/impl/ip/component.xml
+INFO: Created IP archive /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E027/hls/impl/ip/xilinx_com_hls_srcnn_1_0.zip
+INFO: [Common 17-206] Exiting Vivado at Sun Oct 11 04:02:15 2026...
+INFO: [HLS 200-802] Generated output file E027/srcnn.zip
+INFO: [HLS 200-112] Total CPU user time: 88.52 seconds. Total CPU system time: 5.74 seconds. Total elapsed time: 81.82 seconds; peak allocated memory: 963.094 MB.
+INFO: [v++ 60-791] Total elapsed time: 0h 1m 26s

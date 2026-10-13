@@ -1,0 +1,22 @@
+{
+  "id": "E011",
+  "name": "apfixed_w16a16",
+  "stage": 1,
+  "design": "designs/fixed_ref",
+  "clock": 10,
+  "fixed": true,
+  "set14": true,
+  "csim_only": true,
+  "precision": "w16a16acc35",
+  "defines": {
+    "EXP_W_BITS": 16,
+    "EXP_A_BITS": 16
+  },
+  "numpy_reference": "exp/numeric_reference/w16a16/numpy_reference",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "csim_timeout": 2700,
+  "purpose": "Verify fake-quant predictions with actual AMD ap_fixed on butterfly and every supplied Set14 pair.",
+  "changes": "Independent fixed reference retains golden external float signature; internal weights/biases and activations use AP_RND_CONV/AP_SAT. Exact product-fraction accumulators.",
+  "interpretation": "Pending real ap_fixed output and bit comparison with numpy.",
+  "conclusion": "Save actual ap_fixed butterfly output for subsequent architecture bit-exact checks."
+}

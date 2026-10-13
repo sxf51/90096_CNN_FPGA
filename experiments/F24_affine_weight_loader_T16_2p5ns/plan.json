@@ -1,0 +1,56 @@
+{
+  "config_sha256": "1f69cf0c4bd2731dfebc67785fdd10e5e89e3ee4c7c3ca26c531e5b294c81aad",
+  "configuration": {
+    "T": 16,
+    "changes": "Independent frozen F23 source copy; only the Conv1 weight-load loop is rewritten with affine three-dimensional indices. All other arithmetic and interfaces remain unchanged.",
+    "clock": 2.5,
+    "conclusion": "Rank the new point only after exact C simulation and unchanged resource gates; selected candidates require all supplied images, implementation and finite-FIFO RTL validation.",
+    "control_experiment": "F23",
+    "defines": {
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 16,
+      "EXP_TREE_ADD_LATENCY": 1,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/continuous_affine_load_v1",
+    "estimates": {
+      "BRAM18K": 73.0,
+      "Conv1_DSP": 324,
+      "Conv2_DSP": 128,
+      "Conv3_DSP": 50,
+      "DSP": 502.0,
+      "FF": 126618.0,
+      "LUT": 70949.0,
+      "T": 16,
+      "URAM": 0.0,
+      "basis": "Use F23 measured502DSP/73BRAM18K/70449LUT/125618FF and1048730cycles. MAC count and memory banking stay fixed. Reserve20000extra cycles for possible nested-loader restart/drain instead of assuming automatic flattening, and500LUT/1000FF for counters/control. The2.377ns dataflow and1.825ns writer suggest a2.5ns top target could be reachable once the measured2.822ns loader multiplier is eliminated; this is a timing hypothesis, not routed evidence. Use the parsed max(target,estimated) clock and require two-frame bit identity before synthesis.",
+      "latency_cycles": 1068730.0
+    },
+    "fixed": true,
+    "id": "F24",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Compare load1 loop depth, module clock and any new inferred parameter bursts against F23. The explicit counters may eliminate quotient multipliers but can add loop restart overhead; the total frame estimate includes that cost. Separate unchanged inference II from loader latency and do not infer routed timing from an HLS estimate.",
+    "name": "affine_weight_loader_T16_2p5ns",
+    "precision": "w10a10acc23",
+    "purpose": "F23 reports a2.822ns15-bit address mul in srcnn_Pipeline_load1 at the flattened Conv1 weight read; its dataflow_region is2.377ns and write_output is1.825ns. The one-time loader therefore controls the global HLS clock estimate despite unchanged T16 inference engines. Replace the division/modulo-derived Conv1 index with explicit channel/kernel-row/kernel-column counters. Keep the runtime float parameters, every quantization point, memory partitions, streams, padding and MAC schedule. Hypothesis: remove the magic-division address multiplier and approach the2.5ns target without altering output bits.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_f",
+    "storage": "lutram",
+    "unroll": "Cout/Cout/tap"
+  },
+  "created_at": "2026-10-11T02:27:09+00:00",
+  "created_from_commit": "2da2fd90ac3caa88b0769fdd9677b641c4aad5f6",
+  "purpose_section": "F23 reports a2.822ns15-bit address mul in srcnn_Pipeline_load1 at the flattened Conv1 weight read; its dataflow_region is2.377ns and write_output is1.825ns. The one-time loader therefore controls the global HLS clock estimate despite unchanged T16 inference engines. Replace the division/modulo-derived Conv1 index with explicit channel/kernel-row/kernel-column counters. Keep the runtime float parameters, every quantization point, memory partitions, streams, padding and MAC schedule. Hypothesis: remove the magic-division address multiplier and approach the2.5ns target without altering output bits.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 502.0 |\n| Conv1_DSP | 324 |\n| Conv2_DSP | 128 |\n| Conv3_DSP | 50 |\n| BRAM18K | 73.0 |\n| URAM | 0.0 |\n| LUT | 70949.0 |\n| FF | 126618.0 |\n| T | 16 |\n| latency_cycles | 1068730.0 |\n| basis | Use F23 measured502DSP/73BRAM18K/70449LUT/125618FF and1048730cycles. MAC count and memory banking stay fixed. Reserve20000extra cycles for possible nested-loader restart/drain instead of assuming automatic flattening, and500LUT/1000FF for counters/control. The2.377ns dataflow and1.825ns writer suggest a2.5ns top target could be reachable once the measured2.822ns loader multiplier is eliminated; this is a timing hypothesis, not routed evidence. Use the parsed max(target,estimated) clock and require two-frame bit identity before synthesis. |\n\nPlanned at 2026-10-11T02:27:09+00:00; estimates are hypotheses, not tool measurements."
+}

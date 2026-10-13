@@ -1,0 +1,3 @@
+The first invocation in a fresh C process uses load_params=0 and still matches every butterfly output bit against E065. This confirms that the initially false loaded-state flag forces parameter loading before inference in the C model; the six-pixel border MSE remains 1.405191888267716e-05. C24 independently checks later reuse, reloading and retention of the latest banks.
+
+This C-only run does not measure FPGA reset behavior, AXI transfers, cycles or resource use; those paper estimates remain hypotheses. Keep the independent four-call RTL and 5 ns implementation gates before selecting this interface for the handoff. Protected original tests and parameters remain unchanged.

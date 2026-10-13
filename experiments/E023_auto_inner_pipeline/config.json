@@ -1,0 +1,142 @@
+{
+  "changes": "Golden copy with stable loop labels only; all experiment directives are configuration-controlled.",
+  "clock": 10,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_FIXED=0 -DEXP_SET14=0 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=0 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E023/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "Compare compiler-only scheduling with original baseline and streaming architecture.",
+  "cpu_count": 12,
+  "design": "designs/golden_auto",
+  "directives": [
+    "set_directive_pipeline -II 1 conv1/g_06_kx",
+    "set_directive_pipeline -II 1 srcnn/g_06_kx",
+    "set_directive_pipeline -II 1 srcnn/g_12_kx"
+  ],
+  "errors": [],
+  "id": "E023",
+  "ii_targets": {
+    "g_06_kx": 1,
+    "g_12_kx": 1
+  },
+  "interpretation": "Pending measured II, dependency, port and resource reports.",
+  "name": "auto_inner_pipeline",
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [
+    {
+      "AbsoluteTimeLatency": "665858330",
+      "InstanceList": "\n",
+      "Latency": "66585833",
+      "PerformancePragma": "-",
+      "PipelineDepth": "266",
+      "PipelineII": "32",
+      "Slack": "7.30",
+      "TripCount": "2080800",
+      "actual_ii": 32.0,
+      "ii_ok": null,
+      "isPerfectNested": "0",
+      "loop": "g_01_oc_g_02_y_g_03_x",
+      "module": "srcnn_Pipeline_g_01_oc_g_02_y_g_03_x",
+      "target_ii": null
+    },
+    {
+      "AbsoluteTimeLatency": "16854480040",
+      "InstanceList": "\n",
+      "Latency": "1685448004",
+      "PerformancePragma": "-",
+      "PipelineDepth": "10",
+      "PipelineII": "5",
+      "Slack": "7.30",
+      "TripCount": "337089600",
+      "actual_ii": 5.0,
+      "ii_ok": false,
+      "isPerfectNested": "0",
+      "loop": "g_01_oc_g_02_y_g_03_x_g_05_ky_g_06_kx",
+      "module": "srcnn_Pipeline_g_01_oc_g_02_y_g_03_x_g_05_ky_g_06_kx",
+      "target_ii": 1
+    },
+    {
+      "AbsoluteTimeLatency": "2080800050",
+      "InstanceList": "\n",
+      "Latency": "208080005",
+      "PerformancePragma": "-",
+      "PipelineDepth": "10",
+      "PipelineII": "4",
+      "Slack": "7.30",
+      "TripCount": "52020000",
+      "actual_ii": 4.0,
+      "ii_ok": false,
+      "isPerfectNested": "1",
+      "loop": "g_08_y_g_09_x_g_10_ic_g_11_ky_g_12_kx",
+      "module": "srcnn_Pipeline_g_08_y_g_09_x_g_10_ic_g_11_ky_g_12_kx",
+      "target_ii": 1
+    }
+  ],
+  "parsed_modules": [
+    {
+      "BRAM18K": 0.0,
+      "DSP": 5.0,
+      "FF": 6828.0,
+      "LUT": 6541.0,
+      "URAM": 0.0,
+      "clock_est_ns": 7.331,
+      "interval_cycles": 66585632.0,
+      "latency_cycles": 66585835.0,
+      "module": "srcnn_Pipeline_g_01_oc_g_02_y_g_03_x"
+    },
+    {
+      "BRAM18K": 0.0,
+      "DSP": 0.0,
+      "FF": 330.0,
+      "LUT": 1190.0,
+      "URAM": 0.0,
+      "clock_est_ns": 7.016,
+      "interval_cycles": 1685448005.0,
+      "latency_cycles": 1685448006.0,
+      "module": "srcnn_Pipeline_g_01_oc_g_02_y_g_03_x_g_05_ky_g_06_kx"
+    },
+    {
+      "BRAM18K": 0.0,
+      "DSP": 0.0,
+      "FF": 473.0,
+      "LUT": 1001.0,
+      "URAM": 0.0,
+      "clock_est_ns": 7.016,
+      "interval_cycles": 208080004.0,
+      "latency_cycles": 208080007.0,
+      "module": "srcnn_Pipeline_g_08_y_g_09_x_g_10_ic_g_11_ky_g_12_kx"
+    },
+    {
+      "BRAM18K": 11064.0,
+      "DSP": 10.0,
+      "FF": 8027.0,
+      "LUT": 9377.0,
+      "URAM": 0.0,
+      "clock_est_ns": 7.331,
+      "interval_cycles": 1960113854.0,
+      "latency_cycles": 1960113853.0,
+      "module": "srcnn"
+    }
+  ],
+  "purpose": "Pipeline innermost MAC loops; expect float recurrence to limit II.",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "ede43ae07ffde49141ed329dfb8cd4f9267fe9c5",
+  "source_sha256": {
+    "conv1.cpp": "405bed71a56b663cb8729cd9c32dad2ecea6827c3e51fac044692ee8b886e689",
+    "srcnn.cpp": "44403340503f2a4c42e7d179ff9a237c5bd96aa9576f9fa8523c7eaa286f55bf",
+    "srcnn.h": "6cc46158775e3b665f6db7bef9ab022fc795312feb7570e94d82e1b430afaf33"
+  },
+  "stage": 2,
+  "time": "2026-10-10T16:45:14+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 03:45:16 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "validation": {
+    "bit_exact": true,
+    "border_mse": 2.1182492395563412e-14,
+    "butterfly_mse": 3.1660971422452726e-14,
+    "conv1_exact": true,
+    "conv1_mse": 3.462543650707288e-15,
+    "csim_pass": true,
+    "delta_psnr": null,
+    "float_exact": true,
+    "golden_psnr": null,
+    "image_count": 0,
+    "set14_psnr": null
+  }
+}

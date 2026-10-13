@@ -1,0 +1,3 @@
+The frozen C13 design passes both butterfly calls and all 13 course-provided images after the shared testbench gained the guarded reload-switch branch. Every output bit still matches E065; mean deltaPSNR remains -0.07589037644656216 dB and the butterfly six-pixel border MSE remains 1.405191888267716e-05. EXP_RELOAD_SWITCH is disabled in this run, so it executes the original eight-array srcnn interface and validates the shared testbench's legacy behavior.
+
+This is a C-only regression with unchanged frozen source hashes. Hardware resources and cycles remain unmeasured here; the original C13/C14/C18 reports retain their separate evidence and are not replaced. C24 and C25 cover the new interface's C semantics. C23 must finish HLS screening before monitored RTL is planned.

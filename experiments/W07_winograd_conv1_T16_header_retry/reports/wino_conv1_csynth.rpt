@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'wino_conv1'
+================================================================
+* Date:           Sun Oct 11 09:30:33 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        W07
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|  2.920 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+---------+---------+---------+
+    |  Latency (cycles) |   Latency (absolute)  |      Interval     | Pipeline|
+    |   min   |   max   |    min    |    max    |   min   |   max   |   Type  |
+    +---------+---------+-----------+-----------+---------+---------+---------+
+    |  5699779|  5721420|  22.799 ms|  22.886 ms|  5699780|  5721421|       no|
+    +---------+---------+-----------+-----------+---------+---------+---------+
+
+    + Detail: 
+        * Instance: 
+        +--------------------------------------------------+--------------------------------------+---------+---------+-----------+-----------+--------+---------+-------------------+
+        |                                                  |                                      |  Latency (cycles) |   Latency (absolute)  |     Interval     |      Pipeline     |
+        |                     Instance                     |                Module                |   min   |   max   |    min    |    max    |   min  |   max   |        Type       |
+        +--------------------------------------------------+--------------------------------------+---------+---------+-----------+-----------+--------+---------+-------------------+
+        |grp_wino_conv1_Pipeline_layer_load_fu_1025        |wino_conv1_Pipeline_layer_load        |     5201|     5201|  20.804 us|  20.804 us|       0|        0|  loop pipeline stp|
+        |grp_wino_conv1_Pipeline_VITIS_LOOP_446_1_fu_1195  |wino_conv1_Pipeline_VITIS_LOOP_446_1  |       71|       71|   0.284 us|   0.284 us|       0|        0|  loop pipeline stp|
+        |grp_transform_weights_fu_1266                     |transform_weights                     |      587|      587|   2.348 us|   2.348 us|       0|        0|  loop pipeline stp|
+        |grp_layer_region_fu_1720                          |layer_region                          |  5693977|  5715618|  22.776 ms|  22.862 ms|  209618|  5715602|           dataflow|
+        +--------------------------------------------------+--------------------------------------+---------+---------+-----------+-----------+--------+---------+-------------------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|       6|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |       99|   145|   19349|   21906|    0|
+|Memory           |        -|     -|    5364|    2682|    -|
+|Multiplexer      |        -|     -|       0|    6278|    -|
+|Register         |        -|     -|     851|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |       99|   145|   25564|   30872|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |       34|    11|      10|      26|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +--------------------------------------------------+--------------------------------------+---------+-----+-------+-------+-----+
+    |                     Instance                     |                Module                | BRAM_18K| DSP |   FF  |  LUT  | URAM|
+    +--------------------------------------------------+--------------------------------------+---------+-----+-------+-------+-----+
+    |control_s_axi_U                                   |control_s_axi                         |        0|    0|    246|    424|    0|
+    |fpext_32ns_64_2_no_dsp_1_U1829                    |fpext_32ns_64_2_no_dsp_1              |        0|    0|      0|      0|    0|
+    |image_in_m_axi_U                                  |image_in_m_axi                        |        8|    0|    675|    642|    0|
+    |grp_layer_region_fu_1720                          |layer_region                          |       83|  144|  15143|  12768|    0|
+    |parameters_m_axi_U                                |parameters_m_axi                      |        8|    0|    675|    642|    0|
+    |grp_transform_weights_fu_1266                     |transform_weights                     |        0|    1|    543|   3237|    0|
+    |grp_wino_conv1_Pipeline_VITIS_LOOP_446_1_fu_1195  |wino_conv1_Pipeline_VITIS_LOOP_446_1  |        0|    0|   1255|   1865|    0|
+    |grp_wino_conv1_Pipeline_layer_load_fu_1025        |wino_conv1_Pipeline_layer_load        |        0|    0|    812|   2328|    0|
+    +--------------------------------------------------+--------------------------------------+---------+-----+-------+-------+-----+
+    |Total                                             |                                      |       99|  145|  19349|  21906|    0|
+    +--------------------------------------------------+--------------------------------------+---------+-----+-------+-------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +-----------------------------------------------------------------------------------------+----------------------------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+    |                                          Memory                                         |                                      Module                                      | BRAM_18K| FF | LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +-----------------------------------------------------------------------------------------+----------------------------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_143_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_152_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_147_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_150_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_159_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_168_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_163_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_166_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_175_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_184_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_179_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_182_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_95_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_86_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_91_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_88_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_79_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_70_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_75_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_72_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_63_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_54_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_59_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_56_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_47_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_38_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_43_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_40_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_31_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_22_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_27_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_24_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_15_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_6_U    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_11_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_8_U    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn  |        0|  24|  12|    0|    64|   12|     1|          768|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_144_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_151_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_153_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_156_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_157_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_146_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_148_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_149_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_160_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_167_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_169_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_172_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_173_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_162_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_164_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_165_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_176_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_183_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_185_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_98_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_97_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_178_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_180_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_181_U  |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_94_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_87_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_85_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_82_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_81_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_92_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_90_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_89_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_78_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_71_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_69_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_66_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_65_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_76_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_74_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_73_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_62_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_55_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_53_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_50_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_49_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_60_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+    |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_58_U   |p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun  |        0|  26|  13|    0|    64|   13|     1|          832|
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.

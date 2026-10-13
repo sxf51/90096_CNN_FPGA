@@ -1,0 +1,71 @@
+{
+  "changes": "Standalone PE microbenchmark, not a complete SRCNN design. 64 sample operands; explicit bit-exact integer checker.",
+  "clock": 10,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_ADD_ONLY=1 -DEXP_MUL_WIDTH=8 -DEXP_FIXED=0 -DEXP_SET14=0 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=0 -DEXP_QUICK=0 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E055/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "Record operator mapping evidence and compare to network DSP/LUT budgets.",
+  "cpu_count": 12,
+  "defines": {
+    "EXP_ADD_ONLY": 1,
+    "EXP_MUL_WIDTH": 8
+  },
+  "design": "designs/micro_multiplier",
+  "errors": [],
+  "id": "E055",
+  "ii_targets": {
+    "samples": 1
+  },
+  "interpretation": "Pending actual mapping, loop II and resource report. Whole-kernel latency does not describe a network frame.",
+  "name": "mul8_add_control",
+  "notes": "microbenchmark only; exclude latency from network Pareto; constants are explicit representative integers",
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [
+    {
+      "AbsoluteTimeLatency": "640",
+      "InstanceList": "\n",
+      "Latency": "64",
+      "PerformancePragma": "-",
+      "PipelineDepth": "2",
+      "PipelineII": "1",
+      "Slack": "7.30",
+      "TripCount": "64",
+      "actual_ii": 1.0,
+      "ii_ok": true,
+      "isPerfectNested": "0",
+      "loop": "samples",
+      "target_ii": 1
+    }
+  ],
+  "parsed_modules": [
+    {
+      "BRAM18K": 0.0,
+      "DSP": 0.0,
+      "FF": 16.0,
+      "LUT": 73.0,
+      "URAM": 0.0,
+      "clock_est_ns": 1.635,
+      "interval_cycles": 64.0,
+      "latency_cycles": 66.0,
+      "module": "benchmark"
+    }
+  ],
+  "precision": "i8_add_i16",
+  "purpose": "Use an add-only kernel with same array loop as a control for fabric multiplication overhead.",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "9c8ab0be2f3a7eb450aa40193cf2a391f4310e9e",
+  "source_sha256": {
+    "benchmark.cpp": "eca41db6fb6e42d07da315362bd5e268415b60895338eeaffdc2f000e56c2957",
+    "benchmark.h": "c42987ea66c77fd8339affde40e4638d3cc26f3dde7bd4d0791e402353129c6e"
+  },
+  "stage": 5,
+  "tb_files": [
+    "exp/tb/micro_multiplier.cpp"
+  ],
+  "time": "2026-10-10T21:07:13+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 08:07:14 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "top": "benchmark",
+  "validation": {
+    "bit_exact": true,
+    "csim_pass": true,
+    "tested_pairs": 65536
+  }
+}

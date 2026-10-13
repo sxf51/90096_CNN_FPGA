@@ -1,0 +1,31 @@
+{
+  "T": 32,
+  "changes": "Independent copy of E046 no-overflow design. Every fully-unrolled product is an explicit local variable bound to op=mul, impl=dsp.",
+  "clock": 10,
+  "conclusion": "Choose a resource-feasible baseline for bank/storage and frequency scans.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_STORAGE": 0,
+    "EXP_T": 32,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/dataflow_dsp",
+  "fixed": true,
+  "id": "E047",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Determine actual multiply mapping and the remaining weight-bank, array-index mux, saturation-at-layer-boundary and AXI overhead. Actual full-frame bit comparison remains mandatory.",
+  "name": "dataflow_dsp_T32",
+  "precision": "w10a10acc23",
+  "purpose": "Force the 251 direct-convolution products per cycle onto DSPs. E033 default narrow multiplication used only 9 DSP but 136,868 LUT, exceeding the 81,984 LUT limit. Expected MAC DSP split 162/64/25 plus conversion/interface overhead; compute floor 2,080,800 cycles.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 4,
+  "storage": "register",
+  "unroll": "Cout/Cout/tap"
+}

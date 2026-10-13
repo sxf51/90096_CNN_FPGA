@@ -1,0 +1,54 @@
+{
+  "config_sha256": "aa5bdb0ac9aa457e9d3e324b397b3c9150c63f91ceac40131dbd5dcd8e4a4a33",
+  "configuration": {
+    "T": 16,
+    "changes": "Frozen selected design/defines; enable full supplied-image comparison only. No source algorithm change.",
+    "clock": 2.5,
+    "conclusion": "Keep precision acceptance provisional until comic is available; compare independent implementation/cosim reports.",
+    "control_experiment": "F23",
+    "csim_only": true,
+    "defines": {
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 16,
+      "EXP_TREE_ADD_LATENCY": 1,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/continuous_affine_load_v1",
+    "estimates": {
+      "BRAM18K": 73.0,
+      "DSP": 502.0,
+      "LUT": 69290.0,
+      "T": 16.0,
+      "URAM": 0.0,
+      "basis": "Frozen parent F24 HLS estimates. Implementation resources may optimize/change, RTL finite-FIFO latency may differ. No board performance estimate is substituted for actual reports.",
+      "latency_cycles": 1048723.0
+    },
+    "fixed": true,
+    "id": "F83",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Full supplied-image equality establishes this architecture preserves the measured precision point on all supplied inputs. It does not establish the missing14th image, routed timing or RTL behavior.",
+    "name": "final_all_supplied_F24",
+    "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+    "precision": "w10a10acc23",
+    "purpose": "Validate selected point F24 on every supplied Set14 pair and two butterfly frames. Every output bit must match the independently real-ap_fixed-verified numpy reference, with unchanged normalized-float delta PSNR>=-0.1dB and six-pixel borders. Missing comic stays explicit.",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "scope": "frame",
+    "series": "F",
+    "set14": true,
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_final",
+    "storage": "lutram",
+    "unroll": "Cout/Cout/tap"
+  },
+  "created_at": "2026-10-11T03:25:02+00:00",
+  "created_from_commit": "2513ad661dbfe6e7e80a05cc5529bd30f216468a",
+  "purpose_section": "Validate selected point F24 on every supplied Set14 pair and two butterfly frames. Every output bit must match the independently real-ap_fixed-verified numpy reference, with unchanged normalized-float delta PSNR>=-0.1dB and six-pixel borders. Missing comic stays explicit.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 502.0 |\n| BRAM18K | 73.0 |\n| URAM | 0.0 |\n| LUT | 69290.0 |\n| T | 16.0 |\n| latency_cycles | 1048723.0 |\n| basis | Frozen parent F24 HLS estimates. Implementation resources may optimize/change, RTL finite-FIFO latency may differ. No board performance estimate is substituted for actual reports. |\n\nPlanned at 2026-10-11T03:25:02+00:00; estimates are hypotheses, not tool measurements."
+}

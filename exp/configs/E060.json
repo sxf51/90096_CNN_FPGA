@@ -1,0 +1,31 @@
+{
+  "T": 32,
+  "changes": "Independent E048 copy with channel-reduced Conv3 scatter. Five rotating physical row banks and a 5x5 register window avoid overlapping BRAM RMW accesses. Weight storage set to banked LUTRAM; full fractions and layer casts retained.",
+  "clock": 10,
+  "conclusion": "Keep measured scatter evidence for phase-two boundary-kernel comparison.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_STORAGE": 1,
+    "EXP_T": 32,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/scatter_int",
+  "fixed": true,
+  "id": "E060",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare against the same banked gather control E057. Separate explicit padding-row memory from partial-sum storage. All border pixels must match E019 bit for bit; report actual loops and dataflow warnings.",
+  "name": "scatter_integer_T32",
+  "precision": "w10a10acc23",
+  "purpose": "Exact 32-bit partial-sum scatter with explicit padding. Ideal DSP 162/64/25=251; Conv3 partial cache 5*255*32=40800 bits (~5 BRAM18K with row banks), plus pad3 row cache 255*32*10 bits. Nominal frame floor 2080800 cycles, scatter processes 67081 rather than 65025 pixels (3.16% work overhead).",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 5,
+  "storage": "lutram",
+  "unroll": "Cout/Cout/tap"
+}

@@ -1,0 +1,31 @@
+{
+  "changes": "Copy the completed original implementation template F84; regenerate its private project with a per-run serial synthesis hook. No C/C++ design, quantization, data, clock or numerical/resource-gate change.",
+  "clock": 2.5,
+  "conclusion": "Require actual routed reports; retain OOM/timeout/timing failures and the missing-comic precision limitation.",
+  "design": "designs/continuous_affine_load_v1",
+  "estimates": {
+    "BRAM18K": 73.0,
+    "DSP": 502.0,
+    "LUT": 69290.0,
+    "T": 16.0,
+    "URAM": 0.0,
+    "basis": "Frozen parent F24 HLS estimates. Implementation resources may optimize/change, RTL finite-FIFO latency may differ. No board performance estimate is substituted for actual reports. Serial host scheduling changes no arithmetic or hardware budget. F81 kernel evidence shows four approximately2.4GiB Vivado workers plus its main process exceed available memory; hypothesize one worker avoids that host OOM, not that timing closes.",
+    "latency_cycles": 1048723.0
+  },
+  "id": "F90",
+  "implementation_backend": "serial_generated_flow",
+  "implementation_template": "F84",
+  "interpretation": "Compare actual routed utilization/slack against the frozen accepted parent. Kernel OOM is a host-capacity failure, not evidence of FPGA resource or timing feasibility. The retry keeps the official generated flow and changes only tool parallelism.",
+  "name": "serial_vivado_impl_F24",
+  "notes": "Selected globally by lowest HLS latency among resource-feasible exact frame records; full14-image acceptance remains unavailable.",
+  "operation": "impl",
+  "purpose": "Retry physical implementation of F24 after F81's documented kernel OOM killed the main Vivado synthesis process while four worker processes were active. Reuse the original HLS-generated IP/BD flow, target clock and synthesis/implementation directives in an independent workspace. Add a formal pre-synthesis hook setting general.maxThreads and synth.maxThreads to1. Expect unchanged HLS compute/DSP/memory estimates; physical resources and slack remain unknown until reports. Reserve one hardware slot and do not change system swap or global tool settings.",
+  "scope": "frame",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_final",
+  "timeout": 10800,
+  "validation_parent": "F83",
+  "verification_hook": "exp/vivado_serial_hook.tcl",
+  "verify_parent": "F24"
+}

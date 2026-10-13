@@ -1,0 +1,22 @@
+{
+  "stage": 2,
+  "design": "designs/golden_auto",
+  "clock": 10,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "1f025dccb9e5fb187213ff4aea10887e617ab078",
+  "changes": "Golden copy with stable loop labels only; all experiment directives are configuration-controlled.",
+  "interpretation": "Pending measured II, dependency, port and resource reports.",
+  "conclusion": "Compare compiler-only scheduling with original baseline and streaming architecture.",
+  "id": "E023",
+  "name": "auto_inner_pipeline",
+  "directives": [
+    "set_directive_pipeline -II 1 conv1/g_06_kx",
+    "set_directive_pipeline -II 1 srcnn/g_06_kx",
+    "set_directive_pipeline -II 1 srcnn/g_12_kx"
+  ],
+  "ii_targets": {
+    "g_06_kx": 1,
+    "g_12_kx": 1
+  },
+  "purpose": "Pipeline innermost MAC loops; expect float recurrence to limit II."
+}

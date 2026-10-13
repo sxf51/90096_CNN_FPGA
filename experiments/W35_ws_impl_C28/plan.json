@@ -1,0 +1,42 @@
+{
+  "config_sha256": "01aecb4a8c4da373f6162149f34b8e9f092a7286eb172eda7e72d33f03544242",
+  "configuration": {
+    "changes": "Use frozen parent C28 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Limit per-run placement/routing to 4 threads while synthesis remains single-threaded; preserve the serial hardware lock. Exit Vivado after synthesis/report, then reopen the new project in a fresh process for implementation/report; retain the cumulative three-hour tool timeout and one-heavy scheduling. Change only the implementation clock constraint; preserve parent HLS RTL.",
+    "clock": 4,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/winograd_prepacked_t4_reload_guard_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "DSP": 1032.0,
+      "FF": 193984.0,
+      "LUT": 128849.0,
+      "T": 4.0,
+      "URAM": 0.0,
+      "basis": "Frozen C28 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: C31 now completes four E065-exact load/reuse/reload/retain calls; both skipped calls have zero AR/R/AW/W valid cycles and handshakes, with unchanged102-file RTL manifest. C28 remains exact on all13 images and passes HLS screening; C29/C30 prove sequence and fresh-process cold-start semantics. Complete the previously required standalone WS-F5ns route in a fresh staged workspace after prioritized WS-G/WS-H and before WS-I. Keep failed C26/C27 evidence unchanged; use independently routed setup/hold/status/resources before any physical feasibility claim.",
+      "latency_cycles": 263090.0
+    },
+    "id": "W35",
+    "implementation_backend": "staged_packaged_flow",
+    "implementation_clock_ns": 5.0,
+    "implementation_driver_template": "F89",
+    "implementation_threads": 4,
+    "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+    "memory_scheduler": true,
+    "name": "ws_impl_C28",
+    "operation": "impl",
+    "purpose": "Verify frozen C28 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: C31 now completes four E065-exact load/reuse/reload/retain calls; both skipped calls have zero AR/R/AW/W valid cycles and handshakes, with unchanged102-file RTL manifest. C28 remains exact on all13 images and passes HLS screening; C29/C30 prove sequence and fresh-process cold-start semantics. Complete the previously required standalone WS-F5ns route in a fresh staged workspace after prioritized WS-G/WS-H and before WS-I. Keep failed C26/C27 evidence unchanged; use independently routed setup/hold/status/resources before any physical feasibility claim.",
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "W",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 10800,
+    "validation_parent": "C28",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "C28"
+  },
+  "created_at": "2026-10-13T04:18:19+00:00",
+  "created_from_commit": "dc176cc6cdabafb86f7389b23a62765a0e405028",
+  "purpose_section": "Verify frozen C28 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: C31 now completes four E065-exact load/reuse/reload/retain calls; both skipped calls have zero AR/R/AW/W valid cycles and handshakes, with unchanged102-file RTL manifest. C28 remains exact on all13 images and passes HLS screening; C29/C30 prove sequence and fresh-process cold-start semantics. Complete the previously required standalone WS-F5ns route in a fresh staged workspace after prioritized WS-G/WS-H and before WS-I. Keep failed C26/C27 evidence unchanged; use independently routed setup/hold/status/resources before any physical feasibility claim.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 1032.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 128849.0 |\n| FF | 193984.0 |\n| latency_cycles | 263090.0 |\n| T | 4.0 |\n| basis | Frozen C28 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: C31 now completes four E065-exact load/reuse/reload/retain calls; both skipped calls have zero AR/R/AW/W valid cycles and handshakes, with unchanged102-file RTL manifest. C28 remains exact on all13 images and passes HLS screening; C29/C30 prove sequence and fresh-process cold-start semantics. Complete the previously required standalone WS-F5ns route in a fresh staged workspace after prioritized WS-G/WS-H and before WS-I. Keep failed C26/C27 evidence unchanged; use independently routed setup/hold/status/resources before any physical feasibility claim. |\n\nPlanned at 2026-10-13T04:18:19+00:00; estimates are hypotheses, not tool measurements."
+}

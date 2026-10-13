@@ -1,0 +1,487 @@
+<profile>
+    <ReportVersion>
+        <Version>2026.1</Version>
+    </ReportVersion>
+    <UserAssignments>
+        <unit>ns</unit>
+        <ProductFamily>zynquplus</ProductFamily>
+        <Part>xck26-sfvc784-2LV-c</Part>
+        <TopModelName>ieee_decode_pe</TopModelName>
+        <TargetClockPeriod>3.33</TargetClockPeriod>
+        <ClockUncertainty>0.90</ClockUncertainty>
+    </UserAssignments>
+    <PerformanceEstimates>
+        <PipelineType>loop auto-rewind stp (delay=0 cycle(s))</PipelineType>
+        <SummaryOfTimingAnalysis>
+            <unit>ns</unit>
+            <EstimatedClockPeriod>2.051</EstimatedClockPeriod>
+        </SummaryOfTimingAnalysis>
+        <SummaryOfOverallLatency>
+            <unit>clock cycles</unit>
+            <Best-caseLatency>1027</Best-caseLatency>
+            <Average-caseLatency>1027</Average-caseLatency>
+            <Worst-caseLatency>1027</Worst-caseLatency>
+            <Best-caseRealTimeLatency>3.420 us</Best-caseRealTimeLatency>
+            <Average-caseRealTimeLatency>3.420 us</Average-caseRealTimeLatency>
+            <Worst-caseRealTimeLatency>3.420 us</Worst-caseRealTimeLatency>
+            <Interval-min>1024</Interval-min>
+            <Interval-max>1024</Interval-max>
+            <PerformancePragma>-</PerformancePragma>
+        </SummaryOfOverallLatency>
+        <SummaryOfLoopLatency>
+            <decode_words>
+                <Slack>2.43</Slack>
+                <TripCount>1024</TripCount>
+                <isPerfectNested>0</isPerfectNested>
+                <Latency>1025</Latency>
+                <AbsoluteTimeLatency>3413</AbsoluteTimeLatency>
+                <PipelineII>1</PipelineII>
+                <PipelineDepth>3</PipelineDepth>
+                <PerformancePragma>-</PerformancePragma>
+                <InstanceList/>
+            </decode_words>
+        </SummaryOfLoopLatency>
+        <SummaryOfViolations>
+            <IssueType>-</IssueType>
+            <ViolationType>-</ViolationType>
+            <SourceLocation>F20/source/kernel.cpp:7</SourceLocation>
+            <SummaryOfLoopViolations>
+                <decode_words>
+                    <Name>decode_words</Name>
+                    <IssueType>-</IssueType>
+                    <ViolationType>-</ViolationType>
+                    <SourceLocation>F20/source/kernel.cpp:7</SourceLocation>
+                </decode_words>
+            </SummaryOfLoopViolations>
+        </SummaryOfViolations>
+    </PerformanceEstimates>
+    <AreaEstimates>
+        <Resources>
+            <FF>52</FF>
+            <LUT>242</LUT>
+            <BRAM_18K>0</BRAM_18K>
+            <DSP>0</DSP>
+            <URAM>0</URAM>
+        </Resources>
+        <AvailableResources>
+            <BRAM_18K>288</BRAM_18K>
+            <DSP>1248</DSP>
+            <FF>234240</FF>
+            <LUT>117120</LUT>
+            <URAM>64</URAM>
+        </AvailableResources>
+    </AreaEstimates>
+    <InterfaceSummary>
+        <RtlPorts>
+            <name>ap_clk</name>
+            <Object>ieee_decode_pe</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_rst</name>
+            <Object>ieee_decode_pe</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_start</name>
+            <Object>ieee_decode_pe</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_done</name>
+            <Object>ieee_decode_pe</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_idle</name>
+            <Object>ieee_decode_pe</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_ready</name>
+            <Object>ieee_decode_pe</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>input_r_address0</name>
+            <Object>input_r</Object>
+            <Type>array</Type>
+            <Scope/>
+            <IOProtocol>ap_memory</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>10</Bits>
+            <Attribute>address</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>input_r_ce0</name>
+            <Object>input_r</Object>
+            <Type>array</Type>
+            <Scope/>
+            <IOProtocol>ap_memory</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>input_r_q0</name>
+            <Object>input_r</Object>
+            <Type>array</Type>
+            <Scope/>
+            <IOProtocol>ap_memory</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>10</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>output_r_address0</name>
+            <Object>output_r</Object>
+            <Type>array</Type>
+            <Scope/>
+            <IOProtocol>ap_memory</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>10</Bits>
+            <Attribute>address</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>output_r_ce0</name>
+            <Object>output_r</Object>
+            <Type>array</Type>
+            <Scope/>
+            <IOProtocol>ap_memory</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>output_r_we0</name>
+            <Object>output_r</Object>
+            <Type>array</Type>
+            <Scope/>
+            <IOProtocol>ap_memory</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>output_r_d0</name>
+            <Object>output_r</Object>
+            <Type>array</Type>
+            <Scope/>
+            <IOProtocol>ap_memory</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>32</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+    </InterfaceSummary>
+    <RTLDesignHierarchy>
+        <TopModule MAX_DEPTH="2">
+            <ModuleName>ieee_decode_pe</ModuleName>
+            <BindInstances>magnitude_fu_150_p2 magnitude_1_fu_156_p3 select_ln19_fu_192_p3 or_ln19_fu_200_p2 high_1_fu_206_p3 select_ln19_2_fu_234_p3 or_ln19_1_fu_242_p2 high_2_fu_248_p3 select_ln19_4_fu_272_p3 or_ln19_2_fu_280_p2 high_3_fu_286_p3 select_ln19_6_fu_318_p3 or_ln19_3_fu_325_p2 high_4_fu_330_p3 icmp_ln24_fu_302_p2 add_ln24_fu_342_p2 result_exp_fu_348_p3 sub_ln25_fu_362_p2 shl_ln25_fu_372_p2 i_3_fu_125_p2 icmp_ln7_fu_131_p2</BindInstances>
+        </TopModule>
+    </RTLDesignHierarchy>
+    <ModuleInformation>
+        <Module>
+            <Name>ieee_decode_pe</Name>
+            <Loops>
+                <decode_words/>
+            </Loops>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>3.33</TargetClockPeriod>
+                    <ClockUncertainty>0.90</ClockUncertainty>
+                    <EstimatedClockPeriod>2.051</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>1027</Best-caseLatency>
+                    <Average-caseLatency>1027</Average-caseLatency>
+                    <Worst-caseLatency>1027</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>3.420 us</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>3.420 us</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>3.420 us</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>1024</PipelineInitiationInterval>
+                    <PipelineType>loop auto-rewind stp (delay=0 cycle(s))</PipelineType>
+                    <PerformancePragma>-</PerformancePragma>
+                </SummaryOfOverallLatency>
+                <SummaryOfLoopLatency>
+                    <decode_words>
+                        <Name>decode_words</Name>
+                        <Slack>2.43</Slack>
+                        <TripCount>1024</TripCount>
+                        <isPerfectNested>0</isPerfectNested>
+                        <Latency>1025</Latency>
+                        <AbsoluteTimeLatency>3.413 us</AbsoluteTimeLatency>
+                        <PipelineII>1</PipelineII>
+                        <PipelineDepth>3</PipelineDepth>
+                        <PipelineType>yes</PipelineType>
+                        <PerformancePragma>-</PerformancePragma>
+                        <InstanceList/>
+                    </decode_words>
+                </SummaryOfLoopLatency>
+                <SummaryOfViolations>
+                    <IssueType>-</IssueType>
+                    <ViolationType>-</ViolationType>
+                    <SourceLocation>F20/source/kernel.cpp:7</SourceLocation>
+                    <SummaryOfLoopViolations>
+                        <decode_words>
+                            <Name>decode_words</Name>
+                            <IssueType>-</IssueType>
+                            <ViolationType>-</ViolationType>
+                            <SourceLocation>F20/source/kernel.cpp:7</SourceLocation>
+                        </decode_words>
+                    </SummaryOfLoopViolations>
+                </SummaryOfViolations>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>52</FF>
+                    <AVAIL_FF>234240</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>242</LUT>
+                    <AVAIL_LUT>117120</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>288</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>1248</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>64</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+            <BindNodes>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op sub" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="decode_words" OPTYPE="sub" PRAGMA="" RTLNAME="magnitude_fu_150_p2" SOURCE="F20/source/ieee_decode.h:14" STORAGESUBTYPE="" URAM="0" VARIABLE="magnitude" VISIBLE="true"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op select" DSP="0" ID="" IMPL="auto_sel" LATENCY="0" LOOP="decode_words" OPTYPE="select" PRAGMA="" RTLNAME="magnitude_1_fu_156_p3" SOURCE="F20/source/ieee_decode.h:14" STORAGESUBTYPE="" URAM="0" VARIABLE="magnitude_1" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op select" DSP="0" ID="" IMPL="auto_sel" LATENCY="0" LOOP="decode_words" OPTYPE="select" PRAGMA="" RTLNAME="select_ln19_fu_192_p3" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="select_ln19" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op or" DSP="0" ID="" IMPL="auto" LATENCY="0" LOOP="decode_words" OPTYPE="or" PRAGMA="" RTLNAME="or_ln19_fu_200_p2" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="or_ln19" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op select" DSP="0" ID="" IMPL="auto_sel" LATENCY="0" LOOP="decode_words" OPTYPE="select" PRAGMA="" RTLNAME="high_1_fu_206_p3" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="high_1" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op select" DSP="0" ID="" IMPL="auto_sel" LATENCY="0" LOOP="decode_words" OPTYPE="select" PRAGMA="" RTLNAME="select_ln19_2_fu_234_p3" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="select_ln19_2" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op or" DSP="0" ID="" IMPL="auto" LATENCY="0" LOOP="decode_words" OPTYPE="or" PRAGMA="" RTLNAME="or_ln19_1_fu_242_p2" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="or_ln19_1" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op select" DSP="0" ID="" IMPL="auto_sel" LATENCY="0" LOOP="decode_words" OPTYPE="select" PRAGMA="" RTLNAME="high_2_fu_248_p3" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="high_2" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op select" DSP="0" ID="" IMPL="auto_sel" LATENCY="0" LOOP="decode_words" OPTYPE="select" PRAGMA="" RTLNAME="select_ln19_4_fu_272_p3" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="select_ln19_4" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op or" DSP="0" ID="" IMPL="auto" LATENCY="0" LOOP="decode_words" OPTYPE="or" PRAGMA="" RTLNAME="or_ln19_2_fu_280_p2" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="or_ln19_2" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op select" DSP="0" ID="" IMPL="auto_sel" LATENCY="0" LOOP="decode_words" OPTYPE="select" PRAGMA="" RTLNAME="high_3_fu_286_p3" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="high_3" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op select" DSP="0" ID="" IMPL="auto_sel" LATENCY="0" LOOP="decode_words" OPTYPE="select" PRAGMA="" RTLNAME="select_ln19_6_fu_318_p3" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="select_ln19_6" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op or" DSP="0" ID="" IMPL="auto" LATENCY="0" LOOP="decode_words" OPTYPE="or" PRAGMA="" RTLNAME="or_ln19_3_fu_325_p2" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="or_ln19_3" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op select" DSP="0" ID="" IMPL="auto_sel" LATENCY="0" LOOP="decode_words" OPTYPE="select" PRAGMA="" RTLNAME="high_4_fu_330_p3" SOURCE="F20/source/ieee_decode.h:19" STORAGESUBTYPE="" URAM="0" VARIABLE="high_4" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op setne" DSP="0" ID="" IMPL="auto" LATENCY="0" LOOP="decode_words" OPTYPE="setne" PRAGMA="" RTLNAME="icmp_ln24_fu_302_p2" SOURCE="F20/source/ieee_decode.h:24" STORAGESUBTYPE="" URAM="0" VARIABLE="icmp_ln24" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="decode_words" OPTYPE="add" PRAGMA="" RTLNAME="add_ln24_fu_342_p2" SOURCE="F20/source/ieee_decode.h:24" STORAGESUBTYPE="" URAM="0" VARIABLE="add_ln24" VISIBLE="true"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op select" DSP="0" ID="" IMPL="auto_sel" LATENCY="0" LOOP="decode_words" OPTYPE="select" PRAGMA="" RTLNAME="result_exp_fu_348_p3" SOURCE="F20/source/ieee_decode.h:24" STORAGESUBTYPE="" URAM="0" VARIABLE="result_exp" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op sub" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="decode_words" OPTYPE="sub" PRAGMA="" RTLNAME="sub_ln25_fu_362_p2" SOURCE="F20/source/ieee_decode.h:25" STORAGESUBTYPE="" URAM="0" VARIABLE="sub_ln25" VISIBLE="true"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op shl" DSP="0" ID="" IMPL="auto_pipe" LATENCY="0" LOOP="decode_words" OPTYPE="shl" PRAGMA="" RTLNAME="shl_ln25_fu_372_p2" SOURCE="F20/source/ieee_decode.h:25" STORAGESUBTYPE="" URAM="0" VARIABLE="shl_ln25" VISIBLE="false"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="decode_words" OPTYPE="add" PRAGMA="" RTLNAME="i_3_fu_125_p2" SOURCE="F20/source/kernel.cpp:7" STORAGESUBTYPE="" URAM="0" VARIABLE="i_3" VISIBLE="true"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" CE_REG="" DISPNAME="bind_op seteq" DSP="0" ID="" IMPL="auto" LATENCY="0" LOOP="decode_words" OPTYPE="seteq" PRAGMA="" RTLNAME="icmp_ln7_fu_131_p2" SOURCE="F20/source/kernel.cpp:7" STORAGESUBTYPE="" URAM="0" VARIABLE="icmp_ln7" VISIBLE="false"/>
+            </BindNodes>
+        </Module>
+    </ModuleInformation>
+    <FIFOInformation/>
+    <UserConfigCommands>
+        <config_interface m_axi_alignment_size="1"/>
+        <config_rtl auto_prefix="1"/>
+        <config_sim O="1"/>
+    </UserConfigCommands>
+    <Args>
+        <Arg ArgName="input" index="0" direction="in" srcType="ap_int&lt;10&gt; const *" srcSize="16">
+            <hwRefs>
+                <hwRef type="port" interface="input_r_address0" name="input_r_address0" usage="address" direction="out"/>
+                <hwRef type="port" interface="input_r_ce0" name="input_r_ce0" usage="control" direction="out"/>
+                <hwRef type="port" interface="input_r_q0" name="input_r_q0" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="output" index="1" direction="out" srcType="float*" srcSize="32">
+            <hwRefs>
+                <hwRef type="port" interface="output_r_address0" name="output_r_address0" usage="address" direction="out"/>
+                <hwRef type="port" interface="output_r_ce0" name="output_r_ce0" usage="control" direction="out"/>
+                <hwRef type="port" interface="output_r_we0" name="output_r_we0" usage="control" direction="out"/>
+                <hwRef type="port" interface="output_r_d0" name="output_r_d0" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+    </Args>
+    <Interfaces>
+        <Interface InterfaceName="ap_clk" type="clock" busTypeName="clock" mode="slave">
+            <busParams>
+                <busParam busParamName="ASSOCIATED_RESET">ap_rst</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_clk">CLK</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_clk</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_rst" type="reset" busTypeName="reset" mode="slave">
+            <busParams>
+                <busParam busParamName="POLARITY">ACTIVE_HIGH</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_rst">RST</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_rst</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_ctrl" type="ap_ctrl" busTypeName="acc_handshake" mode="slave">
+            <portMaps>
+                <portMap portMapName="ap_start">start</portMap>
+                <portMap portMapName="ap_done">done</portMap>
+                <portMap portMapName="ap_idle">idle</portMap>
+                <portMap portMapName="ap_ready">ready</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_done</port>
+                <port>ap_idle</port>
+                <port>ap_ready</port>
+                <port>ap_start</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="input_r_address0" type="data" busTypeName="data" protocol="ap_memory" mode="master" dataWidth="10">
+            <portMaps>
+                <portMap portMapName="input_r_address0">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>input_r_address0</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_memory" register_option="0" argName="input"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="input_r_q0" type="data" busTypeName="data" protocol="ap_memory" mode="slave" dataWidth="10">
+            <portMaps>
+                <portMap portMapName="input_r_q0">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>input_r_q0</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_memory" register_option="0" argName="input"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="output_r_address0" type="data" busTypeName="data" protocol="ap_memory" mode="master" dataWidth="10">
+            <portMaps>
+                <portMap portMapName="output_r_address0">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>output_r_address0</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_memory" register_option="0" argName="output"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="output_r_d0" type="data" busTypeName="data" protocol="ap_memory" mode="master" dataWidth="32">
+            <portMaps>
+                <portMap portMapName="output_r_d0">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>output_r_d0</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_memory" register_option="0" argName="output"/>
+            </constraints>
+        </Interface>
+    </Interfaces>
+    <ReportHWInterface>
+        <section name="HW Interfaces" level="0">
+            <item name="AP_MEMORY">
+                <table>
+                    <keys size="3">Port, Direction, Bitwidth</keys>
+                    <column name="input_r_address0">out, 10</column>
+                    <column name="input_r_q0">in, 10</column>
+                    <column name="output_r_address0">out, 10</column>
+                    <column name="output_r_d0">out, 32</column>
+                </table>
+            </item>
+            <item name="TOP LEVEL CONTROL">
+                <table>
+                    <keys size="3">Interface, Type, Ports</keys>
+                    <column name="ap_clk">clock, ap_clk</column>
+                    <column name="ap_rst">reset, ap_rst</column>
+                    <column name="ap_ctrl">ap_ctrl_hs, ap_done ap_idle ap_ready ap_start</column>
+                </table>
+            </item>
+        </section>
+    </ReportHWInterface>
+    <ReportSWInterface>
+        <section name="SW I/O Information" level="0">
+            <item name="Top Function Arguments">
+                <table>
+                    <keys size="3">Argument, Direction, Datatype</keys>
+                    <column name="input">in, ap_int&lt;10&gt; const *</column>
+                    <column name="output">out, float*</column>
+                </table>
+            </item>
+            <item name="SW-to-HW Mapping">
+                <table>
+                    <keys size="4">Argument, HW Interface, HW Type, HW Usage</keys>
+                    <column name="input">input_r_address0, port, offset</column>
+                    <column name="input">input_r_ce0, port, </column>
+                    <column name="input">input_r_q0, port, </column>
+                    <column name="output">output_r_address0, port, offset</column>
+                    <column name="output">output_r_ce0, port, </column>
+                    <column name="output">output_r_we0, port, </column>
+                    <column name="output">output_r_d0, port, </column>
+                </table>
+            </item>
+        </section>
+    </ReportSWInterface>
+    <ResolutionUrl key="ZZZ">docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&amp;url=ug1448-hls-guidance&amp;resourceid=ZZZ.html</ResolutionUrl>
+    <PragmaReport>
+        <Pragma type="inline" status="valid" location="F20/source/ieee_decode.h:8" parentFunction="exact_ieee_decode" variable="" isDirective="0" options=""/>
+        <Pragma type="unroll" status="invalid" location="F20/source/ieee_decode.h:18" parentFunction="exact_ieee_decode" variable="" isDirective="0" options="">
+            <Msg msg_id="" msg_severity="ERROR" msg_body="Not implemented"/>
+        </Pragma>
+        <Pragma type="pipeline" status="valid" location="F20/source/kernel.cpp:8" parentFunction="ieee_decode_pe" variable="" isDirective="0" options="ii=1"/>
+        <Pragma type="inline" status="implemented" location="F20/source/ieee_decode.h:8" parentFunction="_zl17exact_ieee_decodeili10eli8e6ap_intili10eeeft1_" variable="" isDirective="0" options=""/>
+        <Pragma type="loop_tripcount" status="implemented" location="F20/source/kernel.cpp:7" parentFunction="ieee_decode_pe" variable="" isDirective="0" options="max=1024 min=1024 avg=1024"/>
+    </PragmaReport>
+</profile>

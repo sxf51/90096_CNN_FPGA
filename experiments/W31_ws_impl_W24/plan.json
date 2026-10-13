@@ -1,0 +1,42 @@
+{
+  "config_sha256": "2f166d6a1f0890500d9934d6d9c25b848865e91e555e709b107103d81c706961",
+  "configuration": {
+    "changes": "Use frozen parent W24 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Limit per-run placement/routing to 4 threads while synthesis remains single-threaded; preserve the serial hardware lock. Change only the implementation clock constraint; preserve parent HLS RTL.",
+    "clock": 3.33,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/winograd_rom_v1",
+    "estimates": {
+      "BRAM18K": 138.0,
+      "DSP": 630.0,
+      "FF": 103695.0,
+      "LUT": 53316.0,
+      "T": 8.0,
+      "URAM": 0.0,
+      "basis": "Frozen W24 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: Fresh-workspace retry of W29 after actual MemAvailable0.4664421082GiB protection terminated implementation, exit-15, OOM1 unchanged. Preserve W29 failure and its original two-thread plan. W25 passed both changed-input ROM RTL transactions at554226/554237cycles and W24 preserves all13-image E017-exact precision. Predict630DSP/138BRAM18K from HLS; no routed resource result exists. Retry the initial5ns screen with synthesis1 and placement-routing4 threads under the explicitly authorized two-task scheduler and actual0.5GiB newest-task guard. Only independently converged5ns timing/resources can trigger a fresh4.5ns probe; ROM remains exploratory and runtime-weight designs remain the integration baseline.",
+      "latency_cycles": 524330.0
+    },
+    "id": "W31",
+    "implementation_backend": "serial_packaged_flow",
+    "implementation_clock_ns": 5.0,
+    "implementation_driver_template": "F89",
+    "implementation_threads": 4,
+    "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+    "memory_scheduler": true,
+    "name": "ws_impl_W24",
+    "operation": "impl",
+    "purpose": "Verify frozen W24 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: Fresh-workspace retry of W29 after actual MemAvailable0.4664421082GiB protection terminated implementation, exit-15, OOM1 unchanged. Preserve W29 failure and its original two-thread plan. W25 passed both changed-input ROM RTL transactions at554226/554237cycles and W24 preserves all13-image E017-exact precision. Predict630DSP/138BRAM18K from HLS; no routed resource result exists. Retry the initial5ns screen with synthesis1 and placement-routing4 threads under the explicitly authorized two-task scheduler and actual0.5GiB newest-task guard. Only independently converged5ns timing/resources can trigger a fresh4.5ns probe; ROM remains exploratory and runtime-weight designs remain the integration baseline.",
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "W",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 10800,
+    "validation_parent": "W24",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "W24"
+  },
+  "created_at": "2026-10-12T10:19:43+00:00",
+  "created_from_commit": "29456fff8c63a71439db91600c7c9e892f163cd0",
+  "purpose_section": "Verify frozen W24 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: Fresh-workspace retry of W29 after actual MemAvailable0.4664421082GiB protection terminated implementation, exit-15, OOM1 unchanged. Preserve W29 failure and its original two-thread plan. W25 passed both changed-input ROM RTL transactions at554226/554237cycles and W24 preserves all13-image E017-exact precision. Predict630DSP/138BRAM18K from HLS; no routed resource result exists. Retry the initial5ns screen with synthesis1 and placement-routing4 threads under the explicitly authorized two-task scheduler and actual0.5GiB newest-task guard. Only independently converged5ns timing/resources can trigger a fresh4.5ns probe; ROM remains exploratory and runtime-weight designs remain the integration baseline.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 630.0 |\n| BRAM18K | 138.0 |\n| URAM | 0.0 |\n| LUT | 53316.0 |\n| FF | 103695.0 |\n| latency_cycles | 524330.0 |\n| T | 8.0 |\n| basis | Frozen W24 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: Fresh-workspace retry of W29 after actual MemAvailable0.4664421082GiB protection terminated implementation, exit-15, OOM1 unchanged. Preserve W29 failure and its original two-thread plan. W25 passed both changed-input ROM RTL transactions at554226/554237cycles and W24 preserves all13-image E017-exact precision. Predict630DSP/138BRAM18K from HLS; no routed resource result exists. Retry the initial5ns screen with synthesis1 and placement-routing4 threads under the explicitly authorized two-task scheduler and actual0.5GiB newest-task guard. Only independently converged5ns timing/resources can trigger a fresh4.5ns probe; ROM remains exploratory and runtime-weight designs remain the integration baseline. |\n\nPlanned at 2026-10-12T10:19:43+00:00; estimates are hypotheses, not tool measurements."
+}

@@ -1,0 +1,83 @@
+{
+  "T": 8,
+  "changes": "New continuous source, wide two-entry LUTRAM window FIFOs, unchanged input/output/weight contract and layer quantization points. Padding mode is an explicit compile-time control.",
+  "clock": 4,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_A_BITS=10 -DEXP_FRAMES=2 -DEXP_ONLINE_PAD=1 -DEXP_STORAGE=1 -DEXP_T=8 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=1 -DEXP_NUMPY_REFERENCE=0 -DEXP_QUICK=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F05/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "Select feasible exact candidates and validate two-frame RTL latency/deadlock before attributing an end-to-end speedup.",
+  "cpu_count": 12,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 1,
+    "EXP_STORAGE": 1,
+    "EXP_T": 8,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/continuous_direct",
+  "errors": [
+    "Synthesis failed (exit=1)"
+  ],
+  "estimates": {
+    "BRAM18K": 96,
+    "Conv1_DSP": 648,
+    "Conv2_DSP": 256,
+    "Conv3_DSP": 100,
+    "DSP": 1007,
+    "LUT": 100000,
+    "T": 8,
+    "URAM": 0,
+    "basis": "Onefold/cycle,65025*T plus input/pad startup, weight load and drain allowance100000 cycles. All502 or1004 products bind to DSP; balanced23-bit additions have explicit fabric latency1. Keep line/pad memory, replace tiny wide BRAM FIFOs with LUTRAM. HLS maximum-component estimates may miss old-pad finite-FIFO row serialization.",
+    "latency_cycles": 620200
+  },
+  "fixed": true,
+  "id": "F05",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare continuous engine II and whole-frame cycles against ideal65025*T. Report registered reduction cost, stream warnings and actual RTL backpressure; HLS II alone is insufficient.",
+  "name": "continuous_T8_online_4ns",
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [],
+  "parsed_modules": [],
+  "precision": "w10a10acc23",
+  "purpose": "Separate window production from convolution engines, flatten pixel/fold loops into oneII1 loop and shift fixed channel registers each fold. Register balanced fabric reductions to break E070's eight-DSP unregistered adder path. Online padding caches the first row and reads/emits subsequent rows together, avoiding pad3's serialized row phases.",
+  "quality_provenance": {
+    "image_count": 13,
+    "method": "Same quantization and butterfly bit identity; quality measured by reference",
+    "path": "experiments/E017_apfixed_boundary_w10a10/metrics.json"
+  },
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "scope": "frame",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "26f6a403e116b267fff9fba42963cd50bd73aa41",
+  "source_sha256": {
+    "conv1.cpp": "11205e4faaa3a2774c5c7338ee0ab2bc378f615890c6a9ed149d2ad9ad08acf6",
+    "integer_numeric.inc": "68d817602805a3c2c2a8b2da8adcfb9a059f5ed30f1ec7613c5e9979a1815794",
+    "srcnn.cpp": "cec913c3244e0e0f3893e6a70b7875df800a1183eeec0668b32589f636858a96",
+    "srcnn.h": "b0607a9c5aa51fad40f53e5f72514f1d28fc5f3051c430213d1a3bbc51982a9b",
+    "types.h": "330b36c6bc8bac2fdc4e866d2804cf0ee300fe6bec22814ea9216f4237e43abb"
+  },
+  "stage": "arch_f",
+  "storage": "lutram",
+  "time": "2026-10-10T23:49:46+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 10:49:48 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "unroll": "Cout/Cout/tap",
+  "validation": {
+    "bit_exact": true,
+    "border_mse": 1.661846957728205e-05,
+    "butterfly_mse": 1.8197758558556394e-05,
+    "conv1_exact": false,
+    "conv1_mse": null,
+    "csim_pass": true,
+    "delta_psnr": null,
+    "float_exact": false,
+    "golden_psnr": null,
+    "image_count": 0,
+    "set14_psnr": null
+  }
+}

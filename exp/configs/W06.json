@@ -1,0 +1,46 @@
+{
+  "T": 8,
+  "changes": "Independent Winograd network/layer source. Equivalent offline transformed weights will be archived for inspection, while the internal load stage retains the original top contract.",
+  "clock": 4,
+  "conclusion": "Require exact butterfly output, then integrate only resource-feasible results. Numerical transforms are exact; FIFO progress still needs RTL cosim.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_STORAGE": 1,
+    "EXP_T": 8,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/winograd_network",
+  "estimates": {
+    "BRAM18K": 241,
+    "Conv1_DSP": 288,
+    "Conv2_DSP": 256,
+    "Conv3_DSP": 100,
+    "DSP": 647,
+    "LUT": 59000,
+    "T": 8,
+    "URAM": 0,
+    "basis": "Nine*16 products per output-channel lane,64/(4*T) lanes. W01 confirms16 DSP/F2 PE and1499 LUT including transforms/interface. Two512x640-bit row FIFOs add72 BRAM18K to gather's168; one extra input line adds1. Latency uses16384 tiles,4*T folds and20 fill/drain cycles. Layer estimate includes input9-line buffers and raster FIFO costs.",
+    "latency_cycles": 906968
+  },
+  "fixed": true,
+  "id": "W06",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Measure transforms, wider arithmetic, runtime weight load, raster FIFO and pipeline fill/drain separately. Explain more than20% deviation from the multiplier-only budget.",
+  "name": "winograd_network_T8",
+  "precision": "w10a10acc23",
+  "purpose": "Apply exact integer F2 to nine3x3 pieces of Conv1's9x9 kernel. Full input transforms add2 bits, G2 weights add4 bits;12x14 products fit one DSP. The34-bit inverse is divisible by4 before the ordinary bias/ReLU cast. Runtime transforms preserve arbitrary incoming float weights. Use9 previous input rows,10x10 window and264x264 padded input;128x128 output tiles discard row/column255. Two512-deep row FIFOs reorder to raster before Conv2.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "scope": "frame",
+  "series": "W",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_w",
+  "storage": "lutram",
+  "unroll": "G2 F2 nine subkernels/Cout/Cin"
+}

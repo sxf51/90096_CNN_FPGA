@@ -1,0 +1,22 @@
+{
+  "id": "E027",
+  "name": "auto_fixed16",
+  "stage": 2,
+  "design": "designs/fixed_ref",
+  "clock": 10,
+  "fixed": true,
+  "set14": false,
+  "csim_only": false,
+  "precision": "w16a16acc35",
+  "defines": {
+    "EXP_W_BITS": 16,
+    "EXP_A_BITS": 16
+  },
+  "numpy_reference": "exp/numeric_reference/w16a16/numpy_reference",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "csim_timeout": 2700,
+  "purpose": "Isolate type-change benefit without streaming architectural changes; retain full intermediate feature maps.",
+  "changes": "Independent fixed reference retains golden external float signature; internal weights/biases and activations use AP_RND_CONV/AP_SAT. Exact product-fraction accumulators.",
+  "interpretation": "Pending real ap_fixed output and bit comparison with numpy.",
+  "conclusion": "Save actual ap_fixed butterfly output for subsequent architecture bit-exact checks."
+}

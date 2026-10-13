@@ -1,0 +1,31 @@
+{
+  "T": 32,
+  "changes": "Independent snapshot of designs/dataflow_dsp, changes {'EXP_STORAGE': 1}; same exact quantization boundaries and butterfly reference as E033.",
+  "clock": 10,
+  "conclusion": "Choose the next coordinate only from measured feasible candidates; quality provenance is E017, with 13-image coverage explicitly provisional.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_STORAGE": 1,
+    "EXP_T": 32,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/dataflow_dsp",
+  "fixed": true,
+  "id": "E039",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare measured loops and resources with E033 and this coordinate's control. Runtime-loaded weights require writable storage; rom binding would contradict the unchanged external parameter contract.",
+  "name": "scan_storage_T32_E039",
+  "precision": "w10a10acc23",
+  "purpose": "Coordinate scan storage; ideal MAC budget 251 DSP, compute floor 2080800 cycles before load/padding/control overhead.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 4,
+  "storage": "lutram",
+  "unroll": "Cout/Cout/Cin"
+}

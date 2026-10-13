@@ -1,0 +1,310 @@
+#!/usr/bin/env python3
+"""Render the architecture evidence index from archived data."""
+import csv
+import json
+import math
+from pathlib import Path
+from run_exp import CAPACITY, LIMIT, ROOT, markdown_table, number, utc
+
+DESCRIPTIONS = {
+    "P": "Signed INT8 packing is exact when shared operands, field range and negative borrowing are handled explicitly. P01 exhausts16777216 signed8 triples; P03/P06 compare unpack-every7/every2 schedules under their respective safe bounds. P05 tests the DSP builtin and P08 inspects actual primitive attributes. Full-network exact10 residual variants retain the passing precision point but add fabric and pipeline overhead. P13-P16 additionally compare complete INT16 product pairs, byte limbs, explicit overlap/fabric recovery and ordinary DSP/fabric mixing. Uniform w8a8 remains rejected by first-phase precision evidence.",
+    "W": "G2=2G makes the F2 inverse exactly divisible by4 before the ordinary layer cast. W01/W03 confirm one DSP per transformed product at10/16-bit operands. The layer and network designs retain complete transform precision, split9x9 into nine3x3 pieces, generate128x128 tiles and reorder two rows into raster streams. Equivalent offline tensors are archived; runtime transforms preserve the fixed incoming-weight contract. Header-order compilation failures and independent retries remain visible.",
+    "G": "Three Conv3 organizations share precision,T32 and10ns. Gather keeps four channel-wide lines; explicit-pad scatter keeps five32-bit partial rows plus a channel-wide pad row; merged-edge scatter replaces replicate padding with nine exact source-position kernels. Every output and border is checked on two butterfly frames. Memory savings carry control, load and cycle costs.",
+    "S": "Whole-network DATAFLOW is compared to sequential layers and8/16/32/64 output tiles. S01 did not export the required global scratch AXI bundles and is invalid as a DDR implementation; its oversized on-chip result is retained. Tile fusion preserves Conv3 replicate semantics by clamping feature centers before their input neighborhoods, and counts complete partial-edge halos. DDR payload divided by19.2GB/s (DS98764-bit DDR4-2400) and9.6GB/s (assumed50% efficiency) is a lower-bound model, never measured bandwidth. Requested256-word bursts are distinguished from actual compiler inference in bursts.csv.",
+    "C": "Exact Winograd Conv1 combines with output-channel packing Conv2 and/or adjacent-pixel packing Conv3. The paper T4 MAC budgets are932 DSP for both packed layers and1188 for only packed Conv3, before interfaces/converters. Exact10 residual restoration avoids the failed uniform INT8 precision point but adds LUT cost. C10/C11 instead use independently verified Conv2-only8-bit weights and ten-bit activations, removing coefficient residual repair in that layer. HLS estimates include transform/load/reorder overhead.",
+    "F": "Storage controls map shallow wide FIFOs to LUTRAM and Conv3 line banks to20 URAM. Continuous engines separate window generation, flatten pixel/fold iterations, shift fixed channel registers and register balanced fabric reductions. Old padding versus online read/emit padding isolates finite-FIFO row serialization. Clock/T controls test actual II, resource and timing limits; final RTL and routed measurements are separate from HLS estimates.",
+}
+
+
+def linked(rows):
+    return [{**row,"id":"["+row["id"]+"]("+row["md_path"]+")"} for row in rows]
+
+
+def measured_direction(points):
+    frames = [row for row in points if row["scope"] == "frame" and number(row["latency_ms_est"]) is not None]
+    accepted = sorted([row for row in frames if row["eligible_provisional"] == "True"],
+                      key=lambda row:number(row["latency_ms_est"]))
+    if accepted:
+        best = accepted[0]
+        return "Measured direction result: ["+best["id"]+"]("+best["md_path"]+") is its fastest provisional resource-feasible point at "+best["latency_ms_est"]+"ms, with "+best["DSP"]+" DSP and "+best["LUT"]+" LUT. RTL and routing must be assessed separately.\n\n"
+    if frames:
+        return "Measured direction result: none of its completed frame points satisfies all resource/precision gates. Their estimated latency cannot establish a feasible speedup.\n\n"
+    return "Completed PE/layer evidence is listed below; it does not establish a resource-feasible frame design.\n\n"
+
+
+def main():
+    rows = list(csv.DictReader((ROOT / "experiments/architecture_data.csv").open(newline="")))
+    by_id = {row["id"]:row for row in rows}
+    arch = [row for row in rows if row["series"]]
+    frames = [row for row in rows if row["scope"] == "frame" and not row["operation"] and
+              row.get("validation_only") != "True" and
+              (row["series"] or "dataflow" in row["design"] or "scatter" in row["design"])]
+    frames.sort(key=lambda row:number(row["latency_ms_est"]) if number(row["latency_ms_est"]) is not None else math.inf)
+    eligible = [row for row in frames if row["eligible_provisional"] == "True"]
+    best = eligible[0] if eligible else None
+    text = "# SRCNN K26 architecture exploration\n\n"
+    rom_current = (ROOT / "experiments/rom_clock_state.json").exists()
+    rom = json.loads((ROOT / "experiments/rom_clock_state.json").read_text()) if rom_current else {}
+    current_path = ROOT / "experiments/rom_clock_comparison.csv"
+    current = list(csv.DictReader(current_path.open(newline=""))) if rom_current and current_path.is_file() else []
+    verified = sorted((row for row in current if row.get("route_feasible") == "True" and
+                       number(row.get("rtl_frame_ms")) is not None),
+                      key=lambda row: number(row["rtl_frame_ms"]))
+    if rom_current:
+        text += "Current follow-up: [ROM_CLOCK.md](ROM_CLOCK.md), following [docs/0005](../docs/0005-rom-clock-t4-plan.md). "
+        text += "The complete course Set14 has13 images; final feasibility now uses independently routed resource/timing gates. "
+        text += "Historical HLS statuses and earlier provisional wording below remain original records.\n\n"
+    if verified:
+        leader = verified[0]
+        text += ("The fastest candidate with matching exact RTL and independently closed routing is ["+
+                 leader["id"]+"]("+leader["md_path"]+") at "+leader["rtl_frame_ms"]+
+                 "ms IP latency, using "+leader["route_DSP"]+" DSP at "+leader["route_clock_ns"]+"ns. ")
+    elif best:
+        text += ("The lowest HLS estimate satisfying the original HLS resource screen is " if rom_current else
+                 "The fastest resource-feasible supplied-image point is ")
+        text += "["+best["id"]+"]("+best["md_path"]+") at "+best["latency_ms_est"]+"ms HLS-estimated latency. "
+    else:
+        text += "No exact frame point satisfies the original HLS resource screen. "
+    text += "Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. "
+    text += ("Routed timing, measured RTL cycles and board validation remain distinct; the HLS leader cannot establish final feasibility.\n\n"
+             if rom_current else "Missing comic keeps every precision acceptance provisional; routed timing, RTL cycles and board validation are distinct evidence.\n\n")
+    text += "Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.\n\n"
+    ws_path = ROOT / "experiments/weight_loading_state.json"
+    ws = json.loads(ws_path.read_text()) if ws_path.is_file() else None
+    if ws:
+        text += "Weight loading and T8 follow-up: [WEIGHT_LOADING.md](WEIGHT_LOADING.md), following [docs/0004](../docs/0004-t8-weight-loading-plan.md). "
+        text += ("That workstream is archived; current acceptance and remaining tasks follow docs/0005.\n\n"
+                 if rom_current else ws["next"] + "\n\n")
+    if best:
+        text += ("## HLS Screening Leader\n\n" if rom_current else "## Current Best\n\n")+markdown_table(linked([best]),[
+            "id","design","precision_w_a_acc","T_target","clock_target_ns","clock_est_ns","latency_cycles",
+            "interval_cycles","latency_ms_est","DSP","BRAM18K","URAM","LUT","FF","delta_psnr","status"])
+        baseline = next((row for row in rows if row["id"] == "E043"),None)
+        if baseline and number(best["latency_ms_est"]):
+            ratio = number(baseline["latency_ms_est"])/number(best["latency_ms_est"])
+            text += "\nHLS-estimate improvement over first-phase E043: "+str(round(ratio,4))+"x. This ratio is not a measured board speedup.\n"
+        related = []
+        for row in rows:
+            path = ROOT / "experiments" / Path(row["md_path"]).parent / "config.json"
+            config = json.loads(path.read_text())
+            if config.get("verify_parent") == best["id"]:
+                related.append({**row,**config.get("verification",{})})
+        text += "\nActual verification of the current HLS winner:\n\n"+markdown_table(linked(related),[
+            "id","operation","status","impl_target_clock_ns","impl_WNS_ns","timing_met","impl_DSP","impl_LUT","impl_FF",
+            "impl_BRAM36","impl_URAM","rtl_status","rtl_latency_max","rtl_interval_max","cycle_deviation_pct"])
+    physical_path = ROOT / "experiments/weight_loading_workstream.csv"
+    if physical_path.is_file():
+        physical = list(csv.DictReader(physical_path.open(newline="")))
+        physical = [row for row in physical if row["operation"] == "impl" and
+                    row["status"] == "impl_complete" and row.get("route_feasible") == "True" and
+                    number(row["rtl_frame_ms_at_route_target"]) is not None]
+        physical.sort(key=lambda row: number(row["rtl_frame_ms_at_route_target"]))
+        if physical:
+            text += "\n## Verified IP Timing\n\n"
+            text += "Matching-source RTL cycles multiplied by independently closed implementation targets. These times exclude board/DDR/driver overhead. "
+            text += "Route-feasible rows satisfy setup/hold, zero unrouted nets and all routed resource caps under docs/0005.\n\n"
+            text += markdown_table(linked(physical),[
+                "id","parent","rtl_source","rtl_latency_cycles","rtl_interval_cycles",
+                "route_target_ns","route_WNS_ns","route_DSP","route_BRAM18K","route_LUT",
+                "route_FF","route_feasible","rtl_frame_ms_at_route_target"])
+            text += "\nTarget minus WNS is a slack-derived estimate; only each implemented target above is accepted. Actual first-five-path and hierarchy reports are linked from each experiment.\n"
+    if rom_current and current_path.is_file():
+        text += "\n## Current Verified IP Timing\n\n"
+        text += "Matching-parent successful RTL latency times an independently closed, resource-feasible routed clock. No DDR, driver or board measurement is included.\n\n"
+        text += markdown_table(linked(verified), ["id", "parent", "rtl_source", "rtl_cycles", "route_clock_ns",
+                                                 "route_WNS_ns", "route_DSP", "route_BRAM18K", "route_LUT",
+                                                 "route_FF", "rtl_frame_ms"])
+        handoffs = rom.get("candidate_board_handoffs", {})
+        if handoffs:
+            text += "\nVerified candidate IP packages and register maps: "
+            text += ", ".join("["+exp_id+"]("+str((ROOT/path).relative_to(ROOT/"experiments"))+")"
+                              for exp_id, path in handoffs.items())
+            text += ". The [F98 handoff](BOARD_HANDOFF.md) remains available; board performance is unmeasured.\n"
+        text += "\n## ROM, Clock, FIFO And T4\n\n"
+        text += "Measured follow-up records from docs/0005; their routed acceptance remains separate from historical HLS statuses. "
+        text += "WS-D functional cosimulation and its2% latency goal are separate columns. See [ROM_CLOCK.md](ROM_CLOCK.md) for counters and memory evidence.\n\n"
+        text += markdown_table(linked([row for row in current if row["id"] not in {"W21", "F97", "F98", "W22"}]),
+                               ["id", "parent", "status", "T", "HLS_cycles", "HLS_DSP", "HLS_LUT", "rtl_cycles",
+                                "rtl_hls_excess_pct", "wsD_goal_met", "route_feasible", "rtl_frame_ms"])
+        from summarize_rom_clock import pending_experiments, reload_measurements_section
+        text += reload_measurements_section()
+        pending = pending_experiments(rom)
+        text += "\nUnmeasured plans have no actual result and do not enter rankings:\n\n"
+        text += markdown_table(linked(pending), ["id", "parent", "operation", "status", "condition"])
+    for series in ("P","W","G","S","C","F"):
+        points = [row for row in arch if row["series"] == series and not row["operation"]]
+        text += "\n## "+series+" Direction\n\n"+DESCRIPTIONS[series]+"\n\n"
+        text += measured_direction(points)
+        if series == "P":
+            path = ROOT / "experiments/int16_packing_comparison.csv"
+            if path.is_file():
+                with path.open(newline="") as handle:
+                    controls = list(csv.DictReader(handle))
+                if controls:
+                    text += ("Complete signed16x16 pair controls at equal requested II1. Each call contains64 pairs and checks both complete32-bit outputs. Every16-bit value is swept in each input role under four companion cases, with a boundary cube and deterministic random triples; this does not exhaust all2^48 triples. These PE results do not establish SRCNN16-bit packing or image quality.\n\n")
+                    text += markdown_table(linked(controls),[
+                        "id","mode","DSP","LUT","FF","clock_est_ns","latency_cycles",
+                        "interval_cycles","ii_ok","checked_products","bit_exact","status"])+"\n"
+                    indexed = {row["id"]:row for row in controls}
+                    if all(exp_id in indexed and number(indexed[exp_id]["LUT"]) is not None
+                           for exp_id in ("P13","P14","P15","P16")):
+                        direct,limbs,overlap,mixed = (indexed[exp_id] for exp_id in ("P13","P14","P15","P16"))
+                        text += ("Measured DSP counts for direct/limbs/overlap/mixed are "+
+                                 "/".join(row["DSP"] for row in (direct,limbs,overlap,mixed))+
+                                 ". Overlap recovery uses "+overlap["LUT"]+" LUT versus "+mixed["LUT"]+
+                                 " LUT for ordinary mixing (difference "+str(number(overlap["LUT"])-number(mixed["LUT"]))+
+                                 "). The one-DSP variants still use fabric multiplication; they are not two unrestricted INT16 multiplications implemented solely by one DSP48E2.\n\n")
+                        if number(overlap["LUT"]) > number(mixed["LUT"]):
+                            text += ("At equal II1 and one DSP, overlap repair does not beat the ordinary mixed control: its FF count is "+
+                                     overlap["FF"]+" versus "+mixed["FF"]+", and estimated clock is "+overlap["clock_est_ns"]+
+                                     "ns versus "+mixed["clock_est_ns"]+"ns. Byte-limb reconstruction is exact but uses more DSP than the direct pair. "
+                                     "This measured result gives no resource or timing basis for integrating these INT16 packing variants into the network. "
+                                     "See [parsed utilization categories](int16_area_breakdown.csv) for multiplier/repair/control costs.\n\n")
+                    text += "![Complete INT16 pair resources](figs/int16_packing_resources.png)\n\n"
+        if series == "C" and all(exp_id in by_id for exp_id in ("C10","W14","W17")):
+            combination,wide,narrow = (by_id[exp_id] for exp_id in ("C10","W14","W17"))
+            saving = number(wide["LUT"])-number(narrow["LUT"])
+            projected = number(combination["LUT"])-saving
+            cap = CAPACITY["LUT"]*LIMIT["LUT"]
+            text += ("An unimplemented raw-bank combination follow-up would still need about "+str(projected)+
+                     " LUT if [C10]("+combination["md_path"]+") reused the measured "+str(saving)+
+                     "-LUT whole-network saving from [W14]("+wide["md_path"]+") to [W17]("+narrow["md_path"]+"). "
+                     "This transfer projection is above the unchanged "+str(cap)+
+                     "-LUT gate and is not a synthesis result; no follow-up is treated as feasible on that assumption.\n\n")
+        if series == "F":
+            controls = {row["id"]:row for row in points}
+            if all(exp_id in controls for exp_id in ("F20","F21","F23")):
+                exact,legacy,network = (controls[exp_id] for exp_id in ("F20","F21","F23"))
+                text += ("The exact IEEE output encoder [F20]("+exact["md_path"]+") uses "+exact["DSP"]+
+                         " DSP, "+exact["LUT"]+" LUT and "+exact["FF"]+" FF at "+exact["clock_est_ns"]+
+                         "ns estimated clock; its legacy control [F21]("+legacy["md_path"]+") uses "+
+                         legacy["DSP"]+" DSP at "+legacy["clock_est_ns"]+"ns. The independent network copy [F23]("+
+                         network["md_path"]+") keeps the same quantization and weights, reaches "+
+                         network["clock_est_ns"]+"ns estimated clock and removes the legacy output scaling DSPs. "
+                         "Continuous folds reduce the repeated per-pixel pipeline fill/drain; assess finite-FIFO RTL cycles "
+                         "and routed timing in the final verification table independently of that HLS estimate.\n\n")
+            loaders = [controls[exp_id] for exp_id in ("F23","F24","F25") if exp_id in controls]
+            if len(loaders) > 1:
+                text += "Loader controls preserve all inference engines, precision and runtime parameters. F24 removes the quotient-address multiplier; F25 tests the flattened counter versus repeated inner-loop drain. Compare the measured top clock/frame product:\n\n"
+                text += markdown_table(linked(loaders),["id","clock_target_ns","clock_est_ns","latency_cycles",
+                                                       "latency_ms_est","DSP","BRAM18K","LUT","FF","status"])+"\n"
+        text += markdown_table(linked(points),["id","scope","T_target","latency_cycles","latency_ms_est",
+                                               "DSP","BRAM18K","URAM","LUT","FF","bit_exact","border_mse","ii_ok","status"])
+        if series == "S":
+            text += "\nTraffic/cache models and inferred image burst lengths (words):\n\n"
+            text += markdown_table(linked(points),[
+                "id","ddr_bytes_per_frame","feature_recompute_ratio","cache_bits",
+                "inferred_image_read_bursts","inferred_image_write_bursts",
+                "ddr_theoretical_lower_bound_ms","ddr_50pct_lower_bound_ms","status"])
+            text += "\nBandwidth inputs are from [DS987 and calculation sources](SOURCES.md). S01's traffic is a hypothetical sequential-DDR payload because its scratch ports were absent; tile/dataflow payloads describe their implemented interfaces. Missing burst inference is shown as 'none reported'; requested256-word limits remain configuration bounds.\n"
+    text += "\n## All Architectures\n\nFrame records only, ordered by HLS-estimated latency. Microkernels and validation operations are excluded; infeasible/failed results remain visible.\n\n"
+    text += markdown_table(linked(frames),["id","series","design","T_target","latency_ms_est","DSP","BRAM18K","LUT","FF","delta_psnr","status"])
+    comparisons = list(csv.DictReader((ROOT / "experiments/estimate_actual.csv").open(newline="")))
+    audits = {}
+    for row in comparisons:
+        record = audits.setdefault(row["id"],{"id":row["id"],"series":row["series"],"scope":row["scope"],"md_path":row["md_path"],"status":row["status"]})
+        if row["metric"] in {"DSP","latency_cycles"}:
+            key = "DSP" if row["metric"] == "DSP" else "cycles"
+            record[key+"_estimate"],record[key+"_actual"],record[key+"_deviation_pct"] = row["estimate"],row["actual"],row["deviation_pct"]
+    text += "\n## Estimates And Actuals\n\nAll numeric values come from frozen plans and parsed reports. Actual means csynth for ordinary runs, routed resources for implementation, and RTL latency for cosim; no cycle measurement is inferred from implementation. Memory/LUT audits are in estimate_actual.csv and each experiment.\n\n"
+    text += markdown_table(linked(list(audits.values())),["id","scope","DSP_estimate","DSP_actual","DSP_deviation_pct","cycles_estimate","cycles_actual","cycles_deviation_pct","status"])
+    largest = sorted([row for row in comparisons if row["over20pct"] == "True"],
+                     key=lambda row:abs(number(row["deviation_pct"]) or 0),reverse=True)[:12]
+    text += "\nLargest percentage deviations (a zero paper denominator has no percentage):\n\n"
+    text += markdown_table(linked(largest),["id","metric","estimate","actual","deviation_pct","status"])
+    text += "\nCause analysis is in each linked interpretation: ignored external scratch ports allocate full on-chip maps; dynamic tiled memory banks add address/multiplexer logic; packing residual/borrow stages increase both LUT and per-pixel pipeline drain; wider Winograd inverse arithmetic and raster FIFOs exceed pure-product budgets; explicit register reductions change timing and FF.\n"
+    verification = []
+    for row in rows:
+        if not row["operation"]:
+            continue
+        path = ROOT / "experiments" / Path(row["md_path"]).parent / "config.json"
+        config = json.loads(path.read_text())
+        verification.append({**row, "parent":config.get("verify_parent"), **config.get("verification",{})})
+    text += "\n## Implementation And Cosim\n\nHLS estimates are inherited only for provenance. Routed WNS/resources and two-frame RTL cycles are parsed independently; none is a board measurement.\n\n"
+    text += markdown_table(linked(verification),["id","scope","parent","operation","status","impl_DSP","impl_BRAM36","impl_LUT","impl_FF","impl_URAM","impl_WNS_ns","timing_met","rtl_status","rtl_latency_max","rtl_interval_max","cycle_deviation_pct"])
+    profile_rows = []
+    for row in verification:
+        base = Path(row["md_path"]).parent
+        channel_path = ROOT / "experiments" / base / "profiling/channels.csv"
+        if not channel_path.is_file():
+            continue
+        with channel_path.open(newline="") as handle:
+            for channel in csv.DictReader(handle):
+                profile_rows.append({"id":row["id"], "md_path":row["md_path"], **channel,
+                                     "data":"[counters]("+str(base / "profiling/channels.csv")+")"})
+    if profile_rows:
+        text += "\nFinite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.\n\n"
+        text += markdown_table(linked(profile_rows),["id","name","peak_depth","write_block_pct","read_block_pct","data"])
+    warning_points = [row for row in arch if number(row.get("dataflow_warning_count")) and not row["operation"]]
+    text += "\nDATAFLOW warnings are retained in [dataflow_warnings.csv](dataflow_warnings.csv) and the linked experiment interpretations. Caller-weight/predecessor synchronization is a possible throughput limit; reported II1 alone does not prove finite-FIFO progress.\n\n"
+    text += markdown_table(linked(warning_points),["id","dataflow_warning_count","status"])
+    selection_path = ROOT / "experiments/final_selection.json"
+    if selection_path.is_file():
+        selection = json.loads(selection_path.read_text())
+        selected_ids = {point["id"] for point in selection["selected"]}
+        validation = []
+        for row in rows:
+            if row["id"] not in selection["queue"] or row["operation"]:
+                continue
+            config = json.loads((ROOT / "experiments" / Path(row["md_path"]).parent / "config.json").read_text())
+            validation.append({**row,**config.get("validation",{})})
+        text += "\nSelected candidates were ranked globally across both phases before validation. Mandatory full-supplied-image C simulation:\n\n"
+        text += markdown_table(linked(validation),["id","design","image_count","csim_pass","bit_exact","set14_psnr","delta_psnr","border_mse","status"])
+        relevant = [record for record in verification if record["parent"] in selected_ids]
+        text += "\nRouted timing closes for "+str(sum(str(record.get("timing_met")).lower() == "true" for record in relevant))+" selected implementation runs; "+str(sum(record.get("rtl_status") == "Pass" and record["status"] == "cosim_complete" for record in relevant))+" selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.\n"
+    failed = [row for row in arch if row["status"] not in {"pass","provisional","csim_pass","impl_complete","cosim_complete","analysis_complete"}]
+    text += "\n## Failed Directions\n\n"+markdown_table(linked(failed),["id","series","status","failure_reason","notes"])
+    if ws and ws.get("cancelled_plans"):
+        text += "\n## Cancelled Plans\n\nUser-cancelled obsolete retries were never launched and have no measured result. Original paper plans are preserved.\n\n"
+        text += markdown_table(linked([{"id": exp_id, **record} for exp_id, record in ws["cancelled_plans"].items()]),
+                               ["id", "parent", "status", "time", "reason"])
+    text += "\n## Pending Human Decisions\n\n"
+    text += ("- The user confirmed that the13 course-provided images are the complete test set; no comic input is pending.\n"
+             if rom_current else "- Supply the missing comic pair before complete14-image precision acceptance. All13 supplied pairs remain mandatory.\n")
+    text += "- DDR sequential layers need explicit scratch pointers or an approved wrapper; global m_axi did not export ports in S01.\n"
+    text += "- Runtime transformed-weight loading preserves the frozen top signature; true offline-transformed input parameters require an approved new weight contract.\n"
+    text += "- Windows settings-batch execution and board integration remain unverified. The existing Linux Vitis2026.1 SSH installation was used.\n"
+    text += "- Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).\n"
+    if any((ROOT / "experiments" / Path(row["md_path"]).parent / "diagnostics/kernel_oom.txt").is_file()
+           for row in rows):
+        retry_state = ("F90/F91 were cancelled by the user before launch" if ws and ws.get("cancelled_plans")
+                       else "F90/F91 are deferred under the current workstream priority")
+        text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; " + retry_state + ". Those original retries did not change system swap or global tool settings. The later user-configured8GiB zram and current memory observations are documented in [docs/0005](../docs/0005-rom-clock-t4-plan.md).\n"
+    if ws:
+        scheduling = ("one heavy task with memory-bounded light jobs" if rom.get("concurrency_policy") == "one_heavy_with_light"
+                      else "the concurrency policy and measured memory admission in docs/0005 section6.1")
+        text += ("- Current decisions supersede historical docs/0004 defaults: final feasibility uses routed gates, ROM remains exploratory, and scheduling uses "+scheduling+". Board selection and measurements remain pending.\n"
+                 if rom_current else "- Section6 unattended decision: preserve runtime float weights and HLS resource gates; keep missing-comic acceptance provisional. A repeated host OOM is archived without changing swap or moving to an unverified host. These decisions are recorded for user review tomorrow in [docs/0004](../docs/0004-t8-weight-loading-plan.md).\n")
+    text += "\n## Next Steps\n\nUse the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. "
+    text += (rom["next"] + "\n"
+             if rom_current else "Complete the missing image and board/AXI system measurements before claiming deployable performance.\n")
+    audit = ROOT / "experiments/rom_clock_audit.json" if rom_current else ROOT / "experiments/weight_loading_audit.json"
+    if not audit.is_file():
+        audit = ROOT / "experiments/weight_loading_audit.json"
+    if not audit.is_file():
+        audit = ROOT / "experiments/architecture_audit.json"
+    if audit.is_file():
+        audit_data = json.loads(audit.read_text())
+        audit_label = "Interim" if audit_data.get("mode") == "snapshot" else "Final"
+        text += "\n## Integrity Audit\n\n"+audit_label+" local/remote original and first-phase source checksum and report-provenance audit: ["+audit.name+"]("+audit.name+").\n\n"
+        text += markdown_table(audit_data["checks"],["location","manifest","checked_files","pass"])
+    text += "\n## Figures\n\n"
+    if (ROOT / "experiments/figs/verified_ip_pareto.png").is_file():
+        text += "![Verified IP frame time versus routed DSP](figs/verified_ip_pareto.png)\n\n"
+    for name,label in (("architecture_pareto","Latency vs DSP by series"),("architecture_dsp_layers","DSP composition"),
+                       ("estimate_actual_dsp","DSP estimates vs actual"),("estimate_actual_cycles","Cycle estimates vs actual"),
+                       ("conv3_resources","Conv3 resource comparison"),
+                       ("conv3_core_resources","Conv3 core and pad resource comparison")):
+        text += "!["+label+"](figs/"+name+".png)\n\n"
+    text += "Generated from archived evidence at "+utc()+".\n"
+    (ROOT / "experiments/ARCH_SUMMARY.md").write_text(text)
+    summary = ROOT / "experiments/SUMMARY.md"
+    original = summary.read_text()
+    link = "Architecture exploration: [ARCH_SUMMARY.md](ARCH_SUMMARY.md).\n\n"
+    if not original.startswith(link):
+        summary.write_text(link+original)
+    print("Wrote ARCH_SUMMARY.md;",len(arch),"architecture records;")
+
+
+if __name__ == "__main__":
+    main()

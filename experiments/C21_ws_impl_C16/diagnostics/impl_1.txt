@@ -1,0 +1,313 @@
+
+*** Running vivado
+    with args -log bd_0_wrapper.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source bd_0_wrapper.tcl -notrace
+
+INFO: [Common 17-3922] A valid Vivado Design Suite BASIC license has been detected. Your current license is active and will expire on 02-aug-2027.
+#-----------------------------------------------------------
+# Vivado v2026.1 (64-bit)
+# SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+# IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+# SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+# Start of session at: Tue Oct 13 10:47:20 2026
+# Process ID         : 129485
+# Current directory  : /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C21/hls/impl/verilog/project.runs/impl_1
+# Command line       : vivado -log bd_0_wrapper.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source bd_0_wrapper.tcl -notrace
+# Log file           : /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C21/hls/impl/verilog/project.runs/impl_1/bd_0_wrapper.vdi
+# Journal file       : /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C21/hls/impl/verilog/project.runs/impl_1/vivado.jou
+# Running On         : Xiaoxin-Ubuntu
+# Platform           : Ubuntu
+# Operating System   : Ubuntu 22.04.5 LTS
+# Processor Detail   : AMD Ryzen 5 4600U with Radeon Graphics
+# CPU Frequency      : 1397.107 MHz
+# CPU Physical cores : 6
+# CPU Logical cores  : 12
+# Host memory        : 16101 MB
+# Swap memory        : 8589 MB
+# Total Virtual      : 24691 MB
+# Available Virtual  : 21517 MB
+#-----------------------------------------------------------
+
+****** Vivado v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Tue Oct 13 10:47:20 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source bd_0_wrapper.tcl -notrace
+create_project: Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1657.070 ; gain = 213.840 ; free physical = 6644 ; free virtual = 20168
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C21/hls/impl/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/lipuze/amdfpga/2026.1/data/ip'.
+Command: link_design -top bd_0_wrapper -part xck26-sfvc784-2LV-c -mode out_of_context
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Device 21-403] Loading part xck26-sfvc784-2LV-c
+INFO: [Project 1-5699] Read binary netlist with skipMacroContent - 1
+INFO: [Project 1-454] Reading design checkpoint '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C21/hls/impl/verilog/project.gen/sources_1/bd/bd_0/ip/bd_0_hls_inst_0/bd_0_hls_inst_0.dcp' for cell 'bd_0_i/hls_inst'
+Netlist sorting complete. Time (s): cpu = 00:00:00.59 ; elapsed = 00:00:00.58 . Memory (MB): peak = 2745.055 ; gain = 0.000 ; free physical = 5550 ; free virtual = 19073
+INFO: [Netlist 29-17] Analyzing 5868 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 5 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2026.1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance bd_0_i/hls_inst/inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][0]_mux. bd_0_i/hls_inst/inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][0]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance bd_0_i/hls_inst/inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][1]_mux. bd_0_i/hls_inst/inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][1]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance bd_0_i/hls_inst/inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][2]_mux. bd_0_i/hls_inst/inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][2]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance bd_0_i/hls_inst/inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][3]_mux. bd_0_i/hls_inst/inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][3]_mux. 
+create_project: Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1657.070 ; gain = 213.840 ; free physical = 6644 ; free virtual = 20168
+Netlist sorting complete. Time (s): cpu = 00:00:00.59 ; elapsed = 00:00:00.58 . Memory (MB): peak = 2745.055 ; gain = 0.000 ; free physical = 5550 ; free virtual = 19073
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.05 . Memory (MB): peak = 3393.641 ; gain = 0.000 ; free physical = 4918 ; free virtual = 18442
+link_design: Time (s): cpu = 00:00:52 ; elapsed = 00:00:53 . Memory (MB): peak = 3393.676 ; gain = 1687.973 ; free physical = 4918 ; free virtual = 18442
+EXP_VIVADO_IMPL_THREADS general=4 synth=1
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 3489.293 ; gain = 95.617 ; free physical = 4856 ; free virtual = 18381
+Time (s): cpu = 00:01:01 ; elapsed = 00:00:22 . Memory (MB): peak = 4390.680 ; gain = 901.387 ; free physical = 4074 ; free virtual = 17599
+Time (s): cpu = 00:00:00.4 ; elapsed = 00:00:00.4 . Memory (MB): peak = 4777.570 ; gain = 0.000 ; free physical = 3714 ; free virtual = 17239
+Time (s): cpu = 00:00:00.47 ; elapsed = 00:00:00.48 . Memory (MB): peak = 4777.570 ; gain = 0.000 ; free physical = 3714 ; free virtual = 17239
+Time (s): cpu = 00:00:00.48 ; elapsed = 00:00:00.49 . Memory (MB): peak = 4777.570 ; gain = 0.000 ; free physical = 3714 ; free virtual = 17239
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 4889.570 ; gain = 112.000 ; free physical = 3613 ; free virtual = 17137
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 4889.570 ; gain = 112.000 ; free physical = 3614 ; free virtual = 17139
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 4889.570 ; gain = 112.000 ; free physical = 3614 ; free virtual = 17139
+Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 4913.582 ; gain = 136.012 ; free physical = 3633 ; free virtual = 17158
+Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 4913.582 ; gain = 136.012 ; free physical = 3634 ; free virtual = 17159
+Done building netlist checker database: Time (s): cpu = 00:00:00.11 ; elapsed = 00:00:00.11 . Memory (MB): peak = 4913.582 ; gain = 0.000 ; free physical = 3637 ; free virtual = 17162
+Done building netlist checker database: Time (s): cpu = 00:00:00.1 ; elapsed = 00:00:00.1 . Memory (MB): peak = 4913.582 ; gain = 0.000 ; free physical = 3637 ; free virtual = 17161
+Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 4913.582 ; gain = 136.012 ; free physical = 3637 ; free virtual = 17161
+Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 4945.598 ; gain = 168.027 ; free physical = 3637 ; free virtual = 17161
+Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 4945.598 ; gain = 168.027 ; free physical = 3637 ; free virtual = 17161
+Time (s): cpu = 00:00:14 ; elapsed = 00:00:14 . Memory (MB): peak = 4945.598 ; gain = 168.027 ; free physical = 3637 ; free virtual = 17161
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:18 . Memory (MB): peak = 4945.598 ; gain = 168.027 ; free physical = 3637 ; free virtual = 17162
+Time (s): cpu = 00:00:00.18 ; elapsed = 00:00:00.18 . Memory (MB): peak = 4945.598 ; gain = 0.000 ; free physical = 3637 ; free virtual = 17162
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 4945.598 ; gain = 168.027 ; free physical = 3637 ; free virtual = 17162
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 4945.598 ; gain = 168.027 ; free physical = 3637 ; free virtual = 17162
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 4945.598 ; gain = 168.027 ; free physical = 3637 ; free virtual = 17162
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 5565.172 ; gain = 0.000 ; free physical = 2996 ; free virtual = 16522
+Time (s): cpu = 00:01:41 ; elapsed = 00:00:45 . Memory (MB): peak = 5565.172 ; gain = 619.574 ; free physical = 2996 ; free virtual = 16522
+Time (s): cpu = 00:01:04 ; elapsed = 00:00:25 . Memory (MB): peak = 5565.172 ; gain = 0.000 ; free physical = 3006 ; free virtual = 16532
+Time (s): cpu = 00:01:07 ; elapsed = 00:00:28 . Memory (MB): peak = 5565.172 ; gain = 0.000 ; free physical = 3006 ; free virtual = 16532
+Netlist sorting complete. Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.05 . Memory (MB): peak = 5565.172 ; gain = 0.000 ; free physical = 3006 ; free virtual = 16532
+opt_design: Time (s): cpu = 00:04:13 ; elapsed = 00:01:58 . Memory (MB): peak = 5565.172 ; gain = 2171.496 ; free physical = 3006 ; free virtual = 16532
+report_drc: Time (s): cpu = 00:02:24 ; elapsed = 00:00:59 . Memory (MB): peak = 5565.172 ; gain = 0.000 ; free physical = 2962 ; free virtual = 16490
+generate_parallel_reports: Time (s): cpu = 00:02:24 ; elapsed = 00:00:59 . Memory (MB): peak = 5565.172 ; gain = 0.000 ; free physical = 2962 ; free virtual = 16490
+Write ShapeDB Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.27 . Memory (MB): peak = 5565.172 ; gain = 0.000 ; free physical = 2938 ; free virtual = 16489
+write_checkpoint: Time (s): cpu = 00:00:14 ; elapsed = 00:00:09 . Memory (MB): peak = 5565.172 ; gain = 0.000 ; free physical = 2859 ; free virtual = 16421
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.05 . Memory (MB): peak = 5629.203 ; gain = 0.000 ; free physical = 2925 ; free virtual = 16488
+Time (s): cpu = 00:00:00.17 ; elapsed = 00:00:00.14 . Memory (MB): peak = 5629.203 ; gain = 0.000 ; free physical = 2926 ; free virtual = 16489
+Netlist sorting complete. Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.05 . Memory (MB): peak = 5629.203 ; gain = 0.000 ; free physical = 2926 ; free virtual = 16489
+Time (s): cpu = 00:00:23 ; elapsed = 00:00:19 . Memory (MB): peak = 5629.203 ; gain = 0.000 ; free physical = 2940 ; free virtual = 16502
+Time (s): cpu = 00:02:00 ; elapsed = 00:01:08 . Memory (MB): peak = 6078.727 ; gain = 449.523 ; free physical = 2359 ; free virtual = 15922
+Time (s): cpu = 00:02:00 ; elapsed = 00:01:08 . Memory (MB): peak = 6078.727 ; gain = 449.523 ; free physical = 2359 ; free virtual = 15922
+Time (s): cpu = 00:02:01 ; elapsed = 00:01:09 . Memory (MB): peak = 6078.727 ; gain = 449.523 ; free physical = 2359 ; free virtual = 15922
+Time (s): cpu = 00:03:28 ; elapsed = 00:01:44 . Memory (MB): peak = 6094.734 ; gain = 465.531 ; free physical = 2412 ; free virtual = 15976
+Time (s): cpu = 00:03:29 ; elapsed = 00:01:45 . Memory (MB): peak = 6094.734 ; gain = 465.531 ; free physical = 2412 ; free virtual = 15976
+Time (s): cpu = 00:03:47 ; elapsed = 00:01:50 . Memory (MB): peak = 6094.734 ; gain = 465.531 ; free physical = 2408 ; free virtual = 15972
+Time (s): cpu = 00:04:01 ; elapsed = 00:01:55 . Memory (MB): peak = 6094.734 ; gain = 465.531 ; free physical = 2408 ; free virtual = 15972
+Time (s): cpu = 00:04:01 ; elapsed = 00:01:55 . Memory (MB): peak = 6094.734 ; gain = 465.531 ; free physical = 2408 ; free virtual = 15972
+Time (s): cpu = 00:04:01 ; elapsed = 00:01:55 . Memory (MB): peak = 6094.734 ; gain = 465.531 ; free physical = 2408 ; free virtual = 15972
+Time (s): cpu = 00:04:01 ; elapsed = 00:01:55 . Memory (MB): peak = 6094.734 ; gain = 465.531 ; free physical = 2408 ; free virtual = 15972
+Time (s): cpu = 00:04:01 ; elapsed = 00:01:56 . Memory (MB): peak = 6094.734 ; gain = 465.531 ; free physical = 2408 ; free virtual = 15972
+Time (s): cpu = 00:04:02 ; elapsed = 00:01:56 . Memory (MB): peak = 6094.734 ; gain = 465.531 ; free physical = 2408 ; free virtual = 15972
+Time (s): cpu = 00:06:59 ; elapsed = 00:03:16 . Memory (MB): peak = 6244.734 ; gain = 615.531 ; free physical = 2232 ; free virtual = 15797
+Time (s): cpu = 00:07:20 ; elapsed = 00:03:23 . Memory (MB): peak = 6244.734 ; gain = 615.531 ; free physical = 2235 ; free virtual = 15800
+Netlist sorting complete. Time (s): cpu = 00:00:00.42 ; elapsed = 00:00:00.42 . Memory (MB): peak = 6244.734 ; gain = 0.000 ; free physical = 2232 ; free virtual = 15797
+Netlist sorting complete. Time (s): cpu = 00:00:00.37 ; elapsed = 00:00:00.37 . Memory (MB): peak = 6244.734 ; gain = 0.000 ; free physical = 2233 ; free virtual = 15799
+Netlist sorting complete. Time (s): cpu = 00:00:00.18 ; elapsed = 00:00:00.19 . Memory (MB): peak = 6244.734 ; gain = 0.000 ; free physical = 2236 ; free virtual = 15801
+Netlist sorting complete. Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.08 . Memory (MB): peak = 6244.734 ; gain = 0.000 ; free physical = 2236 ; free virtual = 15801
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 6244.734 ; gain = 0.000 ; free physical = 2236 ; free virtual = 15801
+Time (s): cpu = 00:08:10 ; elapsed = 00:04:05 . Memory (MB): peak = 6244.734 ; gain = 615.531 ; free physical = 2236 ; free virtual = 15801
+Time (s): cpu = 00:08:40 ; elapsed = 00:04:17 . Memory (MB): peak = 6273.734 ; gain = 644.531 ; free physical = 2192 ; free virtual = 15757
+Time (s): cpu = 00:08:40 ; elapsed = 00:04:17 . Memory (MB): peak = 6273.734 ; gain = 644.531 ; free physical = 2192 ; free virtual = 15757
+Time (s): cpu = 00:09:11 ; elapsed = 00:04:26 . Memory (MB): peak = 6273.734 ; gain = 644.531 ; free physical = 2194 ; free virtual = 15760
+Time (s): cpu = 00:09:44 ; elapsed = 00:04:42 . Memory (MB): peak = 6273.734 ; gain = 644.531 ; free physical = 2199 ; free virtual = 15764
+Time (s): cpu = 00:12:23 ; elapsed = 00:05:31 . Memory (MB): peak = 6363.828 ; gain = 734.625 ; free physical = 2102 ; free virtual = 15667
+Time (s): cpu = 00:12:31 ; elapsed = 00:05:38 . Memory (MB): peak = 6363.828 ; gain = 734.625 ; free physical = 2102 ; free virtual = 15667
+Time (s): cpu = 00:12:32 ; elapsed = 00:05:38 . Memory (MB): peak = 6363.828 ; gain = 734.625 ; free physical = 2102 ; free virtual = 15667
+Time (s): cpu = 00:12:57 ; elapsed = 00:05:46 . Memory (MB): peak = 6363.828 ; gain = 734.625 ; free physical = 2101 ; free virtual = 15667
+Time (s): cpu = 00:12:58 ; elapsed = 00:05:46 . Memory (MB): peak = 6363.828 ; gain = 734.625 ; free physical = 2106 ; free virtual = 15672
+Time (s): cpu = 00:13:20 ; elapsed = 00:05:56 . Memory (MB): peak = 6414.828 ; gain = 785.625 ; free physical = 2088 ; free virtual = 15654
+Time (s): cpu = 00:13:21 ; elapsed = 00:05:56 . Memory (MB): peak = 6414.828 ; gain = 785.625 ; free physical = 2088 ; free virtual = 15654
+Time (s): cpu = 00:13:22 ; elapsed = 00:05:57 . Memory (MB): peak = 6414.828 ; gain = 785.625 ; free physical = 2088 ; free virtual = 15654
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:03 . Memory (MB): peak = 6414.828 ; gain = 0.000 ; free physical = 2077 ; free virtual = 15643
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:14 . Memory (MB): peak = 6414.828 ; gain = 0.000 ; free physical = 2073 ; free virtual = 15639
+Time (s): cpu = 00:16:03 ; elapsed = 00:07:01 . Memory (MB): peak = 6414.828 ; gain = 785.625 ; free physical = 2073 ; free virtual = 15639
+Time (s): cpu = 00:16:29 ; elapsed = 00:07:26 . Memory (MB): peak = 6414.828 ; gain = 785.625 ; free physical = 2078 ; free virtual = 15644
+Time (s): cpu = 00:16:29 ; elapsed = 00:07:26 . Memory (MB): peak = 6414.828 ; gain = 785.625 ; free physical = 2078 ; free virtual = 15644
+Time (s): cpu = 00:16:29 ; elapsed = 00:07:26 . Memory (MB): peak = 6414.828 ; gain = 785.625 ; free physical = 2078 ; free virtual = 15644
+Netlist sorting complete. Time (s): cpu = 00:00:00.28 ; elapsed = 00:00:00.28 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1966 ; free virtual = 15532
+Time (s): cpu = 00:16:53 ; elapsed = 00:07:36 . Memory (MB): peak = 6498.828 ; gain = 869.625 ; free physical = 1966 ; free virtual = 15532
+Time (s): cpu = 00:16:54 ; elapsed = 00:07:37 . Memory (MB): peak = 6498.828 ; gain = 869.625 ; free physical = 1967 ; free virtual = 15533
+Time (s): cpu = 00:16:54 ; elapsed = 00:07:37 . Memory (MB): peak = 6498.828 ; gain = 869.625 ; free physical = 1967 ; free virtual = 15533
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1967 ; free virtual = 15533
+Time (s): cpu = 00:16:54 ; elapsed = 00:07:37 . Memory (MB): peak = 6498.828 ; gain = 869.625 ; free physical = 1967 ; free virtual = 15533
+Time (s): cpu = 00:16:55 ; elapsed = 00:07:37 . Memory (MB): peak = 6498.828 ; gain = 869.625 ; free physical = 1967 ; free virtual = 15533
+Time (s): cpu = 00:16:55 ; elapsed = 00:07:38 . Memory (MB): peak = 6498.828 ; gain = 869.625 ; free physical = 1967 ; free virtual = 15533
+place_design: Time (s): cpu = 00:17:07 ; elapsed = 00:07:45 . Memory (MB): peak = 6498.828 ; gain = 933.656 ; free physical = 1968 ; free virtual = 15535
+report_io: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.52 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1946 ; free virtual = 15512
+report_control_sets: Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.84 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1926 ; free virtual = 15492
+Wrote PlaceDB: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1926 ; free virtual = 15493
+Wrote PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1926 ; free virtual = 15493
+Write ShapeDB Complete: Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.4 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1903 ; free virtual = 15500
+Wrote RouteStorage: Time (s): cpu = 00:00:04 ; elapsed = 00:00:00.88 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1870 ; free virtual = 15490
+Wrote PlaceStorage: Time (s): cpu = 00:00:14 ; elapsed = 00:00:05 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1735 ; free virtual = 15494
+Wrote Netlist Cache: Time (s): cpu = 00:00:00.45 ; elapsed = 00:00:00.24 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1711 ; free virtual = 15492
+Wrote Device Cache: Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.02 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1711 ; free virtual = 15495
+Write Physdb Complete: Time (s): cpu = 00:00:18 ; elapsed = 00:00:06 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1711 ; free virtual = 15495
+write_checkpoint: Time (s): cpu = 00:00:23 ; elapsed = 00:00:12 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1878 ; free virtual = 15504
+Time (s): cpu = 00:01:17 ; elapsed = 00:00:28 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1920 ; free virtual = 15547
+phys_opt_design: Time (s): cpu = 00:01:19 ; elapsed = 00:00:30 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1921 ; free virtual = 15547
+Wrote PlaceDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1922 ; free virtual = 15549
+Wrote PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1922 ; free virtual = 15549
+Write ShapeDB Complete: Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.39 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1873 ; free virtual = 15530
+Wrote RouteStorage: Time (s): cpu = 00:00:03 ; elapsed = 00:00:00.8 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1847 ; free virtual = 15522
+Wrote PlaceStorage: Time (s): cpu = 00:00:13 ; elapsed = 00:00:05 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1654 ; free virtual = 15472
+Wrote Netlist Cache: Time (s): cpu = 00:00:00.43 ; elapsed = 00:00:00.23 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1622 ; free virtual = 15462
+Wrote Device Cache: Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.02 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1622 ; free virtual = 15465
+Write Physdb Complete: Time (s): cpu = 00:00:17 ; elapsed = 00:00:06 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1622 ; free virtual = 15465
+write_checkpoint: Time (s): cpu = 00:00:25 ; elapsed = 00:00:12 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1809 ; free virtual = 15495
+Nodegraph reading from file.  Time (s): cpu = 00:00:00.55 ; elapsed = 00:00:00.56 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1818 ; free virtual = 15504
+Time (s): cpu = 00:01:24 ; elapsed = 00:00:24 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1853 ; free virtual = 15539
+Time (s): cpu = 00:01:25 ; elapsed = 00:00:24 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1853 ; free virtual = 15539
+Time (s): cpu = 00:01:25 ; elapsed = 00:00:25 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1854 ; free virtual = 15540
+Time (s): cpu = 00:01:31 ; elapsed = 00:00:27 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1854 ; free virtual = 15540
+Time (s): cpu = 00:02:04 ; elapsed = 00:00:40 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1864 ; free virtual = 15550
+Time (s): cpu = 00:04:16 ; elapsed = 00:01:29 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1861 ; free virtual = 15547
+Time (s): cpu = 00:04:20 ; elapsed = 00:01:30 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1861 ; free virtual = 15547
+Time (s): cpu = 00:04:21 ; elapsed = 00:01:31 . Memory (MB): peak = 6498.828 ; gain = 0.000 ; free physical = 1861 ; free virtual = 15547
+Time (s): cpu = 00:07:40 ; elapsed = 00:03:27 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1731 ; free virtual = 15418
+Time (s): cpu = 00:07:42 ; elapsed = 00:03:27 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1730 ; free virtual = 15417
+Time (s): cpu = 00:17:00 ; elapsed = 00:07:41 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1747 ; free virtual = 15448
+Time (s): cpu = 00:17:01 ; elapsed = 00:07:42 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1747 ; free virtual = 15447
+Time (s): cpu = 00:17:01 ; elapsed = 00:07:42 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1747 ; free virtual = 15447
+Time (s): cpu = 00:17:02 ; elapsed = 00:07:42 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1747 ; free virtual = 15447
+Time (s): cpu = 00:17:03 ; elapsed = 00:07:42 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1747 ; free virtual = 15447
+Time (s): cpu = 00:17:03 ; elapsed = 00:07:42 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1747 ; free virtual = 15447
+Time (s): cpu = 00:17:41 ; elapsed = 00:07:54 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1747 ; free virtual = 15448
+Time (s): cpu = 00:17:41 ; elapsed = 00:07:54 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1747 ; free virtual = 15448
+Time (s): cpu = 00:18:11 ; elapsed = 00:08:03 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1746 ; free virtual = 15447
+Time (s): cpu = 00:18:13 ; elapsed = 00:08:04 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1747 ; free virtual = 15448
+Time (s): cpu = 00:18:13 ; elapsed = 00:08:04 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1746 ; free virtual = 15447
+Time (s): cpu = 00:18:25 ; elapsed = 00:08:12 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1745 ; free virtual = 15446
+Time (s): cpu = 00:18:26 ; elapsed = 00:08:12 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1745 ; free virtual = 15446
+Time (s): cpu = 00:18:27 ; elapsed = 00:08:13 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1744 ; free virtual = 15445
+Time (s): cpu = 00:18:28 ; elapsed = 00:08:13 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1744 ; free virtual = 15445
+Time (s): cpu = 00:18:29 ; elapsed = 00:08:14 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1744 ; free virtual = 15445
+Time (s): cpu = 00:18:30 ; elapsed = 00:08:14 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1744 ; free virtual = 15445
+route_design: Time (s): cpu = 00:18:31 ; elapsed = 00:08:15 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1744 ; free virtual = 15445
+report_drc: Time (s): cpu = 00:01:57 ; elapsed = 00:00:37 . Memory (MB): peak = 6621.828 ; gain = 0.000 ; free physical = 1704 ; free virtual = 15407
+report_methodology: Time (s): cpu = 00:01:31 ; elapsed = 00:00:30 . Memory (MB): peak = 6621.828 ; gain = 0.000 ; free physical = 1696 ; free virtual = 15399
+report_timing_summary: Time (s): cpu = 00:01:19 ; elapsed = 00:00:36 . Memory (MB): peak = 6621.828 ; gain = 0.000 ; free physical = 1699 ; free virtual = 15403
+report_power: Time (s): cpu = 00:00:56 ; elapsed = 00:00:28 . Memory (MB): peak = 6629.832 ; gain = 8.004 ; free physical = 1665 ; free virtual = 15385
+report_clock_utilization: Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1658 ; free virtual = 15377
+generate_parallel_reports: Time (s): cpu = 00:05:54 ; elapsed = 00:02:21 . Memory (MB): peak = 6629.832 ; gain = 8.004 ; free physical = 1658 ; free virtual = 15377
+Wrote PlaceDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1657 ; free virtual = 15377
+Wrote PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1657 ; free virtual = 15377
+Write ShapeDB Complete: Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.39 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1611 ; free virtual = 15363
+Wrote RouteStorage: Time (s): cpu = 00:00:09 ; elapsed = 00:00:02 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1508 ; free virtual = 15360
+Wrote PlaceStorage: Time (s): cpu = 00:00:11 ; elapsed = 00:00:04 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1419 ; free virtual = 15359
+Wrote Netlist Cache: Time (s): cpu = 00:00:00.45 ; elapsed = 00:00:00.23 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1396 ; free virtual = 15358
+Wrote Device Cache: Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.02 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1396 ; free virtual = 15361
+Write Physdb Complete: Time (s): cpu = 00:00:20 ; elapsed = 00:00:07 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1396 ; free virtual = 15361
+write_checkpoint: Time (s): cpu = 00:00:26 ; elapsed = 00:00:12 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1577 ; free virtual = 15367
+ Verification completed successfully
+Phase 10 Verifying routed nets | Checksum: 20c1f8722
+
+Time (s): cpu = 00:18:13 ; elapsed = 00:08:04 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1746 ; free virtual = 15447
+
+Phase 11 Depositing Routes
+Phase 11 Depositing Routes | Checksum: 20c1f8722
+
+Time (s): cpu = 00:18:25 ; elapsed = 00:08:12 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1745 ; free virtual = 15446
+
+Phase 12 Resolve XTalk
+Phase 12 Resolve XTalk | Checksum: 20c1f8722
+
+Time (s): cpu = 00:18:26 ; elapsed = 00:08:12 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1745 ; free virtual = 15446
+
+Phase 13 Post Process Routing
+Phase 13 Post Process Routing | Checksum: 20c1f8722
+
+Time (s): cpu = 00:18:27 ; elapsed = 00:08:13 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1744 ; free virtual = 15445
+
+Phase 14 Post Router Timing
+INFO: [Route 35-57] Estimated Timing Summary | WNS=0.053  | TNS=0.000  | WHS=0.028  | THS=0.000  |
+
+INFO: [Route 35-327] The final timing numbers are based on the router estimated timing analysis. For a complete and accurate timing signoff, please run report_timing_summary.
+Phase 14 Post Router Timing | Checksum: 20c1f8722
+
+Time (s): cpu = 00:18:28 ; elapsed = 00:08:13 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1744 ; free virtual = 15445
+Total Elapsed time in route_design: 493.31 secs
+
+Phase 15 Post-Route Event Processing
+Phase 15 Post-Route Event Processing | Checksum: 1a4991b7d
+
+Time (s): cpu = 00:18:29 ; elapsed = 00:08:14 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1744 ; free virtual = 15445
+INFO: [Route 35-16] Router Completed Successfully
+Ending Routing Task | Checksum: 1a4991b7d
+
+Time (s): cpu = 00:18:30 ; elapsed = 00:08:14 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1744 ; free virtual = 15445
+
+Routing Is Done.
+INFO: [Common 17-83] Releasing license: Vivado_Implementation
+263 Infos, 106 Warnings, 0 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:18:31 ; elapsed = 00:08:15 . Memory (MB): peak = 6621.828 ; gain = 123.000 ; free physical = 1744 ; free virtual = 15445
+INFO: [Vivado 12-24828] Executing command : report_drc -file bd_0_wrapper_drc_routed.rpt -pb bd_0_wrapper_drc_routed.pb -rpx bd_0_wrapper_drc_routed.rpx
+Command: report_drc -file bd_0_wrapper_drc_routed.rpt -pb bd_0_wrapper_drc_routed.pb -rpx bd_0_wrapper_drc_routed.rpx
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "ap_clk" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+INFO: [DRC 23-27] Running DRC with 4 threads
+WARNING: [DRC 23-814] Not all possible (connectivity based) DRCs may have been run because this design is seen as Out of Context.
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C21/hls/impl/verilog/project.runs/impl_1/bd_0_wrapper_drc_routed.rpt.
+report_drc completed successfully
+report_drc: Time (s): cpu = 00:01:57 ; elapsed = 00:00:37 . Memory (MB): peak = 6621.828 ; gain = 0.000 ; free physical = 1704 ; free virtual = 15407
+INFO: [Vivado 12-24828] Executing command : report_methodology -file bd_0_wrapper_methodology_drc_routed.rpt -pb bd_0_wrapper_methodology_drc_routed.pb -rpx bd_0_wrapper_methodology_drc_routed.rpx
+Command: report_methodology -file bd_0_wrapper_methodology_drc_routed.rpt -pb bd_0_wrapper_methodology_drc_routed.pb -rpx bd_0_wrapper_methodology_drc_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-133] Running Methodology with 4 threads
+WARNING: [DRC 23-814] Not all possible (connectivity based) DRCs may have been run because this design is seen as Out of Context.
+INFO: [Vivado_Tcl 2-1520] The results of Report Methodology are in file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C21/hls/impl/verilog/project.runs/impl_1/bd_0_wrapper_methodology_drc_routed.rpt.
+report_methodology completed successfully
+report_methodology: Time (s): cpu = 00:01:31 ; elapsed = 00:00:30 . Memory (MB): peak = 6621.828 ; gain = 0.000 ; free physical = 1696 ; free virtual = 15399
+INFO: [Vivado 12-24828] Executing command : report_timing_summary -max_paths 10 -routable_nets -report_unconstrained -file bd_0_wrapper_timing_summary_routed.rpt -pb bd_0_wrapper_timing_summary_routed.pb -rpx bd_0_wrapper_timing_summary_routed.rpx -warn_on_violation 
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2LV, Temperature grade: C, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+report_timing_summary: Time (s): cpu = 00:01:19 ; elapsed = 00:00:36 . Memory (MB): peak = 6621.828 ; gain = 0.000 ; free physical = 1699 ; free virtual = 15403
+INFO: [Vivado 12-24838] Running report commands "report_bus_skew, report_incremental_reuse, report_route_status" in parallel.
+Running report generation with 3 threads.
+INFO: [Vivado 12-24828] Executing command : report_incremental_reuse -file bd_0_wrapper_incremental_reuse_routed.rpt
+INFO: [Vivado_Tcl 4-1062] Incremental flow is disabled. No incremental reuse Info to report.
+INFO: [Vivado 12-24828] Executing command : report_bus_skew -warn_on_violation -file bd_0_wrapper_bus_skew_routed.rpt -pb bd_0_wrapper_bus_skew_routed.pb -rpx bd_0_wrapper_bus_skew_routed.rpx
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2LV, Temperature grade: C, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Vivado 12-24828] Executing command : report_route_status -file bd_0_wrapper_route_status.rpt -pb bd_0_wrapper_route_status.pb
+INFO: [Vivado 12-24828] Executing command : report_power -file bd_0_wrapper_power_routed.rpt -pb bd_0_wrapper_power_summary_routed.pb -rpx bd_0_wrapper_power_routed.rpx
+Command: report_power -file bd_0_wrapper_power_routed.rpt -pb bd_0_wrapper_power_summary_routed.pb -rpx bd_0_wrapper_power_routed.rpx
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+283 Infos, 109 Warnings, 0 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+report_power: Time (s): cpu = 00:00:56 ; elapsed = 00:00:28 . Memory (MB): peak = 6629.832 ; gain = 8.004 ; free physical = 1665 ; free virtual = 15385
+INFO: [Vivado 12-24828] Executing command : report_clock_utilization -file bd_0_wrapper_clock_utilization_routed.rpt
+report_clock_utilization: Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1658 ; free virtual = 15377
+generate_parallel_reports: Time (s): cpu = 00:05:54 ; elapsed = 00:02:21 . Memory (MB): peak = 6629.832 ; gain = 8.004 ; free physical = 1658 ; free virtual = 15377
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Wrote PlaceDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1657 ; free virtual = 15377
+Wrote PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1657 ; free virtual = 15377
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Write ShapeDB Complete: Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.39 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1611 ; free virtual = 15363
+Writing XDEF routing special nets.
+Wrote RouteStorage: Time (s): cpu = 00:00:09 ; elapsed = 00:00:02 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1508 ; free virtual = 15360
+Wrote PlaceStorage: Time (s): cpu = 00:00:11 ; elapsed = 00:00:04 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1419 ; free virtual = 15359
+Wrote Netlist Cache: Time (s): cpu = 00:00:00.45 ; elapsed = 00:00:00.23 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1396 ; free virtual = 15358
+Wrote Device Cache: Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.02 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1396 ; free virtual = 15361
+Write Physdb Complete: Time (s): cpu = 00:00:20 ; elapsed = 00:00:07 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1396 ; free virtual = 15361
+INFO: [Common 17-1381] The checkpoint '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C21/hls/impl/verilog/project.runs/impl_1/bd_0_wrapper_routed.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:00:26 ; elapsed = 00:00:12 . Memory (MB): peak = 6629.832 ; gain = 0.000 ; free physical = 1577 ; free virtual = 15367
+INFO: [Common 17-206] Exiting Vivado at Tue Oct 13 11:11:02 2026...

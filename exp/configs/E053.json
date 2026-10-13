@@ -1,0 +1,25 @@
+{
+  "changes": "Standalone PE microbenchmark, not a complete SRCNN design. 64 sample operands; explicit bit-exact integer checker.",
+  "clock": 10,
+  "conclusion": "Record operator mapping evidence and compare to network DSP/LUT budgets.",
+  "defines": {
+    "EXP_FABRIC": 1,
+    "EXP_MUL_WIDTH": 8
+  },
+  "design": "designs/micro_multiplier",
+  "id": "E053",
+  "ii_targets": {
+    "samples": 1
+  },
+  "interpretation": "Pending actual mapping, loop II and resource report. Whole-kernel latency does not describe a network frame.",
+  "name": "mul8_fabric",
+  "notes": "microbenchmark only; exclude latency from network Pareto; constants are explicit representative integers",
+  "precision": "i8_i8_i16",
+  "purpose": "Measure LUT/FF for signed 8x8 fabric multiply with II=1 and exhaustive operand-pair testing.",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 5,
+  "tb_files": [
+    "exp/tb/micro_multiplier.cpp"
+  ],
+  "top": "benchmark"
+}

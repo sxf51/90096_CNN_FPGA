@@ -1,0 +1,42 @@
+{
+  "config_sha256": "6c0ea6d8ce791bd01bf741163bf2f3c41e3ad9b56a79f57c4899798575668ea5",
+  "configuration": {
+    "changes": "Use frozen parent F39 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Limit per-run placement/routing to 4 threads while synthesis remains single-threaded; preserve the serial hardware lock. Change only the implementation clock constraint; preserve parent HLS RTL.",
+    "clock": 3.33,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/winograd_c3_select_reg_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "DSP": 644.0,
+      "FF": 130422.0,
+      "LUT": 81518.0,
+      "T": 8.0,
+      "URAM": 0.0,
+      "basis": "Frozen F39 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: Fresh-workspace retry of F49 after actual MemAvailable0.3829193115GiB protection terminated its route, exit-15, OOM1 unchanged. Preserve F49 failure and frozen F39 source/RTL/init; F43 already passed changed-parameter RTL at558758/558787cycles within the original cycle gate, and all13 course images remain E017-exact. Predict644DSP/146BRAM18K from HLS, with routed physical resources unknown. Retain4.5ns, synthesis1 and placement-routing4 threads; the user explicitly requires two tasks with actual0.5GiB newest-task protection. No timing success or target-times-cycles performance is assumed before independently converged setup/hold, route status and resource gates.",
+      "latency_cycles": 525237.0
+    },
+    "id": "F52",
+    "implementation_backend": "serial_packaged_flow",
+    "implementation_clock_ns": 4.5,
+    "implementation_driver_template": "F89",
+    "implementation_threads": 4,
+    "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+    "memory_scheduler": true,
+    "name": "ws_impl_F39",
+    "operation": "impl",
+    "purpose": "Verify frozen F39 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: Fresh-workspace retry of F49 after actual MemAvailable0.3829193115GiB protection terminated its route, exit-15, OOM1 unchanged. Preserve F49 failure and frozen F39 source/RTL/init; F43 already passed changed-parameter RTL at558758/558787cycles within the original cycle gate, and all13 course images remain E017-exact. Predict644DSP/146BRAM18K from HLS, with routed physical resources unknown. Retain4.5ns, synthesis1 and placement-routing4 threads; the user explicitly requires two tasks with actual0.5GiB newest-task protection. No timing success or target-times-cycles performance is assumed before independently converged setup/hold, route status and resource gates.",
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 10800,
+    "validation_parent": "F39",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "F39"
+  },
+  "created_at": "2026-10-12T10:19:28+00:00",
+  "created_from_commit": "6df4fa42ef6306643552464071c28ac007a5ec8d",
+  "purpose_section": "Verify frozen F39 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: Fresh-workspace retry of F49 after actual MemAvailable0.3829193115GiB protection terminated its route, exit-15, OOM1 unchanged. Preserve F49 failure and frozen F39 source/RTL/init; F43 already passed changed-parameter RTL at558758/558787cycles within the original cycle gate, and all13 course images remain E017-exact. Predict644DSP/146BRAM18K from HLS, with routed physical resources unknown. Retain4.5ns, synthesis1 and placement-routing4 threads; the user explicitly requires two tasks with actual0.5GiB newest-task protection. No timing success or target-times-cycles performance is assumed before independently converged setup/hold, route status and resource gates.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 81518.0 |\n| FF | 130422.0 |\n| latency_cycles | 525237.0 |\n| T | 8.0 |\n| basis | Frozen F39 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: Fresh-workspace retry of F49 after actual MemAvailable0.3829193115GiB protection terminated its route, exit-15, OOM1 unchanged. Preserve F49 failure and frozen F39 source/RTL/init; F43 already passed changed-parameter RTL at558758/558787cycles within the original cycle gate, and all13 course images remain E017-exact. Predict644DSP/146BRAM18K from HLS, with routed physical resources unknown. Retain4.5ns, synthesis1 and placement-routing4 threads; the user explicitly requires two tasks with actual0.5GiB newest-task protection. No timing success or target-times-cycles performance is assumed before independently converged setup/hold, route status and resource gates. |\n\nPlanned at 2026-10-12T10:19:28+00:00; estimates are hypotheses, not tool measurements."
+}

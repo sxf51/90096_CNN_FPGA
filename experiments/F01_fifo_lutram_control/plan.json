@@ -1,0 +1,52 @@
+{
+  "config_sha256": "6434cc6b25e6483e00e99684d513554953e5d93b4c4af4e8dd623e4db7cc4882",
+  "configuration": {
+    "T": 16,
+    "changes": "Independent gather source clone with one storage policy changed.",
+    "clock": 4,
+    "conclusion": "Keep storage only if measured resources improve while exact results and scheduling remain accepted.",
+    "defines": {
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_STORAGE": 1,
+      "EXP_T": 16,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/fifo_lutram_control",
+    "estimates": {
+      "BRAM18K": 96,
+      "Conv1_DSP": 324,
+      "Conv2_DSP": 128,
+      "Conv3_DSP": 50,
+      "DSP": 505,
+      "LUT": 60000,
+      "T": 16,
+      "URAM": 0,
+      "basis": "E042 T16/4ns measured schedule and505 DSP. FIFO memory saving is72 BRAM18K; URAM line control replaces36 BRAM18K with4*5 URAM. HLS may insert different storage latency.",
+      "latency_cycles": 2014678
+    },
+    "fixed": true,
+    "id": "F01",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Separate memory capacity from granularity/wide-port fragmentation. Compare II, FIFO mapping and timing, then verify finite FIFO behavior on final candidates.",
+    "name": "fifo_lutram_control",
+    "precision": "w10a10acc23",
+    "purpose": "Map shallow wide feature FIFOs explicitly to LUTRAM, retaining all depths and the original nested-loop schedule. The first-phase reports map about72 BRAM18K to Conv1 features,features2 and padded3; trade these for LUTs without changing arithmetic.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_f",
+    "storage": "lutram",
+    "unroll": "Cout/Cout/tap"
+  },
+  "created_at": "2026-10-10T22:10:30+00:00",
+  "created_from_commit": "0fc4d3ff9afb1d36f0b457debcbb06406e50fefc",
+  "purpose_section": "Map shallow wide feature FIFOs explicitly to LUTRAM, retaining all depths and the original nested-loop schedule. The first-phase reports map about72 BRAM18K to Conv1 features,features2 and padded3; trade these for LUTs without changing arithmetic.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 505 |\n| Conv1_DSP | 324 |\n| Conv2_DSP | 128 |\n| Conv3_DSP | 50 |\n| BRAM18K | 96 |\n| URAM | 0 |\n| LUT | 60000 |\n| T | 16 |\n| latency_cycles | 2014678 |\n| basis | E042 T16/4ns measured schedule and505 DSP. FIFO memory saving is72 BRAM18K; URAM line control replaces36 BRAM18K with4*5 URAM. HLS may insert different storage latency. |\n\nPlanned at 2026-10-10T22:10:30+00:00; estimates are hypotheses, not tool measurements."
+}

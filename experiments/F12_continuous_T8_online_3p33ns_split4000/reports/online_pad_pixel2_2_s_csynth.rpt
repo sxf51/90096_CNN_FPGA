@@ -1,0 +1,171 @@
+
+
+================================================================
+== Vitis HLS Report for 'online_pad_pixel2_2_s'
+================================================================
+* Date:           Sun Oct 11 12:54:07 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        F12
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.33 ns|  2.377 ns|     0.90 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-------+-------+---------+
+    |  Latency (cycles) |  Latency (absolute) |    Interval   | Pipeline|
+    |   min   |   max   |    min   |    max   |  min  |  max  |   Type  |
+    +---------+---------+----------+----------+-------+-------+---------+
+    |    67361|    67361|  0.224 ms|  0.224 ms|  67361|  67361|       no|
+    +---------+---------+----------+----------+-------+-------+---------+
+
+    + Detail: 
+        * Instance: 
+        +----------------------------------------------------------------------------------+------------------------------------------------------------------------+---------+---------+----------+----------+-----+-----+-------------------+
+        |                                                                                  |                                                                        |  Latency (cycles) |  Latency (absolute) |  Interval |      Pipeline     |
+        |                                     Instance                                     |                                 Module                                 |   min   |   max   |    min   |    max   | min | max |        Type       |
+        +----------------------------------------------------------------------------------+------------------------------------------------------------------------+---------+---------+----------+----------+-----+-----+-------------------+
+        |grp_online_pad_pixel2_2_Pipeline_online_first_read_fu_42                          |online_pad_pixel2_2_Pipeline_online_first_read                          |      258|      258|  0.859 us|  0.859 us|    0|    0|  loop pipeline stp|
+        |grp_online_pad_pixel2_2_Pipeline_online_first_repeats_online_first_write_fu_50    |online_pad_pixel2_2_Pipeline_online_first_repeats_online_first_write    |      782|      782|  2.604 us|  2.604 us|    0|    0|  loop pipeline stp|
+        |grp_online_pad_pixel2_2_Pipeline_online_rows_online_columns_fu_57                 |online_pad_pixel2_2_Pipeline_online_rows_online_columns                 |    65791|    65791|  0.219 ms|  0.219 ms|    0|    0|  loop pipeline stp|
+        |grp_online_pad_pixel2_2_Pipeline_online_bottom_repeats_online_bottom_write_fu_66  |online_pad_pixel2_2_Pipeline_online_bottom_repeats_online_bottom_write  |      523|      523|  1.742 us|  1.742 us|    0|    0|  loop pipeline stp|
+        +----------------------------------------------------------------------------------+------------------------------------------------------------------------+---------+---------+----------+----------+-----+-----+-------------------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|       2|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|    1773|     696|    -|
+|Memory           |        9|     -|       0|       0|    -|
+|Multiplexer      |        -|     -|       0|     190|    -|
+|Register         |        -|     -|      13|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        9|     0|    1786|     888|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        3|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +----------------------------------------------------------------------------------+------------------------------------------------------------------------+---------+----+-----+-----+-----+
+    |                                     Instance                                     |                                 Module                                 | BRAM_18K| DSP|  FF | LUT | URAM|
+    +----------------------------------------------------------------------------------+------------------------------------------------------------------------+---------+----+-----+-----+-----+
+    |grp_online_pad_pixel2_2_Pipeline_online_bottom_repeats_online_bottom_write_fu_66  |online_pad_pixel2_2_Pipeline_online_bottom_repeats_online_bottom_write  |        0|   0|  356|  193|    0|
+    |grp_online_pad_pixel2_2_Pipeline_online_first_read_fu_42                          |online_pad_pixel2_2_Pipeline_online_first_read                          |        0|   0|  350|   79|    0|
+    |grp_online_pad_pixel2_2_Pipeline_online_first_repeats_online_first_write_fu_50    |online_pad_pixel2_2_Pipeline_online_first_repeats_online_first_write    |        0|   0|  356|  193|    0|
+    |grp_online_pad_pixel2_2_Pipeline_online_rows_online_columns_fu_57                 |online_pad_pixel2_2_Pipeline_online_rows_online_columns                 |        0|   0|  711|  231|    0|
+    +----------------------------------------------------------------------------------+------------------------------------------------------------------------+---------+----+-----+-----+-----+
+    |Total                                                                             |                                                                        |        0|   0| 1773|  696|    0|
+    +----------------------------------------------------------------------------------+------------------------------------------------------------------------+---------+----+-----+-----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +-------+--------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    | Memory|                   Module                   | BRAM_18K| FF| LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +-------+--------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |row_U  |online_pad_pixel2_2_s_row_RAM_2P_BRAM_1R1W  |        9|  0|   0|    0|   255|  320|     1|        81600|
+    +-------+--------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |Total  |                                            |        9|  0|   0|    0|   255|  320|     1|        81600|
+    +-------+--------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +-----------------+----------+----+---+----+------------+------------+
+    |  Variable Name  | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +-----------------+----------+----+---+----+------------+------------+
+    |ap_block_state1  |        or|   0|  0|   2|           1|           1|
+    +-----------------+----------+----+---+----+------------+------------+
+    |Total            |          |   0|  0|   2|           1|           1|
+    +-----------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +----------------+----+-----------+-----+-----------+
+    |      Name      | LUT| Input Size| Bits| Total Bits|
+    +----------------+----+-----------+-----+-----------+
+    |ap_NS_fsm       |  49|          9|    1|          9|
+    |ap_done         |   9|          2|    1|          2|
+    |features2_read  |  14|          3|    1|          3|
+    |padded3_din     |  14|          3|  320|        960|
+    |padded3_write   |  20|          4|    1|          4|
+    |row_address0    |  14|          3|    8|         24|
+    |row_address1    |  14|          3|    8|         24|
+    |row_ce0         |  14|          3|    1|          3|
+    |row_ce1         |  14|          3|    1|          3|
+    |row_d1          |  14|          3|  320|        960|
+    |row_we1         |  14|          3|    1|          3|
+    +----------------+----+-----------+-----+-----------+
+    |Total           | 190|         39|  663|       1995|
+    +----------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-----------------------------------------------------------------------------------------------+---+----+-----+-----------+
+    |                                              Name                                             | FF| LUT| Bits| Const Bits|
+    +-----------------------------------------------------------------------------------------------+---+----+-----+-----------+
+    |ap_CS_fsm                                                                                      |  8|   0|    8|          0|
+    |ap_done_reg                                                                                    |  1|   0|    1|          0|
+    |grp_online_pad_pixel2_2_Pipeline_online_bottom_repeats_online_bottom_write_fu_66_ap_start_reg  |  1|   0|    1|          0|
+    |grp_online_pad_pixel2_2_Pipeline_online_first_read_fu_42_ap_start_reg                          |  1|   0|    1|          0|
+    |grp_online_pad_pixel2_2_Pipeline_online_first_repeats_online_first_write_fu_50_ap_start_reg    |  1|   0|    1|          0|
+    |grp_online_pad_pixel2_2_Pipeline_online_rows_online_columns_fu_57_ap_start_reg                 |  1|   0|    1|          0|
+    +-----------------------------------------------------------------------------------------------+---+----+-----+-----------+
+    |Total                                                                                          | 13|   0|   13|          0|
+    +-----------------------------------------------------------------------------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++--------------------------+-----+-----+------------+-----------------------+--------------+
+|         RTL Ports        | Dir | Bits|  Protocol  |     Source Object     |    C Type    |
++--------------------------+-----+-----+------------+-----------------------+--------------+
+|ap_clk                    |   in|    1|  ap_ctrl_hs|  online_pad<pixel2, 2>|  return value|
+|ap_rst                    |   in|    1|  ap_ctrl_hs|  online_pad<pixel2, 2>|  return value|
+|ap_start                  |   in|    1|  ap_ctrl_hs|  online_pad<pixel2, 2>|  return value|
+|ap_done                   |  out|    1|  ap_ctrl_hs|  online_pad<pixel2, 2>|  return value|
+|ap_continue               |   in|    1|  ap_ctrl_hs|  online_pad<pixel2, 2>|  return value|
+|ap_idle                   |  out|    1|  ap_ctrl_hs|  online_pad<pixel2, 2>|  return value|
+|ap_ready                  |  out|    1|  ap_ctrl_hs|  online_pad<pixel2, 2>|  return value|
+|features2_dout            |   in|  320|     ap_fifo|              features2|       pointer|
+|features2_empty_n         |   in|    1|     ap_fifo|              features2|       pointer|
+|features2_read            |  out|    1|     ap_fifo|              features2|       pointer|
+|features2_num_data_valid  |   in|    3|     ap_fifo|              features2|       pointer|
+|features2_fifo_cap        |   in|    3|     ap_fifo|              features2|       pointer|
+|padded3_din               |  out|  320|     ap_fifo|                padded3|       pointer|
+|padded3_full_n            |   in|    1|     ap_fifo|                padded3|       pointer|
+|padded3_write             |  out|    1|     ap_fifo|                padded3|       pointer|
+|padded3_num_data_valid    |   in|   32|     ap_fifo|                padded3|       pointer|
+|padded3_fifo_cap          |   in|   32|     ap_fifo|                padded3|       pointer|
++--------------------------+-----+-----+------------+-----------------------+--------------+
+

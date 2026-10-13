@@ -1,0 +1,171 @@
+
+
+================================================================
+== Vitis HLS Report for 'reorder_rows'
+================================================================
+* Date:           Sun Oct 11 09:30:32 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        W07
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|  2.384 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-------+-------+-----------------------------------------+
+    |  Latency (cycles) |  Latency (absolute) |    Interval   |                 Pipeline                |
+    |   min   |   max   |    min   |    max   |  min  |  max  |                   Type                  |
+    +---------+---------+----------+----------+-------+-------+-----------------------------------------+
+    |    65027|    65027|  0.260 ms|  0.260 ms|  65026|  65026|  loop auto-rewind stp (delay=0 cycle(s))|
+    +---------+---------+----------+----------+-------+-------+-----------------------------------------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +------------------------------+---------+---------+----------+-----------+-----------+-------+----------+
+        |                              |  Latency (cycles) | Iteration|  Initiation Interval  |  Trip |          |
+        |           Loop Name          |   min   |   max   |  Latency |  achieved |   target  | Count | Pipelined|
+        +------------------------------+---------+---------+----------+-----------+-----------+-------+----------+
+        |- raster_rows_raster_columns  |    65025|    65025|         2|          1|          1|  65025|       yes|
+        +------------------------------+---------+---------+----------+-----------+-----------+-------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     113|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|     113|    -|
+|Register         |        -|     -|      37|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|      37|     226|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |add_ln175_1_fu_141_p2             |         +|   0|  0|  15|           8|           8|
+    |add_ln175_fu_118_p2               |         +|   0|  0|  23|          16|           1|
+    |add_ln176_fu_151_p2               |         +|   0|  0|  15|           8|           1|
+    |ap_condition_125                  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op36_read_state2     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op37_read_state2     |       and|   0|  0|   2|           1|           1|
+    |icmp_ln175_fu_112_p2              |      icmp|   0|  0|  23|          16|          10|
+    |icmp_ln176_fu_127_p2              |      icmp|   0|  0|  15|           8|           2|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state2_pp0_stage0_iter1  |        or|   0|  0|   2|           1|           1|
+    |empty_fu_133_p3                   |    select|   0|  0|   2|           1|           1|
+    |x_fu_157_p3                       |    select|   0|  0|   8|           1|           1|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0| 113|          64|          31|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +------------------------------------------------+----+-----------+-----+-----------+
+    |                      Name                      | LUT| Input Size| Bits| Total Bits|
+    +------------------------------------------------+----+-----------+-----+-----------+
+    |ap_done_int                                     |   9|          2|    1|          2|
+    |ap_enable_reg_pp0_iter1                         |   9|          2|    1|          2|
+    |ap_phi_mux_ref_tmp_0_0_0_0_0_0_in_phi_fu_82_p4  |  14|          3|  640|       1920|
+    |ap_sig_allocacmp_indvar_flatten_load            |   9|          2|   16|         32|
+    |ap_sig_allocacmp_x_4                            |   9|          2|    8|         16|
+    |ap_sig_allocacmp_y_load                         |   9|          2|    8|         16|
+    |bottom_blk_n                                    |   9|          2|    1|          2|
+    |indvar_flatten_fu_56                            |   9|          2|   16|         32|
+    |out_r_TDATA_blk_n                               |   9|          2|    1|          2|
+    |top_blk_n                                       |   9|          2|    1|          2|
+    |x_02_fu_48                                      |   9|          2|    8|         16|
+    |y_fu_52                                         |   9|          2|    8|         16|
+    +------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                           | 113|         25|  709|       2058|
+    +------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-------------------------+----+----+-----+-----------+
+    |           Name          | FF | LUT| Bits| Const Bits|
+    +-------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                |   1|   0|    1|          0|
+    |ap_done_reg              |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1  |   1|   0|    1|          0|
+    |icmp_ln175_reg_201       |   1|   0|    1|          0|
+    |indvar_flatten_fu_56     |  16|   0|   16|          0|
+    |trunc_ln175_reg_205      |   1|   0|    1|          0|
+    |x_02_fu_48               |   8|   0|    8|          0|
+    |y_fu_52                  |   8|   0|    8|          0|
+    +-------------------------+----+----+-----+-----------+
+    |Total                    |  37|   0|   37|          0|
+    +-------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------------------+-----+-----+------------+--------------+--------------+
+|       RTL Ports       | Dir | Bits|  Protocol  | Source Object|    C Type    |
++-----------------------+-----+-----+------------+--------------+--------------+
+|ap_clk                 |   in|    1|  ap_ctrl_hs|  reorder_rows|  return value|
+|ap_rst                 |   in|    1|  ap_ctrl_hs|  reorder_rows|  return value|
+|ap_start               |   in|    1|  ap_ctrl_hs|  reorder_rows|  return value|
+|ap_done                |  out|    1|  ap_ctrl_hs|  reorder_rows|  return value|
+|ap_continue            |   in|    1|  ap_ctrl_hs|  reorder_rows|  return value|
+|ap_idle                |  out|    1|  ap_ctrl_hs|  reorder_rows|  return value|
+|ap_ready               |  out|    1|  ap_ctrl_hs|  reorder_rows|  return value|
+|top_dout               |   in|  640|     ap_fifo|           top|       pointer|
+|top_empty_n            |   in|    1|     ap_fifo|           top|       pointer|
+|top_read               |  out|    1|     ap_fifo|           top|       pointer|
+|top_num_data_valid     |   in|   10|     ap_fifo|           top|       pointer|
+|top_fifo_cap           |   in|   10|     ap_fifo|           top|       pointer|
+|bottom_dout            |   in|  640|     ap_fifo|        bottom|       pointer|
+|bottom_empty_n         |   in|    1|     ap_fifo|        bottom|       pointer|
+|bottom_read            |  out|    1|     ap_fifo|        bottom|       pointer|
+|bottom_num_data_valid  |   in|   10|     ap_fifo|        bottom|       pointer|
+|bottom_fifo_cap        |   in|   10|     ap_fifo|        bottom|       pointer|
+|out_r_TREADY           |   in|    1|        axis|         out_r|       pointer|
+|out_r_TDATA            |  out|  640|        axis|         out_r|       pointer|
+|out_r_TVALID           |  out|    1|        axis|         out_r|       pointer|
++-----------------------+-----+-----+------------+--------------+--------------+
+

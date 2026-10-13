@@ -1,0 +1,13 @@
+{
+  "id": "E033", "name": "dataflow_fixed_T32_single", "stage": 3,
+  "design": "designs/dataflow_v1", "clock": 10, "T": 32, "fixed": true, "quick": true,
+  "precision": "w10a10acc23", "storage": "register", "unroll": "Cout/Cout/tap",
+  "defines": {"EXP_T": 32, "EXP_STORAGE": 0, "EXP_W_BITS": 10, "EXP_A_BITS": 10},
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "ii_targets": {"c1_fold": 1, "c2_fold": 1, "c3_fold": 1},
+  "purpose": "Measure T=32 fixed streaming architecture using one butterfly inference and mandatory exact output comparison. Ideal multiplication budget 251 DSP, compute floor 2,080,800 cycles plus load/padding/pipeline overhead.",
+  "changes": "Same top architecture and quantization as E031; test-only standalone Conv1 now preloads quantized input/weights, and fixed architecture checker performs one top inference. Float tests retain both original testbench calls. E031 independent original run is retained.",
+  "interpretation": "No unique butterfly input or correctness condition removed: the complete output must match actual-ap_fixed-boundary reference bit for bit, with explicit border MSE. Full AP fixed representative verification is separately running; Set14 quality cannot be inferred for changed quantization points.",
+  "conclusion": "Use measured T=32 scheduling and resource feasibility to choose the next coordinate scan."
+}

@@ -1,0 +1,52 @@
+{
+  "T": 8,
+  "changes": "Independent selected-loader copy in its own design directory, same T8 streams/banks/padding/IEEE interface as F29, but EXP_TREE_ADD_LATENCY=0. Preserve stage quantization and all runtime float arrays. Hardware execution follows W19/F29.",
+  "clock": 3.33,
+  "conclusion": "Keep all control results including infeasible points. Select the globally feasible exact fastest HLS point for candidate-specific all13 images, changed-parameter RTL and serial physical verification; missing comic remains provisional.",
+  "control_experiment": "F15",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 1,
+    "EXP_STORAGE": 1,
+    "EXP_T": 8,
+    "EXP_TREE_ADD_LATENCY": 0,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/continuous_param_T8_tree0_v1",
+  "estimates": {
+    "BRAM18K": 73,
+    "Conv1_DSP": 648,
+    "Conv2_DSP": 256,
+    "Conv3_DSP": 100,
+    "DSP": 1004,
+    "FF": 95000,
+    "LUT": 83746,
+    "T": 8,
+    "URAM": 0,
+    "basis": "Same1004 direct MAC DSPs and73 BRAM18K as F29. F28 paper61856 plus measured F15 dataflow55572 minus F25 dataflow37682, then4000 extra T8 private-bank/control allowance gives83746LUT, deliberately above81984. F15 measured86073FF versus F14 registered171235; reserve95000FF for new local control/loading. Frame bound65025*8=520200 plus6100 load/startup/drain cycles. The unregistered reduction may worsen estimated clock or II despite lower FF; only new reports decide.",
+    "latency_cycles": 526300,
+    "outside_LUT": 3170
+  },
+  "fixed": true,
+  "id": "F30",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare measured total/compute/private-loader LUT and FF with F29 and old F15. Check each fold II, complete butterfly bit identity, border MSE and clock-period times frame cycles. Explain estimate deviations>20%; reduced FF never excuses a missed LUT/timing/correctness gate.",
+  "name": "streamed_direct_T8_tree0",
+  "precision": "w10a10acc23",
+  "purpose": "After measured WS2 loader selection, compare direct T8 with the registered-tree F29 control, changing only reduction addition latency. Zero-latency fabric trees previously saved FF but increased LUT. Test this tradeoff with stream-owned banks at3.33ns; preserve all exact arithmetic and resource gates, even if LUT remains infeasible.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "require_weight_predecessor_free": true,
+  "scope": "frame",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_ws3",
+  "storage": "local_lutram_s2p",
+  "unroll": "Cout/Cout/tap"
+}

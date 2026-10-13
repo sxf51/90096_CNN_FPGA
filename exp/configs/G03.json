@@ -1,0 +1,47 @@
+{
+  "T": 32,
+  "changes": "Independent first-phase integer design copy; original float srcnn signature, ap_fixed input/weight casts and exact layer quantization remain unchanged.",
+  "clock": 10,
+  "conclusion": "Keep only exact borders and measured resource/latency evidence; finite-FIFO correctness requires final RTL verification.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_STORAGE": 1,
+    "EXP_T": 32,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/scatter_edge",
+  "estimates": {
+    "BRAM18K": 87,
+    "Conv1_DSP": 162,
+    "Conv2_DSP": 64,
+    "Conv3_DSP": 25,
+    "DSP": 254,
+    "LUT": 46000,
+    "T": 32,
+    "URAM": 0,
+    "basis": "251 scheduled multipliers plus3 measured output converters. Controls use E057/E060 timing; edge estimate scales source work and adds kernel/load control. BRAM87 is137 minus32 pad-row and18 padded-feature FIFO. Runtime merged weights require writable LUTRAM.",
+    "boundary_DSP": 3,
+    "latency_cycles": 3700000
+  },
+  "fixed": true,
+  "id": "G03",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare all three variants at identical precision, T32 and10ns. Separate partial-sum, pad-row, FIFO and merged-weight memory; explain estimates differing by over20 percent using per-module loops/resources.",
+  "name": "scatter_edge_kernels",
+  "precision": "w10a10acc23",
+  "purpose": "Merge replicate taps into nine source-position kernels and remove the32-channel padding row/FIFO. Five rotating32-bit sum rows and a5x5 register window avoid BRAM RMW dependencies. Merged coefficients retain fraction9 and need15 bits;9*32*25*15=108000bits of LUTRAM replaces8000 raw weight bits. Expect near-scatter latency with50 fewer BRAM18K, offset by kernel selection and wider arithmetic.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "scope": "frame",
+  "series": "G",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_g",
+  "storage": "lutram",
+  "unroll": "Cout/Cout/tap"
+}

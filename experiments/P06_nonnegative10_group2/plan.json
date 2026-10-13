@@ -1,0 +1,49 @@
+{
+  "config_sha256": "4e8431ffc2f140feea5022b106874ed58cb0d69efc39a835bcb1591d94d1774f",
+  "configuration": {
+    "T": 1,
+    "changes": "Independent PE kernel; 56 input triples per call. Exact direct-product checker, exhaustive signed8 triples, extremal homogeneous groups, and deterministic random wider data.",
+    "clock": 4,
+    "conclusion": "Use only numerically exact and measured primitives in full-network integration.",
+    "defines": {
+      "EXP_C_BITS": 10,
+      "EXP_GROUP": 2,
+      "EXP_NONNEG": 1,
+      "EXP_OPERAND_BITS": 8,
+      "EXP_PACK_MODE": 1
+    },
+    "design": "designs/packing_pe",
+    "estimates": {
+      "BRAM18K": 0,
+      "DSP": 1,
+      "LUT": 320,
+      "T": 1,
+      "URAM": 0,
+      "basis": "56 terms plus <=8 pipeline cycles; array interfaces need no internal frame memory. DSP estimates count one 27x18 multiplier per packed pair, two for direct control; LUT budget includes repair, control and possible fabric accumulation. Frame projection assumes1004 such PEs and excludes buffering/DDR.",
+      "frame_projection_DSP": 1004,
+      "frame_projection_T": 4,
+      "frame_projection_cycles": 260100,
+      "latency_cycles": 64
+    },
+    "id": "P06",
+    "ii_targets": {
+      "pack_terms": 1
+    },
+    "interpretation": "Compare measured DSP/operator LUT, achieved II and pipeline depth with the paper estimate. Inspect pre-adder mapping separately; a DSP count alone is insufficient.",
+    "name": "nonnegative10_group2",
+    "notes": "PE only; kernel latency is excluded from network rankings",
+    "precision": "raw8_raw10_exact_pair",
+    "purpose": "Share nonnegative raw10 activations0..511 between signed8 weights, decode every two terms. The signed18 low field bound is2*128*511=130816; seven-term INT8 accumulation is invalid here.",
+    "scope": "PE",
+    "series": "P",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_pe",
+    "tb_files": [
+      "exp/tb/packing.cpp"
+    ],
+    "top": "packing_pe"
+  },
+  "created_at": "2026-10-10T21:50:34+00:00",
+  "created_from_commit": "a657e3b298d9a8747a00f1dcb528c1d5432f8c5e",
+  "purpose_section": "Share nonnegative raw10 activations0..511 between signed8 weights, decode every two terms. The signed18 low field bound is2*128*511=130816; seven-term INT8 accumulation is invalid here.\n\nPre-implementation paper estimates (scope: PE):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 1 |\n| BRAM18K | 0 |\n| URAM | 0 |\n| LUT | 320 |\n| T | 1 |\n| latency_cycles | 64 |\n| frame_projection_T | 4 |\n| frame_projection_cycles | 260100 |\n| frame_projection_DSP | 1004 |\n| basis | 56 terms plus <=8 pipeline cycles; array interfaces need no internal frame memory. DSP estimates count one 27x18 multiplier per packed pair, two for direct control; LUT budget includes repair, control and possible fabric accumulation. Frame projection assumes1004 such PEs and excludes buffering/DDR. |\n\nPlanned at 2026-10-10T21:50:34+00:00; estimates are hypotheses, not tool measurements."
+}

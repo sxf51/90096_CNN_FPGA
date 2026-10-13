@@ -1,0 +1,131 @@
+
+
+================================================================
+== Synthesis Summary Report of 'packing_pe'
+================================================================
++ General Information: 
+    * Date:           Sun Oct 11 08:54:29 2026
+    * Version:        2026.1 (Build 6493734 on Jun 16 2026)
+    * Project:        P02
+    * Solution:       hls (Vivado IP Flow Target)
+    * Product family: zynquplus
+    * Target device:  xck26-sfvc784-2LV-c
+    
+
+* Performance & Resource Estimates: 
++---------------+------+---------------+----------+---------+------+----------+---------+---------+------+------+---------+----------+----------+-----+
+|    Modules    | Issue|               | Iteration|         | Trip |          |      Latency      |      |      |         |          |          |     |
+|    & Loops    | Type | Violation Type|  Latency | Interval| Count| Pipelined| (cycles)|   (ns)  | Slack| BRAM |   DSP   |    FF    |    LUT   | URAM|
++---------------+------+---------------+----------+---------+------+----------+---------+---------+------+------+---------+----------+----------+-----+
+|+ packing_pe   |     -|              -|         -|       56|     -|    rewind|       58|  232.000|  1.14|     -|  2 (~0%)|  16 (~0%)|  57 (~0%)|    -|
+| o pack_terms  |     -|              -|         2|        1|    56|       yes|       56|  224.000|  2.92|     -|        -|         -|         -|    -|
++---------------+------+---------------+----------+---------+------+----------+---------+---------+------+------+---------+----------+----------+-----+
+    Name Prefix: '+' for module, 'o' for loop, '*' for dataflow
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AP_MEMORY
++-----------------+-----------+----------+
+| Port            | Direction | Bitwidth |
++-----------------+-----------+----------+
+| a_address0      | out       | 6        |
+| a_q0            | in        | 8        |
+| b_address0      | out       | 6        |
+| b_q0            | in        | 8        |
+| c_address0      | out       | 6        |
+| c_q0            | in        | 8        |
+| first_address0  | out       | 6        |
+| first_d0        | out       | 32       |
+| second_address0 | out       | 6        |
+| second_d0       | out       | 32       |
++-----------------+-----------+----------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------------------------------+
+| Interface | Type       | Ports                             |
++-----------+------------+-----------------------------------+
+| ap_clk    | clock      | ap_clk                            |
+| ap_rst    | reset      | ap_rst                            |
+| ap_ctrl   | ap_ctrl_hs | ap_done ap_idle ap_ready ap_start |
++-----------+------------+-----------------------------------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+-------------+
+| Argument | Direction | Datatype    |
++----------+-----------+-------------+
+| a        | in        | ap_int<8>*  |
+| b        | in        | ap_int<8>*  |
+| c        | in        | ap_int<8>*  |
+| first    | out       | ap_int<32>* |
+| second   | out       | ap_int<32>* |
++----------+-----------+-------------+
+
+* SW-to-HW Mapping
++----------+-----------------+---------+----------+
+| Argument | HW Interface    | HW Type | HW Usage |
++----------+-----------------+---------+----------+
+| a        | a_address0      | port    | offset   |
+| a        | a_ce0           | port    |          |
+| a        | a_q0            | port    |          |
+| b        | b_address0      | port    | offset   |
+| b        | b_ce0           | port    |          |
+| b        | b_q0            | port    |          |
+| c        | c_address0      | port    | offset   |
+| c        | c_ce0           | port    |          |
+| c        | c_q0            | port    |          |
+| first    | first_address0  | port    | offset   |
+| first    | first_ce0       | port    |          |
+| first    | first_we0       | port    |          |
+| first    | first_d0        | port    |          |
+| second   | second_address0 | port    | offset   |
+| second   | second_ce0      | port    |          |
+| second   | second_we0      | port    |          |
+| second   | second_d0       | port    |          |
++----------+-----------------+---------+----------+
+
+
+================================================================
+== Bind Op Report
+================================================================
++-----------------------+-----+--------+---------------+-------+--------+---------+
+| Name                  | DSP | Pragma | Variable      | Op    | Impl   | Latency |
++-----------------------+-----+--------+---------------+-------+--------+---------+
+| + packing_pe          | 2   |        |               |       |        |         |
+|   mul_8s_8s_16_1_1_U1 | 1   | yes    | direct_first  | mul   | dsp    | 0       |
+|   mul_8s_8s_16_1_1_U2 | 1   | yes    | direct_second | mul   | dsp    | 0       |
+|   i_3_fu_148_p2       |     |        | i_3           | add   | fabric | 0       |
+|   icmp_ln35_fu_154_p2 |     |        | icmp_ln35     | seteq | auto   | 0       |
++-----------------------+-----+--------+---------------+-------+--------+---------+
+
+
+================================================================
+== Storage Report
+================================================================
+  No bind storage info in design
+
+================================================================
+== Pragma Report
+================================================================
+* Ignored Pragmas
++--------+---------+----------------------------------------------------+-----------------+
+| Type   | Options | Location                                           | Messages        |
++--------+---------+----------------------------------------------------+-----------------+
+| INLINE |         | in residual_product (P02/source/packing_pe.cpp:20) | Not implemented |
++--------+---------+----------------------------------------------------+-----------------+
+
+* Valid Pragma Syntax
++----------+----------------------------------------+----------------------------------------------+
+| Type     | Options                                | Location                                     |
++----------+----------------------------------------+----------------------------------------------+
+| PIPELINE | ii=1                                   | in packing_pe (P02/source/packing_pe.cpp:36) |
+| BIND_OP  | variable=direct_first op=mul impl=dsp  | in packing_pe (P02/source/packing_pe.cpp:46) |
+| BIND_OP  | variable=direct_second op=mul impl=dsp | in packing_pe (P02/source/packing_pe.cpp:47) |
++----------+----------------------------------------+----------------------------------------------+
+
+

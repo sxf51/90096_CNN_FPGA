@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'conv1_stream'
+================================================================
+* Date:           Sun Oct 11 09:30:32 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        W07
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|  2.834 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+--------+---------+----------+
+    |  Latency (cycles) |   Latency (absolute)  |     Interval     | Pipeline |
+    |   min   |   max   |    min    |    max    |   min  |   max   |   Type   |
+    +---------+---------+-----------+-----------+--------+---------+----------+
+    |  5693960|  5715601|  22.776 ms|  22.862 ms|  209618|  5715602|  dataflow|
+    +---------+---------+-----------+-----------+--------+---------+----------+
+
+    + Detail: 
+        * Instance: 
+        +-----------------+--------------+---------+---------+----------+-----------+--------+---------+-----------------------------------------+
+        |                 |              |  Latency (cycles) |  Latency (absolute)  |     Interval     |                 Pipeline                |
+        |     Instance    |    Module    |   min   |   max   |    min   |    max    |   min  |   max   |                   Type                  |
+        +-----------------+--------------+---------+---------+----------+-----------+--------+---------+-----------------------------------------+
+        |conv1_tiles_U0   |conv1_tiles   |   209617|  5715601|  0.838 ms|  22.862 ms|  209617|  5715601|                                       no|
+        |reorder_rows_U0  |reorder_rows  |    65027|    65027|  0.260 ms|   0.260 ms|   65026|    65026|  loop auto-rewind stp (delay=0 cycle(s))|
+        +-----------------+--------------+---------+---------+----------+-----------+--------+---------+-----------------------------------------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|       2|    -|
+|FIFO             |       72|     -|     322|     112|    0|
+|Instance         |        9|   144|   13908|    9975|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|       -|    -|
+|Register         |        -|     -|       -|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |       81|   144|   14230|   10089|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |       28|    11|       6|       8|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +-----------------+--------------+---------+-----+-------+------+-----+
+    |     Instance    |    Module    | BRAM_18K| DSP |   FF  |  LUT | URAM|
+    +-----------------+--------------+---------+-----+-------+------+-----+
+    |conv1_tiles_U0   |conv1_tiles   |        9|  144|  13871|  9749|    0|
+    |reorder_rows_U0  |reorder_rows  |        0|    0|     37|   226|    0|
+    +-----------------+--------------+---------+-----+-------+------+-----+
+    |Total            |              |        9|  144|  13908|  9975|    0|
+    +-----------------+--------------+---------+-----+-------+------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +----------+---------+-----+----+-----+------+-----+---------+
+    |   Name   | BRAM_18K|  FF | LUT| URAM| Depth| Bits| Size:D*B|
+    +----------+---------+-----+----+-----+------+-----+---------+
+    |bottom_U  |       36|  161|  56|    0|   512|  640|   327680|
+    |top_U     |       36|  161|  56|    0|   512|  640|   327680|
+    +----------+---------+-----+----+-----+------+-----+---------+
+    |Total     |       72|  322| 112|    0|  1024| 1280|   655360|
+    +----------+---------+-----+----+-----+------+-----+---------+
+
+    * Expression: 
+    +--------------+----------+----+---+----+------------+------------+
+    | Variable Name| Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +--------------+----------+----+---+----+------------+------------+
+    |ap_idle       |       and|   0|  0|   2|           1|           1|
+    +--------------+----------+----+---+----+------------+------------+
+    |Total         |          |   0|  0|   2|           1|           1|
+    +--------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------------------------------------------------------------------------------------+-----+-----+------------+---------------------------------------------------------------------------------------+--------------+
+|                                            RTL Ports                                           | Dir | Bits|  Protocol  |                                     Source Object                                     |    C Type    |
++------------------------------------------------------------------------------------------------+-----+-----+------------+---------------------------------------------------------------------------------------+--------------+
+|padded_dout                                                                                     |   in|   10|     ap_fifo|                                                                                 padded|       pointer|
+|padded_empty_n                                                                                  |   in|    1|     ap_fifo|                                                                                 padded|       pointer|
+|padded_read                                                                                     |  out|    1|     ap_fifo|                                                                                 padded|       pointer|
+|out_r_TDATA                                                                                     |  out|  640|        axis|                                                                                  out_r|       pointer|
+|out_r_TVALID                                                                                    |  out|    1|        axis|                                                                                  out_r|       pointer|
+|out_r_TREADY                                                                                    |   in|    1|        axis|                                                                                  out_r|       pointer|
+|biases_0_val1                                                                                   |   in|   10|   ap_stable|                                                                          biases_0_val1|        scalar|
+|biases_0_val1_ap_vld                                                                            |   in|    1|   ap_stable|                                                                          biases_0_val1|        scalar|
+|biases_1_val2                                                                                   |   in|   10|   ap_stable|                                                                          biases_1_val2|        scalar|
+|biases_1_val2_ap_vld                                                                            |   in|    1|   ap_stable|                                                                          biases_1_val2|        scalar|
+|biases_2_val3                                                                                   |   in|   10|   ap_stable|                                                                          biases_2_val3|        scalar|
+|biases_2_val3_ap_vld                                                                            |   in|    1|   ap_stable|                                                                          biases_2_val3|        scalar|
+|biases_3_val4                                                                                   |   in|   10|   ap_stable|                                                                          biases_3_val4|        scalar|
+|biases_3_val4_ap_vld                                                                            |   in|    1|   ap_stable|                                                                          biases_3_val4|        scalar|
+|biases_4_val5                                                                                   |   in|   10|   ap_stable|                                                                          biases_4_val5|        scalar|
+|biases_4_val5_ap_vld                                                                            |   in|    1|   ap_stable|                                                                          biases_4_val5|        scalar|
+|biases_5_val6                                                                                   |   in|   10|   ap_stable|                                                                          biases_5_val6|        scalar|
+|biases_5_val6_ap_vld                                                                            |   in|    1|   ap_stable|                                                                          biases_5_val6|        scalar|
+|biases_6_val7                                                                                   |   in|   10|   ap_stable|                                                                          biases_6_val7|        scalar|
+|biases_6_val7_ap_vld                                                                            |   in|    1|   ap_stable|                                                                          biases_6_val7|        scalar|
+|biases_7_val8                                                                                   |   in|   10|   ap_stable|                                                                          biases_7_val8|        scalar|
+|biases_7_val8_ap_vld                                                                            |   in|    1|   ap_stable|                                                                          biases_7_val8|        scalar|
+|biases_8_val9                                                                                   |   in|   10|   ap_stable|                                                                          biases_8_val9|        scalar|
+|biases_8_val9_ap_vld                                                                            |   in|    1|   ap_stable|                                                                          biases_8_val9|        scalar|
+|biases_9_val10                                                                                  |   in|   10|   ap_stable|                                                                         biases_9_val10|        scalar|
+|biases_9_val10_ap_vld                                                                           |   in|    1|   ap_stable|                                                                         biases_9_val10|        scalar|
+|biases_10_val11                                                                                 |   in|   10|   ap_stable|                                                                        biases_10_val11|        scalar|
+|biases_10_val11_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_10_val11|        scalar|
+|biases_11_val12                                                                                 |   in|   10|   ap_stable|                                                                        biases_11_val12|        scalar|
+|biases_11_val12_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_11_val12|        scalar|
+|biases_12_val13                                                                                 |   in|   10|   ap_stable|                                                                        biases_12_val13|        scalar|
+|biases_12_val13_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_12_val13|        scalar|
+|biases_13_val14                                                                                 |   in|   10|   ap_stable|                                                                        biases_13_val14|        scalar|
+|biases_13_val14_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_13_val14|        scalar|
+|biases_14_val15                                                                                 |   in|   10|   ap_stable|                                                                        biases_14_val15|        scalar|
+|biases_14_val15_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_14_val15|        scalar|
+|biases_15_val16                                                                                 |   in|   10|   ap_stable|                                                                        biases_15_val16|        scalar|
+|biases_15_val16_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_15_val16|        scalar|
+|biases_16_val17                                                                                 |   in|   10|   ap_stable|                                                                        biases_16_val17|        scalar|
+|biases_16_val17_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_16_val17|        scalar|
+|biases_17_val18                                                                                 |   in|   10|   ap_stable|                                                                        biases_17_val18|        scalar|
+|biases_17_val18_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_17_val18|        scalar|
+|biases_18_val19                                                                                 |   in|   10|   ap_stable|                                                                        biases_18_val19|        scalar|
+|biases_18_val19_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_18_val19|        scalar|
+|biases_19_val20                                                                                 |   in|   10|   ap_stable|                                                                        biases_19_val20|        scalar|
+|biases_19_val20_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_19_val20|        scalar|
+|biases_20_val21                                                                                 |   in|   10|   ap_stable|                                                                        biases_20_val21|        scalar|
+|biases_20_val21_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_20_val21|        scalar|
+|biases_21_val22                                                                                 |   in|   10|   ap_stable|                                                                        biases_21_val22|        scalar|
+|biases_21_val22_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_21_val22|        scalar|
+|biases_22_val23                                                                                 |   in|   10|   ap_stable|                                                                        biases_22_val23|        scalar|
+|biases_22_val23_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_22_val23|        scalar|
+|biases_23_val24                                                                                 |   in|   10|   ap_stable|                                                                        biases_23_val24|        scalar|
+|biases_23_val24_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_23_val24|        scalar|
+|biases_24_val25                                                                                 |   in|   10|   ap_stable|                                                                        biases_24_val25|        scalar|
+|biases_24_val25_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_24_val25|        scalar|
+|biases_25_val26                                                                                 |   in|   10|   ap_stable|                                                                        biases_25_val26|        scalar|
+|biases_25_val26_ap_vld                                                                          |   in|    1|   ap_stable|                                                                        biases_25_val26|        scalar|
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.

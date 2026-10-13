@@ -1,0 +1,60 @@
+{
+  "T": 32,
+  "bandwidth_source": "AMD DS987 K26 SOM data sheet: 64-bit DDR4 at 2400Mb/s;19.2GB/s theoretical,9.6GB/s assumed50% efficiency. See experiments/SOURCES.md.",
+  "changes": "Independent direct integer layer engine with global float scratch arrays. Probe global-port INTERFACE support without changing any srcnn argument.",
+  "clock": 10,
+  "conclusion": "If global m_axi is unsupported, preserve the failure and record scratch-pointer contract as pending human decision; proceed with tile fusion.",
+  "ddr_bandwidth_GB_s": [
+    19.2,
+    9.6
+  ],
+  "ddr_bytes_per_frame": 50491916,
+  "ddr_lower_bound_ms": [
+    2.629787291666667,
+    5.259574583333334
+  ],
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_STORAGE": 1,
+    "EXP_T": 32,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/ddr_global_probe",
+  "estimates": {
+    "BRAM18K": 0,
+    "Conv1_DSP": 162,
+    "Conv2_DSP": 64,
+    "Conv3_DSP": 25,
+    "DSP": 254,
+    "T": 96,
+    "URAM": 0,
+    "basis": "Three sequential T32 layer schedules,251 dedicated MACs plus3 boundary converters. Full feature maps are external DDR only if both scratch AXI ports exist. DDR payload includes two writes/two reads of float64/32-channel features, float IO and all parameters; csynth omits realistic DDR stalls.",
+    "latency_cycles": 6250529
+  },
+  "fixed": true,
+  "id": "S01",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Require both scratch AXI bundles before interpreting this as a DDR implementation. Compare ideal sequential cycles with reported memory-port stalls and report bandwidth lower bounds separately.",
+  "name": "ddr_global_probe",
+  "precision": "w10a10acc23",
+  "purpose": "Can the fixed srcnn signature expose two global feature arrays through m_axi? Execute each layer sequentially with float carriers for quantized features. The scratch arrays must become real external ports; ignored/rejected pragmas invalidate this DDR experiment. No supplied input/output buffer is used out of bounds.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "requested_burst_words": 256,
+  "required_axi_bundles": [
+    "scratch1",
+    "scratch2"
+  ],
+  "scope": "frame",
+  "series": "S",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_s",
+  "storage": "lutram",
+  "unroll": "Cout/Cout/tap"
+}

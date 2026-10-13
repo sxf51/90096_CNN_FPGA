@@ -1,0 +1,52 @@
+{
+  "config_sha256": "302d7f88dbc55300c758fd8b56318290998d0e13077116432377337102573b37",
+  "configuration": {
+    "T": 32,
+    "changes": "Repeat existing independently copied gather source, with two frames and exact reference gate.",
+    "clock": 10,
+    "conclusion": "Use as the common organization baseline; all internal feature maps remain on chip.",
+    "ddr_bytes_per_frame": 552716,
+    "defines": {
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_STORAGE": 1,
+      "EXP_T": 32,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/gather_control",
+    "estimates": {
+      "BRAM18K": 168,
+      "Conv1_DSP": 162,
+      "Conv2_DSP": 64,
+      "Conv3_DSP": 25,
+      "DSP": 254,
+      "T": 32,
+      "URAM": 0,
+      "basis": "Measured first-phase E057 schedule/resources, including pixel pipeline fill/drain and row-padding overhead; not ideal65025*T.",
+      "latency_cycles": 2983024
+    },
+    "fixed": true,
+    "id": "S02",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Compare sequential/tiled schedules to measured DATAFLOW overlap and its line/FIFO memory cost.",
+    "name": "whole_dataflow_control",
+    "precision": "w10a10acc23",
+    "purpose": "Common T32/10ns exact whole-network DATAFLOW control for structure comparisons. Use the independent G01 gather source unchanged.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "scope": "frame",
+    "series": "S",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_s",
+    "storage": "lutram",
+    "unroll": "Cout/Cout/tap"
+  },
+  "created_at": "2026-10-10T22:01:08+00:00",
+  "created_from_commit": "1d86d0da3afa34de718b0ebd88ec52a706a3771b",
+  "purpose_section": "Common T32/10ns exact whole-network DATAFLOW control for structure comparisons. Use the independent G01 gather source unchanged.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 254 |\n| Conv1_DSP | 162 |\n| Conv2_DSP | 64 |\n| Conv3_DSP | 25 |\n| BRAM18K | 168 |\n| URAM | 0 |\n| T | 32 |\n| latency_cycles | 2983024 |\n| basis | Measured first-phase E057 schedule/resources, including pixel pipeline fill/drain and row-padding overhead; not ideal65025*T. |\n\nPlanned at 2026-10-10T22:01:08+00:00; estimates are hypotheses, not tool measurements."
+}

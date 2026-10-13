@@ -1,0 +1,53 @@
+{
+  "config_sha256": "e7a0b917e77008a6d1b7286e5147a78d48b08ab2e9ba31f00d7698b2c7069bc9",
+  "configuration": {
+    "T": 1,
+    "changes": "Copy the archived design snapshot and restore code used by its testbench from the recorded Git commit. Parameter flags and protected binary inputs remain unchanged.",
+    "clock": 4,
+    "conclusion": "Retain both records and explain tool/configuration differences if observed.",
+    "defines": {
+      "EXP_C_BITS": 8,
+      "EXP_GROUP": 1,
+      "EXP_NONNEG": 0,
+      "EXP_OPERAND_BITS": 8,
+      "EXP_PACK_MODE": 1
+    },
+    "design": "designs/reproduce_P09",
+    "estimates": {
+      "BRAM18K": 0.0,
+      "DSP": 1.0,
+      "FF": 86.0,
+      "LUT": 132.0,
+      "T": 1,
+      "URAM": 0.0,
+      "basis": "Frozen P01 measurements where available, otherwise its original paper estimates. Replay the same source, testbench, flags, inputs and tool configuration in an independent workspace; report any deviation.",
+      "frame_projection_DSP": 1004,
+      "frame_projection_T": 4,
+      "frame_projection_cycles": 260100,
+      "latency_cycles": 61.0
+    },
+    "frozen_source_commit": "e5f44e0eb07817e651bd369f0638edf58de458fa",
+    "frozen_testbench_root": "exp/tb/replay_P09/root",
+    "id": "P09",
+    "ii_targets": {
+      "pack_terms": 1
+    },
+    "interpretation": "Compare exact numerical checks and report values against the frozen parent. A replay is independent evidence and cannot replace the original record.",
+    "name": "reproduction_P01",
+    "notes": "PE only; kernel latency is excluded from network rankings",
+    "precision": "raw8_raw8_exact_pair",
+    "purpose": "Reproduce archived P01 using frozen design and testbench sources, unchanged numerical/resource gates and a fresh experiment ID. Original reports and workspaces remain immutable.",
+    "reproduce_parent": "P01",
+    "scope": "PE",
+    "series": "P",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_reproduction",
+    "tb_files": [
+      "exp/tb/replay_P09/root/exp/tb/packing.cpp"
+    ],
+    "top": "packing_pe"
+  },
+  "created_at": "2026-10-11T00:35:04+00:00",
+  "created_from_commit": "e6ecd9e072d21de4892870138cdf9484a81bce50",
+  "purpose_section": "Reproduce archived P01 using frozen design and testbench sources, unchanged numerical/resource gates and a fresh experiment ID. Original reports and workspaces remain immutable.\n\nPre-implementation paper estimates (scope: PE):\n\n| metric | estimate |\n| --- | --- |\n| BRAM18K | 0.0 |\n| DSP | 1.0 |\n| LUT | 132.0 |\n| T | 1 |\n| URAM | 0.0 |\n| basis | Frozen P01 measurements where available, otherwise its original paper estimates. Replay the same source, testbench, flags, inputs and tool configuration in an independent workspace; report any deviation. |\n| frame_projection_DSP | 1004 |\n| frame_projection_T | 4 |\n| frame_projection_cycles | 260100 |\n| latency_cycles | 61.0 |\n| FF | 86.0 |\n\nPlanned at 2026-10-11T00:35:04+00:00; estimates are hypotheses, not tool measurements."
+}

@@ -1,0 +1,33 @@
+{
+  "T": 16,
+  "changes": "Frozen selected source and parameters; only full-image validation is enabled. Hardware estimates remain in the linked parent experiment.",
+  "clock": 3.33,
+  "conclusion": "Preserve supplied-image numerical acceptance and separate implementation evidence.",
+  "csim_only": true,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_STORAGE": 1,
+    "EXP_T": 16,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/dataflow_int",
+  "fixed": true,
+  "id": "E069",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "All 13 outputs must match the precision reference. This extends architecture coverage beyond butterfly and does not imply complete 14-image acceptance.",
+  "name": "final_candidate_all_supplied",
+  "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+  "precision": "w10a10acc23",
+  "purpose": "Run the final measured first-phase candidate E043 on every supplied Set14 image, compare every output bit to the independently validated precision reference, and measure border MSE. Missing comic remains explicit.",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "set14": true,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 6,
+  "storage": "lutram",
+  "unroll": "Cout/Cout/Cin"
+}

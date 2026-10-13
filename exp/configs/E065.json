@@ -1,0 +1,22 @@
+{
+  "changes": "Independent fixed_ref_raw copy; Conv2 uses ap_fixed<8,1> and its exact 21-bit accumulator. Conv1/Conv3 remain ten-bit; all activations remain ten-bit.",
+  "clock": 10,
+  "conclusion": "Save mixed-precision provenance for phase-two Conv2 weight-only packing; complete Set14 still lacks comic.",
+  "csim_only": true,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/fixed_ref_mixed_raw",
+  "fixed": true,
+  "id": "E065",
+  "interpretation": "Bit comparison to independently predicted numpy output is mandatory for all 13 images. Full product fractions make integer-carrier sums identical to no-overflow ap_fixed arithmetic.",
+  "name": "apfixed_mixed_conv2w8",
+  "numpy_reference": "exp/numeric_reference/mixed_conv2w8/numpy_reference",
+  "precision": "w10_8_10a10acc23_21_23",
+  "purpose": "Confirm E062 Conv2-only eight-bit weights/biases on every supplied image using real ap_fixed input, parameter and layer-boundary casts with exact integer convolution.",
+  "quick": true,
+  "set14": true,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 1
+}

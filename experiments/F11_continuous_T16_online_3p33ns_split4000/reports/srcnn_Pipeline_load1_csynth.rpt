@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'srcnn_Pipeline_load1'
+================================================================
+* Date:           Sun Oct 11 12:35:23 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        F11
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.33 ns|  2.431 ns|     0.90 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval |      Pipeline     |
+    |   min   |   max   |    min    |    max    | min | max |        Type       |
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+    |     5202|     5202|  17.323 us|  17.323 us|    0|    0|  loop pipeline stp|
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +----------+---------+---------+----------+-----------+-----------+------+----------+
+        |          |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        | Loop Name|   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +----------+---------+---------+----------+-----------+-----------+------+----------+
+        |- load1   |     5200|     5200|        18|          1|          1|  5184|       yes|
+        +----------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|    2658|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     0|       0|     173|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|      90|    -|
+|Register         |        -|     -|    1255|     128|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|    1255|    3049|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|       2|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +---------------------------------+------------------------------+---------+----+---+----+-----+
+    |             Instance            |            Module            | BRAM_18K| DSP| FF| LUT| URAM|
+    +---------------------------------+------------------------------+---------+----+---+----+-----+
+    |bitselect_1ns_54ns_6ns_1_1_1_U4  |bitselect_1ns_54ns_6ns_1_1_1  |        0|   0|  0|  17|    0|
+    |bitselect_1ns_54ns_6ns_1_1_1_U5  |bitselect_1ns_54ns_6ns_1_1_1  |        0|   0|  0|  17|    0|
+    |mul_7ns_10ns_15_1_1_U3           |mul_7ns_10ns_15_1_1           |        0|   0|  0|  62|    0|
+    |mul_7ns_9ns_15_1_1_U2            |mul_7ns_9ns_15_1_1            |        0|   0|  0|  50|    0|
+    |sparsemux_7_2_10_1_1_U6          |sparsemux_7_2_10_1_1          |        0|   0|  0|   9|    0|
+    |sparsemux_7_2_10_1_1_U8          |sparsemux_7_2_10_1_1          |        0|   0|  0|   9|    0|
+    |sparsemux_7_2_1_1_1_U7           |sparsemux_7_2_1_1_1           |        0|   0|  0|   9|    0|
+    +---------------------------------+------------------------------+---------+----+---+----+-----+
+    |Total                            |                              |        0|   0|  0| 173|    0|
+    +---------------------------------+------------------------------+---------+----+---+----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +---------------------------------+----------+----+---+-----+------------+------------+
+    |          Variable Name          | Operation| DSP| FF| LUT | Bitwidth P0| Bitwidth P1|
+    +---------------------------------+----------+----+---+-----+------------+------------+
+    |add_ln35_11_fu_7312_p2           |         +|   0|  0|   19|          12|           2|
+    |add_ln35_5_fu_7117_p2            |         +|   0|  0|   19|          12|           5|
+    |add_ln35_6_fu_7350_p2            |         +|   0|  0|   17|          10|          10|
+    |add_ln35_8_fu_7301_p2            |         +|   0|  0|   19|          12|          12|
+    |add_ln35_9_fu_7139_p2            |         +|   0|  0|   19|          12|           1|
+    |add_ln35_fu_7065_p2              |         +|   0|  0|   19|          12|           5|
+    |add_ln409_1_fu_6956_p2           |         +|   0|  0|   20|          13|           1|
+    |add_ln409_2_fu_6836_p2           |         +|   0|  0|   20|          13|           1|
+    |add_ln411_1_fu_6917_p2           |         +|   0|  0|   18|           9|           9|
+    |add_ln411_2_fu_6927_p2           |         +|   0|  0|   64|          64|          64|
+    |add_ln411_3_fu_6765_p2           |         +|   0|  0|   34|          27|          14|
+    |add_ln411_4_fu_7657_p2           |         +|   0|  0|   34|          27|          14|
+    |add_ln411_5_fu_6890_p2           |         +|   0|  0|   18|           9|           9|
+    |add_ln411_fu_6912_p2             |         +|   0|  0|   64|          64|          64|
+    |i_7_fu_6748_p2                   |         +|   0|  0|   20|          13|           1|
+    |tmp_25_fu_7109_p2                |         +|   0|  0|   13|           6|           5|
+    |sub_ln35_1_fu_7045_p2            |         -|   0|  0|   19|          11|          12|
+    |sub_ln35_2_fu_7075_p2            |         -|   0|  0|   18|           4|          11|
+    |sub_ln35_6_fu_7133_p2            |         -|   0|  0|   13|           5|           6|
+    |sub_ln35_fu_7027_p2              |         -|   0|  0|   61|           1|          54|
+    |and_ln35_15_fu_7545_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_18_fu_7559_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_19_fu_7636_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_20_fu_7642_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_21_fu_8001_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_28_fu_7257_p2           |       and|   0|  0|   54|          54|          54|
+    |and_ln35_29_fu_7374_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_30_fu_7404_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_31_fu_7582_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_32_fu_7620_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_33_fu_8022_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_34_fu_8028_p2           |       and|   0|  0|    2|           1|           1|
+    |and_ln35_6_fu_7469_p2            |       and|   0|  0|    2|           1|           1|
+    |and_ln35_7_fu_7475_p2            |       and|   0|  0|    2|           1|           1|
+    |and_ln35_8_fu_7490_p2            |       and|   0|  0|    2|           1|           1|
+    |and_ln35_fu_7284_p2              |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3027_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3043_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3058_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3073_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3088_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3103_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3118_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3133_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3148_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3163_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3178_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3193_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3208_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3223_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3238_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3253_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3268_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3283_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3298_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3313_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3328_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3343_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3358_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3373_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3388_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3403_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3418_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3433_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3448_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3463_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3478_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3493_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3508_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3523_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3538_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3553_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3568_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3583_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3598_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3613_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3628_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3643_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3658_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3673_state18    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_pred3688_state18    |       and|   0|  0|    2|           1|           1|
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.

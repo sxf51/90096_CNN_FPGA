@@ -1,0 +1,1047 @@
+COMMAND ["v++", "-c", "--mode", "hls", "--config", "/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls_config.cfg", "--work_dir", "/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07"]
+
+****** v++ v2026.1 (64-bit)
+  **** SW Build 6497934 on 2026-06-16-10:22:25
+  **** Start of session at: Sun Oct 11 09:29:18 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+  **** HLS Build v2026.1 6493734
+INFO: [HLS 200-2005] Using work_dir /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07 
+INFO: [HLS 200-2006] Changing directory to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs
+INFO: [HLS 200-2176] Writing Vitis IDE component file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/vitis-comp.json
+INFO: [HLS 200-10] Creating and opening component '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07'.
+INFO: [HLS 200-2174] Applying component config ini file W07/hls_config.cfg
+INFO: [HLS 200-1465] Applying config ini 'syn.file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/source/conv1.cpp' from W07/hls_config.cfg(10)
+INFO: [HLS 200-10] Adding design file '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/source/conv1.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'syn.file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/source/srcnn.cpp' from W07/hls_config.cfg(11)
+INFO: [HLS 200-10] Adding design file '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/source/srcnn.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'syn.cflags=-std=c++14 -ffp-contract=off -DEXP_A_BITS=10 -DEXP_FRAMES=2 -DEXP_STORAGE=1 -DEXP_T=16 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=0 -DEXP_QUICK=0 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src' from W07/hls_config.cfg(8)
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/winograd_layer.cpp' from W07/hls_config.cfg(12)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/exp/tb/winograd_layer.cpp' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/src/weights' from W07/hls_config.cfg(13)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/src/weights' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.file=/home/lipuze/amdprojects/90096_CNN_FPGA/test/set5' from W07/hls_config.cfg(14)
+INFO: [HLS 200-10] Adding test bench file '/home/lipuze/amdprojects/90096_CNN_FPGA/test/set5' to the project
+INFO: [HLS 200-1465] Applying config ini 'tb.cflags=-std=c++14 -ffp-contract=off -DEXP_A_BITS=10 -DEXP_FRAMES=2 -DEXP_STORAGE=1 -DEXP_T=16 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=0 -DEXP_QUICK=0 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src' from W07/hls_config.cfg(9)
+INFO: [HLS 200-1465] Applying config ini 'syn.top=wino_conv1' from W07/hls_config.cfg(6)
+INFO: [HLS 200-1465] Applying config ini 'flow_target=vivado' from W07/hls_config.cfg(3)
+INFO: [HLS 200-1505] Using flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see docs.amd.com/access/sources/dita/topic?Doc_Version=2026.1%20English&url=ug1448-hls-guidance&resourceid=200-1505.html
+WARNING: [HLS 200-2149] The 'flow_target' option is deprecated and will be removed in a future release. For 'vivado' value you may simply remove the option for equivalent behavior.
+INFO: [HLS 200-1465] Applying config ini 'part=xck26-sfvc784-2LV-c' from W07/hls_config.cfg(1)
+INFO: [HLS 200-1611] Setting target device to 'xck26-sfvc784-2LV-c'
+INFO: [HLS 200-1465] Applying config ini 'clock=4ns' from W07/hls_config.cfg(4)
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 4ns.
+INFO: [HLS 200-1465] Applying config ini 'csim.O=true' from W07/hls_config.cfg(7)
+INFO: [HLS 200-1907] Replacing 'config_csim -O=1' with 'config_sim -O=1' in current solution file
+INFO: [HLS 200-1465] Applying config ini 'package.output.format=ip_catalog' from W07/hls_config.cfg(5)
+INFO: [HLS 200-2176] Writing Vitis IDE component file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/vitis-comp.json
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 3.08 seconds. CPU system time: 0.7 seconds. Elapsed time: 3.71 seconds; current allocated memory: 249.641 MB.
+INFO: [HLS 200-2191] C-Synthesis will use clang-16 as the compiler
+INFO: [HLS 200-10] Analyzing design file 'W07/source/srcnn.cpp' ... 
+INFO: [HLS 200-10] Analyzing design file 'W07/source/conv1.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 11.7 seconds. CPU system time: 1.67 seconds. Elapsed time: 13.38 seconds; current allocated memory: 254.949 MB.
+INFO: [HLS 200-1995] There were 9,282 instructions in the design after the 'Compile/Link' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 214-131] Inlining function 'ap_int<10> numeric::raw_value<ap_fixed<10, 1, (ap_q_mode)4, (ap_o_mode)0, 0>, 10>(ap_fixed<10, 1, (ap_q_mode)4, (ap_o_mode)0, 0>)' into 'numeric::encode_weight(float)' (W07/source/integer_numeric.inc:35:12)
+INFO: [HLS 214-131] Inlining function 'ap_int<14> wino::add<14>(ap_int<14>, ap_int<14>)' into 'void wino::weight_transform<10>(ap_int<10> const*, ap_int<(10) + (4)>*)' (W07/source/winograd_math.h:62:24)
+INFO: [HLS 214-131] Inlining function 'ap_int<14> wino::sub<14>(ap_int<14>, ap_int<14>)' into 'void wino::weight_transform<10>(ap_int<10> const*, ap_int<(10) + (4)>*)' (W07/source/winograd_math.h:62:36)
+INFO: [HLS 214-131] Inlining function 'void wino::weight_transform<10>(ap_int<10> const*, ap_int<(10) + (4)>*)' into 'transform_weights(ap_int<10> (*) [81], ap_int<14> (*) [9][16])' (W07/source/srcnn.cpp:55:13)
+INFO: [HLS 214-131] Inlining function 'ap_int<10> numeric::raw_value<ap_fixed<10, 2, (ap_q_mode)4, (ap_o_mode)0, 0>, 10>(ap_fixed<10, 2, (ap_q_mode)4, (ap_o_mode)0, 0>)' into 'numeric::encode_input(float)' (W07/source/integer_numeric.inc:30:12)
+INFO: [HLS 214-131] Inlining function 'numeric::encode_input(float)' into 'read_input(float (*) [255][255], hls::stream<ap_int<10>, 0>&)' (W07/source/srcnn.cpp:12:22)
+INFO: [HLS 214-131] Inlining function 'ap_int<12> wino::sub<12>(ap_int<12>, ap_int<12>)' into 'void wino::input_transform<10>(ap_int<10> const*, ap_int<(10) + (2)>*)' (W07/source/winograd_math.h:42:24)
+INFO: [HLS 214-131] Inlining function 'ap_int<12> wino::add<12>(ap_int<12>, ap_int<12>)' into 'void wino::input_transform<10>(ap_int<10> const*, ap_int<(10) + (2)>*)' (W07/source/winograd_math.h:40:24)
+INFO: [HLS 214-131] Inlining function 'ap_int<34> wino::add<34>(ap_int<34>, ap_int<34>)' into 'void wino::output_transform<34>(ap_int<34> const*, ap_int<34>*)' (W07/source/winograd_math.h:73:29)
+INFO: [HLS 214-131] Inlining function 'ap_int<34> wino::sub<34>(ap_int<34>, ap_int<34>)' into 'void wino::output_transform<34>(ap_int<34> const*, ap_int<34>*)' (W07/source/winograd_math.h:79:25)
+INFO: [HLS 214-131] Inlining function 'ap_int<10> numeric::quantize<9, ap_int<23> >(ap_int<23>)' into 'numeric::relu1(ap_int<23>)' (W07/source/integer_numeric.inc:60:22)
+INFO: [HLS 214-131] Inlining function 'numeric::relu1(ap_int<23>)' into 'conv1_tiles(hls::stream<ap_int<10>, 0>&, hls::stream<numeric::pixel1, 0>&, hls::stream<numeric::pixel1, 0>&, ap_int<14> (*) [9][16], ap_int<10>*)' (W07/source/srcnn.cpp:141:45)
+INFO: [HLS 214-131] Inlining function 'numeric::bias1(ap_int<10>)' into 'conv1_tiles(hls::stream<ap_int<10>, 0>&, hls::stream<numeric::pixel1, 0>&, hls::stream<numeric::pixel1, 0>&, ap_int<14> (*) [9][16], ap_int<10>*)' (W07/source/srcnn.cpp:141:72)
+INFO: [HLS 214-131] Inlining function 'void wino::output_transform<34>(ap_int<34> const*, ap_int<34>*)' into 'conv1_tiles(hls::stream<ap_int<10>, 0>&, hls::stream<numeric::pixel1, 0>&, hls::stream<numeric::pixel1, 0>&, ap_int<14> (*) [9][16], ap_int<10>*)' (W07/source/srcnn.cpp:135:25)
+INFO: [HLS 214-131] Inlining function 'ap_int<34> wino::add<34>(ap_int<34>, ap_int<34>)' into 'conv1_tiles(hls::stream<ap_int<10>, 0>&, hls::stream<numeric::pixel1, 0>&, hls::stream<numeric::pixel1, 0>&, ap_int<14> (*) [9][16], ap_int<10>*)' (W07/source/srcnn.cpp:131:39)
+INFO: [HLS 214-131] Inlining function 'void wino::input_transform<10>(ap_int<10> const*, ap_int<(10) + (2)>*)' into 'conv1_tiles(hls::stream<ap_int<10>, 0>&, hls::stream<numeric::pixel1, 0>&, hls::stream<numeric::pixel1, 0>&, ap_int<14> (*) [9][16], ap_int<10>*)' (W07/source/srcnn.cpp:110:21)
+INFO: [HLS 214-131] Inlining function 'numeric::encode_weight(float)' into 'wino_conv1(float (*) [255][255], float (*) [1][9][9], float*, hls::stream<numeric::pixel1, 0>&)' (W07/source/srcnn.cpp:444:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_114_7' is marked as complete unroll implied by the pipeline pragma (W07/source/srcnn.cpp:114:39)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_120_8' is marked as complete unroll implied by the pipeline pragma (W07/source/srcnn.cpp:120:43)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_123_9' is marked as complete unroll implied by the pipeline pragma (W07/source/srcnn.cpp:123:47)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_71_1' is marked as complete unroll implied by the pipeline pragma (W07/source/winograd_math.h:71:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_76_2' is marked as complete unroll implied by the pipeline pragma (W07/source/winograd_math.h:76:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_136_10' is marked as complete unroll implied by the pipeline pragma (W07/source/srcnn.cpp:136:44)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_51_1' is marked as complete unroll implied by the pipeline pragma (W07/source/srcnn.cpp:51:30)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_51_1' is marked as complete unroll implied by the pipeline pragma (W07/source/winograd_math.h:51:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_58_2' is marked as complete unroll implied by the pipeline pragma (W07/source/winograd_math.h:58:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_56_2' is marked as complete unroll implied by the pipeline pragma (W07/source/srcnn.cpp:56:30)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_77_1' (W07/source/srcnn.cpp:77:30) in function 'conv1_tiles' completely with a factor of 9 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_85_2' (W07/source/srcnn.cpp:85:30) in function 'conv1_tiles' completely with a factor of 9 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_89_3' (W07/source/srcnn.cpp:89:30) in function 'conv1_tiles' completely with a factor of 10 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_91_4' (W07/source/srcnn.cpp:91:34) in function 'conv1_tiles' completely with a factor of 9 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_102_5' (W07/source/srcnn.cpp:102:35) in function 'conv1_tiles' completely with a factor of 9 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_37_2' (W07/source/winograd_math.h:37:22) in function 'conv1_tiles' completely with a factor of 4 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_30_1' (W07/source/winograd_math.h:30:22) in function 'conv1_tiles' completely with a factor of 4 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_106_6' (W07/source/srcnn.cpp:106:39) in function 'conv1_tiles' completely with a factor of 16 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_114_7' (W07/source/srcnn.cpp:114:39) in function 'conv1_tiles' completely with a factor of 1 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_136_10' (W07/source/srcnn.cpp:136:44) in function 'conv1_tiles' completely with a factor of 4 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_76_2' (W07/source/winograd_math.h:76:22) in function 'conv1_tiles' completely with a factor of 2 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_71_1' (W07/source/winograd_math.h:71:22) in function 'conv1_tiles' completely with a factor of 4 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_120_8' (W07/source/srcnn.cpp:120:43) in function 'conv1_tiles' completely with a factor of 16 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_123_9' (W07/source/srcnn.cpp:123:47) in function 'conv1_tiles' completely with a factor of 9 (W07/source/srcnn.cpp:64:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_51_1' (W07/source/srcnn.cpp:51:30) in function 'transform_weights' completely with a factor of 9 (W07/source/srcnn.cpp:43:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_51_1' (W07/source/winograd_math.h:51:22) in function 'transform_weights' completely with a factor of 3 (W07/source/srcnn.cpp:43:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_58_2' (W07/source/winograd_math.h:58:22) in function 'transform_weights' completely with a factor of 4 (W07/source/srcnn.cpp:43:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_56_2' (W07/source/srcnn.cpp:56:30) in function 'transform_weights' completely with a factor of 16 (W07/source/srcnn.cpp:43:0)
+INFO: [HLS 200-1995] There were 11,313 instructions in the design after the 'Unroll/Inline' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 7,571 instructions in the design after the 'Unroll/Inline (step 2)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 7,730 instructions in the design after the 'Unroll/Inline (step 3)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 7,685 instructions in the design after the 'Unroll/Inline (step 4)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 214-248] Applying array_partition to '_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEES8_PA9_A16_S1_ILi14EEPS2_E6window': Complete partitioning on dimension 1. Complete partitioning on dimension 2. (W07/source/srcnn.cpp:66:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEES8_PA9_A16_S1_ILi14EEPS2_E4line': Complete partitioning on dimension 1. (W07/source/srcnn.cpp:66:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11transformed': Complete partitioning on dimension 2. Complete partitioning on dimension 3. (W07/source/srcnn.cpp:432:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE3raw': Complete partitioning on dimension 2. (W07/source/srcnn.cpp:431:0)
+INFO: [HLS 214-248] Applying array_partition to 'v': Complete partitioning on dimension 1. Complete partitioning on dimension 2. (W07/source/srcnn.cpp:98:35)
+INFO: [HLS 214-248] Applying array_partition to 'tile': Complete partitioning on dimension 1. Complete partitioning on dimension 2. (W07/source/srcnn.cpp:99:24)
+INFO: [HLS 214-248] Applying array_partition to 'm': Complete partitioning on dimension 1. (W07/source/srcnn.cpp:117:33)
+INFO: [HLS 214-248] Applying array_partition to 'b1': Complete partitioning on dimension 1. (W07/source/srcnn.cpp:433:10)
+INFO: [HLS 200-1995] There were 35,232 instructions in the design after the 'Array/Struct' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 9,024 instructions in the design after the 'Array/Struct (step 2)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'top' with compact=bit mode in 640-bits (W07/source/srcnn.cpp:185:25)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'bottom' with compact=bit mode in 640-bits (W07/source/srcnn.cpp:185:47)
+INFO: [HLS 214-241] Aggregating axis (hls::stream) variable 'out' with compact=bit mode in 640-bits (W07/source/srcnn.cpp:421:0)
+INFO: [HLS 200-1995] There were 9,030 instructions in the design after the 'Array/Struct (step 3)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 12,032 instructions in the design after the 'Array/Struct (step 4)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 12,880 instructions in the design after the 'Array/Struct (step 5)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 12,603 instructions in the design after the 'Performance' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 214-376] Pipelining loop< VITIS_LOOP_446_1> at W07/source/srcnn.cpp:446:23 due to pipeline_loops threshold
+INFO: [HLS 214-437] Disabling loop flattening for loop 'wino_columns'. (W07/source/srcnn.cpp:74:23)
+INFO: [HLS 200-1995] There were 12,083 instructions in the design after the 'Performance (step 2)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 12,082 instructions in the design after the 'Performance (step 3)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 12,066 instructions in the design after the 'Performance (step 4)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 214-115] Multiple burst reads of length 64 and bit width 32 in loop 'VITIS_LOOP_446_1'(W07/source/srcnn.cpp:446:23) has been inferred on bundle 'parameters'. These burst requests might be further partitioned into multiple requests during RTL generation, based on max_read_burst_length or max_write_burst_length settings. (W07/source/srcnn.cpp:446:23)
+INFO: [HLS 200-1995] There were 11,126 instructions in the design after the 'HW Transforms' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-1995] There were 12,135 instructions in the design after the 'HW Transforms (step 2)' phase of compilation. See the Design Size Report for more details (/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/report/csynth_design_size.rpt:2)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 24.64 seconds. CPU system time: 1.37 seconds. Elapsed time: 25 seconds; current allocated memory: 259.371 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 259.371 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.99 seconds. CPU system time: 0.01 seconds. Elapsed time: 1 seconds; current allocated memory: 271.422 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+WARNING: [SYNCHK 200-23] W07/source/integer_numeric.inc:35: variable-indexed range selection may cause suboptimal QoR.
+INFO: [SYNCHK 200-10] 0 error(s), 1 warning(s).
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 2.27 seconds. CPU system time: 0.01 seconds. Elapsed time: 2.28 seconds; current allocated memory: 279.926 MB.
+INFO: [HLS 200-1947] Using 'stable' for argument 'image_in' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'in' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_0.val1' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_1.val2' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_2.val3' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_3.val4' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_4.val5' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_5.val6' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_6.val7' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_7.val8' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_8.val9' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_9.val10' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_10.val11' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_11.val12' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_12.val13' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_13.val14' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_14.val15' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_15.val16' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_16.val17' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_17.val18' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_18.val19' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_19.val20' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_20.val21' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_21.val22' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_22.val23' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_23.val24' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_24.val25' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_25.val26' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_26.val27' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_27.val28' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_28.val29' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_29.val30' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_30.val31' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_31.val32' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_32.val33' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_33.val34' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_34.val35' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_35.val36' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_36.val37' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_37.val38' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_38.val39' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_39.val40' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_40.val41' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_41.val42' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_42.val43' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_43.val44' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_44.val45' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_45.val46' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_46.val47' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_47.val48' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_48.val49' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_49.val50' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_50.val51' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_51.val52' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_52.val53' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_53.val54' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_54.val55' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_55.val56' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_56.val57' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_57.val58' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_58.val59' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_59.val60' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_60.val61' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_61.val62' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_62.val63' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_63.val64' of dataflow function 'layer_region' (W07/source/srcnn.cpp:411:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_0.val1' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_1.val2' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_2.val3' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_3.val4' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_4.val5' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_5.val6' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_6.val7' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_7.val8' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_8.val9' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_9.val10' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_10.val11' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_11.val12' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_12.val13' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_13.val14' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_14.val15' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_15.val16' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_16.val17' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_17.val18' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_18.val19' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_19.val20' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_20.val21' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_21.val22' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_22.val23' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_23.val24' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_24.val25' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_25.val26' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_26.val27' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_27.val28' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_28.val29' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_29.val30' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_30.val31' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_31.val32' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_32.val33' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_33.val34' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_34.val35' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_35.val36' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_36.val37' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_37.val38' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_38.val39' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_39.val40' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_40.val41' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_41.val42' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_42.val43' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_43.val44' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_44.val45' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_45.val46' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_46.val47' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_47.val48' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_48.val49' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_49.val50' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_50.val51' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_51.val52' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_52.val53' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_53.val54' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_54.val55' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_55.val56' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_56.val57' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_57.val58' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_58.val59' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_59.val60' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_60.val61' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_61.val62' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_62.val63' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [HLS 200-1947] Using 'stable' for argument 'biases_63.val64' of dataflow function 'conv1_stream' (W07/source/srcnn.cpp:184:1).
+INFO: [XFORM 203-712] Applying dataflow to function 'conv1_stream' (W07/source/srcnn.cpp:184:1), detected/extracted 2 process function(s): 
+	 'conv1_tiles'
+	 'reorder_rows'.
+INFO: [XFORM 203-712] Applying dataflow to function 'layer_region' (W07/source/srcnn.cpp:411:1), detected/extracted 3 process function(s): 
+	 'read_input'
+	 'replicate_pad<ap_int<10>, 4>'
+	 'conv1_stream'.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (W07/source/srcnn.cpp:443:1) to (W07/source/srcnn.cpp:444:25) in function 'wino_conv1'... converting 29 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (W07/source/srcnn.cpp:446:41) to (W07/source/srcnn.cpp:446:58) in function 'wino_conv1'... converting 29 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (W07/source/srcnn.cpp:29:42) to (W07/source/srcnn.cpp:29:24) in function 'replicate_pad<ap_int<10>, 4>'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (W07/source/srcnn.cpp:20:33) to (W07/source/srcnn.cpp:22:13) in function 'replicate_pad<ap_int<10>, 4>'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (W07/source/srcnn.cpp:11:1) to (W07/source/srcnn.cpp:10:18) in function 'read_input'... converting 29 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (W07/source/srcnn.cpp:112:52) to (W07/source/srcnn.cpp:141:43) in function 'conv1_tiles'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (W07/source/srcnn.cpp:99:24) to (W07/source/srcnn.cpp:141:43) in function 'conv1_tiles'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (W07/source/srcnn.cpp:99:24) to (W07/source/srcnn.cpp:141:43) in function 'conv1_tiles'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (W07/source/srcnn.cpp:99:24) to (W07/source/srcnn.cpp:141:43) in function 'conv1_tiles'... converting 3 basic blocks.
+INFO: [XFORM 203-11] Balancing expressions in function 'wino_conv1' (W07/source/srcnn.cpp:35:23)...3 expression(s) balanced.
+INFO: [XFORM 203-11] Balancing expressions in function 'conv1_tiles' (W07/source/srcnn.cpp:12:28)...214 expression(s) balanced.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 7.8 seconds. CPU system time: 0.03 seconds. Elapsed time: 7.83 seconds; current allocated memory: 318.270 MB.
+INFO: [HLS 200-2061] Successfully converted nested loops 'wino_load_channels'(W07/source/srcnn.cpp:44:25) and 'wino_load_groups'(W07/source/srcnn.cpp:45:27) in function 'transform_weights' into perfectly nested loops.
+INFO: [HLS 200-2061] Successfully converted nested loops 'raster_rows'(W07/source/srcnn.cpp:175:18) and 'raster_columns'(W07/source/srcnn.cpp:176:25) in function 'reorder_rows' into perfectly nested loops.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'wino_load_groups' (W07/source/srcnn.cpp:45:27) and outer loop 'wino_load_channels' (W07/source/srcnn.cpp:44:25) in function 'transform_weights' successfully.
+INFO: [HLS 200-2259] Flattening a loop nest with inner loop 'raster_columns' (W07/source/srcnn.cpp:176:25) and outer loop 'raster_rows' (W07/source/srcnn.cpp:175:18) in function 'reorder_rows' successfully.
+WARNING: [HLS 200-1449] Process conv1_stream has both a predecessor and reads an input from its caller (see the GUI dataflow viewer). This may lead to lower throughput. Consider copying this input via a predecessor process.
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 3.7 seconds. CPU system time: 0.07 seconds. Elapsed time: 3.77 seconds; current allocated memory: 460.277 MB.
+INFO: [HLS 200-2255] Checking Wire Delay Status: Wire Delay Mode is ON
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'wino_conv1' ...
+WARNING: [SYN 201-103] Legalizing function name 'replicate_pad<ap_int<10>, 4>_Pipeline_pad_read_row' to 'replicate_pad_ap_int_10_4_Pipeline_pad_read_row'.
+WARNING: [SYN 201-103] Legalizing function name 'replicate_pad<ap_int<10>, 4>_Pipeline_pad_write_row' to 'replicate_pad_ap_int_10_4_Pipeline_pad_write_row'.
+WARNING: [SYN 201-103] Legalizing function name 'replicate_pad<ap_int<10>, 4>' to 'replicate_pad_ap_int_10_4_s'.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'wino_conv1_Pipeline_layer_load' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'layer_load'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 18, loop 'layer_load'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 1.29 seconds. CPU system time: 0.07 seconds. Elapsed time: 1.36 seconds; current allocated memory: 472.023 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.06 seconds; current allocated memory: 472.023 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'wino_conv1_Pipeline_VITIS_LOOP_446_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'VITIS_LOOP_446_1'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 7, loop 'VITIS_LOOP_446_1'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.24 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.25 seconds; current allocated memory: 472.551 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.06 seconds. CPU system time: 0 seconds. Elapsed time: 0.06 seconds; current allocated memory: 472.551 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'transform_weights' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln53) to 3 in order to utilize available DSP registers.
+INFO: [SCHED 204-61] Pipelining loop 'wino_load_channels_wino_load_groups'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 11, loop 'wino_load_channels_wino_load_groups'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.71 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.72 seconds; current allocated memory: 484.332 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.08 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.09 seconds; current allocated memory: 484.332 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'read_input' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'read_pixels'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 16, loop 'read_pixels'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.14 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.15 seconds; current allocated memory: 484.332 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 484.332 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'replicate_pad_ap_int_10_4_Pipeline_pad_read_row' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'pad_read_row'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 2, loop 'pad_read_row'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 484.332 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 484.332 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'replicate_pad_ap_int_10_4_Pipeline_pad_write_row' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'pad_write_row'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 2, loop 'pad_write_row'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 484.332 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 484.332 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'replicate_pad_ap_int_10_4_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 484.332 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 484.332 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'conv1_tiles_Pipeline_wino_fold' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_131) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_130) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_128) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_127) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_123) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_122) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_121) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_119) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_118) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_117) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_113) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_112) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_111) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_109) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_108) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_107) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_102) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_101) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_99) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_98) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_95) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_94) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_92) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_91) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_90) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_87) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_86) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_85) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_83) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_82) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_79) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_78) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_77) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_75) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_74) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_71) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_70) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_68) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_67) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_66) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_63) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_62) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_61) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_59) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_58) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_39) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_38) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_37) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_35) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_34) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_31) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_30) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_29) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_27) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_26) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_7) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_6) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_5) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_3) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_2) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14_1) to 3 in order to utilize available DSP registers.
+INFO: [HLS 200-486] Changing DSP latency (root=add_ln14) to 3 in order to utilize available DSP registers.
+INFO: [SCHED 204-61] Pipelining loop 'wino_fold'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 11, loop 'wino_fold'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 2.03 seconds. CPU system time: 0.02 seconds. Elapsed time: 2.05 seconds; current allocated memory: 514.129 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.7 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.71 seconds; current allocated memory: 514.129 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'conv1_tiles' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 1.55 seconds. CPU system time: 0.03 seconds. Elapsed time: 1.58 seconds; current allocated memory: 520.816 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.24 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.25 seconds; current allocated memory: 520.816 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'reorder_rows' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'raster_rows_raster_columns'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 2, loop 'raster_rows_raster_columns'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.2 seconds. CPU system time: 0 seconds. Elapsed time: 0.2 seconds; current allocated memory: 520.816 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.01 seconds; current allocated memory: 520.816 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'conv1_stream' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.07 seconds. CPU system time: 0 seconds. Elapsed time: 0.07 seconds; current allocated memory: 520.816 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 520.816 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'layer_region' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.13 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.13 seconds; current allocated memory: 520.816 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 520.816 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'wino_conv1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.17 seconds. CPU system time: 0 seconds. Elapsed time: 0.18 seconds; current allocated memory: 521.531 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.06 seconds. CPU system time: 0 seconds. Elapsed time: 0.07 seconds; current allocated memory: 521.863 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'wino_conv1_Pipeline_layer_load' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'wino_conv1_Pipeline_layer_load' pipeline 'layer_load' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Generating core module 'bitselect_1ns_54ns_6ns_1_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'fpext_32ns_64_2_no_dsp_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mul_7ns_10ns_15_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mul_7ns_9ns_15_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_10_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_1_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'wino_conv1_Pipeline_layer_load'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.24 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.25 seconds; current allocated memory: 527.652 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'wino_conv1_Pipeline_VITIS_LOOP_446_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'wino_conv1_Pipeline_VITIS_LOOP_446_1' pipeline 'VITIS_LOOP_446_1' pipeline type 'loop pipeline'
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARVALID' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARADDR' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARID' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARLEN' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARSIZE' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARBURST' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARLOCK' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARCACHE' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARPROT' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARQOS' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARREGION' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'wino_conv1_Pipeline_VITIS_LOOP_446_1/m_axi_parameters_0_ARUSER' to 0.
+INFO: [RTGEN 206-100] Generating core module 'bitselect_1ns_54ns_6ns_1_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'fpext_32ns_64_2_no_dsp_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_10_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_1_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'wino_conv1_Pipeline_VITIS_LOOP_446_1'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.32 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.35 seconds; current allocated memory: 539.289 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'transform_weights' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'transform_weights' pipeline 'wino_load_channels_wino_load_groups' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_5ns_3ns_4ns_6_4_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mul_4ns_6ns_9_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_123_6_10_1_1': 9 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'urem_4ns_3ns_4_8_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'transform_weights'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.44 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.48 seconds; current allocated memory: 560.391 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'read_input' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'read_input' pipeline 'read_pixels' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Generating core module 'bitselect_1ns_54ns_6ns_1_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'fpext_32ns_64_2_no_dsp_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_10_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_7_2_1_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'read_input'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.37 seconds. CPU system time: 0.04 seconds. Elapsed time: 0.4 seconds; current allocated memory: 579.152 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'replicate_pad_ap_int_10_4_Pipeline_pad_read_row' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'replicate_pad_ap_int_10_4_Pipeline_pad_read_row' pipeline 'pad_read_row' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'replicate_pad_ap_int_10_4_Pipeline_pad_read_row'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.12 seconds. CPU system time: 0 seconds. Elapsed time: 0.13 seconds; current allocated memory: 579.152 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'replicate_pad_ap_int_10_4_Pipeline_pad_write_row' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'replicate_pad_ap_int_10_4_Pipeline_pad_write_row' pipeline 'pad_write_row' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'replicate_pad_ap_int_10_4_Pipeline_pad_write_row'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.04 seconds; current allocated memory: 579.699 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'replicate_pad_ap_int_10_4_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'replicate_pad_ap_int_10_4_s'.
+INFO: [RTMG 210-278] Implementing memory 'wino_conv1_replicate_pad_ap_int_10_4_s_row_RAM_AUTO_1R1W' using auto RAMs.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.04 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.05 seconds; current allocated memory: 580.543 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'conv1_tiles_Pipeline_wino_fold' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'conv1_tiles_Pipeline_wino_fold' pipeline 'wino_fold' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_12s_12s_24s_24_4_1': 16 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_12s_12s_24s_25_4_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_12s_12s_25s_25_4_1': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mac_muladd_13s_12s_25s_25_4_1': 42 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mul_12s_12s_24_1_1': 16 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mul_13s_12s_25_1_1': 30 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'mul_14s_12s_26_1_1': 36 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'sparsemux_129_6_10_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'conv1_tiles_Pipeline_wino_fold'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.94 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.97 seconds; current allocated memory: 603.828 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'conv1_tiles' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_89' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_88' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_87' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_86' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_85' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_84' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_83' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_82' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_81' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_80' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_79' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_78' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_77' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_76' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_75' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_74' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_73' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_72' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_71' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_70' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_69' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_68' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_67' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_66' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_65' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_64' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_63' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_62' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_61' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_60' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_59' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_58' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_57' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_56' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_55' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_54' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_53' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_52' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_51' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_50' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_49' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_48' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_47' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_46' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_45' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_44' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_43' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_42' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_41' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_40' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_39' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_38' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_37' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_36' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_35' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_34' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_33' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_32' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_31' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_30' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_29' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_28' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_27' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_26' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_25' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_24' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_23' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_22' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_21' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_20' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_19' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_18' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_17' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_16' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_15' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_14' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_13' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_12' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_11' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_10' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_9' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_8' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_7' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_6' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_5' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_4' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_3' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_2' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'p_ZZL11conv1_tilesRN3hls6streamI6ap_intILi10EELi0EEERNS0_IN7numeric6pixel1ELi0EEE' is power-on initialization.
+INFO: [SYN 201-210] Renamed object name 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_8_RAM_2P_BRAM_1R1W' to 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_8_bkb' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_7_RAM_2P_BRAM_1R1W' to 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_7_cud' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_6_RAM_2P_BRAM_1R1W' to 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_6_dEe' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_5_RAM_2P_BRAM_1R1W' to 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_5_eOg' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_4_RAM_2P_BRAM_1R1W' to 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_4_fYi' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_3_RAM_2P_BRAM_1R1W' to 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_3_g8j' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_2_RAM_2P_BRAM_1R1W' to 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_2_hbi' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_1_RAM_2P_BRAM_1R1W' to 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_1_ibs' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_RAM_2P_BRAM_1R1W' to 'conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_RAjbC' due to the length limit 80
+INFO: [RTGEN 206-100] Finished creating RTL model for 'conv1_tiles'.
+INFO: [RTMG 210-278] Implementing memory 'wino_conv1_conv1_tiles_conv1_tiles_stream_stream_stream_ap_int_14_9_16_ap_int_10_line_8_bkb' using block RAMs.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 1.3 seconds. CPU system time: 0.11 seconds. Elapsed time: 1.4 seconds; current allocated memory: 658.297 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'reorder_rows' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'reorder_rows' pipeline 'raster_rows_raster_columns' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'reorder_rows'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.73 seconds. CPU system time: 0.07 seconds. Elapsed time: 0.81 seconds; current allocated memory: 700.047 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'conv1_stream' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'conv1_stream'.
+INFO: [RTMG 210-285] Implementing FIFO 'top_U(wino_conv1_fifo_w640_d512_A)' using Vivado Default RAMs.
+INFO: [RTMG 210-285] Implementing FIFO 'bottom_U(wino_conv1_fifo_w640_d512_A)' using Vivado Default RAMs.
+INFO: [RTMG 210-285] Implementing FIFO 'start_for_reorder_rows_U0_U(wino_conv1_start_for_reorder_rows_U0)' using Shift Registers.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.09 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.1 seconds; current allocated memory: 700.047 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'layer_region' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWVALID' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWADDR' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWID' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWLEN' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWSIZE' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWBURST' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWLOCK' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWCACHE' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWPROT' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWQOS' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWREGION' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_AWUSER' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_WVALID' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_WDATA' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_WSTRB' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_WLAST' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_WID' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_WUSER' to 0.
+WARNING: [RTGEN 206-101] Setting dangling out port 'layer_region/m_axi_image_in_0_BREADY' to 0.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'layer_region'.
+INFO: [RTMG 210-285] Implementing FIFO 'raw_U(wino_conv1_fifo_w10_d512_A)' using Vivado Default RAMs.
+INFO: [RTMG 210-285] Implementing FIFO 'padded_U(wino_conv1_fifo_w10_d16_S)' using Shift Registers.
+INFO: [RTMG 210-285] Implementing FIFO 'start_for_replicate_pad_ap_int_10_4_U0_U(wino_conv1_start_for_replicate_pad_ap_int_10_4_U0)' using Shift Registers.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.3 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.33 seconds; current allocated memory: 709.109 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'wino_conv1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Design contains AXI ports. Reset is fixed to synchronous and active low.
+INFO: [RTGEN 206-500] Setting interface mode on port 'wino_conv1/image_in' to 'm_axi'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'wino_conv1/parameters' to 'm_axi'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'wino_conv1/in_r' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'wino_conv1/weights1' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'wino_conv1/biases1' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'wino_conv1/out_r' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on function 'wino_conv1' to 's_axilite & ap_ctrl_hs'.
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_7_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_7_RAkbM' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_RAlbW' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_1_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_1_mb6' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_2_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_2_ncg' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_3_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_3_ocq' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_4_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_4_pcA' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_5_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_5_qcK' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_6_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_6_rcU' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_7_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_7_sc4' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_8_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_8_tde' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_9_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_9_udo' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_RAvdy' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_11_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_11wdI' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_12_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_12xdS' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_13_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_13yd2' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_14_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_14zec' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_15_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_15Aem' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_16_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_16Bew' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_17_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_17CeG' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_18_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_18DeQ' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_19_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_19Ee0' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_RAFfa' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_21_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_21Gfk' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_22_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_22Hfu' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_23_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_23IfE' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_24_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_24JfO' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_25_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_25KfY' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_26_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_26Lf8' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_27_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_27Mgi' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_28_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_28Ngs' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_29_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_29OgC' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_RAPgM' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_31_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_31QgW' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_32_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_32Rg6' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_33_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_33Shg' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_34_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_34Thq' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_35_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_35UhA' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_36_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_36VhK' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_37_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_37WhU' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_38_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_38Xh4' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_39_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_39Yie' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_RAZio' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_41_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_410iy' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_42_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_421iI' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_43_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_432iS' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_44_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_443i2' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_45_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_454jc' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_46_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_465jm' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_47_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_476jw' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_48_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_487jG' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_49_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_498jQ' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_RA9j0' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_51_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_51bak' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_52_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_52bbk' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_53_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_53bck' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_54_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_54bdk' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_55_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_55bek' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_56_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_56bfk' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_57_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_57bgk' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_58_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_58bhl' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_59_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_59bil' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_9_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_9_RAbjl' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_8_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_8_RAbkl' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_7_0_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_7_0_bll' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_10_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_6_10bml' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_20_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_5_20bnm' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_30_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_4_30bom' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_40_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_3_40bpm' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_50_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_2_50bqm' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_60_RAM_2P_LUTRAM_1R1W' to 'wino_conv1_float_255_255_float_1_9_9_float_hls_stream_numeric_pixel1_0_r_1_60brm' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE3r_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbsm' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_143_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_144_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_151_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbvn' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_152_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbwn' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_153_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbxn' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_154_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbyn' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_155_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbzo' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_156_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbAo' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_157_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbBo' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_158_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbCo' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_145_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbDo' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_146_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbEo' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_147_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbFp' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_148_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbGp' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_149_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbHp' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_150_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbIp' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_159_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbJp' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_160_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbKp' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_167_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbLp' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_168_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbMq' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_169_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbNq' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_170_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbOq' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_171_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbPq' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_172_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbQq' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_173_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbRq' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_174_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbSr' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_161_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbTr' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_162_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbUr' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_163_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbVr' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_164_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbWr' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_165_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbXr' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_166_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbYs' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_175_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbZs' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_176_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEb0s' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_183_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEb1s' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_184_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEb2s' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_185_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEb3s' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_186_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEb4t' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_99_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEb5t' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_98_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEb6t' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_97_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEb7t' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_96_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEb8t' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_177_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEb9t' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_178_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcau' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_179_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcbu' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_180_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEccu' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_181_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcdu' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_182_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEceu' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_95_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcfu' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_94_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcgu' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_87_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEchv' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_86_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEciv' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_85_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcjv' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_84_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEckv' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_83_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEclv' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_82_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcmv' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_81_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcnw' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_80_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcow' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_93_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcpw' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_92_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcqw' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_91_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcrw' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_90_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcsw' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_89_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEctx' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_88_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcux' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_79_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcvx' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_78_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcwx' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_71_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcxx' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_70_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcyx' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_69_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEczy' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_68_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcAy' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_67_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcBy' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_66_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcCy' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_65_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcDy' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_64_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcEy' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_77_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcFz' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_76_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcGz' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_75_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcHz' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_74_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcIz' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_73_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcJz' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_72_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcKz' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_63_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcLz' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_62_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcMA' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_55_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcNA' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_54_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcOA' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_53_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcPA' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_52_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcQA' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_51_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcRA' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_50_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcSB' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_49_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcTB' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_48_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcUB' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_61_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcVB' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_60_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcWB' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_59_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcXB' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_58_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcYC' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_57_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEcZC' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_56_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEc0C' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_47_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEc1C' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_46_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEc2C' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_39_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEc3C' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_38_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEc4D' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_37_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEc5D' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_36_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEc6D' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_35_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEc7D' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_34_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEc8D' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_33_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEc9D' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_32_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdaE' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_45_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdbE' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_44_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdcE' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_43_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEddE' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_42_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdeE' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_41_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdfE' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_40_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdgE' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_31_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdhF' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_30_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdiF' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_23_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdjF' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_22_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdkF' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_21_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdlF' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_20_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdmF' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_19_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdnG' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_18_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdoG' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_17_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdpG' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_16_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdqG' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_29_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdrG' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_28_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdsG' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_27_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdtH' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_26_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEduH' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_25_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdvH' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_24_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdwH' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_15_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdxH' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_14_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdyH' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_7_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdzI' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_6_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdAI' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_5_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdBI' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_4_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdCI' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_3_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdDI' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_2_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdEI' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_1_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdFJ' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdGJ' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_13_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdHJ' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_12_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdIJ' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_11_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdJJ' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_10_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdKJ' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_9_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdLJ' due to the length limit 80
+INFO: [SYN 201-210] Renamed object name 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEEE11_8_RAM_2P_LUTRAM_1R1W' to 'p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEdMK' due to the length limit 80
+INFO: [RTGEN 206-100] Bundling port 'in_r', 'weights1', 'biases1' and 'return' to AXI-Lite port control.
+INFO: [RTGEN 206-100] Generating core module 'fpext_32ns_64_2_no_dsp_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'wino_conv1'.
+INFO: [RTMG 210-278] Implementing memory 'wino_conv1_wino_conv1_float_255_255_float_1_9_9_float_stream_raw_9_RAM_2P_LUTRAM_1R1W' using distributed RAMs.
+INFO: [RTMG 210-278] Implementing memory 'wino_conv1_p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbtn' using distributed RAMs.
+INFO: [RTMG 210-278] Implementing memory 'wino_conv1_p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbun' using distributed RAMs.
+INFO: [RTMG 210-278] Implementing memory 'wino_conv1_p_ZZ10wino_conv1PA255_A255_fPA1_A9_A9_fPfRN3hls6streamIN7numeric6pixel1ELi0EEbyn' using distributed RAMs.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.51 seconds. CPU system time: 0.05 seconds. Elapsed time: 0.56 seconds; current allocated memory: 739.453 MB.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 0.86 seconds. CPU system time: 0.09 seconds. Elapsed time: 0.96 seconds; current allocated memory: 760.137 MB.
+INFO: [HLS 200-1603] Design has inferred MAXI bursts and missed bursts, see Vitis HLS GUI synthesis summary report for detailed information.
+INFO: [HLS 200-2225] Wrote inferred directives to file /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/syn/inferred_directives.ini
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 1.63 seconds. CPU system time: 0.12 seconds. Elapsed time: 1.75 seconds; current allocated memory: 789.898 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for wino_conv1.
+INFO: [VLOG 209-307] Generating Verilog RTL for wino_conv1.
+INFO: [HLS 200-790] **** Loop Constraint Status: All loop constraints were satisfied.
+INFO: [HLS 200-789] **** Estimated Fmax: 342.47 MHz
+INFO: [IMPL 213-8] Exporting RTL as a Vivado IP.
+INFO: [Common 17-3922] A valid Vivado Design Suite BASIC license has been detected. Your current license is active and will expire on 02-aug-2027.
+
+****** Vivado v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Sun Oct 11 09:30:40 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source run_ippack.tcl -notrace
+INFO: calling package_hls_ip ip_types=vitis sysgen json_file=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/hls_data.json outdir=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip srcdir=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls ippack_options_dict= ippack_options_dict=
+INFO: Copied 1 ipmisc file(s) to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip/misc
+INFO: Copied 58 verilog file(s) to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip/hdl/verilog
+INFO: Copied 48 vhdl file(s) to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip/hdl/vhdl
+INFO: Copied 10 swdriver file(s) to /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip/drivers
+Generating 1 subcores in /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip/subcore_prj:
+impl/misc/wino_conv1_fpext_32ns_64_2_no_dsp_1_ip.tcl
+create_project: Time (s): cpu = 00:01:25 ; elapsed = 00:00:15 . Memory (MB): peak = 1719.441 ; gain = 275.055 ; free physical = 1181 ; free virtual = 12120
+INFO: Using COE_DIR=/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip/hdl/verilog
+INFO: Generating wino_conv1_fpext_32ns_64_2_no_dsp_1_ip via file impl/misc/wino_conv1_fpext_32ns_64_2_no_dsp_1_ip.tcl
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/lipuze/amdfpga/2026.1/data/ip'.
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'wino_conv1_fpext_32ns_64_2_no_dsp_1_ip'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'wino_conv1_fpext_32ns_64_2_no_dsp_1_ip'...
+INFO: Done generating wino_conv1_fpext_32ns_64_2_no_dsp_1_ip via file impl/misc/wino_conv1_fpext_32ns_64_2_no_dsp_1_ip.tcl
+INFO: Found 1 unique subcore IP: xilinx.com:ip:floating_point:7.1
+INFO: Copied 1 subcore files: /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip/hdl/ip/wino_conv1_fpext_32ns_64_2_no_dsp_1_ip/wino_conv1_fpext_32ns_64_2_no_dsp_1_ip.xci
+INFO: Import ports from HDL: /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip/hdl/vhdl/wino_conv1.vhd (wino_conv1)
+INFO: Add axi4lite interface s_axi_control
+INFO: Add clock interface ap_clk
+INFO: Add reset interface ap_rst_n
+INFO: Add interrupt interface interrupt
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/lipuze/amdfpga/2026.1/data/ip'.
+INFO: Add axi4full interface m_axi_image_in
+INFO: Add axi4full interface m_axi_parameters
+INFO: Add axi4stream interface out_r
+INFO: Calling post_process_vitis to specialize IP
+INFO: Calling post_process_sysgen to specialize IP
+Generating sysgen info xml from json file
+INFO: Created IP /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip/component.xml
+INFO: Created IP archive /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W07/hls/impl/ip/xilinx_com_hls_wino_conv1_1_0.zip
+INFO: [Common 17-206] Exiting Vivado at Sun Oct 11 09:31:00 2026...
+INFO: [HLS 200-802] Generated output file W07/wino_conv1.zip
+INFO: [HLS 200-112] Total CPU user time: 164.23 seconds. Total CPU system time: 10.31 seconds. Total elapsed time: 98.2 seconds; peak allocated memory: 806.250 MB.
+INFO: [v++ 60-791] Total elapsed time: 0h 1m 42s

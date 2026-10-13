@@ -1,0 +1,84 @@
+{
+  "T": 8,
+  "changes": "Independent continuous Winograd clone. Conv2 weights/bias use signed8 fraction7, its accumulator21 bits fraction15, and the output boundary removes8 bits to the existing ten-bit activation fraction7. All other layer types and padding remain unchanged. A packed pair is decoded every product; no accumulated low-field bound is assumed.",
+  "clock": 4,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_ALL_CONTINUOUS=1 -DEXP_A_BITS=10 -DEXP_FRAMES=2 -DEXP_STORAGE=1 -DEXP_T=8 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=1 -DEXP_NUMPY_REFERENCE=0 -DEXP_QUICK=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C08/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "Rank only the unchanged0.1dB precision gate and resource-feasible results; never infer accuracy from a DSP count.",
+  "cpu_count": 12,
+  "defines": {
+    "EXP_ALL_CONTINUOUS": 1,
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_STORAGE": 1,
+    "EXP_T": 8,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/winograd_mixed_packing",
+  "errors": [
+    "Synthesis failed (exit=1)"
+  ],
+  "estimates": {
+    "BRAM18K": 155,
+    "Conv1_DSP": 288,
+    "Conv2_DSP": 128,
+    "Conv3_DSP": 100,
+    "DSP": 519,
+    "LUT": 65000,
+    "T": 8,
+    "URAM": 0,
+    "basis": "OneDSP per transformed Conv1 product or packed Conv2 pair; direct Conv3 products. Continuous engine65025*T projection plus100000 cycles for load/startup/reorder. Retain72 raster FIFO BRAM18K and direct gather storage. LUT budget removes residual[-2,2] restoration from Conv2 but retains signed unpacking, wide transformed-window FIFO, inverse34-bit arithmetic, and registered direct Conv3 reduction. T4 is an explicit LUT-feasibility probe, not assumed deployable.",
+    "latency_cycles": 620200
+  },
+  "fixed": true,
+  "id": "C08",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare mixed Conv2 packing against W11's direct uniform10 layers and C07's full residual packing. Require every butterfly output bit to equal E065, retaining its original rounding/overflow/quantization boundaries. Final selected points must rerun all13 images before RTL/route verification.",
+  "name": "wino_conv2w8_continuous_T8",
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [],
+  "parsed_modules": [],
+  "precision": "w10_8_10a10acc23_21_23",
+  "purpose": "E065 independently verifies Conv2-only signed8 weights/bias at the mixed precision point with13-image deltaPSNR=-0.07589037644656216dB. Pair those coefficients with shared ten-bit activations in one27x10 DSP product, with borrow correction but no coefficient residual restoration. Combine continuous integer Winograd Conv1 and direct Conv3; this avoids the failed uniformINT8 gate and full exact10 packing's large residual fabric cost.",
+  "quality_provenance": {
+    "image_count": 13,
+    "method": "Same quantization and butterfly bit identity; quality measured by reference",
+    "path": "experiments/E065_apfixed_mixed_conv2w8/metrics.json"
+  },
+  "quality_reference": "experiments/E065_apfixed_mixed_conv2w8/metrics.json",
+  "quick": true,
+  "reference": "experiments/E065_apfixed_mixed_conv2w8/butterfly_output.bin",
+  "scope": "frame",
+  "series": "C",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "016cb46553ae5468239d0d08f19d7d7303c8db33",
+  "source_sha256": {
+    "conv1.cpp": "11205e4faaa3a2774c5c7338ee0ab2bc378f615890c6a9ed149d2ad9ad08acf6",
+    "integer_numeric.inc": "68d817602805a3c2c2a8b2da8adcfb9a059f5ed30f1ec7613c5e9979a1815794",
+    "srcnn.cpp": "a8497e0a2c0277072e0e4f5549710af4451da6caa76e12bcc0c4bfb042b28b38",
+    "srcnn.h": "5d4eb01095bd51e2ddcf7a6d9268d1964f410a74db17cd500a1a8e57eab58508",
+    "types.h": "330b36c6bc8bac2fdc4e866d2804cf0ee300fe6bec22814ea9216f4237e43abb",
+    "winograd_math.h": "9eebe1f9e409ba453b5b907087485b3e116061bd6925a556847746ad36ed1539"
+  },
+  "stage": "arch_c",
+  "storage": "lutram",
+  "time": "2026-10-10T22:45:08+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 09:45:10 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "unroll": "G2 F2/paired Cout signed8 weights/direct Cin",
+  "validation": {
+    "bit_exact": true,
+    "border_mse": 1.405191888267716e-05,
+    "butterfly_mse": 1.770653995278335e-05,
+    "conv1_exact": false,
+    "conv1_mse": null,
+    "csim_pass": true,
+    "delta_psnr": null,
+    "float_exact": false,
+    "golden_psnr": null,
+    "image_count": 0,
+    "set14_psnr": null
+  }
+}

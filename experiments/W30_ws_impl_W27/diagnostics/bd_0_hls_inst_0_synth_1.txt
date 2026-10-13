@@ -1,0 +1,195 @@
+
+*** Running vivado
+    with args -log bd_0_hls_inst_0.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source bd_0_hls_inst_0.tcl
+
+INFO: [Common 17-3922] A valid Vivado Design Suite BASIC license has been detected. Your current license is active and will expire on 02-aug-2027.
+#-----------------------------------------------------------
+# Vivado v2026.1 (64-bit)
+# SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+# IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+# SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+# Start of session at: Tue Oct 13 00:33:25 2026
+# Process ID         : 100399
+# Current directory  : /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W30/hls/impl/verilog/project.runs/bd_0_hls_inst_0_synth_1
+# Command line       : vivado -log bd_0_hls_inst_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source bd_0_hls_inst_0.tcl
+# Log file           : /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W30/hls/impl/verilog/project.runs/bd_0_hls_inst_0_synth_1/bd_0_hls_inst_0.vds
+# Journal file       : /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W30/hls/impl/verilog/project.runs/bd_0_hls_inst_0_synth_1/vivado.jou
+# Running On         : Xiaoxin-Ubuntu
+# Platform           : Ubuntu
+# Operating System   : Ubuntu 22.04.5 LTS
+# Processor Detail   : AMD Ryzen 5 4600U with Radeon Graphics
+# CPU Frequency      : 1400.000 MHz
+# CPU Physical cores : 6
+# CPU Logical cores  : 12
+# Host memory        : 16101 MB
+# Swap memory        : 8589 MB
+# Total Virtual      : 24691 MB
+# Available Virtual  : 21898 MB
+#-----------------------------------------------------------
+
+****** Vivado v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Tue Oct 13 00:33:25 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source bd_0_hls_inst_0.tcl -notrace
+create_project: Time (s): cpu = 00:00:09 ; elapsed = 00:00:05 . Memory (MB): peak = 1673.195 ; gain = 229.844 ; free physical = 7939 ; free virtual = 20493
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W30/hls/impl/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/lipuze/amdfpga/2026.1/data/ip'.
+source /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W30/hls/impl/verilog/serial_synthesis.tcl
+EXP_VIVADO_THREADS general=1 synth=1
+Command: synth_design -top bd_0_hls_inst_0 -part xck26-sfvc784-2LV-c -directive sdx_optimization_effort_high -incremental_mode off -mode out_of_context
+INFO: [Vivado_Tcl 97-128] Directive used for synth_design is: sdx_optimization_effort_high
+Starting synth_design
+Attempting to get a license for feature 'Vivado_Synthesis' and/or device 'xck26'
+INFO: [Common 17-349] Got license for feature 'Vivado_Synthesis' and/or device 'xck26'
+INFO: [Device 21-403] Loading part xck26-sfvc784-2LV-c
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 1 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 100412
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2914.633 ; gain = 168.852 ; free physical = 6576 ; free virtual = 19130
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-10515] begin/end is required for generate-for in this mode of Verilog [/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W30/hls/impl/verilog/project.gen/sources_1/bd/bd_0/ipshared/7d5b/hdl/verilog/srcnn_frp_pipeline_valid.v:80]
+WARNING: [Synth 8-10515] begin/end is required for generate-for in this mode of Verilog [/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W30/hls/impl/verilog/project.gen/sources_1/bd/bd_0/ipshared/7d5b/hdl/verilog/srcnn_frp_pipeline_valid.v:85]
+INFO: [Synth 8-6157] synthesizing module 'bd_0_hls_inst_0' [/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W30/hls/impl/verilog/project.gen/sources_1/bd/bd_0/ip/bd_0_hls_inst_0/synth/bd_0_hls_inst_0.v:53]
+create_project: Time (s): cpu = 00:00:09 ; elapsed = 00:00:05 . Memory (MB): peak = 1673.195 ; gain = 229.844 ; free physical = 7939 ; free virtual = 20493
+EXP_VIVADO_THREADS general=1 synth=1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 1 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 100412
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2914.633 ; gain = 168.852 ; free physical = 6576 ; free virtual = 19130
+INFO: [Synth 8-7071] port 'aclk' of module 'srcnn_fpext_32ns_64_2_no_dsp_1_ip' is unconnected for instance 'srcnn_fpext_32ns_64_2_no_dsp_1_ip_u' [/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W30/hls/impl/verilog/project.gen/sources_1/bd/bd_0/ipshared/7d5b/hdl/verilog/srcnn_fpext_32ns_64_2_no_dsp_1.v:32]
+Finished RTL Elaboration : Time (s): cpu = 00:00:21 ; elapsed = 00:00:23 . Memory (MB): peak = 3527.852 ; gain = 782.070 ; free physical = 5853 ; free virtual = 18416
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:22 ; elapsed = 00:00:24 . Memory (MB): peak = 3527.852 ; gain = 782.070 ; free physical = 5886 ; free virtual = 18449
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:22 ; elapsed = 00:00:24 . Memory (MB): peak = 3527.852 ; gain = 782.070 ; free physical = 5886 ; free virtual = 18449
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 3527.852 ; gain = 0.000 ; free physical = 5922 ; free virtual = 18485
+Netlist sorting complete. Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.04 . Memory (MB): peak = 3688.383 ; gain = 0.000 ; free physical = 5845 ; free virtual = 18408
+Finished Constraint Validation : Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 3729.355 ; gain = 983.574 ; free physical = 4989 ; free virtual = 17552
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 3737.359 ; gain = 991.578 ; free physical = 4988 ; free virtual = 17551
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 3737.359 ; gain = 991.578 ; free physical = 4988 ; free virtual = 17551
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:01:07 ; elapsed = 00:01:09 . Memory (MB): peak = 3737.359 ; gain = 991.578 ; free physical = 4979 ; free virtual = 17551
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:02:49 ; elapsed = 00:02:52 . Memory (MB): peak = 3749.285 ; gain = 1003.504 ; free physical = 4665 ; free virtual = 17248
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:03:01 ; elapsed = 00:03:05 . Memory (MB): peak = 4301.219 ; gain = 1555.438 ; free physical = 3104 ; free virtual = 15688
+Finished Timing Optimization : Time (s): cpu = 00:03:59 ; elapsed = 00:04:04 . Memory (MB): peak = 4736.117 ; gain = 1990.336 ; free physical = 2698 ; free virtual = 15287
+Finished Technology Mapping : Time (s): cpu = 00:05:24 ; elapsed = 00:05:38 . Memory (MB): peak = 4764.059 ; gain = 2018.277 ; free physical = 1717 ; free virtual = 14394
+Finished IO Insertion : Time (s): cpu = 00:06:03 ; elapsed = 00:06:18 . Memory (MB): peak = 5220.691 ; gain = 2474.910 ; free physical = 1316 ; free virtual = 13993
+Finished Renaming Generated Instances : Time (s): cpu = 00:06:03 ; elapsed = 00:06:18 . Memory (MB): peak = 5220.691 ; gain = 2474.910 ; free physical = 1316 ; free virtual = 13993
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:06:47 ; elapsed = 00:07:02 . Memory (MB): peak = 5341.652 ; gain = 2595.871 ; free physical = 1184 ; free virtual = 13861
+Finished Renaming Generated Ports : Time (s): cpu = 00:06:48 ; elapsed = 00:07:03 . Memory (MB): peak = 5341.652 ; gain = 2595.871 ; free physical = 1184 ; free virtual = 13861
+Finished Handling Custom Attributes : Time (s): cpu = 00:06:51 ; elapsed = 00:07:06 . Memory (MB): peak = 5354.215 ; gain = 2608.434 ; free physical = 1169 ; free virtual = 13846
+Finished Renaming Generated Nets : Time (s): cpu = 00:06:52 ; elapsed = 00:07:07 . Memory (MB): peak = 5354.215 ; gain = 2608.434 ; free physical = 1169 ; free virtual = 13846
+Finished Writing Synthesis Report : Time (s): cpu = 00:06:52 ; elapsed = 00:07:08 . Memory (MB): peak = 5354.215 ; gain = 2608.434 ; free physical = 1171 ; free virtual = 13848
+Synthesis Optimization Runtime : Time (s): cpu = 00:06:34 ; elapsed = 00:06:51 . Memory (MB): peak = 5354.215 ; gain = 2411.016 ; free physical = 4270 ; free virtual = 16947
+Synthesis Optimization Complete : Time (s): cpu = 00:06:55 ; elapsed = 00:07:12 . Memory (MB): peak = 5354.215 ; gain = 2608.434 ; free physical = 4314 ; free virtual = 16954
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 5354.215 ; gain = 0.000 ; free physical = 4318 ; free virtual = 16958
+Netlist sorting complete. Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.05 . Memory (MB): peak = 5525.188 ; gain = 0.000 ; free physical = 4068 ; free virtual = 16709
+synth_design: Time (s): cpu = 00:07:47 ; elapsed = 00:08:04 . Memory (MB): peak = 5525.223 ; gain = 3806.395 ; free physical = 4068 ; free virtual = 16708
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.25 ; elapsed = 00:00:00.26 . Memory (MB): peak = 5525.223 ; gain = 0.000 ; free physical = 4042 ; free virtual = 16714
+write_checkpoint: Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 5525.223 ; gain = 0.000 ; free physical = 4026 ; free virtual = 16684
+write_vhdl: Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 5525.223 ; gain = 0.000 ; free physical = 3871 ; free virtual = 16656
+|srcnn_mul_10s_10s_20_1_1 | (A'*B'')'   | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 1    | 
+|srcnn_mul_10s_10s_20_1_1 | (A'*B'')'   | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 1    | 
+|srcnn_mul_10s_10s_20_1_1 | (A'*B'')'   | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 1    | 
+|srcnn_mul_10s_10s_20_1_1 | (A''*B')'   | 30     | 18     | -      | -      | 20     | 2    | 1    | -    | -    | -     | 0    | 1    | 
++-------------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+----------------+------+
+|      |Cell            |Count |
++------+----------------+------+
+|1     |CARRY8          |  2925|
+|2     |DSP_ALU         |   644|
+|3     |DSP_A_B_DATA    |   644|
+|6     |DSP_C_DATA      |   644|
+|7     |DSP_MULTIPLIER  |   644|
+|8     |DSP_M_DATA      |   644|
+|9     |DSP_OUTPUT      |   644|
+|10    |DSP_PREADD      |   644|
+|11    |DSP_PREADD_DATA |   644|
+|12    |LUT1            |   655|
+|13    |LUT2            | 12536|
+|14    |LUT3            | 17078|
+|15    |LUT4            |  8148|
+|16    |LUT5            |  3816|
+|17    |LUT6            |  8825|
+|18    |MUXCY           |     8|
+|19    |MUXF7           |   650|
+|20    |MUXF8           |    11|
+|21    |RAM16X1D        |     1|
+|22    |RAM32M          |     1|
+|23    |RAM32M16        |  1634|
+|24    |RAMB18E2        |    17|
+|27    |RAMB36E2        |    46|
+|33    |SRL16E          |   417|
+|34    |SRLC32E         |    20|
+|35    |FDRE            | 77659|
+|36    |FDSE            |   122|
++------+----------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:06:52 ; elapsed = 00:07:08 . Memory (MB): peak = 5354.215 ; gain = 2608.434 ; free physical = 1171 ; free virtual = 13848
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:06:34 ; elapsed = 00:06:51 . Memory (MB): peak = 5354.215 ; gain = 2411.016 ; free physical = 4270 ; free virtual = 16947
+Synthesis Optimization Complete : Time (s): cpu = 00:06:55 ; elapsed = 00:07:12 . Memory (MB): peak = 5354.215 ; gain = 2608.434 ; free physical = 4314 ; free virtual = 16954
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 5354.215 ; gain = 0.000 ; free physical = 4318 ; free virtual = 16958
+INFO: [Netlist 29-17] Analyzing 5874 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 6 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][0]_mux. inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][0]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][1]_mux. inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][1]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][2]_mux. inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][2]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][3]_mux. inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][3]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][4]_mux. inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][4]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][5]_mux. inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][5]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][6]_mux. inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][6]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][7]_mux. inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][7]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][8]_mux. inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][8]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Constraints 18-8706] Failed to create MUXF7 shape for instance inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][9]_mux. inst/grp_dataflow_region_fu_3118/result_U/U_srcnn_fifo_w10_d36_S_ShiftReg/SRL_SIG_reg[35][9]_mux. 
+	to bel F7MUX_AB. Flop can not be placed in the same row as its driver in order to avoid hold issue since they either have different clock signals or not driven by global clock.
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.05 . Memory (MB): peak = 5525.188 ; gain = 0.000 ; free physical = 4068 ; free virtual = 16709
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 2282 instances were transformed.
+  (CARRY4) => CARRY8: 2 instances
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 644 instances
+  RAM16X1D => RAM32X1D (RAMD32(x2)): 1 instance 
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 1 instance 
+  RAM32M16 => RAM32M16 (RAMD32(x14), RAMS32(x2)): 1634 instances
+
+Synth Design complete | Checksum: 1eab4587
+INFO: [Common 17-83] Releasing license: Vivado_Synthesis
+768 Infos, 5 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:07:47 ; elapsed = 00:08:04 . Memory (MB): peak = 5525.223 ; gain = 3806.395 ; free physical = 4068 ; free virtual = 16708
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 7627.761; main = 4639.812; forked = 3363.096
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 10646.211; main = 5525.191; forked = 5291.992
+INFO: [Coretcl 2-1174] Renamed 2537 cell refs.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.25 ; elapsed = 00:00:00.26 . Memory (MB): peak = 5525.223 ; gain = 0.000 ; free physical = 4042 ; free virtual = 16714
+INFO: [Common 17-1381] The checkpoint '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/W30/hls/impl/verilog/project.runs/bd_0_hls_inst_0_synth_1/bd_0_hls_inst_0.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 5525.223 ; gain = 0.000 ; free physical = 4026 ; free virtual = 16684
+INFO: [Vivado 12-24828] Executing command : report_utilization -file bd_0_hls_inst_0_utilization_synth.rpt -pb bd_0_hls_inst_0_utilization_synth.pb
+write_vhdl: Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 5525.223 ; gain = 0.000 ; free physical = 3871 ; free virtual = 16656
+INFO: [Common 17-206] Exiting Vivado at Tue Oct 13 00:42:08 2026...

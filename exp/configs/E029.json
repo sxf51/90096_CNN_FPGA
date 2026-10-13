@@ -1,0 +1,22 @@
+{
+  "changes": "Golden copy with stable loop labels only; all experiment directives are configuration-controlled.",
+  "clock": 10,
+  "conclusion": "Compare compiler-only scheduling with original baseline and streaming architecture.",
+  "design": "designs/golden_auto",
+  "directives": [
+    "set_directive_pipeline -II 1 conv1/g_03_x",
+    "set_directive_pipeline -II 1 srcnn/g_03_x",
+    "set_directive_pipeline -II 1 srcnn/g_09_x"
+  ],
+  "id": "E029",
+  "ii_targets": {
+    "g_03_x": 1,
+    "g_09_x": 1
+  },
+  "interpretation": "Pending measured II, dependency, port and resource reports.",
+  "name": "auto_pixel_pipeline_validcfg",
+  "purpose": "Pipeline pixel loops; measure inner-loop expansion, memory ports and potential resource explosion.",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "1f025dccb9e5fb187213ff4aea10887e617ab078",
+  "stage": 2
+}

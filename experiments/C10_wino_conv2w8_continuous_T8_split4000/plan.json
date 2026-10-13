@@ -1,0 +1,53 @@
+{
+  "config_sha256": "5cf1227dc0118e485670ffbe7fdeae8d0eaf365fd762b9adaed8fd75feed1a03",
+  "configuration": {
+    "T": 8,
+    "changes": "New independent source based on C08. Replace the single oversized window stream with two synchronized channel halves. Each uses a two-entry LUTRAM FIFO; compute retains the complete window and chooses the correct half for each input channel. All first-phase and attempted sources stay frozen.",
+    "clock": 4,
+    "conclusion": "Rank only the unchanged0.1dB precision gate and resource-feasible results; never infer accuracy from a DSP count.",
+    "defines": {
+      "EXP_ALL_CONTINUOUS": 1,
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_STORAGE": 1,
+      "EXP_T": 8,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/winograd_mixed_packing_r2",
+    "estimates": {
+      "BRAM18K": 155,
+      "Conv1_DSP": 288,
+      "Conv2_DSP": 128,
+      "Conv3_DSP": 100,
+      "DSP": 519,
+      "LUT": 65100,
+      "T": 8,
+      "URAM": 0,
+      "basis": "OneDSP per transformed Conv1 product or packed Conv2 pair; direct Conv3 products. Continuous engine65025*T projection plus100000 cycles for load/startup/reorder. Retain72 raster FIFO BRAM18K and direct gather storage. LUT budget removes residual[-2,2] restoration from Conv2 but retains signed unpacking, wide transformed-window FIFO, inverse34-bit arithmetic, and registered direct Conv3 reduction. T4 is an explicit LUT-feasibility probe, not assumed deployable. Two4000-bit channels keep the same8000 stored payload bits per window and two-entry depths; reserve100 additional control LUT for the second FIFO. Arithmetic DSP,T and cycle estimates stay identical. Aggregation legality is required before any resource/speed claim.",
+      "latency_cycles": 620200
+    },
+    "fixed": true,
+    "id": "C10",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Compare the frozen estimates with parsed hardware reports. This is a representation fix for the compiler's4096-bit aggregate limit, not a precision relaxation. Check both stream counts and achievedII; final selected points still require full-supplied-image verification and finite-FIFO RTL cosimulation.",
+    "name": "wino_conv2w8_continuous_T8_split4000",
+    "precision": "w10_8_10a10acc23_21_23",
+    "purpose": "W11 C simulation passes exactly but synthesis rejects the8000-bit aggregated Conv3 stream with HLS214-256: maximum4096 bits. Preserve the continuous schedule and represent one800-element window as two25x16-channel4000-bit packets, each below the measured limit. Both streams produce/consume65025 packets per frame; no quantization or MAC change. E065 independently verifies Conv2-only signed8 weights/bias at the mixed precision point with13-image deltaPSNR=-0.07589037644656216dB. Pair those coefficients with shared ten-bit activations in one27x10 DSP product, with borrow correction but no coefficient residual restoration. Combine continuous integer Winograd Conv1 and direct Conv3; this avoids the failed uniformINT8 gate and full exact10 packing's large residual fabric cost.",
+    "quality_reference": "experiments/E065_apfixed_mixed_conv2w8/metrics.json",
+    "quick": true,
+    "reference": "experiments/E065_apfixed_mixed_conv2w8/butterfly_output.bin",
+    "scope": "frame",
+    "series": "C",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_c",
+    "storage": "lutram",
+    "unroll": "G2 F2/paired Cout signed8 weights/direct Cin"
+  },
+  "created_at": "2026-10-10T23:09:01+00:00",
+  "created_from_commit": "a80b096e3ae863a3f495edabb7f5990656cd439f",
+  "purpose_section": "W11 C simulation passes exactly but synthesis rejects the8000-bit aggregated Conv3 stream with HLS214-256: maximum4096 bits. Preserve the continuous schedule and represent one800-element window as two25x16-channel4000-bit packets, each below the measured limit. Both streams produce/consume65025 packets per frame; no quantization or MAC change. E065 independently verifies Conv2-only signed8 weights/bias at the mixed precision point with13-image deltaPSNR=-0.07589037644656216dB. Pair those coefficients with shared ten-bit activations in one27x10 DSP product, with borrow correction but no coefficient residual restoration. Combine continuous integer Winograd Conv1 and direct Conv3; this avoids the failed uniformINT8 gate and full exact10 packing's large residual fabric cost.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| BRAM18K | 155 |\n| Conv1_DSP | 288 |\n| Conv2_DSP | 128 |\n| Conv3_DSP | 100 |\n| DSP | 519 |\n| LUT | 65100 |\n| T | 8 |\n| URAM | 0 |\n| basis | OneDSP per transformed Conv1 product or packed Conv2 pair; direct Conv3 products. Continuous engine65025*T projection plus100000 cycles for load/startup/reorder. Retain72 raster FIFO BRAM18K and direct gather storage. LUT budget removes residual[-2,2] restoration from Conv2 but retains signed unpacking, wide transformed-window FIFO, inverse34-bit arithmetic, and registered direct Conv3 reduction. T4 is an explicit LUT-feasibility probe, not assumed deployable. Two4000-bit channels keep the same8000 stored payload bits per window and two-entry depths; reserve100 additional control LUT for the second FIFO. Arithmetic DSP,T and cycle estimates stay identical. Aggregation legality is required before any resource/speed claim. |\n| latency_cycles | 620200 |\n\nPlanned at 2026-10-10T23:09:01+00:00; estimates are hypotheses, not tool measurements."
+}

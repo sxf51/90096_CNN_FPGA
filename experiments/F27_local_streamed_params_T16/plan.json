@@ -1,0 +1,58 @@
+{
+  "config_sha256": "2f9486080dd56232339e137fcf2ffb6430eb5359bcc5014e4f657e2782601bb1",
+  "configuration": {
+    "T": 16,
+    "changes": "Independent F25 copy. Remove top-level banks/loaders; add one read_params process and layer streams; move existing cyclic banks into engines, with ram_s2p LUTRAM and II1 local loading. Keep all inference arithmetic, precisions, online padding, AXI bundles and two frames. C simulations may overlap F89; hardware synthesis waits for completed F26.",
+    "clock": 2.5,
+    "conclusion": "Select only measured exact, resource-feasible behavior and expose every missed WS2 target; verify chosen local-loader architecture with a new two-frame RTL experiment before claiming dataflow correctness.",
+    "control_experiment": "F25",
+    "defines": {
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 16,
+      "EXP_TREE_ADD_LATENCY": 1,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/continuous_param_stream_v1",
+    "estimates": {
+      "BRAM18K": 73,
+      "Conv1_DSP": 324,
+      "Conv2_DSP": 128,
+      "Conv3_DSP": 50,
+      "DSP": 502,
+      "FF": 125404,
+      "LUT": 47700,
+      "T": 16,
+      "URAM": 0,
+      "basis": "F25 measured 37682 compute-region LUT, 32294 outside LUT and1056904 cycles. Remove roughly14000 bank-port mux LUT and four of five roughly2500-LUT converter copies; budget7000 LUT inside dataflow for one converter, layer loaders, FIFO/routing and3500 outside for preserved AXI/control. Three depth16 ten-bit parameter FIFOs add480 bits in LUTRAM, no BRAM/URAM. MAC allocation324/128/50 unchanged. Compute lower bound65025*16=1040400; allow about11600 cycles for startup, parameter load and drain. Conv1 needs5248 parameters; downstream streams load before pixel use. Attribution moves under DATAFLOW, so total LUT is the meaningful area check.",
+      "latency_cycles": 1052000,
+      "outside_LUT": 3500
+    },
+    "fixed": true,
+    "id": "F27",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Compare estimates with actual total/dataflow/outside LUT and report the new read_params/local-load modules. Check all fold II1, cycle bound<=1067473.04, clock<=2.377ns, unchanged border MSE and disappearance of weight-related HLS200-1449. Stream counts must be exact on each repeated invocation; C simulation cannot prove finite-FIFO progress.",
+    "name": "local_streamed_params_T16",
+    "precision": "w10a10acc23",
+    "purpose": "WS2 ownership experiment: one parameter AXI-reading process inside DATAFLOW quantizes each of 8032 weights and97 biases once, then sends three distinct streams of5248/2080/801 values. Each engine loads its private cyclic simple-dual-port bank and biases before reading pixels. Hypothesize that shared caller/consumer bank-port multiplexers, duplicated converters and weight-related HLS200-1449 warnings disappear, reducing total LUT as well as outside-LUT attribution. Separate per-layer streams prevent interleaved parameter/pixel deadlock.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws2",
+    "storage": "local_lutram_s2p",
+    "synthesis_after": "F26",
+    "unroll": "Cout/Cout/tap"
+  },
+  "created_at": "2026-10-11T15:16:07+00:00",
+  "created_from_commit": "195947850e79400c33aafd28babb57a142b3cbcc",
+  "purpose_section": "WS2 ownership experiment: one parameter AXI-reading process inside DATAFLOW quantizes each of 8032 weights and97 biases once, then sends three distinct streams of5248/2080/801 values. Each engine loads its private cyclic simple-dual-port bank and biases before reading pixels. Hypothesize that shared caller/consumer bank-port multiplexers, duplicated converters and weight-related HLS200-1449 warnings disappear, reducing total LUT as well as outside-LUT attribution. Separate per-layer streams prevent interleaved parameter/pixel deadlock.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 502 |\n| Conv1_DSP | 324 |\n| Conv2_DSP | 128 |\n| Conv3_DSP | 50 |\n| BRAM18K | 73 |\n| URAM | 0 |\n| T | 16 |\n| latency_cycles | 1052000 |\n| LUT | 47700 |\n| outside_LUT | 3500 |\n| FF | 125404 |\n| basis | F25 measured 37682 compute-region LUT, 32294 outside LUT and1056904 cycles. Remove roughly14000 bank-port mux LUT and four of five roughly2500-LUT converter copies; budget7000 LUT inside dataflow for one converter, layer loaders, FIFO/routing and3500 outside for preserved AXI/control. Three depth16 ten-bit parameter FIFOs add480 bits in LUTRAM, no BRAM/URAM. MAC allocation324/128/50 unchanged. Compute lower bound65025*16=1040400; allow about11600 cycles for startup, parameter load and drain. Conv1 needs5248 parameters; downstream streams load before pixel use. Attribution moves under DATAFLOW, so total LUT is the meaningful area check. |\n\nPlanned at 2026-10-11T15:16:07+00:00; estimates are hypotheses, not tool measurements."
+}

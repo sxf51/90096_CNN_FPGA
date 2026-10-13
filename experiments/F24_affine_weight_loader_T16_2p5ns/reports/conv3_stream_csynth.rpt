@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'conv3_stream'
+================================================================
+* Date:           Sun Oct 11 13:39:35 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        F24
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  2.50 ns|  2.357 ns|     0.68 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+---------+---------+----------+
+    |  Latency (cycles) |  Latency (absolute) |      Interval     | Pipeline |
+    |   min   |   max   |    min   |    max   |   min   |   max   |   Type   |
+    +---------+---------+----------+----------+---------+---------+----------+
+    |  1040415|  1040415|  2.808 ms|  2.808 ms|  1040414|  1040414|  dataflow|
+    +---------+---------+----------+----------+---------+---------+----------+
+
+    + Detail: 
+        * Instance: 
+        +-------------+----------+---------+---------+----------+----------+---------+---------+---------+
+        |             |          |  Latency (cycles) |  Latency (absolute) |      Interval     | Pipeline|
+        |   Instance  |  Module  |   min   |   max   |    min   |    max   |   min   |   max   |   Type  |
+        +-------------+----------+---------+---------+----------+----------+---------+---------+---------+
+        |windows3_U0  |windows3  |    67084|    67084|  0.181 ms|  0.181 ms|    67084|    67084|       no|
+        |engine3_U0   |engine3   |  1040413|  1040413|  2.808 ms|  2.808 ms|  1040413|  1040413|       no|
+        +-------------+----------+---------+---------+----------+----------+---------+---------+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      12|    -|
+|FIFO             |        -|     -|     198|     134|    -|
+|Instance         |       36|    50|   34570|   19017|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|      27|    -|
+|Register         |        -|     -|       4|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |       36|    50|   34772|   19190|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |       12|     4|      14|      16|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +-------------+----------+---------+----+-------+-------+-----+
+    |   Instance  |  Module  | BRAM_18K| DSP|   FF  |  LUT  | URAM|
+    +-------------+----------+---------+----+-------+-------+-----+
+    |engine3_U0   |engine3   |        0|  50|  15252|  12992|    0|
+    |windows3_U0  |windows3  |       36|   0|  19318|   6025|    0|
+    +-------------+----------+---------+----+-------+-------+-----+
+    |Total        |          |       36|  50|  34570|  19017|    0|
+    +-------------+----------+---------+----+-------+-------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +--------------+---------+----+----+-----+------+------+---------+
+    |     Name     | BRAM_18K| FF | LUT| URAM| Depth| Bits | Size:D*B|
+    +--------------+---------+----+----+-----+------+------+---------+
+    |windows0_U    |        0|  99|  67|    0|     2|  4000|     8000|
+    |windows1_1_U  |        0|  99|  67|    0|     2|  4000|     8000|
+    +--------------+---------+----+----+-----+------+------+---------+
+    |Total         |        0| 198| 134|    0|     4|  8000|    16000|
+    +--------------+---------+----+----+-----+------+------+---------+
+
+    * Expression: 
+    +------------------------------+----------+----+---+----+------------+------------+
+    |         Variable Name        | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +------------------------------+----------+----+---+----+------------+------------+
+    |ap_idle                       |       and|   0|  0|   2|           1|           1|
+    |ap_sync_ready                 |       and|   0|  0|   2|           1|           1|
+    |engine3_U0_ap_start           |       and|   0|  0|   2|           1|           1|
+    |windows3_U0_ap_start          |       and|   0|  0|   2|           1|           1|
+    |ap_sync_engine3_U0_ap_ready   |        or|   0|  0|   2|           1|           1|
+    |ap_sync_windows3_U0_ap_ready  |        or|   0|  0|   2|           1|           1|
+    +------------------------------+----------+----+---+----+------------+------------+
+    |Total                         |          |   0|  0|  12|           6|           6|
+    +------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +----------------------------------+----+-----------+-----+-----------+
+    |               Name               | LUT| Input Size| Bits| Total Bits|
+    +----------------------------------+----+-----------+-----+-----------+
+    |ap_sync_reg_engine3_U0_ap_ready   |   9|          2|    1|          2|
+    |ap_sync_reg_windows3_U0_ap_ready  |   9|          2|    1|          2|
+    |real_start                        |   9|          2|    1|          2|
+    +----------------------------------+----+-----------+-----+-----------+
+    |Total                             |  27|          6|    3|          6|
+    +----------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +----------------------------------+---+----+-----+-----------+
+    |               Name               | FF| LUT| Bits| Const Bits|
+    +----------------------------------+---+----+-----+-----------+
+    |ap_sync_ready                     |  1|   0|    1|          0|
+    |ap_sync_reg_engine3_U0_ap_ready   |  1|   0|    1|          0|
+    |ap_sync_reg_windows3_U0_ap_ready  |  1|   0|    1|          0|
+    |start_once_reg                    |  1|   0|    1|          0|
+    +----------------------------------+---+----+-----+-----------+
+    |Total                             |  4|   0|    4|          0|
+    +----------------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++----------------------------------------------------------------------------------------+-----+-----+------------+-------------------------------------------------------------------------------+--------------+
+|                                        RTL Ports                                       | Dir | Bits|  Protocol  |                                 Source Object                                 |    C Type    |
++----------------------------------------------------------------------------------------+-----+-----+------------+-------------------------------------------------------------------------------+--------------+
+|ap_start                                                                                |   in|    1|  ap_ctrl_hs|                                                                   conv3_stream|  return value|
+|start_full_n                                                                            |   in|    1|  ap_ctrl_hs|                                                                   conv3_stream|  return value|
+|start_out                                                                               |  out|    1|  ap_ctrl_hs|                                                                   conv3_stream|  return value|
+|start_write                                                                             |  out|    1|  ap_ctrl_hs|                                                                   conv3_stream|  return value|
+|ap_clk                                                                                  |   in|    1|  ap_ctrl_hs|                                                                   conv3_stream|  return value|
+|ap_rst                                                                                  |   in|    1|  ap_ctrl_hs|                                                                   conv3_stream|  return value|
+|ap_done                                                                                 |  out|    1|  ap_ctrl_hs|                                                                   conv3_stream|  return value|
+|ap_ready                                                                                |  out|    1|  ap_ctrl_hs|                                                                   conv3_stream|  return value|
+|ap_idle                                                                                 |  out|    1|  ap_ctrl_hs|                                                                   conv3_stream|  return value|
+|ap_continue                                                                             |   in|    1|  ap_ctrl_hs|                                                                   conv3_stream|  return value|
+|padded3_dout                                                                            |   in|  320|     ap_fifo|                                                                        padded3|       pointer|
+|padded3_empty_n                                                                         |   in|    1|     ap_fifo|                                                                        padded3|       pointer|
+|padded3_read                                                                            |  out|    1|     ap_fifo|                                                                        padded3|       pointer|
+|result_din                                                                              |  out|   10|     ap_fifo|                                                                         result|       pointer|
+|result_full_n                                                                           |   in|    1|     ap_fifo|                                                                         result|       pointer|
+|result_write                                                                            |  out|    1|     ap_fifo|                                                                         result|       pointer|
+|srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f                                    |   in|   10|     ap_none|                           srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f|       pointer|
+|srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f_ap_vld                             |   in|    1|     ap_none|                           srcnn_float_255_255_float_1_9_9_float_float_64_1_1_f|       pointer|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0_address0   |  out|    4|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0_ce0        |  out|    1|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0_d0         |  out|   10|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0_q0         |   in|   10|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0_we0        |  out|    1|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0_address1   |  out|    4|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0_ce1        |  out|    1|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0_d1         |  out|   10|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0_q1         |   in|   10|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0_we1        |  out|    1|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_0|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1_address0   |  out|    4|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1_ce0        |  out|    1|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1_d0         |  out|   10|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1_q0         |   in|   10|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1_we0        |  out|    1|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1_address1   |  out|    4|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1_ce1        |  out|    1|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1|         array|
+|p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1_d1         |  out|   10|   ap_memory|   p_ZZ5srcnnPA255_A255_fPA1_A9_A9_fPfPA64_A1_A1_fS6_PA32_A5_A5_fS6_S1_E2w3_0_1|         array|
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.

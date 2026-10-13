@@ -1,0 +1,52 @@
+{
+  "T": 8,
+  "changes": "Independent selected-loader copy in a new design directory. Set T8, keep tree-add latency1 and all parameter loading, IEEE output encoding, online replicate padding and arithmetic. No first-phase or previous architecture design changes. Execute after W19 in the serial hardware queue.",
+  "clock": 3.33,
+  "conclusion": "Keep direct-T8 controls distinct from the Winograd main line. Use F30 as the independent zero-latency-tree control and run final validation only on measured globally feasible exact candidates.",
+  "control_experiment": "F14",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 1,
+    "EXP_STORAGE": 1,
+    "EXP_T": 8,
+    "EXP_TREE_ADD_LATENCY": 1,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/continuous_param_T8_tree1_v1",
+  "estimates": {
+    "BRAM18K": 73,
+    "Conv1_DSP": 648,
+    "Conv2_DSP": 256,
+    "Conv3_DSP": 100,
+    "DSP": 1004,
+    "FF": 169000,
+    "LUT": 78240,
+    "T": 8,
+    "URAM": 0,
+    "basis": "Paper MAC allocation5184/8+2048/8+800/8=1004. Old F14 DSP1007 included3 legacy output-conversion DSPs removed by exact IEEE encoding. Keep F28's73 BRAM18K; no new feature/FIFO storage. F28 paper total61856 plus measured old compute-region increment F14(50066)-F25(37682)=12384 and4000 extra T8 private-bank/control allowance gives78240LUT; outside3170 follows measured F27 ownership. Registered FF estimate169000 deliberately exceeds163968, grounded in F14 total171235 and modest parameter sharing. Frame65025*8=520200 plus6100 load/startup/drain allowance; F14 measured528488 with old sequential loading. These are paper hypotheses, not inferred feasibility.",
+    "latency_cycles": 526300,
+    "outside_LUT": 3170
+  },
+  "fixed": true,
+  "id": "F29",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare all resource gates, actual fold II, latency and clock with W19, old F14 and the selected T16 loader. Explain deviations>20%; a failed FF gate remains infeasible even if LUT/latency improves. Verify exact butterfly and unchanged border before any synthesis result counts.",
+  "name": "streamed_direct_T8_tree1",
+  "precision": "w10a10acc23",
+  "purpose": "After measured WS2 loader selection and the W19 integration, compare direct convolution T8 with exact Winograd at the same3.33ns target. Retain the registered reduction tree; test whether stream-owned runtime parameters reduce LUT enough, while explicitly expecting possible FF infeasibility. This advance plan does not authorize calling a pending WS2 parent accepted.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "require_weight_predecessor_free": true,
+  "scope": "frame",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_ws3",
+  "storage": "local_lutram_s2p",
+  "unroll": "Cout/Cout/tap"
+}

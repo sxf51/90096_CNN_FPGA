@@ -1,0 +1,48 @@
+{
+  "T": 32,
+  "changes": "read_input -> pad1 -> nested conv12 (separate overlapping Conv1/Conv2 engines) -> pad3 -> gather Conv3 -> write_output. Runtime weights load into on-chip arrays before the DATAFLOW region; external signature unchanged.",
+  "clock": 10,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_STORAGE=0 -DEXP_T=32 -DEXP_FIXED=0 -DEXP_SET14=0 -DEXP_REFERENCE=0 -DEXP_NUMPY_REFERENCE=0 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/E030/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "After float validation, apply w10a10 and compare against actual ap_fixed butterfly reference before T=32 synthesis.",
+  "cpu_count": 12,
+  "csim_only": true,
+  "defines": {
+    "EXP_STORAGE": 0,
+    "EXP_T": 32
+  },
+  "design": "designs/dataflow_v1",
+  "errors": [],
+  "id": "E030",
+  "interpretation": "Token counts per frame: raw 65025, padded1 69169, Conv2 65025, padded3 67081, output 65025. Conv1 line buffer is 8x263 and Conv3 line buffer is 4x259x32 because padding is explicit. AXI float arrays use sequential bursts up to 256 elements plus AXI-Lite pointer/control registers.",
+  "name": "dataflow_float",
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [],
+  "parsed_modules": [],
+  "purpose": "Prove float replicate-padding streaming flow matches untouched golden before fixed-point synthesis.",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "6d13dcde76f6c4c4b373663a6d6178537ffc7011",
+  "source_sha256": {
+    "conv1.cpp": "f9928a790ad2c0e35e927625f7100be34452f2dcc1a720f57eb56403bc7169f9",
+    "srcnn.cpp": "15a6899bafc09c186b0403487f6c1404bf75dda2ff9212885740145b66c47964",
+    "srcnn.h": "b0607a9c5aa51fad40f53e5f72514f1d28fc5f3051c430213d1a3bbc51982a9b",
+    "types.h": "11913159a11eeca596b8a52a51098f32bc447ca24c899d17ba032fad9e7de87c"
+  },
+  "stage": 3,
+  "storage": "register",
+  "time": "2026-10-10T16:48:54+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Sun Oct 11 03:48:55 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "unroll": "Cout/Cout/Cin",
+  "validation": {
+    "bit_exact": true,
+    "border_mse": 2.1182492395563412e-14,
+    "butterfly_mse": 3.1660971422452726e-14,
+    "conv1_exact": true,
+    "conv1_mse": 3.462543650707288e-15,
+    "csim_pass": true,
+    "delta_psnr": null,
+    "float_exact": true,
+    "golden_psnr": null,
+    "image_count": 0,
+    "set14_psnr": null
+  }
+}

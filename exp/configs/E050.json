@@ -1,0 +1,30 @@
+{
+  "T": 32,
+  "changes": "Independent copy of dataflow_v1. Conv1/Conv2 and interfaces unchanged; Conv3 uses scatter, one read/write per fixed physical cache bank and five-column register reuse. Explicit pad3 retained.",
+  "clock": 10,
+  "conclusion": "Compare actual BRAM/LUT/FF/II against the same T32 gather baseline; retain failures.",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_STORAGE": 0,
+    "EXP_T": 32,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/scatter_v1",
+  "fixed": true,
+  "id": "E050",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Check exact reference output and all borders. Cache keeps full product fractions; supported settings require reference accumulator <=32 bits. Read/write bank roles rotate in registers. Declared partial storage 5x255x32 bits=5100 bytes, excluding existing pad3 row cache. Reports determine physical mapping and real II.",
+  "name": "scatter_T32",
+  "precision": "w10a10acc23",
+  "purpose": "Compare gather with channel-reduced scatter using 5x255x32-bit partial sums and a 5x5 register window. The register window should avoid five simultaneous read-modify-write accesses per physical BRAM bank. Ideal Conv3 budget 25 DSP at T32; padding adds 3.16% Conv3 input work.",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": 5,
+  "storage": "register",
+  "unroll": "Cout/Cout/tap"
+}

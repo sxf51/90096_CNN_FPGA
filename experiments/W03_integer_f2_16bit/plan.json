@@ -1,0 +1,46 @@
+{
+  "config_sha256": "ad9ff06616eaf6d6ba7e5e71aba40d0c9d38597508d5684e13cd54bdd4b90fab",
+  "configuration": {
+    "T": 1,
+    "changes": "Independent 32-tile PE kernel. Weights transformed before each call in testbench; input/output transforms use fabric adds/subtracts. Direct integer2x2 outputs are checked exhaustively for each deterministic random tile, including extrema.",
+    "clock": 4,
+    "conclusion": "Use only numerically exact and measured primitives in full-network integration.",
+    "defines": {
+      "EXP_BITS": 16,
+      "EXP_DIRECT": 0
+    },
+    "design": "designs/winograd_pe",
+    "estimates": {
+      "BRAM18K": 0,
+      "DSP": 16,
+      "LUT": 1500,
+      "T": 1,
+      "URAM": 0,
+      "basis": "32 tiles plus12 pipeline cycles. F2 uses16 products per tile versus36 direct; all transforms are add/subtract/constant shifts in fabric. Nine subkernels and64 channels give2304 products/pixel;128x128 tiles account for the odd255 image edge.",
+      "frame_projection_Conv1_DSP": 288,
+      "frame_projection_T": 8,
+      "frame_projection_cycles": 524288,
+      "latency_cycles": 44
+    },
+    "id": "W03",
+    "ii_targets": {
+      "wino_tiles": 1
+    },
+    "interpretation": "Compare measured DSP/operator LUT, achieved II and pipeline depth with the paper estimate. Inspect pre-adder mapping separately; a DSP count alone is insufficient.",
+    "name": "integer_f2_16bit",
+    "notes": "PE only; kernel latency is excluded from network rankings",
+    "precision": "raw16/v18/G2w20/acc46",
+    "purpose": "Compare exact integer F(2x2,3x3) and direct correlation. G2 is2G, so inverse outputs must divide by4 exactly before any quantization. At16 input/weight bits, transformed operands are18x20, within the27x18 DSP48E2 limits; expect one DSP per product.",
+    "scope": "PE",
+    "series": "W",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_pe",
+    "tb_files": [
+      "exp/tb/winograd.cpp"
+    ],
+    "top": "winograd_pe"
+  },
+  "created_at": "2026-10-10T21:50:35+00:00",
+  "created_from_commit": "8455140e601071ca3add1d44da25d2039b182935",
+  "purpose_section": "Compare exact integer F(2x2,3x3) and direct correlation. G2 is2G, so inverse outputs must divide by4 exactly before any quantization. At16 input/weight bits, transformed operands are18x20, within the27x18 DSP48E2 limits; expect one DSP per product.\n\nPre-implementation paper estimates (scope: PE):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 16 |\n| BRAM18K | 0 |\n| URAM | 0 |\n| LUT | 1500 |\n| T | 1 |\n| latency_cycles | 44 |\n| frame_projection_T | 8 |\n| frame_projection_cycles | 524288 |\n| frame_projection_Conv1_DSP | 288 |\n| basis | 32 tiles plus12 pipeline cycles. F2 uses16 products per tile versus36 direct; all transforms are add/subtract/constant shifts in fabric. Nine subkernels and64 channels give2304 products/pixel;128x128 tiles account for the odd255 image edge. |\n\nPlanned at 2026-10-10T21:50:35+00:00; estimates are hypotheses, not tool measurements."
+}

@@ -1,0 +1,33 @@
+{
+  "changes": "Use frozen parent F42 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Override only verification C++ testbench, archive its SHA256/source commit and preserve identical parent RTL.",
+  "clock": 3.33,
+  "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+  "design": "designs/winograd_reorder_buffer_v1",
+  "estimates": {
+    "BRAM18K": 146.0,
+    "DSP": 644.0,
+    "FF": 130176.0,
+    "LUT": 81550.0,
+    "T": 8.0,
+    "URAM": 0.0,
+    "basis": "Frozen F42 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: WS-D2: independent256-entry reorder raster FIFO, with the original4-entry feature FIFO preserved, tests row burst blocking against F97 latency558758 and reorder write blocks903830 over two frames. F42 all13-image exactness and HLS II1 pass. Measure actual cycles and profiles; no buffered progress or clock closure is inferred from HLS.",
+    "latency_cycles": 525237.0
+  },
+  "id": "F46",
+  "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+  "memory_scheduler": true,
+  "name": "ws_cosim_F42",
+  "operation": "cosim",
+  "purpose": "Verify frozen F42 using cosim in a new workspace. Run two complete butterfly transactions with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout.\n\nDecision basis: WS-D2: independent256-entry reorder raster FIFO, with the original4-entry feature FIFO preserved, tests row burst blocking against F97 latency558758 and reorder write blocks903830 over two frames. F42 all13-image exactness and HLS II1 pass. Measure actual cycles and profiles; no buffered progress or clock closure is inferred from HLS. The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains E017-exact butterfly with unchanged border MSE.",
+  "reload_params": true,
+  "required_image_count": 13,
+  "resource_policy": "routed",
+  "scope": "frame",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_ws_verify",
+  "timeout": 21600,
+  "validation_parent": "F42",
+  "verification_testbench": "exp/tb/validate_reload.cpp",
+  "verify_parent": "F42"
+}

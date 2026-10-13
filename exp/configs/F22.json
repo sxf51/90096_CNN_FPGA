@@ -1,0 +1,50 @@
+{
+  "T": 16,
+  "changes": "Independent copy of the archived F13 design and F20 converter header. Include the converter before size macros and replace numeric::decode only; all MAC, load, streams and quantization remain fixed. Target clock is the second changed parameter.",
+  "clock": 3,
+  "conclusion": "Keep only exact resource-feasible points in final ranking; selected points require all supplied images, actual route and two-frame RTL verification.",
+  "control_experiment": "F13",
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 1,
+    "EXP_STORAGE": 1,
+    "EXP_T": 16,
+    "EXP_TREE_ADD_LATENCY": 1,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/continuous_ieee_v1",
+  "estimates": {
+    "BRAM18K": 73.0,
+    "Conv1_DSP": 324,
+    "Conv2_DSP": 128,
+    "Conv3_DSP": 50,
+    "DSP": 502.0,
+    "FF": 107661.0,
+    "LUT": 69403.0,
+    "T": 16,
+    "URAM": 0,
+    "basis": "F13 measured 505DSP/73BRAM18K/68903LUT/106661FF; removing the three-DSP output scale predicts 502DSP. Keep F13 LUT/FF plus scheduling/control allowances because the PE omits AXI logic and the higher clock may add registers. Reserve 100000 cycles beyond 65025*T for load/start/drain. A 2.051ns PE path does not imply the full network meets either clock; use max(target,estimated) and later RTL/route evidence.",
+    "latency_cycles": 1140400
+  },
+  "fixed": true,
+  "id": "F22",
+  "ii_targets": {
+    "c1_fold": 1,
+    "c2_fold": 1,
+    "c3_fold": 1
+  },
+  "interpretation": "Compare achieved II, each module's clock and top resource counts against F13. The output converter may cease to be the critical path; memory/address, carried addition or input casts may then dominate. Record any over20percent estimate deviation from parsed reports. Two-frame equality precedes synthesis eligibility.",
+  "name": "continuous_ieee_T16_3ns",
+  "precision": "w10a10acc23",
+  "purpose": "F20 exhausts all signed ten-bit output values across three orderings with exact binary32 equality and measures zero DSP, 242 LUT, 52 FF and 2.051ns. F13's output writer uses three DSP and the 3.239ns sitofp critical path. Replace only raw-to-float output encoding with the proven sign/exponent/significand construction, retain online replicate padding and Conv3 rotation, and test a faster target clock. Every butterfly output bit must retain the first-phase precision reference; no precision or weight-contract change.",
+  "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "scope": "frame",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_f",
+  "storage": "lutram",
+  "unroll": "Cout/Cout/tap"
+}
