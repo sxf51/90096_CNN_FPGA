@@ -493,7 +493,6 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [W24](../experiments/W24_constant_rom_T8/W24.md) | W19 | pass | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown |
 | [W25](../experiments/W25_rom_changed_input_cosim_W24/W25.md) | W24 | cosim_complete | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | unknown |
 | [W26](../experiments/W26_frp_W21_T8/W26.md) | W21 | fail | unknown | unknown | unknown | unknown | unknown | unknown |
-| [W27](../experiments/W27_frp_W21_T8/W27.md) | W21 | pass | 525237.0 | 644.0 | 81484.0 | unknown | unknown | unknown |
 | [F39](../experiments/F39_c3_select_W21_T8/F39.md) | W21 | pass | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown |
 | [F40](../experiments/F40_fifo16_W21_T8/F40.md) | W21 | pass | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown |
 | [F41](../experiments/F41_fifo32_W21_T8/F41.md) | W21 | pass | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown |
@@ -539,3 +538,7 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | C31 | C28 | queued_or_running | C28 exact13-image quality/HLS and C29/C30 semantics pass; require repaired four-call exact RTL, zero skipped parameter AXI, latency ordering and unchanged RTL before new routing |
+| W34 | C17 | queued_or_running | User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes |
+| C32 | C17 | unlaunched_conditional | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
+| C33 | C17 | unlaunched_conditional | C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics |
+| C34 | C17 | unlaunched_conditional | C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading |

@@ -210,12 +210,17 @@
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
-    "C31"
+    "C31",
+    "W34",
+    "C32",
+    "C33",
+    "C34"
   ],
   "resource_policy": "routed",
   "rom_clock_workstream": {
     "active_phase": {
-      "C31": "cosim_setup / cosim_execute: repaired guarded top, four strict transactions"
+      "C31": "cosim_execute: first loaded call completed; three calls and post-check pending",
+      "W34": "impl package waiting for the sole heavy slot"
     },
     "authorized_followups": {
       "WS-F-route": "Independent C28 route remains required; schedule after prioritized WS-G work",
@@ -253,7 +258,6 @@
       "W24",
       "W25",
       "W26",
-      "W27",
       "F39",
       "F40",
       "F41",
@@ -293,7 +297,11 @@
       "C28",
       "C29",
       "C30",
-      "C31"
+      "C31",
+      "W34",
+      "C32",
+      "C33",
+      "C34"
     ],
     "fastest_verified_implementation": "C22",
     "hardware_serial_after_oom": true,
@@ -305,7 +313,8 @@
       "time": "2026-10-12T10:19:41+00:00"
     },
     "local_exec_sessions": [
-      59926
+      59926,
+      7451
     ],
     "mainline_basis": "F47",
     "next": "C22 remains the verified 1.365115 ms leader. Supervisor59926 owns C31, the sole active heavy task; require four exact calls, zero skipped parameter AXI, latency ordering and unchanged RTL. After its pass, execute WS-G by copying frozen C17 and transplanting only the C13-to-C28 reload guard changes; first commit its quality/sequence/cold plans, then verify complete13-image E065 exactness, four monitored RTL calls and staged5ns routing. WS-H step1 first uses frozen C17 unchanged RTL with Performance_Explore at4.5ns, queued after the current heavy task; subsequent independent parameter-register and balanced-tree variants use the measured parent and retain the upper-only1percent RTL gate. WS-I comes last: verify installed KV260 support, build a minimal PS/AXI/IP system, implement200MHz or the specified166.67MHz fallback and archive bit/hardware handoff. Preserve C28's required standalone5ns validation as separate lower-priority WS-F work. F90/F91 are user-cancelled unlaunched retries with original plans preserved. No board result exists.",
@@ -328,11 +337,15 @@
       "C29": "Guarded-design four-call C sequence must retain ignored-pointer and most-recent-bank semantics",
       "C30": "Guarded-design fresh-process first load=0 must force full loading and match E065",
       "C31": "C28 exact13-image quality/HLS and C29/C30 semantics pass; require repaired four-call exact RTL, zero skipped parameter AXI, latency ordering and unchanged RTL before new routing",
+      "C32": "C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff",
+      "C33": "C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics",
+      "C34": "C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading",
       "F49": "F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation",
       "F53": "After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled",
       "W29": "W25 same-ROM/changed-input two-frame RTL must pass before implementation",
       "W30": "User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override",
-      "W33": "W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21"
+      "W33": "W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21",
+      "W34": "User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes"
     },
     "priority_evidence": "C18_ws_impl_C13/priority_waiters.json",
     "priority_job": null,
@@ -355,11 +368,18 @@
     "session_jobs": {
       "59926": [
         "C31"
+      ],
+      "7451": [
+        "W34"
       ]
     },
     "skipped_plans": {},
     "submitted_waiting_for_admission": [],
-    "unlaunched_ids": [],
+    "unlaunched_ids": [
+      "C32",
+      "C33",
+      "C34"
+    ],
     "user_cycle_revision": {
       "F48_two_percent_target": "diagnostic_only",
       "W28_max_cycles": 564345,
@@ -403,7 +423,7 @@
     }
   ],
   "skipped_conditional_plans": {},
-  "time": "2026-10-13T02:52:54+00:00",
+  "time": "2026-10-13T03:27:42+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "cancelled_plans": {
