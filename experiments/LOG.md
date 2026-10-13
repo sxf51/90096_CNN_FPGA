@@ -643,6 +643,8 @@
 
 - 2026-10-13T05:55:46+00:00: W34: archived five setup paths from the matching final generated report; no additional Vivado run.
 
+- 2026-10-13T06:09:56+00:00: C32: reload_windows_quality; status=infeasible; latency_ms_est=1.05236; ; HLS status retained; final feasibility requires independent routed gates
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 C31 四帧 RTL 仿真的进程树峰值为 10.4066 GiB，超过历史两帧任务的 7.5 GiB 登记。已按实测峰值加 10% 并向上取整，将后续 cosim 登记提高到 11.5 GiB；原 C31 准入、实现 18 GiB、保护线和单重任务规则不变。证据在 C31 的 cosim_memory_budget_revision.json。明日复核是否需要把两帧与四帧细分为独立预算类别；本轮先用较保守的统一值继续。

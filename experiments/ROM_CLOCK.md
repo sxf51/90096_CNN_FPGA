@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T05:57:49+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T06:09:59+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -63,6 +63,7 @@ WS-G C33/C34 pass; C32 HLS running; WS-H1 W34 failed4.5ns setup timing. Collect 
 | [C30](C30_reload_guard_cold/C30.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C31](C31_ws_cosim_C28/C31.md) | C28 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128849.0 | 300634 | original_verification_pass | unknown | unknown | unknown | 14.270401763655016 | unknown |
 | [W34](W34_t4_strategy_4p5_C17/W34.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | 4.5 | False | unknown | 3.7755140826333244 | unknown |
+| [C32](C32_reload_windows_quality/C32.md) | C17 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C33](C33_reload_windows_sequence/C33.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C34](C34_reload_windows_cold/C34.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
@@ -75,7 +76,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [C32](C32_reload_windows_quality/C32.md) | C17 | csim/csynth | queued_or_running | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
