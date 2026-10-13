@@ -429,8 +429,8 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | C21 | C16 | queued_or_running | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
-| W33 | W24 | unlaunched_conditional | unknown |
-| C23 | C13 | unlaunched_conditional | unknown |
-| C24 | C13 | unlaunched_conditional | unknown |
-| C25 | C13 | unlaunched_conditional | unknown |
-| F53 | C13 | unlaunched_conditional | unknown |
+| W33 | W24 | unlaunched_conditional | W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21 |
+| C23 | C13 | unlaunched_conditional | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
+| C24 | C13 | unlaunched_conditional | After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred |
+| C25 | C13 | unlaunched_conditional | After C21 completes, independently test fresh-process first-call load=0 forced loading |
+| F53 | C13 | unlaunched_conditional | After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled |

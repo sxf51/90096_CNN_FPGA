@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C22 closed5ns and becomes verified leader; C21 active; W33 queued; WS-F C/HLS checks prepared. C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles gives1.365115ms and is9.18percent faster than C18. C21 now runs under recovery supervisor33324; W33 follows. Collect generated final paths and prepare C22/C20 handoff without a new Vivado process. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are implemented and preplanned; supervisors65418/2446 wait until C21 is archived before submitting them to unchanged memory admission. Then plan independent monitored four-call RTL and staged5ns route. Preserve one heavy task,18GiB impl registration, serial_after_oom and all numerical/physical gates. Finish plots, interpretations, two-location protected checksums and the idle audit before closure. No board results exist.
+C22 verified leader and handoff archived; C21 routing at4.5ns; W33 and WS-F checks queued. C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles establishes1.365115ms,9.18percent faster than C18. C22 final paths, hierarchical resources, IP package hash/register handoff and comparison plots are archived. C21 is routing4.5ns under supervisor33324; W33 follows. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are committed; supervisors65418/2446 wait for C21 before unchanged memory admission. After all C checks and the HLS screen pass, allocate independent monitored four-call RTL and staged5ns route. Separate loaded/reused timing CSV/plots and guarded reload handoff are ready; actual standalone driver/AXI evidence remains unmeasured. Preserve one heavy task,18GiB impl registration, serial_after_oom and every numerical/physical gate. Finish remaining interpretations, all plots, two-location protected checksums and the idle audit before closure. No board results exist.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-12T23:38:39+00:00 from archived measurements.
+Updated 2026-10-13T00:05:47+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 

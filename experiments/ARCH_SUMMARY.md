@@ -87,11 +87,11 @@ Unmeasured plans have no actual result and do not enter rankings:
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [C21](C21_ws_impl_C16/C21.md) | C16 | impl | queued_or_running | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
-| [W33](W33_ws_impl_W24/W33.md) | W24 | impl | unlaunched_conditional | unknown |
-| [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
-| [C24](C24_reload_switch_sequence/C24.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
-| [C25](C25_reload_switch_cold/C25.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
-| [F53](F53_legacy_C13_regression/F53.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
+| [W33](W33_ws_impl_W24/W33.md) | W24 | impl | unlaunched_conditional | W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21 |
+| [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
+| [C24](C24_reload_switch_sequence/C24.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred |
+| [C25](C25_reload_switch_cold/C25.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, independently test fresh-process first-call load=0 forced loading |
+| [F53](F53_legacy_C13_regression/F53.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled |
 
 ## P Direction
 
@@ -1016,4 +1016,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-12T23:38:40+00:00.
+Generated from archived evidence at 2026-10-13T00:05:48+00:00.

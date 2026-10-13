@@ -585,6 +585,8 @@
 
 ## Pending Human Decisions / 待人工决策
 
+- 2026-10-13 00:05:47 UTC C23: standalone Vitis Tcl interpreter probe confirms ::AP::printMsg, ::AP::check_bin_exist and ::AESL_AUTOSIM::gDebug are available without a project or simulation. Archive the original tool log in C23/tool_probes/monitor_environment.txt and reproducible exp/hls_monitor_environment.tcl; this is an environment query, not RTL validation. C21 progresses through rerouting; C22 handoff/path completion and outstanding conditions are refreshed in the recovery state.
+
 - 2026-10-13 00:02:11 UTC C23: existing C20 logs confirm HLS executes C vector generation before creating the standalone run_sim driver. The generated driver then runs its own C vector generation and RTL C post-check. Monitored acceptance now requires exactly two successful metric blocks from cosim_execute.console.log, with setup/vector-generation evidence separately retained in the combined log. A regression test rejects missing execution-phase C/RTL checks and verifies all four cycle/AXI source measurements; seven observer checks pass. Actual WS-F execution remains outstanding.
 
 - 2026-10-12 23:58:38 UTC C23: intermediate snapshot audit verifies original46files and45frozen phase-one design files at both locations, immutable paper plans, archived source/report SHA256 and Git tracking. Six requested plans remain unmeasured; idle closure is not claimed. Add SHA256-protected copies of generated run_sim/check_sim/dataflow-monitor/run_xsim drivers and verify they remain unchanged during monitored execution;161 infrastructure tests pass. The monitoring backend still requires actual HLS/RTL execution.

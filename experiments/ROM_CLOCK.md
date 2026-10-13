@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T23:38:39+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T00:05:48+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C22 closed5ns and becomes verified leader; C21 active; W33 queued; WS-F C/HLS checks prepared. C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles gives1.365115ms and is9.18percent faster than C18. C21 now runs under recovery supervisor33324; W33 follows. Collect generated final paths and prepare C22/C20 handoff without a new Vivado process. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are implemented and preplanned; supervisors65418/2446 wait until C21 is archived before submitting them to unchanged memory admission. Then plan independent monitored four-call RTL and staged5ns route. Preserve one heavy task,18GiB impl registration, serial_after_oom and all numerical/physical gates. Finish plots, interpretations, two-location protected checksums and the idle audit before closure. No board results exist.
+C22 verified leader and handoff archived; C21 routing at4.5ns; W33 and WS-F checks queued. C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles establishes1.365115ms,9.18percent faster than C18. C22 final paths, hierarchical resources, IP package hash/register handoff and comparison plots are archived. C21 is routing4.5ns under supervisor33324; W33 follows. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are committed; supervisors65418/2446 wait for C21 before unchanged memory admission. After all C checks and the HLS screen pass, allocate independent monitored four-call RTL and staged5ns route. Separate loaded/reused timing CSV/plots and guarded reload handoff are ready; actual standalone driver/AXI evidence remains unmeasured. Preserve one heavy task,18GiB impl registration, serial_after_oom and every numerical/physical gate. Finish remaining interpretations, all plots, two-location protected checksums and the idle audit before closure. No board results exist.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -61,11 +61,11 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [C21](C21_ws_impl_C16/C21.md) | C16 | impl | queued_or_running | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
-| [W33](W33_ws_impl_W24/W33.md) | W24 | impl | unlaunched_conditional | unknown |
-| [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
-| [C24](C24_reload_switch_sequence/C24.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
-| [C25](C25_reload_switch_cold/C25.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
-| [F53](F53_legacy_C13_regression/F53.md) | C13 | csim/csynth | unlaunched_conditional | unknown |
+| [W33](W33_ws_impl_W24/W33.md) | W24 | impl | unlaunched_conditional | W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21 |
+| [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
+| [C24](C24_reload_switch_sequence/C24.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred |
+| [C25](C25_reload_switch_cold/C25.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, independently test fresh-process first-call load=0 forced loading |
+| [F53](F53_legacy_C13_regression/F53.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 

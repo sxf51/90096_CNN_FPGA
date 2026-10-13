@@ -195,7 +195,7 @@
   "hardware_scheduler": "one heavy task plus memory-bounded light jobs",
   "max_heavy_tasks": 1,
   "max_light_tasks": 3,
-  "next": "C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles gives1.365115ms and is9.18percent faster than C18. C21 now runs under recovery supervisor33324; W33 follows. Collect generated final paths and prepare C22/C20 handoff without a new Vivado process. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are implemented and preplanned; supervisors65418/2446 wait until C21 is archived before submitting them to unchanged memory admission. Then plan independent monitored four-call RTL and staged5ns route. Preserve one heavy task,18GiB impl registration, serial_after_oom and all numerical/physical gates. Finish plots, interpretations, two-location protected checksums and the idle audit before closure. No board results exist.",
+  "next": "C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles establishes1.365115ms,9.18percent faster than C18. C22 final paths, hierarchical resources, IP package hash/register handoff and comparison plots are archived. C21 is routing4.5ns under supervisor33324; W33 follows. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are committed; supervisors65418/2446 wait for C21 before unchanged memory admission. After all C checks and the HLS screen pass, allocate independent monitored four-call RTL and staged5ns route. Separate loaded/reused timing CSV/plots and guarded reload handoff are ready; actual standalone driver/AXI evidence remains unmeasured. Preserve one heavy task,18GiB impl registration, serial_after_oom and every numerical/physical gate. Finish remaining interpretations, all plots, two-location protected checksums and the idle audit before closure. No board results exist.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
@@ -286,21 +286,26 @@
       2446
     ],
     "mainline_basis": "F47",
-    "next": "C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles gives1.365115ms and is9.18percent faster than C18. C21 now runs under recovery supervisor33324; W33 follows. Collect generated final paths and prepare C22/C20 handoff without a new Vivado process. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are implemented and preplanned; supervisors65418/2446 wait until C21 is archived before submitting them to unchanged memory admission. Then plan independent monitored four-call RTL and staged5ns route. Preserve one heavy task,18GiB impl registration, serial_after_oom and all numerical/physical gates. Finish plots, interpretations, two-location protected checksums and the idle audit before closure. No board results exist.",
+    "next": "C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles establishes1.365115ms,9.18percent faster than C18. C22 final paths, hierarchical resources, IP package hash/register handoff and comparison plots are archived. C21 is routing4.5ns under supervisor33324; W33 follows. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are committed; supervisors65418/2446 wait for C21 before unchanged memory admission. After all C checks and the HLS screen pass, allocate independent monitored four-call RTL and staged5ns route. Separate loaded/reused timing CSV/plots and guarded reload handoff are ready; actual standalone driver/AXI evidence remains unmeasured. Preserve one heavy task,18GiB impl registration, serial_after_oom and every numerical/physical gate. Finish remaining interpretations, all plots, two-location protected checksums and the idle audit before closure. No board results exist.",
     "paused_waiter_ids": [],
     "pending_decisions": [
       "Board validation remains unavailable to the agent; F98 handoff is archived.",
       "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."
     ],
-    "phase": "C22 closed5ns and becomes verified leader; C21 active; W33 queued; WS-F C/HLS checks prepared",
+    "phase": "C22 verified leader and handoff archived; C21 routing at4.5ns; W33 and WS-F checks queued",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
       "C21": "C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30",
       "C22": "C20 must pass both exact changed-parameter RTL transactions before staged5ns implementation; compare the independently closed frame product to C18",
+      "C23": "After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening",
+      "C24": "After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred",
+      "C25": "After C21 completes, independently test fresh-process first-call load=0 forced loading",
       "F49": "F43 registeredConv3 changed-parameter RTL must pass the preplanned plus/minus1 percent cycle gate before implementation",
+      "F53": "After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled",
       "W29": "W25 same-ROM/changed-input two-frame RTL must pass before implementation",
-      "W30": "User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override"
+      "W30": "User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override",
+      "W33": "W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21"
     },
     "priority_evidence": "C18_ws_impl_C13/priority_waiters.json",
     "priority_job": null,
@@ -385,7 +390,7 @@
     }
   ],
   "skipped_conditional_plans": {},
-  "time": "2026-10-12T23:38:39+00:00",
+  "time": "2026-10-13T00:05:47+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "closed_at": "2026-10-12T03:13:41+00:00",
