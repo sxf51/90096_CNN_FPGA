@@ -60,6 +60,16 @@ def make_config(parent_id, new_id, settings=None):
     if settings:
         config["settings"] = settings
     if config.get("operation"):
+        if config.get("verification_testbench"):
+            files = observed.get("testbench_sha256")
+            if not files:
+                raise ValueError("Frozen verification testbench manifest missing")
+            for name, digest in files.items():
+                path = folder / "testbench" / name
+                if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+                    raise ValueError("Frozen verification testbench changed: " + name)
+            config["verification_testbench_parent_archive"] = str(folder.relative_to(ROOT))
+            config["verification_testbench_manifest"] = files
         return config, None
     source = folder / "source"
     hashes = observed.get("source_sha256", {})
@@ -148,12 +158,16 @@ def main():
             raise RuntimeError("Frozen HLS parent replay failed")
         parent_metrics = json.loads((archived(parent_new) / "metrics.json").read_text())
         if parent_metrics["status"] not in {"pass", "provisional"}:
-            raise RuntimeError("Replayed parent is not numerically/resource accepted; verification is ineligible")
+            from verify_exp import screened_parent
+            if not screened_parent(config, parent_metrics, json.loads((archived(parent_new) / "config.json").read_text())):
+                raise RuntimeError("Replayed parent is not numerically/resource accepted; verification is ineligible")
         config["verify_parent"] = parent_new
         config["design"] = parent_config["design"]
         if config.get("implementation_backend") == "serial_generated_flow":
             config["implementation_template"] = parent_new
             config["implementation_template_archive"] = str(archived(args.parent).relative_to(ROOT))
+        elif config.get("implementation_backend") in {"serial_packaged_flow", "staged_packaged_flow"}:
+            config["implementation_driver_archive"] = str(archived(args.parent).relative_to(ROOT))
     prepare(config, source)
     print("Prepared", exp_id, "from", args.parent, flush=True)
     return execute(exp_id, args.local) if args.run else 0

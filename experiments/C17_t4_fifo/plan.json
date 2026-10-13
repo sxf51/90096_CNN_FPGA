@@ -1,0 +1,62 @@
+{
+  "config_sha256": "2d0caf2ffa05817c20cf21f48af768817cd275e32a4a84315543a52f6c6a6089",
+  "configuration": {
+    "T": 4,
+    "changes": "Copy the frozen measured C13 source after committing this plan; change only the transformed-window FIFO depth from2 to32.",
+    "clock": 4,
+    "combination_variant": "t4_fifo",
+    "conclusion": "Run13-image exact/precision screening, then changed-parameter two-frame RTL and an independent implementation. Keep the validated integration fallback until the new design independently passes all physical gates.",
+    "control_experiment": "C13",
+    "defines": {
+      "EXP_ALL_CONTINUOUS": 1,
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 4,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/winograd_t4_windows32_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "Conv1_DSP": 576,
+      "Conv2_DSP": 256,
+      "Conv3_DSP": 200,
+      "DSP": 1032.0,
+      "FF": 193108.0,
+      "LUT": 129066.0,
+      "T": 4,
+      "URAM": 0.0,
+      "basis": "C13 HLS counts; C14 exact300632RTL cycles, window reads58166blocked cycles over two frames, fold291234 versus262144nominal. Recovering 58166/2=29083 gives271549; conservatively estimate272000. AtT4 a tile takes16cycles: FIFO16 covers256, FIFO32 covers512 versus264 row-scan cycles. Extra30*1728=51840bits,810LUT6 under64bits/LUT plus control: budget1100additionalLUT and800FF. Retain1032DSP/146BRAM18K/zeroURAM. C15's actual routed result decides the first physical target and any ROM retry; no clock or frame-time closure is assumed.",
+      "latency_cycles": 272000
+    },
+    "fixed": true,
+    "id": "C17",
+    "ii_targets": {
+      "c2_fold": 1,
+      "c3_fold": 1,
+      "wino_fold": 1
+    },
+    "interpretation": "Compare parsed HLS/RTL/routed measurements with paper estimates, explain deviations above20%, and use FIFO/process counters rather than summing overlapping stall totals. HLS estimates cannot prove physical closure.",
+    "memory_scheduler": true,
+    "name": "t4_fifo",
+    "numpy_reference": "exp/numeric_reference/mixed_conv2w8/numpy_reference",
+    "precision": "w10_8_10a10acc23_21_23",
+    "purpose": "Add only a32-entry transformed-window FIFO to frozen C13's runtime-prepacked T4 design. Preserve E065 mixed Conv2-w8 precision, all13-image deltaPSNR and exact changed-parameter two-frame RTL. Test whether deeper lookahead removes C14's window stalls without changing arithmetic or replicate padding. User requested implementation only after C15 has a recorded result. Use one heavy task with budgeted light work. Runtime srcnn signature, source weights, quantization, original tests and physical gates stay fixed.",
+    "quick": true,
+    "reference": "experiments/E065_apfixed_mixed_conv2w8/butterfly_output.bin",
+    "require_weight_predecessor_free": true,
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "C",
+    "set14": true,
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "rom_clock_ws_combo4",
+    "storage": "local_prepacked_lutram_s2p",
+    "unroll": "G2 F2/once-loaded paired Cout signed8/direct Cin"
+  },
+  "created_at": "2026-10-12T10:51:20+00:00",
+  "created_from_commit": "015c64d987f2f78a7ccb55bc0c2619fec7ca75ed",
+  "purpose_section": "Add only a32-entry transformed-window FIFO to frozen C13's runtime-prepacked T4 design. Preserve E065 mixed Conv2-w8 precision, all13-image deltaPSNR and exact changed-parameter two-frame RTL. Test whether deeper lookahead removes C14's window stalls without changing arithmetic or replicate padding. User requested implementation only after C15 has a recorded result. Use one heavy task with budgeted light work. Runtime srcnn signature, source weights, quantization, original tests and physical gates stay fixed.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 1032.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 129066.0 |\n| FF | 193108.0 |\n| T | 4 |\n| latency_cycles | 272000 |\n| Conv1_DSP | 576 |\n| Conv2_DSP | 256 |\n| Conv3_DSP | 200 |\n| basis | C13 HLS counts; C14 exact300632RTL cycles, window reads58166blocked cycles over two frames, fold291234 versus262144nominal. Recovering 58166/2=29083 gives271549; conservatively estimate272000. AtT4 a tile takes16cycles: FIFO16 covers256, FIFO32 covers512 versus264 row-scan cycles. Extra30*1728=51840bits,810LUT6 under64bits/LUT plus control: budget1100additionalLUT and800FF. Retain1032DSP/146BRAM18K/zeroURAM. C15's actual routed result decides the first physical target and any ROM retry; no clock or frame-time closure is assumed. |\n\nPlanned at 2026-10-12T10:51:20+00:00; estimates are hypotheses, not tool measurements."
+}

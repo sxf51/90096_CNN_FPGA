@@ -96,3 +96,30 @@ do not alter global Vivado settings, system swap, frozen parents or gates.
 Archive the patched driver, hook, original-template provenance and SHA256 values.
 Require actual routed utilization/timing reports and keep the original OOM
 records. All-supplied-image validation and two-frame RTL cosim remain independent.
+
+For completed jobs whose local SSH queue disappeared, use the
+`remote_exp.py --collect-only` mode to recover the measured archive without uploading a plan or
+restarting Vitis. Collection verifies the paper fingerprint, rejects active
+run locks and appends identical results at most once. Conflicting evidence is
+an error; resume only IDs with genuinely unused workspaces.
+
+## Complete INT16 packing research
+
+The user additionally requests exact full signed16-by-signed16 pair research.
+P13-P16 use a new `designs/packing_int16_pe` and an independent testbench, with
+paper plans committed before source implementation. Two nonoverlapping32-bit
+products would need a48-bit coefficient port at gap32, exceeding DSP48E2's27-bit
+port. Ordinary INT8 field decoding cannot preserve both complete products.
+
+Compare two direct DSP products, four packed byte-limb products, one overlapping
+DSP product with explicit fabric recovery, and ordinary one-DSP/one-fabric mixing.
+The overlap variant packs the complete first16-bit operand and the signed low8
+bits of the second at gap10; a fabric8x16 product cancels overlap, and a fabric9x16
+product restores the second operand's residual. Every intermediate is widened
+before shifts/additions. Check every16-bit value in each operand role under four
+extremal companion pairs, a boundary cube and deterministic random triples against
+complete32-bit integer products. These checks do not exhaust all2^48 triples.
+
+Report II, full DSP/LUT/FF costs and clock at equal pair throughput. PE results
+do not change SRCNN quantization or establish whole-network resource/quality
+acceptance. Continue the already-frozen final route/cosim queue independently.

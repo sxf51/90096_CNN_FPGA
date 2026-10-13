@@ -1,0 +1,498 @@
+#include "types.h"
+#include "srcnn.h"
+#ifndef __SYNTHESIS__
+#include <cassert>
+#endif
+using namespace numeric;
+
+#ifndef EXP_ONLINE_PAD
+#define EXP_ONLINE_PAD 0
+#endif
+#ifndef EXP_TREE_ADD_LATENCY
+#define EXP_TREE_ADD_LATENCY 1
+#endif
+static_assert(EXP_TREE_ADD_LATENCY == 0 || EXP_TREE_ADD_LATENCY == 1, "Supported reduction latency");
+struct window1 { input v[81]; };
+struct window3 { act2 v[400]; };
+
+template<int Count> struct Reduction {
+    static acc1 sum(acc1 values[Count]) {
+#pragma HLS INLINE
+        acc1 next[Count/2];
+#pragma HLS ARRAY_PARTITION variable=next complete
+        for (int i = 0; i < Count/2; ++i) {
+#pragma HLS UNROLL
+            acc1 value = values[2*i]+values[2*i+1];
+#if EXP_TREE_ADD_LATENCY == 0
+#pragma HLS BIND_OP variable=value op=add impl=fabric latency=0
+#else
+#pragma HLS BIND_OP variable=value op=add impl=fabric latency=1
+#endif
+            next[i] = value;
+        }
+        return Reduction<Count/2>::sum(next);
+    }
+};
+template<> struct Reduction<1> {
+    static acc1 sum(acc1 values[1]) {
+#pragma HLS INLINE
+        return values[0];
+    }
+};
+
+constexpr int power2(int value) {
+    return value <= 1 ? 1 : 2*power2((value+1)/2);
+}
+
+
+static void read_input(ftmap_t in[N0][H][W], hls::stream<input> &stream) {
+    read_pixels: for (int i = 0; i < H * W; ++i) {
+#pragma HLS PIPELINE II=1
+        stream.write(encode_input(in[0][i / W][i % W]));
+    }
+}
+
+static void read_params(param_t weights1[N1][N0][F1][F1], param_t biases1[N1],
+                        param_t weights2[N2][N1][F2][F2], param_t biases2[N2],
+                        param_t weights3[N3][N2][F3][F3], param_t biases3[N3],
+                        hls::stream<weight> &params1, hls::stream<weight> &params2,
+                        hls::stream<weight> &params3) {
+    int oc1 = 0, ky1 = 0, kx1 = 0;
+    int ic3 = 0, ky3 = 0, kx3 = 0;
+    // One converter follows the AXI source selector; destinations never interleave layers.
+    read_all_params: for (int i = 0; i < 8129; ++i) {
+#pragma HLS PIPELINE II=1
+        param_t value;
+        if (i < 5184) {
+            value = weights1[oc1][0][ky1][kx1];
+            if (kx1 == F1-1) {
+                kx1 = 0;
+                if (ky1 == F1-1) { ky1 = 0; ++oc1; }
+                else ++ky1;
+            } else ++kx1;
+        } else if (i < 5248) value = biases1[i-5184];
+        else if (i < 7296) value = weights2[(i-5248)/N1][(i-5248)%N1][0][0];
+        else if (i < 7328) value = biases2[i-7296];
+        else if (i < 8128) {
+            value = weights3[0][ic3][ky3][kx3];
+            if (kx3 == F3-1) {
+                kx3 = 0;
+                if (ky3 == F3-1) { ky3 = 0; ++ic3; }
+                else ++ky3;
+            } else ++kx3;
+        } else value = biases3[0];
+        const weight encoded = encode_weight(value);
+        if (i < 5248) params1.write(encoded);
+        else if (i < 7328) params2.write(encoded);
+        else params3.write(encoded);
+    }
+}
+
+template<int Outputs, int Taps, int BiasCount>
+static void load_local(hls::stream<weight> &params, weight (&weights)[Outputs][Taps],
+                        bias (&biases)[BiasCount]) {
+#pragma HLS INLINE
+    local_load_channels: for (int oc = 0; oc < Outputs; ++oc)
+        local_load_taps: for (int tap = 0; tap < Taps; ++tap) {
+#pragma HLS PIPELINE II=1
+            weights[oc][tap] = params.read();
+        }
+    local_load_bias: for (int i = 0; i < BiasCount; ++i) {
+#pragma HLS PIPELINE II=1
+        for (int c = 0; c < BiasCount-1; ++c) {
+#pragma HLS UNROLL
+            biases[c] = biases[c+1];
+        }
+        biases[BiasCount-1] = params.read();
+    }
+}
+
+template<class Pixel, int Radius>
+static void replicate_pad(hls::stream<Pixel> &in, hls::stream<Pixel> &out) {
+    Pixel row[W];
+    int previous = -1;
+    pad_rows: for (int y = 0; y < H + 2 * Radius; ++y) {
+        const int sy = y < Radius ? 0 : (y >= H + Radius ? H - 1 : y - Radius);
+        if (sy != previous) {
+            pad_read_row: for (int x = 0; x < W; ++x) {
+#pragma HLS PIPELINE II=1
+                row[x] = in.read();
+            }
+            previous = sy;
+        }
+        pad_write_row: for (int x = 0; x < W + 2 * Radius; ++x) {
+#pragma HLS PIPELINE II=1
+            const int sx = x < Radius ? 0 : (x >= W + Radius ? W - 1 : x - Radius);
+            out.write(row[sx]);
+        }
+    }
+}
+
+
+template<class Pixel, int Radius>
+static void online_pad(hls::stream<Pixel> &in, hls::stream<Pixel> &out) {
+    Pixel row[W];
+#pragma HLS AGGREGATE variable=row compact=bit
+#pragma HLS BIND_STORAGE variable=row type=ram_2p impl=bram
+    online_first_read: for (int x = 0; x < W; ++x) {
+#pragma HLS PIPELINE II=1
+        row[x] = in.read();
+    }
+    online_first_repeats: for (int y = 0; y <= Radius; ++y)
+        online_first_write: for (int x = 0; x < W+2*Radius; ++x) {
+#pragma HLS PIPELINE II=1
+            const int sx = x < Radius ? 0 : x >= W+Radius ? W-1 : x-Radius;
+            out.write(row[sx]);
+        }
+    online_rows: for (int y = 1; y < H; ++y) {
+        Pixel value;
+        online_columns: for (int x = 0; x < W+2*Radius; ++x) {
+#pragma HLS PIPELINE II=1
+            if (x == 0 || (x > Radius && x < W+Radius)) {
+                value = in.read();
+                row[x == 0 ? 0 : x-Radius] = value;
+            }
+            out.write(value);
+        }
+    }
+    online_bottom_repeats: for (int y = 0; y < Radius; ++y)
+        online_bottom_write: for (int x = 0; x < W+2*Radius; ++x) {
+#pragma HLS PIPELINE II=1
+            const int sx = x < Radius ? 0 : x >= W+Radius ? W-1 : x-Radius;
+            out.write(row[sx]);
+        }
+}
+
+static void windows1(hls::stream<input> &in, hls::stream<window1> &out) {
+    constexpr int PW = W+8;
+    static input line[8][PW], window[9][9];
+#pragma HLS ARRAY_PARTITION variable=line complete dim=1
+#pragma HLS BIND_STORAGE variable=line type=ram_2p impl=bram
+#pragma HLS ARRAY_PARTITION variable=window complete dim=0
+    make_windows1: for (int p = 0; p < (H+8)*PW; ++p) {
+#pragma HLS PIPELINE II=1
+        const int y = p/PW, x = p%PW;
+        input column[9];
+#pragma HLS ARRAY_PARTITION variable=column complete
+        for (int r = 0; r < 8; ++r) {
+#pragma HLS UNROLL
+            column[r] = line[r][x];
+        }
+        column[8] = in.read();
+        for (int r = 0; r < 8; ++r) {
+#pragma HLS UNROLL
+            line[r][x] = column[r+1];
+        }
+        window1 value;
+#pragma HLS ARRAY_PARTITION variable=value.v complete
+        for (int r = 0; r < 9; ++r) {
+#pragma HLS UNROLL
+            for (int c = 0; c < 8; ++c) {
+#pragma HLS UNROLL
+                window[r][c] = window[r][c+1];
+            }
+            window[r][8] = column[r];
+            for (int c = 0; c < 9; ++c) {
+#pragma HLS UNROLL
+                value.v[9*r+c] = window[r][c];
+            }
+        }
+        if (y >= 8 && x >= 8) out.write(value);
+    }
+}
+
+static void engine1(hls::stream<window1> &in, hls::stream<pixel1> &out,
+                     hls::stream<weight> &params) {
+    static weight weights[N1][81];
+    static bias biases[N1];
+#pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C1_OC dim=1
+#pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C1_TAP dim=2
+#pragma HLS BIND_STORAGE variable=weights type=ram_s2p impl=lutram
+#pragma HLS ARRAY_PARTITION variable=biases complete
+    load_local(params, weights, biases);
+    window1 value;
+    pixel1 result;
+#pragma HLS ARRAY_PARTITION variable=value.v complete
+#pragma HLS ARRAY_PARTITION variable=result.v complete
+    continuous_c1_fold: for (int iteration = 0; iteration < H*W*T; ++iteration) {
+#pragma HLS PIPELINE II=1
+        const int step = iteration%T;
+        if (step == 0) value = in.read();
+        act1 next[C1_OC];
+#pragma HLS ARRAY_PARTITION variable=next complete
+        for (int lane = 0; lane < C1_OC; ++lane) {
+#pragma HLS UNROLL
+            const int oc = step*C1_OC+lane;
+            acc1 products[128];
+#pragma HLS ARRAY_PARTITION variable=products complete
+            for (int t = 0; t < 128; ++t) {
+#pragma HLS UNROLL
+                if (t < 81) {
+                    auto product = value.v[t]*weights[oc][t];
+#pragma HLS BIND_OP variable=product op=mul impl=dsp
+                    products[t] = product;
+                } else products[t] = 0;
+            }
+            next[lane] = relu1(Reduction<128>::sum(products)+bias1(biases[oc]));
+        }
+        for (int c = 0; c < N1-C1_OC; ++c) {
+#pragma HLS UNROLL
+            result.v[c] = result.v[c+C1_OC];
+        }
+        for (int lane = 0; lane < C1_OC; ++lane) {
+#pragma HLS UNROLL
+            result.v[N1-C1_OC+lane] = next[lane];
+        }
+        if (step == T-1) out.write(result);
+    }
+}
+
+static void conv1_stream(hls::stream<input> &in, hls::stream<pixel1> &out,
+                         hls::stream<weight> &params) {
+#pragma HLS DATAFLOW
+    hls::stream<window1> windows("windows1");
+#pragma HLS STREAM variable=windows depth=2
+#pragma HLS BIND_STORAGE variable=windows type=fifo impl=lutram
+    windows1(in,windows);
+    engine1(windows,out,params);
+}
+
+static void conv2_stream(hls::stream<pixel1> &in, hls::stream<pixel2> &out,
+                         hls::stream<weight> &params) {
+    static weight weights[N2][N1];
+    static bias biases[N2];
+#pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C2_OC dim=1
+#pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C2_IC dim=2
+#pragma HLS BIND_STORAGE variable=weights type=ram_s2p impl=lutram
+#pragma HLS ARRAY_PARTITION variable=biases complete
+    load_local(params, weights, biases);
+    pixel1 value;
+    pixel2 result;
+#pragma HLS ARRAY_PARTITION variable=value.v complete
+#pragma HLS ARRAY_PARTITION variable=result.v complete
+    continuous_c2_fold: for (int iteration = 0; iteration < H*W*T; ++iteration) {
+#pragma HLS PIPELINE II=1
+        const int step = iteration%T;
+        if (step == 0) value = in.read();
+        act2 next[C2_OC];
+#pragma HLS ARRAY_PARTITION variable=next complete
+        for (int lane = 0; lane < C2_OC; ++lane) {
+#pragma HLS UNROLL
+            const int oc = step*C2_OC+lane;
+            acc1 products[64];
+#pragma HLS ARRAY_PARTITION variable=products complete
+            for (int ic = 0; ic < N1; ++ic) {
+#pragma HLS UNROLL
+                auto product = value.v[ic]*weights[oc][ic];
+#pragma HLS BIND_OP variable=product op=mul impl=dsp
+                products[ic] = product;
+            }
+            next[lane] = relu2(Reduction<64>::sum(products)+bias1(biases[oc]));
+        }
+        for (int c = 0; c < N2-C2_OC; ++c) {
+#pragma HLS UNROLL
+            result.v[c] = result.v[c+C2_OC];
+        }
+        for (int lane = 0; lane < C2_OC; ++lane) {
+#pragma HLS UNROLL
+            result.v[N2-C2_OC+lane] = next[lane];
+        }
+        if (step == T-1) out.write(result);
+    }
+}
+static void conv12(hls::stream<input> &in, hls::stream<pixel2> &out,
+                   hls::stream<weight> &params1, hls::stream<weight> &params2) {
+#pragma HLS DATAFLOW
+    hls::stream<pixel1> features("conv1_features");
+#pragma HLS STREAM variable=features depth=4
+#pragma HLS BIND_STORAGE variable=features type=fifo impl=lutram
+    conv1_stream(in, features, params1);
+    conv2_stream(features, out, params2);
+}
+
+
+static void windows3(hls::stream<pixel2> &in, hls::stream<window3> &out0, hls::stream<window3> &out1) {
+    constexpr int PW = W+4;
+    static act2 line[4][PW][N2], window[5][5][N2];
+#pragma HLS ARRAY_PARTITION variable=line complete dim=1
+#pragma HLS ARRAY_RESHAPE variable=line complete dim=3
+#pragma HLS BIND_STORAGE variable=line type=ram_2p impl=bram
+#pragma HLS ARRAY_PARTITION variable=window complete dim=0
+    make_windows3: for (int p = 0; p < (H+4)*PW; ++p) {
+#pragma HLS PIPELINE II=1
+        const int y = p/PW, x = p%PW;
+        const pixel2 value = in.read();
+        window3 result0, result1;
+#pragma HLS ARRAY_PARTITION variable=result0.v complete
+#pragma HLS ARRAY_PARTITION variable=result1.v complete
+        for (int ic = 0; ic < N2; ++ic) {
+#pragma HLS UNROLL
+            act2 column[5];
+#pragma HLS ARRAY_PARTITION variable=column complete
+            for (int r = 0; r < 4; ++r) {
+#pragma HLS UNROLL
+                column[r] = line[r][x][ic];
+            }
+            column[4] = value.v[ic];
+            for (int r = 0; r < 4; ++r) {
+#pragma HLS UNROLL
+                line[r][x][ic] = column[r+1];
+            }
+            for (int r = 0; r < 5; ++r) {
+#pragma HLS UNROLL
+                for (int c = 0; c < 4; ++c) {
+#pragma HLS UNROLL
+                    window[r][c][ic] = window[r][c+1][ic];
+                }
+                window[r][4][ic] = column[r];
+                for (int c = 0; c < 5; ++c) {
+#pragma HLS UNROLL
+                    if (ic < N2/2) result0.v[(r*5+c)*(N2/2)+ic] = window[r][c][ic];
+                    else result1.v[(r*5+c)*(N2/2)+ic-N2/2] = window[r][c][ic];
+                }
+            }
+        }
+        if (y >= 4 && x >= 4) {
+            out0.write(result0);
+            out1.write(result1);
+        }
+    }
+}
+
+static void engine3(hls::stream<window3> &in0, hls::stream<window3> &in1, hls::stream<output> &out,
+                     hls::stream<weight> &params) {
+    static weight weights[N2][25];
+    static bias biases[N3];
+#pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C3_IC dim=1
+#pragma HLS ARRAY_PARTITION variable=weights cyclic factor=C3_TAP dim=2
+#pragma HLS BIND_STORAGE variable=weights type=ram_s2p impl=lutram
+    load_local(params, weights, biases);
+    constexpr int COUNT = power2(C3_IC*25);
+    act2 held[25][N2];
+    acc3 sum = 0;
+#pragma HLS ARRAY_PARTITION variable=held complete dim=0
+    continuous_c3_fold: for (int iteration = 0; iteration < H*W*T; ++iteration) {
+#pragma HLS PIPELINE II=1
+        const int step = iteration%T;
+        if (step == 0) {
+            const window3 low = in0.read(), high = in1.read();
+            for (int tap = 0; tap < 25; ++tap) {
+#pragma HLS UNROLL
+                for (int ic = 0; ic < N2; ++ic) {
+#pragma HLS UNROLL
+                    held[tap][ic] = ic < N2/2 ? low.v[tap*(N2/2)+ic]
+                                            : high.v[tap*(N2/2)+ic-N2/2];
+                }
+            }
+        }
+        acc1 products[COUNT];
+#pragma HLS ARRAY_PARTITION variable=products complete
+        for (int index = 0; index < COUNT; ++index) {
+#pragma HLS UNROLL
+            if (index < C3_IC*25) {
+                const int lane = index/25, tap = index%25;
+                auto product = held[tap][lane]*weights[step*C3_IC+lane][tap];
+#pragma HLS BIND_OP variable=product op=mul impl=dsp
+                products[index] = product;
+            } else products[index] = 0;
+        }
+        const acc1 partial = Reduction<COUNT>::sum(products);
+        acc3 next = (step == 0 ? bias3(biases[0]) : sum)+partial;
+#pragma HLS BIND_OP variable=next op=add impl=fabric latency=1
+        sum = next;
+        if (step == T-1) out.write(quantize<EXP_W_BITS-2>(next));
+        // Ascending channel order reads each source before that source is changed.
+        for (int tap = 0; tap < 25; ++tap) {
+#pragma HLS UNROLL
+            for (int ic = 0; ic < N2-C3_IC; ++ic) {
+#pragma HLS UNROLL
+                held[tap][ic] = held[tap][ic+C3_IC];
+            }
+            for (int ic = N2-C3_IC; ic < N2; ++ic) {
+#pragma HLS UNROLL
+                held[tap][ic] = 0;
+            }
+        }
+    }
+}
+
+static void conv3_stream(hls::stream<pixel2> &in, hls::stream<output> &out,
+                         hls::stream<weight> &params) {
+#pragma HLS DATAFLOW
+
+    hls::stream<window3> windows0("windows3_low_channels"), windows1("windows3_high_channels");
+#pragma HLS STREAM variable=windows0 depth=2
+#pragma HLS STREAM variable=windows1 depth=2
+#pragma HLS BIND_STORAGE variable=windows0 type=fifo impl=lutram
+#pragma HLS BIND_STORAGE variable=windows1 type=fifo impl=lutram
+    windows3(in,windows0,windows1);
+    engine3(windows0,windows1,out,params);
+}
+static void write_output(hls::stream<output> &stream, ftmap_t out[N3][H][W]) {
+    write_pixels: for (int i = 0; i < H * W; ++i) {
+#pragma HLS PIPELINE II=1
+        out[0][i / W][i % W] = decode(stream.read());
+    }
+}
+
+static void dataflow_region(ftmap_t in[N0][H][W], ftmap_t out[N3][H][W],
+                            param_t weights1[N1][N0][F1][F1], param_t biases1[N1],
+                            param_t weights2[N2][N1][F2][F2], param_t biases2[N2],
+                            param_t weights3[N3][N2][F3][F3], param_t biases3[N3]) {
+#pragma HLS DATAFLOW
+    hls::stream<input> raw("raw"), padded1("padded1");
+    hls::stream<pixel2> features2("features2"), padded3("padded3");
+    hls::stream<output> result("result");
+    hls::stream<weight> params1("params1"), params2("params2"), params3("params3");
+#pragma HLS STREAM variable=params1 depth=16
+#pragma HLS STREAM variable=params2 depth=16
+#pragma HLS STREAM variable=params3 depth=16
+#pragma HLS BIND_STORAGE variable=params1 type=fifo impl=lutram
+#pragma HLS BIND_STORAGE variable=params2 type=fifo impl=lutram
+#pragma HLS BIND_STORAGE variable=params3 type=fifo impl=lutram
+#pragma HLS STREAM variable=raw depth=512
+#pragma HLS STREAM variable=padded1 depth=16
+#pragma HLS STREAM variable=features2 depth=4
+#pragma HLS BIND_STORAGE variable=features2 type=fifo impl=lutram
+#pragma HLS STREAM variable=padded3 depth=16
+#pragma HLS BIND_STORAGE variable=padded3 type=fifo impl=lutram
+#pragma HLS STREAM variable=result depth=16
+    read_input(in, raw);
+    read_params(weights1, biases1, weights2, biases2, weights3, biases3, params1, params2, params3);
+    #if EXP_ONLINE_PAD
+    online_pad<input,4>(raw,padded1);
+#else
+    replicate_pad<input,4>(raw,padded1);
+#endif
+    conv12(padded1, features2, params1, params2);
+    #if EXP_ONLINE_PAD
+    online_pad<pixel2,2>(features2,padded3);
+#else
+    replicate_pad<pixel2,2>(features2,padded3);
+#endif
+    conv3_stream(padded3, result, params3);
+    write_output(result, out);
+}
+
+void srcnn(ftmap_t in[N0][H][W], param_t weights1[N1][N0][F1][F1], param_t biases1[N1],
+           param_t weights2[N2][N1][F2][F2], param_t biases2[N2],
+           param_t weights3[N3][N2][F3][F3], param_t biases3[N3], ftmap_t out[N3][H][W]) {
+#pragma HLS INTERFACE mode=m_axi port=in offset=slave bundle=image_in depth=65025 max_read_burst_length=256
+#pragma HLS INTERFACE mode=m_axi port=out offset=slave bundle=image_out depth=65025 max_write_burst_length=256
+#pragma HLS INTERFACE mode=m_axi port=weights1 offset=slave bundle=parameters depth=5184 max_read_burst_length=256
+#pragma HLS INTERFACE mode=m_axi port=biases1 offset=slave bundle=parameters depth=64
+#pragma HLS INTERFACE mode=m_axi port=weights2 offset=slave bundle=parameters depth=2048 max_read_burst_length=256
+#pragma HLS INTERFACE mode=m_axi port=biases2 offset=slave bundle=parameters depth=32
+#pragma HLS INTERFACE mode=m_axi port=weights3 offset=slave bundle=parameters depth=800 max_read_burst_length=256
+#pragma HLS INTERFACE mode=m_axi port=biases3 offset=slave bundle=parameters depth=1
+#pragma HLS INTERFACE mode=s_axilite port=in bundle=control
+#pragma HLS INTERFACE mode=s_axilite port=out bundle=control
+#pragma HLS INTERFACE mode=s_axilite port=weights1 bundle=control
+#pragma HLS INTERFACE mode=s_axilite port=biases1 bundle=control
+#pragma HLS INTERFACE mode=s_axilite port=weights2 bundle=control
+#pragma HLS INTERFACE mode=s_axilite port=biases2 bundle=control
+#pragma HLS INTERFACE mode=s_axilite port=weights3 bundle=control
+#pragma HLS INTERFACE mode=s_axilite port=biases3 bundle=control
+#pragma HLS INTERFACE mode=s_axilite port=return bundle=control
+    dataflow_region(in, out, weights1, biases1, weights2, biases2, weights3, biases3);
+}

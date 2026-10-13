@@ -1,0 +1,9 @@
+Read-only collection command:
+ssh -F ../ssh-config -o BatchMode=yes xiaoxin-ubuntu 'journalctl -k --since "2026-10-12 21:15:00" --until "2026-10-12 21:21:00" --no-pager'
+
+Host journal uses UTC+11;2026-10-12 21:19:41 local=10:19:41UTC.
+Relevant unmodified journal lines:
+Oct 12 21:19:41 Xiaoxin-Ubuntu kernel: [  77025]  1000 77025  1924806  1486729  1486665       64         0 14499840        0             0 vivado
+Oct 12 21:19:41 Xiaoxin-Ubuntu kernel: [  78560]  1000 78560  1349279  1019889  1019729      160         0 10534912        0             0 vivado
+Oct 12 21:19:41 Xiaoxin-Ubuntu kernel: [  78675]  1000 78675  1138865   807464   807272      192         0  8802304        0             0 vivado
+Oct 12 21:19:41 Xiaoxin-Ubuntu kernel: Out of memory: Killed process 77025 (vivado) total-vm:7699224kB, anon-rss:5946660kB, file-rss:256kB, shmem-rss:0kB, UID:1000 pgtables:14160kB oom_score_adj:0

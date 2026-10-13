@@ -1,0 +1,50 @@
+{
+  "T": 8,
+  "changes": "Use frozen parent W21 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes.",
+  "clock": 3.33,
+  "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+  "control_experiment": "W21",
+  "csim_only": true,
+  "defines": {
+    "EXP_ALL_CONTINUOUS": 1,
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 1,
+    "EXP_STORAGE": 1,
+    "EXP_T": 8,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/ws_validate_F96",
+  "estimates": {
+    "BRAM18K": 146.0,
+    "DSP": 644.0,
+    "FF": 130057.0,
+    "LUT": 81086.0,
+    "T": 8.0,
+    "URAM": 0.0,
+    "basis": "Frozen W21 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: W21 measured81086LUT below81984,644DSP/146BRAM18K/130057FF,threefoldII1,exact butterfly and unchanged border at525237cycles. Select it as the first HLS-resource-feasible T8 integration candidate, requiring matching-source validation on every supplied image before final RTL/route acceptance.",
+    "latency_cycles": 525237.0
+  },
+  "fixed": true,
+  "id": "F96",
+  "ii_targets": {
+    "c2_fold": 1,
+    "c3_fold": 1,
+    "wino_fold": 1
+  },
+  "interpretation": "Keep parsed HLS, RTL and routed results separate. Missing comic prevents complete Set14 acceptance; retain failed timing, deadlock, host OOM and timeout evidence.",
+  "name": "ws_all_W21",
+  "numpy_reference": "exp/numeric_reference/w10a10/numpy_reference",
+  "precision": "w10a10acc23",
+  "purpose": "Validate frozen W21 on all13 supplied Set14 pairs and two complete butterfly calls. Every output bit must match the independently ap_fixed-verified reference, six-pixel borders remain checked, and deltaPSNR must be>=-0.1dB. Missing comic remains explicit.\n\nDecision basis: W21 measured81086LUT below81984,644DSP/146BRAM18K/130057FF,threefoldII1,exact butterfly and unchanged border at525237cycles. Select it as the first HLS-resource-feasible T8 integration candidate, requiring matching-source validation on every supplied image before final RTL/route acceptance.",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "require_weight_predecessor_free": true,
+  "scope": "frame",
+  "series": "F",
+  "set14": true,
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_ws_verify",
+  "storage": "local_lutram_s2p",
+  "unroll": "G2 F2 nine subkernels/Cout/Cin"
+}

@@ -31,3 +31,20 @@ python exp/reproduce_exp.py F08 --run --local --settings C:/AMDDesignTools/2026.
 Model analyses retain their documented Python commands. Figures are rerunnable
 with `exp/plots/*.py` and read CSV files only; no HLS rerun is needed for plotting.
 The missing comic pair still prevents complete Set14 acceptance.
+
+## Recovering completed remote jobs
+
+If SSH or the local queue stopped after a remote job finished, inspect its
+processes and archive before resuming. Retrieve the completed result without
+uploading sources or launching Vitis:
+
+```sh
+python3 exp/remote_exp.py exp/configs/F85.json --collect-only
+```
+
+Collection requires a remote metrics archive and no active run lock. It checks
+the original paper plan and result identity, appends the CSV record once, updates
+progress and commits with the experiment ID. Repeated collection accepts only an
+identical existing row and preserves local report/profiling enrichment without
+another transfer; conflicting evidence fails. Continue genuinely unstarted
+IDs with `exp/run_queue.py`; completed workspaces remain reserved.

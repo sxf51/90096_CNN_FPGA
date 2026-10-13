@@ -1,0 +1,42 @@
+{
+  "config_sha256": "d473bb59e99b3ff61239427bb19f865c9fab36591ce19076f76bbbd62ce303e6",
+  "configuration": {
+    "changes": "Use frozen parent C13 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Limit per-run placement/routing to 2 threads while synthesis remains single-threaded; preserve the serial hardware lock. Exit Vivado after synthesis/report, then reopen the new project in a fresh process for implementation/report; retain the cumulative three-hour tool timeout and one-heavy scheduling. Change only the implementation clock constraint; preserve parent HLS RTL.",
+    "clock": 4,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/winograd_prepacked_t4_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "DSP": 1032.0,
+      "FF": 192308.0,
+      "LUT": 127966.0,
+      "T": 4.0,
+      "URAM": 0.0,
+      "basis": "Frozen C13 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: C15 reached routing but the host guard stopped it at0.433784GiB; no final physical verdict. The generated synthesis report opens a roughly7GiB parent design while a6-7GiB implementation child runs. Keep C13 RTL/5ns/threads/gates fixed; release the first Vivado process after synthesis reports and reopen project.xpr for the original implementation. Predict the frozen HLS1032DSP/146BRAM18K,263090-cycle lower bound and matching C14 RTL300632; expect less than10GiB per staged process tree, to be measured. Preserve C15 failure and all protected sources.",
+      "latency_cycles": 263090.0
+    },
+    "id": "C18",
+    "implementation_backend": "staged_packaged_flow",
+    "implementation_clock_ns": 5.0,
+    "implementation_driver_template": "F89",
+    "implementation_threads": 2,
+    "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+    "memory_scheduler": true,
+    "name": "ws_impl_C13",
+    "operation": "impl",
+    "purpose": "Verify frozen C13 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: C15 reached routing but the host guard stopped it at0.433784GiB; no final physical verdict. The generated synthesis report opens a roughly7GiB parent design while a6-7GiB implementation child runs. Keep C13 RTL/5ns/threads/gates fixed; release the first Vivado process after synthesis reports and reopen project.xpr for the original implementation. Predict the frozen HLS1032DSP/146BRAM18K,263090-cycle lower bound and matching C14 RTL300632; expect less than10GiB per staged process tree, to be measured. Preserve C15 failure and all protected sources.",
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "C",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 10800,
+    "validation_parent": "C13",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "C13"
+  },
+  "created_at": "2026-10-12T11:01:55+00:00",
+  "created_from_commit": "013a306867f6292bb87227062b3298e42d2362d2",
+  "purpose_section": "Verify frozen C13 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: C15 reached routing but the host guard stopped it at0.433784GiB; no final physical verdict. The generated synthesis report opens a roughly7GiB parent design while a6-7GiB implementation child runs. Keep C13 RTL/5ns/threads/gates fixed; release the first Vivado process after synthesis reports and reopen project.xpr for the original implementation. Predict the frozen HLS1032DSP/146BRAM18K,263090-cycle lower bound and matching C14 RTL300632; expect less than10GiB per staged process tree, to be measured. Preserve C15 failure and all protected sources.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 1032.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 127966.0 |\n| FF | 192308.0 |\n| latency_cycles | 263090.0 |\n| T | 4.0 |\n| basis | Frozen C13 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: C15 reached routing but the host guard stopped it at0.433784GiB; no final physical verdict. The generated synthesis report opens a roughly7GiB parent design while a6-7GiB implementation child runs. Keep C13 RTL/5ns/threads/gates fixed; release the first Vivado process after synthesis reports and reopen project.xpr for the original implementation. Predict the frozen HLS1032DSP/146BRAM18K,263090-cycle lower bound and matching C14 RTL300632; expect less than10GiB per staged process tree, to be measured. Preserve C15 failure and all protected sources. |\n\nPlanned at 2026-10-12T11:01:55+00:00; estimates are hypotheses, not tool measurements."
+}

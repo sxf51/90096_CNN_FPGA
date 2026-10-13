@@ -1,0 +1,60 @@
+{
+  "config_sha256": "086e061ab69cd0f60c473d99ea80635f5ee498b6d3f7c2d71520757a150268cd",
+  "configuration": {
+    "T": 8,
+    "changes": "Independent W17 copy. Replace top raw/transformed banks and load loops with nested parameter DATAFLOW: one read_raw_params converter, a single-channel81-coefficient transform buffer, and three distinct layer streams. Conv1 packets contain16 exact14-bit transformed fields (224bits),640 packets total including64 bias packets. Consumers load private simple-dual-port LUTRAM banks before pixels; inherit the measured-selected local-load flatten policy. Conv2/Conv3 compute and Winograd tile/window/reorder loops remain W17's. Use the frozen F25/F28 exact IEEE decode header. No parent design or interface change.",
+    "clock": 3.33,
+    "conclusion": "Rank only globally resource-feasible exact/quality-passing results. Compare W19 with independent direct-T8 tree1/tree0 controls and the selected T16 fallback, then run candidate-specific full-image, serial implementation and changed-parameter RTL verification. Keep section6 decisions provisional for tomorrow.",
+    "control_experiment": "W17",
+    "defines": {
+      "EXP_ALL_CONTINUOUS": 1,
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 8,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/winograd_param_stream_v1",
+    "estimates": {
+      "BRAM18K": 146,
+      "Conv1_DSP": 288,
+      "Conv2_DSP": 256,
+      "Conv3_DSP": 100,
+      "DSP": 648,
+      "FF": 122000,
+      "LUT": 78000,
+      "T": 8,
+      "URAM": 0,
+      "basis": "W17 measured DSP648, BRAM18K146, LUT93166/outside42289, FF122399 and532562cycles; F27 ownership control reduced total69976->61656 (only8320 LUT) while outside32294->3170 and compute-child37682->58486. Correct the original61k T8 hypothesis: do not count all outside movement as savings. Budget78000 total, about W17 minus14000 ownership/converter/control LUT and another1100 for its raw-cache/legacy-encoder removal, with bank selectors/control retained inside. W17's narrower288 transformed Conv1 MAC banks may differ from direct F27's324 tap banks; reserve larger overhead rather than asserting transferable savings. Actual MAC DSPs are288+256+100=644; allow4 address/interface overhead as in W17. Keep146 BRAM18K for existing line/reorder buffers, no new BRAM/URAM: raw scalar FIFO16*10, Conv1 packet FIFO4*224, downstream scalar FIFOs2*16*10 give1376bits plus one81*10 raw buffer. Conv1 raw5248 scalars become576 transformed plus64 bias packets; local loading/transform overhead is included in538500-cycle budget above the16384*4*8=524288 tile-fold bound and65025*8=520200 downstream bound. Resources/clock remain hypotheses.",
+      "latency_cycles": 538500,
+      "outside_LUT": 3200,
+      "parameter_fifo_bits": 1376,
+      "transform_buffer_bits": 810
+    },
+    "fixed": true,
+    "id": "W19",
+    "ii_targets": {
+      "c2_fold": 1,
+      "c3_fold": 1,
+      "wino_fold": 1
+    },
+    "interpretation": "Compare parsed total/outside LUT, conversion/transform/private-bank modules and warnings against W17 and selected WS2 loader. Explain estimate deviations>20%, keep transform and reorder costs separate, and check all fold II1, stream counts5248/640/2080/801 and exact butterfly/border. HLS can understate finite-FIFO/reorder stalls; require final changed-parameter RTL and all13 images before accepting throughput.",
+    "name": "streamed_winograd_T8",
+    "precision": "w10a10acc23",
+    "purpose": "After strict WS2 loader selection, integrate its stream-owned parameter loading into independent W17 Winograd T8. Preserve exact integer G2 transforms, nine3x3 subkernels, two-row tile reorder and layer quantization; explicitly enable online replicate padding and exact IEEE output encoding. Test whether reducing duplicated conversion/top ownership overhead makes the unchanged Winograd compute schedule HLS-resource feasible. This advance paper plan is conditional: implementation/execution waits for the measured F28 loader conclusion, and missed WS2 gates cannot be called accepted.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "require_weight_predecessor_free": true,
+    "scope": "frame",
+    "series": "W",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws3",
+    "storage": "local_lutram_s2p",
+    "unroll": "G2 F2 nine subkernels/Cout/Cin"
+  },
+  "created_at": "2026-10-11T18:47:20+00:00",
+  "created_from_commit": "536be248da18f0733ccbbc05761bdacde7f3ebd1",
+  "purpose_section": "After strict WS2 loader selection, integrate its stream-owned parameter loading into independent W17 Winograd T8. Preserve exact integer G2 transforms, nine3x3 subkernels, two-row tile reorder and layer quantization; explicitly enable online replicate padding and exact IEEE output encoding. Test whether reducing duplicated conversion/top ownership overhead makes the unchanged Winograd compute schedule HLS-resource feasible. This advance paper plan is conditional: implementation/execution waits for the measured F28 loader conclusion, and missed WS2 gates cannot be called accepted.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 648 |\n| Conv1_DSP | 288 |\n| Conv2_DSP | 256 |\n| Conv3_DSP | 100 |\n| BRAM18K | 146 |\n| URAM | 0 |\n| T | 8 |\n| latency_cycles | 538500 |\n| LUT | 78000 |\n| outside_LUT | 3200 |\n| FF | 122000 |\n| parameter_fifo_bits | 1376 |\n| transform_buffer_bits | 810 |\n| basis | W17 measured DSP648, BRAM18K146, LUT93166/outside42289, FF122399 and532562cycles; F27 ownership control reduced total69976->61656 (only8320 LUT) while outside32294->3170 and compute-child37682->58486. Correct the original61k T8 hypothesis: do not count all outside movement as savings. Budget78000 total, about W17 minus14000 ownership/converter/control LUT and another1100 for its raw-cache/legacy-encoder removal, with bank selectors/control retained inside. W17's narrower288 transformed Conv1 MAC banks may differ from direct F27's324 tap banks; reserve larger overhead rather than asserting transferable savings. Actual MAC DSPs are288+256+100=644; allow4 address/interface overhead as in W17. Keep146 BRAM18K for existing line/reorder buffers, no new BRAM/URAM: raw scalar FIFO16*10, Conv1 packet FIFO4*224, downstream scalar FIFOs2*16*10 give1376bits plus one81*10 raw buffer. Conv1 raw5248 scalars become576 transformed plus64 bias packets; local loading/transform overhead is included in538500-cycle budget above the16384*4*8=524288 tile-fold bound and65025*8=520200 downstream bound. Resources/clock remain hypotheses. |\n\nPlanned at 2026-10-11T18:47:20+00:00; estimates are hypotheses, not tool measurements."
+}

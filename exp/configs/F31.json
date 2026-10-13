@@ -1,0 +1,48 @@
+{
+  "T": 16,
+  "changes": "After this plan is committed, copy frozen F28 sources into a new validation-only design and freeze the already committed F93 testbench under an independent exp/tb replay root. No inference, protected-data, threshold or HLS-parent changes. Archive the testbench snapshot and source SHA256 for reproduction.",
+  "clock": 2.5,
+  "conclusion": "Proceed to F93 only if this testbench preflight and eventual strict F28 synthesis gates pass. Keep final all13-image evidence F94 separate from this two-input test.",
+  "control_experiment": "F28",
+  "csim_only": true,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 1,
+    "EXP_STORAGE": 1,
+    "EXP_T": 16,
+    "EXP_TREE_ADD_LATENCY": 1,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/ws_reload_F31",
+  "estimates": {
+    "BRAM18K": 73,
+    "DSP": 502,
+    "FF": 122255,
+    "LUT": 61856,
+    "T": 16,
+    "URAM": 0,
+    "basis": "F28 pending paper resource/cycle hypothesis, grounded in measured F27; no synthesis is run, so hardware fields remain unknown. Exact reference uses original E017 butterfly. Second sparse network gives Conv1 channel0=0.625, Conv2 channel0=0.5625 (raw72 with7 fractional bits), final0.40625 (raw104 with8 fractional bits). This is an arithmetic prediction to be checked by the actual C testbench, never an RTL result.",
+    "latency_cycles": 1046500
+  },
+  "fixed": true,
+  "frozen_testbench_root": "exp/tb/replay_F31/root",
+  "id": "F31",
+  "interpretation": "Parse exact first-frame/border and second-frame reload markers. Retain unknown hardware metrics and distinguish CPU stream simulation from finite-FIFO/AXI RTL. Any testbench or arithmetic failure must be fixed and recorded before scheduling F93.",
+  "name": "reload_testbench_csim_F28",
+  "precision": "w10a10acc23",
+  "purpose": "Preflight the planned F93 independent two-frame reload testbench in C simulation while hardware remains serialized. First butterfly must match E017 bit for bit; second changes weights/biases and constant0.5 input, requiring exactly104/256 on every pixel. Preserve first-frame output/borders and original parameter arrays. This validates testbench compilation and numerical expectations but cannot prove finite-FIFO progress or RTL reloading.",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "scope": "frame",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "stage": "arch_ws_verify",
+  "storage": "local_lutram_s2p",
+  "tb_files": [
+    "exp/tb/replay_F31/root/exp/tb/validate_reload.cpp",
+    "src/weights",
+    "test/set5"
+  ],
+  "unroll": "Cout/Cout/tap"
+}

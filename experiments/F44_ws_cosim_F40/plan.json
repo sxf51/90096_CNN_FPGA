@@ -1,0 +1,39 @@
+{
+  "config_sha256": "cbc076d11df3ed976a6081ed68a76272a0bdb47c18bc66f63c339cdbde68eeb9",
+  "configuration": {
+    "changes": "Use frozen parent F40 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Override only verification C++ testbench, archive its SHA256/source commit and preserve identical parent RTL.",
+    "clock": 3.33,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/winograd_feature_fifo16_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "DSP": 644.0,
+      "FF": 130057.0,
+      "LUT": 81086.0,
+      "T": 8.0,
+      "URAM": 0.0,
+      "basis": "Frozen F40 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: WS-D1 depth16 control: F40 confirms640-bit feature FIFO16 with unchanged644DSP/146BRAM18K/525237cycles and exact all13 images. Compare real latency/profile counters with F97 and depth32 F45. The goal is measured RTL/HLS excess<=2 percent (535741.74cycles); do not round this acceptance threshold upward or infer finite-FIFO latency from the HLS bound.",
+      "latency_cycles": 525237.0
+    },
+    "id": "F44",
+    "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+    "memory_scheduler": true,
+    "name": "ws_cosim_F40",
+    "operation": "cosim",
+    "purpose": "Verify frozen F40 using cosim in a new workspace. Run two complete butterfly transactions with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout.\n\nDecision basis: WS-D1 depth16 control: F40 confirms640-bit feature FIFO16 with unchanged644DSP/146BRAM18K/525237cycles and exact all13 images. Compare real latency/profile counters with F97 and depth32 F45. The goal is measured RTL/HLS excess<=2 percent (535741.74cycles); do not round this acceptance threshold upward or infer finite-FIFO latency from the HLS bound. The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains E017-exact butterfly with unchanged border MSE.",
+    "reload_params": true,
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 21600,
+    "validation_parent": "F40",
+    "verification_testbench": "exp/tb/validate_reload.cpp",
+    "verify_parent": "F40"
+  },
+  "created_at": "2026-10-12T06:07:13+00:00",
+  "created_from_commit": "0f5e14d8cfead372f59fc9a4b6ffba4ca22e5e2d",
+  "purpose_section": "Verify frozen F40 using cosim in a new workspace. Run two complete butterfly transactions with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout.\n\nDecision basis: WS-D1 depth16 control: F40 confirms640-bit feature FIFO16 with unchanged644DSP/146BRAM18K/525237cycles and exact all13 images. Compare real latency/profile counters with F97 and depth32 F45. The goal is measured RTL/HLS excess<=2 percent (535741.74cycles); do not round this acceptance threshold upward or infer finite-FIFO latency from the HLS bound. The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains E017-exact butterfly with unchanged border MSE.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 81086.0 |\n| FF | 130057.0 |\n| latency_cycles | 525237.0 |\n| T | 8.0 |\n| basis | Frozen F40 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: WS-D1 depth16 control: F40 confirms640-bit feature FIFO16 with unchanged644DSP/146BRAM18K/525237cycles and exact all13 images. Compare real latency/profile counters with F97 and depth32 F45. The goal is measured RTL/HLS excess<=2 percent (535741.74cycles); do not round this acceptance threshold upward or infer finite-FIFO latency from the HLS bound. |\n\nPlanned at 2026-10-12T06:07:13+00:00; estimates are hypotheses, not tool measurements."
+}

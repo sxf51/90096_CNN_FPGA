@@ -1,0 +1,39 @@
+{
+  "config_sha256": "12c4286d6b50afaf9c022b143dfe7da2ecad6cf63f76c5de159238a530cddb60",
+  "configuration": {
+    "changes": "Use frozen parent F41 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Override only verification C++ testbench, archive its SHA256/source commit and preserve identical parent RTL.",
+    "clock": 3.33,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/winograd_feature_fifo32_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "DSP": 644.0,
+      "FF": 130057.0,
+      "LUT": 81105.0,
+      "T": 8.0,
+      "URAM": 0.0,
+      "basis": "Frozen F41 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: WS-D: compare unchanged W21/F97 latency558758 and HLS525237 against the32-entry feature FIFO. The goal is RTL/HLS excess<=2%; measure both frame latencies and channel/process counters without inferring progress from HLS. Complete13 course images passed exactly in F41.",
+      "latency_cycles": 525237.0
+    },
+    "id": "F45",
+    "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+    "memory_scheduler": true,
+    "name": "ws_cosim_F41",
+    "operation": "cosim",
+    "purpose": "Verify frozen F41 using cosim in a new workspace. Run two complete butterfly transactions with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout.\n\nDecision basis: WS-D: compare unchanged W21/F97 latency558758 and HLS525237 against the32-entry feature FIFO. The goal is RTL/HLS excess<=2%; measure both frame latencies and channel/process counters without inferring progress from HLS. Complete13 course images passed exactly in F41. The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains E017-exact butterfly with unchanged border MSE.",
+    "reload_params": true,
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 21600,
+    "validation_parent": "F41",
+    "verification_testbench": "exp/tb/validate_reload.cpp",
+    "verify_parent": "F41"
+  },
+  "created_at": "2026-10-12T05:07:28+00:00",
+  "created_from_commit": "7f69ccd6d3f683950e4b317c1d878885e86c1017",
+  "purpose_section": "Verify frozen F41 using cosim in a new workspace. Run two complete butterfly transactions with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout.\n\nDecision basis: WS-D: compare unchanged W21/F97 latency558758 and HLS525237 against the32-entry feature FIFO. The goal is RTL/HLS excess<=2%; measure both frame latencies and channel/process counters without inferring progress from HLS. Complete13 course images passed exactly in F41. The independent second transaction changes weights/biases and uses constant0.5 input; every pixel must equal104/256 exactly. The first remains E017-exact butterfly with unchanged border MSE.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 81105.0 |\n| FF | 130057.0 |\n| latency_cycles | 525237.0 |\n| T | 8.0 |\n| basis | Frozen F41 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: WS-D: compare unchanged W21/F97 latency558758 and HLS525237 against the32-entry feature FIFO. The goal is RTL/HLS excess<=2%; measure both frame latencies and channel/process counters without inferring progress from HLS. Complete13 course images passed exactly in F41. |\n\nPlanned at 2026-10-12T05:07:28+00:00; estimates are hypotheses, not tool measurements."
+}

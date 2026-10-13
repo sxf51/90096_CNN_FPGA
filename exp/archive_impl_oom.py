@@ -10,8 +10,8 @@ from run_exp import ROOT, append_log, check_protected, markdown_table, utc, writ
 from verify_exp import vivado_diagnostic_excerpt
 
 
-def host_failure_section(record):
-    section = "\n<!-- AUTO: host failure -->\n\nKernel OOM confirmed during technology mapping; original status stays fail and no routed results are inferred. See diagnostics/kernel_oom.txt and subrun excerpts.\n\n"
+def host_failure_section(record, phase="implementation"):
+    section = "\n<!-- AUTO: host failure -->\n\nKernel OOM confirmed during "+phase+"; original status stays fail and no routed results are inferred. See diagnostics/kernel_oom.txt and subrun excerpts.\n\n"
     return section+markdown_table([record],["kind","archived_file","sha256"])+"\n"
 
 
@@ -56,13 +56,15 @@ def main():
     if marker in text:
         previous = host_failure_section(previous_host_failure)
         if previous not in text:
-            raise RuntimeError("Existing host failure section does not match its archived metadata")
+            previous = host_failure_section(previous_host_failure, "technology mapping")
+            if previous not in text:
+                raise RuntimeError("Existing host failure section does not match its archived metadata")
         text = text.replace(previous,section,1)
     else:
         position = text.index("## 7. Conclusion")
         text = text[:position]+section+text[position:]
     md.write_text(text)
-    append_log(args.id+": kernel confirms host OOM killed Vivado; archived subrun/kernel evidence, numerical measurements unchanged. Independent serial retries planned as F89-F91.")
+    append_log(args.id+": kernel confirms host OOM killed Vivado; archived subrun/kernel evidence, numerical measurements unchanged. Preserve the failed workspace and use separately planned retry IDs.")
     check_protected()
 
 

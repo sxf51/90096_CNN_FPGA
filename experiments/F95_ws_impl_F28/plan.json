@@ -1,0 +1,38 @@
+{
+  "config_sha256": "8ca4922126e98076c804451a9f18cf7cba2423d3f8265e25ad7c39e967df9e53",
+  "configuration": {
+    "changes": "Use frozen parent F28 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Change only the implementation clock constraint; preserve parent HLS RTL.",
+    "clock": 2.5,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/continuous_param_noflat_v1",
+    "estimates": {
+      "BRAM18K": 73.0,
+      "DSP": 502.0,
+      "FF": 122061.0,
+      "LUT": 61553.0,
+      "T": 16.0,
+      "URAM": 0.0,
+      "basis": "Frozen F28 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: Strict WS2 selected loader F28 passes all unchanged gates, and F94 source/flags match its full13-image validation. F92 same-compute F25 control closes5ns with WNS+0.568ns; use5ns conservatively for the first fresh packaged F28 route. Keep HLS clock2.5ns and resource gates, use only candidate-specific IP, and compare its measured path before WS4.",
+      "latency_cycles": 1046029.0
+    },
+    "id": "F95",
+    "implementation_backend": "serial_packaged_flow",
+    "implementation_clock_ns": 5.0,
+    "implementation_driver_template": "F89",
+    "interpretation": "Keep parsed HLS, RTL and routed results separate. Missing comic prevents complete Set14 acceptance; retain failed timing, deadlock, host OOM and timeout evidence.",
+    "name": "ws_impl_F28",
+    "operation": "impl",
+    "purpose": "Verify frozen F28 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. HLS resource gates remain unchanged.\n\nDecision basis: Strict WS2 selected loader F28 passes all unchanged gates, and F94 source/flags match its full13-image validation. F92 same-compute F25 control closes5ns with WNS+0.568ns; use5ns conservatively for the first fresh packaged F28 route. Keep HLS clock2.5ns and resource gates, use only candidate-specific IP, and compare its measured path before WS4.",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 10800,
+    "validation_parent": "F94",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "F28"
+  },
+  "created_at": "2026-10-11T19:32:13+00:00",
+  "created_from_commit": "7be52961ca1b0ed0b783afb3109d5de80d4d1ff6",
+  "purpose_section": "Verify frozen F28 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. HLS resource gates remain unchanged.\n\nDecision basis: Strict WS2 selected loader F28 passes all unchanged gates, and F94 source/flags match its full13-image validation. F92 same-compute F25 control closes5ns with WNS+0.568ns; use5ns conservatively for the first fresh packaged F28 route. Keep HLS clock2.5ns and resource gates, use only candidate-specific IP, and compare its measured path before WS4.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 502.0 |\n| BRAM18K | 73.0 |\n| URAM | 0.0 |\n| LUT | 61553.0 |\n| FF | 122061.0 |\n| latency_cycles | 1046029.0 |\n| T | 16.0 |\n| basis | Frozen F28 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: Strict WS2 selected loader F28 passes all unchanged gates, and F94 source/flags match its full13-image validation. F92 same-compute F25 control closes5ns with WNS+0.568ns; use5ns conservatively for the first fresh packaged F28 route. Keep HLS clock2.5ns and resource gates, use only candidate-specific IP, and compare its measured path before WS4. |\n\nPlanned at 2026-10-11T19:32:13+00:00; estimates are hypotheses, not tool measurements."
+}

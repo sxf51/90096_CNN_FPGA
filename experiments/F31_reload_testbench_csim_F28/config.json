@@ -1,0 +1,80 @@
+{
+  "T": 16,
+  "changes": "After this plan is committed, copy frozen F28 sources into a new validation-only design and freeze the already committed F93 testbench under an independent exp/tb replay root. No inference, protected-data, threshold or HLS-parent changes. Archive the testbench snapshot and source SHA256 for reproduction.",
+  "clock": 2.5,
+  "compiler_flags": "-std=c++14 -ffp-contract=off -DEXP_A_BITS=10 -DEXP_FRAMES=2 -DEXP_ONLINE_PAD=1 -DEXP_STORAGE=1 -DEXP_T=16 -DEXP_TREE_ADD_LATENCY=1 -DEXP_W_BITS=10 -DEXP_FIXED=1 -DEXP_SET14=0 -DEXP_REFERENCE=1 -DEXP_NUMPY_REFERENCE=0 -DEXP_QUICK=1 -I/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F31/source -I/home/lipuze/amdprojects/90096_CNN_FPGA/src",
+  "conclusion": "Proceed to F93 only if this testbench preflight and eventual strict F28 synthesis gates pass. Keep final all13-image evidence F94 separate from this two-input test.",
+  "control_experiment": "F28",
+  "cpu_count": 12,
+  "csim_only": true,
+  "defines": {
+    "EXP_A_BITS": 10,
+    "EXP_FRAMES": 2,
+    "EXP_ONLINE_PAD": 1,
+    "EXP_STORAGE": 1,
+    "EXP_T": 16,
+    "EXP_TREE_ADD_LATENCY": 1,
+    "EXP_W_BITS": 10
+  },
+  "design": "designs/ws_reload_F31",
+  "errors": [],
+  "estimates": {
+    "BRAM18K": 73,
+    "DSP": 502,
+    "FF": 122255,
+    "LUT": 61856,
+    "T": 16,
+    "URAM": 0,
+    "basis": "F28 pending paper resource/cycle hypothesis, grounded in measured F27; no synthesis is run, so hardware fields remain unknown. Exact reference uses original E017 butterfly. Second sparse network gives Conv1 channel0=0.625, Conv2 channel0=0.5625 (raw72 with7 fractional bits), final0.40625 (raw104 with8 fractional bits). This is an arithmetic prediction to be checked by the actual C testbench, never an RTL result.",
+    "latency_cycles": 1046500
+  },
+  "fixed": true,
+  "frozen_testbench_root": "exp/tb/replay_F31/root",
+  "id": "F31",
+  "interpretation": "Parse exact first-frame/border and second-frame reload markers. Retain unknown hardware metrics and distinguish CPU stream simulation from finite-FIFO/AXI RTL. Any testbench or arithmetic failure must be fixed and recorded before scheduling F93.",
+  "name": "reload_testbench_csim_F28",
+  "os": "Linux-6.8.0-136-generic-x86_64-with-glibc2.35",
+  "parsed_loops": [],
+  "parsed_modules": [],
+  "precision": "w10a10acc23",
+  "purpose": "Preflight the planned F93 independent two-frame reload testbench in C simulation while hardware remains serialized. First butterfly must match E017 bit for bit; second changes weights/biases and constant0.5 input, requiring exactly104/256 on every pixel. Preserve first-frame output/borders and original parameter arrays. This validates testbench compilation and numerical expectations but cannot prove finite-FIFO progress or RTL reloading.",
+  "quick": true,
+  "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+  "scope": "frame",
+  "series": "F",
+  "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+  "source_commit": "fc8af2a6f0e1137f4e112d77f11b89b0c3d2cc31",
+  "source_sha256": {
+    "conv1.cpp": "11205e4faaa3a2774c5c7338ee0ab2bc378f615890c6a9ed149d2ad9ad08acf6",
+    "ieee_decode.h": "466d6c97a7619c220b4c12f32c55062601cc0eb9c10f793e3bb05d9ad6830cc1",
+    "integer_numeric.inc": "52921c5680592d87c5fba7e90faeea24a26aa8405a63228f9c720673b30decc9",
+    "srcnn.cpp": "7a44b73ca7d99f0485ff95520d4fb3fb21dc44c31d793bfed5e2f448d3e7a75c",
+    "srcnn.h": "b0607a9c5aa51fad40f53e5f72514f1d28fc5f3051c430213d1a3bbc51982a9b",
+    "types.h": "80d14bfdb80890ad9da6769e17b9593498e4fdf6725c7d8055dcdd2b5a5848e1"
+  },
+  "stage": "arch_ws_verify",
+  "storage": "local_lutram_s2p",
+  "tb_files": [
+    "exp/tb/replay_F31/root/exp/tb/validate_reload.cpp",
+    "src/weights",
+    "test/set5"
+  ],
+  "testbench_sha256": {
+    "exp/tb/validate_reload.cpp": "68a5b00c158e82301b63e044b8bb9a967c4b4655c9a763e987f2fe7bb1c16ad6"
+  },
+  "time": "2026-10-11T18:52:41+00:00",
+  "tool_version": "COMMAND [\"vitis-run\", \"--version\"]\n\n****** vitis-run v2026.1 (64-bit)\n  **** SW Build 6497934 on 2026-06-16-10:22:25\n  **** Start of session at: Mon Oct 12 05:52:43 2026\n    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.\n    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.",
+  "unroll": "Cout/Cout/tap",
+  "validation": {
+    "bit_exact": true,
+    "border_mse": 1.661846957728205e-05,
+    "butterfly_mse": 1.8197758558556394e-05,
+    "csim_pass": true,
+    "delta_psnr": null,
+    "frame_count": 2,
+    "image_count": 0,
+    "reload_expected": 0.40625,
+    "reload_pass": true,
+    "set14_psnr": null
+  }
+}

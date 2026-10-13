@@ -1,0 +1,58 @@
+{
+  "config_sha256": "ba00999002c2380231072b7167e7009f07302643a325a6ac74b577830cca6382",
+  "configuration": {
+    "T": 16,
+    "changes": "Independent frozen F27 source copy; add only LOOP_FLATTEN off to the load_local inner tap loop. Retain three private banks, one runtime float converter, separate parameter streams, all inference loops and online replicate padding. This timing probe takes F28; any SRL-bank experiment requires a separate future ID.",
+    "clock": 2.5,
+    "conclusion": "Select the loader only from measured strict gates. Then plan changed-parameter two-frame RTL and W19/direct-T8 candidates; retain all failed hypotheses and conservative section6 decisions for tomorrow.",
+    "control_experiment": "F27",
+    "defines": {
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 16,
+      "EXP_TREE_ADD_LATENCY": 1,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/continuous_param_noflat_v1",
+    "estimates": {
+      "BRAM18K": 73,
+      "Conv1_DSP": 324,
+      "Conv2_DSP": 128,
+      "Conv3_DSP": 50,
+      "DSP": 502,
+      "FF": 122255,
+      "LUT": 61856,
+      "T": 16,
+      "URAM": 0,
+      "basis": "F27 measured DSP502, BRAM18K73, LUT61656/outside3170, FF122055 and1045713cycles. No MAC/storage/stream changes, so retain324/128/50 DSP and memory counts. Budget200 LUT/FF for nonflattened local-load control and787 extra cycles, about6 per128 channel rows, while Conv2/Conv3 loading is hidden by Conv1 startup. F27 local-load depths are about3 cycles; HLS may insert additional row restart control. Its2.419ns Conv3 loader compare-select-add-store path motivates the one-directive change; F25 independently showed nonflattened loading can restore the2.377ns compute/pad bound. Timing and cycle predictions require new reports.",
+      "latency_cycles": 1046500,
+      "outside_LUT": 3170
+    },
+    "fixed": true,
+    "id": "F28",
+    "ii_targets": {
+      "c1_fold": 1,
+      "c2_fold": 1,
+      "c3_fold": 1
+    },
+    "interpretation": "Compare clock, total and outside area with F27 and strict WS2 gates against F25. Explain deviations>20%. Check new local-load loop depths/restart cycles and preserved three fold II1. Distinguish globally resource-feasible provisional status from WS2 acceptance; no finite-FIFO claim until changed-parameter RTL validation.",
+    "name": "local_load_no_flatten_T16",
+    "precision": "w10a10acc23",
+    "purpose": "Address the only missed F27 WS2 gate without changing arithmetic or parameter ownership: explicitly disable local-load loop flattening. Hypothesize that the tap counter no longer combines reset selection with increment, restoring clock<=2.377ns. Repeated inner pipelines may add startup/drain cycles; require total<=1067473.04. Preserve outside LUT<=12000, all fold II1, zero weight-predecessor warnings and exact butterfly/border behavior.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "require_weight_predecessor_free": true,
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws2",
+    "storage": "local_lutram_s2p",
+    "unroll": "Cout/Cout/tap"
+  },
+  "created_at": "2026-10-11T18:35:35+00:00",
+  "created_from_commit": "01f5e5d7e65801f0086786877144b46bf8a2bfc6",
+  "purpose_section": "Address the only missed F27 WS2 gate without changing arithmetic or parameter ownership: explicitly disable local-load loop flattening. Hypothesize that the tap counter no longer combines reset selection with increment, restoring clock<=2.377ns. Repeated inner pipelines may add startup/drain cycles; require total<=1067473.04. Preserve outside LUT<=12000, all fold II1, zero weight-predecessor warnings and exact butterfly/border behavior.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 502 |\n| Conv1_DSP | 324 |\n| Conv2_DSP | 128 |\n| Conv3_DSP | 50 |\n| BRAM18K | 73 |\n| URAM | 0 |\n| T | 16 |\n| latency_cycles | 1046500 |\n| LUT | 61856 |\n| outside_LUT | 3170 |\n| FF | 122255 |\n| basis | F27 measured DSP502, BRAM18K73, LUT61656/outside3170, FF122055 and1045713cycles. No MAC/storage/stream changes, so retain324/128/50 DSP and memory counts. Budget200 LUT/FF for nonflattened local-load control and787 extra cycles, about6 per128 channel rows, while Conv2/Conv3 loading is hidden by Conv1 startup. F27 local-load depths are about3 cycles; HLS may insert additional row restart control. Its2.419ns Conv3 loader compare-select-add-store path motivates the one-directive change; F25 independently showed nonflattened loading can restore the2.377ns compute/pad bound. Timing and cycle predictions require new reports. |\n\nPlanned at 2026-10-11T18:35:35+00:00; estimates are hypotheses, not tool measurements."
+}

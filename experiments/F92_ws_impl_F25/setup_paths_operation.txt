@@ -1,0 +1,14 @@
+COMMAND cd /home/lipuze/amdprojects/90096_CNN_FPGA
+python3 -c 'import sys,hashlib
+from pathlib import Path
+sys.path.insert(0,'"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/exp'"'"')
+from run_exp import invoke,lock
+work=Path('"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F92'"'"')
+with lock(Path('"'"'workspace/exp_runs/.synthesis.lock'"'"'),wait_timeout=86400):
+    print('"'"'CHECKPOINT_SHA256'"'"',hashlib.sha256(Path('"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F92/hls/impl/verilog/project.runs/impl_1/bd_0_wrapper_routed.dcp'"'"').read_bytes()).hexdigest(),flush=True)
+    result=invoke(['"'"'vivado'"'"','"'"'-mode'"'"','"'"'batch'"'"','"'"'-source'"'"',str(work/'"'"'report_setup_paths.tcl'"'"'),'"'"'-notrace'"'"','"'"'-nojournal'"'"','"'"'-tclargs'"'"','"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F92/hls/impl/verilog/project.runs/impl_1/bd_0_wrapper_routed.dcp'"'"','"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F92/srcnn_setup5_routed.rpt'"'"'],Path('"'"'/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh'"'"'),work,work/'"'"'setup_paths.console.log'"'"',1800)
+print(result)
+raise SystemExit(result[0])
+'
+CHECKPOINT_SHA256 0cda6b70a1948afdb5652fc87ac2bec27547b12a00d397af69e04fcd45175d0d
+(0, 140.4082557670008)

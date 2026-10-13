@@ -176,6 +176,21 @@ class RunnerTests(unittest.TestCase):
                 run_exp.ensure_results_schema(path)
             self.assertEqual(path.read_text(), original)
 
+    def test_route_schema_appends_unknown_without_rewriting_historical_values(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "results.csv"
+            old = [field for field in run_exp.FIELDS if field != "route_feasible"]
+            row = dict.fromkeys(old, "")
+            row.update(id="W19", series="W", status="infeasible", LUT="83623.0")
+            with path.open("w", newline="") as stream:
+                writer = csv.DictWriter(stream, fieldnames=old)
+                writer.writeheader()
+                writer.writerow(row)
+            run_exp.ensure_results_schema(path)
+            with path.open(newline="") as stream:
+                migrated = list(csv.DictReader(stream))
+            self.assertEqual(migrated, [{**row, "route_feasible": ""}])
+
 
 if __name__ == "__main__":
     unittest.main()

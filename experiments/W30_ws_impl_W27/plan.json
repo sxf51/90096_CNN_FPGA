@@ -1,0 +1,42 @@
+{
+  "config_sha256": "b844dfe662764751a7b26858460535848203df5b0ad5f060c703a315c2464a17",
+  "configuration": {
+    "changes": "Use frozen parent W27 sources and flags in an independent verification workspace; no quantization, parameter interface, dataset, threshold or parent-workspace changes. Limit per-run placement/routing to 2 threads while synthesis remains single-threaded; preserve the serial hardware lock. Change only the implementation clock constraint; preserve parent HLS RTL.",
+    "clock": 3.33,
+    "conclusion": "Compare measured frame cycles and implementation timing before selecting the final integration candidate. Review unattended section6 decisions with the user tomorrow.",
+    "design": "designs/winograd_frp_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "DSP": 644.0,
+      "FF": 130117.0,
+      "LUT": 81484.0,
+      "T": 8.0,
+      "URAM": 0.0,
+      "basis": "Frozen W27 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: WS-C2 independent4.5ns routing of actual FRP RTL. W28 must pass changed-parameter RTL within plus/minus1 percent of F97. Preserve memory gates; this plan remains unlaunched while12.5GiB reservation plus2GiB floor exceeds idle MemAvailable. Do not claim that FRP removes every high-fanout window or valid path without the routed report.",
+      "latency_cycles": 525237.0
+    },
+    "id": "W30",
+    "implementation_backend": "serial_packaged_flow",
+    "implementation_clock_ns": 4.5,
+    "implementation_driver_template": "F89",
+    "implementation_threads": 2,
+    "interpretation": "Set14 is the complete13-image course-provided set. Final acceptance requires independently routed setup/hold, route status and resource gates; HLS screening cannot establish feasibility. Keep RTL/route evidence distinct.",
+    "memory_scheduler": true,
+    "name": "ws_impl_W27",
+    "operation": "impl",
+    "purpose": "Verify frozen W27 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: WS-C2 independent4.5ns routing of actual FRP RTL. W28 must pass changed-parameter RTL within plus/minus1 percent of F97. Preserve memory gates; this plan remains unlaunched while12.5GiB reservation plus2GiB floor exceeds idle MemAvailable. Do not claim that FRP removes every high-fanout window or valid path without the routed report.",
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "W",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "arch_ws_verify",
+    "timeout": 10800,
+    "validation_parent": "W27",
+    "verification_hook": "exp/vivado_serial_hook.tcl",
+    "verify_parent": "W27"
+  },
+  "created_at": "2026-10-12T05:31:41+00:00",
+  "created_from_commit": "8281643549095b36044084147380c1bd1cef3ff6",
+  "purpose_section": "Verify frozen W27 using impl in a new workspace. Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. Final resource gates use the independent routed report.\n\nDecision basis: WS-C2 independent4.5ns routing of actual FRP RTL. W28 must pass changed-parameter RTL within plus/minus1 percent of F97. Preserve memory gates; this plan remains unlaunched while12.5GiB reservation plus2GiB floor exceeds idle MemAvailable. Do not claim that FRP removes every high-fanout window or valid path without the routed report.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 81484.0 |\n| FF | 130117.0 |\n| latency_cycles | 525237.0 |\n| T | 8.0 |\n| basis | Frozen W27 HLS resource/cycle measurements. Full-image C validation preserves arithmetic; RTL includes finite-FIFO/AXI behavior. Physical resources and timing remain unknown until routed reports. No board measurement is inferred. Decision basis: WS-C2 independent4.5ns routing of actual FRP RTL. W28 must pass changed-parameter RTL within plus/minus1 percent of F97. Preserve memory gates; this plan remains unlaunched while12.5GiB reservation plus2GiB floor exceeds idle MemAvailable. Do not claim that FRP removes every high-fanout window or valid path without the routed report. |\n\nPlanned at 2026-10-12T05:31:41+00:00; estimates are hypotheses, not tool measurements."
+}

@@ -1,0 +1,59 @@
+{
+  "config_sha256": "46b1b64bbd1a96ad6897b5bc33df672b64d85caac32d957626595184b8843119",
+  "configuration": {
+    "T": 8,
+    "changes": "Only the runner scheduling and telemetry change; reuse the immutable parent design and flags.",
+    "clock": 3.33,
+    "conclusion": "Enable budgeted concurrency only after both syntheses and C simulation pass, measured peaks fit their budgets and host available memory stays at least 2 GiB.",
+    "control_experiment": "W21",
+    "controlled_parallel_validation": true,
+    "csim_only": false,
+    "defines": {
+      "EXP_ALL_CONTINUOUS": 1,
+      "EXP_A_BITS": 10,
+      "EXP_FRAMES": 2,
+      "EXP_ONLINE_PAD": 1,
+      "EXP_STORAGE": 1,
+      "EXP_T": 8,
+      "EXP_W_BITS": 10
+    },
+    "design": "designs/winograd_subkernel_cache_v1",
+    "estimates": {
+      "BRAM18K": 146.0,
+      "DSP": 644.0,
+      "FF": 130057.0,
+      "LUT": 81086.0,
+      "T": 8,
+      "URAM": 0.0,
+      "basis": "Measured unchanged parent HLS counts; registered synth budget 2.5 GiB each, C simulation 1 GiB. Total trial reservation 6 GiB, below 13 GiB with a 2 GiB available-memory floor.",
+      "latency_cycles": 525237.0
+    },
+    "fixed": true,
+    "id": "F33",
+    "ii_targets": {
+      "c2_fold": 1,
+      "c3_fold": 1,
+      "wino_fold": 1
+    },
+    "interpretation": "Compare reports with the parent and observed peak RSS with the registered budget. Overlap must be measured; numerical, II and timeout checks remain unchanged.",
+    "memory_scheduler": true,
+    "name": "ws0_memory_control_W21",
+    "precision": "w10a10acc23",
+    "purpose": "Controlled WS-0 memory admission validation using unchanged W21 source/arithmetic. Run F32 and F33 synthesis concurrently with F34 C simulation. Measure individual process-tree RSS, overlapping task timestamps, MemAvailable and CPU. Do not enable general hardware concurrency until this trial passes. No architecture speedup is claimed.",
+    "quality_reference": "experiments/E017_apfixed_boundary_w10a10/metrics.json",
+    "quick": true,
+    "reference": "experiments/E017_apfixed_boundary_w10a10/butterfly_output.bin",
+    "require_weight_predecessor_free": true,
+    "required_image_count": 13,
+    "resource_policy": "routed",
+    "scope": "frame",
+    "series": "F",
+    "settings": "/home/lipuze/amdfpga/2026.1/Vitis/settings64.sh",
+    "stage": "rom_clock_ws0",
+    "storage": "local_lutram_s2p",
+    "unroll": "G2 F2 nine subkernels/Cout/Cin"
+  },
+  "created_at": "2026-10-12T03:49:32+00:00",
+  "created_from_commit": "a3d78b72dc2b4cb9312ea374f7bbd11695a2adc5",
+  "purpose_section": "Controlled WS-0 memory admission validation using unchanged W21 source/arithmetic. Run F32 and F33 synthesis concurrently with F34 C simulation. Measure individual process-tree RSS, overlapping task timestamps, MemAvailable and CPU. Do not enable general hardware concurrency until this trial passes. No architecture speedup is claimed.\n\nPre-implementation paper estimates (scope: frame):\n\n| metric | estimate |\n| --- | --- |\n| DSP | 644.0 |\n| BRAM18K | 146.0 |\n| URAM | 0.0 |\n| LUT | 81086.0 |\n| FF | 130057.0 |\n| latency_cycles | 525237.0 |\n| T | 8 |\n| basis | Measured unchanged parent HLS counts; registered synth budget 2.5 GiB each, C simulation 1 GiB. Total trial reservation 6 GiB, below 13 GiB with a 2 GiB available-memory floor. |\n\nPlanned at 2026-10-12T03:49:32+00:00; estimates are hypotheses, not tool measurements."
+}

@@ -1,0 +1,139 @@
+
+
+================================================================
+== Synthesis Summary Report of 'packing16_pe'
+================================================================
++ General Information: 
+    * Date:           Mon Oct 12 01:42:49 2026
+    * Version:        2026.1 (Build 6493734 on Jun 16 2026)
+    * Project:        P15
+    * Solution:       hls (Vivado IP Flow Target)
+    * Product family: zynquplus
+    * Target device:  xck26-sfvc784-2LV-c
+    
+
+* Performance & Resource Estimates: 
++-----------------+--------+---------------+----------+---------+------+----------+---------+---------+-------+------+---------+-----------+-----------+-----+
+|     Modules     |  Issue |               | Iteration|         | Trip |          |      Latency      |       |      |         |           |           |     |
+|     & Loops     |  Type  | Violation Type|  Latency | Interval| Count| Pipelined| (cycles)|   (ns)  | Slack | BRAM |   DSP   |     FF    |    LUT    | URAM|
++-----------------+--------+---------------+----------+---------+------+----------+---------+---------+-------+------+---------+-----------+-----------+-----+
+|+ packing16_pe   |  Timing|              -|         -|       64|     -|    rewind|       69|  276.000|  -0.47|     -|  1 (~0%)|  200 (~0%)|  747 (~0%)|    -|
+| o pack16_terms  |       -|              -|         5|        1|    64|       yes|       67|  268.000|   2.92|     -|        -|          -|          -|    -|
++-----------------+--------+---------------+----------+---------+------+----------+---------+---------+-------+------+---------+-----------+-----------+-----+
+    Name Prefix: '+' for module, 'o' for loop, '*' for dataflow
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AP_MEMORY
++-----------------+-----------+----------+
+| Port            | Direction | Bitwidth |
++-----------------+-----------+----------+
+| a_address0      | out       | 6        |
+| a_q0            | in        | 16       |
+| b_address0      | out       | 6        |
+| b_q0            | in        | 16       |
+| c_address0      | out       | 6        |
+| c_q0            | in        | 16       |
+| first_address0  | out       | 6        |
+| first_d0        | out       | 32       |
+| second_address0 | out       | 6        |
+| second_d0       | out       | 32       |
++-----------------+-----------+----------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------------------------------+
+| Interface | Type       | Ports                             |
++-----------+------------+-----------------------------------+
+| ap_clk    | clock      | ap_clk                            |
+| ap_rst    | reset      | ap_rst                            |
+| ap_ctrl   | ap_ctrl_hs | ap_done ap_idle ap_ready ap_start |
++-----------+------------+-----------------------------------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+-------------+
+| Argument | Direction | Datatype    |
++----------+-----------+-------------+
+| a        | in        | ap_int<16>* |
+| b        | in        | ap_int<16>* |
+| c        | in        | ap_int<16>* |
+| first    | out       | ap_int<32>* |
+| second   | out       | ap_int<32>* |
++----------+-----------+-------------+
+
+* SW-to-HW Mapping
++----------+-----------------+---------+----------+
+| Argument | HW Interface    | HW Type | HW Usage |
++----------+-----------------+---------+----------+
+| a        | a_address0      | port    | offset   |
+| a        | a_ce0           | port    |          |
+| a        | a_q0            | port    |          |
+| b        | b_address0      | port    | offset   |
+| b        | b_ce0           | port    |          |
+| b        | b_q0            | port    |          |
+| c        | c_address0      | port    | offset   |
+| c        | c_ce0           | port    |          |
+| c        | c_q0            | port    |          |
+| first    | first_address0  | port    | offset   |
+| first    | first_ce0       | port    |          |
+| first    | first_we0       | port    |          |
+| first    | first_d0        | port    |          |
+| second   | second_address0 | port    | offset   |
+| second   | second_ce0      | port    |          |
+| second   | second_we0      | port    |          |
+| second   | second_d0       | port    |          |
++----------+-----------------+---------+----------+
+
+
+================================================================
+== Bind Op Report
+================================================================
++----------------------------------+-----+--------+----------------+-------+-----------+---------+
+| Name                             | DSP | Pragma | Variable       | Op    | Impl      | Latency |
++----------------------------------+-----+--------+----------------+-------+-----------+---------+
+| + packing16_pe                   | 1   |        |                |       |           |         |
+|   difference_fu_201_p2           |     |        | difference     | sub   | fabric    | 0       |
+|   am_addmul_26s_8s_16s_43_4_1_U3 | 1   |        | packed         | add   | dsp_slice | 3       |
+|   am_addmul_26s_8s_16s_43_4_1_U3 | 1   |        | sext_ln42      | sext  | dsp_slice | 3       |
+|   am_addmul_26s_8s_16s_43_4_1_U3 | 1   | yes    | packed_product | mul   | dsp_slice | 3       |
+|   mul_16s_8s_24_1_1_U1           |     | yes    | low_product    | mul   | fabric    | 0       |
+|   mul_16s_9s_25_1_1_U2           |     | yes    | mul_ln46       | mul   | fabric    | 0       |
+|   recovered_fu_271_p2            |     |        | recovered      | sub   | fabric    | 0       |
+|   add_ln54_fu_298_p2             |     |        | add_ln54       | add   | fabric    | 0       |
+|   i_3_fu_172_p2                  |     |        | i_3            | add   | fabric    | 0       |
+|   icmp_ln62_fu_178_p2            |     |        | icmp_ln62      | seteq | auto      | 0       |
++----------------------------------+-----+--------+----------------+-------+-----------+---------+
+
+
+================================================================
+== Storage Report
+================================================================
+  No bind storage info in design
+
+================================================================
+== Pragma Report
+================================================================
+* Implemented Pragmas
++--------+---------+----------------------------------------------------------------------------------------+
+| Type   | Options | Location                                                                               |
++--------+---------+----------------------------------------------------------------------------------------+
+| INLINE |         | in _zl12overlap_pair6ap_intili16ees0_s0_rs_ili32ees2_ (P15/source/packing16_pe.cpp:37) |
++--------+---------+----------------------------------------------------------------------------------------+
+
+* Valid Pragma Syntax
++----------+----------------------------------------------+--------------------------------------------------+
+| Type     | Options                                      | Location                                         |
++----------+----------------------------------------------+--------------------------------------------------+
+| INLINE   |                                              | in overlap_pair (P15/source/packing16_pe.cpp:37) |
+| BIND_OP  | variable=packed_product op=mul impl=dsp      | in overlap_pair (P15/source/packing16_pe.cpp:43) |
+| BIND_OP  | variable=low_product op=mul impl=fabric      | in overlap_pair (P15/source/packing16_pe.cpp:45) |
+| BIND_OP  | variable=residual_product op=mul impl=fabric | in overlap_pair (P15/source/packing16_pe.cpp:47) |
+| PIPELINE | ii=1                                         | in packing16_pe (P15/source/packing16_pe.cpp:63) |
++----------+----------------------------------------------+--------------------------------------------------+
+
+

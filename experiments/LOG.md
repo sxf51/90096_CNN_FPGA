@@ -333,9 +333,221 @@
 
 - 2026-10-11T05:29:16+00:00: F82: archived RTL FIFO/process counters and their source prefixes; large per-cycle histories retained only in workspace; arithmetic/timing measurements unchanged.
 
-- 2026-10-11T09:43:21+00:00: F100: reproduction_F25; status=fail; latency_ms_est=unknown; Vitis version probe failed
+- 2026-10-11T06:25:23+00:00: P13-P16: user requested complete INT16 packing research; preplanned direct, four-DSP byte limbs, one-DSP overlap/fabric repair and ordinary mixed controls. Exact32-bit product checks cover all16-bit values in each operand role, boundary cubes and deterministic random triples. Existing final verification queues continue.
+
+- 2026-10-11T14:40:53+00:00: F85: final_cosim_F24; status=cosim_complete; latency_ms_est=2.830503377; cosim of F24; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-11T14:41:03+00:00: P13: int16_direct_pair; status=pass; latency_ms_est=0.000264; PE only; two complete signed16 products per term, no network latency or Set14 claim
+
+- 2026-10-11T14:42:01+00:00: F85: archived RTL FIFO/process counters and their source prefixes; large per-cycle histories retained only in workspace; arithmetic/timing measurements unchanged.
+
+- 2026-10-11T14:42:06+00:00: P14: int16_limb_packing; status=pass; latency_ms_est=0.000272; PE only; two complete signed16 products per term, no network latency or Set14 claim
+
+- 2026-10-11T14:42:58+00:00: P15: int16_overlap_fabric_repair; status=pass; latency_ms_est=0.000276; PE only; two complete signed16 products per term, no network latency or Set14 claim
+
+- 2026-10-11T14:43:46+00:00: P16: int16_direct_mixed_control; status=pass; latency_ms_est=0.000264; PE only; two complete signed16 products per term, no network latency or Set14 claim
+
+- 2026-10-11T14:46:35+00:00: F86: final_all_supplied_F23; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-11T14:52:06+00:00: F87: final_impl_F23; status=fail; latency_ms_est=2.95951606; impl of F23; HLS estimates inherited, real measurements in data.csv; impl failed (exit=1)
+
+- 2026-10-11T14:53:34+00:00: F87: kernel confirms host OOM killed Vivado; archived subrun/kernel evidence, numerical measurements unchanged. Independent serial retries planned as F89-F91.
+
+- 2026-10-11T15:11:04+00:00: F88: final_cosim_F23; status=fail; latency_ms_est=2.95951606; cosim of F23; HLS estimates inherited, real measurements in data.csv; cosim failed (exit=-15)
+
+- 2026-10-11T16:42:26+00:00: F89: setup-path recovery now checks the parsed five paths, CSV, operation record, script digest and manifest instead of report presence alone; retry registration is idempotent. Infrastructure tests:45 PASS; routed result remains pending.
+
+- 2026-10-11T16:47:17+00:00: F89/WS3: verified Vitis2026.1 export_design/config_export help: flow=none packages RTL without running Vivado. Added serial_packaged_flow for fresh WS2/WS3 verification workspaces, package logs and independent constraints/hooks;47 infrastructure tests PASS. Actual generated driver and routed verdict still required.
+
+- 2026-10-11T16:52:33+00:00: WS2/WS3: documented conditional packetized exact G2 loading after F27 acceptance;48 infrastructure tests PASS. Loader analysis now recognizes continuous_wino_fold, preserving W17 II1 evidence. Added generated workstream table with separate HLS/RTL/routed columns; pending runs have no invented numeric results.
+
+- 2026-10-11T16:55:16+00:00: F89: congestion rerouting continues, overlaps4157->2476; no final routed verdict. Workstream numeric tables now regenerate both WEIGHT_LOADING.md and docs0004 section9; future ARCH_SUMMARY regeneration preserves the active priority and tomorrow-review decisions.
+
+- 2026-10-11T17:08:20+00:00: WS2/WS3: added fresh-ID verification planning with frozen source checks and separate all13/cosim/serial-impl operations. Serial templates now require byte-identical parent RTL/init files; package export also checks parent RTL.49 infrastructure tests PASS. Live F89 retains its original loaded runner and timeout.
+
+- 2026-10-11T17:17:22+00:00: F89/WS3: observed F25 flow=none package has IP but no run_vivado.tcl. Clarification: flow=none skips RTL synthesis/route, while IP packaging still uses Vivado. Fresh serial candidates now copy only official driver/settings/extraction/XDC boilerplate, regenerate module lists/clock, preserve their independently packaged IP, and archive original/patched scripts for replay.50 infrastructure tests PASS. Live route overlaps2476->1277.
+
+- 2026-10-11T17:35:00+00:00: F89/WS2 recovery: verified original local sessions95149/11690/51861 and remote runners remain active; no restart. F89 congestion overlaps now476, about4.1GiB available memory, original three-hour timeout unchanged. Read both AGENTS and docs0002/0003/0004 plus recovery/summary records; protected sources and existing user edits remain preserved. F26/F27 C validation is exact; hardware gates are pending.
+
+- 2026-10-11T17:37:29+00:00: F89/WS3: final verification now checks validation_parent source SHA256, precision and design defines against the frozen hardware candidate at both plan and execution entry points; testbench-only flags may differ.52 infrastructure tests PASS, including recorded F25/F80 provenance. Live F89 congestion overlaps down to296; no final routed verdict.
+
+- 2026-10-11T17:41:41+00:00: F89/WS4: added close_weight_loading.py for the current workstream instead of restoring deferred F90/F91. Closure requires explicit ready state, every current ID archived, no active remote HLS/Vivado processes, source/report provenance and local/remote checksums, then all CSV summaries/plots. Syntax, early-closure rejection and live process detection verified; no closure executed while F89/F26/F27 remain active.
+
+- 2026-10-11T18:13:53+00:00: F89: serial_vivado_impl_F25; status=timeout; latency_ms_est=2.64226; impl of F25; HLS estimates inherited, real measurements in data.csv; impl failed (exit=124)
+
+- 2026-10-11T18:19:02+00:00: F89: archived partial synth/placed reports and intermediate route summaries; final routed metrics remain unknown and failure/timeout unchanged.
+
+- 2026-10-11T18:21:12+00:00: F26: s2p_bias_shift_T16; status=provisional; latency_ms_est=2.64227; 
+
+- 2026-10-11T18:21:57+00:00: F89: archived partial synth/placed reports and intermediate route summaries; final routed metrics remain unknown and failure/timeout unchanged.
+
+- 2026-10-11T18:28:11+00:00: F27: local_streamed_params_T16; status=provisional; latency_ms_est=2.6142825; 
+
+- 2026-10-11T18:33:48+00:00: F27/F28: parsed ownership results (total61656/outside3170/mux184LUT, zero HLS200-1449); clock2.419ns is the sole WS2 gate miss. Planned/committed independent F28 local-load LOOP_FLATTEN off before copying its frozen parent; C simulation overlaps the active F92 serial5ns implementation. All resource, precision and clock thresholds remain unchanged.
+
+- 2026-10-11T18:39:00+00:00: WS2 verification infrastructure: added --reload-params planning, independent archived testbench replacement, pre/post cosim RTL SHA checks, exact C/RTL reload/border markers, and archive-based verification replay.60 tests PASS. No changed-parameter RTL result or fresh-candidate routed result is yet claimed.
+
+- 2026-10-11T18:47:08+00:00: F94: ws_all_F28; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-11T18:53:13+00:00: F31: reload_testbench_csim_F28; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-11T19:18:19+00:00: F92: ws_impl_F25; status=impl_complete; latency_ms_est=2.64226; impl of F25; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-11T19:25:16+00:00: F28: local_load_no_flatten_T16; status=provisional; latency_ms_est=2.6150725; 
+
+- 2026-10-11T19:27:41+00:00: F92: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
+
+- 2026-10-11T21:22:19+00:00: F93: ws_reload_cosim_F28; status=cosim_complete; latency_ms_est=2.6150725; cosim of F28; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-11T21:31:03+00:00: W19: streamed_winograd_T8; status=infeasible; latency_ms_est=1.74903921; 
+
+- 2026-10-11T21:42:35+00:00: F29: streamed_direct_T8_tree1; status=infeasible; latency_ms_est=1.7507841300000002; 
+
+- 2026-10-11T21:51:24+00:00: WS3 recovery: resumed active queue64528 and W21 queue44013 without restarting their workspaces. W19/F29 are archived infeasible with exact butterflies, unchanged borders and foldII1; their manual interpretations now compare total/private-loader resources and paper estimates. W21 two-call C simulation is bit-exact and waits for W20 before synthesis. Updated recovery state and CSV-only area figure; F95 remains planned. F93 actual changed-parameter RTL PASS and latency1059506/interval1059535 are preserved separately from HLS and routed timing.
+
+- 2026-10-11T21:53:45+00:00: F30: streamed_direct_T8_tree0; status=infeasible; latency_ms_est=1.7507708100000001; 
+
+- 2026-10-11T22:57:22+00:00: W20: ws_impl_W17; status=impl_complete; latency_ms_est=2.130248; impl of W17; HLS estimates inherited, real measurements in data.csv; diagnostic only: parent remains HLS-resource-infeasible and cannot enter accepted rankings
+
+- 2026-10-11T23:06:11+00:00: W21: subkernel_raw_cache_T8; status=provisional; latency_ms_est=1.74903921; 
+
+- 2026-10-11T23:09:04+00:00: W20: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
+
+- 2026-10-11T23:09:27+00:00: F96: ws_all_W21; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-11T23:24:08+00:00: F95/F98: user requests higher remote utilization. Independent 30-second proc snapshot: {'cpu_intervals': 6, 'logical_cpus': 12, 'cpu_busy_pct': 8.863906306107229, 'mean_load1': 1.0471428571428572, 'max_load1': 1.06}. Preserve active serial hardware queue and frozen F95/F97/F98 plans; added per-run1/2/4 implementation-thread limits with synthesis1, CPU/memory telemetry and63 passing infrastructure tests. No global/swap/threshold changes; thread-speed benefit awaits a measured independent WS4 run.
+
+- 2026-10-11T23:56:15+00:00: F95: ws_impl_F28; status=impl_complete; latency_ms_est=2.6150725; impl of F28; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T00:03 UTC: F95 route calibration and manual interpretation archived:5ns target passes with WNS+0.282ns/TNS0,591DSP/30140LUT/76498FF/72BRAM18K. F93 measured RTL latency gives5.29753ms at that closed target, not board time. Its initial worst path is Conv1 local-load address to LUTRAM WADR1; five-path export waits behind active F97. Updated recovery state to three remaining hardware operations: F97, F98 and one WS4 clock/thread probe; no further exploration will be added.
+
+- 2026-10-12T00:48:27+00:00: F97: ws_cosim_W21; status=cosim_complete; latency_ms_est=1.74903921; cosim of W21; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T00:50:51+00:00: F95: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
+
+- 2026-10-12T00:55 UTC: F97 changed-parameter two-frame RTL PASS: measured latency558758/interval558787,6.382071% above HLS; first butterfly and six-pixel border remain exact to the precision reference, second outputs all104/256. F95 checkpoint five-path/hierarchy export also archived with SHA256; all paths are Conv1 local-load address to LUTRAM WADR1. Updated recovery to active F98 and one WS4 clock/thread probe, then F99 closure. Parsed profiles distinguish overlapping FIFO stalls from the frame-cycle deviation.
+
+- 2026-10-12T01:54:26+00:00: F98: ws_impl_W21; status=impl_complete; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T02:01:09+00:00: F98: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
+
+- 2026-10-12T02:10 UTC: F98 routed analysis completed:5ns WNS+0.140ns/TNS0,644DSP/42594LUT/88806FF/109BRAM18K. F97 RTL cycles imply2.79379ms at the closed target. Three critical paths are Conv2 parameter FIFO to weight LUTRAM write data; two are Conv3 step control to DSP. Minimum available memory3.011604GiB/peak toolRSS11.642307GiB. Select one final W22 same-RTL4.95ns probe, placement/routing2 threads/synthesis1; preserve original HLS gates and5ns fallback. Remote hardware is idle; obsolete F98 session cleared. No further exploration will be added.
+
+- 2026-10-12T02:56:23+00:00: W22: ws_clock_4p95_W21; status=impl_complete; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T03:00:07+00:00: W22: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
+
+- 2026-10-12 收尾审计修复：首次 changed-parameter cosim 的 `testbench_sha256` 使用 basename，源码提交记录在 `source_commit`；旧审计只接受重放实验的 `frozen_source_commit` 和仓库相对路径，导致 KeyError。修正提交/路径解析后仍逐字节对比归档 SHA256 和 `git show`，重放优先冻结提交，不跳过校验、不改实验配置或硬件结果。补充首次验证、Git 内容篡改、重放提交优先级和缺失提交四种检查。
+
+- 2026-10-12 F99: 审计修复后的完整基础设施检查通过，67 tests；其中新增四项 testbench 源码来源检查，原有重放、报告解析、时钟隔离、CPU/内存和远程恢复检查全部通过。
+
+- 2026-10-12T03:09:20+00:00: F99: WS0-WS4 operations archived and audited; 20 workstream records, local/remote protected checksums and report SHA256 verified; all plots regenerated. Failures remain explicit; no board acceptance or push.
+
+- 2026-10-12T03:13:41+00:00: F99: WS0-WS4 operations archived and audited; 20 workstream records, local/remote protected checksums and report SHA256 verified; all plots regenerated. Failures remain explicit; no board acceptance or push.
+
+- 2026-10-12T03:59:19+00:00: F34: ws0_memory_control_F96; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-12T04:05:22+00:00: F32: ws0_memory_control_F28; status=provisional; latency_ms_est=2.6150725; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T04:07:23+00:00: F33: ws0_memory_control_W21; status=provisional; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T04:13:55+00:00: F38: ws0_memory_control_F96; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-12T04:17:39+00:00: F35: runtime_rom_bank_equivalence; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-12T04:20:15+00:00: F36: ws0_memory_control_F28; status=provisional; latency_ms_est=2.6150725; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T04:22:30+00:00: F37: ws0_memory_control_W21; status=provisional; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T04:35:46+00:00: W24: constant_rom_T8; status=pass; latency_ms_est=1.7460189000000002; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T04:53:12+00:00: W26: frp_W21_T8; status=fail; latency_ms_est=unknown; ; Design not found: /home/lipuze/amdprojects/90096_CNN_FPGA/designs/winograd_frp_v1
+
+- 2026-10-12T05:06:45+00:00: F41: fifo32_W21_T8; status=pass; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T05:16:32+00:00: W27: frp_W21_T8; status=pass; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T05:25:53+00:00: F42: reorder_W21_T8; status=pass; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T05:35:02+00:00: F47: windows16_W21_T8; status=pass; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T05:50:52+00:00: C13: runtime_prepacked_conv2_T4; status=infeasible; latency_ms_est=1.05236; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T05:52 UTC: ROM/clock/FIFO progress recovered without rerunning active jobs. F48 (window FIFO16) and F46 (reorder output FIFO256) paper plans committed and queued for changed-parameter two-frame RTL. State now includes W28/W29/W30 and removes completed sessions. Summary includes unmeasured plans separately and refuses to attach a failed cosim cycle gate to an accepted routed frame time;89 infrastructure tests pass. CSV-only plots group overlapping IDs, and interpretations compare the actual HLS reports with paper estimates. Implementation W23/W29/W30 remains unlaunched under the unchanged12.5+2GiB admission requirement.
+
+- 2026-10-12T05:58:13+00:00: W25: rom_changed_input_cosim_W24; status=cosim_complete; latency_ms_est=1.7460189000000002; cosim of W24; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T06:01:26+00:00: F40: fifo16_W21_T8; status=pass; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T06:12:09+00:00: F39: c3_select_W21_T8; status=pass; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T06:18 UTC: F39 synthesis collected and committed; all13 images E017-exact, foldsII1,644DSP/146BRAM18K/81518LUT/130422FF/525237cycles. F43 changed-parameter RTL plan committed before queuing; retain553171..564345cycle acceptance. Reconciled live sessions and addedF44. Derived comparisons now use matching successful RTL cycles for architecture paper estimates (W24 estimate547500 versus W25 actual554226) and separately report the WS-D2% performance goal with maximum integer535741cycles.95 infrastructure tests pass; arithmetic/deadlock PASS cannot silently establish the performance goal.
+
+- 2026-10-12T06:52:37+00:00: F45: ws_cosim_F41; status=cosim_complete; latency_ms_est=1.74903921; cosim of F41; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T07:57:42+00:00: F46: ws_cosim_F42; status=fail; latency_ms_est=1.74903921; cosim of F42; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.4973716735839844, "floor_gib": 0.5}
+
+- 2026-10-12T08:04:26+00:00: F43: ws_cosim_F39; status=cosim_complete; latency_ms_est=1.74903921; cosim of F39; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T08:14 UTC: F43 final changed-parameter RTL PASS at558758latency/558787interval, identical to F97 and within553171..564345. F49 independent4.5ns routing and W29 ROM5ns routing are queued; W28 FRP and C14 T4 mixed are actually running concurrently. F46 is retained as fail after actual MemAvailable0.497372GiB termination without a new OOM. Two completed telemetry traces establish3551.591seconds overlap and14.116714GiB aligned combined RSS (including shared mappings). F43's100 extra operand-register module monitors generate1517011599bytes of process event histories and reach9.507710GiB RSS. The installed2026.1 schema confirms cosim.setup, profiling enable and deadlock-detection options, but no aggregate-only mode was found. Preserve standard generated monitors and all correctness/cycle/FIFO gates; F50 is a separately planned retry of F42. No completed workspace, protected design or tool installation is changed.
+
+- 2026-10-12T08:52:54+00:00: C14: ws_cosim_C13; status=cosim_complete; latency_ms_est=1.05236; cosim of C13; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T09:00:01+00:00: W28: ws_cosim_W27; status=fail; latency_ms_est=1.74903921; cosim of W27; HLS estimates inherited, real measurements in data.csv; Measured RTL cycles are below the preplanned acceptance bound
+
+- 2026-10-12T09:54:29+00:00: F44: ws_cosim_F40; status=cosim_complete; latency_ms_est=1.74903921; cosim of F40; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T10:01:54+00:00: F49: ws_impl_F39; status=fail; latency_ms_est=1.74903921; impl of F39; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.3829193115234375, "floor_gib": 0.5}
+
+- 2026-10-12T10:07:17+00:00: F48: ws_cosim_F47; status=cosim_complete; latency_ms_est=1.74903921; cosim of F47; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T10:08:40+00:00: W29: ws_impl_W24; status=fail; latency_ms_est=1.7460189000000002; impl of W24; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.4664421081542969, "floor_gib": 0.5}
+
+- 2026-10-12T10:18 UTC: Live process and scheduler inspection confirms W23 and C15 independent implementations are active, not merely queued. F50 rasterFIFO RTL and newly launched wrapper F51 windowFIFO16 route await a free task slot. Persisted F48's measured535771/535800cycles,22987-cycle improvement and strict30-cycle WS-D miss. F49/W29 both stopped at the actual0.5GiB guard with unchanged OOM1; preserve host failures and prepare F52/W31 fresh-workspace retries. Reconciled recovery state; no completed workspace or frozen threshold is modified.
+
+- 2026-10-12T10:19:42+00:00: W23: ws_clock_strategy_4p5_W21; status=fail; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv; impl failed (exit=137)
+
+- 2026-10-12T10:28:12+00:00: W23: kernel confirms host OOM killed Vivado; archived subrun/kernel evidence, numerical measurements unchanged. Preserve the failed workspace and use separately planned retry IDs.
+
+- 2026-10-12T10:55:15+00:00: C15: ws_impl_C13; status=fail; latency_ms_est=1.05236; impl of C13; HLS estimates inherited, real measurements in data.csv; Task terminated at the configured MemAvailable floor: {"available_gib": 0.43378448486328125, "floor_gib": 0.5}
+
+- 2026-10-12T11:40:15+00:00: F52: ws_impl_F39; status=impl_complete; latency_ms_est=1.74903921; impl of F39; HLS estimates inherited, real measurements in data.csv
 
 ## Pending Human Decisions / 待人工决策
+
+- 2026-10-12T11:02 UTC C15: 单重任务仍在布线阶段触发内存保护（0.433784GiB，exit-15），没有最终布线/时序/资源结论。诊断为生成驱动的综合报告open_run保留父进程设计，另起实现子进程导致数据库内存叠加。自行决定新ID补跑：综合与报告后退出，第二Vivado进程重开project.xpr做原实现与报告，累计3小时且不改数值/布线门槛、不改原工作区或swap。C16/C17现在建设并跑13图/HLS；ROM仍待实际物理证据决定。C15 OOM1→2涵盖先前W23的实际OOM，不能重复归因成C15的新内核杀进程。
+
+- 2026-10-12T10:43 UTC 用户更新决定（已授权执行）：F48作为新T8主线基础，原2%差30周期只保留诊断；W28按单边上限564345接受变快的549438周期，原fail、±1%计划和报告不改，追加用户授权元数据后启动W30。并行改为最多一个重任务，轻任务按13GiB登记预算及2GiB可用余量准入；当前C15保持既有0.5GiB保护，避免运行中改计划。C15结束后实施T8窗口16+FRP和T4窗口32两条独立组合；T4 ROM依据实际布线压力再决定。本条明确替代下面较早的门槛与两重任务决策。
+
+- 2026-10-12T10:22 UTC W23: 实际同时运行两项实现时，21:19:41本地/10:19:41UTC内核杀掉Vivado77025，anon-RSS5946660KiB，exit137，OOM1→2。调度按原规则自动置serial_after_oom=true、实现登记15GiB（仍仅作观察），C15继续，后续硬件串行回退；不擅自重新启用会重复OOM的并行、不改swap。另立W32保留同一RTL、4.5ns、Performance_Explore、综合1/布局布线4线程补跑。完整待跑仍6项，当前估计5–7小时，条件时钟探针另计。规则及保护未放宽。
+
+- 2026-10-12T10:18 UTC F49/W29: 两次独立实现均被实际可用内存0.5GiB保护终止，分别为0.382919/0.466442GiB，exit-15，OOM计数均1→1；不是RTL、时序或FPGA资源不可行。自行决定保留失败并以F52/W31新ID补跑，继续用户授权的两项并行及实际内存监测，不恢复预留预算拦截、不改swap。若同一方向反复内存失败达到45分钟问题上限，记录后先完成其他方向，再依据实际空槽安排重试。
+
+- 2026-10-12T10:18 UTC F48: windowFIFO16逐位PASS，实测535771周期比F97少22987（4.113943%），但严格WS-D上限535741仍差30周期，目标未达。自行决定对最快已测FIFO候选另立F51做5ns独立实现；不放宽2%门槛。F51已冻结计划中的条件收益百分比存在算术勘误，正确为3.145399568%，在持久解读说明，保留原计划指纹。
+
+- 2026-10-12T09:07 UTC W28: FRP 两帧数值与换参数检查均 PASS，实测549438周期比F97少9320（约1.668%）；超出预先提交的±1%门槛553171..564345，按原规则记fail，W30不启动。原计划和全部RTL/FIFO证据保留；明日复核是否另立新实验评估更快FRP，不改本次门槛或历史状态。C14已逐位PASS，300632latency/300661interval；其前置条件满足，C15独立5ns布线已排队。
+
+- 2026-10-12T07:05 UTC 用户明确授权覆盖原预留预算规则：“我觉得不用担心，直接干进去，同时跑两项”。06:58:29 UTC F46 已在 F43 仍运行时准入，两项分别验证 rasterFIFO 与 Conv3 操作数寄存器；不是仅有两个排队任务。调度改为最多两项，预算保留作观察，不再用预算相加拦截第二项，实际可用内存0.5GiB以下中止最近启动项，OOM仍退回串行。W28/F48/C14/F44 的原 Python 等待进程确认未获准入、未启动 Vitis 后迁移到新调度，保留 ID、原计划 SHA256、RTL/init、配置和冻结 testbench；旧 SSH 包装器因任务未完成而退出并报缺 metrics.json，此为等待进程迁移退出，不是 RTL 失败，新进程完成后使用 collect-only 归档。原等待期全局 host_memory 会由恢复进程重新开始采样；它不是工具峰值或性能测量，工具启动后的逐任务 telemetry 单独保存。此前 W23 空闲主机也无法准入的问题已由该授权解决，无需人工重复确认。
+
+- 2026-10-12 F45: FIFO32 的两帧 RTL 功能通过，但558758周期与F97完全相同，未达到535741周期的 WS-D 门槛。feature FIFO 写阻塞903830→801394、峰值深度4→32，消费者读阻塞仍46990，说明缓冲改变背压但未缩短整帧关键调度。详见F45 interpretation 和原始FIFO计数器；不将功能PASS当作加速成功。
+
+- 2026-10-12 HLS FIFO accounting: F47's1728-bit transformed-window FIFO reports67LUT at both depth2 and16; F42's163840-bit raster FIFO reports347LUT. The logical capacities require much more storage under a naive64bits/LUT model. Preserve these raw estimates and require routed utilization to resolve the discrepancy; do not claim near-zero physical storage cost or alter any resource gate.
+
+- 2026-10-12T04:24 UTC，0005 内存准入：远程 MemTotal=15724196 KiB（14.996 GiB），空闲 MemAvailable 约13.4 GiB；WS-C1 的12.5 GiB登记预算加2 GiB保留要求至少14.5 GiB可用，因此空闲时也不能准入。保守保留0005的总预算13 GiB、2 GiB可用内存保留和实现12.5 GiB登记，不通过关闭调度或改swap启动W23。其W21/F98同RTL、4.5ns、Performance_Explore、综合1/布线4线程计划已提交；工具探针确认策略与布线后phys_opt属性支持。继续独立ROM编码/功能验证/综合；实际启动实现需要人工澄清登记口径或调整内存规则。当前不宣称W23已经启动、超时或时序失败。
+
+- 2026-10-12T04:24 UTC，WS-0登记修正：初次F32/F33进程树RSS3.119/3.430 GiB高于2.5 GiB登记；工具报告的1.460/1.779 GB是allocated memory，并非完整进程树RSS。F36/F37/F38以csynth4 GiB、csim1.25 GiB重验，实际三任务重叠77.827秒、最低可用10.706 GiB、无OOM且功能/II与冻结父实验相同，已启用按预算准入。这会使13 GiB总预算下的csynth实际最多3个，并使7.5 GiB cosim最多同时容纳1个4 GiB csynth；规则中的4/2个为上限，不保证全部能同时准入。原失败登记证据保留。
+
+- 2026-10-12 收尾展示材料：最终两地 checksum 与全部报告 SHA256 已通过。修复 CPU 图例颜色，折行样本作用域标签，增大资源校准图以容纳实验 ID；等价离线 G2 归档补入 `winograd_param_stream` 和 `winograd_subkernel_cache`，原始权重及运行时接口不变。以上均为归档/展示更新，不新增硬件运行。
+
+- 2026-10-12 W22: 最后一个 WS4 探针已完成，4.95 ns 下 WNS +0.047 ns / WHS +0.032 ns，IP 推导帧时间 2.7658521 ms，比 F98 5 ns 低 1%，但 setup 余量从 140 ps 降至 47 ps。按最小延迟目标保留 W22 为当前最快已验证时钟点，同时保留 F98 为更保守的集成起点，板端团队可在系统时钟验收时选择。不得把 4.903 ns 的 slack 推导值当作已验证时钟；缺 comic、资源口径、常量 ROM 和大内存主机仍按第 6 节待复核。
+
+- 2026-10-11T18:56:00+00:00: WS2/WS3 preparation: F94 independently passed all13-image exactness and mean deltaPSNR=-0.069514dB. F31 independent changed-parameter C preflight passed, with every second output bit equal104/256 and unchanged first-frame borders; this is not RTL evidence. W19/F29/F30 paper plans are committed and conditional on measured loader selection; no parent design is modified. F92 remains in placement and F28 synthesis waits for its lock.
+
+- 2026-10-11T18:33:48+00:00: WS2: F27 passes exact/area/II/cycle gates but misses clock2.419>2.377ns. Conservatively retain the gate and use an independent local-load loop-flatten control F28 before selecting the loader. F92 is running on unchanged F25 RTL with5ns implementation constraints; no partial F89 timing or LUT ratio is treated as final route acceptance.
+
+- 2026-10-12 WS0: 用户授权第 6 节先自行决策并执行、明日复核。暂定保留运行时 float 权重接口及 HLS 资源门限，不做常量 ROM；缺 comic 保持 13 图暂定结论。F89 若再次 OOM，保留内核/内存证据并继续 WS2，不改 swap 或全局设置，不迁移到未经验证的主机。明日复核大内存主机、ROM 专用版本、资源口径和 comic 数据。
+
+- 2026-10-12 WS0: 2026-10-12 用户决定降低优先级：F88/F90/F91。F88 主动中止（SIGTERM），无 RTL 判定；P14–P16/F86/F87 新指令前已完成，保留实测结果。F85/P13 已收回无需重跑；当前硬件队列仅 F89，随后 WS2→WS3。
 
 - 2026-10-11T03:45 UTC: F81 failed in Vivado technology mapping because kernel OOM killed the main synthesis process while four internal worker processes used about2.4GiB each. F89-F91 are independent preplanned serial retries; a checked per-run Tcl hook sets general.maxThreads and synth.maxThreads to1, preserving target clocks, directives and HLS sources. No system swap/global tool setting is changed. If serial implementation still cannot complete within host capacity, a larger-memory host is required for routed evidence; failed synthesis is not implementation or timing acceptance.
 

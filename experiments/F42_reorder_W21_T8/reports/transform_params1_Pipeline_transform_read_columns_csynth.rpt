@@ -1,0 +1,320 @@
+
+
+================================================================
+== Vitis HLS Report for 'transform_params1_Pipeline_transform_read_columns'
+================================================================
+* Date:           Mon Oct 12 16:24:52 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        F42
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.33 ns|  2.042 ns|     0.90 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval |      Pipeline     |
+    |   min   |   max   |    min    |    max    | min | max |        Type       |
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+    |       11|       11|  36.630 ns|  36.630 ns|    0|    0|  loop pipeline stp|
+    +---------+---------+-----------+-----------+-----+-----+-------------------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +--------------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                          |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |         Loop Name        |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +--------------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- transform_read_columns  |        9|        9|         2|          1|          1|     9|       yes|
+        +--------------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      95|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       0|      81|    -|
+|Register         |        -|     -|      27|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|      27|     176|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +---------------------------+----------+----+---+----+------------+------------+
+    |       Variable Name       | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +---------------------------+----------+----+---+----+------------+------------+
+    |add_ln149_fu_374_p2        |         +|   0|  0|  12|           4|           1|
+    |add_ln156_fu_317_p2        |         +|   0|  0|  15|           8|           5|
+    |column_2_fu_308_p2         |         +|   0|  0|  12|           4|           1|
+    |group_fu_337_p2            |         +|   0|  0|  12|           5|           5|
+    |tap_fu_347_p2              |         +|   0|  0|  12|           4|           4|
+    |ap_block_pp0_stage0_11001  |       and|   0|  0|   2|           1|           1|
+    |icmp_ln149_fu_380_p2       |      icmp|   0|  0|  12|           4|           2|
+    |icmp_ln153_fu_302_p2       |      icmp|   0|  0|  12|           4|           4|
+    |select_ln149_fu_386_p3     |    select|   0|  0|   4|           1|           1|
+    |ap_enable_pp0              |       xor|   0|  0|   2|           1|           2|
+    +---------------------------+----------+----+---+----+------------+------------+
+    |Total                      |          |   0|  0|  95|          36|          26|
+    +---------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +--------------------------------+----+-----------+-----+-----------+
+    |              Name              | LUT| Input Size| Bits| Total Bits|
+    +--------------------------------+----+-----------+-----+-----------+
+    |ap_done_int                     |   9|          2|    1|          2|
+    |ap_enable_reg_pp0_iter1         |   9|          2|    1|          2|
+    |ap_sig_allocacmp_column_1       |   9|          2|    4|          8|
+    |ap_sig_allocacmp_phi_mul_load   |   9|          2|    8|         16|
+    |ap_sig_allocacmp_phi_urem_load  |   9|          2|    4|          8|
+    |column_fu_240                   |   9|          2|    4|          8|
+    |phi_mul_fu_236                  |   9|          2|    8|         16|
+    |phi_urem_fu_232                 |   9|          2|    4|          8|
+    |raw1_blk_n                      |   9|          2|    1|          2|
+    +--------------------------------+----+-----------+-----+-----------+
+    |Total                           |  81|         18|   35|         70|
+    +--------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-------------------------+---+----+-----+-----------+
+    |           Name          | FF| LUT| Bits| Const Bits|
+    +-------------------------+---+----+-----+-----------+
+    |ap_CS_fsm                |  1|   0|    1|          0|
+    |ap_done_reg              |  1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1  |  1|   0|    1|          0|
+    |column_fu_240            |  4|   0|    4|          0|
+    |phi_mul_fu_236           |  8|   0|    8|          0|
+    |phi_urem_fu_232          |  4|   0|    4|          0|
+    |tap_reg_923              |  4|   0|    4|          0|
+    |trunc_ln156_reg_919      |  4|   0|    4|          0|
+    +-------------------------+---+----+-----+-----------+
+    |Total                    | 27|   0|   27|          0|
+    +-------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++---------------------+-----+-----+------------+---------------------------------------------------+--------------+
+|      RTL Ports      | Dir | Bits|  Protocol  |                   Source Object                   |    C Type    |
++---------------------+-----+-----+------------+---------------------------------------------------+--------------+
+|ap_clk               |   in|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_read_columns|  return value|
+|ap_rst               |   in|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_read_columns|  return value|
+|ap_start             |   in|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_read_columns|  return value|
+|ap_done              |  out|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_read_columns|  return value|
+|ap_idle              |  out|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_read_columns|  return value|
+|ap_ready             |  out|    1|  ap_ctrl_hs|  transform_params1_Pipeline_transform_read_columns|  return value|
+|raw1_dout            |   in|   10|     ap_fifo|                                               raw1|       pointer|
+|raw1_empty_n         |   in|    1|     ap_fifo|                                               raw1|       pointer|
+|raw1_read            |  out|    1|     ap_fifo|                                               raw1|       pointer|
+|raw1_num_data_valid  |   in|    5|     ap_fifo|                                               raw1|       pointer|
+|raw1_fifo_cap        |   in|    5|     ap_fifo|                                               raw1|       pointer|
+|sub_ln156            |   in|    5|     ap_none|                                          sub_ln156|        scalar|
+|mul_ln157            |   in|    4|     ap_none|                                          mul_ln157|        scalar|
+|raw_242_out          |  out|   10|      ap_vld|                                        raw_242_out|       pointer|
+|raw_242_out_ap_vld   |  out|    1|      ap_vld|                                        raw_242_out|       pointer|
+|raw_241_out          |  out|   10|      ap_vld|                                        raw_241_out|       pointer|
+|raw_241_out_ap_vld   |  out|    1|      ap_vld|                                        raw_241_out|       pointer|
+|raw_240_out          |  out|   10|      ap_vld|                                        raw_240_out|       pointer|
+|raw_240_out_ap_vld   |  out|    1|      ap_vld|                                        raw_240_out|       pointer|
+|raw_239_out          |  out|   10|      ap_vld|                                        raw_239_out|       pointer|
+|raw_239_out_ap_vld   |  out|    1|      ap_vld|                                        raw_239_out|       pointer|
+|raw_238_out          |  out|   10|      ap_vld|                                        raw_238_out|       pointer|
+|raw_238_out_ap_vld   |  out|    1|      ap_vld|                                        raw_238_out|       pointer|
+|raw_237_out          |  out|   10|      ap_vld|                                        raw_237_out|       pointer|
+|raw_237_out_ap_vld   |  out|    1|      ap_vld|                                        raw_237_out|       pointer|
+|raw_236_out          |  out|   10|      ap_vld|                                        raw_236_out|       pointer|
+|raw_236_out_ap_vld   |  out|    1|      ap_vld|                                        raw_236_out|       pointer|
+|raw_235_out          |  out|   10|      ap_vld|                                        raw_235_out|       pointer|
+|raw_235_out_ap_vld   |  out|    1|      ap_vld|                                        raw_235_out|       pointer|
+|raw_234_out          |  out|   10|      ap_vld|                                        raw_234_out|       pointer|
+|raw_234_out_ap_vld   |  out|    1|      ap_vld|                                        raw_234_out|       pointer|
+|raw_233_out          |  out|   10|      ap_vld|                                        raw_233_out|       pointer|
+|raw_233_out_ap_vld   |  out|    1|      ap_vld|                                        raw_233_out|       pointer|
+|raw_232_out          |  out|   10|      ap_vld|                                        raw_232_out|       pointer|
+|raw_232_out_ap_vld   |  out|    1|      ap_vld|                                        raw_232_out|       pointer|
+|raw_231_out          |  out|   10|      ap_vld|                                        raw_231_out|       pointer|
+|raw_231_out_ap_vld   |  out|    1|      ap_vld|                                        raw_231_out|       pointer|
+|raw_230_out          |  out|   10|      ap_vld|                                        raw_230_out|       pointer|
+|raw_230_out_ap_vld   |  out|    1|      ap_vld|                                        raw_230_out|       pointer|
+|raw_229_out          |  out|   10|      ap_vld|                                        raw_229_out|       pointer|
+|raw_229_out_ap_vld   |  out|    1|      ap_vld|                                        raw_229_out|       pointer|
+|raw_228_out          |  out|   10|      ap_vld|                                        raw_228_out|       pointer|
+|raw_228_out_ap_vld   |  out|    1|      ap_vld|                                        raw_228_out|       pointer|
+|raw_227_out          |  out|   10|      ap_vld|                                        raw_227_out|       pointer|
+|raw_227_out_ap_vld   |  out|    1|      ap_vld|                                        raw_227_out|       pointer|
+|raw_226_out          |  out|   10|      ap_vld|                                        raw_226_out|       pointer|
+|raw_226_out_ap_vld   |  out|    1|      ap_vld|                                        raw_226_out|       pointer|
+|raw_225_out          |  out|   10|      ap_vld|                                        raw_225_out|       pointer|
+|raw_225_out_ap_vld   |  out|    1|      ap_vld|                                        raw_225_out|       pointer|
+|raw_224_out          |  out|   10|      ap_vld|                                        raw_224_out|       pointer|
+|raw_224_out_ap_vld   |  out|    1|      ap_vld|                                        raw_224_out|       pointer|
+|raw_223_out          |  out|   10|      ap_vld|                                        raw_223_out|       pointer|
+|raw_223_out_ap_vld   |  out|    1|      ap_vld|                                        raw_223_out|       pointer|
+|raw_222_out          |  out|   10|      ap_vld|                                        raw_222_out|       pointer|
+|raw_222_out_ap_vld   |  out|    1|      ap_vld|                                        raw_222_out|       pointer|
+|raw_221_out          |  out|   10|      ap_vld|                                        raw_221_out|       pointer|
+|raw_221_out_ap_vld   |  out|    1|      ap_vld|                                        raw_221_out|       pointer|
+|raw_220_out          |  out|   10|      ap_vld|                                        raw_220_out|       pointer|
+|raw_220_out_ap_vld   |  out|    1|      ap_vld|                                        raw_220_out|       pointer|
+|raw_219_out          |  out|   10|      ap_vld|                                        raw_219_out|       pointer|
+|raw_219_out_ap_vld   |  out|    1|      ap_vld|                                        raw_219_out|       pointer|
+|raw_218_out          |  out|   10|      ap_vld|                                        raw_218_out|       pointer|
+|raw_218_out_ap_vld   |  out|    1|      ap_vld|                                        raw_218_out|       pointer|
+|raw_217_out          |  out|   10|      ap_vld|                                        raw_217_out|       pointer|
+|raw_217_out_ap_vld   |  out|    1|      ap_vld|                                        raw_217_out|       pointer|
+|raw_216_out          |  out|   10|      ap_vld|                                        raw_216_out|       pointer|
+|raw_216_out_ap_vld   |  out|    1|      ap_vld|                                        raw_216_out|       pointer|
+|raw_215_out          |  out|   10|      ap_vld|                                        raw_215_out|       pointer|
+|raw_215_out_ap_vld   |  out|    1|      ap_vld|                                        raw_215_out|       pointer|
+|raw_214_out          |  out|   10|      ap_vld|                                        raw_214_out|       pointer|
+|raw_214_out_ap_vld   |  out|    1|      ap_vld|                                        raw_214_out|       pointer|
+|raw_213_out          |  out|   10|      ap_vld|                                        raw_213_out|       pointer|
+|raw_213_out_ap_vld   |  out|    1|      ap_vld|                                        raw_213_out|       pointer|
+|raw_212_out          |  out|   10|      ap_vld|                                        raw_212_out|       pointer|
+|raw_212_out_ap_vld   |  out|    1|      ap_vld|                                        raw_212_out|       pointer|
+|raw_211_out          |  out|   10|      ap_vld|                                        raw_211_out|       pointer|
+|raw_211_out_ap_vld   |  out|    1|      ap_vld|                                        raw_211_out|       pointer|
+|raw_210_out          |  out|   10|      ap_vld|                                        raw_210_out|       pointer|
+|raw_210_out_ap_vld   |  out|    1|      ap_vld|                                        raw_210_out|       pointer|
+|raw_209_out          |  out|   10|      ap_vld|                                        raw_209_out|       pointer|
+|raw_209_out_ap_vld   |  out|    1|      ap_vld|                                        raw_209_out|       pointer|
+|raw_208_out          |  out|   10|      ap_vld|                                        raw_208_out|       pointer|
+|raw_208_out_ap_vld   |  out|    1|      ap_vld|                                        raw_208_out|       pointer|
+|raw_207_out          |  out|   10|      ap_vld|                                        raw_207_out|       pointer|
+|raw_207_out_ap_vld   |  out|    1|      ap_vld|                                        raw_207_out|       pointer|
+|raw_206_out          |  out|   10|      ap_vld|                                        raw_206_out|       pointer|
+|raw_206_out_ap_vld   |  out|    1|      ap_vld|                                        raw_206_out|       pointer|
+|raw_205_out          |  out|   10|      ap_vld|                                        raw_205_out|       pointer|
+|raw_205_out_ap_vld   |  out|    1|      ap_vld|                                        raw_205_out|       pointer|
+|raw_204_out          |  out|   10|      ap_vld|                                        raw_204_out|       pointer|
+|raw_204_out_ap_vld   |  out|    1|      ap_vld|                                        raw_204_out|       pointer|
+|raw_203_out          |  out|   10|      ap_vld|                                        raw_203_out|       pointer|
+|raw_203_out_ap_vld   |  out|    1|      ap_vld|                                        raw_203_out|       pointer|
+|raw_202_out          |  out|   10|      ap_vld|                                        raw_202_out|       pointer|
+|raw_202_out_ap_vld   |  out|    1|      ap_vld|                                        raw_202_out|       pointer|
+|raw_201_out          |  out|   10|      ap_vld|                                        raw_201_out|       pointer|
+|raw_201_out_ap_vld   |  out|    1|      ap_vld|                                        raw_201_out|       pointer|
+|raw_200_out          |  out|   10|      ap_vld|                                        raw_200_out|       pointer|
+|raw_200_out_ap_vld   |  out|    1|      ap_vld|                                        raw_200_out|       pointer|
+|raw_199_out          |  out|   10|      ap_vld|                                        raw_199_out|       pointer|
+|raw_199_out_ap_vld   |  out|    1|      ap_vld|                                        raw_199_out|       pointer|
+|raw_198_out          |  out|   10|      ap_vld|                                        raw_198_out|       pointer|
+|raw_198_out_ap_vld   |  out|    1|      ap_vld|                                        raw_198_out|       pointer|
+|raw_197_out          |  out|   10|      ap_vld|                                        raw_197_out|       pointer|
+|raw_197_out_ap_vld   |  out|    1|      ap_vld|                                        raw_197_out|       pointer|
+|raw_196_out          |  out|   10|      ap_vld|                                        raw_196_out|       pointer|
+|raw_196_out_ap_vld   |  out|    1|      ap_vld|                                        raw_196_out|       pointer|
+|raw_195_out          |  out|   10|      ap_vld|                                        raw_195_out|       pointer|
+|raw_195_out_ap_vld   |  out|    1|      ap_vld|                                        raw_195_out|       pointer|
+|raw_194_out          |  out|   10|      ap_vld|                                        raw_194_out|       pointer|
+|raw_194_out_ap_vld   |  out|    1|      ap_vld|                                        raw_194_out|       pointer|
+|raw_193_out          |  out|   10|      ap_vld|                                        raw_193_out|       pointer|
+|raw_193_out_ap_vld   |  out|    1|      ap_vld|                                        raw_193_out|       pointer|
+|raw_192_out          |  out|   10|      ap_vld|                                        raw_192_out|       pointer|
+|raw_192_out_ap_vld   |  out|    1|      ap_vld|                                        raw_192_out|       pointer|
+|raw_191_out          |  out|   10|      ap_vld|                                        raw_191_out|       pointer|
+|raw_191_out_ap_vld   |  out|    1|      ap_vld|                                        raw_191_out|       pointer|
+|raw_190_out          |  out|   10|      ap_vld|                                        raw_190_out|       pointer|
+|raw_190_out_ap_vld   |  out|    1|      ap_vld|                                        raw_190_out|       pointer|
+|raw_189_out          |  out|   10|      ap_vld|                                        raw_189_out|       pointer|
+|raw_189_out_ap_vld   |  out|    1|      ap_vld|                                        raw_189_out|       pointer|
+|raw_188_out          |  out|   10|      ap_vld|                                        raw_188_out|       pointer|
+|raw_188_out_ap_vld   |  out|    1|      ap_vld|                                        raw_188_out|       pointer|
+|raw_187_out          |  out|   10|      ap_vld|                                        raw_187_out|       pointer|
+|raw_187_out_ap_vld   |  out|    1|      ap_vld|                                        raw_187_out|       pointer|
+|raw_186_out          |  out|   10|      ap_vld|                                        raw_186_out|       pointer|
+|raw_186_out_ap_vld   |  out|    1|      ap_vld|                                        raw_186_out|       pointer|
+|raw_185_out          |  out|   10|      ap_vld|                                        raw_185_out|       pointer|
+|raw_185_out_ap_vld   |  out|    1|      ap_vld|                                        raw_185_out|       pointer|
+|raw_184_out          |  out|   10|      ap_vld|                                        raw_184_out|       pointer|
+|raw_184_out_ap_vld   |  out|    1|      ap_vld|                                        raw_184_out|       pointer|
+|raw_183_out          |  out|   10|      ap_vld|                                        raw_183_out|       pointer|
+|raw_183_out_ap_vld   |  out|    1|      ap_vld|                                        raw_183_out|       pointer|
+|raw_182_out          |  out|   10|      ap_vld|                                        raw_182_out|       pointer|
+|raw_182_out_ap_vld   |  out|    1|      ap_vld|                                        raw_182_out|       pointer|
+|raw_181_out          |  out|   10|      ap_vld|                                        raw_181_out|       pointer|
+|raw_181_out_ap_vld   |  out|    1|      ap_vld|                                        raw_181_out|       pointer|
+|raw_180_out          |  out|   10|      ap_vld|                                        raw_180_out|       pointer|
+|raw_180_out_ap_vld   |  out|    1|      ap_vld|                                        raw_180_out|       pointer|
+|raw_179_out          |  out|   10|      ap_vld|                                        raw_179_out|       pointer|
+|raw_179_out_ap_vld   |  out|    1|      ap_vld|                                        raw_179_out|       pointer|
+|raw_178_out          |  out|   10|      ap_vld|                                        raw_178_out|       pointer|
+|raw_178_out_ap_vld   |  out|    1|      ap_vld|                                        raw_178_out|       pointer|
+|raw_177_out          |  out|   10|      ap_vld|                                        raw_177_out|       pointer|
+|raw_177_out_ap_vld   |  out|    1|      ap_vld|                                        raw_177_out|       pointer|
+|raw_176_out          |  out|   10|      ap_vld|                                        raw_176_out|       pointer|
+|raw_176_out_ap_vld   |  out|    1|      ap_vld|                                        raw_176_out|       pointer|
+|raw_175_out          |  out|   10|      ap_vld|                                        raw_175_out|       pointer|
+|raw_175_out_ap_vld   |  out|    1|      ap_vld|                                        raw_175_out|       pointer|
+|raw_174_out          |  out|   10|      ap_vld|                                        raw_174_out|       pointer|
+|raw_174_out_ap_vld   |  out|    1|      ap_vld|                                        raw_174_out|       pointer|
+|raw_173_out          |  out|   10|      ap_vld|                                        raw_173_out|       pointer|
+|raw_173_out_ap_vld   |  out|    1|      ap_vld|                                        raw_173_out|       pointer|
+|raw_172_out          |  out|   10|      ap_vld|                                        raw_172_out|       pointer|
+|raw_172_out_ap_vld   |  out|    1|      ap_vld|                                        raw_172_out|       pointer|
+|raw_171_out          |  out|   10|      ap_vld|                                        raw_171_out|       pointer|
+|raw_171_out_ap_vld   |  out|    1|      ap_vld|                                        raw_171_out|       pointer|
+|raw_170_out          |  out|   10|      ap_vld|                                        raw_170_out|       pointer|
+|raw_170_out_ap_vld   |  out|    1|      ap_vld|                                        raw_170_out|       pointer|
+|raw_169_out          |  out|   10|      ap_vld|                                        raw_169_out|       pointer|
+|raw_169_out_ap_vld   |  out|    1|      ap_vld|                                        raw_169_out|       pointer|
+|raw_168_out          |  out|   10|      ap_vld|                                        raw_168_out|       pointer|
+|raw_168_out_ap_vld   |  out|    1|      ap_vld|                                        raw_168_out|       pointer|
+|raw_167_out          |  out|   10|      ap_vld|                                        raw_167_out|       pointer|
+|raw_167_out_ap_vld   |  out|    1|      ap_vld|                                        raw_167_out|       pointer|
+|raw_166_out          |  out|   10|      ap_vld|                                        raw_166_out|       pointer|
+|raw_166_out_ap_vld   |  out|    1|      ap_vld|                                        raw_166_out|       pointer|
+|raw_165_out          |  out|   10|      ap_vld|                                        raw_165_out|       pointer|
+|raw_165_out_ap_vld   |  out|    1|      ap_vld|                                        raw_165_out|       pointer|
+|raw_164_out          |  out|   10|      ap_vld|                                        raw_164_out|       pointer|
+|raw_164_out_ap_vld   |  out|    1|      ap_vld|                                        raw_164_out|       pointer|
+|raw_163_out          |  out|   10|      ap_vld|                                        raw_163_out|       pointer|
+|raw_163_out_ap_vld   |  out|    1|      ap_vld|                                        raw_163_out|       pointer|
+|raw_162_out          |  out|   10|      ap_vld|                                        raw_162_out|       pointer|
+|raw_162_out_ap_vld   |  out|    1|      ap_vld|                                        raw_162_out|       pointer|
++---------------------+-----+-----+------------+---------------------------------------------------+--------------+
+
