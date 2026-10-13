@@ -1,0 +1,182 @@
+
+
+================================================================
+== Vitis HLS Report for 'engine3'
+================================================================
+* Date:           Tue Oct 13 20:03:44 2026
+
+* Version:        2026.1 (Build 6493734 on Jun 16 2026)
+* Project:        C38
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xck26-sfvc784-2LV-c
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.00 ns|  2.771 ns|     1.08 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+--------+--------+---------+
+    |  Latency (cycles) |  Latency (absolute) |     Interval    | Pipeline|
+    |   min   |   max   |    min   |    max   |   min  |   max  |   Type  |
+    +---------+---------+----------+----------+--------+--------+---------+
+    |   260115|   261043|  1.040 ms|  1.044 ms|  260115|  261043|       no|
+    +---------+---------+----------+----------+--------+--------+---------+
+
+    + Detail: 
+        * Instance: 
+        +------------------------------------------------+-------------------------------------+---------+---------+----------+----------+-----+-----+-------------------+
+        |                                                |                                     |  Latency (cycles) |  Latency (absolute) |  Interval |      Pipeline     |
+        |                    Instance                    |                Module               |   min   |   max   |    min   |    max   | min | max |        Type       |
+        +------------------------------------------------+-------------------------------------+---------+---------+----------+----------+-----+-----+-------------------+
+        |grp_engine3_Pipeline_local_load_taps_fu_490     |engine3_Pipeline_local_load_taps     |       27|       27|  0.108 us|  0.108 us|    0|    0|  loop pipeline stp|
+        |grp_engine3_Pipeline_continuous_c3_fold_fu_898  |engine3_Pipeline_continuous_c3_fold  |   260113|   260113|  1.040 ms|  1.040 ms|    0|    0|  loop pipeline stp|
+        +------------------------------------------------+-------------------------------------+---------+---------+----------+----------+-----+-----+-------------------+
+
+        * Loop: 
+        +-----------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                       |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |       Loop Name       |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +-----------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- local_load_channels  |      928|      928|        29|          -|          -|    32|        no|
+        +-----------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      33|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|   200|   31973|   17978|    -|
+|Memory           |        -|     -|    4000|     200|    -|
+|Multiplexer      |        -|     -|       0|    5476|    -|
+|Register         |        -|     -|      39|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|   200|   36012|   23687|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      288|  1248|  234240|  117120|   64|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|    16|      15|      20|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +------------------------------------------------+-------------------------------------+---------+-----+-------+-------+-----+
+    |                    Instance                    |                Module               | BRAM_18K| DSP |   FF  |  LUT  | URAM|
+    +------------------------------------------------+-------------------------------------+---------+-----+-------+-------+-----+
+    |grp_engine3_Pipeline_continuous_c3_fold_fu_898  |engine3_Pipeline_continuous_c3_fold  |        0|  200|  31958|  17905|    0|
+    |grp_engine3_Pipeline_local_load_taps_fu_490     |engine3_Pipeline_local_load_taps     |        0|    0|     15|     73|    0|
+    +------------------------------------------------+-------------------------------------+---------+-----+-------+-------+-----+
+    |Total                                           |                                     |        0|  200|  31973|  17978|    0|
+    +------------------------------------------------+-------------------------------------+---------+-----+-------+-------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +--------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+    |                                                       Memory                                                       |                                      Module                                      | BRAM_18K| FF | LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +--------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_1_U      |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_814_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_802_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_796_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_795_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_794_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_792_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_791_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_790_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_789_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_813_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_812_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_811_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_810_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_809_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_808_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_807_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_806_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_805_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_803_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_801_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_800_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_799_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_798_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_797_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_788_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_787_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_775_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_768_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_767_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_766_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_765_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_764_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_763_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_762_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_786_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_785_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_784_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_783_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_781_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_780_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_779_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_778_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_777_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_776_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_774_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_773_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_772_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_770_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_769_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_761_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_759_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_747_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_741_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_740_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_739_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_737_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_736_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_735_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_734_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_758_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_757_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_756_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_755_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_754_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_753_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_752_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_751_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_750_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_748_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_746_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_745_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_744_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_743_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_742_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_733_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_732_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_720_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_713_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_712_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_711_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_710_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_709_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_708_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_U      |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+    |engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_10_0_hls_stream_ap_int_10_0_bool_weigh_2_731_U  |engine3_engine3_hls_stream_window3_0_hls_stream_window3_0_hls_stream_ap_int_1nOc  |        0|  20|   1|    0|     4|   10|     1|           40|
+
+ARCHIVE EXCERPT: complete raw report remains in the corresponding workspace/exp_runs directory.
