@@ -7,7 +7,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from monitored_cosim import install_monitor, run_monitored
+from monitored_cosim import install_monitor, measured_result, run_monitored
 
 
 class MonitoredCosimTests(unittest.TestCase):
@@ -124,6 +124,35 @@ class MonitoredCosimTests(unittest.TestCase):
             run_monitored({}, self.work, self.archive, 100, invoke)
         self.assertEqual((self.archive / "simulation_driver/check_sim.tcl").read_text(),
                          "# generated driver fixture\n")
+
+    def test_execution_metrics_are_independent_of_setup_vector_generation(self):
+        install_monitor(self.work, self.archive)
+        functional = dict(csim_pass=True, bit_exact=True, reload_switch_pass=True,
+                          load_flags=[1, 0, 1, 0], frame_count=4, reuse_pass=True,
+                          reload_pass=True, retained_latest_pass=True,
+                          reload_expected=104/256, border_mse=.000016)
+        marker = "EXP_METRICS " + json.dumps(functional) + "\n"
+        execution = marker * 2 + "EXP_MONITORED_COSIM_DONE\n"
+        (self.work / "cosim_execute.console.log").write_text(execution)
+        (self.work / "cosim.console.log").write_text(marker + execution)
+        (self.sim / "srcnn_reload.performance.result.transaction.xml").write_text(
+            "transaction 0: 300000 300029\ntransaction 1: 295000 295029\n"
+            "transaction 2: 300000 300029\ntransaction 3: 295000 x\n")
+        fields = ("transaction,load_params,ar_requests,r_beats,aw_requests,w_beats,"
+                  "ar_valid_cycles,r_valid_cycles,aw_valid_cycles,w_valid_cycles,read_bytes\n")
+        fields += "\n".join(str(i) + "," + ("1,64,8129,0,0,64,8129,0,0,32516"
+                                          if load else "0,0,0,0,0,0,0,0,0,0")
+                             for i, load in enumerate((1, 0, 1, 0))) + "\n"
+        (self.sim / "reload_parameter_axi.csv").write_text(fields)
+        result = measured_result(self.work, self.archive, {"border_mse": functional["border_mse"]})
+        self.assertTrue(result["skip_parameter_axi_zero"])
+        self.assertEqual(result["rtl_latency_max"], 300000)
+        self.assertEqual(result["rtl_latency_min"], 295000)
+        self.assertEqual(result["rtl_frame_count"], 4)
+        self.assertTrue((self.archive / "reload_transactions.csv").is_file())
+        (self.work / "cosim_execute.console.log").write_text(marker + "EXP_MONITORED_COSIM_DONE\n")
+        with self.assertRaisesRegex(RuntimeError, "separate C and RTL"):
+            measured_result(self.work, self.archive, {"border_mse": functional["border_mse"]})
 
 
 if __name__ == "__main__":

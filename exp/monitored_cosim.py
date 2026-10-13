@@ -101,7 +101,7 @@ def measured_axi(rows):
 
 
 def measured_result(work, archive, parent):
-    text = (work / "cosim.console.log").read_text(errors="replace")
+    text = (work / "cosim_execute.console.log").read_text(errors="replace")
     if "EXP_MONITORED_COSIM_DONE" not in text:
         raise RuntimeError("Generated simulation and post-check driver did not complete")
     functional = check_rtl_metrics(text, parent)
