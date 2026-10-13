@@ -500,6 +500,11 @@ hook 再换 strategy，后者重置了步骤属性；分阶段重新打开工程
 W34 的实际证据见 `experiments/W34_t4_strategy_4p5_C17/implementation/thread_observation.json`。
 后续实现必须核对新的子进程日志，不能只根据配置里的线程数宣称多线程已生效。
 
+主机利用率分析也应将计划线程上限和观察到的子进程上限分开：从归档的
+`implementation/thread_observation.json` 读取 child 初始化及运行时 hook，
+两者矛盾时记录 unknown；没有观测文件时保留 unknown，不拿配置代替实测。
+图只从派生 CSV 读取此字段。线程上限仍不代表实际 CPU 占用，后者使用各阶段采样。
+
 W34 最终在实际单线程下完成，但4.5ns 的 WNS=-0.324ns，没有收敛。
 用新 ID W36 对冻结 C17 RTL 补做原计划的四线程策略对照；保留 W34 原结果和
 线程诊断，不覆盖其工作区。W36 先提交独立纸面计划，排在优先 WS-G 的 C35/C36
