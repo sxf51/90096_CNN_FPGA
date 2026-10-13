@@ -757,3 +757,5 @@
 
 - 2026-10-13T09:21 UTC C39 scheduling: live W36 synthesis completed and report generation remains active; sole heavy slot is unchanged. Local supervisor86350 waits for W36 metrics/results and committed archive before launching the already committed C39 four-call monitored RTL plan once. C40 remains unlaunched until strict C39 acceptance; W35 still precedes WS-I. Preserve C22's independently verified1.365115ms fallback and all protected/user changes.
 
+- 2026-10-13T09:52 UTC presentation/scheduling: allnine CSV-only plotting scripts reran through C37/C38. The architecture Pareto now uses shorter precision labels, wrapped ID groups and legend avoidance; grouping additionally requires identical T/precision. PNG inspected after the committed docs/0005 plan; measurements and gates are unchanged. Local supervisor6186 rechecks strict committed C39 numerical/AXI/cycle/RTL-hash evidence before launching C40 once. W36 is in initial routing; W35 and final WS-I remain pending.
+

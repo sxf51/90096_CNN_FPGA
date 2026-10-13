@@ -2,6 +2,7 @@
 """Regenerate all architecture plots from derived CSV evidence only."""
 import csv
 import math
+import textwrap
 from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
@@ -14,6 +15,8 @@ ROOT = Path(__file__).resolve().parents[2]
 FIGS = ROOT / "experiments/figs"
 FIGS.mkdir(exist_ok=True)
 COLORS = {"S":"#4e79a7","G":"#59a14f","P":"#e15759","W":"#b07aa1","C":"#f28e2b","F":"#76b7b2","E":"#888888"}
+PRECISION_LABELS = {"w10a10acc23": "w10 a10",
+                    "w10_8_10a10acc23_21_23": "w10/8/10 a10"}
 np.random.seed(1011)
 
 
@@ -39,24 +42,27 @@ frames = [row for row in rows if row["scope"] == "frame" and not row["operation"
           num(row,"latency_ms_est") is not None and num(row,"DSP") is not None and
           row["status"] in {"pass","provisional","infeasible"} and
           (row["series"] or row["id"] in {"E043","E057","E060"})]
-fig,ax = plt.subplots(figsize=(15,10),constrained_layout=True)
+fig,ax = plt.subplots(figsize=(16,11),constrained_layout=True)
 labels,grouped = [],{}
 for row in frames:
     grouped.setdefault((num(row,"DSP"),num(row,"latency_ms_est"),row["series"] or "E",
-                        row["status"] == "infeasible"),[]).append(row)
-for (dsp,latency,series,bad),points in grouped.items():
+                        row["status"] == "infeasible",row["T_target"],
+                        row["precision_w_a_acc"]),[]).append(row)
+for (dsp,latency,series,bad,t,precision),points in grouped.items():
     ax.scatter(dsp,latency,color=COLORS[series],marker="x" if bad else "o",s=42)
-    row = points[0]
-    labels.append(ax.text(dsp,latency,",".join(p["id"] for p in points)+f" T={row['T_target']}\n"+row["precision_w_a_acc"],fontsize=7))
+    ids = textwrap.fill(", ".join(p["id"] for p in points),width=23)
+    labels.append(ax.text(dsp,latency,ids+f" T={t}\n"+
+                          PRECISION_LABELS.get(precision,precision),fontsize=8))
 ax.set(title="SRCNN architecture exploration: HLS estimates",xlabel="DSP48E2 (count)",ylabel="Estimated frame latency (ms)")
 ax.set_yscale("log")
 ax.axvline(1248,color="#444444",linestyle="--",linewidth=1)
 ax.grid(alpha=.2)
-ax.legend(handles=[Line2D([0],[0],marker="o",color=color,linestyle="",label=series+" series") for series,color in COLORS.items()]+
-                  [Line2D([0],[0],marker="x",color="#444444",linestyle="",label="Resource infeasible")],fontsize=8)
+legend = ax.legend(handles=[Line2D([0],[0],marker="o",color=color,linestyle="",label=series+" series") for series,color in COLORS.items()]+
+                   [Line2D([0],[0],marker="x",color="#444444",linestyle="",label="Resource infeasible")],fontsize=8)
 fig.canvas.draw()
 fig.set_layout_engine("none")
-adjust_text(labels,ax=ax,iter_lim=1000,expand=(1.2,1.3),force_text=(.3,.5),
+adjust_text(labels,objects=[legend],ax=ax,iter_lim=1500,expand=(1.3,1.5),
+            force_text=(.3,.5),force_pull=(.004,.004),
             arrowprops={"arrowstyle":"-","color":"#888888","lw":.5})
 save(fig,"architecture_pareto.png")
 
