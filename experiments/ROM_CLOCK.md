@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T07:51:34+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T08:45:15+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -67,6 +67,7 @@ WS-G C35 strict RTL pass; C36 physical run active; WS-H C37/C38 independent sour
 | [C33](C33_reload_windows_sequence/C33.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C34](C34_reload_windows_cold/C34.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C35](C35_ws_cosim_C32/C35.md) | C32 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | 273025 | original_verification_pass | unknown | unknown | unknown | 3.7762742787639247 | unknown |
+| [C36](C36_ws_impl_C32/C36.md) | C32 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | unknown | unknown | 5.0 | False | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -78,7 +79,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
-| [C36](C36_ws_impl_C32/C36.md) | C32 | impl | queued_or_running | Launch only after strict C35 acceptance; independent default-strategy5ns staged implementation of frozen C32 with observed synthesis1/route4threads and all routed gates |
 | [W36](W36_ws_impl_C17/W36.md) | C17 | impl | unlaunched_conditional | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
 | [C37](C37_t4_reload_paramreg/C37.md) | C32 | csim/csynth | unlaunched_conditional | Accepted C32/C35 parent; independent224-bit parameter-write register helper with one-cycle latency andII1; require13-image quality,HLS screening and actual datapath-register evidence |
 | [C38](C38_t4_reload_balanced/C38.md) | C32 | csim/csynth | unlaunched_conditional | Accepted C32/C35 parent; independent full34-bit nine-product balanced registered tree; preserve inverse/shift/quantization and require13-image quality/HLS before new four-call RTL |
@@ -119,6 +119,8 @@ Four exact RTL transactions separately measure initial loading, reuse with ignor
 | [C35](C35_ws_cosim_C32/C35.md) | C32 | [C35](C35_ws_cosim_C32/C35.md) | 3 | retain | 0 | 267022 | unknown | 0 | 0 | 0 | unknown | unknown |
 
 Full read/write valid-cycle and handshake counts: [reload_switch_measurements.csv](reload_switch_measurements.csv).
+
+![Separate load and reuse transactions](figs/reload_switch_transactions.png)
 
 Verified candidate IP packages and register maps: [C18](board_handoff/C18/HANDOFF.md), [C21](board_handoff/C21/HANDOFF.md), [C22](board_handoff/C22/HANDOFF.md). Retain the [F98 integration handoff](BOARD_HANDOFF.md); board verification is pending.
 
