@@ -2,7 +2,7 @@
 
 Current follow-up: [ROM_CLOCK.md](ROM_CLOCK.md), following [docs/0005](../docs/0005-rom-clock-t4-plan.md). The complete course Set14 has13 images; final feasibility now uses independently routed resource/timing gates. Historical HLS statuses and earlier provisional wording below remain original records.
 
-The lowest HLS estimate satisfying the original HLS resource screen is [W24](W24_constant_rom_T8/W24.md) at 1.7460189000000002ms HLS-estimated latency. Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Routed timing, measured RTL cycles and board validation remain distinct; the HLS leader cannot establish final feasibility.
+The fastest candidate with matching exact RTL and independently closed routing is [C22](C22_ws_impl_C17/C22.md) at 1.365115ms IP latency, using 1032.0 DSP at 5.0ns. Packing and integer Winograd primitives pass exact checks, while full-network results include fabric, memory and scheduling costs absent from DSP-only budgets. Routed timing, measured RTL cycles and board validation remain distinct; the HLS leader cannot establish final feasibility.
 
 Re-run frozen HLS records with fresh IDs using the [reproduction guide](REPRODUCE.md). Original reserved IDs remain immutable.
 
@@ -997,15 +997,15 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 - Windows settings-batch execution and board integration remain unverified. The existing Linux Vitis2026.1 SSH installation was used.
 - Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).
 - Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Those original retries did not change system swap or global tool settings. The later user-configured8GiB zram and current memory observations are documented in [docs/0005](../docs/0005-rom-clock-t4-plan.md).
-- Current decisions supersede historical docs/0004 defaults: final feasibility uses routed gates, ROM remains exploratory, and the user authorized two concurrent tasks with actual memory telemetry. Board selection and measurements remain pending.
+- Current decisions supersede historical docs/0004 defaults: final feasibility uses routed gates, ROM remains exploratory, and scheduling uses one heavy task with memory-bounded light jobs. Board selection and measurements remain pending.
 
 ## Next Steps
 
-Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. Complete the queued docs/0005 RTL/routing comparisons and board/AXI system measurements before claiming deployable performance.
+Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. C22 remains the verified 1.365115 ms leader and C21 is a verified 2.411892 ms lower-DSP alternative; both IP handoffs are archived. W33 independently closes 4.5 ns with WNS +0.063/WHS +0.032, zero TNS/THS, no unrouted/partial nets and 630 DSP/33829 LUT/82539 FF/101 BRAM18K. Matching W25 exact 554226 cycles gives 2.494017 ms; ROM stays exploratory. C24 four-call reuse/reload/retain, C25 fresh-process first-call load=0 and F53 frozen C13 13-image regression all pass exactly. C23 completes all 13 loaded/reused images with unchanged -0.07589037644656216 dB deltaPSNR and is now synthesizing; its complete archive remains pending under supervisor 65418. After actual passing HLS screening arrives, allocate independent monitored four-call RTL and staged 5 ns routing. The standalone monitor/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.
 
 ## Integrity Audit
 
-Final local/remote original and first-phase source checksum and report-provenance audit: [weight_loading_audit.json](weight_loading_audit.json).
+Interim local/remote original and first-phase source checksum and report-provenance audit: [rom_clock_audit.json](rom_clock_audit.json).
 
 | location | manifest | checked_files | pass |
 | --- | --- | --- | --- |
@@ -1030,4 +1030,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-13T00:57:39+00:00.
+Generated from archived evidence at 2026-10-13T01:07:53+00:00.
