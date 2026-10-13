@@ -1030,6 +1030,13 @@
       "csv_matches_archive": true,
       "id": "C22",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C21",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2169,6 +2176,7 @@
     "C18",
     "C19",
     "C20",
+    "C21",
     "C22",
     "F32",
     "F33",
@@ -2206,27 +2214,17 @@
   "pushed": false,
   "remote_jobs_active": true,
   "remote_processes": [
-    "125370 python3 exp/run_exp.py --config exp/configs/C21.json",
-    "129351 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_implementation.tcl -notrace -nojournal",
-    "129485 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -log bd_0_wrapper.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source bd_0_wrapper.tcl -notrace"
+    "138171 python3 exp/run_exp.py --config exp/configs/W33.json",
+    "139135 python3 exp/run_exp.py --config exp/configs/C23.json",
+    "139354 python3 exp/run_exp.py --config exp/configs/C24.json",
+    "139575 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_synthesis.tcl -notrace -nojournal"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-12T23:53:33+00:00",
+  "time": "2026-10-13T00:29:27+00:00",
   "unmeasured_plans": [
     {
-      "condition": "C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30",
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "C21",
-      "not_run_condition_failed": false,
-      "operation": "impl",
-      "plan_sha256": "f04e92d24698be7cb6d9d931305a090669355c64850c39ff508784983a60821a",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": null,
+      "condition": "After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening",
       "failure_reason": null,
       "has_measured_result": false,
       "id": "C23",
@@ -2237,7 +2235,7 @@
       "unlaunched_for_memory": false
     },
     {
-      "condition": null,
+      "condition": "After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred",
       "failure_reason": null,
       "has_measured_result": false,
       "id": "C24",
@@ -2248,7 +2246,7 @@
       "unlaunched_for_memory": false
     },
     {
-      "condition": null,
+      "condition": "After C21 completes, independently test fresh-process first-call load=0 forced loading",
       "failure_reason": null,
       "has_measured_result": false,
       "id": "C25",
@@ -2259,7 +2257,7 @@
       "unlaunched_for_memory": false
     },
     {
-      "condition": null,
+      "condition": "After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled",
       "failure_reason": null,
       "has_measured_result": false,
       "id": "F53",
@@ -2270,7 +2268,7 @@
       "unlaunched_for_memory": false
     },
     {
-      "condition": null,
+      "condition": "W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21",
       "failure_reason": null,
       "has_measured_result": false,
       "id": "W33",
@@ -2619,6 +2617,15 @@
       "additional_evidence_files_checked": 16,
       "git_visible_and_tracked": true,
       "id": "C22",
+      "operation": "impl",
+      "reports_checked": 6,
+      "sha256_pass": true,
+      "status": "impl_complete"
+    },
+    {
+      "additional_evidence_files_checked": 16,
+      "git_visible_and_tracked": true,
+      "id": "C21",
       "operation": "impl",
       "reports_checked": 6,
       "sha256_pass": true,
