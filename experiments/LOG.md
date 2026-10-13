@@ -605,6 +605,8 @@
 
 - 2026-10-13T01:09:55+00:00: C23: reload_switch_quality; status=infeasible; latency_ms_est=1.05236; ; HLS status retained; final feasibility requires independent routed gates
 
+- 2026-10-13T01:11:14+00:00: C26: ws_cosim_C23; status=fail; latency_ms_est=1.05236; cosim of C23; HLS estimates inherited, real measurements in data.csv; Unsupported memory telemetry phase
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 00:05:47 UTC C23: standalone Vitis Tcl interpreter probe confirms ::AP::printMsg, ::AP::check_bin_exist and ::AESL_AUTOSIM::gDebug are available without a project or simulation. Archive the original tool log in C23/tool_probes/monitor_environment.txt and reproducible exp/hls_monitor_environment.tcl; this is an environment query, not RTL validation. C21 progresses through rerouting; C22 handoff/path completion and outstanding conditions are refreshed in the recovery state.
