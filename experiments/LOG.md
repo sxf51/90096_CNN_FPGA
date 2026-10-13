@@ -607,6 +607,8 @@
 
 - 2026-10-13T01:11:14+00:00: C26: ws_cosim_C23; status=fail; latency_ms_est=1.05236; cosim of C23; HLS estimates inherited, real measurements in data.csv; Unsupported memory telemetry phase
 
+- 2026-10-13T01:43 UTC C27 checkpoint: the first of four monitored RTL transactions completes with load=1,8129 parameter AR requests and R beats,32516read bytes,and zero writes. The other calls and generated C/RTL output post-check remain outstanding. The generated AXI-Lite sequence writes the load flag and waits for argument writes before setting start; the read-only observer therefore samples the programmed flag. All164 experiment-infrastructure unit checks pass locally. One heavy task remains active with about10GiB available; no physical or reuse verdict is inferred from this partial result.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.

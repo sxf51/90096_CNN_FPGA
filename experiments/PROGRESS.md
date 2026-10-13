@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C23 passes HLS screening; C27 monitored four-call RTL running after C26 pre-tool failure. C22 remains the verified1.365115ms leader; C21 and W33 independently close4.5ns at2.411892 and2.494017ms. All WS-F C checks and C23 HLS screening pass. C26's pre-tool telemetry registration failure is archived unchanged;21 targeted scheduler/observer checks validate the repair. C27 completes setup and now executes the unchanged generated run_sim driver with the read-only observer, on the sole heavy slot under supervisor31264. Its first RTL transaction is still running; actual reuse cycles and zero-AXI evidence remain unknown. The01:34UTC snapshot audit passes both-location protected checksums and paper/source/testbench/report provenance, while explicitly retaining one active unarchived plan. Collect four exact load/reuse/reload/retain transactions and synthesis RTL hashes; only after acceptance allocate fresh staged5ns routing of C23. Preserve one heavy task,18GiB implementation registration,serial_after_oom and all gates. Complete interpretations,all plots and the final idle audit. No board result exists.
+C27 monitored RTL completes the first of four transactions; reuse/reload/retain remain active. C22 remains the verified1.365115ms leader; C21 and W33 independently close4.5ns at2.411892 and2.494017ms. All WS-F C checks and C23 HLS screening pass. C26's pre-tool failure remains archived. At01:42UTC C27 completes the first of four RTL transactions: load=1,8129 parameter read requests/beats,32516bytes,no writes. The next reuse transaction is running; its latency,zero parameter AXI and final output post-check remain unknown. Generated AXI-Lite sequencing writes load_params before the start bit, confirming observer sampling order. All164 experiment-infrastructure tests pass locally. Supervisor31264 owns the sole heavy slot; no second run is launched. Collect all four exact transactions and unchanged synthesis RTL hashes, then allocate fresh staged5ns routing only after acceptance. Preserve one heavy task,18GiB implementation registration,serial_after_oom and all gates. Complete interpretations,all plots and the final idle audit. No board result exists.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T01:35:15+00:00 from archived measurements.
+Updated 2026-10-13T01:43:29+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
