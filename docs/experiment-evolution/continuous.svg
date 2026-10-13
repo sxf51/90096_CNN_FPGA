@@ -1,0 +1,343 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="2782" height="5270" viewBox="0 0 2782 5270">
+<title>B 的后续：连续流水、窗口控制和加载时序</title>
+<desc>保持直接卷积时，能否减少像素间流水重启、宽选择器和一次性加载关键路径？。数据快照 653ceb9。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="2782" height="5270" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">B 的后续：连续流水、窗口控制和加载时序</text>
+<text x="48" y="76" font-size="17" fill="#435654">保持直接卷积时，能否减少像素间流水重启、宽选择器和一次性加载关键路径？</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M1320.50 343.00 L1320.50 383.00 L1885.00 383.00 L1885.00 395.00 L1937.33 395.00 L1937.33 423.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M803.42 343.00 L803.42 383.00 L830.00 383.00 L830.00 395.00 L1832.67 395.00 L1832.67 423.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1119.70 343.00 L1119.70 383.00 L1089.00 383.00 L1089.00 407.00 L1141.33 407.00 L1141.33 435.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M759.62 343.00 L759.62 383.00 L755.50 383.00 L755.50 407.00 L1036.67 407.00 L1036.67 435.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1006.50 343.00 L1006.50 383.00 L850.00 383.00 L850.00 710.00 L1378.50 710.00 L1378.50 738.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1487.00 617.00 L1487.00 710.00 L1457.00 710.00 L1457.00 738.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1885.00 658.00 L1885.00 710.00 L1535.50 710.00 L1535.50 738.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1614.00 997.00 L1614.00 1037.00 L1959.50 1037.00 L1959.50 1077.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2116.50 1312.00 L2116.50 1352.00 L2357.50 1352.00 L2357.50 1404.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1821.15 1312.00 L1821.15 1352.00 L1760.50 1352.00 L1760.50 1404.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2480.69 1615.00 L2480.69 1667.00 L2556.50 1667.00 L2556.50 1719.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1300.00 997.00 L1300.00 1037.00 L840.00 1037.00 L840.00 1077.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1802.50 1312.00 L1802.50 1352.00 L1551.50 1352.00 L1551.50 1364.00 L1414.83 1364.00 L1414.83 1392.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M997.00 1312.00 L997.00 1352.00 L1153.50 1352.00 L1153.50 1364.00 L1310.17 1364.00 L1310.17 1392.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2234.31 1615.00 L2234.31 1667.00 L2158.50 1667.00 L2158.50 1719.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1760.50 1615.00 L1760.50 1691.00 L1802.83 1691.00 L1802.83 1719.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1493.90 1627.00 L1493.90 1667.00 L1551.50 1667.00 L1551.50 1691.00 L1698.17 1691.00 L1698.17 1719.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2556.50 1930.00 L2556.50 2034.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1355.55 1627.00 L1355.55 1667.00 L1352.50 1667.00 L1352.50 1994.00 L1300.33 1994.00 L1300.33 2022.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M978.35 1312.00 L978.35 1352.00 L1039.00 1352.00 L1039.00 1994.00 L1195.67 1994.00 L1195.67 2022.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1386.35 2257.00 L1386.35 2297.00 L1447.00 2297.00 L1447.00 2337.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1447.00 2572.00 L1447.00 2652.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M683.00 1312.00 L683.00 1352.00 L536.50 1352.00 L536.50 1392.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M674.85 1627.00 L674.85 1667.00 L735.50 1667.00 L735.50 1719.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M398.15 1627.00 L398.15 1667.00 L337.50 1667.00 L337.50 1707.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M735.50 1930.00 L735.50 2034.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M337.50 1942.00 L337.50 2022.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M735.50 2245.00 L735.50 2321.00 L389.83 2321.00 L389.83 2349.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M475.85 2257.00 L475.85 2297.00 L536.50 2297.00 L536.50 2321.00 L285.17 2321.00 L285.17 2349.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1248.00 2257.00 L1248.00 2309.00 L787.83 2309.00 L787.83 2337.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M337.50 2257.00 L337.50 2309.00 L683.17 2309.00 L683.17 2337.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1175.35 2257.00 L1175.35 2297.00 L1143.50 2297.00 L1143.50 2636.00 L615.00 2636.00 L615.00 2664.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M180.50 2257.00 L180.50 2297.00 L24.00 2297.00 L24.00 2636.00 L458.00 2636.00 L458.00 2664.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M735.50 2572.00 L735.50 2636.00 L536.50 2636.00 L536.50 2664.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M536.50 2875.00 L536.50 2967.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M536.50 3202.00 L536.50 3282.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M611.41 3541.00 L611.41 3581.00 L641.00 3581.00 L641.00 3621.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M461.59 3541.00 L461.59 3581.00 L432.00 3581.00 L432.00 3956.00 L484.17 3956.00 L484.17 3984.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M641.00 3904.00 L641.00 3956.00 L588.83 3956.00 L588.83 3984.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M536.50 4243.00 L536.50 4323.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M671.98 4582.00 L671.98 4622.00 L725.50 4622.00 L725.50 4634.00 L872.17 4634.00 L872.17 4662.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M934.50 4529.00 L934.50 4634.00 L976.83 4634.00 L976.83 4662.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M529.33 4582.00 L529.33 4622.00 L526.50 4622.00 L526.50 4949.00 L797.67 4949.00 L797.67 4977.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M924.50 4897.00 L924.50 4949.00 L902.33 4949.00 L902.33 4977.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<g data-id="F01">
+<rect x="1708.00" y="431.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1732.00" y="458.00" font-size="17" font-weight="700" fill="#243031">F01</text>
+<text x="1732.00" y="489.50" font-size="20" font-weight="700" fill="#243031">浅宽 FIFO 改用 LUTRAM</text>
+<text x="1732.00" y="525.50" font-size="16" font-weight="400" fill="#243031">保留 T16 和原有逐像素调度，把浅宽特</text>
+<text x="1732.00" y="549.50" font-size="16" font-weight="400" fill="#243031">征 FIFO 显式绑定到 LUTRAM。</text>
+<text x="1732.00" y="579.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 8.0587 ms / DSP 505</text>
+<text x="1732.00" y="609.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F02">
+<rect x="912.00" y="443.00" width="354" height="195" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="936.00" y="470.00" font-size="17" font-weight="700" fill="#243031">F02</text>
+<text x="936.00" y="501.50" font-size="20" font-weight="700" fill="#243031">Conv3 行缓存改用 URAM</text>
+<text x="936.00" y="537.50" font-size="16" font-weight="400" fill="#243031">把四行宽缓存换到 20 个 URAM。</text>
+<text x="936.00" y="567.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 8.0587 ms / DSP 505</text>
+<text x="936.00" y="597.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F03">
+<rect x="1280.00" y="746.00" width="354" height="243" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1304.00" y="773.00" font-size="17" font-weight="700" fill="#243031">F03</text>
+<text x="1304.00" y="804.50" font-size="20" font-weight="700" fill="#243031">连续 MAC，保留旧补边</text>
+<text x="1304.00" y="840.50" font-size="16" font-weight="400" fill="#243031">窗口生成与 MAC 引擎分离，所有像素/分</text>
+<text x="1304.00" y="864.50" font-size="16" font-weight="400" fill="#243031">组组成连续 II1 循环，并注册平衡加法</text>
+<text x="1304.00" y="888.50" font-size="16" font-weight="400" fill="#243031">树。</text>
+<text x="1304.00" y="918.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+<text x="1304.00" y="948.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="F04">
+<rect x="1782.50" y="1085.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1806.50" y="1112.00" font-size="17" font-weight="700" fill="#243031">F04</text>
+<text x="1806.50" y="1143.50" font-size="20" font-weight="700" fill="#243031">连续 MAC + 边读边补边，T16</text>
+<text x="1806.50" y="1179.50" font-size="16" font-weight="400" fill="#243031">在后续行同步读取输入并输出复制边界，减</text>
+<text x="1806.50" y="1203.50" font-size="16" font-weight="400" fill="#243031">少整行先读后写串行阶段。</text>
+<text x="1806.50" y="1233.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+<text x="1806.50" y="1263.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="F05">
+<rect x="2180.50" y="1412.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2204.50" y="1439.00" font-size="17" font-weight="700" fill="#243031">F05</text>
+<text x="2204.50" y="1470.50" font-size="20" font-weight="700" fill="#243031">连续 MAC + 在线补边，T8</text>
+<text x="2204.50" y="1506.50" font-size="16" font-weight="400" fill="#243031">提高并行度，测 T8 的时间/资源代价。</text>
+<text x="2204.50" y="1536.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+<text x="2204.50" y="1566.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="F06">
+<rect x="1583.50" y="1412.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1607.50" y="1439.00" font-size="17" font-weight="700" fill="#243031">F06</text>
+<text x="1607.50" y="1470.50" font-size="20" font-weight="700" fill="#243031">连续 T16，3.33 ns</text>
+<text x="1607.50" y="1506.50" font-size="16" font-weight="400" fill="#243031">保持 T16 并收紧目标周期。</text>
+<text x="1607.50" y="1536.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+<text x="1607.50" y="1566.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="F07">
+<rect x="2379.50" y="1727.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2403.50" y="1754.00" font-size="17" font-weight="700" fill="#243031">F07</text>
+<text x="2403.50" y="1785.50" font-size="20" font-weight="700" fill="#243031">连续 T8，3.33 ns</text>
+<text x="2403.50" y="1821.50" font-size="16" font-weight="400" fill="#243031">扫描更高并行度和更紧时钟的组合。</text>
+<text x="2403.50" y="1851.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+<text x="2403.50" y="1881.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="F08">
+<rect x="663.00" y="1085.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="687.00" y="1112.00" font-size="17" font-weight="700" fill="#243031">F08</text>
+<text x="687.00" y="1143.50" font-size="20" font-weight="700" fill="#243031">合法双窗口流，旧补边</text>
+<text x="687.00" y="1179.50" font-size="16" font-weight="400" fill="#243031">完整窗口改用两个 4000 位 FIFO，保持</text>
+<text x="687.00" y="1203.50" font-size="16" font-weight="400" fill="#243031">连续计算与旧补边。</text>
+<text x="687.00" y="1233.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 4.1947 ms / DSP 505</text>
+<text x="687.00" y="1263.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F09">
+<rect x="1185.50" y="1400.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1209.50" y="1427.00" font-size="17" font-weight="700" fill="#243031">F09</text>
+<text x="1209.50" y="1458.50" font-size="20" font-weight="700" fill="#243031">合法双窗口流，在线补边 T16</text>
+<text x="1209.50" y="1494.50" font-size="16" font-weight="400" fill="#243031">保留同步双通道并测在线补边的 T16 版</text>
+<text x="1209.50" y="1518.50" font-size="16" font-weight="400" fill="#243031">本。</text>
+<text x="1209.50" y="1548.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 4.1947 ms / DSP 505</text>
+<text x="1209.50" y="1578.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F10">
+<rect x="1981.50" y="1727.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2005.50" y="1754.00" font-size="17" font-weight="700" fill="#243031">F10</text>
+<text x="2005.50" y="1785.50" font-size="20" font-weight="700" fill="#243031">合法双窗口流，在线补边 T8</text>
+<text x="2005.50" y="1821.50" font-size="16" font-weight="400" fill="#243031">修正宽流后测较高并行度。</text>
+<text x="2005.50" y="1851.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.114 ms / DSP 1007</text>
+<text x="2005.50" y="1881.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT/FF；HLS 时序警告</text>
+</g>
+<g data-id="F11">
+<rect x="1573.50" y="1727.00" width="354" height="195" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1597.50" y="1754.00" font-size="17" font-weight="700" fill="#243031">F11</text>
+<text x="1597.50" y="1785.50" font-size="20" font-weight="700" fill="#243031">合法 T16，3.33 ns</text>
+<text x="1597.50" y="1821.50" font-size="16" font-weight="400" fill="#243031">修正流表示后测紧时钟 T16 配置。</text>
+<text x="1597.50" y="1851.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 3.4922 ms / DSP 505</text>
+<text x="1597.50" y="1881.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F12">
+<rect x="2379.50" y="2042.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2403.50" y="2069.00" font-size="17" font-weight="700" fill="#243031">F12</text>
+<text x="2403.50" y="2100.50" font-size="20" font-weight="700" fill="#243031">合法 T8，3.33 ns</text>
+<text x="2403.50" y="2136.50" font-size="16" font-weight="400" fill="#243031">修正流表示后测紧时钟 T8 配置。</text>
+<text x="2403.50" y="2166.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.7599 ms / DSP 1007</text>
+<text x="2403.50" y="2196.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT/FF；HLS 时序警告</text>
+</g>
+<g data-id="F13">
+<rect x="1071.00" y="2030.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="1095.00" y="2057.00" font-size="17" font-weight="700" fill="#243031">F13</text>
+<text x="1095.00" y="2088.50" font-size="20" font-weight="700" fill="#243031">Conv3 窗口通道轮换，T16</text>
+<text x="1095.00" y="2124.50" font-size="16" font-weight="400" fill="#243031">每轮把已用通道移走，让乘法器读取固定位</text>
+<text x="1095.00" y="2148.50" font-size="16" font-weight="400" fill="#243031">置；保留注册加法树。</text>
+<text x="1095.00" y="2178.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 4.1947 ms / DSP 505</text>
+<text x="1095.00" y="2208.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F14">
+<rect x="1270.00" y="2345.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1294.00" y="2372.00" font-size="17" font-weight="700" fill="#243031">F14</text>
+<text x="1294.00" y="2403.50" font-size="20" font-weight="700" fill="#243031">窗口轮换，T8，注册加法树</text>
+<text x="1294.00" y="2439.50" font-size="16" font-weight="400" fill="#243031">改变 T，观察固定读位置在高并行度下的</text>
+<text x="1294.00" y="2463.50" font-size="16" font-weight="400" fill="#243031">资源取舍。</text>
+<text x="1294.00" y="2493.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.114 ms / DSP 1007</text>
+<text x="1294.00" y="2523.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT/FF；HLS 时序警告</text>
+</g>
+<g data-id="F15">
+<rect x="1270.00" y="2660.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1294.00" y="2687.00" font-size="17" font-weight="700" fill="#243031">F15</text>
+<text x="1294.00" y="2718.50" font-size="20" font-weight="700" fill="#243031">窗口轮换，T8，无树级寄存</text>
+<text x="1294.00" y="2754.50" font-size="16" font-weight="400" fill="#243031">把加法树延迟绑定为零，隔离寄存级对</text>
+<text x="1294.00" y="2778.50" font-size="16" font-weight="400" fill="#243031">FF/时序的影响。</text>
+<text x="1294.00" y="2808.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.1139 ms / DSP 1007</text>
+<text x="1294.00" y="2838.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT；HLS 时序警告</text>
+</g>
+<g data-id="F16">
+<rect x="359.50" y="1400.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="383.50" y="1427.00" font-size="17" font-weight="700" fill="#243031">F16</text>
+<text x="383.50" y="1458.50" font-size="20" font-weight="700" fill="#243031">精确构造 float 输出的小内核</text>
+<text x="383.50" y="1494.50" font-size="16" font-weight="400" fill="#243031">十位原始输出都能被 float 精确表示，</text>
+<text x="383.50" y="1518.50" font-size="16" font-weight="400" fill="#243031">尝试直接构造符号/指数/尾数。</text>
+<text x="383.50" y="1548.50" font-size="16" font-weight="700" fill="#243031">运行失败</text>
+<text x="383.50" y="1578.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="F17">
+<rect x="558.50" y="1727.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="582.50" y="1754.00" font-size="17" font-weight="700" fill="#243031">F17</text>
+<text x="582.50" y="1785.50" font-size="20" font-weight="700" fill="#243031">普通 float 转换的小内核控制</text>
+<text x="582.50" y="1821.50" font-size="16" font-weight="400" fill="#243031">用同一输入集合测原有转换/除法。</text>
+<text x="582.50" y="1851.50" font-size="16" font-weight="700" fill="#243031">运行失败</text>
+<text x="582.50" y="1881.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="F18">
+<rect x="160.50" y="1715.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="184.50" y="1742.00" font-size="17" font-weight="700" fill="#243031">F18</text>
+<text x="184.50" y="1773.50" font-size="20" font-weight="700" fill="#243031">精确 float 构造 SDK 修复</text>
+<text x="184.50" y="1809.50" font-size="16" font-weight="400" fill="#243031">按安装版本修正 fp_struct 符号及显式</text>
+<text x="184.50" y="1833.50" font-size="16" font-weight="400" fill="#243031">符号分支。</text>
+<text x="184.50" y="1863.50" font-size="16" font-weight="700" fill="#243031">运行失败</text>
+<text x="184.50" y="1893.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="F19">
+<rect x="558.50" y="2042.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="582.50" y="2069.00" font-size="17" font-weight="700" fill="#243031">F19</text>
+<text x="582.50" y="2100.50" font-size="20" font-weight="700" fill="#243031">普通转换 SDK 修复控制</text>
+<text x="582.50" y="2136.50" font-size="16" font-weight="400" fill="#243031">保持普通转换，在同一修正工程中测量。</text>
+<text x="582.50" y="2166.50" font-size="16" font-weight="700" fill="#243031">运行失败</text>
+<text x="582.50" y="2196.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="F20">
+<rect x="160.50" y="2030.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="184.50" y="2057.00" font-size="17" font-weight="700" fill="#243031">F20</text>
+<text x="184.50" y="2088.50" font-size="20" font-weight="700" fill="#243031">精确 float 构造有效探针</text>
+<text x="184.50" y="2124.50" font-size="16" font-weight="400" fill="#243031">仅把设计翻译单元改名为 kernel.cpp，</text>
+<text x="184.50" y="2148.50" font-size="16" font-weight="400" fill="#243031">穷举 1024 个输出编码。</text>
+<text x="184.50" y="2178.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 0 / LUT 242</text>
+<text x="184.50" y="2208.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="F21">
+<rect x="160.50" y="2357.00" width="354" height="195" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="184.50" y="2384.00" font-size="17" font-weight="700" fill="#243031">F21</text>
+<text x="184.50" y="2415.50" font-size="20" font-weight="700" fill="#243031">普通转换有效控制</text>
+<text x="184.50" y="2451.50" font-size="16" font-weight="400" fill="#243031">相同接口/样本下测普通 float 转换。</text>
+<text x="184.50" y="2481.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 3 / LUT 220</text>
+<text x="184.50" y="2511.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F22">
+<rect x="558.50" y="2345.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="582.50" y="2372.00" font-size="17" font-weight="700" fill="#243031">F22</text>
+<text x="582.50" y="2403.50" font-size="20" font-weight="700" fill="#243031">集成精确输出编码，3 ns</text>
+<text x="582.50" y="2439.50" font-size="16" font-weight="400" fill="#243031">只替换定点到 float 的输出编码，保留</text>
+<text x="582.50" y="2463.50" font-size="16" font-weight="400" fill="#243031">十位数值与连续推理引擎。</text>
+<text x="582.50" y="2493.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 3.1461 ms / DSP 502</text>
+<text x="582.50" y="2523.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F23">
+<rect x="359.50" y="2672.00" width="354" height="195" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="383.50" y="2699.00" font-size="17" font-weight="700" fill="#243031">F23</text>
+<text x="383.50" y="2730.50" font-size="20" font-weight="700" fill="#243031">集成精确输出编码，2.5 ns</text>
+<text x="383.50" y="2766.50" font-size="16" font-weight="400" fill="#243031">进一步收紧目标周期，定位全局关键路径。</text>
+<text x="383.50" y="2796.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.9595 ms / DSP 502</text>
+<text x="383.50" y="2826.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F24">
+<rect x="359.50" y="2975.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="383.50" y="3002.00" font-size="17" font-weight="700" fill="#243031">F24</text>
+<text x="383.50" y="3033.50" font-size="20" font-weight="700" fill="#243031">显式三维权重加载索引</text>
+<text x="383.50" y="3069.50" font-size="16" font-weight="400" fill="#243031">用输出通道/核行/核列计数器替代除法和</text>
+<text x="383.50" y="3093.50" font-size="16" font-weight="400" fill="#243031">取余推导的地址。</text>
+<text x="383.50" y="3123.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.8305 ms / DSP 502</text>
+<text x="383.50" y="3153.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F25">
+<rect x="359.50" y="3290.00" width="354" height="243" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="3"/>
+<text x="383.50" y="3317.00" font-size="17" font-weight="700" fill="#243031">F25</text>
+<text x="383.50" y="3348.50" font-size="20" font-weight="700" fill="#243031">关闭权重加载循环合并</text>
+<text x="383.50" y="3384.50" font-size="16" font-weight="400" fill="#243031">只在 Conv1 权重加载内层加入</text>
+<text x="383.50" y="3408.50" font-size="16" font-weight="400" fill="#243031">LOOP_FLATTEN off，推理引擎保持相同</text>
+<text x="383.50" y="3432.50" font-size="16" font-weight="400" fill="#243031">。</text>
+<text x="383.50" y="3462.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.6423 ms / DSP 502</text>
+<text x="383.50" y="3492.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F26">
+<rect x="464.00" y="3629.00" width="354" height="267" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="488.00" y="3656.00" font-size="17" font-weight="700" fill="#243031">F26</text>
+<text x="488.00" y="3687.50" font-size="20" font-weight="700" fill="#243031">S2P 权重银行与 bias 移位加载</text>
+<text x="488.00" y="3723.50" font-size="16" font-weight="400" fill="#243031">仅将共享权重银行改为</text>
+<text x="488.00" y="3747.50" font-size="16" font-weight="400" fill="#243031">simple-dual-port，并用固定下标移位</text>
+<text x="488.00" y="3771.50" font-size="16" font-weight="400" fill="#243031">方式写 bias，隔离端口和写入译码成本</text>
+<text x="488.00" y="3795.50" font-size="16" font-weight="400" fill="#243031">。</text>
+<text x="488.00" y="3825.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.6423 ms / DSP 502</text>
+<text x="488.00" y="3855.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F27">
+<rect x="359.50" y="3992.00" width="354" height="243" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="383.50" y="4019.00" font-size="17" font-weight="700" fill="#243031">F27</text>
+<text x="383.50" y="4050.50" font-size="20" font-weight="700" fill="#243031">参数流与各层私有银行</text>
+<text x="383.50" y="4086.50" font-size="16" font-weight="400" fill="#243031">在 DATAFLOW 内统一转换参数，分三条</text>
+<text x="383.50" y="4110.50" font-size="16" font-weight="400" fill="#243031">流传给各层；各层先加载自己的 S2P</text>
+<text x="383.50" y="4134.50" font-size="16" font-weight="400" fill="#243031">LUTRAM 银行，再处理像素。</text>
+<text x="383.50" y="4164.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.6143 ms / DSP 502</text>
+<text x="383.50" y="4194.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F28">
+<rect x="359.50" y="4331.00" width="354" height="243" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="383.50" y="4358.00" font-size="17" font-weight="700" fill="#243031">F28</text>
+<text x="383.50" y="4389.50" font-size="20" font-weight="700" fill="#243031">私有加载器关闭循环合并</text>
+<text x="383.50" y="4425.50" font-size="16" font-weight="400" fill="#243031">只给 load_local 内层 tap 循环加入</text>
+<text x="383.50" y="4449.50" font-size="16" font-weight="400" fill="#243031"> LOOP_FLATTEN off，保持私有银行、</text>
+<text x="383.50" y="4473.50" font-size="16" font-weight="400" fill="#243031">参数流和推理算术。</text>
+<text x="383.50" y="4503.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.6151 ms / DSP 502</text>
+<text x="383.50" y="4533.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F29">
+<rect x="747.50" y="4670.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="771.50" y="4697.00" font-size="17" font-weight="700" fill="#243031">F29</text>
+<text x="771.50" y="4728.50" font-size="20" font-weight="700" fill="#243031">私有参数流直接卷积 T8，注册树</text>
+<text x="771.50" y="4764.50" font-size="16" font-weight="400" fill="#243031">基于 F28 将直接卷积改为 T8，保留加法</text>
+<text x="771.50" y="4788.50" font-size="16" font-weight="400" fill="#243031">树级间寄存，和 Winograd T8 比较。</text>
+<text x="771.50" y="4818.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.7508 ms / DSP 1004</text>
+<text x="771.50" y="4848.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT/FF</text>
+</g>
+<g data-id="F30">
+<rect x="673.00" y="4985.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="697.00" y="5012.00" font-size="17" font-weight="700" fill="#243031">F30</text>
+<text x="697.00" y="5043.50" font-size="20" font-weight="700" fill="#243031">直接卷积 T8，取消树寄存</text>
+<text x="697.00" y="5079.50" font-size="16" font-weight="400" fill="#243031">保持 F29 的参数流和 T8，单独把归约加</text>
+<text x="697.00" y="5103.50" font-size="16" font-weight="400" fill="#243031">法延迟绑定为零。</text>
+<text x="697.00" y="5133.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.7508 ms / DSP 1004</text>
+<text x="697.00" y="5163.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT</text>
+</g>
+<g data-id="E042">
+<rect x="588.50" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="612.50" y="225.00" font-size="17" font-weight="700" fill="#243031">E042 / 外部来源</text>
+<text x="612.50" y="256.50" font-size="20" font-weight="700" fill="#243031">T16：4 ns 目标</text>
+<text x="612.50" y="292.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 8.0587 ms / DSP 505</text>
+</g>
+<g data-id="E048">
+<rect x="986.50" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1010.50" y="225.00" font-size="17" font-weight="700" fill="#243031">E048 / 外部来源</text>
+<text x="1010.50" y="256.50" font-size="20" font-weight="700" fill="#243031">整数承载的定点运算</text>
+<text x="1010.50" y="292.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 29.1386 ms / DSP 254</text>
+</g>
+<g data-id="E070">
+<rect x="1310.00" y="472.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1334.00" y="499.00" font-size="17" font-weight="700" fill="#243031">E070 / 外部来源</text>
+<text x="1334.00" y="530.50" font-size="20" font-weight="700" fill="#243031">第一项可行 E039 的实际实现</text>
+<text x="1334.00" y="566.50" font-size="16" font-weight="700" fill="#243031">Routed WNS -1.277 ns</text>
+</g>
+<g data-id="W19">
+<rect x="757.50" y="4384.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="781.50" y="4411.00" font-size="17" font-weight="700" fill="#243031">W19 / 外部来源</text>
+<text x="781.50" y="4442.50" font-size="20" font-weight="700" fill="#243031">Winograd T8 接入私有参数流</text>
+<text x="781.50" y="4478.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 645</text>
+</g>
+</svg>

@@ -1,0 +1,30 @@
+%% Host scheduling: admission and memory controls
+flowchart TB
+  F32["F32<br/>F28 concurrent synthesis memory control<br/>Keep F28 unchanged; overlap synthesis with F33 and F34 C simulation while recording task-tree RSS and available memory.<br/>HLS estimate 2.6151 ms / DSP 502<br/>HLS timing warning"]
+  F33["F33<br/>W21 concurrent synthesis memory control<br/>Reproduce W21 arithmetic and HLS cycles while measuring concurrent host load.<br/>HLS estimate 1.749 ms / DSP 644<br/>Candidate; final acceptance pending"]
+  F34["F34<br/>Concurrent W21 multi-image C simulation<br/>Run all 13 course images alongside F32/F33 without changing arithmetic or references.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
+  F36["F36<br/>F28 synthesis with corrected registration<br/>Use measured memory registrations for another two-synthesis plus multi-image C simulation trial.<br/>HLS estimate 2.6151 ms / DSP 502<br/>HLS timing warning"]
+  F37["F37<br/>W21 synthesis with corrected registration<br/>Reproduce the same W21 design under corrected scheduling budgets.<br/>HLS estimate 1.749 ms / DSP 644<br/>Candidate; final acceptance pending"]
+  F38["F38<br/>Multi-image simulation with corrected registration<br/>Retain the complete F96 13-image check while overlapping F36/F37 synthesis.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
+  F28["F28 / external parent<br/>Disable private-loader loop flattening<br/>HLS estimate 2.6151 ms / DSP 502"]
+  F96["F96 / external parent<br/>All supplied images on W21<br/>C simulation / avg delta PSNR -0.0695 dB"]
+  W21["W21 / external parent<br/>Reorder the raw cache by subkernel<br/>HLS estimate 1.749 ms / DSP 644"]
+  F28 -.->|Reproduce the same experiment| F32
+  W21 -.->|Reproduce the same experiment| F33
+  F96 -.->|Reproduce the same experiment| F34
+  F28 -.->|Reproduce the same experiment| F36
+  F32 -->|Retry after a fix| F36
+  W21 -.->|Reproduce the same experiment| F37
+  F33 -->|Retry after a fix| F37
+  F96 -.->|Reproduce the same experiment| F38
+  F34 -->|Retry after a fix| F38
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class F33,F34,F37,F38 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  class F32,F36 warning
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class F28,F96,W21 context

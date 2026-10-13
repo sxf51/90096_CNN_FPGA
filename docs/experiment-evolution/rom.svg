@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="920" height="2024" viewBox="0 0 920 2024">
+<title>常量 ROM：单独量化参数通路的代价</title>
+<desc>固定权重可以省多少资源和周期？移除运行时参数接口是否值得？。数据快照 653ceb9。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="920" height="2024" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">常量 ROM：单独量化参数通路的代价</text>
+<text x="48" y="76" font-size="17" fill="#435654">固定权重可以省多少资源和周期？移除运行时参数接口是否值得？</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M336.13 343.00 L336.13 383.00 L414.00 383.00 L414.00 395.00 L560.67 395.00 L560.67 423.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M623.00 343.00 L623.00 395.00 L665.33 395.00 L665.33 423.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M219.12 343.00 L219.12 383.00 L215.00 383.00 L215.00 710.00 L371.67 710.00 L371.67 738.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M613.00 658.00 L613.00 710.00 L476.33 710.00 L476.33 738.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M424.00 997.00 L424.00 1077.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M573.81 997.00 L573.81 1037.00 L633.00 1037.00 L633.00 1388.00 L590.67 1388.00 L590.67 1416.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M581.00 1336.00 L581.00 1376.00 L653.00 1376.00 L653.00 1388.00 L695.33 1388.00 L695.33 1416.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M274.19 997.00 L274.19 1037.00 L215.00 1037.00 L215.00 1703.00 L345.50 1703.00 L345.50 1731.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M424.00 1336.00 L424.00 1731.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M643.00 1651.00 L643.00 1703.00 L502.50 1703.00 L502.50 1731.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<g data-id="F35">
+<rect x="436.00" y="431.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="460.00" y="458.00" font-size="17" font-weight="700" fill="#243031">F35</text>
+<text x="460.00" y="489.50" font-size="20" font-weight="700" fill="#243031">运行时权重银行与 ROM 等价</text>
+<text x="460.00" y="525.50" font-size="16" font-weight="400" fill="#243031">导出运行时加载后的整数银行，逐元素与同</text>
+<text x="460.00" y="549.50" font-size="16" font-weight="400" fill="#243031">量化、同 G2 变换的 ROM 内容比较。</text>
+<text x="460.00" y="579.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+<text x="460.00" y="609.50" font-size="15" font-weight="400" fill="#5c6160">C 仿真通过</text>
+</g>
+<g data-id="W24">
+<rect x="247.00" y="746.00" width="354" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="271.00" y="773.00" font-size="17" font-weight="700" fill="#243031">W24</text>
+<text x="271.00" y="804.50" font-size="20" font-weight="700" fill="#243031">T8 常量 ROM 整网</text>
+<text x="271.00" y="840.50" font-size="16" font-weight="400" fill="#243031">新顶层 srcnn_rom 固定训练参数，移除</text>
+<text x="271.00" y="864.50" font-size="16" font-weight="400" fill="#243031">参数 AXI、读取/变换进程和私有银行写</text>
+<text x="271.00" y="888.50" font-size="16" font-weight="400" fill="#243031">端口。</text>
+<text x="271.00" y="918.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.746 ms / DSP 630</text>
+<text x="271.00" y="948.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="W25">
+<rect x="247.00" y="1085.00" width="354" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="271.00" y="1112.00" font-size="17" font-weight="700" fill="#243031">W25</text>
+<text x="271.00" y="1143.50" font-size="20" font-weight="700" fill="#243031">ROM 换输入双帧 RTL</text>
+<text x="271.00" y="1179.50" font-size="16" font-weight="400" fill="#243031">使用相同 ROM 权重，第二帧改为 lenna</text>
+<text x="271.00" y="1203.50" font-size="16" font-weight="400" fill="#243031">；保留有限 FIFO、死锁和逐位输出检查</text>
+<text x="271.00" y="1227.50" font-size="16" font-weight="400" fill="#243031">。</text>
+<text x="271.00" y="1257.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 554226 cycles</text>
+<text x="271.00" y="1287.50" font-size="15" font-weight="400" fill="#5c6160">RTL 协仿完成</text>
+</g>
+<g data-id="W29">
+<rect x="466.00" y="1424.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="490.00" y="1451.00" font-size="17" font-weight="700" fill="#243031">W29</text>
+<text x="490.00" y="1482.50" font-size="20" font-weight="700" fill="#243031">ROM 首次 5 ns 实现</text>
+<text x="490.00" y="1518.50" font-size="16" font-weight="400" fill="#243031">在独立工作区验证 ROM 的物理时序和资</text>
+<text x="490.00" y="1542.50" font-size="16" font-weight="400" fill="#243031">源，不用 HLS 时钟推断实现结果。</text>
+<text x="490.00" y="1572.50" font-size="16" font-weight="700" fill="#243031">物理实现未完成</text>
+<text x="490.00" y="1602.50" font-size="15" font-weight="400" fill="#5c6160">主机内存保护中止</text>
+</g>
+<g data-id="W31">
+<rect x="247.00" y="1739.00" width="354" height="219" rx="4" fill="#ffffff" stroke="#939b9b" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="271.00" y="1766.00" font-size="17" font-weight="700" fill="#243031">W31</text>
+<text x="271.00" y="1797.50" font-size="20" font-weight="700" fill="#243031">ROM 内存失败后独立重试</text>
+<text x="271.00" y="1833.50" font-size="16" font-weight="400" fill="#243031">同一 ROM RTL 在新工作区补跑，沿用原</text>
+<text x="271.00" y="1857.50" font-size="16" font-weight="400" fill="#243031">数值、时序和资源门限。</text>
+<text x="271.00" y="1887.50" font-size="16" font-weight="700" fill="#243031">已排队/运行，暂无归档测量</text>
+<text x="271.00" y="1917.50" font-size="15" font-weight="400" fill="#5c6160">未归档测量</text>
+</g>
+<g data-id="W19">
+<rect x="446.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="470.00" y="225.00" font-size="17" font-weight="700" fill="#243031">W19 / 外部来源</text>
+<text x="470.00" y="256.50" font-size="20" font-weight="700" fill="#243031">Winograd T8 接入私有参数流</text>
+<text x="470.00" y="292.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 645</text>
+</g>
+<g data-id="W21">
+<rect x="48.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="225.00" font-size="17" font-weight="700" fill="#243031">W21 / 外部来源</text>
+<text x="72.00" y="256.50" font-size="20" font-weight="700" fill="#243031">权重缓存按子卷积重排</text>
+<text x="72.00" y="292.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+</g>
+</svg>

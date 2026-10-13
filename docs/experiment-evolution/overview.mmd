@@ -1,0 +1,76 @@
+%% SRCNN 实验总览 / 从原始结构到 C18
+flowchart TB
+  baseline["E000 / 起点<br/>原始浮点、完整中间图<br/>522.28 M MAC / frame<br/>BRAM18K 11064，器件仅 288<br/>功能成立，存储结构不可行"]
+  precision["E010-E019 / E062-E071<br/>精度与独立参考<br/>10 位平均 ΔPSNR −0.0695 dB<br/>全 8 位约 −5.18 dB<br/>课程完整测试集为 13 图；逐位对照定点参考"]
+  compiler["E020-E029 / E032<br/>只改编译指令<br/>有效浮点控制约 3811 ms<br/>BRAM18K 11114<br/>修复无效配置后，仍需改存储组织"]
+  streaming["E030-E033 / E047-E048<br/>整网流连接与行缓存<br/>中间图取消，BRAM18K 168<br/>DSP 绑定、整数承载<br/>权重选择器仍大：LUT 89304"]
+  scans["E034-E043 / E057-E067 扫描<br/>LUTRAM 银行、展开与时钟<br/>E043：HLS 约 6.9392 ms<br/>DSP 505 / BRAM18K 168<br/>资源合格；存在 HLS 时序告警"]
+  micro["E051-E055 / E071<br/>乘法器和范围控制<br/>DSP / fabric / 常数权重对照<br/>小内核成本不能当作整网结果"]
+  packing["A / P01-P16<br/>Packing：省 DSP 的代价<br/>INT8 与精确十位 PE 成立<br/>P10-P12 整网 LUT 超预算<br/>P13-P16 已测：普通混合映射优于完整 INT16 Packing"]
+  scatter["C / E050 / E060 / G01-G03<br/>Conv3 Scatter<br/>BRAM18K 168 → 137 → 87<br/>29.83 → 37.70 → 44.14 ms<br/>缓存变少，控制与额外工作变多"]
+  memory["S01-S06<br/>DDR 探针与分块融合<br/>DDR 探针未导出 scratch 端口<br/>B8-B64：少 BRAM、重算 halo<br/>无有效 DDR；分块 LUT/时间不合格"]
+  winograd["D / W01-W18<br/>Winograd → 连续 tile → 窄银行<br/>W18：HLS 约 4.2274 ms<br/>DSP 326 / LUT 74480<br/>资源合格；存在 HLS 时序告警"]
+  continuous["B / F01-F15<br/>连续流水与固定窗口读取<br/>FIFO LUTRAM、在线补边<br/>双窗口流、通道轮换、注册加法树<br/>去像素间重启，减少宽选择器"]
+  combination["C01-C12 / 组合实验<br/>Winograd + Packing / 混合精度<br/>最快原始估计 C11：1.0817 ms<br/>LUT 248797 / FF 307525<br/>明显超量，不能按最小时间选择"]
+  loader["F16-F24<br/>移除输出转换与加载路径瓶颈<br/>F20：精确 float 编码，0 DSP<br/>F24：显式三维权重加载索引<br/>全局关键路径转到加载循环控制"]
+  f25["F25 / 当前直接卷积候选<br/>关闭 F24 的权重加载循环合并<br/>HLS 约 2.64226 ms / DSP 502<br/>BRAM18K 73 / LUT 69976<br/>2.5 ns 有 uncertainty 后的时序告警"]
+  private["F26-F28 / 私有参数<br/>参数流接入各层私有权重银行<br/>F28：HLS 2.6151 ms / 区外 LUT 3170<br/>F26 面积假设失败，F27 未达加载器时钟门槛<br/>F28 达 WS2 门槛；F93/F94/F95 验证重载、多图、布线"]
+  t8["W19-W21 / F29-F30<br/>Winograd T8，缓存按子卷积索引<br/>W19 LUT 超预算；W21 剩 898 LUT 余量<br/>直接卷积 T8 对照仍超预算<br/>W21：HLS 525237 周期；F97：RTL 558758 周期"]
+  verification["E069-E070 / F80-F98 / W20<br/>数值、RTL、物理分别验收<br/>F93/F97：换参数双帧 RTL Pass<br/>F92/F95/F98：独立 5 ns 布线通过<br/>W20 仍仅诊断；板端验收未完成"]
+  w22["W22 / W21 集成后备<br/>相同 W21 RTL，4.95 ns 布线<br/>F97 周期按通过目标折算：2.7658521 ms<br/>WNS +0.047 ns；保留 F98 的 5 ns 后备<br/>后续 W32 已使相同 RTL 在 4.5 ns 收敛"]
+  host["F32-F38 / 主机对照<br/>按实测峰值修正内存登记<br/>F28/W21 设计不变，并行 C 仿真与综合<br/>后续两重任务重叠触发内存失败<br/>当前：一个重任务加预算内轻任务"]
+  rom["F35 / W24-W25 / W29-W31<br/>固定 ROM，移除参数通路<br/>银行等价、13 图和换输入 RTL 通过<br/>RTL 554226 周期；HLS 630 DSP / 53316 LUT<br/>W29 被内存保护中止；W31 尚无归档结果"]
+  clock["W23-W32 / F39-F43-F49-F52<br/>物理策略与 Conv3 操作数寄存<br/>W32 / F52 均在 4.5 ns 收敛<br/>558758 RTL 周期：2.514411 ms/张<br/>布线门限通过；原 OOM/内存保护失败保留"]
+  fifo["F40-F48 / F50-F51<br/>变换窗口 FIFO 加深到 16<br/>层间特征 FIFO16/32 不减周期<br/>F48：535771 周期，比 F97 少 22987<br/>原 2% 目标差 30 周期；用户接受为 T8 依据"]
+  frp["W26-W30<br/>MAC fold 使用 FRP 流水<br/>W28 换参数 RTL 精确，549438 周期<br/>W30：4.5 ns 收敛，2.472471 ms/张<br/>布线门限通过；W28 原失败与后续授权保留"]
+  t4["C13-C15 / C18<br/>T4 在运行时加载阶段预拼 Conv2<br/>C14：300632 周期；C18：5 ns 收敛<br/>1.503160 ms/张 / 1032 DSP / 布线 LUT 58529<br/>E065 混合精度；布线门限通过，未板测"]
+  next["C16-C17 / 待验收组合<br/>T8 窗口16加 FRP；T4 窗口32<br/>计划已启动，尚无归档结果行<br/>仍需多图、换参数 RTL 和独立布线<br/>单项收益不能相加，物理通过不能继承"]
+  baseline -.->|数值依据或研究启发| precision
+  baseline -->|设计或参数基线| compiler
+  baseline -->|设计或参数基线| streaming
+  precision -.->|数值依据或研究启发| streaming
+  compiler -.->|数值依据或研究启发| streaming
+  streaming -->|设计或参数基线| scans
+  streaming -.->|数值依据或研究启发| micro
+  scans -->|设计或参数基线| packing
+  micro -.->|数值依据或研究启发| packing
+  scans -->|设计或参数基线| scatter
+  scans -->|设计或参数基线| memory
+  scans -->|设计或参数基线| winograd
+  scans -->|设计或参数基线| continuous
+  packing -->|集成已有模块| combination
+  winograd -->|集成已有模块| combination
+  continuous -->|设计或参数基线| loader
+  loader -->|设计或参数基线| f25
+  f25 -.->|验证同一设计| verification
+  scans -.->|验证同一设计| verification
+  f25 -->|设计或参数基线| private
+  private -->|集成已有模块| t8
+  winograd -->|设计或参数基线| t8
+  private -.->|验证同一设计| verification
+  t8 -.->|验证同一设计| verification
+  verification -->|修复后重试| w22
+  t8 -.->|对照实验| host
+  t8 -->|设计或参数基线| rom
+  w22 -.->|验证同一设计| clock
+  host -.->|数值依据或研究启发| clock
+  t8 -->|设计或参数基线| fifo
+  t8 -->|设计或参数基线| frp
+  t8 -->|设计或参数基线| t4
+  packing -.->|数值依据或研究启发| t4
+  precision -.->|数值依据或研究启发| t4
+  fifo -->|集成已有模块| next
+  frp -->|集成已有模块| next
+  t4 -->|设计或参数基线| next
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class continuous,verification,w22,clock,fifo,frp,t4 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  class scans,winograd,loader,f25,private,t8,rom warning
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class baseline,compiler,streaming,packing,memory,combination infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  class next planned
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  class precision,micro,scatter,host analysis
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031

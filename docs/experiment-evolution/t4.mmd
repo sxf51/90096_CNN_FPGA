@@ -1,0 +1,31 @@
+%% T4：运行时预拼 Conv2 参数与独立布线
+flowchart TB
+  C13["C13<br/>运行时预拼 Conv2 权重的 T4<br/>T=4；仅 Conv2 使用 8 位权重和 21 位累加器，在参数加载时把每对系数预拼为 27 位，计算时逐乘积解码。<br/>HLS 估计 1.0524 ms / DSP 1032<br/>超预算: LUT/FF"]
+  C14["C14<br/>T4 换参数双帧 RTL<br/>冻结混合精度参考，检查两帧有限 FIFO、死锁和第二帧重新加载参数。<br/>RTL Pass / 300632 cycles<br/>RTL 协仿完成"]
+  C15["C15<br/>T4 首次独立 5 ns 实现<br/>依据新布线门限验证 C13；保持 RTL、目标与数值验收。<br/>物理实现未完成<br/>主机内存保护中止"]
+  C18["C18<br/>T4 分阶段进程的 5 ns 补跑<br/>相同 C13 RTL 先完成综合报告并退出 Vivado，再由新进程重开项目做实现；目标、线程与总限时不变。<br/>Routed WNS 0.047 ns<br/>独立布线门限通过"]
+  C17["C17<br/>T4 变换窗口 FIFO 深度 32<br/>只把 C13 的变换窗口 FIFO 从 2 加深到 32，保持运行时参数与 E065 混合精度。<br/>已排队/运行，暂无归档测量<br/>未归档测量"]
+  E065["E065 / 外部来源<br/>Conv2 权重 8 位边界复核<br/>C 仿真 / 平均 ΔPSNR -0.0759 dB"]
+  W21["W21 / 外部来源<br/>权重缓存按子卷积重排<br/>HLS 估计 1.749 ms / DSP 644"]
+  W21 -->|设计或参数基线| C13
+  E065 -.->|数值依据或研究启发| C13
+  C13 -.->|验证同一设计| C14
+  C13 -.->|验证同一设计| C15
+  C14 -.->|验证同一设计| C15
+  C13 -.->|验证同一设计| C18
+  C14 -.->|验证同一设计| C18
+  C15 -->|修复后重试| C18
+  C13 -->|设计或参数基线| C17
+  C14 -.->|数值依据或研究启发| C17
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class C14,C18 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class C15 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class C13 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  class C17 planned
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E065,W21 context

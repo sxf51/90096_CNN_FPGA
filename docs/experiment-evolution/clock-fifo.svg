@@ -1,0 +1,264 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="3923" height="1823" viewBox="0 0 3923 1823">
+<title>T8 后续：物理时钟、FRP 与 FIFO 等待</title>
+<desc>改善控制扇出和窗口等待能否缩短真实 RTL 周期与已收敛时钟？。数据快照 653ceb9。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="3923" height="1823" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">T8 后续：物理时钟、FRP 与 FIFO 等待</text>
+<text x="48" y="76" font-size="17" fill="#435654">改善控制扇出和窗口等待能否缩短真实 RTL 周期与已收敛时钟？</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M1784.50 358.00 L1784.50 413.00 L434.00 413.00 L434.00 425.00 L313.50 425.00 L313.50 453.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M739.50 358.00 L739.50 413.00 L414.00 413.00 L414.00 425.00 L235.00 425.00 L235.00 453.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M225.00 373.00 L225.00 425.00 L156.50 425.00 L156.50 453.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1784.50 358.00 L1784.50 413.00 L558.50 413.00 L558.50 806.00 L418.00 806.00 L418.00 834.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M739.50 358.00 L739.50 413.00 L538.50 413.00 L538.50 806.00 L339.50 806.00 L339.50 834.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M235.00 742.00 L235.00 806.00 L261.00 806.00 L261.00 834.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2098.50 358.00 L2098.50 413.00 L2349.50 413.00 L2349.50 468.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2098.50 358.00 L2098.50 413.00 L2558.50 413.00 L2558.50 806.00 L2401.67 806.00 L2401.67 834.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2349.50 727.00 L2349.50 806.00 L2506.33 806.00 L2506.33 834.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2297.00 1069.00 L2297.00 1121.00 L339.50 1121.00 L339.50 1188.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2297.00 1069.00 L2297.00 1121.00 L548.50 1121.00 L548.50 1502.00 L496.33 1502.00 L496.33 1530.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M339.50 1423.00 L339.50 1502.00 L391.67 1502.00 L391.67 1530.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2098.50 358.00 L2098.50 413.00 L3698.00 413.00 L3698.00 468.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3629.18 727.00 L3629.18 782.00 L3593.50 782.00 L3593.50 822.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3541.00 727.00 L3541.00 782.00 L3384.50 782.00 L3384.50 1160.00 L3436.83 1160.00 L3436.83 1188.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3436.50 1081.00 L3436.50 1121.00 L3195.50 1121.00 L3195.50 1160.00 L3332.17 1160.00 L3332.17 1188.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3766.82 727.00 L3766.82 782.00 L3802.50 782.00 L3802.50 1502.00 L3776.50 1502.00 L3776.50 1530.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3593.50 1081.00 L3593.50 1502.00 L3698.00 1502.00 L3698.00 1530.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3384.50 1423.00 L3384.50 1502.00 L3619.50 1502.00 L3619.50 1530.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1784.50 358.00 L1784.50 413.00 L1553.50 413.00 L1553.50 480.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1553.50 715.00 L1553.50 834.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1784.50 358.00 L1784.50 413.00 L946.50 413.00 L946.50 806.00 L809.83 806.00 L809.83 834.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1396.50 715.00 L1396.50 782.00 L578.50 782.00 L578.50 806.00 L705.17 806.00 L705.17 834.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M757.50 1069.00 L757.50 1188.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1946.71 358.00 L1946.71 413.00 L1951.50 413.00 L1951.50 468.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1794.50 727.00 L1794.50 782.00 L1155.50 782.00 L1155.50 834.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1951.50 727.00 L1951.50 1160.00 L1814.83 1160.00 L1814.83 1188.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1155.50 1069.00 L1155.50 1160.00 L1710.17 1160.00 L1710.17 1188.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2098.50 358.00 L2098.50 413.00 L3290.00 413.00 L3290.00 425.00 L3038.83 425.00 L3038.83 453.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1053.50 358.00 L1053.50 413.00 L2683.00 413.00 L2683.00 425.00 L2934.17 425.00 L2934.17 453.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2909.19 742.00 L2909.19 782.00 L2882.00 782.00 L2882.00 834.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2829.50 742.00 L2829.50 782.00 L2673.00 782.00 L2673.00 1160.00 L2630.83 1160.00 L2630.83 1188.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2725.00 1069.00 L2725.00 1121.00 L2180.50 1121.00 L2180.50 1160.00 L2526.17 1160.00 L2526.17 1188.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3126.33 742.00 L3126.33 782.00 L3175.50 782.00 L3175.50 1133.00 L3065.00 1133.00 L3065.00 1161.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2611.00 1069.00 L2611.00 1121.00 L3155.50 1121.00 L3155.50 1133.00 L2908.00 1133.00 L2908.00 1161.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2882.00 1069.00 L2882.00 1133.00 L2986.50 1133.00 L2986.50 1161.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<g data-id="W23">
+<rect x="58.00" y="461.00" width="354" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="82.00" y="488.00" font-size="17" font-weight="700" fill="#243031">W23</text>
+<text x="82.00" y="519.50" font-size="20" font-weight="700" fill="#243031">相同 W21 RTL 的 4.5 ns 策</text>
+<text x="82.00" y="549.50" font-size="20" font-weight="700" fill="#243031">略</text>
+<text x="82.00" y="585.50" font-size="16" font-weight="400" fill="#243031">不改 RTL，使用</text>
+<text x="82.00" y="609.50" font-size="16" font-weight="400" fill="#243031">Performance_Explore 和布线后物理</text>
+<text x="82.00" y="633.50" font-size="16" font-weight="400" fill="#243031">优化，综合 1、布局布线 4 线程。</text>
+<text x="82.00" y="663.50" font-size="16" font-weight="700" fill="#243031">主机 OOM；无 routed 结果</text>
+<text x="82.00" y="693.50" font-size="15" font-weight="400" fill="#5c6160">主机 OOM</text>
+</g>
+<g data-id="W32">
+<rect x="162.50" y="842.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="186.50" y="869.00" font-size="17" font-weight="700" fill="#243031">W32</text>
+<text x="186.50" y="900.50" font-size="20" font-weight="700" fill="#243031">4.5 ns 策略的 OOM 后重试</text>
+<text x="186.50" y="936.50" font-size="16" font-weight="400" fill="#243031">保留相同 W21 RTL、策略和目标，以新工</text>
+<text x="186.50" y="960.50" font-size="16" font-weight="400" fill="#243031">作区独立补跑，保留 W23 失败。</text>
+<text x="186.50" y="990.50" font-size="16" font-weight="700" fill="#243031">Routed WNS 0.144 ns</text>
+<text x="186.50" y="1020.50" font-size="15" font-weight="400" fill="#5c6160">独立布线门限通过</text>
+</g>
+<g data-id="W26">
+<rect x="2172.50" y="476.00" width="354" height="243" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2196.50" y="503.00" font-size="17" font-weight="700" fill="#243031">W26</text>
+<text x="2196.50" y="534.50" font-size="20" font-weight="700" fill="#243031">三个 MAC fold 的 FRP 初试</text>
+<text x="2196.50" y="570.50" font-size="16" font-weight="400" fill="#243031">只将三个连续 MAC fold 改为</text>
+<text x="2196.50" y="594.50" font-size="16" font-weight="400" fill="#243031">free-running 流水，尝试减少全局使</text>
+<text x="2196.50" y="618.50" font-size="16" font-weight="400" fill="#243031">能分发。</text>
+<text x="2196.50" y="648.50" font-size="16" font-weight="700" fill="#243031">运行失败</text>
+<text x="2196.50" y="678.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="W27">
+<rect x="2277.00" y="842.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="2301.00" y="869.00" font-size="17" font-weight="700" fill="#243031">W27</text>
+<text x="2301.00" y="900.50" font-size="20" font-weight="700" fill="#243031">FRP 有效设计重试</text>
+<text x="2301.00" y="936.50" font-size="16" font-weight="400" fill="#243031">构建正确的独立设计副本，保持数值、接口</text>
+<text x="2301.00" y="960.50" font-size="16" font-weight="400" fill="#243031">和流 token，启用三个 FRP fold。</text>
+<text x="2301.00" y="990.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+<text x="2301.00" y="1020.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="W28">
+<rect x="162.50" y="1196.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="186.50" y="1223.00" font-size="17" font-weight="700" fill="#243031">W28</text>
+<text x="186.50" y="1254.50" font-size="20" font-weight="700" fill="#243031">FRP 换参数双帧 RTL</text>
+<text x="186.50" y="1290.50" font-size="16" font-weight="400" fill="#243031">两帧数值和换参数检查保持不变，实测有限</text>
+<text x="186.50" y="1314.50" font-size="16" font-weight="400" fill="#243031"> FIFO 下的 FRP 周期。</text>
+<text x="186.50" y="1344.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 549438 cycles</text>
+<text x="186.50" y="1374.50" font-size="15" font-weight="400" fill="#5c6160">原周期门限失败；后获用户授权</text>
+</g>
+<g data-id="W30">
+<rect x="267.00" y="1538.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="291.00" y="1565.00" font-size="17" font-weight="700" fill="#243031">W30</text>
+<text x="291.00" y="1596.50" font-size="20" font-weight="700" fill="#243031">FRP 的独立 4.5 ns 物理实现</text>
+<text x="291.00" y="1632.50" font-size="16" font-weight="400" fill="#243031">依据 W28 明确的单边周期授权，在独立</text>
+<text x="291.00" y="1656.50" font-size="16" font-weight="400" fill="#243031">工作区验证相同 FRP RTL 的布线门限。</text>
+<text x="291.00" y="1686.50" font-size="16" font-weight="700" fill="#243031">Routed WNS 0.027 ns</text>
+<text x="291.00" y="1716.50" font-size="15" font-weight="400" fill="#5c6160">独立布线门限通过</text>
+</g>
+<g data-id="F39">
+<rect x="3521.00" y="476.00" width="354" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="3545.00" y="503.00" font-size="17" font-weight="700" fill="#243031">F39</text>
+<text x="3545.00" y="534.50" font-size="20" font-weight="700" fill="#243031">Conv3 选择路径加操作数寄存器</text>
+<text x="3545.00" y="570.50" font-size="16" font-weight="400" fill="#243031">在 100 个 Conv3 DSP 输入前各增加一</text>
+<text x="3545.00" y="594.50" font-size="16" font-weight="400" fill="#243031">周期操作数寄存器，其他层与原流水风格不</text>
+<text x="3545.00" y="618.50" font-size="16" font-weight="400" fill="#243031">变。</text>
+<text x="3545.00" y="648.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+<text x="3545.00" y="678.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="F43">
+<rect x="3416.50" y="830.00" width="354" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="3440.50" y="857.00" font-size="17" font-weight="700" fill="#243031">F43</text>
+<text x="3440.50" y="888.50" font-size="20" font-weight="700" fill="#243031">Conv3 寄存控制双帧 RTL</text>
+<text x="3440.50" y="924.50" font-size="16" font-weight="400" fill="#243031">保留全部换参数、有限 FIFO、</text>
+<text x="3440.50" y="948.50" font-size="16" font-weight="400" fill="#243031">profiling 和数值检查，测量寄存控制</text>
+<text x="3440.50" y="972.50" font-size="16" font-weight="400" fill="#243031">的真实周期。</text>
+<text x="3440.50" y="1002.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 558758 cycles</text>
+<text x="3440.50" y="1032.50" font-size="15" font-weight="400" fill="#5c6160">RTL 协仿完成</text>
+</g>
+<g data-id="F49">
+<rect x="3207.50" y="1196.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="3231.50" y="1223.00" font-size="17" font-weight="700" fill="#243031">F49</text>
+<text x="3231.50" y="1254.50" font-size="20" font-weight="700" fill="#243031">Conv3 寄存设计 4.5 ns 实现</text>
+<text x="3231.50" y="1290.50" font-size="16" font-weight="400" fill="#243031">独立验证操作数寄存器是否改善物理路径，</text>
+<text x="3231.50" y="1314.50" font-size="16" font-weight="400" fill="#243031">保留同设计 RTL 前提。</text>
+<text x="3231.50" y="1344.50" font-size="16" font-weight="700" fill="#243031">物理实现未完成</text>
+<text x="3231.50" y="1374.50" font-size="15" font-weight="400" fill="#5c6160">主机内存保护中止</text>
+</g>
+<g data-id="F52">
+<rect x="3521.00" y="1538.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="3545.00" y="1565.00" font-size="17" font-weight="700" fill="#243031">F52</text>
+<text x="3545.00" y="1596.50" font-size="20" font-weight="700" fill="#243031">Conv3 寄存设计独立补跑</text>
+<text x="3545.00" y="1632.50" font-size="16" font-weight="400" fill="#243031">在新工作区补跑同一 F39 RTL 的 4.5</text>
+<text x="3545.00" y="1656.50" font-size="16" font-weight="400" fill="#243031">ns 实现，保留 F49 原失败。</text>
+<text x="3545.00" y="1686.50" font-size="16" font-weight="700" fill="#243031">Routed WNS 0.072 ns</text>
+<text x="3545.00" y="1716.50" font-size="15" font-weight="400" fill="#5c6160">独立布线门限通过</text>
+</g>
+<g data-id="F40">
+<rect x="1376.50" y="488.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1400.50" y="515.00" font-size="17" font-weight="700" fill="#243031">F40</text>
+<text x="1400.50" y="546.50" font-size="20" font-weight="700" fill="#243031">层间特征 FIFO 深度 16</text>
+<text x="1400.50" y="582.50" font-size="16" font-weight="400" fill="#243031">只将 Conv1 到 Conv2 的 640-bit</text>
+<text x="1400.50" y="606.50" font-size="16" font-weight="400" fill="#243031">特征 FIFO 从 4 加深到 16。</text>
+<text x="1400.50" y="636.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+<text x="1400.50" y="666.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="F44">
+<rect x="1376.50" y="842.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1400.50" y="869.00" font-size="17" font-weight="700" fill="#243031">F44</text>
+<text x="1400.50" y="900.50" font-size="20" font-weight="700" fill="#243031">深度 16 特征 FIFO 双帧 RTL</text>
+<text x="1400.50" y="936.50" font-size="16" font-weight="400" fill="#243031">两帧换参数和有限 FIFO 计数器对照</text>
+<text x="1400.50" y="960.50" font-size="16" font-weight="400" fill="#243031">F97。</text>
+<text x="1400.50" y="990.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 558758 cycles</text>
+<text x="1400.50" y="1020.50" font-size="15" font-weight="400" fill="#5c6160">RTL 协仿完成</text>
+</g>
+<g data-id="F41">
+<rect x="580.50" y="842.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="604.50" y="869.00" font-size="17" font-weight="700" fill="#243031">F41</text>
+<text x="604.50" y="900.50" font-size="20" font-weight="700" fill="#243031">层间特征 FIFO 深度 32</text>
+<text x="604.50" y="936.50" font-size="16" font-weight="400" fill="#243031">只将相同层间特征 FIFO 从 4 加深到</text>
+<text x="604.50" y="960.50" font-size="16" font-weight="400" fill="#243031">32，与 16 深度控制比较。</text>
+<text x="604.50" y="990.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+<text x="604.50" y="1020.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="F45">
+<rect x="580.50" y="1196.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="604.50" y="1223.00" font-size="17" font-weight="700" fill="#243031">F45</text>
+<text x="604.50" y="1254.50" font-size="20" font-weight="700" fill="#243031">深度 32 特征 FIFO 双帧 RTL</text>
+<text x="604.50" y="1290.50" font-size="16" font-weight="400" fill="#243031">实测两帧换参数结果、延迟和有限 FIFO</text>
+<text x="604.50" y="1314.50" font-size="16" font-weight="400" fill="#243031">等待。</text>
+<text x="604.50" y="1344.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 558758 cycles</text>
+<text x="604.50" y="1374.50" font-size="15" font-weight="400" fill="#5c6160">RTL 协仿完成</text>
+</g>
+<g data-id="F42">
+<rect x="1774.50" y="476.00" width="354" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1798.50" y="503.00" font-size="17" font-weight="700" fill="#243031">F42</text>
+<text x="1798.50" y="534.50" font-size="20" font-weight="700" fill="#243031">重排输出加 256 深度缓冲</text>
+<text x="1798.50" y="570.50" font-size="16" font-weight="400" fill="#243031">保留原 4 深度特征 FIFO，在</text>
+<text x="1798.50" y="594.50" font-size="16" font-weight="400" fill="#243031">reorder_rows 后增加独立转发和 256</text>
+<text x="1798.50" y="618.50" font-size="16" font-weight="400" fill="#243031"> 深度 LUTRAM 缓冲。</text>
+<text x="1798.50" y="648.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+<text x="1798.50" y="678.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="F46">
+<rect x="978.50" y="842.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1002.50" y="869.00" font-size="17" font-weight="700" fill="#243031">F46</text>
+<text x="1002.50" y="900.50" font-size="20" font-weight="700" fill="#243031">重排缓冲首次双帧 RTL</text>
+<text x="1002.50" y="936.50" font-size="16" font-weight="400" fill="#243031">保留标准 profiling、死锁检查及换参</text>
+<text x="1002.50" y="960.50" font-size="16" font-weight="400" fill="#243031">数测试，测量 raster FIFO 效果。</text>
+<text x="1002.50" y="990.50" font-size="16" font-weight="700" fill="#243031">RTL 未完成 / 未知 cycles</text>
+<text x="1002.50" y="1020.50" font-size="15" font-weight="400" fill="#5c6160">主机内存保护中止</text>
+</g>
+<g data-id="F50">
+<rect x="1585.50" y="1196.00" width="354" height="219" rx="4" fill="#ffffff" stroke="#939b9b" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1609.50" y="1223.00" font-size="17" font-weight="700" fill="#243031">F50</text>
+<text x="1609.50" y="1254.50" font-size="20" font-weight="700" fill="#243031">重排缓冲双帧 RTL 补跑计划</text>
+<text x="1609.50" y="1290.50" font-size="16" font-weight="400" fill="#243031">保留原设计、标准计数器和逐位门限，在新</text>
+<text x="1609.50" y="1314.50" font-size="16" font-weight="400" fill="#243031">工作区重试。</text>
+<text x="1609.50" y="1344.50" font-size="16" font-weight="700" fill="#243031">已排队/运行，暂无归档测量</text>
+<text x="1609.50" y="1374.50" font-size="15" font-weight="400" fill="#5c6160">未归档测量</text>
+</g>
+<g data-id="F47">
+<rect x="2809.50" y="461.00" width="354" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="2833.50" y="488.00" font-size="17" font-weight="700" fill="#243031">F47</text>
+<text x="2833.50" y="519.50" font-size="20" font-weight="700" fill="#243031">变换窗口 FIFO 从 2 加深到</text>
+<text x="2833.50" y="549.50" font-size="20" font-weight="700" fill="#243031">16</text>
+<text x="2833.50" y="585.50" font-size="16" font-weight="400" fill="#243031">针对 F97 的窗口读阻塞，仅增加</text>
+<text x="2833.50" y="609.50" font-size="16" font-weight="400" fill="#243031">Winograd 变换窗口 lookahead，不改</text>
+<text x="2833.50" y="633.50" font-size="16" font-weight="400" fill="#243031">变算术。</text>
+<text x="2833.50" y="663.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+<text x="2833.50" y="693.50" font-size="15" font-weight="400" fill="#5c6160">局部实验通过</text>
+</g>
+<g data-id="F48">
+<rect x="2705.00" y="842.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="2729.00" y="869.00" font-size="17" font-weight="700" fill="#243031">F48</text>
+<text x="2729.00" y="900.50" font-size="20" font-weight="700" fill="#243031">窗口 FIFO16 换参数双帧 RTL</text>
+<text x="2729.00" y="936.50" font-size="16" font-weight="400" fill="#243031">测量更深窗口 FIFO 的有限流等待、逐位</text>
+<text x="2729.00" y="960.50" font-size="16" font-weight="400" fill="#243031">输出和实际周期。</text>
+<text x="2729.00" y="990.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 535771 cycles</text>
+<text x="2729.00" y="1020.50" font-size="15" font-weight="400" fill="#5c6160">RTL 协仿完成</text>
+</g>
+<g data-id="F51">
+<rect x="2401.50" y="1196.00" width="354" height="219" rx="4" fill="#ffffff" stroke="#939b9b" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="2425.50" y="1223.00" font-size="17" font-weight="700" fill="#243031">F51</text>
+<text x="2425.50" y="1254.50" font-size="20" font-weight="700" fill="#243031">窗口 FIFO16 独立布线计划</text>
+<text x="2425.50" y="1290.50" font-size="16" font-weight="400" fill="#243031">对同一 F47 RTL 独立做 5 ns 物理实</text>
+<text x="2425.50" y="1314.50" font-size="16" font-weight="400" fill="#243031">现，保留 F48 实测与所有布线门限。</text>
+<text x="2425.50" y="1344.50" font-size="16" font-weight="700" fill="#243031">已排队/运行，暂无归档测量</text>
+<text x="2425.50" y="1374.50" font-size="15" font-weight="400" fill="#5c6160">未归档测量</text>
+</g>
+<g data-id="C16">
+<rect x="2809.50" y="1169.00" width="354" height="273" rx="4" fill="#ffffff" stroke="#939b9b" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="2833.50" y="1196.00" font-size="17" font-weight="700" fill="#243031">C16</text>
+<text x="2833.50" y="1227.50" font-size="20" font-weight="700" fill="#243031">T8 组合：窗口 FIFO16 与</text>
+<text x="2833.50" y="1257.50" font-size="20" font-weight="700" fill="#243031">FRP</text>
+<text x="2833.50" y="1293.50" font-size="16" font-weight="400" fill="#243031">复制 F47 的 16 深度窗口设计，只集成</text>
+<text x="2833.50" y="1317.50" font-size="16" font-weight="400" fill="#243031"> W27 的三个 FRP fold；保持运行时参</text>
+<text x="2833.50" y="1341.50" font-size="16" font-weight="400" fill="#243031">数和 E017 精度。</text>
+<text x="2833.50" y="1371.50" font-size="16" font-weight="700" fill="#243031">已排队/运行，暂无归档测量</text>
+<text x="2833.50" y="1401.50" font-size="15" font-weight="400" fill="#5c6160">未归档测量</text>
+</g>
+<g data-id="F97">
+<rect x="719.50" y="213.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="743.50" y="240.00" font-size="17" font-weight="700" fill="#243031">F97 / 外部来源</text>
+<text x="743.50" y="271.50" font-size="20" font-weight="700" fill="#243031">W21 更换参数的双帧 RTL 验证</text>
+<text x="743.50" y="307.50" font-size="16" font-weight="700" fill="#243031">RTL Pass / 558758 cycles</text>
+</g>
+<g data-id="W21">
+<rect x="1764.50" y="213.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1788.50" y="240.00" font-size="17" font-weight="700" fill="#243031">W21 / 外部来源</text>
+<text x="1788.50" y="271.50" font-size="20" font-weight="700" fill="#243031">权重缓存按子卷积重排</text>
+<text x="1788.50" y="307.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+</g>
+<g data-id="W22">
+<rect x="48.00" y="198.00" width="354" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="225.00" font-size="17" font-weight="700" fill="#243031">W22 / 外部来源</text>
+<text x="72.00" y="256.50" font-size="20" font-weight="700" fill="#243031">相同 W21 RTL 的 4.95 ns</text>
+<text x="72.00" y="286.50" font-size="20" font-weight="700" fill="#243031">布线</text>
+<text x="72.00" y="322.50" font-size="16" font-weight="700" fill="#243031">Routed WNS 0.047 ns</text>
+</g>
+</svg>

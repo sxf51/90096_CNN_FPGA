@@ -1,0 +1,20 @@
+%% C: gather/scatter storage and control tradeoffs
+flowchart TB
+  G01["G01<br/>Matched gather control<br/>Independently rerun the same T32, 10 ns, 10-bit Conv3 line-buffer organization.<br/>HLS estimate 29.8302 ms / DSP 254<br/>Candidate; final acceptance pending"]
+  G02["G02<br/>Scatter with explicit padding<br/>Store five rows of 32-bit partial sums while retaining 32-channel padding.<br/>HLS estimate 37.7021 ms / DSP 254<br/>Candidate; final acceptance pending"]
+  G03["G03<br/>Scatter with merged boundary kernels<br/>Merge repeated taps for nine boundary classes and remove the wide-channel padding buffer.<br/>HLS estimate 44.1393 ms / DSP 254<br/>Candidate; final acceptance pending"]
+  E057["E057 / external parent<br/>Integer T32 with LUTRAM weight banks<br/>HLS estimate 29.8302 ms / DSP 254"]
+  E060["E060 / external parent<br/>Integer Conv3 scatter<br/>HLS estimate 37.7021 ms / DSP 254"]
+  E057 -->|Design or parameter baseline| G01
+  E060 -->|Design or parameter baseline| G02
+  G01 -.->|Control experiment| G02
+  G02 -->|Design or parameter baseline| G03
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class G01,G02,G03 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E057,E060 context

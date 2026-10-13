@@ -1,0 +1,73 @@
+%% T8 follow-up: routed clocks, FRP, and FIFO waits
+flowchart TB
+  W23["W23<br/>Same W21 RTL with a 4.5 ns strategy<br/>Keep RTL unchanged; use Performance_Explore and post-route optimization with one synthesis and four place/route threads.<br/>Host OOM; no routed results<br/>Host OOM"]
+  W32["W32<br/>4.5 ns strategy retry after OOM<br/>Independently retry the same W21 RTL, strategy, and target in a fresh workspace; retain W23 failure.<br/>Routed WNS 0.144 ns<br/>Independent route gates pass"]
+  W26["W26<br/>First FRP attempt for three MAC folds<br/>Change only the three continuous folds to free-running pipelines to reduce global enable distribution.<br/>Run failed<br/>Run failed"]
+  W27["W27<br/>Valid FRP design retry<br/>Build the independent design correctly, retaining arithmetic, interfaces, and stream tokens while enabling three FRP folds.<br/>HLS estimate 1.749 ms / DSP 644<br/>Local experiment passed"]
+  W28["W28<br/>FRP two-frame RTL with parameter reload<br/>Retain both numerical/reload checks and measure FRP cycles with finite FIFOs.<br/>RTL Pass / 549438 cycles<br/>Original cycle gate failed; later user acceptance"]
+  W30["W30<br/>Independent FRP implementation at 4.5 ns<br/>Use explicit upper-bound acceptance of W28 to independently route identical FRP RTL in a separate workspace.<br/>Routed WNS 0.027 ns<br/>Independent route gates pass"]
+  F39["F39<br/>Register Conv3 selected operands<br/>Add one-cycle operand registers before 100 Conv3 DSPs, keeping other layers and pipeline style unchanged.<br/>HLS estimate 1.749 ms / DSP 644<br/>Local experiment passed"]
+  F43["F43<br/>Two-frame RTL of registered Conv3<br/>Retain changed parameters, finite FIFOs, profiling, and numerical checks while measuring registered-control cycles.<br/>RTL Pass / 558758 cycles<br/>RTL co-simulation complete"]
+  F49["F49<br/>Registered Conv3 implementation at 4.5 ns<br/>Independently route the operand-register design with matching RTL prerequisites.<br/>Physical implementation incomplete<br/>Host memory guard stopped the job"]
+  F52["F52<br/>Independent registered-Conv3 retry<br/>Retry identical F39 RTL at 4.5 ns in a fresh workspace while retaining F49 failure.<br/>Routed WNS 0.072 ns<br/>Independent route gates pass"]
+  F40["F40<br/>Inter-layer feature FIFO depth 16<br/>Change only the 640-bit Conv1-to-Conv2 FIFO from depth 4 to 16.<br/>HLS estimate 1.749 ms / DSP 644<br/>Local experiment passed"]
+  F44["F44<br/>Two-frame RTL of feature FIFO16<br/>Compare changed-parameter frames and finite-FIFO counters against F97.<br/>RTL Pass / 558758 cycles<br/>RTL co-simulation complete"]
+  F41["F41<br/>Inter-layer feature FIFO depth 32<br/>Change the same feature FIFO from depth 4 to 32 and compare with the depth-16 control.<br/>HLS estimate 1.749 ms / DSP 644<br/>Local experiment passed"]
+  F45["F45<br/>Two-frame RTL of feature FIFO32<br/>Measure changed-parameter outputs, cycles, and finite-FIFO waits.<br/>RTL Pass / 558758 cycles<br/>RTL co-simulation complete"]
+  F42["F42<br/>Add a depth-256 reorder-output FIFO<br/>Keep the original depth-4 feature FIFO and add independent forwarding plus a depth-256 LUTRAM buffer after reorder_rows.<br/>HLS estimate 1.749 ms / DSP 644<br/>Local experiment passed"]
+  F46["F46<br/>First reorder-buffer two-frame RTL<br/>Preserve standard profiling, deadlock detection, and reload checks while measuring the raster FIFO.<br/>RTL incomplete / unknown cycles<br/>Host memory guard stopped the job"]
+  F50["F50<br/>Reorder-buffer two-frame RTL retry plan<br/>Retain design, standard counters, and exact gates in a fresh workspace.<br/>Queued/running; no archived measurements<br/>No archived measurements"]
+  F47["F47<br/>Deepen transformed-window FIFO from 2 to 16<br/>Target F97 window-read stalls by increasing Winograd lookahead without changing arithmetic.<br/>HLS estimate 1.749 ms / DSP 644<br/>Local experiment passed"]
+  F48["F48<br/>Window FIFO16 two-frame RTL with reload<br/>Measure finite-stream waits, exact outputs, and actual cycles with the deeper window FIFO.<br/>RTL Pass / 535771 cycles<br/>RTL co-simulation complete"]
+  F51["F51<br/>Window FIFO16 independent routing plan<br/>Route identical F47 RTL independently at 5 ns while preserving F48 measurements and all route gates.<br/>Queued/running; no archived measurements<br/>No archived measurements"]
+  C16["C16<br/>T8 combination: window FIFO16 plus FRP<br/>Copy F47's depth-16 window design and integrate only W27's three FRP folds, preserving runtime parameters and E017 precision.<br/>Queued/running; no archived measurements<br/>No archived measurements"]
+  F97["F97 / external parent<br/>W21 two-frame RTL with changed parameters<br/>RTL Pass / 558758 cycles"]
+  W21["W21 / external parent<br/>Reorder the raw cache by subkernel<br/>HLS estimate 1.749 ms / DSP 644"]
+  W22["W22 / external parent<br/>Same W21 RTL routed at 4.95 ns<br/>Routed WNS 0.047 ns"]
+  W21 -.->|Verify the same design| W23
+  F97 -.->|Verify the same design| W23
+  W22 -.->|Control experiment| W23
+  W21 -.->|Verify the same design| W32
+  F97 -.->|Verify the same design| W32
+  W23 -->|Retry after a fix| W32
+  W21 -->|Design or parameter baseline| W26
+  W21 -->|Design or parameter baseline| W27
+  W26 -->|Retry after a fix| W27
+  W27 -.->|Verify the same design| W28
+  W27 -.->|Verify the same design| W30
+  W28 -.->|Verify the same design| W30
+  W21 -->|Design or parameter baseline| F39
+  F39 -.->|Verify the same design| F43
+  F39 -.->|Verify the same design| F49
+  F43 -.->|Verify the same design| F49
+  F39 -.->|Verify the same design| F52
+  F43 -.->|Verify the same design| F52
+  F49 -->|Retry after a fix| F52
+  W21 -->|Design or parameter baseline| F40
+  F40 -.->|Verify the same design| F44
+  W21 -->|Design or parameter baseline| F41
+  F40 -.->|Control experiment| F41
+  F41 -.->|Verify the same design| F45
+  W21 -->|Design or parameter baseline| F42
+  F42 -.->|Verify the same design| F46
+  F42 -.->|Verify the same design| F50
+  F46 -->|Retry after a fix| F50
+  W21 -->|Design or parameter baseline| F47
+  F97 -.->|Numerical reference or research motivation| F47
+  F47 -.->|Verify the same design| F48
+  F47 -.->|Verify the same design| F51
+  F48 -.->|Verify the same design| F51
+  F47 -->|Design or parameter baseline| C16
+  W27 -->|Integrate an existing module| C16
+  F48 -.->|Numerical reference or research motivation| C16
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class W32,W27,W30,F39,F43,F52,F40,F44,F41,F45,F42,F47,F48 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class W23,W26,W28,F49,F46 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  class F50,F51,C16 planned
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class F97,W21,W22 context

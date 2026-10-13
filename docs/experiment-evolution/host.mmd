@@ -1,0 +1,30 @@
+%% 主机调度：并行准入与内存登记对照
+flowchart TB
+  F32["F32<br/>F28 并行综合内存对照<br/>保留 F28 设计，与 F33 综合及 F34 C 仿真并行，测量任务树 RSS 和可用内存。<br/>HLS 估计 2.6151 ms / DSP 502<br/>HLS 时序警告"]
+  F33["F33<br/>W21 并行综合内存对照<br/>保留 W21 设计，复测相同数值与 HLS 周期，同时测量并行主机负载。<br/>HLS 估计 1.749 ms / DSP 644<br/>候选，仍需验收"]
+  F34["F34<br/>W21 多图 C 仿真并行对照<br/>与 F32/F33 同时运行全部课程 13 图 C 仿真，不改变算术与参考。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>C 仿真通过"]
+  F36["F36<br/>修正登记后的 F28 综合<br/>按照首轮实测修正内存登记，再运行两项综合加一项多图 C 仿真。<br/>HLS 估计 2.6151 ms / DSP 502<br/>HLS 时序警告"]
+  F37["F37<br/>修正登记后的 W21 综合<br/>同一 W21 设计在修正后的调度预算下重测综合。<br/>HLS 估计 1.749 ms / DSP 644<br/>候选，仍需验收"]
+  F38["F38<br/>修正登记后的多图仿真<br/>保留 F96 的完整 13 图数值检查，与 F36/F37 的综合并行。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>C 仿真通过"]
+  F28["F28 / 外部来源<br/>私有加载器关闭循环合并<br/>HLS 估计 2.6151 ms / DSP 502"]
+  F96["F96 / 外部来源<br/>W21 的全部已有图像验证<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB"]
+  W21["W21 / 外部来源<br/>权重缓存按子卷积重排<br/>HLS 估计 1.749 ms / DSP 644"]
+  F28 -.->|复现同一实验| F32
+  W21 -.->|复现同一实验| F33
+  F96 -.->|复现同一实验| F34
+  F28 -.->|复现同一实验| F36
+  F32 -->|修复后重试| F36
+  W21 -.->|复现同一实验| F37
+  F33 -->|修复后重试| F37
+  F96 -.->|复现同一实验| F38
+  F34 -->|修复后重试| F38
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class F33,F34,F37,F38 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  class F32,F36 warning
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class F28,F96,W21 context

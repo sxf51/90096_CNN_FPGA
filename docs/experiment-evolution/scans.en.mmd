@@ -1,0 +1,56 @@
+%% Parameter scans: parallelism, storage, and clock
+flowchart TB
+  E034["E034<br/>Initial T16 scan<br/>Reduce computation rounds per pixel from 32 to 16, increasing parallel multipliers.<br/>Run failed<br/>Run failed"]
+  E035["E035<br/>Initial T8 scan<br/>Further reduce rounds per pixel to 8.<br/>Run failed<br/>Run failed"]
+  E044["E044<br/>Valid initial T16 streaming scan<br/>Fix simulation settings and measure the same higher-parallelism idea.<br/>HLS estimate 175.4626 ms / DSP 18<br/>Over budget: LUT; HLS timing warning"]
+  E045["E045<br/>Valid initial T8 streaming scan<br/>Run the initial T8 configuration with valid settings.<br/>HLS estimate 280.0106 ms / DSP 36<br/>Over budget: LUT; HLS timing warning"]
+  E057["E057<br/>Integer T32 with LUTRAM weight banks<br/>Replace fully partitioned weight registers with writable LUTRAM banks matched to parallel ports.<br/>HLS estimate 29.8302 ms / DSP 254<br/>Candidate; final acceptance pending"]
+  E058["E058<br/>Integer T16 with LUTRAM weight banks<br/>Use T16 in the same integer organization to measure the parallelism/resource tradeoff.<br/>HLS estimate 18.7632 ms / DSP 505<br/>Candidate; final acceptance pending"]
+  E059["E059<br/>Integer T8 with LUTRAM weight banks<br/>Increase parallelism again to T8.<br/>HLS estimate 13.2297 ms / DSP 1007<br/>Over budget: LUT"]
+  E036["E036<br/>T16 Conv1 unroll direction<br/>Shift Conv1 parallelism from output channels toward kernel grouping.<br/>HLS estimate 78.9402 ms / DSP 565<br/>II target missed"]
+  E037["E037<br/>T16 Conv2 unroll direction<br/>Change Conv2 channel unrolling and its relationship to memory ports.<br/>HLS estimate 18.7632 ms / DSP 505<br/>Candidate; final acceptance pending"]
+  E038["E038<br/>T16 Conv3 unroll direction<br/>Change how Conv3 parallelism splits input channels and kernel computation.<br/>HLS estimate 21.5535 ms / DSP 519<br/>Candidate; final acceptance pending"]
+  E039["E039<br/>DSP T32 LUTRAM control<br/>Measure LUTRAM weight banking in the explicitly DSP-bound design.<br/>HLS estimate 29.8302 ms / DSP 251<br/>Candidate; final acceptance pending"]
+  E040["E040<br/>DSP T32 BRAM weight banks<br/>Map the same weight banks to BRAM.<br/>HLS estimate 29.8302 ms / DSP 251<br/>Over budget: BRAM18K"]
+  E064["E064<br/>T16 fully partitioned weights<br/>Retain T16 but replace banked weights with fully partitioned registers.<br/>HLS estimate 18.0715 ms / DSP 505<br/>Over budget: LUT"]
+  E067["E067<br/>T16 BRAM weight banks<br/>Retain T16 and store weights in BRAM.<br/>HLS estimate 18.7632 ms / DSP 505<br/>Over budget: BRAM18K"]
+  E041["E041<br/>T16 at a 5 ns target<br/>Keep precision/storage fixed and inspect scheduling and resources at a tighter period.<br/>HLS estimate 9.7275 ms / DSP 505<br/>Candidate; final acceptance pending"]
+  E042["E042<br/>T16 at a 4 ns target<br/>Tighten the target period again without changing the architecture.<br/>HLS estimate 8.0587 ms / DSP 505<br/>HLS timing warning"]
+  E043["E043<br/>T16 at a 3.33 ns target<br/>Continue tightening the target under the same resource and precision budgets.<br/>HLS estimate 6.9392 ms / DSP 505<br/>HLS timing warning"]
+  E033["E033 / external parent<br/>T32 single-image synthesis control<br/>HLS estimate 123.54 ms / DSP 9"]
+  E047["E047 / external parent<br/>Explicit DSP multiplier binding<br/>HLS estimate 29.1386 ms / DSP 251"]
+  E048["E048 / external parent<br/>Integer carriers for fixed-point arithmetic<br/>HLS estimate 29.1386 ms / DSP 254"]
+  E033 -->|Design or parameter baseline| E034
+  E033 -->|Design or parameter baseline| E035
+  E034 -->|Retry after a fix| E044
+  E035 -->|Retry after a fix| E045
+  E048 -->|Design or parameter baseline| E057
+  E048 -->|Design or parameter baseline| E058
+  E057 -.->|Control experiment| E058
+  E048 -->|Design or parameter baseline| E059
+  E058 -.->|Control experiment| E059
+  E058 -->|Design or parameter baseline| E036
+  E058 -->|Design or parameter baseline| E037
+  E058 -->|Design or parameter baseline| E038
+  E047 -->|Design or parameter baseline| E039
+  E047 -->|Design or parameter baseline| E040
+  E039 -.->|Control experiment| E040
+  E058 -->|Design or parameter baseline| E064
+  E058 -->|Design or parameter baseline| E067
+  E058 -->|Design or parameter baseline| E041
+  E058 -->|Design or parameter baseline| E042
+  E041 -.->|Control experiment| E042
+  E058 -->|Design or parameter baseline| E043
+  E042 -.->|Control experiment| E043
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E057,E058,E037,E038,E039,E041 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  class E042,E043 warning
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E034,E035 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E044,E045,E059,E036,E040,E064,E067 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E033,E047,E048 context

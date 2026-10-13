@@ -1,0 +1,30 @@
+%% Constant ROM: measure the parameter-path cost
+flowchart TB
+  F35["F35<br/>Runtime-bank and ROM equivalence<br/>Export loaded integer banks and compare every element with ROM using identical quantization and G2 transforms.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
+  W24["W24<br/>T8 network with constant ROM weights<br/>Introduce srcnn_rom with fixed training parameters, removing parameter AXI, reader/transformer processes, and private-bank write ports.<br/>HLS estimate 1.746 ms / DSP 630<br/>Local experiment passed"]
+  W25["W25<br/>ROM two-frame RTL with changed input<br/>Keep ROM weights identical and use lenna for the second frame, retaining finite-FIFO, deadlock, and bit-exact checks.<br/>RTL Pass / 554226 cycles<br/>RTL co-simulation complete"]
+  W29["W29<br/>First ROM implementation at 5 ns<br/>Independently measure ROM timing/resources without inferring implementation from HLS clocks.<br/>Physical implementation incomplete<br/>Host memory guard stopped the job"]
+  W31["W31<br/>Independent ROM retry after memory failure<br/>Retry identical ROM RTL in a fresh workspace with the original numerical, timing, and resource gates.<br/>Queued/running; no archived measurements<br/>No archived measurements"]
+  W19["W19 / external parent<br/>Private parameter streams for Winograd T8<br/>HLS estimate 1.749 ms / DSP 645"]
+  W21["W21 / external parent<br/>Reorder the raw cache by subkernel<br/>HLS estimate 1.749 ms / DSP 644"]
+  W21 -.->|Verify the same design| F35
+  W19 -.->|Control experiment| F35
+  W21 -->|Design or parameter baseline| W24
+  F35 -.->|Numerical reference or research motivation| W24
+  W24 -.->|Verify the same design| W25
+  W24 -.->|Verify the same design| W29
+  W25 -.->|Verify the same design| W29
+  W24 -.->|Verify the same design| W31
+  W25 -.->|Verify the same design| W31
+  W29 -->|Retry after a fix| W31
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class F35,W24,W25 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class W29 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  class W31 planned
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class W19,W21 context

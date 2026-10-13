@@ -59,6 +59,12 @@ These values indicate close agreement with the floating-point reference; they ar
 
 The current `src/` uses on-chip 16x16 tile fusion for KV260. Float32 remains the default; `-DSRCNN_INT8=1` enables experimental INT8 weights/activations with INT32 accumulation and unchanged float public interfaces. See the [implementation and validation record](docs/0004-kv260-tiled-int8.md) for resource budgets, quality tradeoffs, and reproduction commands.
 
+## Experiment Records and Evolution
+
+The [complete SVG](docs/experiment-evolution/full.en.svg) / [local viewer](docs/experiment-evolution/full.en.html) cover 207 experiments and 217 main relationships in snapshot `653ceb9`, with node latency normalized to a 100 MHz reference clock. The [guide](docs/0004-experiment-evolution.en.md) and [ledger](docs/experiment-evolution/records.en.md) retain all 307 dependencies and original evidence.
+
+Independent routing in this snapshot: C18 T4 closes 5 ns, giving 1.503160 ms/frame with C14 RTL cycles; W32/F52 T8 close 4.5 ns, giving 2.514411 ms/frame, while W30 FRP gives 2.472471 ms/frame. These are IP compute times at closed targets, distinct from the graph metric and excluding DDR, driver, and board measurements. Five follow-up plans including C16/C17 lack archived results; F90/F91 remain deferred. This edition is frozen through W30 and excludes later results. Root `src/` now holds the KV260 tile-fusion baseline described above (merged from master); the experiment design sources live in `designs/`.
+
 ## FPGA optimization plan
 
 The following retains the optimization roadmap and the original untiled float32 baseline. Tiling, local reuse and three-layer tile fusion are now implemented, with optional INT8 quantization; streaming, double buffering and board validation remain future stages. It follows the lecture material on tiled convolution, model quantization, dataflow, and overlapping load/compute/store, while using the actual 255 × 255 dimensions in this code. Each change must preserve the current edge-replication behavior and be checked against the golden reference before performance is compared.

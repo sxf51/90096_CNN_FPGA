@@ -1,0 +1,42 @@
+%% 第一轮流式架构：消除完整中间图
+flowchart TB
+  E030["E030<br/>浮点流式功能控制<br/>read/pad/Conv1/Conv2/pad/Conv3/write 用流连接，并用行缓存复用窗口。<br/>C 仿真通过<br/>C 仿真通过"]
+  E031["E031<br/>10 位流式，T32<br/>把已验证流结构改为 10 位定点、T=32 部分展开。<br/>HLS 估计 123.54 ms / DSP 9<br/>超预算: LUT；HLS 时序警告"]
+  E033["E033<br/>T32 单图综合控制<br/>缩短 C 仿真任务，保持同一流式硬件组织。<br/>HLS 估计 123.54 ms / DSP 9<br/>超预算: LUT；HLS 时序警告"]
+  E046["E046<br/>去掉冗余累加饱和<br/>利用已归档范围界，保留完整乘积精度，只在层边界量化。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>运行失败"]
+  E063["E063<br/>累加控制重试<br/>在独立运行中测量去冗余饱和的方案。<br/>HLS 估计 29.1386 ms / DSP 148<br/>超预算: LUT"]
+  E047["E047<br/>明确把乘法绑定到 DSP<br/>把 T32 的 162/64/25 路乘法指定到 DSP。<br/>HLS 估计 29.1386 ms / DSP 251<br/>超预算: LUT"]
+  E048["E048<br/>整数承载的定点运算<br/>用整数保存定点原始位，显式实现层边界舍入，保持数值契约。<br/>HLS 估计 29.1386 ms / DSP 254<br/>超预算: LUT"]
+  E050["E050<br/>初版 Conv3 Scatter<br/>先跨通道归约，再缓存少通道的部分和。<br/>HLS 估计 38.8222 ms / DSP 34<br/>超预算: LUT"]
+  E060["E060<br/>整数版 Conv3 Scatter<br/>保留显式补边，用 32 位部分和与轮换行缓存。<br/>HLS 估计 37.7021 ms / DSP 254<br/>候选，仍需验收"]
+  E056["E056<br/>T4 的 DSP/LUT 混合计算<br/>DSP 不够时让部分 Conv1/Conv3 乘法落在 fabric，提高并行度。<br/>HLS 估计 10.4629 ms / DSP 1160<br/>超预算: LUT"]
+  E000["E000 / 外部来源<br/>原始浮点基线<br/>HLS 估计 19601.1385 ms / DSP 10"]
+  E010["E010 / 外部来源<br/>逐层范围与位宽扫描<br/>分析完成"]
+  E017["E017 / 外部来源<br/>10 位边界与整数参考<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB"]
+  E053["E053 / 外部来源<br/>8x8 fabric 乘法<br/>PE: DSP 0 / LUT 119"]
+  E000 -->|设计或参数基线| E030
+  E030 -->|设计或参数基线| E031
+  E017 -.->|数值依据或研究启发| E031
+  E031 -->|设计或参数基线| E033
+  E033 -->|设计或参数基线| E046
+  E010 -.->|数值依据或研究启发| E046
+  E046 -->|修复后重试| E063
+  E033 -->|设计或参数基线| E047
+  E047 -->|设计或参数基线| E048
+  E017 -.->|数值依据或研究启发| E048
+  E031 -->|设计或参数基线| E050
+  E048 -->|设计或参数基线| E060
+  E050 -.->|数值依据或研究启发| E060
+  E048 -->|设计或参数基线| E056
+  E053 -.->|数值依据或研究启发| E056
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E030,E060 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E046 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E031,E033,E063,E047,E048,E050,E056 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E000,E010,E017,E053 context

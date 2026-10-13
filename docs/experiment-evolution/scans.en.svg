@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" width="4167" height="2200" viewBox="0 0 4167 2200">
+<title>Parameter scans: parallelism, storage, and clock</title>
+<desc>With precision fixed, what do T, unroll direction, weight banks, and target period change?. Snapshot 653ceb9. Experiment relationships are not Git ancestry.</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="4167" height="2200" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">Parameter scans: parallelism, storage, and clock</text>
+<text x="48" y="81.5" font-size="17" font-weight="400" fill="#435654">With precision fixed, what do T, unroll direction, weight banks, and target period change?</text>
+<text x="48" y="114" font-size="16" font-weight="400" fill="#526461">Solid: baseline, retry, integration. Dashed: references, controls, verification, reproduction.</text>
+<text x="48" y="146" font-size="16" font-weight="400" fill="#526461">Green: stage evidence passed; red: over budget/failed; amber: timing pending; dashed border: plan; gray: external parent.</text>
+<path d="M342.68 381.00 L342.68 421.00 L258.00 421.00 L258.00 476.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M637.32 381.00 L637.32 421.00 L722.00 421.00 L722.00 488.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M258.00 735.00 L258.00 842.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M722.00 723.00 L722.00 842.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2445.00 381.00 L2445.00 421.00 L2951.00 421.00 L2951.00 461.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2065.00 381.00 L2065.00 421.00 L1801.00 421.00 L1801.00 802.00 L2766.67 802.00 L2766.67 830.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2951.00 750.00 L2951.00 802.00 L2893.33 802.00 L2893.33 830.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2065.00 381.00 L2065.00 421.00 L964.00 421.00 L964.00 1195.00 L920.67 1195.00 L920.67 1223.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2640.00 1119.00 L2640.00 1159.00 L1196.00 1159.00 L1196.00 1195.00 L1047.33 1195.00 L1047.33 1223.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2640.00 1119.00 L2640.00 1159.00 L1448.00 1159.00 L1448.00 1226.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2640.00 1119.00 L2640.00 1159.00 L1912.00 1159.00 L1912.00 1226.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M2640.00 1119.00 L2640.00 1159.00 L2376.00 1159.00 L2376.00 1214.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1366.97 381.00 L1366.97 421.00 L1448.00 421.00 L1448.00 488.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1213.30 381.00 L1213.30 421.00 L1206.00 421.00 L1206.00 841.00 L1263.67 841.00 L1263.67 869.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1448.00 723.00 L1448.00 841.00 L1390.33 841.00 L1390.33 869.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M2837.40 1119.00 L2837.40 1159.00 L2840.00 1159.00 L2840.00 1199.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3020.00 1119.00 L3020.00 1159.00 L3304.00 1159.00 L3304.00 1226.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3020.00 1119.00 L3020.00 1159.00 L3909.00 1159.00 L3909.00 1214.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3020.00 1119.00 L3020.00 1159.00 L3667.00 1159.00 L3667.00 1540.00 L3744.67 1540.00 L3744.67 1568.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3909.00 1473.00 L3909.00 1540.00 L3871.33 1540.00 L3871.33 1568.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M3020.00 1119.00 L3020.00 1159.00 L3546.00 1159.00 L3546.00 1855.00 L3744.67 1855.00 L3744.67 1883.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M3808.00 1803.00 L3808.00 1855.00 L3871.33 1855.00 L3871.33 1883.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<g data-id="E034">
+<rect x="48.00" y="484.00" width="420" height="243" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="511.00" font-size="17" font-weight="700" fill="#243031">E034</text>
+<text x="72.00" y="542.50" font-size="20" font-weight="700" fill="#243031">Initial T16 scan</text>
+<text x="72.00" y="578.50" font-size="16" font-weight="400" fill="#243031">Reduce computation rounds per pixel</text>
+<text x="72.00" y="602.50" font-size="16" font-weight="400" fill="#243031">from 32 to 16, increasing parallel</text>
+<text x="72.00" y="626.50" font-size="16" font-weight="400" fill="#243031">multipliers.</text>
+<text x="72.00" y="656.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="72.00" y="686.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+</g>
+<g data-id="E035">
+<rect x="512.00" y="496.00" width="420" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="536.00" y="523.00" font-size="17" font-weight="700" fill="#243031">E035</text>
+<text x="536.00" y="554.50" font-size="20" font-weight="700" fill="#243031">Initial T8 scan</text>
+<text x="536.00" y="590.50" font-size="16" font-weight="400" fill="#243031">Further reduce rounds per pixel to</text>
+<text x="536.00" y="614.50" font-size="16" font-weight="400" fill="#243031">8.</text>
+<text x="536.00" y="644.50" font-size="16" font-weight="700" fill="#243031">Run failed</text>
+<text x="536.00" y="674.50" font-size="15" font-weight="400" fill="#5c6160">Run failed</text>
+</g>
+<g data-id="E044">
+<rect x="48.00" y="850.00" width="420" height="249" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="72.00" y="877.00" font-size="17" font-weight="700" fill="#243031">E044</text>
+<text x="72.00" y="908.50" font-size="20" font-weight="700" fill="#243031">Valid initial T16 streaming</text>
+<text x="72.00" y="938.50" font-size="20" font-weight="700" fill="#243031">scan</text>
+<text x="72.00" y="974.50" font-size="16" font-weight="400" fill="#243031">Fix simulation settings and measure</text>
+<text x="72.00" y="998.50" font-size="16" font-weight="400" fill="#243031">the same higher-parallelism idea.</text>
+<text x="72.00" y="1028.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 175.4626 ms / DSP 18</text>
+<text x="72.00" y="1058.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT; HLS timing warning</text>
+</g>
+<g data-id="E045">
+<rect x="512.00" y="850.00" width="420" height="249" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="536.00" y="877.00" font-size="17" font-weight="700" fill="#243031">E045</text>
+<text x="536.00" y="908.50" font-size="20" font-weight="700" fill="#243031">Valid initial T8 streaming</text>
+<text x="536.00" y="938.50" font-size="20" font-weight="700" fill="#243031">scan</text>
+<text x="536.00" y="974.50" font-size="16" font-weight="400" fill="#243031">Run the initial T8 configuration</text>
+<text x="536.00" y="998.50" font-size="16" font-weight="400" fill="#243031">with valid settings.</text>
+<text x="536.00" y="1028.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 280.0106 ms / DSP 36</text>
+<text x="536.00" y="1058.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT; HLS timing warning</text>
+</g>
+<g data-id="E057">
+<rect x="2741.00" y="469.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="2765.00" y="496.00" font-size="17" font-weight="700" fill="#243031">E057</text>
+<text x="2765.00" y="527.50" font-size="20" font-weight="700" fill="#243031">Integer T32 with LUTRAM</text>
+<text x="2765.00" y="557.50" font-size="20" font-weight="700" fill="#243031">weight banks</text>
+<text x="2765.00" y="593.50" font-size="16" font-weight="400" fill="#243031">Replace fully partitioned weight</text>
+<text x="2765.00" y="617.50" font-size="16" font-weight="400" fill="#243031">registers with writable LUTRAM</text>
+<text x="2765.00" y="641.50" font-size="16" font-weight="400" fill="#243031">banks matched to parallel ports.</text>
+<text x="2765.00" y="671.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.8302 ms / DSP 254</text>
+<text x="2765.00" y="701.50" font-size="15" font-weight="400" fill="#5c6160">Candidate; final acceptance pending</text>
+</g>
+<g data-id="E058">
+<rect x="2620.00" y="838.00" width="420" height="273" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="2644.00" y="865.00" font-size="17" font-weight="700" fill="#243031">E058</text>
+<text x="2644.00" y="896.50" font-size="20" font-weight="700" fill="#243031">Integer T16 with LUTRAM</text>
+<text x="2644.00" y="926.50" font-size="20" font-weight="700" fill="#243031">weight banks</text>
+<text x="2644.00" y="962.50" font-size="16" font-weight="400" fill="#243031">Use T16 in the same integer</text>
+<text x="2644.00" y="986.50" font-size="16" font-weight="400" fill="#243031">organization to measure the</text>
+<text x="2644.00" y="1010.50" font-size="16" font-weight="400" fill="#243031">parallelism/resource tradeoff.</text>
+<text x="2644.00" y="1040.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 18.7632 ms / DSP 505</text>
+<text x="2644.00" y="1070.50" font-size="15" font-weight="400" fill="#5c6160">Candidate; final acceptance pending</text>
+</g>
+<g data-id="E059">
+<rect x="774.00" y="1231.00" width="420" height="225" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="798.00" y="1258.00" font-size="17" font-weight="700" fill="#243031">E059</text>
+<text x="798.00" y="1289.50" font-size="20" font-weight="700" fill="#243031">Integer T8 with LUTRAM</text>
+<text x="798.00" y="1319.50" font-size="20" font-weight="700" fill="#243031">weight banks</text>
+<text x="798.00" y="1355.50" font-size="16" font-weight="400" fill="#243031">Increase parallelism again to T8.</text>
+<text x="798.00" y="1385.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 13.2297 ms / DSP 1007</text>
+<text x="798.00" y="1415.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT</text>
+</g>
+<g data-id="E036">
+<rect x="1238.00" y="1234.00" width="420" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1262.00" y="1261.00" font-size="17" font-weight="700" fill="#243031">E036</text>
+<text x="1262.00" y="1292.50" font-size="20" font-weight="700" fill="#243031">T16 Conv1 unroll direction</text>
+<text x="1262.00" y="1328.50" font-size="16" font-weight="400" fill="#243031">Shift Conv1 parallelism from output</text>
+<text x="1262.00" y="1352.50" font-size="16" font-weight="400" fill="#243031">channels toward kernel grouping.</text>
+<text x="1262.00" y="1382.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 78.9402 ms / DSP 565</text>
+<text x="1262.00" y="1412.50" font-size="15" font-weight="400" fill="#5c6160">II target missed</text>
+</g>
+<g data-id="E037">
+<rect x="1702.00" y="1234.00" width="420" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1726.00" y="1261.00" font-size="17" font-weight="700" fill="#243031">E037</text>
+<text x="1726.00" y="1292.50" font-size="20" font-weight="700" fill="#243031">T16 Conv2 unroll direction</text>
+<text x="1726.00" y="1328.50" font-size="16" font-weight="400" fill="#243031">Change Conv2 channel unrolling and</text>
+<text x="1726.00" y="1352.50" font-size="16" font-weight="400" fill="#243031">its relationship to memory ports.</text>
+<text x="1726.00" y="1382.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 18.7632 ms / DSP 505</text>
+<text x="1726.00" y="1412.50" font-size="15" font-weight="400" fill="#5c6160">Candidate; final acceptance pending</text>
+</g>
+<g data-id="E038">
+<rect x="2166.00" y="1222.00" width="420" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="2190.00" y="1249.00" font-size="17" font-weight="700" fill="#243031">E038</text>
+<text x="2190.00" y="1280.50" font-size="20" font-weight="700" fill="#243031">T16 Conv3 unroll direction</text>
+<text x="2190.00" y="1316.50" font-size="16" font-weight="400" fill="#243031">Change how Conv3 parallelism splits</text>
+<text x="2190.00" y="1340.50" font-size="16" font-weight="400" fill="#243031">input channels and kernel</text>
+<text x="2190.00" y="1364.50" font-size="16" font-weight="400" fill="#243031">computation.</text>
+<text x="2190.00" y="1394.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 21.5535 ms / DSP 519</text>
+<text x="2190.00" y="1424.50" font-size="15" font-weight="400" fill="#5c6160">Candidate; final acceptance pending</text>
+</g>
+<g data-id="E039">
+<rect x="1238.00" y="496.00" width="420" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1262.00" y="523.00" font-size="17" font-weight="700" fill="#243031">E039</text>
+<text x="1262.00" y="554.50" font-size="20" font-weight="700" fill="#243031">DSP T32 LUTRAM control</text>
+<text x="1262.00" y="590.50" font-size="16" font-weight="400" fill="#243031">Measure LUTRAM weight banking in</text>
+<text x="1262.00" y="614.50" font-size="16" font-weight="400" fill="#243031">the explicitly DSP-bound design.</text>
+<text x="1262.00" y="644.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.8302 ms / DSP 251</text>
+<text x="1262.00" y="674.50" font-size="15" font-weight="400" fill="#5c6160">Candidate; final acceptance pending</text>
+</g>
+<g data-id="E040">
+<rect x="1117.00" y="877.00" width="420" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1141.00" y="904.00" font-size="17" font-weight="700" fill="#243031">E040</text>
+<text x="1141.00" y="935.50" font-size="20" font-weight="700" fill="#243031">DSP T32 BRAM weight banks</text>
+<text x="1141.00" y="971.50" font-size="16" font-weight="400" fill="#243031">Map the same weight banks to BRAM.</text>
+<text x="1141.00" y="1001.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.8302 ms / DSP 251</text>
+<text x="1141.00" y="1031.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: BRAM18K</text>
+</g>
+<g data-id="E064">
+<rect x="2630.00" y="1207.00" width="420" height="273" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="2654.00" y="1234.00" font-size="17" font-weight="700" fill="#243031">E064</text>
+<text x="2654.00" y="1265.50" font-size="20" font-weight="700" fill="#243031">T16 fully partitioned</text>
+<text x="2654.00" y="1295.50" font-size="20" font-weight="700" fill="#243031">weights</text>
+<text x="2654.00" y="1331.50" font-size="16" font-weight="400" fill="#243031">Retain T16 but replace banked</text>
+<text x="2654.00" y="1355.50" font-size="16" font-weight="400" fill="#243031">weights with fully partitioned</text>
+<text x="2654.00" y="1379.50" font-size="16" font-weight="400" fill="#243031">registers.</text>
+<text x="2654.00" y="1409.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 18.0715 ms / DSP 505</text>
+<text x="2654.00" y="1439.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: LUT</text>
+</g>
+<g data-id="E067">
+<rect x="3094.00" y="1234.00" width="420" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="3118.00" y="1261.00" font-size="17" font-weight="700" fill="#243031">E067</text>
+<text x="3118.00" y="1292.50" font-size="20" font-weight="700" fill="#243031">T16 BRAM weight banks</text>
+<text x="3118.00" y="1328.50" font-size="16" font-weight="400" fill="#243031">Retain T16 and store weights in</text>
+<text x="3118.00" y="1352.50" font-size="16" font-weight="400" fill="#243031">BRAM.</text>
+<text x="3118.00" y="1382.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 18.7632 ms / DSP 505</text>
+<text x="3118.00" y="1412.50" font-size="15" font-weight="400" fill="#5c6160">Over budget: BRAM18K</text>
+</g>
+<g data-id="E041">
+<rect x="3699.00" y="1222.00" width="420" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="3723.00" y="1249.00" font-size="17" font-weight="700" fill="#243031">E041</text>
+<text x="3723.00" y="1280.50" font-size="20" font-weight="700" fill="#243031">T16 at a 5 ns target</text>
+<text x="3723.00" y="1316.50" font-size="16" font-weight="400" fill="#243031">Keep precision/storage fixed and</text>
+<text x="3723.00" y="1340.50" font-size="16" font-weight="400" fill="#243031">inspect scheduling and resources at</text>
+<text x="3723.00" y="1364.50" font-size="16" font-weight="400" fill="#243031">a tighter period.</text>
+<text x="3723.00" y="1394.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 9.7275 ms / DSP 505</text>
+<text x="3723.00" y="1424.50" font-size="15" font-weight="400" fill="#5c6160">Candidate; final acceptance pending</text>
+</g>
+<g data-id="E042">
+<rect x="3598.00" y="1576.00" width="420" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="3622.00" y="1603.00" font-size="17" font-weight="700" fill="#243031">E042</text>
+<text x="3622.00" y="1634.50" font-size="20" font-weight="700" fill="#243031">T16 at a 4 ns target</text>
+<text x="3622.00" y="1670.50" font-size="16" font-weight="400" fill="#243031">Tighten the target period again</text>
+<text x="3622.00" y="1694.50" font-size="16" font-weight="400" fill="#243031">without changing the architecture.</text>
+<text x="3622.00" y="1724.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 8.0587 ms / DSP 505</text>
+<text x="3622.00" y="1754.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+</g>
+<g data-id="E043">
+<rect x="3598.00" y="1891.00" width="420" height="243" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="3622.00" y="1918.00" font-size="17" font-weight="700" fill="#243031">E043</text>
+<text x="3622.00" y="1949.50" font-size="20" font-weight="700" fill="#243031">T16 at a 3.33 ns target</text>
+<text x="3622.00" y="1985.50" font-size="16" font-weight="400" fill="#243031">Continue tightening the target</text>
+<text x="3622.00" y="2009.50" font-size="16" font-weight="400" fill="#243031">under the same resource and</text>
+<text x="3622.00" y="2033.50" font-size="16" font-weight="400" fill="#243031">precision budgets.</text>
+<text x="3622.00" y="2063.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 6.9392 ms / DSP 505</text>
+<text x="3622.00" y="2093.50" font-size="15" font-weight="400" fill="#5c6160">HLS timing warning</text>
+</g>
+<g data-id="E033">
+<rect x="280.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="304.00" y="233.00" font-size="17" font-weight="700" fill="#243031">E033 / external parent</text>
+<text x="304.00" y="264.50" font-size="20" font-weight="700" fill="#243031">T32 single-image synthesis</text>
+<text x="304.00" y="294.50" font-size="20" font-weight="700" fill="#243031">control</text>
+<text x="304.00" y="330.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 123.54 ms / DSP 9</text>
+</g>
+<g data-id="E047">
+<rect x="1016.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1040.00" y="233.00" font-size="17" font-weight="700" fill="#243031">E047 / external parent</text>
+<text x="1040.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Explicit DSP multiplier</text>
+<text x="1040.00" y="294.50" font-size="20" font-weight="700" fill="#243031">binding</text>
+<text x="1040.00" y="330.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.1386 ms / DSP 251</text>
+</g>
+<g data-id="E048">
+<rect x="2045.00" y="206.00" width="420" height="167" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="2069.00" y="233.00" font-size="17" font-weight="700" fill="#243031">E048 / external parent</text>
+<text x="2069.00" y="264.50" font-size="20" font-weight="700" fill="#243031">Integer carriers for</text>
+<text x="2069.00" y="294.50" font-size="20" font-weight="700" fill="#243031">fixed-point arithmetic</text>
+<text x="2069.00" y="330.50" font-size="16" font-weight="700" fill="#243031">HLS estimate 29.1386 ms / DSP 254</text>
+</g>
+</svg>

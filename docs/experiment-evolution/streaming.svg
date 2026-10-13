@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="1590" height="2315" viewBox="0 0 1590 2315">
+<title>第一轮流式架构：消除完整中间图</title>
+<desc>行缓存和流连接有效后，为什么 LUT 与时序仍然成为瓶颈？。数据快照 653ceb9。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="1590" height="2315" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">第一轮流式架构：消除完整中间图</text>
+<text x="48" y="76" font-size="17" fill="#435654">行缓存和流连接有效后，为什么 LUT 与时序仍然成为瓶颈？</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M225.00 343.00 L225.00 423.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M225.00 682.00 L225.00 734.00 L182.67 734.00 L182.67 762.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M719.35 629.00 L719.35 722.00 L538.50 722.00 L538.50 734.00 L287.33 734.00 L287.33 762.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M235.00 997.00 L235.00 1077.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M96.65 1312.00 L96.65 1352.00 L36.00 1352.00 L36.00 1364.00 L182.67 1364.00 L182.67 1392.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M546.45 1271.00 L546.45 1352.00 L434.00 1352.00 L434.00 1364.00 L287.33 1364.00 L287.33 1392.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M235.00 1627.00 L235.00 1719.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M392.00 1312.00 L392.00 1352.00 L643.00 1352.00 L643.00 1392.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M643.00 1627.00 L643.00 1679.00 L695.17 1679.00 L695.17 1707.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M846.04 629.00 L846.04 722.00 L852.00 722.00 L852.00 1679.00 L799.83 1679.00 L799.83 1707.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M392.00 997.00 L392.00 1037.00 L1061.00 1037.00 L1061.00 1089.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M747.50 1942.00 L747.50 1994.00 L799.67 1994.00 L799.67 2022.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1061.00 1300.00 L1061.00 1994.00 L904.33 1994.00 L904.33 2022.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M904.50 1942.00 L904.50 1982.00 L1165.50 1982.00 L1165.50 1994.00 L1302.17 1994.00 L1302.17 2022.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M1364.50 1901.00 L1364.50 1994.00 L1406.83 1994.00 L1406.83 2022.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<g data-id="E030">
+<rect x="48.00" y="431.00" width="354" height="243" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="72.00" y="458.00" font-size="17" font-weight="700" fill="#243031">E030</text>
+<text x="72.00" y="489.50" font-size="20" font-weight="700" fill="#243031">浮点流式功能控制</text>
+<text x="72.00" y="525.50" font-size="16" font-weight="400" fill="#243031">read/pad/Conv1/Conv2/pad/Conv3</text>
+<text x="72.00" y="549.50" font-size="16" font-weight="400" fill="#243031">/write 用流连接，并用行缓存复用窗口</text>
+<text x="72.00" y="573.50" font-size="16" font-weight="400" fill="#243031">。</text>
+<text x="72.00" y="603.50" font-size="16" font-weight="700" fill="#243031">C 仿真通过</text>
+<text x="72.00" y="633.50" font-size="15" font-weight="400" fill="#5c6160">C 仿真通过</text>
+</g>
+<g data-id="E031">
+<rect x="58.00" y="770.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="82.00" y="797.00" font-size="17" font-weight="700" fill="#243031">E031</text>
+<text x="82.00" y="828.50" font-size="20" font-weight="700" fill="#243031">10 位流式，T32</text>
+<text x="82.00" y="864.50" font-size="16" font-weight="400" fill="#243031">把已验证流结构改为 10 位定点、T=32</text>
+<text x="82.00" y="888.50" font-size="16" font-weight="400" fill="#243031">部分展开。</text>
+<text x="82.00" y="918.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 123.54 ms / DSP 9</text>
+<text x="82.00" y="948.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT；HLS 时序警告</text>
+</g>
+<g data-id="E033">
+<rect x="58.00" y="1085.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="82.00" y="1112.00" font-size="17" font-weight="700" fill="#243031">E033</text>
+<text x="82.00" y="1143.50" font-size="20" font-weight="700" fill="#243031">T32 单图综合控制</text>
+<text x="82.00" y="1179.50" font-size="16" font-weight="400" fill="#243031">缩短 C 仿真任务，保持同一流式硬件组织</text>
+<text x="82.00" y="1203.50" font-size="16" font-weight="400" fill="#243031">。</text>
+<text x="82.00" y="1233.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 123.54 ms / DSP 9</text>
+<text x="82.00" y="1263.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT；HLS 时序警告</text>
+</g>
+<g data-id="E046">
+<rect x="58.00" y="1400.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="82.00" y="1427.00" font-size="17" font-weight="700" fill="#243031">E046</text>
+<text x="82.00" y="1458.50" font-size="20" font-weight="700" fill="#243031">去掉冗余累加饱和</text>
+<text x="82.00" y="1494.50" font-size="16" font-weight="400" fill="#243031">利用已归档范围界，保留完整乘积精度，只</text>
+<text x="82.00" y="1518.50" font-size="16" font-weight="400" fill="#243031">在层边界量化。</text>
+<text x="82.00" y="1548.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+<text x="82.00" y="1578.50" font-size="15" font-weight="400" fill="#5c6160">运行失败</text>
+</g>
+<g data-id="E063">
+<rect x="58.00" y="1727.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="82.00" y="1754.00" font-size="17" font-weight="700" fill="#243031">E063</text>
+<text x="82.00" y="1785.50" font-size="20" font-weight="700" fill="#243031">累加控制重试</text>
+<text x="82.00" y="1821.50" font-size="16" font-weight="400" fill="#243031">在独立运行中测量去冗余饱和的方案。</text>
+<text x="82.00" y="1851.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 29.1386 ms / DSP 148</text>
+<text x="82.00" y="1881.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT</text>
+</g>
+<g data-id="E047">
+<rect x="466.00" y="1400.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="490.00" y="1427.00" font-size="17" font-weight="700" fill="#243031">E047</text>
+<text x="490.00" y="1458.50" font-size="20" font-weight="700" fill="#243031">明确把乘法绑定到 DSP</text>
+<text x="490.00" y="1494.50" font-size="16" font-weight="400" fill="#243031">把 T32 的 162/64/25 路乘法指定到</text>
+<text x="490.00" y="1518.50" font-size="16" font-weight="400" fill="#243031">DSP。</text>
+<text x="490.00" y="1548.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 29.1386 ms / DSP 251</text>
+<text x="490.00" y="1578.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT</text>
+</g>
+<g data-id="E048">
+<rect x="570.50" y="1715.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="594.50" y="1742.00" font-size="17" font-weight="700" fill="#243031">E048</text>
+<text x="594.50" y="1773.50" font-size="20" font-weight="700" fill="#243031">整数承载的定点运算</text>
+<text x="594.50" y="1809.50" font-size="16" font-weight="400" fill="#243031">用整数保存定点原始位，显式实现层边界舍</text>
+<text x="594.50" y="1833.50" font-size="16" font-weight="400" fill="#243031">入，保持数值契约。</text>
+<text x="594.50" y="1863.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 29.1386 ms / DSP 254</text>
+<text x="594.50" y="1893.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT</text>
+</g>
+<g data-id="E050">
+<rect x="884.00" y="1097.00" width="354" height="195" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="908.00" y="1124.00" font-size="17" font-weight="700" fill="#243031">E050</text>
+<text x="908.00" y="1155.50" font-size="20" font-weight="700" fill="#243031">初版 Conv3 Scatter</text>
+<text x="908.00" y="1191.50" font-size="16" font-weight="400" fill="#243031">先跨通道归约，再缓存少通道的部分和。</text>
+<text x="908.00" y="1221.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 38.8222 ms / DSP 34</text>
+<text x="908.00" y="1251.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT</text>
+</g>
+<g data-id="E060">
+<rect x="675.00" y="2030.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="699.00" y="2057.00" font-size="17" font-weight="700" fill="#243031">E060</text>
+<text x="699.00" y="2088.50" font-size="20" font-weight="700" fill="#243031">整数版 Conv3 Scatter</text>
+<text x="699.00" y="2124.50" font-size="16" font-weight="400" fill="#243031">保留显式补边，用 32 位部分和与轮换行</text>
+<text x="699.00" y="2148.50" font-size="16" font-weight="400" fill="#243031">缓存。</text>
+<text x="699.00" y="2178.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 37.7021 ms / DSP 254</text>
+<text x="699.00" y="2208.50" font-size="15" font-weight="400" fill="#5c6160">候选，仍需验收</text>
+</g>
+<g data-id="E056">
+<rect x="1177.50" y="2030.00" width="354" height="219" rx="4" fill="#fcf0f0" stroke="#b16868" stroke-width="1.5"/>
+<text x="1201.50" y="2057.00" font-size="17" font-weight="700" fill="#243031">E056</text>
+<text x="1201.50" y="2088.50" font-size="20" font-weight="700" fill="#243031">T4 的 DSP/LUT 混合计算</text>
+<text x="1201.50" y="2124.50" font-size="16" font-weight="400" fill="#243031">DSP 不够时让部分 Conv1/Conv3 乘法</text>
+<text x="1201.50" y="2148.50" font-size="16" font-weight="400" fill="#243031">落在 fabric，提高并行度。</text>
+<text x="1201.50" y="2178.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 10.4629 ms / DSP 1160</text>
+<text x="1201.50" y="2208.50" font-size="15" font-weight="400" fill="#5c6160">超预算: LUT</text>
+</g>
+<g data-id="E000">
+<rect x="48.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="225.00" font-size="17" font-weight="700" fill="#243031">E000 / 外部来源</text>
+<text x="72.00" y="256.50" font-size="20" font-weight="700" fill="#243031">原始浮点基线</text>
+<text x="72.00" y="292.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 19601.1385 ms / DSP 10</text>
+</g>
+<g data-id="E010">
+<rect x="456.00" y="1126.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="480.00" y="1153.00" font-size="17" font-weight="700" fill="#243031">E010 / 外部来源</text>
+<text x="480.00" y="1184.50" font-size="20" font-weight="700" fill="#243031">逐层范围与位宽扫描</text>
+<text x="480.00" y="1220.50" font-size="16" font-weight="700" fill="#243031">分析完成</text>
+</g>
+<g data-id="E017">
+<rect x="665.00" y="484.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="689.00" y="511.00" font-size="17" font-weight="700" fill="#243031">E017 / 外部来源</text>
+<text x="689.00" y="542.50" font-size="20" font-weight="700" fill="#243031">10 位边界与整数参考</text>
+<text x="689.00" y="578.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+</g>
+<g data-id="E053">
+<rect x="1187.50" y="1756.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1211.50" y="1783.00" font-size="17" font-weight="700" fill="#243031">E053 / 外部来源</text>
+<text x="1211.50" y="1814.50" font-size="20" font-weight="700" fill="#243031">8x8 fabric 乘法</text>
+<text x="1211.50" y="1850.50" font-size="16" font-weight="700" fill="#243031">PE: DSP 0 / LUT 119</text>
+</g>
+</svg>

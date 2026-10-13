@@ -1,0 +1,43 @@
+%% Combinations: can Winograd and packing savings add up?
+flowchart TB
+  C01["C01<br/>Winograd plus Conv2/3 packing, T4<br/>Combine Conv1 Winograd with exact 10-bit packing in both later layers.<br/>Run failed<br/>Run failed"]
+  C02["C02<br/>Winograd plus Conv3 packing only, T4<br/>Keep Conv2 direct to isolate its packing cost.<br/>Run failed<br/>Run failed"]
+  C03["C03<br/>Winograd plus Conv2/3 packing, T8<br/>Lower parallelism to control resource use.<br/>Run failed<br/>Run failed"]
+  C04["C04<br/>Two-layer packing header fix<br/>Fix only include order, retaining mathematics, precision, and parameters.<br/>HLS estimate 9.5138 ms / DSP 936<br/>Over budget: LUT/FF; HLS timing warning"]
+  C05["C05<br/>Conv3-only packing header fix<br/>Run the valid control with one fewer packed layer.<br/>HLS estimate 9.5138 ms / DSP 1192<br/>Over budget: LUT/FF; HLS timing warning"]
+  C06["C06<br/>T8 combination header fix<br/>Validly measure the combination at lower parallelism.<br/>HLS estimate 13.9743 ms / DSP 470<br/>Over budget: LUT; HLS timing warning"]
+  C07["C07<br/>Continuously scheduled 10-bit combination<br/>Separate window generation from fixed MAC loops in the combined architecture.<br/>Run failed<br/>Run failed"]
+  C12["C12<br/>Continuous-combination guard fix<br/>Fix control/representation while preserving the arithmetic contract.<br/>HLS estimate 7.5772 ms / DSP 470<br/>Over budget: LUT; HLS timing warning"]
+  C08["C08<br/>Conv2 8-bit-weight combination, T8<br/>Use validated 8-bit weights only in Conv2 to remove its 10-bit coefficient residual recovery.<br/>C simulation / avg delta PSNR -0.0759 dB<br/>Run failed"]
+  C09["C09<br/>Conv2 8-bit-weight combination, T4<br/>Scan greater parallelism with the same mixed precision.<br/>C simulation / avg delta PSNR -0.0759 dB<br/>Run failed"]
+  C10["C10<br/>T8 mixed combination with split windows<br/>Use two synchronized 4000-bit channels while retaining quantization and MAC arithmetic.<br/>HLS estimate 2.1302 ms / DSP 520<br/>Over budget: LUT/FF; HLS timing warning"]
+  C11["C11<br/>T4 mixed combination with split windows<br/>Fix window representation at T4.<br/>HLS estimate 1.0817 ms / DSP 1036<br/>Over budget: LUT/FF; HLS timing warning"]
+  E065["E065 / external parent<br/>Conv2 8-bit-weight boundary validation<br/>C simulation / avg delta PSNR -0.0759 dB"]
+  P07["P07 / external parent<br/>Exact 10-bit coefficient residual recovery<br/>PE: DSP 1 / LUT 454"]
+  W05["W05 / external parent<br/>Winograd network, T16<br/>Run failed"]
+  W10["W10 / external parent<br/>Fixed tile loops, continuous Conv1 only<br/>HLS estimate 7.5482 ms / DSP 326"]
+  W05 -->|Design or parameter baseline| C01
+  P07 -->|Integrate an existing module| C01
+  C01 -->|Design or parameter baseline| C02
+  C01 -->|Design or parameter baseline| C03
+  C01 -->|Retry after a fix| C04
+  C02 -->|Retry after a fix| C05
+  C03 -->|Retry after a fix| C06
+  C04 -->|Design or parameter baseline| C07
+  W10 -.->|Numerical reference or research motivation| C07
+  C07 -->|Retry after a fix| C12
+  C07 -->|Design or parameter baseline| C08
+  E065 -.->|Numerical reference or research motivation| C08
+  C08 -->|Design or parameter baseline| C09
+  C08 -->|Retry after a fix| C10
+  C09 -->|Retry after a fix| C11
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class C01,C02,C03,C07,C08,C09 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class C04,C05,C06,C12,C10,C11 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E065,P07,W05,W10 context

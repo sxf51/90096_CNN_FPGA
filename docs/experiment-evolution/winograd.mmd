@@ -1,0 +1,62 @@
+%% D：Winograd，从精确变换到连续调度和权重银行
+flowchart TB
+  W01["W01<br/>十位整数 F(2x2,3x3) PE<br/>用 G2=2G 保留整数变换，逆变换精确除以四再量化。<br/>PE: DSP 16 / LUT 1499<br/>局部实验通过"]
+  W02["W02<br/>直接卷积 PE 控制<br/>相同 tile 的直接 36 次乘法，比较 Winograd 的 16 次乘法。<br/>PE: DSP 36 / LUT 503<br/>局部实验通过"]
+  W03["W03<br/>十六位 Winograd PE<br/>增加输入/权重位宽，测量变换后的 18x20 位乘法映射。<br/>PE: DSP 16 / LUT 2155<br/>局部实验通过"]
+  W04["W04<br/>Winograd Conv1 单层 T16<br/>把 9x9 核拆为九个 3x3，运行时变换权重并重排 tile 输出。<br/>运行失败<br/>运行失败"]
+  W05["W05<br/>Winograd 整网 T16<br/>把 Conv1 Winograd 与 Conv2/3 接起来测整图。<br/>运行失败<br/>运行失败"]
+  W06["W06<br/>Winograd 整网 T8<br/>改变并行度，在相同数值契约下测更快目标。<br/>运行失败<br/>运行失败"]
+  W07["W07<br/>单层头文件顺序修复<br/>先包含 AMD 类型头文件，再定义网络尺寸宏。<br/>单层: DSP 145 / LUT 30872<br/>候选，仍需验收"]
+  W08["W08<br/>整网 T16 头文件修复<br/>在独立源码副本修复包含顺序。<br/>HLS 估计 22.8954 ms / DSP 326<br/>HLS 时序警告"]
+  W09["W09<br/>整网 T8 头文件修复<br/>相同修复下测 T8 并行度。<br/>HLS 估计 13.9743 ms / DSP 648<br/>超预算: LUT；HLS 时序警告"]
+  W10["W10<br/>固定 tile 循环，仅 Conv1 连续<br/>分离窗口生成与固定次数 MAC 循环，消除条件边界对循环估计的膨胀。<br/>HLS 估计 7.5482 ms / DSP 326<br/>HLS 时序警告"]
+  W11["W11<br/>三层连续，T8，4 ns<br/>推广连续调度到其他层，扫描 T8。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>运行失败"]
+  W12["W12<br/>三层连续，T16，4 ns<br/>在 T16 下测连续三层组织。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>运行失败"]
+  W13["W13<br/>三层连续，T8，3.33 ns<br/>在同一连续组织收紧目标周期。<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB<br/>运行失败"]
+  W14["W14<br/>T8 双 4000 位窗口流<br/>把一个完整 Conv3 窗口分成同步的两个通道，不改变算术。<br/>HLS 估计 2.1302 ms / DSP 648<br/>超预算: LUT/FF；HLS 时序警告"]
+  W15["W15<br/>T16 双窗口流<br/>修正 T16 的流表示。<br/>HLS 估计 4.2274 ms / DSP 326<br/>超预算: LUT；HLS 时序警告"]
+  W16["W16<br/>T8 双窗口流，3.33 ns<br/>修正宽流后再测较紧时钟。<br/>HLS 估计 1.7735 ms / DSP 648<br/>超预算: LUT/FF；HLS 时序警告"]
+  W17["W17<br/>T8 原始权重窄银行<br/>原始权重只供顺序变换，减少其通道分银行；保留变换后 MAC 银行。<br/>HLS 估计 2.1302 ms / DSP 648<br/>超预算: LUT；HLS 时序警告"]
+  W18["W18<br/>T16 原始权重窄银行<br/>在 T16 下测量相同加载/银行调整。<br/>HLS 估计 4.2274 ms / DSP 326<br/>HLS 时序警告"]
+  W19["W19<br/>Winograd T8 接入私有参数流<br/>把选定的私有加载器接入 W17，单个转换进程输出三层参数流，保留整数 Winograd、连续 tile 和精确输出编码。<br/>HLS 估计 1.749 ms / DSP 645<br/>超预算: LUT"]
+  W21["W21<br/>权重缓存按子卷积重排<br/>只把 81 系数扁平缓存改为 9 子卷积 x 9 tap，保持变换算术和流 token 数不变，消除动态稀疏选择器。<br/>HLS 估计 1.749 ms / DSP 644<br/>候选，仍需验收"]
+  E048["E048 / 外部来源<br/>整数承载的定点运算<br/>HLS 估计 29.1386 ms / DSP 254"]
+  E071["E071 / 外部来源<br/>Packing/Winograd 前置范围<br/>分析完成"]
+  F03["F03 / 外部来源<br/>连续 MAC，保留旧补边<br/>C 仿真 / 平均 ΔPSNR -0.0695 dB"]
+  F28["F28 / 外部来源<br/>私有加载器关闭循环合并<br/>HLS 估计 2.6151 ms / DSP 502"]
+  E071 -.->|数值依据或研究启发| W01
+  W01 -.->|对照实验| W02
+  W01 -->|设计或参数基线| W03
+  E048 -->|设计或参数基线| W04
+  W01 -->|集成已有模块| W04
+  W04 -->|设计或参数基线| W05
+  W05 -->|设计或参数基线| W06
+  W04 -->|修复后重试| W07
+  W05 -->|修复后重试| W08
+  W06 -->|修复后重试| W09
+  W08 -->|设计或参数基线| W10
+  F03 -.->|数值依据或研究启发| W10
+  W10 -->|设计或参数基线| W11
+  W10 -->|设计或参数基线| W12
+  W11 -->|设计或参数基线| W13
+  W11 -->|修复后重试| W14
+  W12 -->|修复后重试| W15
+  W13 -->|修复后重试| W16
+  W14 -->|设计或参数基线| W17
+  W09 -.->|数值依据或研究启发| W17
+  W15 -->|设计或参数基线| W18
+  W17 -->|设计或参数基线| W19
+  F28 -->|集成已有模块| W19
+  W19 -->|设计或参数基线| W21
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class W01,W02,W03,W07,W21 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  class W08,W10,W18 warning
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class W04,W05,W06,W11,W12,W13 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class W09,W14,W15,W16,W17,W19 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E048,E071,F03,F28 context

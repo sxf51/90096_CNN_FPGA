@@ -1,0 +1,52 @@
+%% Baseline and precision: establish what may change
+flowchart TB
+  E000["E000<br/>Original floating-point baseline<br/>Preserve src/, network structure, and replicated edges; measure correctness and synthesis scale.<br/>HLS estimate 19601.1385 ms / DSP 10<br/>Over budget: BRAM18K"]
+  E010["E010<br/>Layer ranges and bit-width scan<br/>Measure ranges on 13 inputs and scan 16/12/10/8-bit weight and activation combinations.<br/>Analysis complete<br/>Analysis complete"]
+  E011["E011<br/>Real ap_fixed: 16/16 bits<br/>Check the software quantization model using AMD data types, with all supplied images planned.<br/>Run failed<br/>Run failed"]
+  E012["E012<br/>Real ap_fixed: 10/10 bits<br/>Validate the butterfly output of the complete fixed-point convolution network.<br/>Run failed<br/>Run failed"]
+  E013["E013<br/>Real ap_fixed: 8/8 bits<br/>Check agreement between the quantization model and actual fixed-point arithmetic despite the failed quality gate.<br/>C simulation passed<br/>C simulation passed"]
+  E014["E014<br/>16/16-bit full-dataset retry<br/>Retry complete ap_fixed simulation across the supplied images.<br/>Timed out<br/>Timed out"]
+  E018["E018<br/>16/16-bit single-image control<br/>Limit complete ap_fixed arithmetic checks to butterfly; retain E010 as the separate multi-image quality evaluation.<br/>Run failed<br/>Run failed"]
+  E015["E015<br/>Valid 16/16-bit single-image retry<br/>Fix run configuration and validate complete ap_fixed butterfly arithmetic.<br/>C simulation passed<br/>C simulation passed"]
+  E016["E016<br/>8/8-bit single-image retry<br/>Recheck narrow arithmetic using an independent configuration.<br/>C simulation passed<br/>C simulation passed"]
+  E017["E017<br/>10-bit boundaries and integer reference<br/>Use real ap_fixed for input/parameter conversion and layer rounding/saturation; preserve full product and accumulation fractions in integers.<br/>C simulation / avg delta PSNR -0.0695 dB<br/>C simulation passed"]
+  E019["E019<br/>Complete 10/10-bit ap_fixed retry<br/>Check the complete ap_fixed network against the independent integer reference on butterfly, bit for bit.<br/>C simulation passed<br/>C simulation passed"]
+  E049["E049<br/>Exhaustive layer-boundary rounding<br/>Exhaust all 25,165,824 states across three 23-bit accumulator boundaries.<br/>C simulation passed<br/>C simulation passed"]
+  E062["E062<br/>Layer-specific INT8 feasibility<br/>Try 8-bit weights/activations one layer at a time instead of quantizing the entire network to INT8.<br/>Analysis complete<br/>Analysis complete"]
+  E065["E065<br/>Conv2 8-bit-weight boundary validation<br/>Retain 10-bit activations and validate mixed precision on 13 images with real ap_fixed boundaries.<br/>C simulation / avg delta PSNR -0.0759 dB<br/>C simulation passed"]
+  E066["E066<br/>Complete mixed-precision ap_fixed control<br/>Validate mixed-precision butterfly output using the complete ap_fixed network.<br/>C simulation / avg delta PSNR -0.0759 dB<br/>C simulation passed"]
+  E071["E071<br/>Packing/Winograd prerequisite ranges<br/>Measure raw integer coefficients, transform widths, packed low-field accumulation limits, and paper DSP budgets.<br/>Analysis complete<br/>Analysis complete"]
+  E048["E048 / external parent<br/>Integer carriers for fixed-point arithmetic<br/>HLS estimate 29.1386 ms / DSP 254"]
+  E000 -.->|Numerical reference or research motivation| E010
+  E010 -.->|Numerical reference or research motivation| E011
+  E010 -.->|Numerical reference or research motivation| E012
+  E010 -.->|Numerical reference or research motivation| E013
+  E011 -->|Retry after a fix| E014
+  E014 -->|Retry after a fix| E018
+  E018 -->|Retry after a fix| E015
+  E013 -->|Retry after a fix| E016
+  E010 -.->|Numerical reference or research motivation| E017
+  E012 -->|Retry after a fix| E019
+  E017 -.->|Control experiment| E019
+  E017 -.->|Numerical reference or research motivation| E049
+  E048 -.->|Verify the same design| E049
+  E010 -.->|Numerical reference or research motivation| E062
+  E017 -.->|Numerical reference or research motivation| E062
+  E062 -.->|Numerical reference or research motivation| E065
+  E017 -->|Design or parameter baseline| E065
+  E065 -.->|Control experiment| E066
+  E019 -->|Design or parameter baseline| E066
+  E017 -.->|Numerical reference or research motivation| E071
+  E065 -.->|Numerical reference or research motivation| E071
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E013,E015,E016,E017,E019,E049,E065,E066 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E011,E012,E014,E018 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class E000 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  class E010,E062,E071 analysis
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E048 context

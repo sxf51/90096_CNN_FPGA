@@ -1,0 +1,22 @@
+%% Multiplier controls: explain HLS mapping
+flowchart TB
+  E051["E051<br/>Ordinary 16x16 multiplier<br/>Measure DSP mapping for one signed 16x16 multiplication in isolation.<br/>PE: DSP 1 / LUT 62<br/>Local experiment passed"]
+  E052["E052<br/>Fully unrolled constant weights<br/>Fully unroll 64 multiplications by known constants to observe constant optimization.<br/>PE: DSP 60 / LUT 424<br/>Local experiment passed"]
+  E053["E053<br/>8x8 fabric multiplier<br/>Explicitly measure LUT multiplication and exhaust operand pairs.<br/>PE: DSP 0 / LUT 119<br/>Local experiment passed"]
+  E054["E054<br/>16x16 multiplier at 4 ns<br/>Change only the target period and check that single-DSP mapping persists.<br/>PE: DSP 1 / LUT 62<br/>Local experiment passed"]
+  E055["E055<br/>Matched addition-only control<br/>Use the same array interface/loop to separate interface LUT cost from multiplier cost.<br/>PE: DSP 0 / LUT 73<br/>Local experiment passed"]
+  E047["E047 / external parent<br/>Explicit DSP multiplier binding<br/>HLS estimate 29.1386 ms / DSP 251"]
+  E047 -.->|Numerical reference or research motivation| E051
+  E051 -.->|Control experiment| E052
+  E051 -.->|Control experiment| E053
+  E051 -->|Design or parameter baseline| E054
+  E053 -.->|Control experiment| E055
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  class E051,E052,E053,E054,E055 candidate
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E047 context

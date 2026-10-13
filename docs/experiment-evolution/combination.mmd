@@ -1,0 +1,43 @@
+%% 组合路线：Winograd 与 Packing 能否叠加收益
+flowchart TB
+  C01["C01<br/>Winograd + Conv2/3 Packing，T4<br/>组合 Conv1 Winograd 和后两层精确十位 Packing。<br/>运行失败<br/>运行失败"]
+  C02["C02<br/>Winograd + 仅 Conv3 Packing，T4<br/>保留直接 Conv2，隔离 Conv2 Packing 的代价。<br/>运行失败<br/>运行失败"]
+  C03["C03<br/>Winograd + Conv2/3 Packing，T8<br/>降低并行度以控制资源。<br/>运行失败<br/>运行失败"]
+  C04["C04<br/>双层 Packing 头文件修复<br/>只修复包含顺序，保持数学、精度和参数。<br/>HLS 估计 9.5138 ms / DSP 936<br/>超预算: LUT/FF；HLS 时序警告"]
+  C05["C05<br/>仅 Conv3 Packing 头文件修复<br/>有效运行少一个 Packing 层的控制。<br/>HLS 估计 9.5138 ms / DSP 1192<br/>超预算: LUT/FF；HLS 时序警告"]
+  C06["C06<br/>T8 组合头文件修复<br/>有效测量较低并行度的组合方案。<br/>HLS 估计 13.9743 ms / DSP 470<br/>超预算: LUT；HLS 时序警告"]
+  C07["C07<br/>连续调度的十位组合<br/>把组合架构的窗口生成与固定 MAC 循环分开。<br/>运行失败<br/>运行失败"]
+  C12["C12<br/>连续组合的 guard 修复<br/>修正连续组织的控制/表示，保留数学契约。<br/>HLS 估计 7.5772 ms / DSP 470<br/>超预算: LUT；HLS 时序警告"]
+  C08["C08<br/>Conv2 八位权重组合，T8<br/>仅 Conv2 使用已验证的八位权重，去掉该层十位系数残差修复。<br/>C 仿真 / 平均 ΔPSNR -0.0759 dB<br/>运行失败"]
+  C09["C09<br/>Conv2 八位权重组合，T4<br/>扫描更高并行度并保留混合精度。<br/>C 仿真 / 平均 ΔPSNR -0.0759 dB<br/>运行失败"]
+  C10["C10<br/>T8 混合组合双窗口流<br/>改成两个同步 4000 位通道，保持量化和 MAC。<br/>HLS 估计 2.1302 ms / DSP 520<br/>超预算: LUT/FF；HLS 时序警告"]
+  C11["C11<br/>T4 混合组合双窗口流<br/>在 T4 下修正窗口流表示。<br/>HLS 估计 1.0817 ms / DSP 1036<br/>超预算: LUT/FF；HLS 时序警告"]
+  E065["E065 / 外部来源<br/>Conv2 权重 8 位边界复核<br/>C 仿真 / 平均 ΔPSNR -0.0759 dB"]
+  P07["P07 / 外部来源<br/>精确十位系数残差修复<br/>PE: DSP 1 / LUT 454"]
+  W05["W05 / 外部来源<br/>Winograd 整网 T16<br/>运行失败"]
+  W10["W10 / 外部来源<br/>固定 tile 循环，仅 Conv1 连续<br/>HLS 估计 7.5482 ms / DSP 326"]
+  W05 -->|设计或参数基线| C01
+  P07 -->|集成已有模块| C01
+  C01 -->|设计或参数基线| C02
+  C01 -->|设计或参数基线| C03
+  C01 -->|修复后重试| C04
+  C02 -->|修复后重试| C05
+  C03 -->|修复后重试| C06
+  C04 -->|设计或参数基线| C07
+  W10 -.->|数值依据或研究启发| C07
+  C07 -->|修复后重试| C12
+  C07 -->|设计或参数基线| C08
+  E065 -.->|数值依据或研究启发| C08
+  C08 -->|设计或参数基线| C09
+  C08 -->|修复后重试| C10
+  C09 -->|修复后重试| C11
+  classDef candidate fill:#f0f8f3,stroke:#458365,color:#243031
+  classDef warning fill:#fff7e8,stroke:#ac7b24,color:#243031
+  classDef failure fill:#fcf0f0,stroke:#b16868,color:#243031
+  class C01,C02,C03,C07,C08,C09 failure
+  classDef infeasible fill:#fcf0f0,stroke:#b16868,color:#243031
+  class C04,C05,C06,C12,C10,C11 infeasible
+  classDef planned fill:#ffffff,stroke:#939b9b,color:#243031
+  classDef analysis fill:#edf7f8,stroke:#49838a,color:#243031
+  classDef context fill:#f4f5f5,stroke:#b7bfbf,color:#243031
+  class E065,P07,W05,W10 context

@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif" width="1391" height="1055" viewBox="0 0 1391 1055">
+<title>主机调度：并行准入与内存登记对照</title>
+<desc>同一硬件设计的主机运行方式能否安全并行？资源峰值是否符合登记？。数据快照 653ceb9。实验关系不是 Git 提交历史。</desc>
+<defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#778482"/></marker></defs>
+<rect x="0" y="0" width="1391" height="1055" fill="#ffffff"/>
+<text x="48" y="43" font-size="27" font-weight="700" fill="#182c2d">主机调度：并行准入与内存登记对照</text>
+<text x="48" y="76" font-size="17" fill="#435654">同一硬件设计的主机运行方式能否安全并行？资源峰值是否符合登记？</text>
+<text x="48" y="105" font-size="16" fill="#526461">实线：基线、修复、集成；虚线：数值依据、对照、同一设计验证、复现。</text>
+<text x="48" y="133" font-size="16" fill="#526461">绿：阶段证据通过；红：超预算或失败；琥珀：时序待处理；虚边：仅计划；灰：外部来源。</text>
+<path d="M286.44 343.00 L286.44 383.00 L329.50 383.00 L329.50 423.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1122.44 343.00 L1122.44 383.00 L1165.50 383.00 L1165.50 435.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M704.44 343.00 L704.44 383.00 L747.50 383.00 L747.50 435.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M163.56 343.00 L163.56 383.00 L120.50 383.00 L120.50 734.00 L172.67 734.00 L172.67 762.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M329.50 682.00 L329.50 734.00 L277.33 734.00 L277.33 762.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M999.56 343.00 L999.56 383.00 L956.50 383.00 L956.50 734.00 L1008.67 734.00 L1008.67 762.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M1165.50 670.00 L1165.50 734.00 L1113.33 734.00 L1113.33 762.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M581.56 343.00 L581.56 383.00 L538.50 383.00 L538.50 734.00 L590.67 734.00 L590.67 762.00" fill="none" stroke="#778482" stroke-width="1.7" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<path d="M747.50 670.00 L747.50 734.00 L695.33 734.00 L695.33 762.00" fill="none" stroke="#778482" stroke-width="1.7" marker-end="url(#arrow)"/>
+<g data-id="F32">
+<rect x="152.50" y="431.00" width="354" height="243" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="176.50" y="458.00" font-size="17" font-weight="700" fill="#243031">F32</text>
+<text x="176.50" y="489.50" font-size="20" font-weight="700" fill="#243031">F28 并行综合内存对照</text>
+<text x="176.50" y="525.50" font-size="16" font-weight="400" fill="#243031">保留 F28 设计，与 F33 综合及 F34 C</text>
+<text x="176.50" y="549.50" font-size="16" font-weight="400" fill="#243031"> 仿真并行，测量任务树 RSS 和可用内存</text>
+<text x="176.50" y="573.50" font-size="16" font-weight="400" fill="#243031">。</text>
+<text x="176.50" y="603.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.6151 ms / DSP 502</text>
+<text x="176.50" y="633.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F33">
+<rect x="988.50" y="443.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="1012.50" y="470.00" font-size="17" font-weight="700" fill="#243031">F33</text>
+<text x="1012.50" y="501.50" font-size="20" font-weight="700" fill="#243031">W21 并行综合内存对照</text>
+<text x="1012.50" y="537.50" font-size="16" font-weight="400" fill="#243031">保留 W21 设计，复测相同数值与 HLS</text>
+<text x="1012.50" y="561.50" font-size="16" font-weight="400" fill="#243031">周期，同时测量并行主机负载。</text>
+<text x="1012.50" y="591.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+<text x="1012.50" y="621.50" font-size="15" font-weight="400" fill="#5c6160">候选，仍需验收</text>
+</g>
+<g data-id="F34">
+<rect x="570.50" y="443.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="594.50" y="470.00" font-size="17" font-weight="700" fill="#243031">F34</text>
+<text x="594.50" y="501.50" font-size="20" font-weight="700" fill="#243031">W21 多图 C 仿真并行对照</text>
+<text x="594.50" y="537.50" font-size="16" font-weight="400" fill="#243031">与 F32/F33 同时运行全部课程 13 图</text>
+<text x="594.50" y="561.50" font-size="16" font-weight="400" fill="#243031">C 仿真，不改变算术与参考。</text>
+<text x="594.50" y="591.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+<text x="594.50" y="621.50" font-size="15" font-weight="400" fill="#5c6160">C 仿真通过</text>
+</g>
+<g data-id="F36">
+<rect x="48.00" y="770.00" width="354" height="219" rx="4" fill="#fff7e8" stroke="#ac7b24" stroke-width="1.5"/>
+<text x="72.00" y="797.00" font-size="17" font-weight="700" fill="#243031">F36</text>
+<text x="72.00" y="828.50" font-size="20" font-weight="700" fill="#243031">修正登记后的 F28 综合</text>
+<text x="72.00" y="864.50" font-size="16" font-weight="400" fill="#243031">按照首轮实测修正内存登记，再运行两项综</text>
+<text x="72.00" y="888.50" font-size="16" font-weight="400" fill="#243031">合加一项多图 C 仿真。</text>
+<text x="72.00" y="918.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.6151 ms / DSP 502</text>
+<text x="72.00" y="948.50" font-size="15" font-weight="400" fill="#5c6160">HLS 时序警告</text>
+</g>
+<g data-id="F37">
+<rect x="884.00" y="770.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="908.00" y="797.00" font-size="17" font-weight="700" fill="#243031">F37</text>
+<text x="908.00" y="828.50" font-size="20" font-weight="700" fill="#243031">修正登记后的 W21 综合</text>
+<text x="908.00" y="864.50" font-size="16" font-weight="400" fill="#243031">同一 W21 设计在修正后的调度预算下重</text>
+<text x="908.00" y="888.50" font-size="16" font-weight="400" fill="#243031">测综合。</text>
+<text x="908.00" y="918.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+<text x="908.00" y="948.50" font-size="15" font-weight="400" fill="#5c6160">候选，仍需验收</text>
+</g>
+<g data-id="F38">
+<rect x="466.00" y="770.00" width="354" height="219" rx="4" fill="#f0f8f3" stroke="#458365" stroke-width="1.5"/>
+<text x="490.00" y="797.00" font-size="17" font-weight="700" fill="#243031">F38</text>
+<text x="490.00" y="828.50" font-size="20" font-weight="700" fill="#243031">修正登记后的多图仿真</text>
+<text x="490.00" y="864.50" font-size="16" font-weight="400" fill="#243031">保留 F96 的完整 13 图数值检查，与</text>
+<text x="490.00" y="888.50" font-size="16" font-weight="400" fill="#243031">F36/F37 的综合并行。</text>
+<text x="490.00" y="918.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+<text x="490.00" y="948.50" font-size="15" font-weight="400" fill="#5c6160">C 仿真通过</text>
+</g>
+<g data-id="F28">
+<rect x="48.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="72.00" y="225.00" font-size="17" font-weight="700" fill="#243031">F28 / 外部来源</text>
+<text x="72.00" y="256.50" font-size="20" font-weight="700" fill="#243031">私有加载器关闭循环合并</text>
+<text x="72.00" y="292.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 2.6151 ms / DSP 502</text>
+</g>
+<g data-id="F96">
+<rect x="466.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="490.00" y="225.00" font-size="17" font-weight="700" fill="#243031">F96 / 外部来源</text>
+<text x="490.00" y="256.50" font-size="20" font-weight="700" fill="#243031">W21 的全部已有图像验证</text>
+<text x="490.00" y="292.50" font-size="16" font-weight="700" fill="#243031">C 仿真 / 平均 ΔPSNR -0.0695 dB</text>
+</g>
+<g data-id="W21">
+<rect x="884.00" y="198.00" width="354" height="137" rx="4" fill="#f4f5f5" stroke="#b7bfbf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="908.00" y="225.00" font-size="17" font-weight="700" fill="#243031">W21 / 外部来源</text>
+<text x="908.00" y="256.50" font-size="20" font-weight="700" fill="#243031">权重缓存按子卷积重排</text>
+<text x="908.00" y="292.50" font-size="16" font-weight="700" fill="#243031">HLS 估计 1.749 ms / DSP 644</text>
+</g>
+</svg>
