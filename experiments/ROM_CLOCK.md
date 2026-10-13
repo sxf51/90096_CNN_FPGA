@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T00:57:40+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T01:09:56+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -52,6 +52,7 @@ W33 archived at 4.5 ns; all WS-F C checks pass; C23 HLS screening running. C22 r
 | [C21](C21_ws_impl_C16/C21.md) | C16 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | 535976.0 | unknown | 4.5 | True | 2.411892 | 2.044600818297271 | unknown |
 | [C22](C22_ws_impl_C17/C22.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | 5.0 | True | 1.365115 | 3.7755140826333244 | unknown |
 | [W33](W33_ws_impl_W24/W33.md) | W24 | impl | impl_complete | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | 4.5 | True | 2.494017 | 5.701752712986097 | unknown |
+| [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128840.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C24](C24_reload_switch_sequence/C24.md) | C13 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C25](C25_reload_switch_cold/C25.md) | C13 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F53](F53_legacy_C13_regression/F53.md) | C13 | csim | csim_pass | True | -0.07589037644656216 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
@@ -65,7 +66,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | queued_or_running | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 
