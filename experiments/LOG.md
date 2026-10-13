@@ -641,6 +641,8 @@
 
 - 2026-10-13T05:53:08+00:00: C34: reload_windows_cold; status=csim_pass; latency_ms_est=unknown; 
 
+- 2026-10-13T05:55:46+00:00: W34: archived five setup paths from the matching final generated report; no additional Vivado run.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 C31 四帧 RTL 仿真的进程树峰值为 10.4066 GiB，超过历史两帧任务的 7.5 GiB 登记。已按实测峰值加 10% 并向上取整，将后续 cosim 登记提高到 11.5 GiB；原 C31 准入、实现 18 GiB、保护线和单重任务规则不变。证据在 C31 的 cosim_memory_budget_revision.json。明日复核是否需要把两帧与四帧细分为独立预算类别；本轮先用较保守的统一值继续。
@@ -720,4 +722,6 @@
 - Existing `calculate_PSNR` converts model output to uint8 without clamping and may wrap outside [0,1]. Use explicitly defined normalized float MSE PSNR (`10 log10(1/MSE)`, no clipping/cropping) for the new precision gate against the same float golden; also preserve original testbench output. Metric choice must be reviewed before claiming external benchmark equivalence.
 
 - 2026-10-13T04:52 UTC C32 support: committed the steady-state comparison protocol before implementation. Derived summaries and the verified-IP Pareto now retain maximum transaction/first-load latency separately and rank reload candidates by the slower of both accepted zero-AXI reuse calls, only with matching closed routing. All175 script tests pass, including incomplete/mismatched transaction and unclosed-route rejection. No numerical, resource or cycle threshold changed; C22 remains the measured fallback while W34 routes and C32-C34 await admission.
+
+- 2026-10-13 W34 recovery: archived five paths from the existing final post-route report without launching Vivado. All five are inside continuous_wino_fold with8-11logic levels; worst4.822ns includes3.485ns routing. Final WNS-0.324/TNS-51.194 rejects4.5ns despite feasible resources. C33 four-call and C34 fresh-process C checks pass; C32 synthesis remains active. Removed finished supervisors7451/36261 from current state. Continue WS-G before independent WS-H variants, keep C22 fallback and prohibit an unqualified4ns probe.
 
