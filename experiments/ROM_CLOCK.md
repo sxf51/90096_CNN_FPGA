@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T02:35:43+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T02:36:01+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -58,6 +58,7 @@ C27 exposes a4byte read on reuse; guarded C29/C30 pass and C28 quality passes wi
 | [F53](F53_legacy_C13_regression/F53.md) | C13 | csim | csim_pass | True | -0.07589037644656216 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C26](C26_ws_cosim_C23/C26.md) | C23 | cosim | fail | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128840.0 | unknown | rejected_or_unmeasured | unknown | unknown | unknown | unknown | unknown |
 | [C27](C27_ws_cosim_C23/C27.md) | C23 | cosim | fail | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128840.0 | unknown | rejected_or_unmeasured | unknown | unknown | unknown | unknown | unknown |
+| [C28](C28_reload_guard_quality/C28.md) | C23 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128849.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C29](C29_reload_guard_sequence/C29.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C30](C30_reload_guard_cold/C30.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
@@ -70,7 +71,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [C28](C28_reload_guard_quality/C28.md) | C23 | csim/csynth | queued_or_running | Independent guarded scalar-bias design; require complete13-image E065 exactness,unchanged border/deltaPSNR and all HLS screening/II gates before new RTL |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 

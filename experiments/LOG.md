@@ -617,6 +617,8 @@
 
 - 2026-10-13T02:35:41+00:00: C27: ws_cosim_C23; status=fail; latency_ms_est=1.05236; cosim of C23; HLS estimates inherited, real measurements in data.csv; Skipped-load transaction has parameter AXI traffic
 
+- 2026-10-13T02:36:00+00:00: C28: reload_guard_quality; status=infeasible; latency_ms_est=1.05236; ; HLS status retained; final feasibility requires independent routed gates
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.
