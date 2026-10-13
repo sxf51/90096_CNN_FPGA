@@ -535,12 +535,12 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C28](../experiments/C28_reload_guard_quality/C28.md) | C23 | infeasible | 263090.0 | 1032.0 | 128849.0 | unknown | unknown | unknown |
 | [C29](../experiments/C29_reload_guard_sequence/C29.md) | C23 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C30](../experiments/C30_reload_guard_cold/C30.md) | C23 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C31](../experiments/C31_ws_cosim_C28/C31.md) | C28 | cosim_complete | 263090.0 | 1032.0 | 128849.0 | 300634 | unknown | unknown |
 
 未测量的计划：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| C31 | C28 | queued_or_running | C28 exact13-image quality/HLS and C29/C30 semantics pass; require repaired four-call exact RTL, zero skipped parameter AXI, latency ordering and unchanged RTL before new routing |
 | W34 | C17 | queued_or_running | User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes |
 | C32 | C17 | unlaunched_conditional | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
 | C33 | C17 | unlaunched_conditional | C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics |

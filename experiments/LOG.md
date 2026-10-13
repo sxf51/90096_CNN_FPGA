@@ -631,6 +631,8 @@
 
 - 2026-10-13T03:56:57+00:00: WS-H preparation: independent parameter-register/balanced-tree generator added after docs/0005 implementation-plan commit; no new timing design created. Four-call cycle limits check each parent latency*101//100, preventing loaded-frame maxima from hiding reuse regressions. Full171-script-test suite passes; C31 has3/4 observed transactions, last retain/post-check pending; W34 retains next heavy admission.
 
+- 2026-10-13T04:00:09+00:00: C31: ws_cosim_C28; status=cosim_complete; latency_ms_est=1.05236; cosim of C28; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.

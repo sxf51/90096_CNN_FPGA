@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T03:37:47+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T04:00:10+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -61,6 +61,7 @@ C31 is running; user authorizes WS-G, WS-H and WS-I after cancelling obsolete F9
 | [C28](C28_reload_guard_quality/C28.md) | C23 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128849.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C29](C29_reload_guard_sequence/C29.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C30](C30_reload_guard_cold/C30.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C31](C31_ws_cosim_C28/C31.md) | C28 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128849.0 | 300634 | original_verification_pass | unknown | unknown | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -71,7 +72,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [C31](C31_ws_cosim_C28/C31.md) | C28 | cosim | queued_or_running | C28 exact13-image quality/HLS and C29/C30 semantics pass; require repaired four-call exact RTL, zero skipped parameter AXI, latency ordering and unchanged RTL before new routing |
 | [W34](W34_t4_strategy_4p5_C17/W34.md) | C17 | impl | queued_or_running | User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes |
 | [C32](C32_reload_windows_quality/C32.md) | C17 | csim/csynth | unlaunched_conditional | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
 | [C33](C33_reload_windows_sequence/C33.md) | C17 | csim/csynth | unlaunched_conditional | C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics |
