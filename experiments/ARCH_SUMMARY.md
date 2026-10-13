@@ -94,7 +94,6 @@ Unmeasured plans have no actual result and do not enter rankings:
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | queued_or_running | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
-| [F53](F53_legacy_C13_regression/F53.md) | C13 | csim/csynth | queued_or_running | After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled |
 
 ## P Direction
 
@@ -301,6 +300,7 @@ Loader controls preserve all inference engines, precision and runtime parameters
 | [F47](F47_windows16_W21_T8/F47.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81086.0 | 130057.0 | True | 1.661846957728205e-05 | True | pass |
 | [F40](F40_fifo16_W21_T8/F40.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81086.0 | 130057.0 | True | 1.661846957728205e-05 | True | pass |
 | [F39](F39_c3_select_W21_T8/F39.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81518.0 | 130422.0 | True | 1.661846957728205e-05 | True | pass |
+| [F53](F53_legacy_C13_regression/F53.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | csim_pass |
 
 ## All Architectures
 
@@ -575,6 +575,7 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [W33](W33_ws_impl_W24/W33.md) | frame | 630.0 | 630.0 | 0.0 | 524330.0 | unknown | unknown | impl_complete |
 | [C24](C24_reload_switch_sequence/C24.md) | frame | 1032.0 | unknown | unknown | 300632.0 | unknown | unknown | csim_pass |
 | [C25](C25_reload_switch_cold/C25.md) | frame | 1032.0 | unknown | unknown | 300632.0 | unknown | unknown | csim_pass |
+| [F53](F53_legacy_C13_regression/F53.md) | frame | 1032.0 | unknown | unknown | 300632.0 | unknown | unknown | csim_pass |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -1029,4 +1030,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-13T00:56:02+00:00.
+Generated from archived evidence at 2026-10-13T00:57:39+00:00.

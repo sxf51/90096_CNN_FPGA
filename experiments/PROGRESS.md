@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-W33 closes 4.5 ns; C24/C25 exact C checks pass; C23 synthesis and F53 regression running. C22 remains the verified 1.365115 ms leader and C21 is a verified 2.411892 ms lower-DSP alternative; both IP handoffs are archived. W33 independently closes 4.5 ns with WNS +0.063/WHS +0.032, zero TNS/THS, no unrouted/partial nets and 630 DSP/33829 LUT/82539 FF/101 BRAM18K. Matching W25 exact 554226 cycles gives 2.494017 ms; ROM stays exploratory. C24 four-call reuse/reload/retain and C25 fresh-process first-call load=0 checks pass exactly. C23 completes all 13 loaded/reused images with unchanged -0.07589037644656216 dB deltaPSNR and is now synthesizing; its complete archive remains pending under supervisor 65418. Supervisor 2446 runs F53's frozen C13 13-image regression. After actual passing HLS and regression archives arrive, allocate independent monitored four-call RTL and staged 5 ns routing. The standalone monitor/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.
+W33 archived at 4.5 ns; all WS-F C checks pass; C23 HLS screening running. C22 remains the verified 1.365115 ms leader and C21 is a verified 2.411892 ms lower-DSP alternative; both IP handoffs are archived. W33 independently closes 4.5 ns with WNS +0.063/WHS +0.032, zero TNS/THS, no unrouted/partial nets and 630 DSP/33829 LUT/82539 FF/101 BRAM18K. Matching W25 exact 554226 cycles gives 2.494017 ms; ROM stays exploratory. C24 four-call reuse/reload/retain, C25 fresh-process first-call load=0 and F53 frozen C13 13-image regression all pass exactly. C23 completes all 13 loaded/reused images with unchanged -0.07589037644656216 dB deltaPSNR and is now synthesizing; its complete archive remains pending under supervisor 65418. After actual passing HLS screening arrives, allocate independent monitored four-call RTL and staged 5 ns routing. The standalone monitor/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T00:56:06+00:00 from archived measurements.
+Updated 2026-10-13T00:57:39+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
