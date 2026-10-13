@@ -548,3 +548,4 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | C32 | C17 | queued_or_running | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
 | C33 | C17 | queued_or_running | C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics |
 | C34 | C17 | queued_or_running | C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading |
+| W35 | C28 | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
