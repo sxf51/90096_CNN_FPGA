@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C23 passes HLS screening; C27 monitored four-call RTL running after C26 pre-tool failure. C22 remains the verified 1.365115 ms leader; C21 and W33 independently close4.5ns at2.411892 and2.494017ms. All WS-F C checks and C23 HLS screening pass. C26's pre-tool telemetry registration failure is archived unchanged;21 targeted scheduler/observer checks validate the repair. C27 now actually runs cosim.setup on the sole heavy slot under supervisor31264. Collect four exact loaded/reused/reloaded/retained transactions, observed zero skipped-call parameter AXI and matching synthesis RTL hashes; only after acceptance allocate fresh staged5ns routing of C23. Hardware reuse measurements remain unknown. Preserve one heavy task,18GiB implementation registration,serial_after_oom and all gates. Complete interpretations,all plots,two-location protected checksums and the final idle audit. No board result exists.
+C23 passes HLS screening; C27 monitored four-call RTL running after C26 pre-tool failure. C22 remains the verified1.365115ms leader; C21 and W33 independently close4.5ns at2.411892 and2.494017ms. All WS-F C checks and C23 HLS screening pass. C26's pre-tool telemetry registration failure is archived unchanged;21 targeted scheduler/observer checks validate the repair. C27 completes setup and now executes the unchanged generated run_sim driver with the read-only observer, on the sole heavy slot under supervisor31264. Its first RTL transaction is still running; actual reuse cycles and zero-AXI evidence remain unknown. The01:34UTC snapshot audit passes both-location protected checksums and paper/source/testbench/report provenance, while explicitly retaining one active unarchived plan. Collect four exact load/reuse/reload/retain transactions and synthesis RTL hashes; only after acceptance allocate fresh staged5ns routing of C23. Preserve one heavy task,18GiB implementation registration,serial_after_oom and all gates. Complete interpretations,all plots and the final idle audit. No board result exists.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T01:13:59+00:00 from archived measurements.
+Updated 2026-10-13T01:35:15+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 

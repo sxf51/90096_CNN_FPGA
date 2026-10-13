@@ -1037,6 +1037,48 @@
       "csv_matches_archive": true,
       "id": "C21",
       "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 9,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "W33",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C24",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C25",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "F53",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 0,
+      "csv_matches_archive": true,
+      "id": "C23",
+      "plan_unchanged": true
+    },
+    {
+      "archived_source_files_checked": 7,
+      "archived_testbench_files_checked": 1,
+      "csv_matches_archive": true,
+      "id": "C26",
+      "plan_unchanged": true
     }
   ],
   "board_validation": false,
@@ -2178,6 +2220,10 @@
     "C20",
     "C21",
     "C22",
+    "C23",
+    "C24",
+    "C25",
+    "C26",
     "F32",
     "F33",
     "F34",
@@ -2199,6 +2245,7 @@
     "F50",
     "F51",
     "F52",
+    "F53",
     "W23",
     "W24",
     "W25",
@@ -2208,73 +2255,27 @@
     "W29",
     "W30",
     "W31",
-    "W32"
+    "W32",
+    "W33"
   ],
   "mode": "snapshot",
   "pushed": false,
   "remote_jobs_active": true,
   "remote_processes": [
-    "138171 python3 exp/run_exp.py --config exp/configs/W33.json",
-    "139135 python3 exp/run_exp.py --config exp/configs/C23.json",
-    "139354 python3 exp/run_exp.py --config exp/configs/C24.json",
-    "139575 /home/lipuze/amdfpga/2026.1/Vivado/bin/unwrapped/lnx64.o/vivado -mode batch -source run_synthesis.tcl -notrace -nojournal"
+    "147003 python3 exp/run_exp.py --config exp/configs/C27.json"
   ],
   "resource_policy": "routed",
   "test_set": "Set14 (complete13-image course-provided set)",
-  "time": "2026-10-13T00:29:27+00:00",
+  "time": "2026-10-13T01:34:31+00:00",
   "unmeasured_plans": [
     {
-      "condition": "After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening",
+      "condition": "After repairing C26's pre-tool scheduler telemetry integration, independently verify frozen C23 using four exact transactions, zero skipped-call parameter AXI and unchanged synthesis RTL under a cumulative six-hour timeout",
       "failure_reason": null,
       "has_measured_result": false,
-      "id": "C23",
+      "id": "C27",
       "not_run_condition_failed": false,
-      "operation": "csim/csynth",
-      "plan_sha256": "2318a48b6e26a4c484fcda0f79310f09b71ef2869c7f5e22a85aa95973fa7215",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": "After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred",
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "C24",
-      "not_run_condition_failed": false,
-      "operation": "csim/csynth",
-      "plan_sha256": "efeb1ce4f16632a9622cf9e2432fb12b8881bcdece0e1768a836aa0f9aefcc8c",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": "After C21 completes, independently test fresh-process first-call load=0 forced loading",
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "C25",
-      "not_run_condition_failed": false,
-      "operation": "csim/csynth",
-      "plan_sha256": "710b711a978d7575e6938b5914ab172aedbd14c39d3fb2ffd788f87962d95490",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": "After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled",
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "F53",
-      "not_run_condition_failed": false,
-      "operation": "csim/csynth",
-      "plan_sha256": "49e905ad12a53893b9a0ce73f5e5a0e7976faba08eaa3ea44da2154d734b83c5",
-      "prerequisite_metrics_sha256": null,
-      "unlaunched_for_memory": false
-    },
-    {
-      "condition": "W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21",
-      "failure_reason": null,
-      "has_measured_result": false,
-      "id": "W33",
-      "not_run_condition_failed": false,
-      "operation": "impl",
-      "plan_sha256": "aba6d2cbb16ad1381e53fb027c6d11415e396ae6b1fa59ee0ddb03262a4695dd",
+      "operation": "cosim",
+      "plan_sha256": "5452ecee32585be77e90b79368ed3887e56d00562c84a2ed72950bebc8c1ef76",
       "prerequisite_metrics_sha256": null,
       "unlaunched_for_memory": false
     }
@@ -2630,6 +2631,24 @@
       "reports_checked": 6,
       "sha256_pass": true,
       "status": "impl_complete"
+    },
+    {
+      "additional_evidence_files_checked": 16,
+      "git_visible_and_tracked": true,
+      "id": "W33",
+      "operation": "impl",
+      "reports_checked": 6,
+      "sha256_pass": true,
+      "status": "impl_complete"
+    },
+    {
+      "additional_evidence_files_checked": 0,
+      "git_visible_and_tracked": true,
+      "id": "C26",
+      "operation": "cosim",
+      "reports_checked": 0,
+      "sha256_pass": true,
+      "status": "fail"
     }
   ]
 }

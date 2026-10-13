@@ -1012,7 +1012,7 @@ Routed timing closes for 1 selected implementation runs; 2 selected two-frame RT
 
 ## Next Steps
 
-Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. C22 remains the verified 1.365115 ms leader; C21 and W33 independently close4.5ns at2.411892 and2.494017ms. All WS-F C checks and C23 HLS screening pass. C26's pre-tool telemetry registration failure is archived unchanged;21 targeted scheduler/observer checks validate the repair. C27 now actually runs cosim.setup on the sole heavy slot under supervisor31264. Collect four exact loaded/reused/reloaded/retained transactions, observed zero skipped-call parameter AXI and matching synthesis RTL hashes; only after acceptance allocate fresh staged5ns routing of C23. Hardware reuse measurements remain unknown. Preserve one heavy task,18GiB implementation registration,serial_after_oom and all gates. Complete interpretations,all plots,two-location protected checksums and the final idle audit. No board result exists.
+Use the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. C22 remains the verified1.365115ms leader; C21 and W33 independently close4.5ns at2.411892 and2.494017ms. All WS-F C checks and C23 HLS screening pass. C26's pre-tool telemetry registration failure is archived unchanged;21 targeted scheduler/observer checks validate the repair. C27 completes setup and now executes the unchanged generated run_sim driver with the read-only observer, on the sole heavy slot under supervisor31264. Its first RTL transaction is still running; actual reuse cycles and zero-AXI evidence remain unknown. The01:34UTC snapshot audit passes both-location protected checksums and paper/source/testbench/report provenance, while explicitly retaining one active unarchived plan. Collect four exact load/reuse/reload/retain transactions and synthesis RTL hashes; only after acceptance allocate fresh staged5ns routing of C23. Preserve one heavy task,18GiB implementation registration,serial_after_oom and all gates. Complete interpretations,all plots and the final idle audit. No board result exists.
 
 ## Integrity Audit
 
@@ -1041,4 +1041,4 @@ Interim local/remote original and first-phase source checksum and report-provena
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-13T01:14:00+00:00.
+Generated from archived evidence at 2026-10-13T01:35:16+00:00.

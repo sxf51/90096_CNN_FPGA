@@ -609,6 +609,8 @@
 
 ## Pending Human Decisions / 待人工决策
 
+- 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.
+
 - 2026-10-13 01:13 UTC C23/C26/C27: C23's complete13-image E065 exactness, unchanged deltaPSNR and three fold II1 checks pass; HLS screening permits independent hardware validation while retaining the original infeasible status. C26 is rejected before any Vitis process due to unregistered monitored telemetry phases. Preserve the original fail record, register both phases strictly as cosim heavy leases, and pass21 targeted scheduler/observer checks. Fresh C27 now actually runs setup under supervisor31264; four-call exactness, zero skipped parameter AXI and independent5ns routing remain outstanding. No numerical, memory or physical gate is relaxed.
 
 - 2026-10-13 00:05:47 UTC C23: standalone Vitis Tcl interpreter probe confirms ::AP::printMsg, ::AP::check_bin_exist and ::AESL_AUTOSIM::gDebug are available without a project or simulation. Archive the original tool log in C23/tool_probes/monitor_environment.txt and reproducible exp/hls_monitor_environment.tcl; this is an environment query, not RTL validation. C21 progresses through rerouting; C22 handoff/path completion and outstanding conditions are refreshed in the recovery state.
