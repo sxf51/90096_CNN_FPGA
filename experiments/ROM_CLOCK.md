@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T07:25:45+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T07:30:40+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -66,6 +66,7 @@ WS-G C32-C34 C/HLS gates pass; C35 monitored RTL running, C36 conditional route 
 | [C32](C32_reload_windows_quality/C32.md) | C17 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C33](C33_reload_windows_sequence/C33.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C34](C34_reload_windows_cold/C34.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C35](C35_ws_cosim_C32/C35.md) | C32 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | 273025 | original_verification_pass | unknown | unknown | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -77,7 +78,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
-| [C35](C35_ws_cosim_C32/C35.md) | C32 | cosim | queued_or_running | C32 all13 E065-exact quality and threefoldII1/HLS screening plus C33/C34 C semantics pass; require four exact RTL calls,zero reuse parameter AXI,latency ordering and unchanged synthesis manifests |
 | [C36](C36_ws_impl_C32/C36.md) | C32 | impl | unlaunched_conditional | Launch only after strict C35 acceptance; independent default-strategy5ns staged implementation of frozen C32 with observed synthesis1/route4threads and all routed gates |
 | [W36](W36_ws_impl_C17/W36.md) | C17 | impl | unlaunched_conditional | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
 
