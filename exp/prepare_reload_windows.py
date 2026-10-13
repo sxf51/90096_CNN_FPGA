@@ -14,14 +14,47 @@ from run_exp import ROOT, check_protected
 DESIGN = "designs/winograd_t4_windows32_reload_v1"
 
 
+def source_hashes(source):
+    return {str(path.relative_to(source)): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in source.rglob("*") if path.is_file()}
+
+
+def reviewed_patch():
+    folders = []
+    for exp_id in ("C13", "C28"):
+        config = json.loads((archived(exp_id) / "config.json").read_text())
+        folder = ROOT / config["design"]
+        if source_hashes(folder) != config["source_sha256"]:
+            raise RuntimeError("Frozen transplant source mismatch: " + exp_id)
+        folders.append(str(folder.relative_to(ROOT)))
+    result = subprocess.run(["git", "diff", "--no-index", "--", *folders], cwd=ROOT,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if result.returncode != 1 or not result.stdout or result.stderr:
+        raise RuntimeError("Expected a nonempty frozen C13-to-C28 source diff")
+    return result.stdout
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--id", required=True)
     parser.add_argument("--mode", choices=("quality", "sequence", "cold"))
     parser.add_argument("--copy-parent", action="store_true")
+    parser.add_argument("--review-diff", action="store_true",
+                        help="Archive the frozen transplant patch and dry-run it against C17 without editing source")
     args = parser.parse_args()
     check_protected()
     parent = archived("C17")
+    if args.review_diff:
+        record = ROOT / "experiments" / (args.id + "_reload_windows_quality") / "plan.json"
+        subprocess.run(["git", "cat-file", "-e", "HEAD:" + str(record.relative_to(ROOT))],
+                       cwd=ROOT, check=True)
+        patch = reviewed_patch()
+        original = json.loads((parent / "config.json").read_text())["design"]
+        subprocess.run(["git", "apply", "--check", "--directory=" + original, "-p3"],
+                       input=patch, cwd=ROOT, check=True)
+        (record.parent / "source_patch.diff").write_bytes(patch)
+        print("Archived C13-to-C28 transplant patch; C17 dry-run passed, source unchanged")
+        return
     if args.copy_parent:
         proof = archived("C31")
         rtl_config = json.loads((proof / "config.json").read_text())
@@ -36,11 +69,28 @@ def main():
                        cwd=ROOT, check=True)
         source = parent / "source"
         expected = json.loads((parent / "config.json").read_text())["source_sha256"]
-        actual = {str(path.relative_to(source)): hashlib.sha256(path.read_bytes()).hexdigest()
-                  for path in source.rglob("*") if path.is_file()}
+        actual = source_hashes(source)
         if actual != expected or (ROOT / DESIGN).exists():
             raise RuntimeError("Frozen C17 source mismatch or new design already exists")
         shutil.copytree(source, ROOT / DESIGN)
+        patch = reviewed_patch()
+        if patch != (record.parent / "source_patch.diff").read_bytes():
+            raise RuntimeError("Transplant patch differs from the reviewed archive")
+        subprocess.run(["git", "apply", "--check", "--directory=" + DESIGN, "-p3"],
+                       input=patch, cwd=ROOT, check=True)
+        subprocess.run(["git", "apply", "--directory=" + DESIGN, "-p3"],
+                       input=patch, cwd=ROOT, check=True)
+        guard = archived("C28") / "source"
+        expected = source_hashes(guard)
+        guard_cpp = (guard / "srcnn.cpp").read_bytes()
+        old = b"#pragma HLS STREAM variable=windows depth=2\n"
+        if guard_cpp.count(old) != 1:
+            raise RuntimeError("Expected one unchanged C28 transformed-window FIFO")
+        expected["srcnn.cpp"] = hashlib.sha256(guard_cpp.replace(
+            old, b"#pragma HLS STREAM variable=windows depth=32\n", 1)).hexdigest()
+        if source_hashes(ROOT / DESIGN) != expected:
+            raise RuntimeError("Integrated source differs beyond the reviewed reload/FIFO changes")
+        print("Integrated only the reviewed guard diff into frozen C17; all source hashes verified")
         return
     if args.mode is None:
         parser.error("--mode is required for a plan")
