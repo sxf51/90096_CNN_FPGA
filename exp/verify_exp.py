@@ -18,6 +18,7 @@ from compact_archive import compact
 from archive_cosim_profiles import archive_profiles, profile_results
 from host_memory import MemoryMonitor
 from route_gates import evaluate_route, parse_route_status
+from rtl_acceptance import check_transaction_cycle_limits
 
 
 def archive_verification_reports(work, archive, operation):
@@ -677,6 +678,8 @@ def run_verification(config, resume_waiting=False):
         if operation == "cosim" and config.get("rtl_min_cycles") is not None:
             if observed["rtl_latency_min"] < config["rtl_min_cycles"]:
                 raise RuntimeError("Measured RTL cycles are below the preplanned acceptance bound")
+        if operation == "cosim":
+            check_transaction_cycle_limits(config, observed)
         row["status"] = operation + "_complete"
         if operation == "impl":
             if not config.get("resource_policy") == "routed":

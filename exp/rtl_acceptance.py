@@ -5,6 +5,26 @@ from run_exp import number
 LOWER_BOUND_FAILURE = "Measured RTL cycles are below the preplanned acceptance bound"
 
 
+def check_transaction_cycle_limits(config, measured):
+    limits = config.get("rtl_transaction_max_cycles")
+    if limits is None:
+        return
+    rows = measured.get("reload_switch_transactions", [])
+    if (not config.get("reload_switch_validation") or not isinstance(limits, list) or
+            len(limits) != 4 or any(type(value) is not int or value <= 0 for value in limits) or
+            len(rows) != 4 or [row.get("transaction") for row in rows] != list(range(4)) or
+            [row.get("load_params") for row in rows] != [1, 0, 1, 0]):
+        raise RuntimeError("Need four ordered reload transactions and positive preplanned cycle limits")
+    for row, limit in zip(rows, limits):
+        cycles = row.get("latency_cycles")
+        if type(cycles) is not int or cycles <= 0:
+            raise RuntimeError("Per-call latency must be a measured positive integer")
+        if cycles > limit:
+            raise RuntimeError("RTL transaction " + str(row["transaction"]) +
+                               " exceeds its preplanned parent+1percent bound: " +
+                               str(cycles) + " > " + str(limit))
+
+
 def accepted_cosim(row, config):
     measured = config.get("verification", {})
     if config.get("operation") != "cosim" or measured.get("rtl_status") != "Pass":

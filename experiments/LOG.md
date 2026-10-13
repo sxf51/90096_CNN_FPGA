@@ -629,6 +629,8 @@
 
 - 2026-10-13T03:37:46+00:00: C31: first two monitored RTL calls complete. Loaded call reads8129parameters/32516bytes with zero writes; skipped call has zero AR/R/AW/W handshakes and valid cycles. This is partial observer evidence, not four-call acceptance. The reviewed frozen C13-to-C28 patch is archived in C32/source_patch.diff and git-apply dry-run succeeds on unchanged C17. Actual WS-G source copying/integration remains gated by final accepted C31. W34 remains queued for the sole heavy slot.
 
+- 2026-10-13T03:56:57+00:00: WS-H preparation: independent parameter-register/balanced-tree generator added after docs/0005 implementation-plan commit; no new timing design created. Four-call cycle limits check each parent latency*101//100, preventing loaded-frame maxima from hiding reuse regressions. Full171-script-test suite passes; C31 has3/4 observed transactions, last retain/post-check pending; W34 retains next heavy admission.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.

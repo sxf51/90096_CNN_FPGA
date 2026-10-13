@@ -10,6 +10,7 @@ from analyze_arch import eligible
 from plan_arch import plan
 from reproduce_exp import archived
 from run_exp import ROOT, check_protected, number
+from rtl_acceptance import accepted_cosim
 from verify_exp import check_image_validation, diagnostic_parent, screened_parent
 
 
@@ -25,6 +26,7 @@ def main():
                         help="Run synthesis/report and implementation/report in separate Vivado processes")
     parser.add_argument("--rtl-min-cycles", type=int)
     parser.add_argument("--rtl-max-cycles", type=int)
+    parser.add_argument("--cycle-parent", help="Matching four-call RTL parent for per-call upper-only +1%% limits")
     parser.add_argument("--template")
     parser.add_argument("--diagnostic", action="store_true")
     parser.add_argument("--reload-params", action="store_true",
@@ -51,6 +53,22 @@ def main():
                               base.get("top") != "srcnn_reload" or
                               base.get("precision") != "w10_8_10a10acc23_21_23"):
         raise RuntimeError("WS-F observation requires the independently validated mixed srcnn_reload top")
+    cycle_limits = None
+    if args.cycle_parent:
+        reference = archived(args.cycle_parent)
+        reference_config = json.loads((reference / "config.json").read_text())
+        reference_metrics = json.loads((reference / "metrics.json").read_text())
+        measured = reference_config.get("verification", {})
+        calls = measured.get("reload_switch_transactions", [])
+        if (not args.reload_switch or not accepted_cosim(reference_metrics, reference_config) or
+                reference_config.get("verify_parent") != base.get("control_experiment") or
+                measured.get("reload_switch_bit_exact") is not True or
+                measured.get("skip_parameter_axi_zero") is not True or len(calls) != 4 or
+                [item.get("transaction") for item in calls] != list(range(4)) or
+                [item.get("load_params") for item in calls] != [1, 0, 1, 0] or
+                any(type(item.get("latency_cycles")) is not int or item["latency_cycles"] <= 0 for item in calls)):
+            raise RuntimeError("Cycle parent must be the independent variant's accepted four-call control")
+        cycle_limits = [item["latency_cycles"] * 101 // 100 for item in calls]
     if args.rtl_min_cycles is not None or args.rtl_max_cycles is not None:
         if args.operation != "cosim" or any(value is not None and value < 1 for value in
                                            (args.rtl_min_cycles, args.rtl_max_cycles)):
@@ -161,6 +179,11 @@ def main():
                               "and RTL post-check driver with a cumulative six-hour tool limit. Preserve "
                               "deadlock detection, FIFO profiling and synthesis RTL SHA256 before/after. "
                               "Archive every transaction's cycles and bus counts; do not use the old two-call gate.")
+    if cycle_limits is not None:
+        config.update(rtl_cycle_parent=args.cycle_parent, rtl_transaction_max_cycles=cycle_limits)
+        config["purpose"] += (" Each transaction must independently remain <=its matching " +
+                              args.cycle_parent + " latency*101//100: " + str(cycle_limits) +
+                              ". Faster calls have no lower bound.")
     plan(config)
     subprocess.run([sys.executable, str(ROOT / "exp/commit_exp.py"), args.id,
                     "plan_"+config["name"]], cwd=ROOT, check=True)
