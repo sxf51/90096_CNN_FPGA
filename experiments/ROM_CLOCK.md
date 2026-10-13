@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T04:02:22+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T04:08:11+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -171,3 +171,4 @@ Process-tree RSS sums include shared mappings; minimum MemAvailable is measured 
 
 - Board validation remains unavailable to the agent; F98 handoff is archived.
 - T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned.
+- C31 measured10.4066GiB four-call process-tree RSS; future cosim budget raised to11.5GiB without changing admission/protection policy. Review whether two/four-call classes should later be separated; use the conservative unified budget now.

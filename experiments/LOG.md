@@ -635,6 +635,8 @@
 
 ## Pending Human Decisions / 待人工决策
 
+- 2026-10-13 C31 四帧 RTL 仿真的进程树峰值为 10.4066 GiB，超过历史两帧任务的 7.5 GiB 登记。已按实测峰值加 10% 并向上取整，将后续 cosim 登记提高到 11.5 GiB；原 C31 准入、实现 18 GiB、保护线和单重任务规则不变。证据在 C31 的 cosim_memory_budget_revision.json。明日复核是否需要把两帧与四帧细分为独立预算类别；本轮先用较保守的统一值继续。
+
 - 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.
 
 - 2026-10-13 01:13 UTC C23/C26/C27: C23's complete13-image E065 exactness, unchanged deltaPSNR and three fold II1 checks pass; HLS screening permits independent hardware validation while retaining the original infeasible status. C26 is rejected before any Vitis process due to unregistered monitored telemetry phases. Preserve the original fail record, register both phases strictly as cosim heavy leases, and pass21 targeted scheduler/observer checks. Fresh C27 now actually runs setup under supervisor31264; four-call exactness, zero skipped parameter AXI and independent5ns routing remain outstanding. No numerical, memory or physical gate is relaxed.
