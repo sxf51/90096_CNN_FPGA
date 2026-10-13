@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T00:17:47+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T00:24:17+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C22 verified leader and handoff archived; C21 routing at4.5ns; W33 and WS-F checks queued. C22 independently closes5ns with WNS+0.013/WHS+0.032,TNS0,no unrouted/partial nets and1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles establishes1.365115ms,9.18percent faster than C18. C22 final paths, hierarchical resources, IP package hash/register handoff and comparison plots are archived. C21 is routing4.5ns under supervisor33324; W33 follows. WS-F C23 quality/HLS, C24 four-call sequence, C25 fresh-process cold-start and F53 legacy13-image regression are committed; supervisors65418/2446 wait for C21 before unchanged memory admission. After all C checks and the HLS screen pass, allocate independent monitored four-call RTL and staged5ns route. Separate loaded/reused timing CSV/plots and guarded reload handoff are ready; actual standalone driver/AXI evidence remains unmeasured. Preserve one heavy task,18GiB impl registration, serial_after_oom and every numerical/physical gate. Finish remaining interpretations, all plots, two-location protected checksums and the idle audit before closure. No board results exist.
+C22 and C21 verified and handed off; W33 running at 4.5 ns; WS-F checks waiting for memory admission. C22 remains the verified leader: matching C20 exact 273023 cycles at independently closed 5 ns gives 1.365115 ms, 9.18 percent faster than C18. C21 independently closes 4.5 ns with WNS +0.053/WHS +0.029, TNS 0 and no unrouted/partial nets; matching C19 exact 535976 cycles gives 2.411892 ms, 2.45 percent faster than W30. Both final paths, hierarchical resources and IP package/register handoffs are archived. Supervisor 33324 now runs W33; supervisors 65418/2446 have submitted C23 quality/HLS and C24 four-call checks, which wait under unchanged memory admission. C25 fresh-process cold-start and F53 legacy 13-image regression follow C24. After all C checks and the HLS screen pass, allocate independent monitored four-call RTL and staged 5 ns routing. Separate loaded/reused timing CSV/plots and guarded reload handoff are ready; actual standalone driver/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish remaining interpretations, all plots, two-location protected checksums and the idle audit before closure. No board results exist.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -49,7 +49,7 @@ C22 verified leader and handoff archived; C21 routing at4.5ns; W33 and WS-F chec
 | [C18](C18_ws_impl_C13/C18.md) | C13 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | 5.0 | True | 1.50316 | 14.269641567524417 | unknown |
 | [C19](C19_ws_cosim_C16/C19.md) | C16 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | 535976.0 | original_verification_pass | unknown | unknown | unknown | 2.044600818297271 | unknown |
 | [C20](C20_ws_cosim_C17/C20.md) | C17 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | original_verification_pass | unknown | unknown | unknown | 3.7755140826333244 | unknown |
-| [C21](C21_ws_impl_C16/C21.md) | C16 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | 535976.0 | unknown | 4.5 | True | 2.411892 | unknown | unknown |
+| [C21](C21_ws_impl_C16/C21.md) | C16 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | 535976.0 | unknown | 4.5 | True | 2.411892 | 2.044600818297271 | unknown |
 | [C22](C22_ws_impl_C17/C22.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | 5.0 | True | 1.365115 | 3.7755140826333244 | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
@@ -61,9 +61,9 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W33](W33_ws_impl_W24/W33.md) | W24 | impl | unlaunched_conditional | W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21 |
-| [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
-| [C24](C24_reload_switch_sequence/C24.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred |
+| [W33](W33_ws_impl_W24/W33.md) | W24 | impl | queued_or_running | W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21 |
+| [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | queued_or_running | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
+| [C24](C24_reload_switch_sequence/C24.md) | C13 | csim/csynth | queued_or_running | After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred |
 | [C25](C25_reload_switch_cold/C25.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, independently test fresh-process first-call load=0 forced loading |
 | [F53](F53_legacy_C13_regression/F53.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled |
 
@@ -75,6 +75,7 @@ These plans have no result row. In particular, unlaunched implementation is neit
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [C22](C22_ws_impl_C17/C22.md) | C17 | C20 | 273023.0 | 5.0 | 0.013 | 1032.0 | 109.0 | 59552.0 | 100499.0 | 1.365115 |
 | [C18](C18_ws_impl_C13/C18.md) | C13 | C14 | 300632.0 | 5.0 | 0.047 | 1032.0 | 109.0 | 58529.0 | 102072.0 | 1.50316 |
+| [C21](C21_ws_impl_C16/C21.md) | C16 | C19 | 535976.0 | 4.5 | 0.053 | 644.0 | 109.0 | 54139.0 | 78445.0 | 2.411892 |
 | [W30](W30_ws_impl_W27/W30.md) | W27 | W28 | 549438.0 | 4.5 | 0.027 | 644.0 | 109.0 | 54091.0 | 77784.0 | 2.472471 |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 |
 | [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | F97 | 558758.0 | 4.5 | 0.144 | 644.0 | 109.0 | 45030.0 | 89096.0 | 2.514411 |
@@ -85,7 +86,7 @@ These plans have no result row. In particular, unlaunched implementation is neit
 
 IP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded integration fallback.
 
-Verified candidate IP packages and register maps: [C18](board_handoff/C18/HANDOFF.md), [C22](board_handoff/C22/HANDOFF.md). Retain the [F98 integration handoff](BOARD_HANDOFF.md); board verification is pending.
+Verified candidate IP packages and register maps: [C18](board_handoff/C18/HANDOFF.md), [C22](board_handoff/C22/HANDOFF.md), [C21](board_handoff/C21/HANDOFF.md). Retain the [F98 integration handoff](BOARD_HANDOFF.md); board verification is pending.
 
 ## Figures
 

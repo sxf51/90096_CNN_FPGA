@@ -587,6 +587,8 @@
 
 - 2026-10-13T00:18:04+00:00: C21: archived five setup paths from the matching final generated report; no additional Vivado run.
 
+- 2026-10-13 00:21 UTC C21: independently closed 4.5 ns, exact matching C19 frame 535976 cycles gives 2.411892 ms; all physical gates pass. Archive interpretation of the five parameter-load/local-weight-memory setup paths and the greater-than-20-percent HLS-to-route resource differences. C21 package/register handoff is complete; C22 remains the 1.365115 ms leader. W33 is the sole admitted implementation; C23/C24 runners wait for memory, with C25/F53 following. Refresh current state, derived tables and plots without changing frozen plans or rerunning completed workspaces. No board measurement or push.
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 00:05:47 UTC C23: standalone Vitis Tcl interpreter probe confirms ::AP::printMsg, ::AP::check_bin_exist and ::AESL_AUTOSIM::gDebug are available without a project or simulation. Archive the original tool log in C23/tool_probes/monitor_environment.txt and reproducible exp/hls_monitor_environment.tcl; this is an environment query, not RTL validation. C21 progresses through rerouting; C22 handoff/path completion and outstanding conditions are refreshed in the recovery state.
