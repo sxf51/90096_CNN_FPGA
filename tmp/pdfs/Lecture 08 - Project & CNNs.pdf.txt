@@ -1,0 +1,706 @@
+PAGE 1
+[8] Project & CNNs
+
+PAGE 2
+Design Project
+Hardware Accelerated Computing 2
+Image super-resolution: reconstruct 
+high resolution image from one or 
+more low resolution images
+▪ Long-standing research problem 
+with applications for satellite, 
+medical, and sensor imaging
+As with many computer vision tasks, 
+deep learning ML approaches have 
+been primary focus of recent years
+▪ ELEN90096 Project is to accelerate 
+SRCNN algorithm of [1] in HLS and 
+deploy to Kria KV260
+[1] C. Dong et al., "Learning a deep convolutional network for image 
+super-resolution," Computer Vision–ECCV 2014.
+ELEN90096_2026_SM2
+
+PAGE 3
+Design Project
+SRCNN is a 3-layer convolutional neural network
+▪ Each layer is a computationally intensive, multidimensional calculation
+       ⇒ parallelization
+▪ Multiple layers that must be executed with significant memory access
+       ⇒ dataflow
+Hardware Accelerated Computing 3
+ELEN90096_2026_SM2
+
+PAGE 4
+Design Project
+Major project milestones:
+1. Golden Reference code submission – 
+functionally correct, baseline C/C++ 
+sequential implementation of SRCNN
+2. Status Update – oral presentation to discuss 
+approach, progress, and remaining tasks
+3. Final Report – complete documentation of 
+your solution and its performance, along 
+with HLS and PYNQ host code submission
+See Canvas assignments for additional details on 
+what is expected for each milestone
+Deliverable Due Subject Weight
+Golden Reference 5 Oct 5%
+Status Update 12 Oct 10%
+Final Report 19 Oct* 25%
+Hardware Accelerated Computing 4ELEN90096_2026_SM2
+
+PAGE 5
+Remaining Syllabus
+Week Lecture Project
+7 CNNs & Block Matrix Example
+8 Mid-Semester Test
+9 CNN Optimizations Start Project
+Mid-Semester Break
+10 GPU Architectures and Cloud Golden Reference
+11 Review Project Update
+12 Final Report*
+Hardware Accelerated Computing 5ELEN90096_2026_SM2
+
+PAGE 6
+Convolutional Neural Networks
+(CNNs)
+Hardware Accelerated Computing 6ELEN90096_2026_SM2
+
+PAGE 7
+Machine Learning
+Machine learning is the ability to extract patterns 
+from raw data
+▪ Performance at some task T, as measured by metric 
+P, improves with experience E
+    - Mitchell, 1997 
+▪ Tasks: classification, regression, denoising, …
+▪ Experience: datasets - images, sound clips, 
+databases, …
+▪ Performance: accuracy, error rate, …
+Supervised learning – examples in dataset include 
+label or target, i.e., the correct output/decision
+Hardware Accelerated Computing 7
+ELEN90096_2026_SM2
+Goodfellow et al., Deep Learning 
+http://www.deeplearningbook.org
+
+PAGE 8
+Linear Regression
+ELEN90096_2026_SM2 Hardware Accelerated Computing 8
+[1] Goodfellow et al., Deep Learning http://www.deeplearningbook.org
+Task: predict value 𝑦 ∈  ℝ given input 𝑥 ∈ ℝ𝑛 
+Algorithm: Linear Regression with parameter 
+weights 𝑤 ∈ ℝ𝑛
+Performance: Mean Squared Error
+Learning:
+Experience: (𝑿 𝑡𝑟𝑎𝑖𝑛 , 𝒚 𝑡𝑟𝑎𝑖𝑛 )
+ො𝑦 = 𝒘𝑇𝒙 = ෍
+𝑖
+𝑤𝑖 ⋅ 𝑥𝑖
+
+PAGE 9
+Logistic Regression
+Sigmoidal logistic function applied to the 
+output of  linear (affine) regression
+ො𝑦 = 𝑔 𝑤𝑇𝒙 = 𝑔 ෍
+𝑖
+𝑤𝑖 ⋅ 𝑥𝑖 + 𝑏
+Non-linearity allows universal function 
+approximation
+▪ Numerical optimization in learning as 
+no longer a closed form solution
+ELEN90096_2026_SM2 Hardware Accelerated Computing 9
+𝑔 𝑧 = 𝑒 𝑧
+𝑒𝑧 − 1
+https://en.wikipedia.org/wiki/Logistic_regression
+
+PAGE 10
+Multilayer Perceptron (MLP)
+Hardware Accelerated Computing 10
+https://towardsdatascience.com/simple-introduction-to-convolutional-
+neural-networks-cdf8d3077bac
+ELEN90096_2026_SM2
+𝑥𝑖 = 𝑔𝑖(𝑊𝑖 ∗ 𝑥𝑖−1 + 𝑏𝑖)
+activation 
+function
+input features
+𝑛𝑖−1 𝑥 1
+output features
+𝑛𝑖 𝑥 1
+weight matrix
+𝑛𝑖 𝑥 𝑛𝑖−1
+bias vector
+𝑛𝑖 𝑥 1
+Each neuron a 
+logistic units
+Feedforward neural network architecture
+
+PAGE 11
+Activation Function
+Hardware Accelerated Computing 11ELEN90096_2026_SM2
+[4] A. Amidi and S. Amidi, “CNN Cheatsheet,” https://stanford.edu/~shervine/teaching/cs-
+230/cheatsheet-convolutional-neural-networks
+𝑔 𝑧 = 𝑒 𝑧
+𝑒𝑧 − 1
+Sigmoid
+https://en.wikipedia.org/wiki/Logistic_regression
+
+PAGE 12
+Training versus Inference
+ELEN90096_2026_SM2 Hardware Accelerated Computing 12
+
+
+PAGE 13
+Deep Learning
+ELEN90096_2026_SM2 Hardware Accelerated Computing 13
+Goodfellow et al., Deep Learning 
+http://www.deeplearningbook.org
+Image classification
+
+PAGE 14
+Image Representations
+Raster graphics represent image 
+as 2D rectangular matrix of pixels
+▪ width x height
+▪ bits per pixel
+▪ Possibly multiple channels
+▪ Colour space, e.g., RGB
+▪ Image + depth
+ELEN90096_2026_SM2 Hardware Accelerated Computing 14
+https://en.wikipedia.org/wiki/Raster_graphics https://en.wikipedia.org/wiki/YCbCr
+
+PAGE 15
+Colour Spaces
+Hardware Accelerated Computing 15ELEN90096_2026_SM2
+RGB is not only possible colour space
+▪ Originally to drive cathode ray tubes
+▪ Redundant information captured by the 3 
+planes
+Y’CbCr is another commonly used colour space
+▪ Luma plane Y’ – brightness
+▪ Chroma planes Cb and Cr – blue and red 
+differences
+▪ Chroma planes can be represented with lower 
+resolution as human colour perception is less
+https://en.wikipedia.org/wiki/YCbCr
+
+PAGE 16
+Convolutional Neural Networks
+Hardware Accelerated Computing 16ELEN90096_2026_SM2
+CNNs a form of DNNs where simplified connectivity is used to manage parameters to be learned
+▪ Convolutional layers with possible non-linear activations – feature extraction and representation
+▪ Pooling layers help reduce complexity of representation
+▪ Fully-connected layers at end of network to make decision based on extracted features
+https://au.mathworks.com/discovery/convolutional-neural-network-matlab.html
+
+PAGE 17
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+0
+2
+0
+1
+2
+1
+2
+0
+2
+9 . 0
+1 0 . 0
+1 2 . 0
+6 . 0
+1 7 . 0
+1 2 . 0
+1 4 . 0
+1 9 . 0
+1 7 . 0
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+0
+2
+0
+1
+2
+1
+2
+0
+2
+9 . 0
+1 0 . 0
+1 2 . 0
+6 . 0
+1 7 . 0
+1 2 . 0
+1 4 . 0
+1 9 . 0
+1 7 . 0
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+0
+2
+0
+1
+2
+1
+2
+0
+2
+9 . 0
+1 0 . 0
+1 2 . 0
+6 . 0
+1 7 . 0
+1 2 . 0
+1 4 . 0
+1 9 . 0
+1 7 . 0
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+0
+2
+0
+1
+2
+1
+2
+0
+2
+9 . 0
+1 0 . 0
+1 2 . 0
+6 . 0
+1 7 . 0
+1 2 . 0
+1 4 . 0
+1 9 . 0
+1 7 . 0
+Convolutional Layer
+Hardware Accelerated Computing 17
+[3] Vincent Dumoulin, Francesco Visin - A guide to convolution arithmetic for deep learning
+ELEN90096_2026_SM2
+Filter kernel
+fi x fi
+Input feature map
+hi-1 x wi-1 Output feature map
+hi x wi
+∗ =
+The basic convolutional 
+layer implements a 2D 
+discrete convolution 
+between a filter kernel and 
+an input feature map
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+0
+2
+0
+1
+2
+1
+2
+0
+2
+9 . 0
+1 0 . 0
+1 2 . 0
+6 . 0
+1 7 . 0
+1 2 . 0
+1 4 . 0
+1 9 . 0
+1 7 . 0
+
+PAGE 18
+Convolutional Layers
+ELEN90096_2026_SM2 Hardware Accelerated Computing 18
+Dense connectivity Sparse connectivity 
+(with parameter reuse)
+[1] Goodfellow et al., Deep Learning http://www.deeplearningbook.org
+
+PAGE 19
+Additional Feature Dimensions
+ELEN90096_2026_SM2 Hardware Accelerated Computing 19
+Input feature map
+ni-1 x hi-1 x wi-1
+Output feature map
+ ni x hi x wi
+kernels
+ni-1 x fi x fi
+Feature maps typically three dimensional
+▪ Multichannel inputs (RGB or Y’CbCr, etc.)
+▪ Multiple output features at each layer
+[3] Vincent Dumoulin, Francesco Visin - A guide to convolution arithmetic for deep learning
+
+PAGE 20
+Complexity of CNNs
+for (n = 0; n < N; n++) { // output feature
+    for (h = 0; h < H; h++) { // output height
+        for (w = 0; w < W; w++) { // output width
+            // kernel computation
+            for (i = 0; i < F; i++) { // kernel height
+                for (j = 0; j < F; f++) { // kernel width
+                    for (k = 0; k < N_in; k++) { // input feature
+                        out[n][h][w] += W[k][i][j] * in[k][h+i][w+j];
+                    }
+                }
+            }
+            out[n][w][h] = f(out[n][w][h] + b[n]); // bias and activation
+        }
+    }
+}
+Hardware Accelerated Computing 20ELEN90096_2026_SM2
+
+PAGE 21
+Input Padding
+Without input padding, width and 
+height of the feature map shrinks at 
+each layer
+▪ Padding can be applied using either 
+zeros or by extending edge values. 
+Common choices include
+▪ None – width/height shrink
+▪ Same – width/height constant
+▪ Full – width/height grow
+Edge cases must be handled in 
+computation
+ELEN90096_2026_SM2 Hardware Accelerated Computing 21
+None
+Same
+Full
+[Vincent Dumoulin, Francesco Visin - A guide to 
+convolution arithmetic for deep learning
+https://arxiv.org/abs/1603.07285
+
+PAGE 22
+Stride
+Common to use a non-unit stride 
+when shifting kernel function 
+through input feature map
+▪ Reduces output size
+▪ Stride offset must also be 
+handled in computation
+ELEN90096_2026_SM2 Hardware Accelerated Computing 22
+[Vincent Dumoulin, Francesco Visin - A guide to 
+convolution arithmetic for deep learning
+https://arxiv.org/abs/1603.07285
+
+PAGE 23
+Pooling Layer
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+3 . 0
+3 . 0
+3 . 0
+2 . 0
+3 . 0
+3 . 0
+3 . 0
+3 . 0
+3 . 0
+ELEN90096_2026_SM2 Hardware Accelerated Computing 23
+MAX Pooling Example
+[Vincent Dumoulin, Francesco Visin - A guide to 
+convolution arithmetic for deep learning
+https://arxiv.org/abs/1603.07285
+Pooling layers used to further 
+reduce size of feature map
+▪ Max pooling (most common)
+▪ Average pooling
+Like convolutional layer has a
+▪ Kernel size
+▪ Stride
+
+PAGE 24
+Fully Connected Layers
+Fully connected layers occur at the end 
+of network
+▪ Unlike convolutional layers, dense 
+connections and no parameter sharing
+▪ Useful to map to task objective, e.g., 
+classification
+ELEN90096_2026_SM2 Hardware Accelerated Computing 24
+[4] A. Amidi and S. Amidi, “CNN Cheatsheet,” https://stanford.edu/~shervine/teaching/cs-
+230/cheatsheet-convolutional-neural-networks
+
+PAGE 25
+The Need for Acceleration
+Dataset Size
+ Model Size
+ELEN90096_2026_SM2 Hardware Accelerated Computing 25
+Increasing dataset sizes
+⇒ training runtime
+Increasing model sizes
+⇒ inference runtime
+
+PAGE 26
+SRCNN
+SRCNN has relatively simple 
+architecture (not very deep!)
+ELEN90096_2026_SM2 Hardware Accelerated Computing 26
+Layer Kernel Features Activation
+0 1
+1 9 x 9 64 ReLU
+2 1 x 1 32 ReLU
+3 5 x 5 1 None
+
+PAGE 27
+References
+1. C. Dong, C. C. Loy, K. He, and X. Tang, "Learning a deep convolutional network for 
+image super-resolution," Computer Vision–ECCV 2014.
+2. I. Goodfellow, Y . Benigo and A. Courville, Deep Learning, MIT Press., 2016 
+http://www.deeplearningbook.org
+3. Vincent Dumoulin, Francesco Visin - A guide to convolution arithmetic for deep 
+learning
+https://arxiv.org/abs/1603.07285
+4. A. Amidi and S. Amidi, “CNN Cheatsheet,” https://stanford.edu/~shervine/teaching/cs-
+230/cheatsheet-convolutional-neural-networks
+Hardware Accelerated Computing 27ELEN90096_2026_SM2
+
+PAGE 28
+Let’s take a 5-minute Break
+Hardware Accelerated ComputingELEN90096_2026_SM2 28
+
+PAGE 29
+Example: Matrix Multiplication
+Hardware Accelerated Computing 29ELEN90096_2026_SM2
+
+PAGE 30
+Matrix Multiplication
+Matrix product is fundamental operation in 
+many numerical algorithms
+▪ Linear operation
+▪ Multidimensional computation
+▪ Opportunities for parallelization and 
+management of memory usage
+Hardware Accelerated Computing 30ELEN90096_2026_SM2
+What is computational complexity of 
+multiplying n x m and m x p matrix?
+~N*M*P multiply-accumulate operations (MACs)
+Kastner et al, Parallel Programming for FPGAs.
+
+PAGE 31
+Matrix Multiplication
+Hardware Accelerated Computing 31
+ELEN90096_2026_SM2
+What options do we have in HLS to 
+parallelize this computation? How does our choice determine our 
+approach to memory layout?Pipeline COL loop: ~N*P cycles to complete
+Pipeline ROW loop: ~N cycles to complete
+Pipeline matmul: ~1 cycle
+Partial unrolling at each point…
+Kastner et al, Parallel Programming for FPGAs.
+
+PAGE 32
+Matrix Multiplication
+Hardware Accelerated Computing 32
+ELEN90096_2026_SM2
+How does our choice determine our 
+approach to memory layout?
+Kastner et al, Parallel Programming for FPGAs.
+
+PAGE 33
+Block Matrix Multiplication
+Hardware Accelerated Computing 33
+ELEN90096_2026_SM2
+Blocking or tiling breaks computation of larger matrix down into computation of submatrices 
+• Find structure in algorithm, e.g., skip computation for blocks known a priori to be zero 
+• Reduce memory storage requirements and stream data to core as needed
+
+PAGE 34
+Block Matrix Multiplication
+Hardware Accelerated Computing 34ELEN90096_2026_SM2
+
+PAGE 35
+Block Matrix Multiplication
+Hardware Accelerated Computing 35ELEN90096_2026_SM2
+
+PAGE 36
+Block Matrix Multiplication
+Hardware Accelerated Computing 36ELEN90096_2026_SM2
+
+PAGE 37
+37
+void blockmatmul(hls::stream<blockvec> &Arows,
+  hls::stream<blockvec> &Bcols,
+  blockmat &ABpartial, int it)
+{
+#pragma HLS DATAFLOW
+    int counter = it % (SIZE/BLOCK SIZE);
+    static DTYPE A[BLOCK SIZE][SIZE];
+    if(counter == 0) {// only load the A rows when necessary
+        loadA: for(int i = 0; i < SIZE; i++) {
+            blockvec tempA = Arows.read();
+            for(int j = 0; j < BLOCK SIZE; j++) {
+#pragma HLS PIPELINE II=1
+                A[j][i] = tempA.a[j];
+            }
+        }
+    }
+    DTYPE AB[BLOCK SIZE][BLOCK SIZE] = { 0 };
+    partialsum: for(int k=0; k < SIZE; k++) {
+        blockvec tempB = Bcols.read();
+        for(int i = 0; i < BLOCK SIZE; i++) {
+            for(int j = 0; j < BLOCK SIZE; j++) {
+                AB[i][j] = AB[i][j] + A[i][k] * tempB.a[j];
+            }
+        }
+    }
+// write output here ...
+ELEN90096_2026_SM2 Hardware Accelerated Computing
+
+PAGE 38
+Producer-Consumer Model
+ELEN90096_2026_SM2 Hardware Accelerated Computing 38
+
+PAGE 39
+Dataflow
+The HLS Dataflow model takes sequential 
+functions and creates a task-level pipeline
+  #pragma HLS DATAFLOW
+Tool handles inferring task-level parallelism and 
+channels within region marked dataflow
+▪ Creates synchronization signals to control 
+execution between tasks
+▪ User can manually specify whether channels 
+are FIFO or PIPO
+Hardware Accelerated Computing 39
+#pragma HLS STREAM type=<T> variable=<V> depth=<D>
+ELEN90096_2026_SM2

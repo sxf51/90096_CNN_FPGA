@@ -1,0 +1,860 @@
+PAGE 1
+[9] CNN Optimizations
+
+PAGE 2
+Design Project
+Major project milestones:
+1. Golden Reference code submission –
+functionally correct, baseline C/C++ 
+sequential implementation of SRCNN
+2. Status Update – oral presentation to discuss 
+approach, progress, and remaining tasks
+3. Final Report – complete documentation of 
+your solution and its performance, along 
+with HLS and PYNQ host code submission
+See Canvas assignments for additional details on 
+what is expected for each milestone
+Deliverable Due Weight
+Golden Reference 5 Oct 5%
+Status Update 12 Oct 10%
+Final Report 19 Oct* 25%
+Hardware Accelerated Computing 1ELEN90096_2026_SM2
+
+PAGE 3
+SRCNN
+ELEN90096_2026_SM2 Hardware Accelerated Computing 2
+Layer Kernel Features Activation
+0 1 x 1 1 Bicubic*
+1 9 x 9 64 ReLU
+2 1 x 1 32 ReLU
+3 5 x 5 1 None
+Project Goal: Accelerate SRCNN on Kria KV260 board
+
+PAGE 4
+Operations in One Layer
+ELEN90096_2026_SM2 Hardware Accelerated Computing 3
+c
+X1
+w
+h
+KN
+ff
+K1
+ff
+c
+A1
+w
+h
+c
+AN
+w
+h
+B1
+BN
+N
+X2
+w
+h
+Layer Kernel 
+(f)
+Features 
+(N)
+Activation 
+(g)
+0* Bicubic*
+1 9 x 9 64 ReLU
+2 1 x 1 32 ReLU
+3 5 x 5 1 None
+w
+h
+h
+w
+
+PAGE 5
+Operations in One Layer
+ELEN90096_2026_SM2 Hardware Accelerated Computing 4
+c
+X1
+w
+h
+KN
+ff
+K1
+ff
+c
+A1
+w
+h
+c
+AN
+w
+h
+B1
+BN
+N
+X2
+w
+h
+Apply each filter kernel to each 
+channel of the input independently 
+to get a set of output feature maps 
+that correspond to each kernel.
+w
+h
+h
+w
+Q: For our first layer with N=64 features, how much 
+storage would we need for all our output feature maps?
+
+PAGE 6
+Operations in One Layer
+ELEN90096_2026_SM2 Hardware Accelerated Computing 5
+c
+X1
+w
+h
+KN
+ff
+K1
+ff
+c
+A1
+w
+h
+c
+AN
+w
+h
+𝐵𝑛 = 𝑔 ෍
+𝑐
+A𝑛 + 𝑏𝑛
+B1
+BN
+N
+X2
+w
+h
+w
+h
+h
+w
+Combine one set of output feature maps by 
+summing them, optionally adding a bias (not 
+shown), and optionally passing through an 
+activation function.
+Bias is a feature-
+specific scalar 
+added to every pixel
+
+PAGE 7
+Operations in One Layer
+ELEN90096_2026_SM2 Hardware Accelerated Computing 6
+c
+X1
+w
+h
+KN
+ff
+K1
+ff
+c
+A1
+w
+h
+c
+AN
+w
+h
+B1
+BN
+N
+X2
+w
+h
+Layer Kernel 
+(f)
+Features 
+(N)
+Activation 
+(g)
+0* Bicubic*
+1 9 x 9 64 ReLU
+2 1 x 1 32 ReLU
+3 5 x 5 1 None
+Stack the activations together.  This is the 
+output of this layer and the input to the 
+next.
+w
+h
+h
+w
+
+PAGE 8
+CNN Optimizations
+1. Tiled convolution
+2. Model quantization
+3. Dataflow considerations
+Hardware Accelerated Computing 7ELEN90096_2026_SM2
+
+PAGE 9
+Tiled Convolution
+Hardware Accelerated Computing 8ELEN90096_2026_SM2
+
+PAGE 10
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+0
+2
+0
+1
+2
+1
+2
+0
+2
+9 . 0
+1 0 . 0
+1 2 . 0
+6 . 0
+1 7 . 0
+1 2 . 0
+1 4 . 0
+1 9 . 0
+1 7 . 0
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+0
+2
+0
+1
+2
+1
+2
+0
+2
+9 . 0
+1 0 . 0
+1 2 . 0
+6 . 0
+1 7 . 0
+1 2 . 0
+1 4 . 0
+1 9 . 0
+1 7 . 0
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+0
+2
+0
+1
+2
+1
+2
+0
+2
+9 . 0
+1 0 . 0
+1 2 . 0
+6 . 0
+1 7 . 0
+1 2 . 0
+1 4 . 0
+1 9 . 0
+1 7 . 0
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+0
+2
+0
+1
+2
+1
+2
+0
+2
+9 . 0
+1 0 . 0
+1 2 . 0
+6 . 0
+1 7 . 0
+1 2 . 0
+1 4 . 0
+1 9 . 0
+1 7 . 0
+Convolutional Layer
+Hardware Accelerated Computing 9
+[3] Vincent Dumoulin, Francesco Visin - A guide to convolution arithmetic for deep learning
+ELEN90096_2026_SM2
+Filter kernel
+fi x fi
+Input feature map
+hi-1 x wi-1 Output feature map
+hi x wi
+∗ =
+The basic convolutional 
+layer implements a 2D 
+discrete convolution 
+between a filter kernel and 
+an input feature map
+2
+2
+3
+0
+3
+0
+0
+1
+0
+3
+0
+0
+2
+1
+2
+0
+2
+2
+3
+1
+1
+2
+3
+1
+0
+0
+2
+0
+1
+2
+1
+2
+0
+2
+9 . 0
+1 0 . 0
+1 2 . 0
+6 . 0
+1 7 . 0
+1 2 . 0
+1 4 . 0
+1 9 . 0
+1 7 . 0
+
+PAGE 11
+3D Feature Maps
+ELEN90096_2026_SM2 Hardware Accelerated Computing 10
+Input feature map
+C x H x W
+Output feature
+map
+N x H x W
+kernels
+N x K x K
+Feature maps typically three dimensional
+▪ Multichannel inputs (RGB or Y’CbCr, etc.)
+▪ Multiple output features at each layer
+X1
+KN
+K1
+A1
+AN
+B1
+BN
+X2
+
+PAGE 12
+SRCNN Complexity
+// Direct convolution
+for (n = 0; n < N; n++) { // output feature
+  for (h = 0; h < H; h++) { // output height
+    for (w = 0; w < W; w++) { // output width
+      for (c = 0; c < C; c++) { // input feature 
+        for (kh = 0; kh < K; kh++) { // kernel height
+          for (kw = 0; kw < K; kw++) { // kernel width 
+            out[n][h][w] += W[c][kh][kw] * in[c][h+kh][w+kw];
+       }}}
+       out[n][w][h] = f(out[n][w][h] + b[n]); // bias & activation 
+}}}
+Hardware Accelerated Computing 11ELEN90096_2026_SM2
+Layer Kernel Features Activation
+0 1
+1 9 x 9 64 ReLU
+2 1 x 1 32 ReLU
+3 5 x 5 1 None
+What is complexity (in # of MACs) of SRCNN conv1 
+layer for an input image of dimensions 256 x 256?
+XCK26 SOM
+DSPs 1248
+Logic cells 256k
+
+PAGE 13
+SRCNN Complexity
+// Direct convolution
+for (n = 0; n < N; n++) { // output feature
+  for (h = 0; h < H; h++) { // output height
+    for (w = 0; w < W; w++) { // output width
+      for (c = 0; c < C; c++) { // input feature 
+        for (kh = 0; kh < K; kh++) { // kernel height
+          for (kw = 0; kw < K; kw++) { // kernel width 
+            out[n][h][w] += W[c][kh][kw] * in[c][h+kh][w+kw];
+       }}}
+       out[n][w][h] = f(out[n][w][h] + b[n]); // bias & activation 
+}}}
+Hardware Accelerated Computing 12ELEN90096_2026_SM2
+Layer Kernel Features Activation
+0 1
+1 9 x 9 64 ReLU
+2 1 x 1 32 ReLU
+3 5 x 5 1 None
+How much RAM (in bits) is required to store the output 
+feature map assuming single precision floating-point values?
+XCK26 SOM
+LUTRAM 3.2 Mb
+BRAM 5.1 Mb
+URAM 18 Mb
+
+PAGE 14
+Block Matrix Multiplication
+Hardware Accelerated Computing 13
+ELEN90096_2026_SM2
+Blocking or tiling breaks computation of larger matrix down into computation of submatrices 
+▪ Reduce memory storage requirements and stream data to core as needed
+
+PAGE 15
+Tiled Convolution
+Tiled convolution allows similar parameterization of unrolling, memory 
+requirements, and overlapping of data streaming from DRAM [1]
+Hardware Accelerated Computing 14
+ELEN90096_2026_SM2
+Abdelouahab, Kamel, et al. "Accelerating CNN inference on FPGAs: A survey." 
+
+PAGE 16
+// Tiled-convolution
+for (n = 0; n < N; n += Tn) { // output feature
+for (h = 0; h < H; h += Th) { // output height
+for (w = 0; w < W; w += Tw) { // output width
+for (c = 0; c < C; c += Tc) { // input feature
+    // load input feature tile [c:c+Tc][h:h+Th][w:w+Tw]
+    // load weight tile [n:n+Tn][c:c+Tc][0:K][0:K]
+    // load output feature tile [n:n+Tn][h:h+Th][w:w+Tw]
+    // tile calculation 
+    for (tn = 0; tn < Tn; tn++) { // output tile feature
+    for (th = 0; th < Th; th++) { // output tile height
+    for (tw = 0; tw < Tw; tw++) { // output tile width
+    for (tc = 0; tc < Tc; tc++) { // input tile feature
+        for (kh = 0; kh < K; kh++) { // kernel height
+        for (kw = 0; kw < K; kw++) { // kernel width
+            out[tn][th][tw] += W[tn][tc][kh][kw] * in[tc][th+kh][tw+kw];
+        }}
+    }}}}
+    // store output feature tile [n:n+Tn][h:h+Th][w:w+Tw]
+}}}}
+Hardware Accelerated Computing 15ELEN90096_2026_SM2
+Tile across output features, width, height, input 
+features. Design choice of:
+▪ Loop schedule (order)
+▪ Tile size (Tn, Th, Tw, Tc)
+Input feature, output feature, and weight tiles 
+must be loaded from DRAM into local memory
+Updated output feature tile must be 
+saved to back to DRAM
+Loop unrolling and pipelining 
+of tile calculation. 
+
+PAGE 17
+// Output stationary
+for (n = 0; n < N; n += Tn) { // output feature
+for (h = 0; h < H; h += Th) { // output height
+for (w = 0; w < W; w += Tw) { // output width
+    // initialize output feature tile to zero
+    for (c = 0; c < C; c += Tc) { // input feature
+       // load input feature tile [c:c+Tc][h:h+Th][w:w+Tw]
+       // load weight tile [n:n+Tn][c:c+Tc][0:K][0:K]
+       
+       // tile calculation 
+    }
+// store output feature tile [n:n+Tn][h:h+Th][w:w+Tw]
+}}}
+Tile Order – Output Stationary
+▪ Loop schedule (or order) will impact memory access pattern to load/store input 
+feature map, weights, and output feature map from DRAM
+ELEN90096_2026_SM2 Hardware Accelerated Computing 16
+Output tile initialized to to zero, 
+fully computed, and then written 
+once to DRAM
+Output stationary
+
+PAGE 18
+// Input stationary
+for (c = 0; c < C; n += Tc) { // input feature
+for (h = 0; h < H; h += Th) { // output height
+for (w = 0; w < W; w += Tw) { // output width
+    // load input feature tile [c:c+Tc][h:h+Th][w:w+Tw]
+    for (n = 0; n < N; n += Tn) { // output feature
+        // load output feature tile [n:n+Tn][h:h+Th][w:w+Tw] 
+        // load weight tile [n:n+Tn][c:c+Tc][0:K][0:K]
+        
+        // tile calculation 
+        // store output feature tile [n:n+Tn][h:h+Th][w:w+Tw]
+    }
+}}}
+Tile Order – Input Stationary
+▪ Loop schedule (or order) will impact memory access pattern to load/store input 
+feature map, weights, and output feature map from DRAM
+ELEN90096_2026_SM2 Hardware Accelerated Computing 17
+Input stationary
+Each input tile is loaded ONCE 
+from DRAM, partial results for all 
+affected output tiles computed 
+and stored to DRAM
+
+PAGE 19
+// Weight stationary
+for (n = 0; n < N; n += Tn) { // output feature
+for (c = 0; c < C; n += Tc) { // input feature
+    // load weight tile [n:n+Tn][c:c+Tc][0:K][0:K]
+    for (h = 0; h < H; h += Th) { // output height
+    for (w = 0; w < W; w += Tw) { // output width
+        // load input feature tile [c:c+Tc][h:h+Th][w:w+Tw]
+        // load output feature tile [n:n+Tn][h:h+Th][w:w+Tw] 
+        // tile calculation 
+    // store output feature tile [n:n+Tn][h:h+Th][w:w+Tw]
+    }}
+}}
+Tile Order – Weight Stationary
+▪ Loop schedule (or order) will impact memory access pattern to load/store input 
+feature map, weights, and output feature map from DRAM
+ELEN90096_2026_SM2 Hardware Accelerated Computing 18
+Weight stationary
+Each weight tile is loaded ONCE 
+from DRAM, partial results for all 
+affected output tiles computed 
+and stored to DRAM
+
+PAGE 20
+Tile Boundaries
+Like padding in general case, care 
+must be taken at tile boundaries.
+Options include:
+▪ Load additional input feature 
+borders
+▪ Store partial sums of output 
+feature accumulations
+Hardware Accelerated Computing 19
+loaded input tile
+kernel overlap
+missing input features
+ELEN90096_2026_SM2
+
+PAGE 21
+Tile Calculation
+▪ Loop order
+ELEN90096_2026_SM2 Hardware Accelerated Computing 20
+// Tile calculation 
+for (tn = 0; tn < Tn; tn++) { // output tile feature
+for (th = 0; th < Th; th++) { // output tile height
+for (tw = 0; tw < Tw; tw++) { // output tile width
+for (tc = 0; tc < Tc; tc++) { // input tile feature
+for (kh = 0; kh < K; kh++) { // kernel height
+for (kw = 0; kw < K; kw++) { // kernel width
+    out[tn][th][tw] += W[tn][tc][kh][kw] * in[tc][th+kh][tw+kw];
+}}}}}}
+Tile calculation is your hardware 
+accelerator
+Apply pipelining and unrolling to loops
+▪ Design choice of loop order
+Input/Weight/Output tiles stored in 
+on-chip memory (LUTRAM or BRAM)
+▪ Array partitioning
+▪ Local data re-use as possible
+
+PAGE 22
+Model Quantization
+Hardware Accelerated Computing 21ELEN90096_2026_SM2
+
+PAGE 23
+Fixed-point Conversion
+SRCNN algorithm and your golden 
+reference implemented in floating-point
+▪ Floating-point arithmetic requires 
+more resources than fixed-point
+Converting to fixed-point can allow 
+more 
+▪ At each layer choose must quantize 
+output feature maps, weights, and 
+biases
+▪ Can tradeoff some reduction in 
+quality, i.e., MSE, for gains in 
+throughput, latency, or area.
+Fixed-point representation
+100010.01001011
+For a fixed bit width, tradeoff between 
+range for avoiding overflow and step 
+size for reducing quantization errors
+R = 2-f 2b
+Hardware Accelerated Computing 22ELEN90096_2026_SM2
+p integer 
+bits
+f fractional 
+bits
+b bits
+
+PAGE 24
+Fixed-point Conversion
+Model conversion approach of [4]:
+1. Apply floating point model to set of 
+typical inputs and record all 
+intermediate feature maps 
+2. Calculate statistics on weights, 
+biases, and output feature maps of 
+each layer
+3. Choose a fixed-point bit width b and 
+step size 2-f for each item in (2) 
+See [4] for discussion on choosing (3) 
+for different distributions
+Hardware Accelerated Computing 23ELEN90096_2026_SM2
+Lin et al., "Fixed point quantization of deep convolutional networks." 
+
+
+PAGE 25
+CNN References
+1. Zhang, Chen, et al. "Optimizing FPGA-based accelerator design for deep convolutional 
+neural networks." Proceedings of the 2015 ACM/SIGDA international symposium on 
+field-programmable gate arrays. 2015.
+2. Abdelouahab, Kamel, et al. "Accelerating CNN inference on FPGAs: A survey." arXiv 
+preprint arXiv:1806.01683 (2018).
+3. Williams, Samuel, Andrew Waterman, and David Patterson. "Roofline: an insightful 
+visual performance model for multicore architectures." Communications of the ACM 
+52.4 (2009): 65-76.
+4. Lin, Darryl, Sachin Talathi, and Sreekanth Annapureddy. "Fixed point quantization of 
+deep convolutional networks." International conference on machine learning. PMLR, 
+2016.
+Hardware Accelerated Computing 24ELEN90096_2026_SM2
+
+PAGE 26
+CNN Dataflow
+Hardware Accelerated Computing 25ELEN90096_2026_SM2
+
+PAGE 27
+CNN Dataflow
+Have seen that full feature maps cannot fit into on-chip memory
+▪ DRAM access has high latency compared with accessing on-chip memory
+▪ Must read/write feature map and weight tiles from DRAM to on-chip memory before 
+computation
+▪ Ideally, load/compute/write operations occur concurrently via PIPOs / FIFOs / Dataflow
+ELEN90096_2026_SM2 Hardware Accelerated Computing 26
+DRAM DRAM
+BRAM CNN Tile 
+Accelerator BRAM
+PL
+LOAD COMPUTE STORE
+
+PAGE 28
+HLS Interfaces
+HLS synthesizes arguments of the top-level function to ports and interfaces to connect with external 
+components
+▪ IP interface defines how data flows into/out of IP , control of dataflow, and core execution control
+For Vivado IP flow, default interfaces created are for integrating core with other IP
+▪ Generally, will need to modify to make hardware software-controllable
+ELEN90096_2026_SM2 Hardware Accelerated Computing 27
+
+
+PAGE 29
+Default Interfaces
+ELEN90096_2026_SM2 Hardware Accelerated Computing 28
+
+
+PAGE 30
+Default Interfaces
+ELEN90096_2026_SM2 Hardware Accelerated Computing 29
+
+
+PAGE 31
+PS/PL Interface
+ELEN90096_2026_SM2 Hardware Accelerated Computing 30
+We want our hardware cores to be controllable from software and to be able to directly access 
+global memory (DRAM).
+https://adaptivesupport.amd.com/s/article/1053914?language=en_US
+https://pynq.readthedocs.io/en/latest/overlay_
+design_methodology/pspl_interface.html
+
+PAGE 32
+AXI Bus
+Advanced eXtensible Interface (AXI) is an ARM 
+bus protocol for on-chip communications
+▪ Between PS and PL
+▪ Between PL and DRAM
+Wide bus width (up to 512 bits) with possibility 
+of burst transfers
+Three distinct modes for HLS: Memory Mapped, 
+Streaming, and Lite
+Can use #pragma HLS INTERFACE to have Vitis 
+create AXI interfaces for your 
+ELEN90096_2026_SM2 Hardware Accelerated Computing 31
+https://adaptivesupport.amd.com/s/article/1053914?language=en_US
+
+PAGE 33
+HLS Interface
+ELEN90096_2026_SM2 Hardware Accelerated Computing 32
+AXI4 Streaming
+▪ Unidirectional streaming of unlimited burst size
+▪ Connect to  another streaming interface
+AXI4 Lite
+▪ Read and write registers in IP , including control
+▪ Connect to PS AXI master interface
+AXI4 Memory Mapped
+▪ Read/write to global memory (DRAM)
+▪ Ensure consecutive memory access to 
+enable burst transfers of up to 4k bytes
+▪ Connect to PS AXI slave interface
+
+PAGE 34
+HLS Interface
+ELEN90096_2026_SM2 Hardware Accelerated Computing 33
+
+
+PAGE 35
+ELEN90096_2026_SM2 Hardware Accelerated Computing 34
+
+
+PAGE 36
+Multiple Layers
+Hardware Accelerated Computing 35ELEN90096_2026_SM2
+DRAM
+Layer 
+1
+DRAM
+Layer 
+2
+DRAM
+Layer 
+3
+DRAM
+Option 1:
+DRAM
+Layer 
+1
+FIFO/
+PIPO
+Layer 
+2
+FIFO/
+PIPO
+Layer 
+3
+DRAM
+Option 2:
+?
+
+PAGE 37
+Dataflow Example
+Overlapping of 
+load/compute/store 
+operations important for 
+maximizing throughput 
+Hardware Accelerated Computing 36ELEN90096_2026_SM2
+
+
+PAGE 38
+Key Takeaways
+1. Convolutional tiling will be required to fit SRCNN on Kria board
+2. You have a design choices in tile size, tile order, and tile calculation 
+pipelining/unrolling
+3. Fixed-point conversion can allow more arithmetic units, and thus 
+higher throughput, at a potential cost to output accuracy (MSE)
+4. Global memory access (DRAM) likely to be a bottleneck in design, 
+so important to consider dataflow and overlapping 
+load/compute/store operations
+Hardware Accelerated Computing 37ELEN90096_2026_SM2

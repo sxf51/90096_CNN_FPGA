@@ -57,9 +57,11 @@ Local C simulation with the supplied butterfly input, weights, and golden output
 
 These values indicate close agreement with the floating-point reference; they are not image-quality scores against high-resolution ground truth. Use the Set14 MSE and PSNR test for image-quality evaluation.
 
+The current `src/` uses on-chip 16x16 tile fusion for KV260. Float32 remains the default; `-DSRCNN_INT8=1` enables experimental INT8 weights/activations with INT32 accumulation and unchanged float public interfaces. See the [implementation and validation record](docs/0004-kv260-tiled-int8.md) for resource budgets, quality tradeoffs, and reproduction commands.
+
 ## FPGA optimization plan
 
-The following is a **plan, not an implemented feature list**. It follows the lecture material on tiled convolution, model quantization, dataflow, and overlapping load/compute/store, while using the actual 255 × 255 dimensions in this code. Each change must preserve the current edge-replication behavior and be checked against the golden reference before performance is compared.
+The following retains the optimization roadmap and the original untiled float32 baseline. Tiling, local reuse and three-layer tile fusion are now implemented, with optional INT8 quantization; streaming, double buffering and board validation remain future stages. It follows the lecture material on tiled convolution, model quantization, dataflow, and overlapping load/compute/store, while using the actual 255 × 255 dimensions in this code. Each change must preserve the current edge-replication behavior and be checked against the golden reference before performance is compared.
 
 ### Quantitative baseline
 
@@ -72,7 +74,7 @@ Direct convolution requires `H × W × Cin × Cout × K²` multiply-accumulate o
 | Conv3: 32→1, 5×5 | 52,020,000 | 9.96% | 260,100 B | 3,200 B |
 | Total | 522,280,800 | 100% | — | 32,128 B |
 
-The current top function holds complete Conv1 and Conv2 intermediate maps, together `24,969,600 B ≈ 23.81 MiB`. Writing each map to external memory and reading it back once would transfer at least `2 × 24,969,600 = 49,939,200 B`; this is a data-movement lower bound, **not measured DRAM traffic** for the current code. All weights total only about 31.38 KiB, excluding biases, so feature-map reuse deserves priority. The XCK26 on-chip BRAM and URAM capacities shown in the lecture are insufficient for both complete float32 intermediate maps.
+The original untiled top function held complete Conv1 and Conv2 intermediate maps, together `24,969,600 B ≈ 23.81 MiB`. Writing each map to external memory and reading it back once would transfer at least `2 × 24,969,600 = 49,939,200 B`; this is a data-movement lower bound, **not measured DRAM traffic** for the current code. All weights total only about 31.38 KiB, excluding biases, so feature-map reuse deserves priority. The XCK26 on-chip BRAM and URAM capacities shown in the lecture are insufficient for both complete float32 intermediate maps.
 
 ### Phase 0: Measure the baseline
 

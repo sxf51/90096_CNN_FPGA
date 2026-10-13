@@ -2,6 +2,7 @@
 #define _UTIL_H_
 
 #include <string>
+#include <cstdint>
 
 #include "srcnn.h"
 
