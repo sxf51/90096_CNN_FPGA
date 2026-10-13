@@ -424,12 +424,12 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C20](../experiments/C20_ws_cosim_C17/C20.md) | C17 | cosim_complete | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | unknown |
 | [C21](../experiments/C21_ws_impl_C16/C21.md) | C16 | impl_complete | 525237.0 | 644.0 | 81485.0 | 535976.0 | True | 2.411892 |
 | [C22](../experiments/C22_ws_impl_C17/C22.md) | C17 | impl_complete | 263090.0 | 1032.0 | 127985.0 | 273023.0 | True | 1.365115 |
+| [W33](../experiments/W33_ws_impl_W24/W33.md) | W24 | impl_complete | 524330.0 | 630.0 | 53316.0 | 554226.0 | True | 2.494017 |
 
 未测量的计划：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| W33 | W24 | queued_or_running | W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21 |
 | C23 | C13 | queued_or_running | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
 | C24 | C13 | queued_or_running | After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred |
 | C25 | C13 | unlaunched_conditional | After C21 completes, independently test fresh-process first-call load=0 forced loading |
