@@ -597,6 +597,8 @@
 
 - 2026-10-13T00:53:39+00:00: W33: archived five setup paths from the matching final generated report; no additional Vivado run.
 
+- 2026-10-13T00:54:07+00:00: C25: reload_switch_cold; status=csim_pass; latency_ms_est=unknown; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 00:05:47 UTC C23: standalone Vitis Tcl interpreter probe confirms ::AP::printMsg, ::AP::check_bin_exist and ::AESL_AUTOSIM::gDebug are available without a project or simulation. Archive the original tool log in C23/tool_probes/monitor_environment.txt and reproducible exp/hls_monitor_environment.tcl; this is an environment query, not RTL validation. C21 progresses through rerouting; C22 handoff/path completion and outstanding conditions are refreshed in the recovery state.

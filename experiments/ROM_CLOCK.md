@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T00:53:41+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T00:54:08+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -53,6 +53,7 @@ C22 and C21 verified and handed off; W33 running at 4.5 ns; WS-F checks waiting 
 | [C22](C22_ws_impl_C17/C22.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | 5.0 | True | 1.365115 | 3.7755140826333244 | unknown |
 | [W33](W33_ws_impl_W24/W33.md) | W24 | impl | impl_complete | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | 4.5 | True | 2.494017 | unknown | unknown |
 | [C24](C24_reload_switch_sequence/C24.md) | C13 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C25](C25_reload_switch_cold/C25.md) | C13 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -64,7 +65,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | queued_or_running | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
-| [C25](C25_reload_switch_cold/C25.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, independently test fresh-process first-call load=0 forced loading |
 | [F53](F53_legacy_C13_regression/F53.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
