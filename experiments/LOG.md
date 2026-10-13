@@ -599,6 +599,10 @@
 
 - 2026-10-13T00:54:07+00:00: C25: reload_switch_cold; status=csim_pass; latency_ms_est=unknown; 
 
+- 2026-10-13 00:55 UTC W33/C24/C25: W33 independently closes 4.5 ns at WNS +0.063/WHS +0.032, all routed resource gates and zero unrouted/partial nets. Matching W25 establishes 2.494017 ms; the five worst paths are Conv3 wide-window FIFO enables, with 92.83 percent routing delay and fanout 4000 on the worst path. C24 four-call load/reuse/reload/retain and C25 fresh-process load=0 checks pass exactly. C23's all13-image C quality passes at unchanged deltaPSNR -0.07589037644656216 dB, with HLS screening still running; F53 legacy regression follows. Refresh interpretations and recovery state. Correct future reload verification plan wording to four calls; frozen plans and thresholds stay unchanged. No RTL reload verdict or board result exists yet.
+
+- 2026-10-13T00:56:05+00:00: F53: legacy_C13_regression; status=csim_pass; latency_ms_est=unknown; 
+
 ## Pending Human Decisions / 待人工决策
 
 - 2026-10-13 00:05:47 UTC C23: standalone Vitis Tcl interpreter probe confirms ::AP::printMsg, ::AP::check_bin_exist and ::AESL_AUTOSIM::gDebug are available without a project or simulation. Archive the original tool log in C23/tool_probes/monitor_environment.txt and reproducible exp/hls_monitor_environment.tcl; this is an environment query, not RTL validation. C21 progresses through rerouting; C22 handoff/path completion and outstanding conditions are refreshed in the recovery state.

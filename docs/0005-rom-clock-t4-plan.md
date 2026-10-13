@@ -427,10 +427,10 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [W33](../experiments/W33_ws_impl_W24/W33.md) | W24 | impl_complete | 524330.0 | 630.0 | 53316.0 | 554226.0 | True | 2.494017 |
 | [C24](../experiments/C24_reload_switch_sequence/C24.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C25](../experiments/C25_reload_switch_cold/C25.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F53](../experiments/F53_legacy_C13_regression/F53.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 
 未测量的计划：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | C23 | C13 | queued_or_running | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
-| F53 | C13 | unlaunched_conditional | After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled |

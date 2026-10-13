@@ -103,7 +103,9 @@ def main():
         config.update(operation=args.operation, verify_parent=args.parent,
                       timeout=21600 if args.operation == "cosim" else 10800,
                       purpose="Verify frozen "+args.parent+" using "+args.operation+" in a new workspace. "+
-                              ("Run two complete butterfly transactions with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout."
+                              (("Run four complete load/reuse/reload/retain transactions" if args.reload_switch else
+                                "Run two complete butterfly transactions") +
+                               " with finite-FIFO profiling and deadlock detection; measure actual latency and interval under a six-hour timeout."
                                if args.operation == "cosim" else
                                "Run serial Vivado synthesis, placement and routing; archive actual WNS/TNS and resources under a three-hour timeout. HLS resource gates remain unchanged."))
         if base.get("resource_policy") == "routed":

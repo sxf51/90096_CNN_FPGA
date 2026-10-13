@@ -23,6 +23,7 @@ Actual verification of the current HLS winner:
 | [W25](W25_rom_changed_input_cosim_W24/W25.md) | cosim | cosim_complete | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | Pass | 554226.0 | 554237.0 | 5.701752712986097 |
 | [W29](W29_ws_impl_W24/W29.md) | impl | fail | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [W31](W31_ws_impl_W24/W31.md) | impl | impl_complete | 5.0 | 0.47 | True | 630.0 | 33771.0 | 82635.0 | 50.5 | 0.0 | unknown | unknown | unknown | unknown |
+| [W33](W33_ws_impl_W24/W33.md) | impl | impl_complete | 4.5 | 0.063 | True | 630.0 | 33829.0 | 82539.0 | 50.5 | 0.0 | unknown | unknown | unknown | unknown |
 
 ## Current Verified IP Timing
 
@@ -34,6 +35,7 @@ Matching-parent successful RTL latency times an independently closed, resource-f
 | [C18](C18_ws_impl_C13/C18.md) | C13 | C14 | 300632.0 | 5.0 | 0.047 | 1032.0 | 109.0 | 58529.0 | 102072.0 | 1.50316 |
 | [C21](C21_ws_impl_C16/C21.md) | C16 | C19 | 535976.0 | 4.5 | 0.053 | 644.0 | 109.0 | 54139.0 | 78445.0 | 2.411892 |
 | [W30](W30_ws_impl_W27/W30.md) | W27 | W28 | 549438.0 | 4.5 | 0.027 | 644.0 | 109.0 | 54091.0 | 77784.0 | 2.472471 |
+| [W33](W33_ws_impl_W24/W33.md) | W24 | W25 | 554226.0 | 4.5 | 0.063 | 630.0 | 101.0 | 33829.0 | 82539.0 | 2.494017 |
 | [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 |
 | [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | F97 | 558758.0 | 4.5 | 0.144 | 644.0 | 109.0 | 45030.0 | 89096.0 | 2.514411 |
 | [F51](F51_ws_impl_F47/F51.md) | F47 | F48 | 535771.0 | 5.0 | 0.055 | 644.0 | 109.0 | 43617.0 | 87203.0 | 2.678855 |
@@ -83,16 +85,16 @@ Measured follow-up records from docs/0005; their routed acceptance remains separ
 | [C20](C20_ws_cosim_C17/C20.md) | C17 | cosim_complete | 4 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | 3.7755140826333244 | unknown | unknown | unknown |
 | [C21](C21_ws_impl_C16/C21.md) | C16 | impl_complete | 8 | 525237.0 | 644.0 | 81485.0 | 535976.0 | 2.044600818297271 | unknown | True | 2.411892 |
 | [C22](C22_ws_impl_C17/C22.md) | C17 | impl_complete | 4 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | 3.7755140826333244 | unknown | True | 1.365115 |
+| [W33](W33_ws_impl_W24/W33.md) | W24 | impl_complete | 8 | 524330.0 | 630.0 | 53316.0 | 554226.0 | 5.701752712986097 | unknown | True | 2.494017 |
+| [C24](C24_reload_switch_sequence/C24.md) | C13 | csim_pass | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C25](C25_reload_switch_cold/C25.md) | C13 | csim_pass | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 Unmeasured plans have no actual result and do not enter rankings:
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W33](W33_ws_impl_W24/W33.md) | W24 | impl | queued_or_running | W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21 |
 | [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | queued_or_running | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
-| [C24](C24_reload_switch_sequence/C24.md) | C13 | csim/csynth | queued_or_running | After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred |
-| [C25](C25_reload_switch_cold/C25.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, independently test fresh-process first-call load=0 forced loading |
-| [F53](F53_legacy_C13_regression/F53.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled |
+| [F53](F53_legacy_C13_regression/F53.md) | C13 | csim/csynth | queued_or_running | After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled |
 
 ## P Direction
 
@@ -230,6 +232,8 @@ An unimplemented raw-bank combination follow-up would still need about 96004.0 L
 | [C13](C13_runtime_prepacked_conv2_T4/C13.md) | frame | 4 | 263090.0 | 1.05236 | 1032.0 | 146.0 | 0.0 | 127966.0 | 192308.0 | True | 1.405191888267716e-05 | True | infeasible |
 | [C17](C17_t4_fifo/C17.md) | frame | 4 | 263090.0 | 1.05236 | 1032.0 | 146.0 | 0.0 | 127985.0 | 192308.0 | True | 1.405191888267716e-05 | True | infeasible |
 | [C16](C16_t8_fifo_frp/C16.md) | frame | 8 | 525237.0 | 1.74903921 | 644.0 | 146.0 | 0.0 | 81485.0 | 130117.0 | True | 1.661846957728205e-05 | True | pass |
+| [C24](C24_reload_switch_sequence/C24.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | csim_pass |
+| [C25](C25_reload_switch_cold/C25.md) | frame | 4 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | True | 1.405191888267716e-05 | unknown | csim_pass |
 
 ## F Direction
 
@@ -411,6 +415,8 @@ Frame records only, ordered by HLS-estimated latency. Microkernels and validatio
 | [F31](F31_reload_testbench_csim_F28/F31.md) | F | designs/ws_reload_F31 | 16 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
 | [F35](F35_runtime_rom_bank_equivalence/F35.md) | F | designs/rom_bank_probe_v1 | 8 | unknown | unknown | unknown | unknown | unknown | -0.0695141811880653 | csim_pass |
 | [W26](W26_frp_W21_T8/W26.md) | W | designs/winograd_frp_v1 | 8 | unknown | unknown | unknown | unknown | unknown | unknown | fail |
+| [C24](C24_reload_switch_sequence/C24.md) | C | designs/winograd_prepacked_t4_reload_v1 | 4 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
+| [C25](C25_reload_switch_cold/C25.md) | C | designs/winograd_prepacked_t4_reload_v1 | 4 | unknown | unknown | unknown | unknown | unknown | unknown | csim_pass |
 
 ## Estimates And Actuals
 
@@ -566,6 +572,9 @@ All numeric values come from frozen plans and parsed reports. Actual means csynt
 | [W31](W31_ws_impl_W24/W31.md) | frame | 630.0 | 630.0 | 0.0 | 524330.0 | unknown | unknown | impl_complete |
 | [C22](C22_ws_impl_C17/C22.md) | frame | 1032.0 | 1032.0 | 0.0 | 263090.0 | unknown | unknown | impl_complete |
 | [C21](C21_ws_impl_C16/C21.md) | frame | 644.0 | 644.0 | 0.0 | 525237.0 | unknown | unknown | impl_complete |
+| [W33](W33_ws_impl_W24/W33.md) | frame | 630.0 | 630.0 | 0.0 | 524330.0 | unknown | unknown | impl_complete |
+| [C24](C24_reload_switch_sequence/C24.md) | frame | 1032.0 | unknown | unknown | 300632.0 | unknown | unknown | csim_pass |
+| [C25](C25_reload_switch_cold/C25.md) | frame | 1032.0 | unknown | unknown | 300632.0 | unknown | unknown | csim_pass |
 
 Largest percentage deviations (a zero paper denominator has no percentage):
 
@@ -631,6 +640,7 @@ HLS estimates are inherited only for provenance. Routed WNS/resources and two-fr
 | [W31](W31_ws_impl_W24/W31.md) | frame | W24 | impl | impl_complete | 630.0 | 50.5 | 33771.0 | 82635.0 | 0.0 | 0.47 | True | unknown | unknown | unknown | unknown |
 | [C22](C22_ws_impl_C17/C22.md) | frame | C17 | impl | impl_complete | 1032.0 | 54.5 | 59552.0 | 100499.0 | 0.0 | 0.013 | True | unknown | unknown | unknown | unknown |
 | [C21](C21_ws_impl_C16/C21.md) | frame | C16 | impl | impl_complete | 644.0 | 54.5 | 54139.0 | 78445.0 | 0.0 | 0.053 | True | unknown | unknown | unknown | unknown |
+| [W33](W33_ws_impl_W24/W33.md) | frame | W24 | impl | impl_complete | 630.0 | 50.5 | 33829.0 | 82539.0 | 0.0 | 0.063 | True | unknown | unknown | unknown | unknown |
 
 Finite-FIFO RTL counters span both transactions, including startup/inactive cycles. A fast producer blocking behind the T-fold consumer is expected; these parallel counters cannot be added to frame latency. Full process/module measurements and counter schemas are in each verification archive.
 
@@ -1019,4 +1029,4 @@ Final local/remote original and first-phase source checksum and report-provenanc
 
 ![Conv3 core and pad resource comparison](figs/conv3_core_resources.png)
 
-Generated from archived evidence at 2026-10-13T00:24:16+00:00.
+Generated from archived evidence at 2026-10-13T00:56:02+00:00.

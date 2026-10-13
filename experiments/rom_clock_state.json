@@ -1,15 +1,15 @@
 {
   "plan": "docs/0005-rom-clock-t4-plan.md",
-  "phase": "C22 and C21 verified and handed off; W33 running at 4.5 ns; WS-F checks waiting for memory admission",
+  "phase": "W33 closes 4.5 ns; C24/C25 exact C checks pass; C23 synthesis and F53 regression running",
   "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F43", "F44", "F45", "F47", "W28", "W29", "W30", "F48", "F46", "C14", "C15", "F49", "F50", "F51", "F52", "W31", "W32", "C16", "C17", "C18", "C19", "C20", "C21", "C22", "W33", "C23", "C24", "C25", "F53"],
   "complete_test_set": "Set14 (13 course-provided images)",
   "resource_policy": "routed",
-  "next": "C22 remains the verified leader: matching C20 exact 273023 cycles at independently closed 5 ns gives 1.365115 ms, 9.18 percent faster than C18. C21 independently closes 4.5 ns with WNS +0.053/WHS +0.029, TNS 0 and no unrouted/partial nets; matching C19 exact 535976 cycles gives 2.411892 ms, 2.45 percent faster than W30. Both final paths, hierarchical resources and IP package/register handoffs are archived. Supervisor 33324 now runs W33; supervisors 65418/2446 have submitted C23 quality/HLS and C24 four-call checks, which wait under unchanged memory admission. C25 fresh-process cold-start and F53 legacy 13-image regression follow C24. After all C checks and the HLS screen pass, allocate independent monitored four-call RTL and staged 5 ns routing. Separate loaded/reused timing CSV/plots and guarded reload handoff are ready; actual standalone driver/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish remaining interpretations, all plots, two-location protected checksums and the idle audit before closure. No board results exist.",
+  "next": "C22 remains the verified 1.365115 ms leader and C21 is a verified 2.411892 ms lower-DSP alternative; both IP handoffs are archived. W33 independently closes 4.5 ns with WNS +0.063/WHS +0.032, zero TNS/THS, no unrouted/partial nets and 630 DSP/33829 LUT/82539 FF/101 BRAM18K. Matching W25 exact 554226 cycles gives 2.494017 ms; ROM stays exploratory. C24 four-call reuse/reload/retain and C25 fresh-process first-call load=0 checks pass exactly. C23 completes all 13 loaded/reused images with unchanged -0.07589037644656216 dB deltaPSNR and is now synthesizing; its complete archive remains pending under supervisor 65418. Supervisor 2446 runs F53's frozen C13 13-image regression. After actual passing HLS and regression archives arrive, allocate independent monitored four-call RTL and staged 5 ns routing. The standalone monitor/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.",
   "completed_workstreams": ["WS-0", "WS-A agent handoff (board measurements pending)"],
   "waiting_for_memory": [],
-  "submitted_waiting_for_admission": ["C23", "C24"],
+  "submitted_waiting_for_admission": [],
   "deferred": [],
-  "unlaunched_ids": ["C25", "F53"],
+  "unlaunched_ids": [],
   "concurrency_policy": "one_heavy_with_light",
   "mainline_basis": "F47",
   "user_cycle_revision": {"reference": "docs/0005 section6.2", "F48_two_percent_target": "diagnostic_only", "W28_max_cycles": 564345, "W30_authorized": true},
@@ -48,14 +48,13 @@
   },
   "pending_decisions": ["Board validation remains unavailable to the agent; F98 handoff is archived.", "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."],
   "skipped_plans": {},
-  "local_exec_sessions": [33324, 65418, 2446],
+  "local_exec_sessions": [65418, 2446],
   "session_jobs": {
-    "33324": ["W33"],
     "65418": ["C23"],
-    "2446": ["C24", "C25", "F53"]
+    "2446": ["F53"]
   },
   "board_handoff": "experiments/BOARD_HANDOFF.md",
   "candidate_board_handoffs": {"C18": "experiments/board_handoff/C18/HANDOFF.md", "C22": "experiments/board_handoff/C22/HANDOFF.md", "C21": "experiments/board_handoff/C21/HANDOFF.md"},
   "wsE": "C20 passes exact 273023 cycles, 9.18 percent lower than C14's 300632; C22 independently closes 5 ns and becomes the verified 1.365115 ms leader with all routed resources feasible. C19 passes 535976 cycles, 205 more than F48; C21 independently closes 4.5 ns, giving 2.411892 ms and improving W30 by 2.45 percent. All 13-image precision is unchanged. C18 remains the 1.503160 ms fallback. No resource-driven T4 ROM retry is required.",
-  "wsF": "C23 independent source and validation infrastructure are committed on frozen C13/C18: srcnn_reload has unconditional DATAFLOW calls, internal parameter-load guards and cold-start force-load. C23 checks all 13 images with 12 reused parameter calls and synthesizes; C24 checks four-call load/reuse/reload/retain. Both runners are submitted and waiting for memory admission while W33 holds the implementation slot. C25 checks fresh-process first-call load=0 and F53 regresses frozen C13 with the shared macro disabled, following C24. Monitored four-call RTL and 5 ns routing depend on actual passing C/HLS evidence; no WS-F hardware result exists yet."
+  "wsF": "C24 independently passes exact load/reuse/reload/retain with flags [1,0,1,0], ignored incoming parameters and both constructed outputs equal to 104/256. C25 independently passes first-call load=0 in a fresh C process. C23 completes all 13 E065-exact images with 12 reused calls and unchanged mean deltaPSNR; its HLS result is pending. F53's frozen C13 legacy regression is running with the new shared macro disabled. Monitored four-call RTL and staged 5 ns routing require both remaining archives to pass; no WS-F hardware result exists yet."
 }

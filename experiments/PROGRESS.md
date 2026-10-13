@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C22 and C21 verified and handed off; W33 running at 4.5 ns; WS-F checks waiting for memory admission. C22 remains the verified leader: matching C20 exact 273023 cycles at independently closed 5 ns gives 1.365115 ms, 9.18 percent faster than C18. C21 independently closes 4.5 ns with WNS +0.053/WHS +0.029, TNS 0 and no unrouted/partial nets; matching C19 exact 535976 cycles gives 2.411892 ms, 2.45 percent faster than W30. Both final paths, hierarchical resources and IP package/register handoffs are archived. Supervisor 33324 now runs W33; supervisors 65418/2446 have submitted C23 quality/HLS and C24 four-call checks, which wait under unchanged memory admission. C25 fresh-process cold-start and F53 legacy 13-image regression follow C24. After all C checks and the HLS screen pass, allocate independent monitored four-call RTL and staged 5 ns routing. Separate loaded/reused timing CSV/plots and guarded reload handoff are ready; actual standalone driver/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish remaining interpretations, all plots, two-location protected checksums and the idle audit before closure. No board results exist.
+W33 closes 4.5 ns; C24/C25 exact C checks pass; C23 synthesis and F53 regression running. C22 remains the verified 1.365115 ms leader and C21 is a verified 2.411892 ms lower-DSP alternative; both IP handoffs are archived. W33 independently closes 4.5 ns with WNS +0.063/WHS +0.032, zero TNS/THS, no unrouted/partial nets and 630 DSP/33829 LUT/82539 FF/101 BRAM18K. Matching W25 exact 554226 cycles gives 2.494017 ms; ROM stays exploratory. C24 four-call reuse/reload/retain and C25 fresh-process first-call load=0 checks pass exactly. C23 completes all 13 loaded/reused images with unchanged -0.07589037644656216 dB deltaPSNR and is now synthesizing; its complete archive remains pending under supervisor 65418. Supervisor 2446 runs F53's frozen C13 13-image regression. After actual passing HLS and regression archives arrive, allocate independent monitored four-call RTL and staged 5 ns routing. The standalone monitor/AXI evidence remains unmeasured. Preserve one heavy task, 18 GiB implementation registration, serial_after_oom and every numerical/physical gate. Finish interpretations, plots, two-location protected checksums and the idle audit before closure. No board results exist.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T00:54:09+00:00 from archived measurements.
+Updated 2026-10-13T00:56:05+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -18,7 +18,7 @@ Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and
 
 First phase stages0-6 closed in E099. The current complete course Set14 has13 images and final feasibility uses independently routed gates. Historical provisional statuses remain unchanged. No board validation has run.
 
-151 architecture records completed: P01, P02, W01, P03, W02, P04, W03, P05, P06, P07, G01, G02, S01, G03, S02, P10, C01, C02, C03, S03, P11, S04, W07, S05, P12, W04, W05, W06, S06, F01, W10, F02, W11, C08, W12, P08, F03, W08, C09, W09, F08, F16, F17, F18, F19, C04, F04, W13, C07, F13, F05, C12, F06, F14, F07, W17, C05, P09, F09, C06, F15, W18, F10, F20, F11, F21, F22, F12, F23, W14, W15, W16, F24, C10, F25, C11, F80, F81, F82, F83, F84, F85, P13, P14, P15, P16, F86, F87, F88, F89, F26, F27, F94, F31, F92, F28, F93, W19, F29, F30, W20, W21, F96, F95, F97, F98, W22, F34, F32, F33, F38, F35, F36, F37, W24, W26, F41, W27, F42, F47, C13, W25, F40, F39, F45, F46, F43, C14, W28, F44, F49, F48, W29, W23, C15, F52, W32, C18, W30, F51, C17, C16, F50, C20, C19, W31, C22, C21, W33, C24, C25.
+152 architecture records completed: P01, P02, W01, P03, W02, P04, W03, P05, P06, P07, G01, G02, S01, G03, S02, P10, C01, C02, C03, S03, P11, S04, W07, S05, P12, W04, W05, W06, S06, F01, W10, F02, W11, C08, W12, P08, F03, W08, C09, W09, F08, F16, F17, F18, F19, C04, F04, W13, C07, F13, F05, C12, F06, F14, F07, W17, C05, P09, F09, C06, F15, W18, F10, F20, F11, F21, F22, F12, F23, W14, W15, W16, F24, C10, F25, C11, F80, F81, F82, F83, F84, F85, P13, P14, P15, P16, F86, F87, F88, F89, F26, F27, F94, F31, F92, F28, F93, W19, F29, F30, W20, W21, F96, F95, F97, F98, W22, F34, F32, F33, F38, F35, F36, F37, W24, W26, F41, W27, F42, F47, C13, W25, F40, F39, F45, F46, F43, C14, W28, F44, F49, F48, W29, W23, C15, F52, W32, C18, W30, F51, C17, C16, F50, C20, C19, W31, C22, C21, W33, C24, C25, F53.
 
 Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md); 1.7460189000000002ms, T=8, DSP=630.0, BRAM18K=138.0, LUT=53316.0, deltaPSNR=-0.0695141811880653dB. HLS estimates are distinct from route/RTL results.
 
@@ -26,7 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: C23, F53.
+Final verification: C23.
 
 ## Weight Loading Workstream
 
