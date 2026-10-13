@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T02:19:14+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T02:25:07+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C27 reaches2/4 and exposes an unconditional4byte read on reuse; independent scalar-load repair is being prepared. C22 remains the verified1.365115ms leader. C27 reaches2/4: loaded call reads8129floats/32516bytes,but the skipped call reads one4byte value. Generated RTL unconditionally preloads biases3[0] as biases3_0_0_val before the inner guard,so zero parameter AXI acceptance fails. Keep C27 running through all four calls and the output post-check; preserve its original evidence and do not route C23. Prepare fresh C28 quality/HLS,C29 sequence and C30 cold-start plans for an independent C23 copy with a volatile scalar bias read explicitly guarded at the non-DATAFLOW top. Keep all MACs,FIFOdepths,quantization,interfaces and gates unchanged. Light runs may use measured memory headroom; the next heavy run waits for C27. After repaired C/RTL acceptance allocate fresh staged5ns routing. Complete interpretations,all plots and the final idle audit. No board result exists.
+C27 exposes a4byte read on reuse; guarded C29/C30 pass and C28 quality passes with synthesis active. C22 remains the verified1.365115ms leader. C27's first skipped call reads one4byte bias because HLS scalarizes and hoists biases3[0] before the inner guard; keep all four calls and the output post-check but reject zero-AXI acceptance. Independent guarded design source is committed after the C28 paper plan. C29 four-call C semantics and C30 fresh-process flag0 fallback pass exactly. C28 passes all13 E065-exact images with unchanged deltaPSNR/border and is now synthesizing beside the sole C27 heavy task; actual admission observed6.547GiB available before its4GiB registration. Supervisor80307 owns C28 and31264 owns C27. Preserve failed raw measurements and unchanged parent RTL hashes; after repaired C/HLS screening and C27 release allocate a new four-call monitored RTL ID,then independent5ns routing only after zero-AXI acceptance. Keep all MACs,FIFOdepths,quantization,interfaces and gates unchanged. Finish interpretations,all plots and the final idle audit. No board result exists.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -57,6 +57,8 @@ C27 reaches2/4 and exposes an unconditional4byte read on reuse; independent scal
 | [C25](C25_reload_switch_cold/C25.md) | C13 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F53](F53_legacy_C13_regression/F53.md) | C13 | csim | csim_pass | True | -0.07589037644656216 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C26](C26_ws_cosim_C23/C26.md) | C23 | cosim | fail | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128840.0 | unknown | rejected_or_unmeasured | unknown | unknown | unknown | unknown | unknown |
+| [C29](C29_reload_guard_sequence/C29.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C30](C30_reload_guard_cold/C30.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -68,6 +70,7 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [C27](C27_ws_cosim_C23/C27.md) | C23 | cosim | queued_or_running | After repairing C26's pre-tool scheduler telemetry integration, independently verify frozen C23 using four exact transactions, zero skipped-call parameter AXI and unchanged synthesis RTL under a cumulative six-hour timeout |
+| [C28](C28_reload_guard_quality/C28.md) | C23 | csim/csynth | queued_or_running | Independent guarded scalar-bias design; require complete13-image E065 exactness,unchanged border/deltaPSNR and all HLS screening/II gates before new RTL |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 

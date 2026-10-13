@@ -100,7 +100,28 @@ def measured_axi(rows):
     return [{key: int(value) for key, value in row.items()} for row in rows]
 
 
+def archive_measurements(work, archive):
+    simulation = work / "hls/sim/verilog"
+    folder = archive / "parameter_axi_monitor"
+    records = []
+    for name in ("srcnn_reload.performance.result.transaction.xml", "reload_parameter_axi.csv"):
+        source = simulation / name
+        if not source.is_file():
+            continue
+        folder.mkdir(parents=True, exist_ok=True)
+        destination = folder / name
+        shutil.copyfile(source, destination)
+        records.append({"raw_file": str(source.relative_to(work)),
+                        "archived_file": str(destination.relative_to(archive)),
+                        "sha256": hashlib.sha256(source.read_bytes()).hexdigest()})
+    if records:
+        write_json(folder / "measurement_manifest.json",
+                   {record["raw_file"].rsplit("/", 1)[-1]: record for record in records})
+    return records
+
+
 def measured_result(work, archive, parent):
+    archive_measurements(work, archive)
     text = (work / "cosim_execute.console.log").read_text(errors="replace")
     if "EXP_MONITORED_COSIM_DONE" not in text:
         raise RuntimeError("Generated simulation and post-check driver did not complete")
@@ -115,13 +136,6 @@ def measured_result(work, archive, parent):
         row["parameter_axi_zero"] = row["load_params"] == 0 and row["read_bytes"] == 0
     from analyze_arch import write_csv
     write_csv(archive / "reload_transactions.csv", transactions, list(transactions[0]))
-    folder = archive / "parameter_axi_monitor"
-    for source in (performance, bus):
-        shutil.copyfile(source, folder / source.name)
-    report_manifest = {source.name: {"raw_file": str(source.relative_to(work)),
-                                    "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}
-                       for source in (performance, bus)}
-    write_json(folder / "measurement_manifest.json", report_manifest)
     latencies = [row["latency_cycles"] for row in transactions]
     intervals = [row["interval_cycles"] for row in transactions if row["interval_cycles"] is not None]
     return {"rtl_status": "Pass", "rtl_latency_min": min(latencies),

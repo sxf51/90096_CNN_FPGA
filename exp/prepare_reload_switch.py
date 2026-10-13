@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Commit WS-F hypotheses before copying the immutable C13 parameter banks."""
+"""Commit WS-F hypotheses before copying immutable parameter-bank designs."""
 import argparse
 import hashlib
 import json

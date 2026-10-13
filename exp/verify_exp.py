@@ -700,6 +700,9 @@ def run_verification(config, resume_waiting=False):
         archive_logs(work, archive)
         config["verification_reports"] = archive_verification_reports(work,archive,operation)
         config["verification_diagnostics"] = archive_verification_diagnostics(work,archive)
+        if operation == "cosim" and config.get("parameter_axi_monitor"):
+            from monitored_cosim import archive_measurements
+            config["verification_diagnostics"].extend(archive_measurements(work, archive))
         if operation == "cosim" and observed.get("rtl_status") == "Pass":
             try:
                 config["verification_profiles"] = archive_profiles(work,archive)
@@ -756,7 +759,7 @@ def run_verification(config, resume_waiting=False):
             md += "\nIndependent generated-flow retry files:\n\n"
             md += markdown_table(config["implementation_files"],["kind","archived_file","sha256"])
         if config["verification_diagnostics"]:
-            md += "\nVivado subrun diagnostic excerpts:\n\n"
+            md += "\nVerification diagnostic evidence:\n\n"
             md += markdown_table(config["verification_diagnostics"],["raw_file","archived_file","raw_sha256","sha256","excerpt"])
         default = "Actual verification results are parsed from reports in data.csv. Implementation completion alone does not prove timing closure or board operation."
         if config.get("required_image_count") == 13:

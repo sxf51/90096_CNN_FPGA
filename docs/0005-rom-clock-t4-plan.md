@@ -259,6 +259,9 @@ WS-F 的参数 AXI 证据采用工具 help 确认的 `cosim.setup=true`：先生
 C29/C30 分别检查四次调用和冷启动；三项通过后用新 ID 重做同样的四事务
 RTL、零 AXI 计数及独立 5 ns 布线，不降低任何门槛。允许这些轻任务在
 C27 运行期间按现有内存预算准入；新重任务仍等待 C27 释放。
+参数观测的原始 CSV 与逐事务性能 XML 必须在判定前复制，并在失败或超时时
+仍作为带 SHA256 的诊断证据归档。只有经过全部门槛的事务才写入已验证汇总；
+不把“完整输出正确但参数口仍有读取”的结果改成通过。
 
 **ID 与估计。** 计划用下一个可用的 C 编号（C19–C22 已占用，开工前再确认）。纸面估计：
 
@@ -447,9 +450,12 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C25](../experiments/C25_reload_switch_cold/C25.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [F53](../experiments/F53_legacy_C13_regression/F53.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C26](../experiments/C26_ws_cosim_C23/C26.md) | C23 | fail | 263090.0 | 1032.0 | 128840.0 | unknown | unknown | unknown |
+| [C29](../experiments/C29_reload_guard_sequence/C29.md) | C23 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C30](../experiments/C30_reload_guard_cold/C30.md) | C23 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
 
 未测量的计划：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | C27 | C23 | queued_or_running | After repairing C26's pre-tool scheduler telemetry integration, independently verify frozen C23 using four exact transactions, zero skipped-call parameter AXI and unchanged synthesis RTL under a cumulative six-hour timeout |
+| C28 | C23 | queued_or_running | Independent guarded scalar-bias design; require complete13-image E065 exactness,unchanged border/deltaPSNR and all HLS screening/II gates before new RTL |

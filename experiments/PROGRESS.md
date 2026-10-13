@@ -4,13 +4,13 @@
 
 ## Active docs/0005 workstream
 
-C27 reaches2/4 and exposes an unconditional4byte read on reuse; independent scalar-load repair is being prepared. C22 remains the verified1.365115ms leader. C27 reaches2/4: loaded call reads8129floats/32516bytes,but the skipped call reads one4byte value. Generated RTL unconditionally preloads biases3[0] as biases3_0_0_val before the inner guard,so zero parameter AXI acceptance fails. Keep C27 running through all four calls and the output post-check; preserve its original evidence and do not route C23. Prepare fresh C28 quality/HLS,C29 sequence and C30 cold-start plans for an independent C23 copy with a volatile scalar bias read explicitly guarded at the non-DATAFLOW top. Keep all MACs,FIFOdepths,quantization,interfaces and gates unchanged. Light runs may use measured memory headroom; the next heavy run waits for C27. After repaired C/RTL acceptance allocate fresh staged5ns routing. Complete interpretations,all plots and the final idle audit. No board result exists.
+C27 exposes a4byte read on reuse; guarded C29/C30 pass and C28 quality passes with synthesis active. C22 remains the verified1.365115ms leader. C27's first skipped call reads one4byte bias because HLS scalarizes and hoists biases3[0] before the inner guard; keep all four calls and the output post-check but reject zero-AXI acceptance. Independent guarded design source is committed after the C28 paper plan. C29 four-call C semantics and C30 fresh-process flag0 fallback pass exactly. C28 passes all13 E065-exact images with unchanged deltaPSNR/border and is now synthesizing beside the sole C27 heavy task; actual admission observed6.547GiB available before its4GiB registration. Supervisor80307 owns C28 and31264 owns C27. Preserve failed raw measurements and unchanged parent RTL hashes; after repaired C/HLS screening and C27 release allocate a new four-call monitored RTL ID,then independent5ns routing only after zero-AXI acceptance. Keep all MACs,FIFOdepths,quantization,interfaces and gates unchanged. Finish interpretations,all plots and the final idle audit. No board result exists.
 
 See [ROM_CLOCK.md](ROM_CLOCK.md) and [rom_clock_state.json](rom_clock_state.json). Current gates override historical missing-comic/HLS-only/serial-lock wording below: complete course Set14=13; final feasibility=routed; concurrency=one heavy task with light jobs admitted by measured headroom.
 
 <!-- ROM_CLOCK_CURRENT -->
 
-Updated 2026-10-13T02:19:14+00:00 from archived measurements.
+Updated 2026-10-13T02:25:06+00:00 from archived measurements.
 
 Branch: `exp/explore-arch`, from phase-one final `2fa7249`. Original46 files and45 first-phase design files remain checksum protected. Preserve user README/.gitignore/docs-index edits.
 
@@ -26,7 +26,7 @@ Fastest resource-feasible exact frame estimate: [W24](W24_constant_rom_T8/W24.md
 
 Exploration: all required runs archived.
 
-Final verification: C27.
+Final verification: C27, C28.
 
 ## Weight Loading Workstream
 

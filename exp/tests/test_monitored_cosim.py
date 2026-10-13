@@ -7,7 +7,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from monitored_cosim import install_monitor, measured_result, run_monitored
+from monitored_cosim import archive_measurements, install_monitor, measured_result, run_monitored
 
 
 class MonitoredCosimTests(unittest.TestCase):
@@ -153,6 +153,44 @@ class MonitoredCosimTests(unittest.TestCase):
         (self.work / "cosim_execute.console.log").write_text(marker + "EXP_MONITORED_COSIM_DONE\n")
         with self.assertRaisesRegex(RuntimeError, "separate C and RTL"):
             measured_result(self.work, self.archive, {"border_mse": functional["border_mse"]})
+
+    def test_partial_observer_evidence_survives_aborted_execution(self):
+        bus = self.sim / "reload_parameter_axi.csv"
+        bus.write_text("transaction,load_params,read_bytes\n0,1,32516\n1,0,4\n")
+        (self.work / "cosim_execute.console.log").write_text("simulation aborted\n")
+        with self.assertRaisesRegex(RuntimeError, "did not complete"):
+            measured_result(self.work, self.archive, {})
+        records = archive_measurements(self.work, self.archive)
+        self.assertEqual(len(records), 1)
+        record = records[0]
+        self.assertEqual((self.archive / record["archived_file"]).read_bytes(), bus.read_bytes())
+        self.assertEqual(record["sha256"], hashlib.sha256(bus.read_bytes()).hexdigest())
+        self.assertFalse((self.archive / "reload_transactions.csv").exists())
+
+    def test_nonzero_skipped_read_is_rejected_but_raw_measurements_are_retained(self):
+        functional = dict(csim_pass=True, bit_exact=True, reload_switch_pass=True,
+                          load_flags=[1, 0, 1, 0], frame_count=4, reuse_pass=True,
+                          reload_pass=True, retained_latest_pass=True,
+                          reload_expected=104/256, border_mse=.000016)
+        marker = "EXP_METRICS " + json.dumps(functional) + "\n"
+        (self.work / "cosim_execute.console.log").write_text(marker * 2 + "EXP_MONITORED_COSIM_DONE\n")
+        performance = self.sim / "srcnn_reload.performance.result.transaction.xml"
+        performance.write_text("transaction 0: 300000 300029\ntransaction 1: 295000 295029\n"
+                               "transaction 2: 300000 300029\ntransaction 3: 295000 x\n")
+        bus = self.sim / "reload_parameter_axi.csv"
+        bus.write_text("transaction,load_params,ar_requests,r_beats,aw_requests,w_beats,"
+                       "ar_valid_cycles,r_valid_cycles,aw_valid_cycles,w_valid_cycles,read_bytes\n" +
+                       "\n".join(str(i) + "," + ("1,8129,8129,0,0,8129,8129,0,0,32516"
+                                                 if load else "0,1,1,0,0,1,1,0,0,4")
+                                 for i, load in enumerate((1, 0, 1, 0))) + "\n")
+        with self.assertRaisesRegex(RuntimeError, "parameter AXI traffic"):
+            measured_result(self.work, self.archive, {"border_mse": functional["border_mse"]})
+        folder = self.archive / "parameter_axi_monitor"
+        records = json.loads((folder / "measurement_manifest.json").read_text())
+        for source in (performance, bus):
+            self.assertEqual((folder / source.name).read_bytes(), source.read_bytes())
+            self.assertEqual(records[source.name]["sha256"], hashlib.sha256(source.read_bytes()).hexdigest())
+        self.assertFalse((self.archive / "reload_transactions.csv").exists())
 
 
 if __name__ == "__main__":

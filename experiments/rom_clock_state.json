@@ -1,11 +1,11 @@
 {
   "plan": "docs/0005-rom-clock-t4-plan.md",
-  "phase": "C27 reaches2/4 and exposes an unconditional4byte read on reuse; independent scalar-load repair is being prepared",
-  "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F43", "F44", "F45", "F47", "W28", "W29", "W30", "F48", "F46", "C14", "C15", "F49", "F50", "F51", "F52", "W31", "W32", "C16", "C17", "C18", "C19", "C20", "C21", "C22", "W33", "C23", "C24", "C25", "F53", "C26", "C27"],
+  "phase": "C27 exposes a4byte read on reuse; guarded C29/C30 pass and C28 quality passes with synthesis active",
+  "experiment_ids": ["F32", "F33", "F34", "F36", "F37", "F38", "F35", "W23", "W24", "W25", "W26", "W27", "F39", "F40", "F41", "F42", "C13", "F43", "F44", "F45", "F47", "W28", "W29", "W30", "F48", "F46", "C14", "C15", "F49", "F50", "F51", "F52", "W31", "W32", "C16", "C17", "C18", "C19", "C20", "C21", "C22", "W33", "C23", "C24", "C25", "F53", "C26", "C27", "C28", "C29", "C30"],
   "complete_test_set": "Set14 (13 course-provided images)",
   "resource_policy": "routed",
-  "next": "C22 remains the verified1.365115ms leader. C27 reaches2/4: loaded call reads8129floats/32516bytes,but the skipped call reads one4byte value. Generated RTL unconditionally preloads biases3[0] as biases3_0_0_val before the inner guard,so zero parameter AXI acceptance fails. Keep C27 running through all four calls and the output post-check; preserve its original evidence and do not route C23. Prepare fresh C28 quality/HLS,C29 sequence and C30 cold-start plans for an independent C23 copy with a volatile scalar bias read explicitly guarded at the non-DATAFLOW top. Keep all MACs,FIFOdepths,quantization,interfaces and gates unchanged. Light runs may use measured memory headroom; the next heavy run waits for C27. After repaired C/RTL acceptance allocate fresh staged5ns routing. Complete interpretations,all plots and the final idle audit. No board result exists.",
-  "active_phase": {"C27": "cosim_execute: generated simulation and post-check driver"},
+  "next": "C22 remains the verified1.365115ms leader. C27's first skipped call reads one4byte bias because HLS scalarizes and hoists biases3[0] before the inner guard; keep all four calls and the output post-check but reject zero-AXI acceptance. Independent guarded design source is committed after the C28 paper plan. C29 four-call C semantics and C30 fresh-process flag0 fallback pass exactly. C28 passes all13 E065-exact images with unchanged deltaPSNR/border and is now synthesizing beside the sole C27 heavy task; actual admission observed6.547GiB available before its4GiB registration. Supervisor80307 owns C28 and31264 owns C27. Preserve failed raw measurements and unchanged parent RTL hashes; after repaired C/HLS screening and C27 release allocate a new four-call monitored RTL ID,then independent5ns routing only after zero-AXI acceptance. Keep all MACs,FIFOdepths,quantization,interfaces and gates unchanged. Finish interpretations,all plots and the final idle audit. No board result exists.",
+  "active_phase": {"C27": "cosim_execute: preserve four-call output and known zero-AXI failure", "C28": "csynth: guarded scalar bias after complete13-image C validation"},
   "completed_workstreams": ["WS-0", "WS-A agent handoff (board measurements pending)"],
   "waiting_for_memory": [],
   "submitted_waiting_for_admission": [],
@@ -46,14 +46,17 @@
     "C24": "After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred",
     "C25": "After C21 completes, independently test fresh-process first-call load=0 forced loading",
     "F53": "After C21 completes, regress frozen C13 on all13images with the new shared testbench macro disabled",
-    "C27": "After repairing C26's pre-tool scheduler telemetry integration, independently verify frozen C23 using four exact transactions, zero skipped-call parameter AXI and unchanged synthesis RTL under a cumulative six-hour timeout"
+    "C27": "After repairing C26's pre-tool scheduler telemetry integration, independently verify frozen C23 using four exact transactions, zero skipped-call parameter AXI and unchanged synthesis RTL under a cumulative six-hour timeout",
+    "C28": "Independent guarded scalar-bias design; require complete13-image E065 exactness,unchanged border/deltaPSNR and all HLS screening/II gates before new RTL",
+    "C29": "Guarded-design four-call C sequence must retain ignored-pointer and most-recent-bank semantics",
+    "C30": "Guarded-design fresh-process first load=0 must force full loading and match E065"
   },
   "pending_decisions": ["Board validation remains unavailable to the agent; F98 handoff is archived.", "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned."],
   "skipped_plans": {},
-  "local_exec_sessions": [31264],
-  "session_jobs": {"31264": ["C27"]},
+  "local_exec_sessions": [31264, 80307],
+  "session_jobs": {"31264": ["C27"], "80307": ["C28"]},
   "board_handoff": "experiments/BOARD_HANDOFF.md",
   "candidate_board_handoffs": {"C18": "experiments/board_handoff/C18/HANDOFF.md", "C22": "experiments/board_handoff/C22/HANDOFF.md", "C21": "experiments/board_handoff/C21/HANDOFF.md"},
   "wsE": "C20 passes exact 273023 cycles, 9.18 percent lower than C14's 300632; C22 independently closes 5 ns and becomes the verified 1.365115 ms leader with all routed resources feasible. C19 passes 535976 cycles, 205 more than F48; C21 independently closes 4.5 ns, giving 2.411892 ms and improving W30 by 2.45 percent. All 13-image precision is unchanged. C18 remains the 1.503160 ms fallback. No resource-driven T4 ROM retry is required.",
-  "wsF": "C24/C25/F53 and C23 quality/HLS pass. C26's pre-tool failure remains archived. C27's first skipped RTL call exposes a4byte bias read despite correct C behavior; the generated top preloads the scalar outside the guard. Preserve the fail evidence and finish the remaining two calls. Independently guard the scalar at the top in C28-C30 before a fresh monitored RTL experiment; no gate is relaxed."
+  "wsF": "C24/C25/F53 and C23 quality/HLS pass. C26 remains a pre-tool failure. C27 exposes a4byte scalar-bias read on reuse and cannot pass zero-AXI acceptance; preserve all four calls and raw diagnostics. Independent C29/C30 pass sequence and cold-start semantics. C28 passes all13-image quality and is synthesizing with the unchanged memory scheduler before new RTL and routing; no gate is relaxed."
 }
