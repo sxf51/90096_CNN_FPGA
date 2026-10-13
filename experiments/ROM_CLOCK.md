@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T11:41:50+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T12:52:41+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -72,6 +72,7 @@ W36 final timing fails; C39 monitored four-call RTL active; C40 conditional; W35
 | [C37](C37_t4_reload_paramreg/C37.md) | C32 | csim/csynth | infeasible | True | -0.07589037644656216 | 263154.0 | 1032.0 | 128942.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C38](C38_t4_reload_balanced/C38.md) | C32 | csim/csynth | infeasible | True | -0.07589037644656216 | 263092.0 | 1032.0 | 131780.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C39](C39_ws_cosim_C37/C39.md) | C37 | cosim | cosim_complete | True | -0.07589037644656216 | 263154.0 | 1032.0 | 128942.0 | 273025 | original_verification_pass | unknown | unknown | unknown | unknown | unknown |
+| [C40](C40_ws_impl_C37/C40.md) | C37 | impl | impl_complete | True | -0.07589037644656216 | 263154.0 | 1032.0 | 128942.0 | unknown | unknown | 4.5 | False | unknown | unknown | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -83,7 +84,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
-| [C40](C40_ws_impl_C37/C40.md) | C37 | impl | unlaunched_conditional | Launch only after strict C39 acceptance; independent4.5ns Performance_Explore staged implementation of frozen C37,observed synthesis1/route4threads and unchanged physical gates; no4ns plan until matching closure |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 

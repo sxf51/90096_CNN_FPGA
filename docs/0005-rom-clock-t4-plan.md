@@ -625,10 +625,10 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C37](../experiments/C37_t4_reload_paramreg/C37.md) | C32 | infeasible | 263154.0 | 1032.0 | 128942.0 | unknown | unknown | unknown |
 | [C38](../experiments/C38_t4_reload_balanced/C38.md) | C32 | infeasible | 263092.0 | 1032.0 | 131780.0 | unknown | unknown | unknown |
 | [C39](../experiments/C39_ws_cosim_C37/C39.md) | C37 | cosim_complete | 263154.0 | 1032.0 | 128942.0 | 273025 | unknown | unknown |
+| [C40](../experiments/C40_ws_impl_C37/C40.md) | C37 | impl_complete | 263154.0 | 1032.0 | 128942.0 | unknown | False | unknown |
 
 未测量的计划：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
 | W35 | C28 | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
-| C40 | C37 | unlaunched_conditional | Launch only after strict C39 acceptance; independent4.5ns Performance_Explore staged implementation of frozen C37,observed synthesis1/route4threads and unchanged physical gates; no4ns plan until matching closure |
