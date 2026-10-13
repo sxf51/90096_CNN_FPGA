@@ -1,6 +1,6 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T00:05:48+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T00:17:46+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
@@ -49,6 +49,7 @@ C22 verified leader and handoff archived; C21 routing at4.5ns; W33 and WS-F chec
 | [C18](C18_ws_impl_C13/C18.md) | C13 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | 5.0 | True | 1.50316 | 14.269641567524417 | unknown |
 | [C19](C19_ws_cosim_C16/C19.md) | C16 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | 535976.0 | original_verification_pass | unknown | unknown | unknown | 2.044600818297271 | unknown |
 | [C20](C20_ws_cosim_C17/C20.md) | C17 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | original_verification_pass | unknown | unknown | unknown | 3.7755140826333244 | unknown |
+| [C21](C21_ws_impl_C16/C21.md) | C16 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | 535976.0 | unknown | 4.5 | True | 2.411892 | unknown | unknown |
 | [C22](C22_ws_impl_C17/C22.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | 5.0 | True | 1.365115 | 3.7755140826333244 | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
@@ -60,7 +61,6 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [C21](C21_ws_impl_C16/C21.md) | C16 | impl | queued_or_running | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
 | [W33](W33_ws_impl_W24/W33.md) | W24 | impl | unlaunched_conditional | W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21 |
 | [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
 | [C24](C24_reload_switch_sequence/C24.md) | C13 | csim/csynth | unlaunched_conditional | After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred |

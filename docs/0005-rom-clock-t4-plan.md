@@ -422,13 +422,13 @@ zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFr
 | [C18](../experiments/C18_ws_impl_C13/C18.md) | C13 | impl_complete | 263090.0 | 1032.0 | 127966.0 | 300632.0 | True | 1.50316 |
 | [C19](../experiments/C19_ws_cosim_C16/C19.md) | C16 | cosim_complete | 525237.0 | 644.0 | 81485.0 | 535976.0 | unknown | unknown |
 | [C20](../experiments/C20_ws_cosim_C17/C20.md) | C17 | cosim_complete | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | unknown |
+| [C21](../experiments/C21_ws_impl_C16/C21.md) | C16 | impl_complete | 525237.0 | 644.0 | 81485.0 | 535976.0 | True | 2.411892 |
 | [C22](../experiments/C22_ws_impl_C17/C22.md) | C17 | impl_complete | 263090.0 | 1032.0 | 127985.0 | 273023.0 | True | 1.365115 |
 
 未测量的计划：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| C21 | C16 | queued_or_running | C19 must pass both exact changed-parameter RTL transactions before staged4.5ns implementation; compare the independently closed frame product to W30 |
 | W33 | W24 | unlaunched_conditional | W25 same-ROM/changed-input exact RTL and W31 independently closed5ns permit a fresh staged4.5ns implementation; unique heavy slot after C21 |
 | C23 | C13 | unlaunched_conditional | After C21 completes, validate all13 loaded/reused images and synthesize the independent reload top under unchanged memory admission; hardware verification requires allC checks and HLS screening |
 | C24 | C13 | unlaunched_conditional | After C21 completes, independently test load/reuse/reload/retain with ignored incoming pointers; no HLS/RTL result is inferred |
