@@ -334,14 +334,14 @@ def main():
         if config.get("operation") == "cosim":
             measured = config.get("verification", {})
             if measured.get("rtl_status") == "Pass":
-                human += ("\n\nBoth RTL transactions pass. Maximum latency is "+str(measured.get("rtl_latency_max"))+
+                human += ("\n\nAll "+str(config.get("verification_frames", 2))+" RTL transactions pass. Maximum latency is "+str(measured.get("rtl_latency_max"))+
                           " cycles and interval is "+str(measured.get("rtl_interval_max"))+" cycles; latency differs from the frozen HLS bound by "+
                           str(measured.get("cycle_deviation_pct"))+"%. Finite-FIFO/AXI handshake costs are included in RTL. "
                           "This ideal-clock simulation does not establish routed timing or board latency.")
             if config.get("verification_profiles"):
                 human += ("\n\nThe archived profiling/channels.csv and processes.csv locate FIFO backpressure and per-process stalls. "
                           "Fast source/window producers are expected to block behind the T-fold MAC consumer; a large write-block fraction alone is not evidence that deeper FIFOs would improve frame throughput. "
-                          "Process counters span both transactions and include startup/inactive cycles; overlapping stalls cannot be summed to explain the complete latency difference.")
+                          "Process counters span all recorded transactions and include startup/inactive cycles; overlapping stalls cannot be summed to explain the complete latency difference.")
             if config.get("profiling_archive_error"):
                 human += "\n\nRTL counter archive unavailable: "+config["profiling_archive_error"]
         human += "\n\nEstimate audit (parsed values; zero estimates have no percentage denominator):\n\n"

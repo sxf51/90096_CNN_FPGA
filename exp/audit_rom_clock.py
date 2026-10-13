@@ -20,9 +20,14 @@ def inventory(state, rows):
     waiting = set(state.get("waiting_for_memory", []))
     active = {exp_id for jobs in state.get("session_jobs", {}).values() for exp_id in jobs}
     skipped = set(state.get("skipped_plans", {}))
+    conditional = set(state.get("unlaunched_ids", []))
+    if not conditional <= set(unmeasured):
+        raise RuntimeError("Completed IDs still listed as unlaunched conditional plans")
+    if any(not state.get("planned_conditions", {}).get(exp_id) for exp_id in conditional):
+        raise RuntimeError("Unlaunched conditional plan lacks a recorded prerequisite")
     if not skipped <= set(unmeasured) or skipped & (waiting | active):
         raise RuntimeError("Skipped conditional plans must be unmeasured and inactive")
-    unexplained = set(unmeasured) - waiting - active - set(state.get("deferred", [])) - skipped
+    unexplained = set(unmeasured) - waiting - active - set(state.get("deferred", [])) - skipped - conditional
     if unexplained:
         raise RuntimeError("Unmeasured experiments have no recovery state: " + ", ".join(sorted(unexplained)))
     if waiting & set(measured):
@@ -45,6 +50,7 @@ def audit_pending(state, unmeasured):
         if hashlib.sha256(recorded).digest() != hashlib.sha256(path.read_bytes()).digest():
             raise RuntimeError("Pending paper plan differs from committed version: " + exp_id)
         waiting = exp_id in state.get("waiting_for_memory", [])
+        conditional = exp_id in state.get("unlaunched_ids", [])
         skipped = state.get("skipped_plans", {}).get(exp_id)
         prerequisite_sha256 = None
         if skipped:
@@ -59,6 +65,7 @@ def audit_pending(state, unmeasured):
         records.append({"id": exp_id, "plan_sha256": hashlib.sha256(recorded).hexdigest(),
                         "operation": config.get("operation", "csim/csynth"),
                         "unlaunched_for_memory": waiting,
+                        "unlaunched_for_condition": conditional and not skipped,
                         "not_run_condition_failed": bool(skipped),
                         "failure_reason": skipped["reason"] if skipped else None,
                         "prerequisite_metrics_sha256": prerequisite_sha256,

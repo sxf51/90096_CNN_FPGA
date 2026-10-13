@@ -44,11 +44,22 @@ def main():
     best = eligible[0] if eligible else None
     text = "# SRCNN K26 architecture exploration\n\n"
     rom_current = (ROOT / "experiments/rom_clock_state.json").exists()
+    rom = json.loads((ROOT / "experiments/rom_clock_state.json").read_text()) if rom_current else {}
+    current_path = ROOT / "experiments/rom_clock_comparison.csv"
+    current = list(csv.DictReader(current_path.open(newline=""))) if rom_current and current_path.is_file() else []
+    verified = sorted((row for row in current if row.get("route_feasible") == "True" and
+                       number(row.get("rtl_frame_ms")) is not None),
+                      key=lambda row: number(row["rtl_frame_ms"]))
     if rom_current:
         text += "Current follow-up: [ROM_CLOCK.md](ROM_CLOCK.md), following [docs/0005](../docs/0005-rom-clock-t4-plan.md). "
         text += "The complete course Set14 has13 images; final feasibility now uses independently routed resource/timing gates. "
         text += "Historical HLS statuses and earlier provisional wording below remain original records.\n\n"
-    if best:
+    if verified:
+        leader = verified[0]
+        text += ("The fastest candidate with matching exact RTL and independently closed routing is ["+
+                 leader["id"]+"]("+leader["md_path"]+") at "+leader["rtl_frame_ms"]+
+                 "ms IP latency, using "+leader["route_DSP"]+" DSP at "+leader["route_clock_ns"]+"ns. ")
+    elif best:
         text += ("The lowest HLS estimate satisfying the original HLS resource screen is " if rom_current else
                  "The fastest resource-feasible supplied-image point is ")
         text += "["+best["id"]+"]("+best["md_path"]+") at "+best["latency_ms_est"]+"ms HLS-estimated latency. "
@@ -97,25 +108,27 @@ def main():
                 "route_target_ns","route_WNS_ns","route_DSP","route_BRAM18K","route_LUT",
                 "route_FF","route_feasible","rtl_frame_ms_at_route_target"])
             text += "\nTarget minus WNS is a slack-derived estimate; only each implemented target above is accepted. Actual first-five-path and hierarchy reports are linked from each experiment.\n"
-    current_path = ROOT / "experiments/rom_clock_comparison.csv"
     if rom_current and current_path.is_file():
-        current = list(csv.DictReader(current_path.open(newline="")))
-        verified = sorted((row for row in current if row.get("route_feasible") == "True" and
-                           number(row.get("rtl_frame_ms")) is not None),
-                          key=lambda row: number(row["rtl_frame_ms"]))
         text += "\n## Current Verified IP Timing\n\n"
         text += "Matching-parent successful RTL latency times an independently closed, resource-feasible routed clock. No DDR, driver or board measurement is included.\n\n"
         text += markdown_table(linked(verified), ["id", "parent", "rtl_source", "rtl_cycles", "route_clock_ns",
                                                  "route_WNS_ns", "route_DSP", "route_BRAM18K", "route_LUT",
                                                  "route_FF", "rtl_frame_ms"])
+        handoffs = rom.get("candidate_board_handoffs", {})
+        if handoffs:
+            text += "\nVerified candidate IP packages and register maps: "
+            text += ", ".join("["+exp_id+"]("+str((ROOT/path).relative_to(ROOT/"experiments"))+")"
+                              for exp_id, path in handoffs.items())
+            text += ". The [F98 handoff](BOARD_HANDOFF.md) remains available; board performance is unmeasured.\n"
         text += "\n## ROM, Clock, FIFO And T4\n\n"
         text += "Measured follow-up records from docs/0005; their routed acceptance remains separate from historical HLS statuses. "
         text += "WS-D functional cosimulation and its2% latency goal are separate columns. See [ROM_CLOCK.md](ROM_CLOCK.md) for counters and memory evidence.\n\n"
         text += markdown_table(linked([row for row in current if row["id"] not in {"W21", "F97", "F98", "W22"}]),
                                ["id", "parent", "status", "T", "HLS_cycles", "HLS_DSP", "HLS_LUT", "rtl_cycles",
                                 "rtl_hls_excess_pct", "wsD_goal_met", "route_feasible", "rtl_frame_ms"])
-        from summarize_rom_clock import pending_experiments
-        pending = pending_experiments(json.loads((ROOT / "experiments/rom_clock_state.json").read_text()))
+        from summarize_rom_clock import pending_experiments, reload_measurements_section
+        text += reload_measurements_section()
+        pending = pending_experiments(rom)
         text += "\nUnmeasured plans have no actual result and do not enter rankings:\n\n"
         text += markdown_table(linked(pending), ["id", "parent", "operation", "status", "condition"])
     for series in ("P","W","G","S","C","F"):
@@ -241,6 +254,10 @@ def main():
         text += "\nRouted timing closes for "+str(sum(str(record.get("timing_met")).lower() == "true" for record in relevant))+" selected implementation runs; "+str(sum(record.get("rtl_status") == "Pass" and record["status"] == "cosim_complete" for record in relevant))+" selected two-frame RTL runs pass. Completion of a route with negative WNS is retained as a timing failure.\n"
     failed = [row for row in arch if row["status"] not in {"pass","provisional","csim_pass","impl_complete","cosim_complete","analysis_complete"}]
     text += "\n## Failed Directions\n\n"+markdown_table(linked(failed),["id","series","status","failure_reason","notes"])
+    if ws and ws.get("cancelled_plans"):
+        text += "\n## Cancelled Plans\n\nUser-cancelled obsolete retries were never launched and have no measured result. Original paper plans are preserved.\n\n"
+        text += markdown_table(linked([{"id": exp_id, **record} for exp_id, record in ws["cancelled_plans"].items()]),
+                               ["id", "parent", "status", "time", "reason"])
     text += "\n## Pending Human Decisions\n\n"
     text += ("- The user confirmed that the13 course-provided images are the complete test set; no comic input is pending.\n"
              if rom_current else "- Supply the missing comic pair before complete14-image precision acceptance. All13 supplied pairs remain mandatory.\n")
@@ -250,21 +267,30 @@ def main():
     text += "- Review normalized-float PSNR against the original wrapping uint8 metric before external benchmark claims. See [LOG.md](LOG.md).\n"
     if any((ROOT / "experiments" / Path(row["md_path"]).parent / "diagnostics/kernel_oom.txt").is_file()
            for row in rows):
-        text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; F90/F91 are deferred under the current workstream priority. Assess the archived route and memory evidence before changing hosts. No system swap/global tool settings were changed.\n"
+        retry_state = ("F90/F91 were cancelled by the user before launch" if ws and ws.get("cancelled_plans")
+                       else "F90/F91 are deferred under the current workstream priority")
+        text += "- Vivado internal synthesis workers exceeded the15GiB host memory budget in F81. F89 keeps the generated flow with per-run synthesis threads set to1; " + retry_state + ". Those original retries did not change system swap or global tool settings. The later user-configured8GiB zram and current memory observations are documented in [docs/0005](../docs/0005-rom-clock-t4-plan.md).\n"
     if ws:
-        text += ("- Current decisions supersede historical docs/0004 defaults: final feasibility uses routed gates, ROM remains exploratory, and the user authorized two concurrent tasks with actual memory telemetry. Board selection and measurements remain pending.\n"
+        scheduling = ("one heavy task with memory-bounded light jobs" if rom.get("concurrency_policy") == "one_heavy_with_light"
+                      else "the concurrency policy and measured memory admission in docs/0005 section6.1")
+        text += ("- Current decisions supersede historical docs/0004 defaults: final feasibility uses routed gates, ROM remains exploratory, and scheduling uses "+scheduling+". Board selection and measurements remain pending.\n"
                  if rom_current else "- Section6 unattended decision: preserve runtime float weights and HLS resource gates; keep missing-comic acceptance provisional. A repeated host OOM is archived without changing swap or moving to an unverified host. These decisions are recorded for user review tomorrow in [docs/0004](../docs/0004-t8-weight-loading-plan.md).\n")
     text += "\n## Next Steps\n\nUse the best exact resource-feasible architecture as the integration candidate only after checking routed slack and finite-FIFO RTL evidence. Prioritize the measured limiting loop/path or memory bank; retain strict precision, border and resource gates. "
-    text += ("Complete the queued docs/0005 RTL/routing comparisons and board/AXI system measurements before claiming deployable performance.\n"
+    text += (rom["next"] + "\n"
              if rom_current else "Complete the missing image and board/AXI system measurements before claiming deployable performance.\n")
-    audit = ROOT / "experiments/weight_loading_audit.json"
+    audit = ROOT / "experiments/rom_clock_audit.json" if rom_current else ROOT / "experiments/weight_loading_audit.json"
+    if not audit.is_file():
+        audit = ROOT / "experiments/weight_loading_audit.json"
     if not audit.is_file():
         audit = ROOT / "experiments/architecture_audit.json"
     if audit.is_file():
         audit_data = json.loads(audit.read_text())
-        text += "\n## Integrity Audit\n\nFinal local/remote original and first-phase source checksum and report-provenance audit: ["+audit.name+"]("+audit.name+").\n\n"
+        audit_label = "Interim" if audit_data.get("mode") == "snapshot" else "Final"
+        text += "\n## Integrity Audit\n\n"+audit_label+" local/remote original and first-phase source checksum and report-provenance audit: ["+audit.name+"]("+audit.name+").\n\n"
         text += markdown_table(audit_data["checks"],["location","manifest","checked_files","pass"])
     text += "\n## Figures\n\n"
+    if (ROOT / "experiments/figs/verified_ip_pareto.png").is_file():
+        text += "![Verified IP frame time versus routed DSP](figs/verified_ip_pareto.png)\n\n"
     for name,label in (("architecture_pareto","Latency vs DSP by series"),("architecture_dsp_layers","DSP composition"),
                        ("estimate_actual_dsp","DSP estimates vs actual"),("estimate_actual_cycles","Cycle estimates vs actual"),
                        ("conv3_resources","Conv3 resource comparison"),

@@ -20,6 +20,15 @@ class RomClockAuditTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "no recovery state"):
             inventory({"experiment_ids": ["W24", "W25"]}, [{"id": "W24"}])
 
+    def test_explicit_conditional_plan_remains_unmeasured(self):
+        state = {"experiment_ids": ["C31", "C32"], "unlaunched_ids": ["C32"],
+                 "planned_conditions": {"C32": "Strict zero-AXI C31 must pass"}}
+        self.assertEqual(inventory(state, [{"id": "C31"}]), (["C31"], ["C32"]))
+        with self.assertRaisesRegex(RuntimeError, "recorded prerequisite"):
+            inventory({**state, "planned_conditions": {}}, [{"id": "C31"}])
+        with self.assertRaisesRegex(RuntimeError, "still listed"):
+            inventory(state, [{"id": "C31"}, {"id": "C32"}])
+
     def test_completed_memory_wait_and_duplicate_results_fail(self):
         with self.assertRaisesRegex(RuntimeError, "still listed"):
             inventory({"experiment_ids": ["W24"], "waiting_for_memory": ["W24"]}, [{"id": "W24"}])

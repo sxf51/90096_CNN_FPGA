@@ -8,8 +8,16 @@
 
 ### 1.1 已经布线且时序收敛的设计
 
+2026-10-13 更新：最快的已验证设计是 C17（C22 布线）。
+
 | 设计 | 源码 | T | 布线时钟 | RTL 周期 | IP 级帧时间 | 布线后资源 |
 | --- | --- | --- | --- | --- | --- | --- |
+| **C17（[C22](../experiments/C22_ws_impl_C17/C22.md)）** | `designs/winograd_t4_windows32_v1` | 4 | 5.0 ns，WNS +0.013 | 273,023（C20） | **1.365 ms** | LUT 59,552 / FF 100,499 / DSP 1,032 / BRAM18K 109 |
+| C13（[C18](../experiments/C18_ws_impl_C13/C18.md)） | `designs/winograd_prepacked_t4_v1` | 4 | 5.0 ns，WNS +0.047 | 300,632（C14） | 1.503 ms | LUT 58,529 / FF 102,072 / DSP 1,032 / BRAM18K 109 |
+| C16（[C21](../experiments/C21_ws_impl_C16/C21.md)） | `designs/winograd_windows16_frp_v1` | 8 | 4.5 ns，WNS +0.053 | 535,976（C19） | 2.412 ms | LUT 54,139 / DSP 644 |
+| W27（[W30](../experiments/W30_ws_impl_W27/W30.md)） | `designs/winograd_frp_v1` | 8 | 4.5 ns，WNS +0.027 | 549,438（W28） | 2.472 ms | LUT 54,091 / DSP 644 |
+| W24 ROM（[W33](../experiments/W33_ws_impl_W24/W33.md)） | `designs/winograd_rom_v1` | 8 | 4.5 ns，WNS +0.063 | 554,226（W25） | 2.494 ms | LUT 33,829 / DSP 630 |
+| W21（[W32](../experiments/W32_ws_clock_strategy_4p5_retry_W21/W32.md)） | `designs/winograd_subkernel_cache_v1` | 8 | 4.5 ns，WNS +0.144 | 558,758（F97） | 2.514 ms | LUT 45,030 / DSP 644 |
 | W21（[W22](../experiments/W22_ws_clock_4p95_W21/W22.md)） | `designs/winograd_subkernel_cache_v1` | 8 | 4.95 ns，WNS +0.047 | 558,758（F97） | 2.766 ms | LUT 42,592 / FF 88,806 / DSP 644 / BRAM18K 109 |
 | W21（[F98](../experiments/F98_ws_impl_W21/F98.md)） | 同上 | 8 | 5.0 ns，WNS +0.140 | 558,758 | 2.794 ms | 同上 |
 | F28（[F95](../experiments/F95_ws_impl_F28/F95.md)） | `designs/continuous_param_noflat_v1` | 16 | 5.0 ns，WNS +0.282 | 1,059,506（F93） | 5.298 ms | LUT 30,140 / DSP 591 |
@@ -65,6 +73,17 @@ DSP 在布线后可能变多：Vivado 会把一部分加法映射进 DSP。
 4. **comic 图不管。** 课程提供的数据和 `test/tb_set14.cpp` 的参考 PSNR/MSE 表都只有 13 张。
    - 这 13 张就是完整测试集，报告写“Set14（课程提供的 13 张）”。
    - 以后不再因为缺 comic 标注“暂定”（provisional）；已归档的文字不必回改。
+5. **远程主机已开 zram（2026-10-12，用户要求）。** 这一条取代各处“不修改系统 swap”的约定。
+   - 配置：8 GiB `/dev/zram0`，zstd 压缩，优先级 100；`vm.swappiness=100`、`vm.page-cluster=0`。
+   - 配置文件 `/etc/systemd/zram-generator.conf`（systemd-zram-generator 0.3.2，用 `zram-fraction`/`max-zram-size`）和 `/etc/sysctl.d/99-zram.conf`，重启后自动生效。
+   - 不使用硬盘 swap。
+   - `MemAvailable` 不包含 swap，现有内存保护照常按它判断。内存记录里新增的 swap 使用量应作为观测值归档。
+6. **远程工作区清理规则（用户批准）。**
+   - 规则：已在本地归档报告的实验，删除远程 `hls/` 下可重新生成的工程、HDL、`.autopilot` 和仿真构建，保留 `hls/*/report/`、`hls/impl/*/report/`、`hls_data.json`、`config.cmdline`，以及工作区根目录下的全部文件（源码、日志、报告、打包 IP）。工作区目录本身保留，ID 保留规则不变。
+   - 不清理：排队或运行中的任务、它们引用的父实验（两层），以及主线和上板相关的设计（W21、W22、W32、F52、F96–F98、F47/F48、W24/W25、W27/W28、F39/F42/F43、C13–C15、F28/F93–F95）。
+   - 2026-10-12 已执行：清理 148 个工作区，删除 55.4 GiB，保留报告 1.4 GiB；系统盘剩余空间从 33 GB 增到 89 GB。
+   - 每个被清理的工作区根目录有 `cleanup_2026-10-12_hls_manifest.tsv.gz`，记录删除的文件。汇总日志和脚本在远程与本地的 `workspace/exp_runs/_cleanup/`。
+   - 以后要用某个已清理实验的生成 RTL，用 `exp/reproduce_exp.py` 在新 ID 下重新综合，不要去恢复旧工作区。
 
 ## 3. 不变的约束
 
@@ -112,6 +131,13 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
    - 分开记录单帧时间和多帧连续调用的时间。
 4. 时钟：F98 只在 5 ns 下收敛，板上 PL 时钟不能超过 200 MHz。如果板上 IOPLL 是 1000 MHz，除数 5 正好是 200 MHz。整板 block design 要重新检查时序：OOC 收敛不包含互联。
 5. 结果写进第 8 节，不做推断。
+
+后续候选交付：已独立通过布线门限和同父两帧换参数 RTL 验证的运行时加载版本，可用
+`python3 exp/prepare_board_handoff.py <implementation_ID> --cosim <cosim_ID>`
+另行归档到 `experiments/board_handoff/<implementation_ID>/HANDOFF.md`。保留原 F98
+交付物。脚本重新核对布线门限、父设计身份、换参数逐位结果、13 图验证及包的传输前后
+SHA256，只归档软件驱动和元数据，IP ZIP 保持在 Git 排除的工作区。交付明确区分 HLS
+打包元数据与独立收敛的布线时钟，板端实际 PL 时钟不得超过后者；不据此宣称上板通过。
 
 ### WS-B 常量 ROM 权重（探索，W23 起）
 
@@ -179,7 +205,169 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
   - 或者收敛时钟 × RTL 周期不比当时最好的 T8 设计更快。
 - 预期（假设）：时钟可能降到 5–6 ns，帧时间约 1.5–1.8 ms。
 
+### WS-F 权重重装开关（用户 2026-10-13 批准，基于 C18/C13）
+
+**问题。** 现在每次调用 `srcnn` 都从 DDR 重新读 8,129 个参数，Conv1 还要重新做 Winograd 变换。官方 `test/tb_set14.cpp` 的用法是“权重读一次，然后连续处理 13 张图”，硬件却每帧重装。
+
+- T8 上实测，重装露出到帧时间里的代价约 4,532 周期（0.8%，W25 对比 F97）。
+- 参数进程本身每帧约 11,230 周期。
+- T4 每帧更短，估计露出 1.5–3.7%；这是假设，用本工作项实测。
+
+**接口（用户批准的接口变更）。**
+
+- 新顶层 `srcnn_reload(ftmap_t in[N0][H][W], 原有 6 个参数数组, ftmap_t out[N3][H][W], bool load_params)`，配置写 `"top": "srcnn_reload"`（runner 已支持自定义顶层，W24 的 `srcnn_rom` 是先例）。
+- `load_params` 走 `s_axilite` 的 control bundle；其余端口、bundle、突发长度和 C13 完全相同。
+- 保留 `srcnn(...)`，原 8 个参数不变，内部以 `load_params=true` 调用 `srcnn_reload`。这样 `test/` 下的官方 testbench 不用改也能编译运行。
+
+**语义。**
+
+- `load_params=1`：与 C13 完全相同，先装全部参数再计算。
+- `load_params=0`：不读任何参数（参数 AXI 口零流量），不做变换，直接用片上已有的权重计算。这一帧传进来的参数指针被忽略。
+- 安全规则：顶层用一个 `static bool params_loaded`，上电初值为 false，实际装载 `do_load = load_params || !params_loaded`，调用结束后置 true。没装过就传 0 时，强制装载，不能用未初始化的权重算出垃圾结果。
+- 主机侧约定：比特流加载后第一次调用、以及换权重的那次调用传 1，其余传 0。
+
+**实现要点（只改这几处，算术、量化、调度、FIFO、时钟全部不变）。**
+
+1. 从 `designs/winograd_prepacked_t4_v1` 复制出新目录（例如 `designs/winograd_prepacked_t4_reload_v1`），不改父目录。
+2. `do_load` 作为标量传入 `dataflow_region`，再传给 `read_params`、`wino_engine`、`conv2_stream`、`engine3`。
+   - 各进程照常无条件调用，保持 DATAFLOW 的规范形式；只在进程内部用 `if (do_load)` 包住参数读取、变换和本地装载循环。
+   - `do_load=0` 时三条参数流保持为空；C 仿真末尾 `params1/2/3.empty()` 的断言必须仍然成立。
+3. 片上权重和 bias（`wino_engine`、`conv2_stream` 的 `packed_weights`/`biases`、`engine3` 经 `load_local` 装载的数组）必须是 `static` 且没有初始化器，确保跨调用保留，复位也不清除。用 RTL 仿真确认，不能凭推断。
+4. `read_raw_params` 的递增下标计数器每次装载都要从 0 开始，不能依赖上一帧残留。
+
+**验证计划（全部要求逐位一致，基准与 C13/C14 相同：E065 定点参考）。**
+
+1. C 仿真，单次运行内按顺序调用：
+   - (a) `load=1`，正常权重，butterfly → 与 E065 逐位一致；
+   - (b) `load=0`，参数指针换成 C14 第二帧用的构造测试参数，输入换成另一张图（如 lenna）→ 输出必须等于“正常权重 × lenna”的参考，证明硬件忽略了新指针、沿用片上权重；
+   - (c) `load=1`，构造测试参数 → 每个输出都是 104/256，证明重装仍然有效；
+   - (d) `load=0` → 仍然是 104/256，证明保留的是最近一次装载；
+   - (e) 新建一个运行或进程，第一次调用就传 `load=0` → 按安全规则强制装载，结果正确。
+2. 13 张图：第一张 `load=1`，其余 12 张 `load=0`。每张都与 E065 逐位一致，平均 ΔPSNR 仍是 −0.0759 dB。
+3. RTL 协同仿真：至少 3 个事务，按 (a)(b)(c) 的顺序，三个都 PASS。分别记录 `load=1` 和 `load=0` 的事务延迟；`load=0` 的延迟必须不大于 `load=1`。原有的“第二帧换参数”检查由 (c) 覆盖。
+4. 在 5 ns 下独立布线，按第 6 节的布线门限验收。资源应与 C18 基本相同；时序没有理由变好，因为参数分发路径仍然存在，只是不再每帧使用。
+
+**测试代码。** `exp/tb/validate.cpp` 等共享 testbench 只能用新的编译宏（如 `EXP_RELOAD_SWITCH`）包住新调用序列，不得改变其他设计的行为；改完后至少回归一个旧设计的 C 仿真（如 C13），确认结果不变。
+
+WS-F 的参数 AXI 证据采用工具 help 确认的 `cosim.setup=true`：先生成仿真工程，在生成的 testbench 中加入只读计数器，再通过 HLS Tcl 解释器运行工具原有 `run_sim.tcl`，保留输入向量检查、死锁检测、dataflow profiling 和 RTL 输出的 C 后校验。只观察 `parameters` 的 AR/R/AW/W 有效周期、握手与请求字节数，不修改综合 RTL；运行前后核对综合 RTL 的 SHA256。累计工具时间仍限 6 小时。归档四个事务（装载、复用、重装、保留）的独立周期与计数，复用时包括 ARVALID/RVALID 在内必须全为零；没有计数或 C/RTL 后校验就不能标为通过。原有两帧换参数门限继续单独保留。
+
+2026-10-13 C26 在启动任何 Vitis 工具前因调度器的采样阶段白名单缺少
+`cosim_setup` / `cosim_execute` 而失败，保留原 ID 和原始失败证据。
+两个阶段都必须申请 `cosim` 重任务预算，并分别保留准入和内存记录；禁止使用轻任务
+预算绕过保护。新增检查覆盖真实调度入口的阶段注册、独立记录、释放和错误预算拒绝。
+修复后用新的 C27 验证同一 C23 RTL，所有数值、AXI、六小时累计时限和物理门槛保持原样。
+
+2026-10-13 C27 的第一个复用事务实际观察到 1 次 AR/R 握手、4 字节读取，
+不满足零参数 AXI 门槛。生成 RTL 将 `biases3[0]` 标量化成
+`biases3_0_0_val`，在顶层无条件预读后才进入带 `do_load` 的 DATAFLOW 区域。
+保留 C23/C27，并让原四事务及输出后校验跑完；该版本不得据此进入布线。
+新设计从冻结 C23 复制，只在非 DATAFLOW 顶层的 `if (do_load)` 中经
+`const volatile param_t *` 读取最后一个 bias，再向内部进程传递标量。
+复用时传入的零占位标量不得写入已有 bank。C28 重新检查 13 图及 HLS，
+C29/C30 分别检查四次调用和冷启动；三项通过后用新 ID 重做同样的四事务
+RTL、零 AXI 计数及独立 5 ns 布线，不降低任何门槛。允许这些轻任务在
+C27 运行期间按现有内存预算准入；新重任务仍等待 C27 释放。
+参数观测的原始 CSV 与逐事务性能 XML 必须在判定前复制，并在失败或超时时
+仍作为带 SHA256 的诊断证据归档。只有经过全部门槛的事务才写入已验证汇总；
+不把“完整输出正确但参数口仍有读取”的结果改成通过。
+
+**ID 与估计。** 计划用下一个可用的 C 编号（C19–C22 已占用，开工前再确认）。纸面估计：
+
+- DSP 1,032，BRAM18K 146（HLS），URAM 0，T 4；
+- LUT 约等于 C13 的 127,966 再加不到 1k；
+- `load=1` 周期约等于 C14 的 300,632；`load=0` 预期少 4.5k–11k 周期。
+
+**验收后的结论。** 连续处理视频时，帧时间以 `load=0` 的 RTL 周期 × 收敛时钟为准；第一帧（`load=1`）单独报告。
+
+`exp/analyze_rom_clock.py` 将四个实际事务和参数 AXI 计数整理到
+`experiments/reload_switch_measurements.csv`；两个汇总脚本从该表分别展示首帧、复用、重装和保留。
+只有同父且门限通过的独立布线结果可以提供时钟和毫秒数。新图脚本
+`exp/plots/reload_switch.py` 只读 CSV，没有实测数据时不生成图。
+
+**后续。** 如果 C17（T4 + 32 深窗口 FIFO）胜出，这个开关与 FIFO 修改互不干扰，可以再合成一个组合版本；但必须在两者各自验证之后，另立计划。
+
+**上板。** 交给秀夫时说明：多了一个 `load_params` 控制寄存器（HLS 生成的驱动里会有对应的设置函数）。第一帧写 1，之后写 0。
+
+独立实现驱动和 `exp/prepare_board_handoff.py` 支持 `srcnn_reload`；交付必须先有同父的
+四事务逐位、零参数 AXI 及独立布线证据。脚本读取实际打包 IP 的生成寄存器头文件，
+将一位 `load_params` 与八个指针分开列出，并单独给出四次调用的 IP 时间。
+旧 `srcnn` 交付继续使用原两帧换参数门槛，不继承新接口的验证结论。
+
+### WS-G 重装开关 + 32 深窗口 FIFO 合并（用户 2026-10-13 批准）
+
+**前提。** C31（C28 修复版重装开关的 4 帧 RTL 仿真）必须通过，包括跳过装载时参数 AXI 零流量这条检查。C31 失败时先修重装开关，不做合并。
+
+**做法。**
+- 以 C17 的 `designs/winograd_t4_windows32_v1` 为父，复制出新目录，只移植 C28 相对 C13 的重装开关改动：
+  - `srcnn_reload` 顶层、`srcnn` 兼容包装；
+  - `do_load` 标量和 `params_loaded` 标志；
+  - 各进程内的 `if (do_load)`；
+  - C28 对 `biases3[0]` 的受控读取修复。
+- 先对 C13 → C28 做 diff，逐项移植，不顺带其他改动。窗口 FIFO、算术、量化、时钟全部保持 C17 不变。
+
+**验证。** 与 WS-F 相同，基准是 E065：
+- C 仿真四步序列（装、跳过且塞错误指针、重装、保留），加冷启动强制装载；
+- 13 张图（第一张装载，其余跳过）；
+- 4 帧 RTL 仿真，检查跳过帧的参数口零流量，分别记录装载帧和跳过帧的周期；
+- 5 ns 独立分阶段布线，按第 6 节的布线门限验收。
+
+**纸面估计（假设）。**
+- DSP 1,032；HLS LUT 约 129k；
+- 装载帧约 273,023 周期，跳过帧约 268.5k 周期（按 C27 实测的 4,517 周期节省推算）；
+- 5 ns 下跳过帧约 1.343 ms。
+
+**结论口径。** 连续处理视频时，用跳过帧的 RTL 周期 × 收敛时钟；装载帧单独报告。
+
+### WS-H T4 冲 4.5 ns / 4 ns（用户 2026-10-13 批准）
+
+**目标。**
+- 4.5 ns：273k × 4.5 ≈ 1.23 ms；
+- 4 ns：约 1.09 ms。4 ns 即 250 MHz，正好是 1000 MHz 除以 4，最适合上板。
+- 不尝试 4 ns 以下。
+
+**基线和依据。** 以 WS-G 的结果为父；WS-G 没完成时以 C17 为父，并在结论里写明父设计。C22 在 5 ns 下的两类最差路径：
+1. `params1` FIFO（224 位宽、深 4）→ Winograd 私有权重 LUTRAM 的写数据：0 级逻辑，4.83 ns 几乎全是走线，扇出到很多 bank。
+2. DSP 输出 → `wino_engine` 里的加法链（`add_ln14_393`）：11–12 级逻辑，4.94 ns。源码 `srcnn.cpp` 中对 9 个 group 的乘积是 `sum = wino::add(sum, product)` 的线性累加，后面再接输出变换。
+
+**步骤。** 每次只改一处，每一步都要独立布线验证。
+1. **同一份 RTL，只换 Vivado 策略**（`Performance_Explore` + 布线后物理优化），目标 4.5 ns。W32 曾用这个方法把 T8 从 4.95 ns 提到 4.5 ns。不改 RTL，成本最低。
+2. **参数写入路径加寄存器。** 在 `params1` 出口到权重 bank 写口之间加一到两级寄存器，必要时按 bank 组复制寄存器以降低扇出。装载每帧最多一次（WS-G 之后通常为零次），多几拍延迟不影响帧时间。
+3. **Winograd 9 项累加改为带寄存器的平衡加法树。** 把线性累加改成每层打一拍的平衡树（同 `Reduction` 模板，`latency=1`），必要时在输出变换前再加一级寄存器。连续折叠下，流水线多几级只增加整帧开头的一次填充。
+4. 可选（探索）：T4 版 ROM，彻底去掉第 1 类路径。只有在第 2 步无效时才做，并沿用 WS-B 的接口约定。
+
+2026-10-13 执行细化：第 2、3 步分别从已测量的 WS-G 父设计复制，互不叠加。参数版本先用独立、II=1、固定一拍延迟的函数，在 224 位 `params1` 读取与权重写入之间加一级寄存器；综合后核对返回端的实际寄存器，若被消掉则记录失败，不用源码 pragma 当作成功证据。必要时再单独计划按 bank 复制的版本。算术版本把九个完整乘积补零到 16 项，用四级平衡树，每级 fabric 加法绑定 `latency=1`；保留 34 位 `inverse`、右移两位及原量化点，输出变换暂不改动。每个新设计先提交自己的资源/周期估算，再生成源码并跑 13 图、四调用零参数 AXI RTL 和独立布线；周期只设父点的 +1% 上限。4.5 ns 先验证，只有收敛后才单独计划 4 ns。
+
+**验收。**
+- 逐位一致：butterfly、13 张图、换参数的多帧 RTL 仿真；
+- RTL 周期相对父设计变化不超过 +1%（变快不设下限）；
+- 在新目标下独立布线收敛，并通过布线门限。
+
+### WS-I 整板时序与上板时钟（与秀夫协作，用户 2026-10-13 批准）
+
+**问题。** C22 在 OOC 下 5 ns 的余量只有 13 ps，C18 只有 47 ps。放进 KV260 整板 block design（PS、互联、时钟）后，200 MHz 可能收不住。
+
+**agent 能做的部分（不需要开发板）。**
+1. 确认 Vivado 2026.1 里有 KV260 的板卡和器件支持文件；没有时明确报告，不要自行下载未知来源的板卡文件。
+2. 用 Tcl 搭一个最小整板 block design：Zynq UltraScale+ PS、AXI 互联、C22（或 WS-G/WS-H 的胜出者）的打包 IP，PL 时钟取 PS 的 FCLK。
+3. 先按 200 MHz（1000 ÷ 5）做完整实现：
+   - 收敛：记录时序和资源；
+   - 不收敛：改用 166.67 MHz（1000 ÷ 6）再实现。这时 C22 约 1.64 ms，C18 约 1.80 ms。
+4. 导出比特流和硬件描述（`.bit`、`.hwh` 或 `.xsa`）交给秀夫，连同寄存器映射和调用约定（WS-G 版本：第一帧 `load_params=1`，之后为 0）。
+5. 整板实现同样占一个重任务槽，按第 6.1 节排队。
+
+**秀夫在板上做的部分。**
+- 读回实际 PL 时钟（他之前设定 100 MHz，读回是 66.666 MHz）；
+- 测单帧和连续多帧的时间；
+- 同一个比特流在两个时钟下各测一次，把 PL 周期和固定开销（驱动、轮询、DDR）分开；
+- 结果记入第 8 节，不做推断。
+
+### 不再运行的旧计划
+
+F90、F91（F24、F23 的串行布线重试）已经过时，保留计划文件，不再运行，状态记为“用户 2026-10-13 取消”。
+
 ## 5. 顺序与并行
+
+2026-10-12 用户要求优先 C18。已启动的 W32 保持运行；C18 使用紧接其后的唯一重任务槽。通过 `exp/priority_waiters.py` 在调度锁内核实并暂停未准入的 F50/F51/W31/W30 等待进程，并用独立 `priority_light_waiters.json` 记录 C16/C17 的临时暂停，防止轻任务先占内存延后 C18。C18 的 package、综合报告和布线报告连续优先，完成后自动恢复全部等待队列。不得暂停已准入的工具进程；监督进程退出或等待超时也必须恢复被暂停的等待进程。恢复后轻任务继续遵守原内存预算。此操作不改任何实验计划、源码、工具时限或验收门槛。
 
 1. WS-0，包括内存预算调度的受控验证。
 2. 用 Vivado 槽跑 WS-C 第 1 步：W21，同一份 RTL，4.5 ns，布局布线 4 线程对照。同时用剩余预算并行编码，并对以下设计做 C 仿真和 csynth：
@@ -189,6 +377,14 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 3. 各设计 csynth 通过后，按 Vivado 槽的空闲情况排布线，优先主线（WS-C、WS-D），WS-B 其次。
 4. WS-E：主线时钟和 FIFO 有结论后，按筛选门槛决定。T4 的 csynth（约 3.3 GiB、26 分钟，参照 C11）可以提前并行跑。
 5. WS-A 由秀夫并行推进，有结果就记录。
+
+C18 完成后的排队选择：F51 已准入，保持运行。随后优先 F50 的协同仿真，让
+C16/C17 的 C 仿真和 HLS 筛选按余量准入；7.5 GiB cosim + 4 GiB csynth +
+1.25 GiB csim 的登记总量为 12.75 GiB，实际可用余量检查仍必须通过。
+用现有 `priority_waiters.py` 仅暂停尚未准入的 W31，`--basis` 归档这次自主排序
+的依据；F50 归档、监督进程退出或超时后自动恢复 W31。C18/W32 的路径导出仍
+按唯一重任务槽排队。保留 `serial_after_oom=true`、18 GiB 实现登记和全部保护线，
+不将允许的预算组合写成实际并行证据。
 
 ## 6. 门限与筛选规则
 
@@ -220,9 +416,12 @@ agent 碰不到开发板，这一项负责准备交付物和记录结果：
 | --- | --- | --- | --- |
 | Vivado 实现（单线程 / 2 线程） | 10.4–12.0 GiB RSS | 44–63 分钟 | 12.5 GiB |
 | C/RTL 协同仿真（T8 两帧） | 6.8 GiB RSS | 约 52 分钟 | 7.5 GiB |
+| C/RTL 协同仿真（T4 四帧，C31） | 10.407 GiB 进程树 RSS | 见 C31 自动归档 | 11.5 GiB |
 | csynth（T16/T8） | 1.5–1.8 GB | 7–9 分钟 | 2.5 GiB |
 | csynth（T4，参照 C11） | 3.3 GB | 约 26 分钟 | 4 GiB |
 | C 仿真 | 未单独测量，先按 1 GiB 登记，受控验证时实测 | — | 1 GiB |
+
+2026-10-13 按 C31 完整四帧采样提高后续 cosim 登记值：取已完成任务的进程树峰值乘 1.10，再向上取整到 0.5 GiB。用 `exp/register_cosim_budget.py C31` 在调度锁内执行，拒绝修改正在运行的 cosim 登记；保留现有实现 18 GiB、轻任务预算、单重任务规则和 `serial_after_oom=true`。原 C31 的 7.5 GiB 准入记录原样保留，新值只影响后续任务。这是基于实测上调预算，不是新增并行授权。
 
 准入规则：
 
@@ -252,11 +451,25 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 
 验收先检查脚本的项目恢复、阶段互斥、超时和失败传播，再用C13同一RTL/5ns独立补跑验证真实报告及峰值。预期每阶段峰值接近单一设计数据库而不再叠加父综合与子实现；这是待验证的主机运行假设，不是FPGA面积优化。C16/C17已满足用户“等C15出结果”的启动条件；T4是否需ROM仍由最终布线资源/时序决定。
 
+分阶段实现的内存汇总必须使用 `impl_synth_host_memory.csv` 和 `impl_route_host_memory.csv`，另存 `host_memory_phases.csv`。总峰值取两阶段实测最大值；CPU利用率只累加各阶段内部的计数器差，排除调度等待、package和阶段之间的空隙。任一阶段缺少采样时写明缺失，不能回退到包含其他任务的全局等待期 `host_memory.csv` 并宣称该任务占用。旧的单进程实现仍使用自己的 `impl_host_memory.csv`。
+
+zram 启用后的新采样同时保存 `/proc/meminfo` 的 `SwapTotal`、`SwapFree` 和两者之差，按阶段及整次工具运行汇总最大 swap 用量与有完整 swap 字段的样本数。旧 CSV 仅有 `SwapFree` 时不能反推总容量或宣称零使用；汇总保留 unknown 和字段覆盖率。主机 swap 用量不等于单个 Vivado 的用量，不能将它加到任务 RSS 当作峰值。正在运行的任务保持原采样模式，在新启动进程中启用新增字段；C18 的运行时主机快照单独归档。
+
 同 0004 第 8 节的表格；另加 `route_feasible` 和 `rtl_cycles × route_clock` 两列。没有测到的写 unknown。
 
 新布线结果的路径分析同样采用本工作流的布线门限。只关联 `cosim_complete` 且 RTL 报告为 PASS 的同父设计周期；失败、超时或周期门槛未通过的仿真不能进入已验证帧时间。布线未收敛时，目标时钟乘周期不能标为已验证时间。
 
 从已有 routed checkpoint 导出五条路径也属于 Vivado 任务，使用双任务调度和独立 `setup_paths` 内存采样，避免在两个硬件任务之外另起一个 Vivado。导出仅打开 checkpoint 并读报告，不重新布线；其失败不改写已有实现结果，保留诊断后再重试。ROM 的模块资源报告按实际顶层 `srcnn_rom` 归档，不能套用运行时版本的文件名。
+
+启用布线后物理优化的 `Performance_Explore` 实验必须从最终 `*_postroute_physopt.dcp` 导出路径，而不是优化前的 `*_routed.dcp`；归档选用的相对路径、阶段和SHA256。最终checkpoint缺失或同阶段有多个文件时明确报错，不能回退到较早状态。默认策略继续使用最终routed checkpoint。C18优先期间不另行占槽导出。
+
+已有最终工程报告包含至少五条 setup 路径时，可以用
+`python3 exp/archive_setup_paths.py <ID> --generated-report <工作区相对报告路径>`
+直接归档。脚本核对传输 SHA256、最差 slack 与已归档最终结果一致；
+`Performance_Explore` 必须使用 `*_timing_summary_postroute_physopted.rpt`，不能使用
+较早的 routed 报告。记录源报告、阶段和未重新运行 Vivado，保留被替代的等待进程
+诊断。此路径不宣称打开过 checkpoint，也不更改实现结果或门限；内容不足或阶段
+不符时继续使用最终 checkpoint 导出。已经准入的导出任务保持运行。
 
 `python3 exp/audit_rom_clock.py --snapshot` 可在任务运行时校验两地原始文件、冻结设计、已归档报告及未测量计划；去掉 `--snapshot` 则要求远程无实验进程。审计结果写到 `experiments/rom_clock_audit.json`，明确保留未启动计划和未完成状态。审计通过本身不代表布线或上板验收完成。
 
@@ -268,6 +481,9 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 | --- | --- | --- |
 | 2026-10-12 | — | 文档建立。当前最快：W21，在 W22 的 4.95 ns 下 2.766 ms（IP 级）。用户决定见第 2 节。 |
 | 2026-10-12 | — | 用户补充决定：ROM 只作探索，主线保持运行时加载；不再追 comic，13 张即完整测试集；允许按内存预算并行和多线程（第 6.1 节）。 |
+| 2026-10-13 | — | 当前最快：C17，C22 布线 5 ns，1.365 ms（IP 级）。用户批准 WS-G（重装开关 + 32 深窗口 FIFO）、WS-H（T4 冲 4.5/4 ns）、WS-I（整板时序与上板时钟）；F90/F91 取消。顺序：C31 → WS-G；WS-H 第 1 步（同 RTL 换策略）可先用 C17 做；WS-I 等 WS-G 或 WS-H 出结果。 |
+| 2026-10-13 | — | 用户批准 WS-F：在 C18/C13 基础上加权重重装开关 `load_params`（新顶层 `srcnn_reload`，保留 `srcnn` 兼容包装），规格和验证计划见第 4 节 WS-F。排在当前 C19–C22 验证之后。 |
+| 2026-10-12 | — | 远程开启 8 GiB zstd zram；按清理规则清理 148 个已归档工作区的 `hls/` 生成物（55.4 GiB），系统盘剩余 89 GB。详见第 2 节第 5、6 条。 |
 
 <!-- ROM_CLOCK_MEASUREMENTS -->
 
@@ -294,22 +510,42 @@ C15 在布线阶段被0.5GiB保护终止，实际 `MemAvailable=0.433784GiB`，�
 | [F47](../experiments/F47_windows16_W21_T8/F47.md) | W21 | pass | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown |
 | [W28](../experiments/W28_ws_cosim_W27/W28.md) | W27 | fail | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | unknown |
 | [W29](../experiments/W29_ws_impl_W24/W29.md) | W24 | fail | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown |
+| [W30](../experiments/W30_ws_impl_W27/W30.md) | W27 | impl_complete | 525237.0 | 644.0 | 81484.0 | 549438.0 | True | 2.472471 |
 | [F48](../experiments/F48_ws_cosim_F47/F48.md) | F47 | cosim_complete | 525237.0 | 644.0 | 81086.0 | 535771.0 | unknown | unknown |
 | [F46](../experiments/F46_ws_cosim_F42/F46.md) | F42 | fail | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown |
 | [C14](../experiments/C14_ws_cosim_C13/C14.md) | C13 | cosim_complete | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | unknown |
 | [C15](../experiments/C15_ws_impl_C13/C15.md) | C13 | fail | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown |
 | [F49](../experiments/F49_ws_impl_F39/F49.md) | F39 | fail | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown |
+| [F50](../experiments/F50_ws_cosim_F42/F50.md) | F42 | cosim_complete | 525237.0 | 644.0 | 81550.0 | 558760.0 | unknown | unknown |
+| [F51](../experiments/F51_ws_impl_F47/F51.md) | F47 | impl_complete | 525237.0 | 644.0 | 81086.0 | 535771.0 | True | 2.678855 |
 | [F52](../experiments/F52_ws_impl_F39/F52.md) | F39 | impl_complete | 525237.0 | 644.0 | 81518.0 | 558758.0 | True | 2.514411 |
+| [W31](../experiments/W31_ws_impl_W24/W31.md) | W24 | impl_complete | 524330.0 | 630.0 | 53316.0 | 554226.0 | True | 2.77113 |
+| [W32](../experiments/W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl_complete | 525237.0 | 644.0 | 81086.0 | 558758.0 | True | 2.514411 |
+| [C16](../experiments/C16_t8_fifo_frp/C16.md) | F47 | pass | 525237.0 | 644.0 | 81485.0 | unknown | unknown | unknown |
+| [C17](../experiments/C17_t4_fifo/C17.md) | C13 | infeasible | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | unknown |
+| [C18](../experiments/C18_ws_impl_C13/C18.md) | C13 | impl_complete | 263090.0 | 1032.0 | 127966.0 | 300632.0 | True | 1.50316 |
+| [C19](../experiments/C19_ws_cosim_C16/C19.md) | C16 | cosim_complete | 525237.0 | 644.0 | 81485.0 | 535976.0 | unknown | unknown |
+| [C20](../experiments/C20_ws_cosim_C17/C20.md) | C17 | cosim_complete | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | unknown |
+| [C21](../experiments/C21_ws_impl_C16/C21.md) | C16 | impl_complete | 525237.0 | 644.0 | 81485.0 | 535976.0 | True | 2.411892 |
+| [C22](../experiments/C22_ws_impl_C17/C22.md) | C17 | impl_complete | 263090.0 | 1032.0 | 127985.0 | 273023.0 | True | 1.365115 |
+| [W33](../experiments/W33_ws_impl_W24/W33.md) | W24 | impl_complete | 524330.0 | 630.0 | 53316.0 | 554226.0 | True | 2.494017 |
+| [C23](../experiments/C23_reload_switch_quality/C23.md) | C13 | infeasible | 263090.0 | 1032.0 | 128840.0 | unknown | unknown | unknown |
+| [C24](../experiments/C24_reload_switch_sequence/C24.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C25](../experiments/C25_reload_switch_cold/C25.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F53](../experiments/F53_legacy_C13_regression/F53.md) | C13 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C26](../experiments/C26_ws_cosim_C23/C26.md) | C23 | fail | 263090.0 | 1032.0 | 128840.0 | unknown | unknown | unknown |
+| [C27](../experiments/C27_ws_cosim_C23/C27.md) | C23 | fail | 263090.0 | 1032.0 | 128840.0 | unknown | unknown | unknown |
+| [C28](../experiments/C28_reload_guard_quality/C28.md) | C23 | infeasible | 263090.0 | 1032.0 | 128849.0 | unknown | unknown | unknown |
+| [C29](../experiments/C29_reload_guard_sequence/C29.md) | C23 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C30](../experiments/C30_reload_guard_cold/C30.md) | C23 | csim_pass | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C31](../experiments/C31_ws_cosim_C28/C31.md) | C28 | cosim_complete | 263090.0 | 1032.0 | 128849.0 | 300634 | unknown | unknown |
 
 未测量的计划：
 
 | id | parent | status | condition |
 | --- | --- | --- | --- |
-| W30 | W27 | queued_or_running | User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override |
-| F50 | F42 | queued_or_running | unknown |
-| F51 | F47 | queued_or_running | unknown |
-| W31 | W24 | queued_or_running | unknown |
-| W32 | W21 | queued_or_running | unknown |
-| C16 | F47 | queued_or_running | unknown |
-| C17 | C13 | queued_or_running | unknown |
-| C18 | C13 | queued_or_running | unknown |
+| W34 | C17 | queued_or_running | User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes |
+| C32 | C17 | queued_or_running | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
+| C33 | C17 | queued_or_running | C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics |
+| C34 | C17 | queued_or_running | C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading |
+| W35 | C28 | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |

@@ -7,13 +7,64 @@ from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from analyze_route import analyze, setup_paths, hierarchy
-from archive_setup_paths import archive_complete, register_report
+from archive_setup_paths import archive_complete, register_report, select_checkpoint, validate_generated_paths
 from archive_route_progress import resources, routing_progress
 from verify_exp import parse_verification
 from run_exp import ROOT
 
 
 class RoutedPathTests(unittest.TestCase):
+    def test_final_optimized_checkpoint_is_used_instead_of_preoptimization_route(self):
+        checkpoints = ["work/impl_1/bd_0_wrapper_routed.dcp",
+                       "work/impl_1/bd_0_wrapper_postroute_physopt.dcp"]
+        self.assertEqual(select_checkpoint(checkpoints, True), checkpoints[1])
+        self.assertEqual(select_checkpoint(checkpoints), checkpoints[1])
+        self.assertEqual(select_checkpoint(checkpoints[:1]), checkpoints[0])
+
+    def test_checkpoint_selection_rejects_missing_or_ambiguous_final_state(self):
+        with self.assertRaisesRegex(RuntimeError, "optimization checkpoint is missing"):
+            select_checkpoint(["work/impl_1/top_routed.dcp"], True)
+        with self.assertRaisesRegex(RuntimeError, "unique final"):
+            select_checkpoint(["work/impl_1/top_postroute_physopt.dcp",
+                               "work/impl_2/top_postroute_physopt.dcp"], True)
+
+    def test_generated_paths_require_final_stage_and_matching_worst_slack(self):
+        config = {"implementation_strategy": "Performance_Explore", "verification": {"impl_WNS_ns": .144}}
+        block = "Slack (MET) : 0.144ns\n  Source: start/Q\n  Destination: finish/D\n  Path Type: Setup\n"
+        final = "hls/impl/verilog/project.runs/impl_1/top_timing_summary_postroute_physopted.rpt"
+        rows, stage = validate_generated_paths(block*5, config, final)
+        self.assertEqual(len(rows), 5)
+        self.assertEqual(stage, "post_route_phys_opt")
+        with self.assertRaisesRegex(RuntimeError, "physical optimization report"):
+            validate_generated_paths(block*5, config, final.replace("postroute_physopted", "routed"))
+        with self.assertRaisesRegex(RuntimeError, "worst slack"):
+            validate_generated_paths(block.replace("0.144", "0.143")*5, config, final)
+        with self.assertRaisesRegex(RuntimeError, "fewer than five"):
+            validate_generated_paths(block*4, config, final)
+        with self.assertRaisesRegex(RuntimeError, "final implementation run"):
+            validate_generated_paths(block*5, config, "../"+final)
+
+    def test_generated_archive_is_complete_without_claiming_a_checkpoint_export(self):
+        with tempfile.TemporaryDirectory() as temp:
+            archive = Path(temp)
+            report = archive / "reports/impl/srcnn_setup5_routed.rpt"
+            report.parent.mkdir(parents=True)
+            report.write_text("Slack (MET) : 0.144ns\n  Source: start/Q\n  Destination: finish/D\n  Path Type: Setup\n"*5)
+            (archive / "critical_paths.csv").write_text("path,slack_ns\n")
+            (archive / "setup_paths_operation.txt").write_text("Copied existing final report\n")
+            raw = "hls/impl/verilog/project.runs/impl_1/top_timing_summary_postroute_physopted.rpt"
+            config = {"implementation_strategy": "Performance_Explore", "verification": {"impl_WNS_ns": .144},
+                      "setup_paths_provenance": {"kind": "generated_final_report", "raw_file": raw,
+                                                 "stage": "post_route_phys_opt",
+                                                 "sha256": hashlib.sha256(report.read_bytes()).hexdigest()}}
+            register_report(config, archive, report, raw)
+            self.assertTrue(archive_complete(archive, config, archive / "not_executed.tcl"))
+            config["setup_paths_provenance"]["stage"] = "routed"
+            self.assertFalse(archive_complete(archive, config, archive / "not_executed.tcl"))
+            config["setup_paths_provenance"]["stage"] = "post_route_phys_opt"
+            report.write_text(report.read_text().replace("0.144", "0.143"))
+            self.assertFalse(archive_complete(archive, config, archive / "not_executed.tcl"))
+
     def route_fixture(self, root, wns=.1, accepted_cosim=True):
         archive = root / "experiments/F01_impl"
         archive.mkdir(parents=True)
@@ -68,6 +119,43 @@ class RoutedPathTests(unittest.TestCase):
             self.assertNotIn("rtl_source_id", result)
             self.assertNotIn("rtl_frame_ms_at_target", result)
 
+    def test_archived_reports_fill_legacy_route_fields_without_rewriting_results(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            archive = self.route_fixture(root)
+            config_path = archive / "config.json"
+            config = json.loads(config_path.read_text())
+            evidence = {**config["verification"], "route_feasible": True}
+            config["verification"].pop("impl_WHS_ns")
+            config["verification"].pop("impl_unrouted_nets")
+            config["verification_reports"] = [{"raw_file": "timing.rpt", "archived_file": "timing.rpt"}]
+            config_path.write_text(json.dumps(config))
+            before = [path.read_bytes() for path in (config_path, archive / "metrics.json")]
+            with patch("analyze_route.ROOT", root), patch(
+                    "analyze_route.archive_route_evidence", return_value=evidence) as raw:
+                result = analyze(archive)
+            raw.assert_called_once_with(archive)
+            self.assertTrue(result["route_feasible"])
+            self.assertAlmostEqual(result["rtl_frame_ms_at_target"], 2.514411)
+            self.assertEqual(before, [path.read_bytes() for path in (config_path, archive / "metrics.json")])
+
+    def test_raw_route_failure_overrides_stale_success(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            archive = self.route_fixture(root)
+            config_path = archive / "config.json"
+            config = json.loads(config_path.read_text())
+            config["verification_reports"] = [{"raw_file": "timing.rpt", "archived_file": "timing.rpt"}]
+            config_path.write_text(json.dumps(config))
+            evidence = {**config["verification"], "impl_WNS_ns": -.05, "timing_met": False,
+                        "route_feasible": False}
+            with patch("analyze_route.ROOT", root), patch(
+                    "analyze_route.archive_route_evidence", return_value=evidence):
+                result = analyze(archive)
+            self.assertFalse(result["route_feasible"])
+            self.assertEqual(result["WNS_ns"], -.05)
+            self.assertIsNone(result["rtl_frame_ms_at_target"])
+
     def test_timeout_partial_resources_never_become_final_routed_results(self):
         archive = ROOT / "experiments/F89_serial_vivado_impl_F25"
         partial = resources((archive / "diagnostics/pre_route/srcnn_utilization_synth.rpt").read_text())
@@ -101,6 +189,10 @@ class RoutedPathTests(unittest.TestCase):
             register_report(config, archive, report, "srcnn_setup5_routed.rpt")
             register_report(config, archive, report, "srcnn_setup5_routed.rpt")
             self.assertEqual(len(config["verification_reports"]), 1)
+            self.assertTrue(archive_complete(archive, config, script))
+            config["implementation_strategy"] = "Performance_Explore"
+            self.assertFalse(archive_complete(archive, config, script))
+            config["setup_paths_checkpoint"] = {"stage": "post_route_phys_opt"}
             self.assertTrue(archive_complete(archive, config, script))
             report.write_text(block*4)
             self.assertFalse(archive_complete(archive, config, script))

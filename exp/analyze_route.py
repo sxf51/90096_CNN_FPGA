@@ -5,8 +5,8 @@ import csv
 import json
 import re
 from analyze_arch import write_csv
-from host_memory import cpu_summary
-from route_gates import evaluate_route
+from host_memory import cpu_summary, swap_summary
+from route_gates import archive_route_evidence, evaluate_route
 from rtl_acceptance import accepted_cosim
 from run_exp import ROOT, markdown_table, number
 
@@ -58,12 +58,48 @@ def hierarchy(text):
     return records
 
 
+def memory_summary(archive, config):
+    staged = config.get("implementation_backend") == "staged_packaged_flow"
+    names = (["impl_synth_host_memory.csv", "impl_route_host_memory.csv"] if staged else
+             ["impl_host_memory.csv" if (archive / "impl_host_memory.csv").is_file() else "host_memory.csv"])
+    samples, phases = [], []
+    for name in names:
+        path = archive / name
+        rows = []
+        if path.is_file():
+            with path.open(newline="") as stream:
+                rows = list(csv.DictReader(stream))
+        values = {"samples": len(rows),
+                  "min_available_GiB": min(float(row["available_kib"]) for row in rows)/1048576 if rows else None,
+                  "peak_tool_RSS_GiB": max(float(row["tool_rss_kib"]) for row in rows)/1048576 if rows else None,
+                  "peak_process_tree_RSS_GiB": max(float(row["task_tree_rss_kib"]) for row in rows)/1048576
+                  if rows and "task_tree_rss_kib" in rows[0] else None,
+                  **cpu_summary(rows), **swap_summary(rows)}
+        phases.append({"telemetry_file": name, **values})
+        samples.extend({**row, "telemetry_segment": name} for row in rows)
+    values = {"samples": len(samples),
+              "min_available_GiB": min(float(row["available_kib"]) for row in samples)/1048576 if samples else None,
+              "peak_tool_RSS_GiB": max(float(row["tool_rss_kib"]) for row in samples)/1048576 if samples else None,
+              "peak_process_tree_RSS_GiB": max(float(row["task_tree_rss_kib"]) for row in samples)/1048576
+              if samples and all("task_tree_rss_kib" in row for row in samples) else None,
+              "telemetry_file": ";".join(names),
+              "implementation_threads": config.get("implementation_threads", 1),
+              **cpu_summary(samples, segment_key="telemetry_segment"), **swap_summary(samples)}
+    if staged:
+        values["measurement_scope"] = "synthesis and implementation stages"
+        values["missing_telemetry_files"] = [item["telemetry_file"] for item in phases if not item["samples"]]
+        write_csv(archive / "host_memory_phases.csv", phases, list(phases[0]))
+    return values, phases
+
+
 def analyze(archive):
     config = json.loads((archive / "config.json").read_text())
     metrics = json.loads((archive / "metrics.json").read_text())
-    observed = config.get("verification", {})
+    recorded = config.get("verification", {})
+    observed = (archive_route_evidence(archive) if config.get("verification_reports")
+                else evaluate_route(recorded))
     routed_policy = config.get("resource_policy") == "routed"
-    route_feasible = evaluate_route(observed).get("route_feasible")
+    route_feasible = observed.get("route_feasible")
     target = config.get("implementation_clock_ns", config["clock"])
     wns = number(observed.get("impl_WNS_ns"))
     values = {"id": config["id"], "parent": config["verify_parent"], "status": metrics["status"],
@@ -92,23 +128,14 @@ def analyze(archive):
                 values["rtl_frame_ms_from_slack"] = rtl*(target-wns)/1e6 if wns is not None else None
     paths = []
     for record in config.get("verification_reports", []):
-        if record["raw_file"] == observed.get("impl_timing_report"):
+        if record["raw_file"] == recorded.get("impl_timing_report"):
             paths = setup_paths((archive / record["archived_file"]).read_text())
     extra_paths = archive / "reports/impl/srcnn_setup5_routed.rpt"
     if extra_paths.is_file():
         paths = setup_paths(extra_paths.read_text())
     write_csv(archive / "route_analysis.csv", [values], list(values))
     write_csv(archive / "critical_paths.csv", paths, ["path","slack_ns","source","destination","logic_levels","data_path_ns","DSP_sites","DSP_cascade_PCIN_PCOUT"])
-    memory = archive / ("impl_host_memory.csv" if (archive / "impl_host_memory.csv").is_file()
-                        else "host_memory.csv")
-    samples = list(csv.DictReader(memory.open(newline=""))) if memory.is_file() else []
-    memory_values = {"samples":len(samples), "min_available_GiB":min(float(item["available_kib"]) for item in samples)/1048576 if samples else None,
-                     "peak_tool_RSS_GiB":max(float(item["tool_rss_kib"]) for item in samples)/1048576 if samples else None,
-                     "peak_process_tree_RSS_GiB":max(float(item["task_tree_rss_kib"]) for item in samples)/1048576
-                     if samples and "task_tree_rss_kib" in samples[0] else None,
-                     "telemetry_file": memory.name,
-                     "implementation_threads": config.get("implementation_threads", 1),
-                     **cpu_summary(samples)}
+    memory_values, memory_phases = memory_summary(archive, config)
     write_csv(archive / "host_memory_summary.csv", [memory_values], list(memory_values))
     block = "<!-- AUTO: ROUTE ANALYSIS START -->\n\n"
     block += ("Routed calibration (final timing/resource acceptance uses independent routed gates):\n\n"
@@ -117,6 +144,9 @@ def analyze(archive):
     block += "\n`period_from_slack_ns = implementation target - WNS` is a slack-derived estimate. Negative slack requires a fresh relaxed-constraint implementation; this arithmetic alone does not prove timing closure. No board result is inferred.\n\n"
     block += "First five available setup paths:\n\n" + markdown_table(paths, ["path","slack_ns","source","destination","logic_levels","data_path_ns","DSP_sites","DSP_cascade_PCIN_PCOUT"])
     block += "\nHost memory during the operation:\n\n" + markdown_table([memory_values], list(memory_values))
+    if config.get("implementation_backend") == "staged_packaged_flow":
+        block += "\nSeparate tool stages (queue/package intervals and CPU counter gaps are excluded):\n\n"
+        block += markdown_table(memory_phases, list(memory_phases[0]))
     block += "\nTool RSS and CPU utilization cover the entire host; process-tree RSS covers this task. Shared mappings may be counted more than once.\n"
     hierarchy_rows = []
     top = config.get("parent_config", {}).get("top", "srcnn")

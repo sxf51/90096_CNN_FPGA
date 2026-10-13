@@ -91,7 +91,7 @@ def audit_verification_reports(rows):
             continue
         reports = config.get("verification_reports", [])
         evidence = (reports + config.get("partial_implementation_reports", []) + config.get("implementation_files", []) + config.get("implementation_driver_template_files", []) + config.get("verification_diagnostics", []) +
-                    config.get("verification_profiles", []))
+                    config.get("verification_profiles", []) + config.get("generated_cosim_driver", []))
         if config.get("host_failure"):
             evidence.append(config["host_failure"])
         if row["status"] == operation + "_complete":

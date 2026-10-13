@@ -1,0 +1,22 @@
+COMMAND cd /home/lipuze/amdprojects/90096_CNN_FPGA
+python3 -c 'import sys,hashlib,json
+from pathlib import Path
+sys.path.insert(0,'"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/exp'"'"')
+from run_exp import invoke,lock
+work=Path('"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F52'"'"')
+archive=Path('"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/experiments/F52_ws_impl_F39'"'"')
+config=json.loads((archive/'"'"'config.json'"'"').read_text())
+print('"'"'CHECKPOINT_SHA256'"'"',hashlib.sha256(Path('"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F52/hls/impl/verilog/project.runs/impl_1/bd_0_wrapper_routed.dcp'"'"').read_bytes()).hexdigest(),flush=True)
+args=['"'"'vivado'"'"','"'"'-mode'"'"','"'"'batch'"'"','"'"'-source'"'"',str(work/'"'"'report_setup_paths.tcl'"'"'),'"'"'-notrace'"'"','"'"'-nojournal'"'"','"'"'-tclargs'"'"','"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F52/hls/impl/verilog/project.runs/impl_1/bd_0_wrapper_routed.dcp'"'"','"'"'/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/F52/srcnn_setup5_routed.rpt'"'"']
+if config.get('"'"'memory_scheduler'"'"'):
+    from memory_scheduler import scheduled_invoke
+    result=scheduled_invoke(config,archive,'"'"'impl'"'"',args,Path(config['"'"'settings'"'"']),work,work/'"'"'setup_paths.console.log'"'"',1800,telemetry_name='"'"'setup_paths'"'"')
+else:
+    with lock(Path('"'"'workspace/exp_runs/.synthesis.lock'"'"'),wait_timeout=86400):
+        result=invoke(args,Path(config['"'"'settings'"'"']),work,work/'"'"'setup_paths.console.log'"'"',1800)
+print(result)
+raise SystemExit(result[0])
+'
+CHECKPOINT_SHA256 cdadb5390cbf443118334e1ec0c7c37ad276f6dcd6cf8720be0000c6959fec8f
+EXP_MEMORY_WAIT F52 impl one-heavy-task cap reached available=6.073GiB
+(0, 166.50356867999653)

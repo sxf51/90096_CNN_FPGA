@@ -3,6 +3,7 @@
 import csv
 import json
 from analyze_arch import dsp_composition, write_csv
+from host_memory import swap_summary
 from run_exp import ROOT, number
 from route_gates import archive_route_evidence
 from rtl_acceptance import accepted_cosim, acceptance_basis
@@ -31,6 +32,47 @@ def rtl_excess(hls_cycles, rtl_cycles):
     return {"rtl_hls_excess_cycles": int(rtl)-int(hls),
             "rtl_hls_excess_pct": 100*(rtl/hls-1),
             "rtl_2pct_limit_cycles": limit, "rtl_within_2pct": int(rtl) <= limit}
+
+
+def reload_transactions(records, comparisons):
+    from monitored_cosim import measured_axi
+    count_keys = ("ar_requests", "r_beats", "aw_requests", "w_beats", "ar_valid_cycles",
+                  "r_valid_cycles", "aw_valid_cycles", "w_valid_cycles", "read_bytes")
+    result = []
+    for _, row, config in records:
+        if not config.get("reload_switch_validation") or not accepted_cosim(row, config):
+            continue
+        measured = config.get("verification", {})
+        if (measured.get("reload_switch_bit_exact") is not True or
+                measured.get("skip_parameter_axi_zero") is not True):
+            raise RuntimeError("Accepted reload switch lacks exact/zero-AXI evidence")
+        transactions = measured.get("reload_switch_transactions", [])
+        if (len(transactions) != 4 or [item["transaction"] for item in transactions] != list(range(4)) or
+                [item["load_params"] for item in transactions] != [1, 0, 1, 0]):
+            raise RuntimeError("Accepted reload switch lacks four ordered measurements")
+        measured_axi([{key: item[key] for key in ("transaction", "load_params", *count_keys)}
+                      for item in transactions])
+        routes = [candidate for candidate in comparisons if candidate["operation"] == "impl" and
+                  candidate["parent"] == config["verify_parent"] and
+                  candidate["route_feasible"] is True and candidate["rtl_source"] == row["id"]]
+        for route in routes or [None]:
+            clock = number(route["route_clock_ns"]) if route else None
+            if route and (clock is None or clock <= 0):
+                raise RuntimeError("Closed reload route lacks a positive clock")
+            for item, case in zip(transactions, ("first_load", "reuse", "reload", "retain")):
+                result.append({"id": route["id"] if route else row["id"],
+                               "parent": config["verify_parent"], "rtl_source": row["id"],
+                               "implementation_id": route["id"] if route else None,
+                               "transaction": item["transaction"], "case": case,
+                               "load_params": item["load_params"],
+                               "latency_cycles": item["latency_cycles"],
+                               "interval_cycles": item["interval_cycles"],
+                               **{key: item[key] for key in count_keys},
+                               "route_clock_ns": clock,
+                               "ip_frame_ms": item["latency_cycles"] * clock / 1e6 if clock else None,
+                               "md_path": route["md_path"] if route else row["md_path"],
+                               "rtl_md_path": row["md_path"]})
+    return result
 
 
 def main():
@@ -125,12 +167,16 @@ def main():
                                "samples": len(samples),
                                "peak_process_tree_rss_GiB": max(float(item["task_tree_rss_kib"]) for item in samples)/1048576
                                if "task_tree_rss_kib" in samples[0] else None,
-                               "minimum_available_GiB": min(float(item["available_kib"]) for item in samples)/1048576})
+                               "minimum_available_GiB": min(float(item["available_kib"]) for item in samples)/1048576,
+                               **swap_summary(samples)})
     outputs = (("rom_clock_comparison.csv", comparisons), ("rom_clock_estimates.csv", estimates),
                ("rom_clock_dsp.csv", composition), ("rom_clock_fifo.csv", fifos), ("rom_clock_memory.csv", memory))
     for filename, rows in outputs:
         columns = list(rows[0]) if rows else ["id"]
         write_csv(ROOT/"experiments"/filename, rows, columns)
+    reload_rows = reload_transactions(records, comparisons)
+    write_csv(ROOT/"experiments/reload_switch_measurements.csv", reload_rows,
+              list(reload_rows[0]) if reload_rows else ["id"])
 
 
 if __name__ == "__main__":

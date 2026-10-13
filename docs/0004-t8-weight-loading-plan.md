@@ -123,6 +123,11 @@ Winograd 只有在 T8 才有意义：直接卷积 T8 要 1007 个 DSP（81%）�
 3. P14–P16、F86–F88、F90、F91 暂不运行，保留计划文件，在 `experiments/PROGRESS.md` 注明“2026-10-12 用户决定降低优先级”。
 4. 本文档不在 `exp/commit_exp.py` 的 `OWNED` 列表里：把 `docs/0004-t8-weight-loading-plan.md` 加进去，随 WS0 一起提交，之后更新本文档时随实验一起提交。
 
+2026-10-13 用户取消已经过时的 F90（F24）和 F91（F23）布线重试。两项均未启动，
+本地与远程没有对应工作区或工具进程；保留原计划和各自的 `cancellation.json`，
+从执行队列移除，不生成 `results.csv` 测量行。F88 的既有中断记录保持原样。
+新的 WS-F 权重复用验证仍按 [0005](0005-rom-clock-t4-plan.md) 执行。
+
 ### WS1 F25 布线（F89，最高优先级）
 
 运行：`python3 exp/run_queue.py F89`（超时 3 小时）。它沿用 F81 生成的 Vivado 流程，只把 `general.maxThreads` 和 `synth.maxThreads` 设为 1（`exp/vivado_serial_hook.tcl`）。运行期间定期看远程 `free -g`，留下内存证据。
@@ -318,16 +323,16 @@ WS0–WS4 收尾使用 `python3 exp/close_weight_loading.py`。恢复状态需�
 | [W21](../experiments/W21_subkernel_raw_cache_T8/W21.md) | unknown | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 644.0 | 146.0 | 81086.0 | 3170.0 | 130057.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | False | provisional |
 | [W22](../experiments/W22_ws_clock_4p95_W21/W22.md) | W21 | 8 | 3.33 | 2.431 | 525237.0 | 525238.0 | 1.74903921 | 644.0 | 146.0 | 81086.0 | unknown | 130057.0 | True | 1.661846957728205e-05 | -0.0695141811880653 | unknown | impl_complete |
 
-| id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_TNS_ns | route_period_from_slack_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | timing_met | rtl_frame_ms_at_route_target | status |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [F89](../experiments/F89_serial_vivado_impl_F25/F89.md) | F25 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | timeout |
-| [F92](../experiments/F92_ws_impl_F25/F92.md) | F25 | F82 | 1068183.0 | 1068212.0 | 5.0 | 0.568 | 0.0 | 4.432 | 592.0 | 72.0 | 32400.0 | 77757.0 | True | 5.340915 | impl_complete |
-| [F93](../experiments/F93_ws_reload_cosim_F28/F93.md) | F28 | unknown | 1059506.0 | 1059535.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
-| [F95](../experiments/F95_ws_impl_F28/F95.md) | F28 | F93 | 1059506.0 | 1059535.0 | 5.0 | 0.282 | 0.0 | 4.718 | 591.0 | 72.0 | 30140.0 | 76498.0 | True | 5.29753 | impl_complete |
-| [F97](../experiments/F97_ws_cosim_W21/F97.md) | W21 | unknown | 558758.0 | 558787.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
-| [F98](../experiments/F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 558787.0 | 5.0 | 0.14 | 0.0 | 4.86 | 644.0 | 109.0 | 42594.0 | 88806.0 | True | 2.79379 | impl_complete |
-| [W20](../experiments/W20_ws_impl_W17/W20.md) | W17 | unknown | unknown | unknown | 5.0 | 0.188 | 0.0 | 4.812 | 696.0 | 109.0 | 42812.0 | 89690.0 | True | unknown | impl_complete |
-| [W22](../experiments/W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 558787.0 | 4.95 | 0.047 | 0.0 | 4.9030000000000005 | 644.0 | 109.0 | 42592.0 | 88806.0 | True | 2.7658521 | impl_complete |
+| id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_TNS_ns | route_period_from_slack_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | timing_met | route_feasible | rtl_frame_ms_at_route_target | status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F89](../experiments/F89_serial_vivado_impl_F25/F89.md) | F25 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | timeout |
+| [F92](../experiments/F92_ws_impl_F25/F92.md) | F25 | F82 | 1068183.0 | 1068212.0 | 5.0 | 0.568 | 0.0 | 4.432 | 592.0 | 72.0 | 32400.0 | 77757.0 | True | True | 5.340915 | impl_complete |
+| [F93](../experiments/F93_ws_reload_cosim_F28/F93.md) | F28 | unknown | 1059506.0 | 1059535.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
+| [F95](../experiments/F95_ws_impl_F28/F95.md) | F28 | F93 | 1059506.0 | 1059535.0 | 5.0 | 0.282 | 0.0 | 4.718 | 591.0 | 72.0 | 30140.0 | 76498.0 | True | True | 5.29753 | impl_complete |
+| [F97](../experiments/F97_ws_cosim_W21/F97.md) | W21 | unknown | 558758.0 | 558787.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
+| [F98](../experiments/F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 558787.0 | 5.0 | 0.14 | 0.0 | 4.86 | 644.0 | 109.0 | 42594.0 | 88806.0 | True | True | 2.79379 | impl_complete |
+| [W20](../experiments/W20_ws_impl_W17/W20.md) | W17 | unknown | unknown | unknown | 5.0 | 0.188 | 0.0 | 4.812 | 696.0 | 109.0 | 42812.0 | 89690.0 | True | True | unknown | impl_complete |
+| [W22](../experiments/W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 558787.0 | 4.95 | 0.047 | 0.0 | 4.9030000000000005 | 644.0 | 109.0 | 42592.0 | 88806.0 | True | True | 2.7658521 | impl_complete |
 
 负 WNS 对应的周期只作估计，不能当作时序通过；缺失值为 unknown。
 

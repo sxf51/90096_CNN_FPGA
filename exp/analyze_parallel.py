@@ -6,7 +6,7 @@ from datetime import datetime
 import itertools
 import json
 from analyze_arch import write_csv
-from host_memory import cpu_summary
+from host_memory import cpu_summary, swap_summary
 from run_exp import ROOT
 
 GIB_KIB = 1048576
@@ -45,6 +45,7 @@ def overlap(first, second):
         "minimum_available_GiB": min(float(row["available_kib"])/GIB_KIB for row in samples)
         if samples else None,
         "cpu_busy_pct": cpu_summary(samples).get("cpu_busy_pct") if len(samples) >= 2 else None,
+        **swap_summary(samples),
         "notes": "RSS sum includes shared mappings; MemAvailable is a host measurement. "
                  "Paired task samples are at most4seconds apart. Overlap ends at process exit, including failure.",
     }
@@ -79,6 +80,7 @@ def main():
                      "oom_delta": (admission["oom_after"]-admission["oom_before"]
                                    if admission.get("oom_before") is not None and admission.get("oom_after") is not None
                                    else None), "memory_pressure": json.dumps(admission.get("memory_pressure")),
+                     **swap_summary(samples),
                      "admission_path": str(task["path"].relative_to(ROOT))})
     pairs = [record for first, second in itertools.combinations(tasks, 2)
              if (record := overlap(first, second)) is not None]

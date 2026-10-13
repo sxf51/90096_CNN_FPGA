@@ -52,20 +52,20 @@ HLS estimates (verification rows inherit their parent and are not new synthesis 
 
 RTL and routed results, kept separate:
 
-| id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_TNS_ns | route_period_from_slack_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | timing_met | rtl_frame_ms_at_route_target | status |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [F89](F89_serial_vivado_impl_F25/F89.md) | F25 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | timeout |
-| [F92](F92_ws_impl_F25/F92.md) | F25 | F82 | 1068183.0 | 1068212.0 | 5.0 | 0.568 | 0.0 | 4.432 | 592.0 | 72.0 | 32400.0 | 77757.0 | True | 5.340915 | impl_complete |
-| [F93](F93_ws_reload_cosim_F28/F93.md) | F28 | unknown | 1059506.0 | 1059535.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
-| [F95](F95_ws_impl_F28/F95.md) | F28 | F93 | 1059506.0 | 1059535.0 | 5.0 | 0.282 | 0.0 | 4.718 | 591.0 | 72.0 | 30140.0 | 76498.0 | True | 5.29753 | impl_complete |
-| [F97](F97_ws_cosim_W21/F97.md) | W21 | unknown | 558758.0 | 558787.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
-| [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 558787.0 | 5.0 | 0.14 | 0.0 | 4.86 | 644.0 | 109.0 | 42594.0 | 88806.0 | True | 2.79379 | impl_complete |
-| [W20](W20_ws_impl_W17/W20.md) | W17 | unknown | unknown | unknown | 5.0 | 0.188 | 0.0 | 4.812 | 696.0 | 109.0 | 42812.0 | 89690.0 | True | unknown | impl_complete |
-| [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 558787.0 | 4.95 | 0.047 | 0.0 | 4.9030000000000005 | 644.0 | 109.0 | 42592.0 | 88806.0 | True | 2.7658521 | impl_complete |
+| id | parent | rtl_source | rtl_latency_cycles | rtl_interval_cycles | route_target_ns | route_WNS_ns | route_TNS_ns | route_period_from_slack_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | timing_met | route_feasible | rtl_frame_ms_at_route_target | status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [F89](F89_serial_vivado_impl_F25/F89.md) | F25 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | timeout |
+| [F92](F92_ws_impl_F25/F92.md) | F25 | F82 | 1068183.0 | 1068212.0 | 5.0 | 0.568 | 0.0 | 4.432 | 592.0 | 72.0 | 32400.0 | 77757.0 | True | True | 5.340915 | impl_complete |
+| [F93](F93_ws_reload_cosim_F28/F93.md) | F28 | unknown | 1059506.0 | 1059535.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
+| [F95](F95_ws_impl_F28/F95.md) | F28 | F93 | 1059506.0 | 1059535.0 | 5.0 | 0.282 | 0.0 | 4.718 | 591.0 | 72.0 | 30140.0 | 76498.0 | True | True | 5.29753 | impl_complete |
+| [F97](F97_ws_cosim_W21/F97.md) | W21 | unknown | 558758.0 | 558787.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | cosim_complete |
+| [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 558787.0 | 5.0 | 0.14 | 0.0 | 4.86 | 644.0 | 109.0 | 42594.0 | 88806.0 | True | True | 2.79379 | impl_complete |
+| [W20](W20_ws_impl_W17/W20.md) | W17 | unknown | unknown | unknown | 5.0 | 0.188 | 0.0 | 4.812 | 696.0 | 109.0 | 42812.0 | 89690.0 | True | True | unknown | impl_complete |
+| [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 558787.0 | 4.95 | 0.047 | 0.0 | 4.9030000000000005 | 644.0 | 109.0 | 42592.0 | 88806.0 | True | True | 2.7658521 | impl_complete |
 
 Times derived from RTL cycles at a routed target are conditional on `timing_met=true`. Target minus negative WNS is a slack-derived period estimate, not a proven closed clock. Missing values remain unknown. No board validation has run.
 
-Routed/HLS resource calibration from [route_calibration.csv](route_calibration.csv); HLS resource gates remain unchanged:
+Routed/HLS resource calibration from [route_calibration.csv](route_calibration.csv). Historical HLS status is retained; docs/0005 now defines final feasibility using routed resources/timing.
 
 ![Routed resource calibration](figs/route_calibration.png)
 
@@ -75,4 +75,14 @@ Host utilization from archived CPU/memory CSV files (short snapshots are labeled
 
 Current recovery state: Review section6 decisions, missing comic and any failed route/RTL gates; use measured physical bottlenecks for the next independent design. No board acceptance or push.
 
+User-cancelled obsolete retries (unlaunched; original plans retained):
+
+| id | parent | status | time | reason |
+| --- | --- | --- | --- | --- |
+| [F90](F90_serial_vivado_impl_F24/F90.md) | F24 | cancelled_by_user | 2026-10-13T02:48:58+00:00 | Obsolete routing retry; explicitly cancelled by the user before launch. |
+| [F91](F91_serial_vivado_impl_F23/F91.md) | F23 | cancelled_by_user | 2026-10-13T02:48:58+00:00 | Obsolete routing retry; explicitly cancelled by the user before launch. |
+
+No measured result rows were created for these cancellations.
+
 <!-- AUTO: WORKSTREAM END -->
+

@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-12T11:40:15+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T04:18:35+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-C15 host-memory failure archived; build C16/C17 and prepare staged C13 route retry; one-heavy policy. C15 reached routing but was memory-guard terminated at0.433784GiB; no routed verdict exists. F52 registeredConv34.5ns implementation is active; F50/F51/W31/W32/W30 await the one-heavy slot. Build and run independent C16 T8 windows16+FRP and C17 T4 windows32 all13-image C/HLS screening. Plan a fresh C13 5ns implementation with synthesis/report and routing/report in separate Vivado processes to release the live synthesis design; preserve C15. F48 is the T8 basis and faster W28 is accepted under the unchanged upper limit564345. Keep one heavy plus budgeted light work and all numerical/physical gates. No board results exist.
+C31 strict RTL acceptance complete; WS-G light validation and WS-H1 physical run submitted. C31 passes four exact calls, both skipped calls have zero parameter AXI, and synthesis RTL is unchanged. Frozen C17 plus only the reviewed C13-to-C28 guard transplant is committed as the independent WS-G source. C32 quality/HLS and C33/C34 sequence/cold validation are submitted under the unchanged memory scheduler; W34 is the sole heavy task, using C17 unchanged RTL at4.5ns Performance_Explore. On all WS-G C/HLS gates, first commit fresh C35 monitored four-call RTL and C36 staged5ns route plans, then execute in order. WS-H parameter-register and balanced-tree variants remain independent copies of the measured WS-G parent, with per-call parent+1percent limits and actual register/critical-path inspection. WS-I runs last using installed KV260 support only. Preserve the required C28 standalone5ns validation as lower-priority WS-F work; F90/F91 stay cancelled. C22 remains the verified1.365115ms fallback; no board result exists.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -25,7 +25,7 @@ C15 host-memory failure archived; build C16/C17 and prepare staged C13 route ret
 | [F39](F39_c3_select_W21_T8/F39.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
 | [F40](F40_fifo16_W21_T8/F40.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
 | [F41](F41_fifo32_W21_T8/F41.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81105.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | False |
-| [F42](F42_reorder_W21_T8/F42.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F42](F42_reorder_W21_T8/F42.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | unknown | unknown | unknown | unknown | 6.382452112094161 | False |
 | [C13](C13_runtime_prepacked_conv2_T4/C13.md) | W21 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [F43](F43_ws_cosim_F39/F43.md) | F39 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | original_verification_pass | unknown | unknown | unknown | 6.382071331608397 | unknown |
 | [F44](F44_ws_cosim_F40/F44.md) | F40 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | original_verification_pass | unknown | unknown | unknown | 6.382071331608397 | False |
@@ -33,12 +33,35 @@ C15 host-memory failure archived; build C16/C17 and prepare staged C13 route ret
 | [F47](F47_windows16_W21_T8/F47.md) | W21 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | unknown | unknown | unknown | unknown | unknown | 2.0055708185066967 | False |
 | [W28](W28_ws_cosim_W27/W28.md) | W27 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | 549438.0 | user_authorized_upper_only | unknown | unknown | unknown | 4.6076342679590265 | unknown |
 | [W29](W29_ws_impl_W24/W29.md) | W24 | impl | fail | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | unknown | unknown | unknown | unknown | unknown | 5.701752712986097 | unknown |
+| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81484.0 | 549438.0 | unknown | 4.5 | True | 2.472471 | 4.6076342679590265 | unknown |
 | [F48](F48_ws_cosim_F47/F48.md) | F47 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 535771.0 | original_verification_pass | unknown | unknown | unknown | 2.0055708185066967 | False |
 | [F46](F46_ws_cosim_F42/F46.md) | F42 | cosim | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | unknown | rejected_or_unmeasured | unknown | unknown | unknown | unknown | unknown |
 | [C14](C14_ws_cosim_C13/C14.md) | C13 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | original_verification_pass | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [C15](C15_ws_impl_C13/C15.md) | C13 | impl | fail | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | unknown | unknown | unknown | unknown | unknown | 14.269641567524417 | unknown |
 | [F49](F49_ws_impl_F39/F49.md) | F39 | impl | fail | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | unknown | unknown | unknown | unknown | unknown | 6.382071331608397 | unknown |
-| [F52](F52_ws_impl_F39/F52.md) | F39 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | unknown | unknown |
+| [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81550.0 | 558760.0 | original_verification_pass | unknown | unknown | unknown | 6.382452112094161 | False |
+| [F51](F51_ws_impl_F47/F51.md) | F47 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 535771.0 | unknown | 5.0 | True | 2.678855 | 2.0055708185066967 | unknown |
+| [F52](F52_ws_impl_F39/F52.md) | F39 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81518.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
+| [W31](W31_ws_impl_W24/W31.md) | W24 | impl | impl_complete | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | 5.0 | True | 2.77113 | 5.701752712986097 | unknown |
+| [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81086.0 | 558758.0 | unknown | 4.5 | True | 2.514411 | 6.382071331608397 | unknown |
+| [C16](C16_t8_fifo_frp/C16.md) | F47 | csim/csynth | pass | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | unknown | unknown | unknown | unknown | unknown | 2.044600818297271 | unknown |
+| [C17](C17_t4_fifo/C17.md) | C13 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | unknown | unknown | unknown | unknown | unknown | 3.7755140826333244 | unknown |
+| [C18](C18_ws_impl_C13/C18.md) | C13 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127966.0 | 300632.0 | unknown | 5.0 | True | 1.50316 | 14.269641567524417 | unknown |
+| [C19](C19_ws_cosim_C16/C19.md) | C16 | cosim | cosim_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | 535976.0 | original_verification_pass | unknown | unknown | unknown | 2.044600818297271 | unknown |
+| [C20](C20_ws_cosim_C17/C20.md) | C17 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | original_verification_pass | unknown | unknown | unknown | 3.7755140826333244 | unknown |
+| [C21](C21_ws_impl_C16/C21.md) | C16 | impl | impl_complete | True | -0.0695141811880653 | 525237.0 | 644.0 | 81485.0 | 535976.0 | unknown | 4.5 | True | 2.411892 | 2.044600818297271 | unknown |
+| [C22](C22_ws_impl_C17/C22.md) | C17 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 127985.0 | 273023.0 | unknown | 5.0 | True | 1.365115 | 3.7755140826333244 | unknown |
+| [W33](W33_ws_impl_W24/W33.md) | W24 | impl | impl_complete | True | -0.0695141811880653 | 524330.0 | 630.0 | 53316.0 | 554226.0 | unknown | 4.5 | True | 2.494017 | 5.701752712986097 | unknown |
+| [C23](C23_reload_switch_quality/C23.md) | C13 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128840.0 | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C24](C24_reload_switch_sequence/C24.md) | C13 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C25](C25_reload_switch_cold/C25.md) | C13 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [F53](F53_legacy_C13_regression/F53.md) | C13 | csim | csim_pass | True | -0.07589037644656216 | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C26](C26_ws_cosim_C23/C26.md) | C23 | cosim | fail | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128840.0 | unknown | rejected_or_unmeasured | unknown | unknown | unknown | unknown | unknown |
+| [C27](C27_ws_cosim_C23/C27.md) | C23 | cosim | fail | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128840.0 | unknown | rejected_or_unmeasured | unknown | unknown | unknown | unknown | unknown |
+| [C28](C28_reload_guard_quality/C28.md) | C23 | csim/csynth | infeasible | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128849.0 | unknown | unknown | unknown | unknown | unknown | 14.270401763655016 | unknown |
+| [C29](C29_reload_guard_sequence/C29.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C30](C30_reload_guard_cold/C30.md) | C23 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
+| [C31](C31_ws_cosim_C28/C31.md) | C28 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128849.0 | 300634 | original_verification_pass | unknown | unknown | unknown | 14.270401763655016 | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -49,14 +72,11 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 
 | id | parent | operation | status | condition |
 | --- | --- | --- | --- | --- |
-| [W30](W30_ws_impl_W27/W30.md) | W27 | impl | queued_or_running | User authorizes upper-only cycle acceptance of W28 exact549438cycles, <= original564345 limit; see docs/0005 section6.2 and W28 acceptance_override |
-| [F50](F50_ws_cosim_F42/F50.md) | F42 | cosim | queued_or_running | unknown |
-| [F51](F51_ws_impl_F47/F51.md) | F47 | impl | queued_or_running | unknown |
-| [W31](W31_ws_impl_W24/W31.md) | W24 | impl | queued_or_running | unknown |
-| [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | impl | queued_or_running | unknown |
-| [C16](C16_t8_fifo_frp/C16.md) | F47 | csim/csynth | queued_or_running | unknown |
-| [C17](C17_t4_fifo/C17.md) | C13 | csim/csynth | queued_or_running | unknown |
-| [C18](C18_ws_impl_C13/C18.md) | C13 | impl | queued_or_running | unknown |
+| [W34](W34_t4_strategy_4p5_C17/W34.md) | C17 | impl | queued_or_running | User-authorized WS-H step1 uses frozen C17 unchanged RTL and matching accepted C20 cycles; sole heavy slot after C31; independent4.5ns Performance_Explore with staged processes |
+| [C32](C32_reload_windows_quality/C32.md) | C17 | csim/csynth | queued_or_running | C31 strict exact/zero-AXI/RTL-hash acceptance before copying and integrating frozen C17 with only the reviewed C13-to-C28 guard diff |
+| [C33](C33_reload_windows_sequence/C33.md) | C17 | csim/csynth | queued_or_running | C31 pass and independently integrated WS-G source; four C calls preserve ignored-pointer and latest-bank semantics |
+| [C34](C34_reload_windows_cold/C34.md) | C17 | csim/csynth | queued_or_running | C31 pass and independently integrated WS-G source; fresh-process flag0 must force initial full loading |
+| [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 
@@ -64,12 +84,38 @@ These plans have no result row. In particular, unlaunched implementation is neit
 
 | id | parent | rtl_source | rtl_cycles | route_clock_ns | route_WNS_ns | route_DSP | route_BRAM18K | route_LUT | route_FF | rtl_frame_ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [C22](C22_ws_impl_C17/C22.md) | C17 | C20 | 273023.0 | 5.0 | 0.013 | 1032.0 | 109.0 | 59552.0 | 100499.0 | 1.365115 |
+| [C18](C18_ws_impl_C13/C18.md) | C13 | C14 | 300632.0 | 5.0 | 0.047 | 1032.0 | 109.0 | 58529.0 | 102072.0 | 1.50316 |
+| [C21](C21_ws_impl_C16/C21.md) | C16 | C19 | 535976.0 | 4.5 | 0.053 | 644.0 | 109.0 | 54139.0 | 78445.0 | 2.411892 |
+| [W30](W30_ws_impl_W27/W30.md) | W27 | W28 | 549438.0 | 4.5 | 0.027 | 644.0 | 109.0 | 54091.0 | 77784.0 | 2.472471 |
+| [W33](W33_ws_impl_W24/W33.md) | W24 | W25 | 554226.0 | 4.5 | 0.063 | 630.0 | 101.0 | 33829.0 | 82539.0 | 2.494017 |
+| [F52](F52_ws_impl_F39/F52.md) | F39 | F43 | 558758.0 | 4.5 | 0.072 | 644.0 | 109.0 | 43468.0 | 89030.0 | 2.514411 |
+| [W32](W32_ws_clock_strategy_4p5_retry_W21/W32.md) | W21 | F97 | 558758.0 | 4.5 | 0.144 | 644.0 | 109.0 | 45030.0 | 89096.0 | 2.514411 |
+| [F51](F51_ws_impl_F47/F51.md) | F47 | F48 | 535771.0 | 5.0 | 0.055 | 644.0 | 109.0 | 43617.0 | 87203.0 | 2.678855 |
 | [W22](W22_ws_clock_4p95_W21/W22.md) | W21 | F97 | 558758.0 | 4.95 | 0.047 | 644.0 | 109.0 | 42592.0 | 88806.0 | 2.7658521 |
+| [W31](W31_ws_impl_W24/W31.md) | W24 | W25 | 554226.0 | 5.0 | 0.47 | 630.0 | 101.0 | 33771.0 | 82635.0 | 2.77113 |
 | [F98](F98_ws_impl_W21/F98.md) | W21 | F97 | 558758.0 | 5.0 | 0.14 | 644.0 | 109.0 | 42594.0 | 88806.0 | 2.79379 |
 
 IP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded integration fallback.
 
+## Parameter Reuse
+
+Four exact RTL transactions separately measure initial loading, reuse with ignored incoming parameters, reloading and retention of the latest banks. Parameter AXI counts come from the read-only simulation observer. Milliseconds require matching independently closed routing; an unmeasured clock stays unknown. No board/DDR time is inferred.
+
+| id | parent | rtl_source | transaction | case | load_params | latency_cycles | interval_cycles | read_bytes | ar_valid_cycles | r_valid_cycles | route_clock_ns | ip_frame_ms |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [C31](C31_ws_cosim_C28/C31.md) | C28 | [C31](C31_ws_cosim_C28/C31.md) | 0 | first_load | 1 | 300634 | 300666 | 32516 | 8129 | 8129 | unknown | unknown |
+| [C31](C31_ws_cosim_C28/C31.md) | C28 | [C31](C31_ws_cosim_C28/C31.md) | 1 | reuse | 0 | 296105 | 296137 | 0 | 0 | 0 | unknown | unknown |
+| [C31](C31_ws_cosim_C28/C31.md) | C28 | [C31](C31_ws_cosim_C28/C31.md) | 2 | reload | 1 | 300634 | 300666 | 32516 | 8129 | 8129 | unknown | unknown |
+| [C31](C31_ws_cosim_C28/C31.md) | C28 | [C31](C31_ws_cosim_C28/C31.md) | 3 | retain | 0 | 296105 | unknown | 0 | 0 | 0 | unknown | unknown |
+
+Full read/write valid-cycle and handshake counts: [reload_switch_measurements.csv](reload_switch_measurements.csv).
+
+Verified candidate IP packages and register maps: [C18](board_handoff/C18/HANDOFF.md), [C21](board_handoff/C21/HANDOFF.md), [C22](board_handoff/C22/HANDOFF.md). Retain the [F98 integration handoff](BOARD_HANDOFF.md); board verification is pending.
+
 ## Figures
+
+![Verified IP frame time versus routed DSP](figs/verified_ip_pareto.png)
 
 ![HLS screening](figs/rom_clock_pareto.png)
 
@@ -79,7 +125,7 @@ IP times exclude DDR, driver and board overhead. W21 remains the runtime-loaded 
 
 ![Cycle estimates and measurements](figs/rom_clock_estimate_latency_cycles.png)
 
-![Two-frame RTL cycles](figs/rom_clock_rtl_cycles.png)
+![RTL transaction cycles](figs/rom_clock_rtl_cycles.png)
 
 
 ## Measured Parallel Execution
@@ -100,6 +146,23 @@ Current policy permits one heavy task with light jobs subject to registered budg
 | W23 | W29 | 342.5068440437317 | 161 | 16.554981231689453 | 0.5088157653808594 | 31.89580124556352 |
 | W23 | C15 | 73.9129331111908 | 36 | 10.116344451904297 | 4.914371490478516 | 26.598767270810896 |
 | W23 | C15 | 587.7770907878876 | 279 | 14.542190551757812 | 0.20591354370117188 | 29.55477371313919 |
+| F50 | C17 | 121.88273620605469 | 59 | 3.2512283325195312 | 10.243728637695312 | 42.10668926993302 |
+| F50 | C16 | 123.70464706420898 | 60 | 3.2514190673828125 | 10.243728637695312 | 42.08153758938877 |
+| F50 | C17 | 901.2647974491119 | 441 | 6.877098083496094 | 8.201549530029297 | 17.577913663558654 |
+| F50 | C16 | 538.6181435585022 | 262 | 7.094631195068359 | 7.980602264404297 | 17.747602567828178 |
+| C17 | C16 | 121.87702989578247 | 59 | 1.9005126953125 | 10.32436752319336 | 42.15509217454121 |
+| C16 | C17 | 1.8211803436279297 | 1 | 0.3324623107910156 | 11.27688217163086 | 20.689655172413794 |
+| C24 | C23 | 29.290664434432983 | 14 | 1.90777587890625 | 12.256977081298828 | 15.777644590949954 |
+| C23 | C25 | 18.639331340789795 | 10 | 1.8754310607910156 | 12.331581115722656 | 16.81480579568976 |
+| C23 | F53 | 38.56585335731506 | 19 | 1.8727836608886719 | 12.210433959960938 | 16.97186541624072 |
+| F53 | C23 | 67.12886714935303 | 32 | 1.8881988525390625 | 12.230640411376953 | 18.468700907037277 |
+| C27 | C28 | 128.4185767173767 | 63 | 8.668876647949219 | 5.0134735107421875 | 20.978300121466795 |
+| C27 | C29 | 31.110657930374146 | 15 | 8.662715911865234 | 5.0134735107421875 | 32.966783167107096 |
+| C27 | C30 | 25.14866542816162 | 13 | 8.668956756591797 | 5.0134735107421875 | 33.8460110168967 |
+| C27 | C28 | 891.6538236141205 | 435 | 12.732074737548828 | 1.8162078857421875 | 17.48388577917822 |
+| C28 | C29 | 31.110657930374146 | 15 | 1.8247795104980469 | 5.034660339355469 | 32.885400677691216 |
+| C28 | C30 | 25.14866542816162 | 12 | 1.9011421203613281 | 5.019691467285156 | 33.69619352543579 |
+| C29 | C30 | 25.14866542816162 | 12 | 1.859405517578125 | 5.019691467285156 | 33.67438520911865 |
 
 Process-tree RSS sums include shared mappings; minimum MemAvailable is measured for the entire host. Sampling alignment tolerance is4seconds. A hatch marks nonzero tool exit, not failed timing closure.
 
@@ -109,3 +172,4 @@ Process-tree RSS sums include shared mappings; minimum MemAvailable is measured 
 
 - Board validation remains unavailable to the agent; F98 handoff is archived.
 - T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned.
+- C31 measured10.4066GiB four-call process-tree RSS; future cosim budget raised to11.5GiB without changing admission/protection policy. Review whether two/four-call classes should later be separated; use the conservative unified budget now.

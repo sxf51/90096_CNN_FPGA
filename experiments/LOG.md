@@ -513,7 +513,147 @@
 
 - 2026-10-12T11:40:15+00:00: F52: ws_impl_F39; status=impl_complete; latency_ms_est=1.74903921; impl of F39; HLS estimates inherited, real measurements in data.csv
 
+- 2026-10-12T12:20:59+00:00: W32: ws_clock_strategy_4p5_retry_W21; status=impl_complete; latency_ms_est=1.74903921; impl of W21; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T12:53 UTC C18：综合及综合报告已于12:42:08UTC成功退出，第二阶段重新打开原project.xpr进行5ns布局布线，无重新综合。12:53UTC检查全部六个等待worker仍为T状态、两个优先监督存活；当前唯一重任务为C18。远程实际MemAvailable=7630408KiB，SwapTotal=SwapFree=8388604KiB，/dev/zram0为8GiB zstd、优先级100；swap使用量0。docs/0005的用户新增记录说明zram与清理由外部已授权操作完成，本agent未修改系统配置。最终内存改善需同时分析分阶段和swap数据，不能全部归因于流程拆分。
+
+- 2026-10-12T13:00 UTC C18：swap采样新增容量和实际使用量，汇总明确旧样本字段缺失，不根据SwapFree推断历史使用；12项内存/分阶段/并行测试和11项路径测试通过。C18正在运行的原逐阶段CSV保持原schema，另存runtime_host_environment.csv作当前主机观测，不能充当整次工具峰值。外部已授权的zram/清理记录保持原文，调度仍最多一项重任务。
+
+- 2026-10-12T13:32:31+00:00: C18: ws_impl_C13; status=impl_complete; latency_ms_est=1.05236; impl of C13; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T13:35 UTC C18：已独立5ns布线收敛，WNS+0.047/WHS+0.031/TNS0，1032DSP/58529LUT/102072FF/109BRAM18K/URAM0，全部routed门槛通过。关联同父C14的300632/300661RTL周期、C13全部13图E065逐位和ΔPSNR-0.075890dB，IP帧时间1.503160ms；未上板。分阶段进程树峰值综合10.640743GiB、实现8.169937GiB，最低可用4.822098GiB，工具70.538872分钟；完整swap使用因旧字段缺失仍unknown。两个优先监督13:32:30UTC恢复全部六项等待，实际进程已从T变S，W30已启动。保留C13原HLS判定及C15失败；当前资源无需T4 ROM，继续C16/C17和其后独立RTL/实现。
+
+- 2026-10-12T13:57:35+00:00: C18: regenerated CSV-only route calibration and ROM-clock figures; separated resource panels and retained external ID annotations with tight image bounds. Hardware measurements and acceptance gates are unchanged.
+
+- 2026-10-12T14:06:23+00:00: C18: archived verified runtime IP package provenance and generated driver/register map in experiments/board_handoff/C18; preserved F98 handoff. Transfer SHA256 agrees before/after collection. Route, same-parent exact reload RTL, all13-image precision and six handoff gate checks passed. OOC limit200MHz, no board result; ZIP/HDL stay outside Git.
+
+- 2026-10-12T14:11:15+00:00: C18: interim --snapshot audit passed for local/remote protected checksums and immutable source/report hashes; six planned experiments remain unmeasured and remote jobs are active. Snapshot is not closure. Board results remain unavailable; no push.
+
+- 2026-10-12T14:22:21+00:00: W30: ws_impl_W27; status=impl_complete; latency_ms_est=1.74903921; impl of W27; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T14:25:11+00:00: F52: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
+
+- 2026-10-12T14:31:55+00:00: W30: independent4.5ns route passes all physical gates; W28 authorized exact549438cycles gives2.472471ms uniform T8. Five generated-final setup paths and physical hierarchy archived, first slack matches final summary; F52 checkpoint paths archived too. F51 is now the sole running implementation. Preserve18GiB registration, serial-after-OOM and old W28 fail. C18 remains fastest1.503160ms; five queued experiments remain before conditional combination RTL/routing.
+
+- 2026-10-12T14:39 UTC W30 supplemental plots: regenerated the ROM/clock and routed calibration plots from the current CSV files and inspected the two changed figures. F51 has completed Vivado synthesis and is the sole heavy task; F50/W31/C16/C17 remain queued. C19-C22 are unused in both locations. After C16/C17 pass all13-image and HLS screening, plan changed-parameter cosim C19/C20 and staged implementation C21/C22, then run them under the existing one-heavy admission policy. First physical targets are4.5ns forT8 and5ns forT4, backed by W30/W32 and C18 respectively; faster RTL remains allowed. These four follow-ups are conditional preparation, not measured or launched experiments. Final path exports, plots and integrity audit remain pending.
+
+- 2026-10-12T14:50 UTC F50 queue ordering: priority_waiters now accepts an explicit decision basis (four existing pause/resume tests pass). In the scheduler lock, W31's package waiter PID80160 was proven unadmitted and paused; active F51 was untouched. F50 will be favored over W31 after F51, permitting C16/C17 screening if the13GiB total budget and2GiB light headroom both pass. A7.5GiB cosim, one4GiB synth and one1.25GiB csim total12.75GiB; actual overlap remains unmeasured. Supervisor session1570 automatically resumes W31 on F50 completion, timeout or exit. Preserve18GiB impl registration, serial_after_oom=true, all original plans, tool timeouts and gates. C18/W32 checkpoint exports remain under the same one-heavy cap.
+
+- 2026-10-12T15:06:59+00:00: F51: ws_impl_F47; status=impl_complete; latency_ms_est=1.74903921; impl of F47; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T15:10:49+00:00: C18: exported five setup paths from the existing routed checkpoint; no RTL or constraints changed.
+
+- 2026-10-12T15:15:51+00:00: W32: archived five setup paths from the matching final generated report; no additional Vivado run.
+
+- 2026-10-12T15:16:52+00:00: F51: archived five setup paths from the matching final generated report; no additional Vivado run.
+
+- 2026-10-12T15:27:50+00:00: C17: t4_fifo; status=infeasible; latency_ms_est=1.05236; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T15:29:09+00:00: F51: independently route-feasible at5ns with535771 matching F48 RTL cycles,2.678855ms IP frame time and644DSP/43617LUT/87203FF/109BRAM18K. Archive all five final paths and physical hierarchy. C18 checkpoint export completed after it had already admitted; leave the active export intact. W32 unadmitted export was deliberately cancelled under the scheduler lock at15:10UTC and replaced by the matching final postroute_physopted report; preserve original console and cancellation SHA256 proof. The generated-report archive path passes13 focused tests. F50 RTL and C17 HLS now actually overlap; C16 waits for synthesis budget and W31 is auto-resuming after F50. Four planned experiment results remain, followed by conditional combination RTL/routing and any justified clock probe. No gate, source interface, protected file or existing workspace is changed.
+
+- 2026-10-12T15:36:50+00:00: C16: t8_fifo_frp; status=pass; latency_ms_est=1.74903921; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-12T16:00:21Z C19/C21: both local and remote IDs were unused. C16 all13 E017-exact images and all three II1 folds have passed; prepared and committed changed-parameter C19 RTL and conditional staged4.5ns C21 route plans. C19 wrapper session64820 is queued behind the existing one-heavy scheduler, not measured; C21 remains unlaunched until accepted C19. Removed finished C16 session9972 from recovery state. Six planned results remain, plus a separate ROM4.5ns probe only if W31 closes5ns. F50 is the sole actual heavy task and has completed the first of two RTL transactions. Keep18GiB implementation registration, serial_after_oom, exact/quality/physical gates and no-push. analyze_route now fills missing legacy physical-gate fields from archived raw reports without changing config/metrics or historical statuses;20 focused route/path tests passed. Regenerate verified plots before final closure.
+
+- 2026-10-12T16:04:57+00:00: F50: ws_cosim_F42; status=cosim_complete; latency_ms_est=1.74903921; cosim of F42; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T16:08:43Z F50: exact changed-parameter RTL PASS at558760 latency/558789 interval cycles, two cycles slower than F97/W21; no raster-buffer throughput gain and WS-D diagnostic target remains unmet. reorder_rows two-frame write stalls become15256, but forward_raster inherits903826 against the four-entry features FIFO; counters overlap and cannot be summed. Preserve F46's host-memory failure and archive the successful unchanged retry. Supervisor released W31 at16:04:56UTC; verified C20 is now the sole heavy task. Five plans remain C19/C20/C21/C22/W31. Author C16/F50 interpretations and refresh recovery state. Interim16:06UTC audit passed both-location protected checksums and source/report integrity with active jobs; final idle audit and closure remain pending. No push or board result.
+
+- 2026-10-12T16:42:53+00:00: C20: ws_cosim_C17; status=cosim_complete; latency_ms_est=1.05236; cosim of C17; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T17:34:51+00:00: C19: ws_cosim_C16; status=cosim_complete; latency_ms_est=1.74903921; cosim of C16; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T18:05:51+00:00: W31: ws_impl_W24; status=impl_complete; latency_ms_est=1.7460189000000002; impl of W24; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T22:21:00Z C22/C21: C19/C20 exact RTL and W31 route completed in the existing workers; the conditional implementation plans were not automatically launched, leaving the host idle. Confirmed empty remote scheduler and unused C21/C22 workspaces, then started sequential queue46657 with C22 first and C21 next. C22 package completed and staged synthesis is actually running. C20 measures273023latency/273052interval versus C14's300632; C19 measures535976/536005 versus F48's535771. W31 closes5ns at630DSP/33771LUT/82635FF/101BRAM18K, WNS+0.470/WHS+0.038, and triggers committed W33 fresh4.5ns ROM plan. Keep mainline queue first and all one-heavy/memory/physical gates. docs/0005 also contains approved WS-F added by the user; prepare independent reload-switch work and run its verification after C19-C22, before final closure. No push or board validation.
+
+- 2026-10-12T22:39:38+00:00: W31: archived five setup paths from the matching final generated report; no additional Vivado run.
+
+- 2026-10-12T22:39 UTC C22 recovery / C23 preparation: SSH transient failure ended local queue46657 during archive transfer; remote C22 worker119223 and staged synthesis survived, while C21 never launched. Confirmed live process and scheduler identity, then started recovery supervisor33324 to collect C22 before launching C21 and W33. It refuses to overwrite any stopped incomplete workspace. C23-C27/F53 were unused remotely and locally; committed C23 WS-F paper estimate before copying frozen C13 to an independent reload-switch directory. Gate only parameter-read/transform/load processes, preserve static uninitialized banks, original wrapper and all arithmetic/FIFO/precision. New sequence checks cover load/reuse/reload/latest-bank retention; fresh-process fallback and all13-image reused weights remain separate mandatory checks. No protected file, existing workspace, numerical gate or physical gate changed.
+
+- 2026-10-12T23:32:35+00:00: C22: ws_impl_C17; status=impl_complete; latency_ms_est=1.05236; impl of C17; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-12T23:34 UTC C22: recovered completed remote route without rerunning the workspace. Final5ns WNS+0.013/WHS+0.032,TNS0 and no unrouted/partial nets pass;1032DSP/59552LUT/100499FF/109BRAM18K. Matching C20 exact273023cycles establishes1.365115ms,9.18percent faster than C18. Recovery supervisor33324 has actually started C21; W33 follows. WS-F source, guarded13-image test, four-call sequence and fresh-process fallback are committed; C23 wrapper65418 and C24/C25/F53 wrapper2446 wait for C21 before unchanged memory-budget admission. Six new gate tests and existing runner/verification/profile/architecture tests pass; no WS-F hardware result yet. Monitored cosim uses documented setup plus unchanged generated simulation/post-check scripts, an observer only in the generated testbench, per-call zero-AXI gates and synthesis RTL hashes. No original or first-phase design file changed; no push or board claim.
+
+- 2026-10-12T23:35:41+00:00: C22: archived five setup paths from the matching final generated report; no additional Vivado run.
+
+- 2026-10-12T23:40 UTC C22: matching C20 handoff and IP-package SHA256 are archived; route/architecture/ROM-clock CSV analyses, summaries and three comparison plot scripts refreshed. Eleven ROM-clock checks and five simulation-observer workflow checks pass. Observer tests cover immutable synthesis RTL, rejected duplicate/wrong-count instrumentation, setup failure, cumulative timeout and retained logs. The real monitored HLS driver remains unvalidated until WS-F RTL runs; no unit-test result is substituted for hardware evidence. C21 is the sole active heavy task, with W33 and C23/C24/C25/F53 preserved in their existing supervisor queues.
+
+- 2026-10-12 23:44:26 UTC C23: prepared separate first-load/reuse/reload/retain reporting and CSV-only plots. All154 experiment-infrastructure tests pass, including rejection of failed RTL, mismatched/unclosed routing and nonzero parameter read-valid counts on a skipped call. No reload hardware measurements exist yet; the empty measurement CSV is explicit and no plot or milliseconds are fabricated.
+
+- 2026-10-12 23:52:10 UTC C23: extend independently packaged Vivado flow and verified IP handoff to the approved srcnn_reload top. Legacy srcnn still requires its exact changed-parameter two-call proof; reload handoff independently requires all four exact calls and measured zero skipped-call parameter traffic. Generated one-bit load_params register is distinct from eight64-bit pointers. Archive the original per-transaction performance table and AXI CSV as tracked source evidence even when setup/standalone simulation does not emit the conventional cosim report. Eleven handoff and24 verification checks pass; actual reload RTL/package/route results remain outstanding.
+
+- 2026-10-13T00:17:45+00:00: C21: ws_impl_C16; status=impl_complete; latency_ms_est=1.74903921; impl of C16; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-13T00:18:04+00:00: C21: archived five setup paths from the matching final generated report; no additional Vivado run.
+
+- 2026-10-13 00:21 UTC C21: independently closed 4.5 ns, exact matching C19 frame 535976 cycles gives 2.411892 ms; all physical gates pass. Archive interpretation of the five parameter-load/local-weight-memory setup paths and the greater-than-20-percent HLS-to-route resource differences. C21 package/register handoff is complete; C22 remains the 1.365115 ms leader. W33 is the sole admitted implementation; C23/C24 runners wait for memory, with C25/F53 following. Refresh current state, derived tables and plots without changing frozen plans or rerunning completed workspaces. No board measurement or push.
+
+- 2026-10-13 00:29 UTC C21: snapshot integrity audit passed for local/remote original 46 files, 45 frozen phase-one design files, immutable paper plans, archived source/testbench/report hashes and Git exclusions. It records 41 measured workstream records and five unmeasured plans with active remote workers; this is not the final idle audit. W33 synthesized 630 DSP and is generating its synthesis reports before the independent implementation stage. No extra hardware job or changed memory threshold.
+
+- 2026-10-13T00:53:10+00:00: W33: ws_impl_W24; status=impl_complete; latency_ms_est=1.7460189000000002; impl of W24; HLS estimates inherited, real measurements in data.csv
+
+- 2026-10-13T00:53:39+00:00: C24: reload_switch_sequence; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-13T00:53:39+00:00: W33: archived five setup paths from the matching final generated report; no additional Vivado run.
+
+- 2026-10-13T00:54:07+00:00: C25: reload_switch_cold; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-13 00:55 UTC W33/C24/C25: W33 independently closes 4.5 ns at WNS +0.063/WHS +0.032, all routed resource gates and zero unrouted/partial nets. Matching W25 establishes 2.494017 ms; the five worst paths are Conv3 wide-window FIFO enables, with 92.83 percent routing delay and fanout 4000 on the worst path. C24 four-call load/reuse/reload/retain and C25 fresh-process load=0 checks pass exactly. C23's all13-image C quality passes at unchanged deltaPSNR -0.07589037644656216 dB, with HLS screening still running; F53 legacy regression follows. Refresh interpretations and recovery state. Correct future reload verification plan wording to four calls; frozen plans and thresholds stay unchanged. No RTL reload verdict or board result exists yet.
+
+- 2026-10-13T00:56:05+00:00: F53: legacy_C13_regression; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-13T01:09:55+00:00: C23: reload_switch_quality; status=infeasible; latency_ms_est=1.05236; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-13T01:11:14+00:00: C26: ws_cosim_C23; status=fail; latency_ms_est=1.05236; cosim of C23; HLS estimates inherited, real measurements in data.csv; Unsupported memory telemetry phase
+
+- 2026-10-13T01:43 UTC C27 checkpoint: the first of four monitored RTL transactions completes with load=1,8129 parameter AR requests and R beats,32516read bytes,and zero writes. The other calls and generated C/RTL output post-check remain outstanding. The generated AXI-Lite sequence writes the load flag and waits for argument writes before setting start; the read-only observer therefore samples the programmed flag. All164 experiment-infrastructure unit checks pass locally. One heavy task remains active with about10GiB available; no physical or reuse verdict is inferred from this partial result.
+
+- 2026-10-13T02:12 UTC C27: after two complete RTL transactions,the loaded call reads8129floats/32516bytes and the skipped call still makes1AR/R handshake,4bytes. The generated top passes biases3_0_0_val into dataflow_region after an unconditional top-level read; the internal do_load guard cannot suppress it. Preserve the active four-call run through the C/RTL post-check and keep the strict zero-AXI failure. Do not route C23. C28-C30 are unused and will independently copy C23,guard the scalar bias read at the non-DATAFLOW top,and repeat complete quality/HLS,sequence,cold-start and subsequent RTL/route checks. These are light-job plans subject to existing memory admission; no second heavy task or threshold change is authorized by this repair.
+
+- 2026-10-13T02:19:05+00:00: C30: reload_guard_cold; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-13T02:19:13+00:00: C29: reload_guard_sequence; status=csim_pass; latency_ms_est=unknown; 
+
+- 2026-10-13T02:35:41+00:00: C27: ws_cosim_C23; status=fail; latency_ms_est=1.05236; cosim of C23; HLS estimates inherited, real measurements in data.csv; Skipped-load transaction has parameter AXI traffic
+
+- 2026-10-13T02:36:00+00:00: C28: reload_guard_quality; status=infeasible; latency_ms_est=1.05236; ; HLS status retained; final feasibility requires independent routed gates
+
+- 2026-10-13T02:36:23+00:00: C27: recovered raw failed reload measurements and unchanged synthesis RTL SHA256; original verdict preserved.
+
+- 2026-10-13T02:40:30+00:00: C27: recovered raw failed reload measurements and unchanged synthesis RTL SHA256; original verdict preserved.
+
+- 2026-10-13T02:48:58+00:00 F90/F91: user cancelled obsolete unlaunched F24/F23 routing retries. Verified no corresponding local or remote workspace and no remote process; retain immutable paper/config plans and archive cancellation.json in each experiment folder. Remove both IDs from the active retry queue and deferred list; no result row, tool time or hardware verdict is fabricated. C31 repaired four-call RTL remains active under supervisor59926, and independent C32 routing remains conditional on its strict acceptance.
+
+- 2026-10-13T03:31:56+00:00: C32/W34: committed WS-G quality/sequence/cold plans and C17 same-RTL4.5ns Performance_Explore plan before implementation. C31 alone executes RTL; W34 is an unadmitted heavy-slot waiter. Snapshot audit at03:30UTC verifies both-location protected hashes and plan/report provenance, records51 archived workstream operations and five unmeasured plans.17 targeted audit/summary/analysis tests pass; conditional plans remain unmeasured. F90/F91 cancellation records preserve original plans and no result rows. WS-G source copy is gated by accepted exact/zero-AXI C31; WS-I remains last.
+
+- 2026-10-13T03:37:46+00:00: C31: first two monitored RTL calls complete. Loaded call reads8129parameters/32516bytes with zero writes; skipped call has zero AR/R/AW/W handshakes and valid cycles. This is partial observer evidence, not four-call acceptance. The reviewed frozen C13-to-C28 patch is archived in C32/source_patch.diff and git-apply dry-run succeeds on unchanged C17. Actual WS-G source copying/integration remains gated by final accepted C31. W34 remains queued for the sole heavy slot.
+
+- 2026-10-13T03:56:57+00:00: WS-H preparation: independent parameter-register/balanced-tree generator added after docs/0005 implementation-plan commit; no new timing design created. Four-call cycle limits check each parent latency*101//100, preventing loaded-frame maxima from hiding reuse regressions. Full171-script-test suite passes; C31 has3/4 observed transactions, last retain/post-check pending; W34 retains next heavy admission.
+
+- 2026-10-13T04:00:09+00:00: C31: ws_cosim_C28; status=cosim_complete; latency_ms_est=1.05236; cosim of C28; HLS estimates inherited, real measurements in data.csv
+
 ## Pending Human Decisions / 待人工决策
+
+- 2026-10-13 C31 四帧 RTL 仿真的进程树峰值为 10.4066 GiB，超过历史两帧任务的 7.5 GiB 登记。已按实测峰值加 10% 并向上取整，将后续 cosim 登记提高到 11.5 GiB；原 C31 准入、实现 18 GiB、保护线和单重任务规则不变。证据在 C31 的 cosim_memory_budget_revision.json。明日复核是否需要把两帧与四帧细分为独立预算类别；本轮先用较保守的统一值继续。
+
+- 2026-10-13 01:34 UTC C27: snapshot audit passes local/remote original46 and frozen phase-one45 file hashes, immutable plans, source/testbench/report provenance and Git exclusions. It records47 archived workstream operations and one active unarchived C27, never idle closure. C27 has completed setup and genuinely runs the generated simulation/post-check driver with the read-only AXI observer; its first RTL transaction remains in progress. Separate5ns routing still requires actual exact/zero-AXI acceptance.
+
+- 2026-10-13 01:13 UTC C23/C26/C27: C23's complete13-image E065 exactness, unchanged deltaPSNR and three fold II1 checks pass; HLS screening permits independent hardware validation while retaining the original infeasible status. C26 is rejected before any Vitis process due to unregistered monitored telemetry phases. Preserve the original fail record, register both phases strictly as cosim heavy leases, and pass21 targeted scheduler/observer checks. Fresh C27 now actually runs setup under supervisor31264; four-call exactness, zero skipped parameter AXI and independent5ns routing remain outstanding. No numerical, memory or physical gate is relaxed.
+
+- 2026-10-13 00:05:47 UTC C23: standalone Vitis Tcl interpreter probe confirms ::AP::printMsg, ::AP::check_bin_exist and ::AESL_AUTOSIM::gDebug are available without a project or simulation. Archive the original tool log in C23/tool_probes/monitor_environment.txt and reproducible exp/hls_monitor_environment.tcl; this is an environment query, not RTL validation. C21 progresses through rerouting; C22 handoff/path completion and outstanding conditions are refreshed in the recovery state.
+
+- 2026-10-13 00:02:11 UTC C23: existing C20 logs confirm HLS executes C vector generation before creating the standalone run_sim driver. The generated driver then runs its own C vector generation and RTL C post-check. Monitored acceptance now requires exactly two successful metric blocks from cosim_execute.console.log, with setup/vector-generation evidence separately retained in the combined log. A regression test rejects missing execution-phase C/RTL checks and verifies all four cycle/AXI source measurements; seven observer checks pass. Actual WS-F execution remains outstanding.
+
+- 2026-10-12 23:58:38 UTC C23: intermediate snapshot audit verifies original46files and45frozen phase-one design files at both locations, immutable paper plans, archived source/report SHA256 and Git tracking. Six requested plans remain unmeasured; idle closure is not claimed. Add SHA256-protected copies of generated run_sim/check_sim/dataflow-monitor/run_xsim drivers and verify they remain unchanged during monitored execution;161 infrastructure tests pass. The monitoring backend still requires actual HLS/RTL execution.
+
+- 2026-10-12T12:21 UTC C18：在W32退出后获得唯一重任务槽（12:20:58UTC），package成功，12:21:57UTC开始分阶段综合。其余六个未启动等待进程保持暂停并自动恢复，C18不是仅排队。分阶段内存汇总已补齐，按两个工具阶段取峰值并排除CPU计数器的等待空隙；19项相关测试通过。W32已在4.5ns独立收敛，WNS+0.144/WHS+0.029，IP级2.514411ms；五条路径必须从postroute_physopt最终checkpoint导出，11项路径测试通过，导出顺延至C18之后。
+
+- 2026-10-12T12:12 UTC C18优先执行补充：C16/C17仍未准入、未启动C仿真，已在调度锁内核实后暂时暂停，防止W32释放时先启动轻任务而占据预算、拖后C18。独立监督会话18976和priority_light_waiters.json保证C18完成或监督退出时自动恢复这两项。原95744监督继续管理四项重任务等待进程；当前只有W32实际运行工具。此为队列优先级调整，无新增实验或改变原计划。
+
+- 2026-10-12T11:44 UTC 用户要求优先C18：W32在11:40UTC已进入Vivado综合，保留其正在执行的工作；C18获得下一个重任务槽，package/综合报告/布线报告连续优先。用exp/priority_waiters.py在调度锁内确认F50/F51/W31/W30未准入后暂停其Python等待进程（不是工具），C18结束或监督进程退出后自动SIGCONT恢复。4项安全/恢复测试通过，远程监督会话95744已实测开始。C16/C17轻任务仍受预算限制；F52路径导出顺延至C18之后。实验计划和验收门槛不变，无新增失败或重跑。
+
+- 2026-10-12T11:40 UTC F52：独立4.5ns布线完成且route_feasible=true，WNS+0.072/TNS0/WHS+0.032，644DSP/43468LUT/89030FF/109BRAM18K/URAM0，无未布线网络。关联同父设计F43逐位及换参数RTL558758/558787cycles，得到IP级2.514411ms，比W22快9.090909%；不是板端实测。44.274936工具分钟、最低可用2.301548GiB、进程树峰值12.214828GiB，保留原F49内存失败。五条checkpoint路径待唯一重槽空闲后导出。
 
 - 2026-10-12T11:02 UTC C15: 单重任务仍在布线阶段触发内存保护（0.433784GiB，exit-15），没有最终布线/时序/资源结论。诊断为生成驱动的综合报告open_run保留父进程设计，另起实现子进程导致数据库内存叠加。自行决定新ID补跑：综合与报告后退出，第二Vivado进程重开project.xpr做原实现与报告，累计3小时且不改数值/布线门槛、不改原工作区或swap。C16/C17现在建设并跑13图/HLS；ROM仍待实际物理证据决定。C15 OOM1→2涵盖先前W23的实际OOM，不能重复归因成C15的新内核杀进程。
 

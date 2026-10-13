@@ -27,6 +27,9 @@
 #ifndef EXP_FRAMES
 #define EXP_FRAMES 1
 #endif
+#ifndef EXP_RELOAD_SWITCH
+#define EXP_RELOAD_SWITCH 0
+#endif
 
 int tb_conv1();
 int tb_srcnn();
@@ -41,6 +44,9 @@ static ftmap_t first[N1][H][W], first_ref[N1][H][W];
 static param_t w1[N1][N0][F1][F1], b1[N1];
 static param_t w2[N2][N1][F2][F2], b2[N2];
 static param_t w3[N3][N2][F3][F3], b3[N3];
+#if EXP_RELOAD_SWITCH
+static bool load_params = true;
+#endif
 
 template<class T> void read_exact(const std::string &path, T *data, size_t n) {
     std::ifstream in(path.c_str(), std::ios::binary | std::ios::ate);
@@ -74,7 +80,14 @@ double mse(const float *a, const float *b, size_t n, bool border = false) {
 
 void infer(bool golden) {
     if (golden) golden_srcnn(image, w1, b1, w2, b2, w3, b3, reference);
+#if EXP_RELOAD_SWITCH
+    else {
+        srcnn_reload(image, w1, b1, w2, b2, w3, b3, output, load_params);
+        load_params = false;
+    }
+#else
     else srcnn(image, w1, b1, w2, b2, w3, b3, output);
+#endif
 }
 
 void save(const std::string &path, const float *data, size_t n) {
@@ -133,11 +146,17 @@ int main() {
         double model_psnr = 0, golden_psnr = 0;
         int count = 0;
         if (EXP_SET14) {
+#if EXP_RELOAD_SWITCH
+            load_params = true;
+#endif
             std::ofstream detail("quality.csv");
             detail << "image,psnr,golden_psnr,delta_psnr,mse,border_mse\n";
             for (const char *name : names) {
                 const std::string prefix = std::string("set14/") + name + "_3x_";
                 read_image(prefix + "LR_u8.bin");
+#if EXP_RELOAD_SWITCH
+                std::cout << "EXP_RELOAD_IMAGE " << name << " load=" << int(load_params) << std::endl;
+#endif
                 infer(false);
                 infer(true);
                 if (EXP_NUMPY_REFERENCE) {
@@ -184,6 +203,10 @@ int main() {
         if (count) std::cout << golden_psnr; else std::cout << "null";
         std::cout << ",\"delta_psnr\":";
         if (count) std::cout << model_psnr - golden_psnr; else std::cout << "null";
+#if EXP_RELOAD_SWITCH
+        std::cout << ",\"reload_switch_quality_pass\":" << (pass ? "true" : "false")
+                  << ",\"parameter_reuse_images\":" << (count ? count - 1 : 0);
+#endif
         std::cout << "}" << std::endl;
         return pass ? 0 : 1;
     } catch (const std::exception &e) {

@@ -1,0 +1,27 @@
+{
+  "channel_prefix_fields": [
+    "blocking_flags",
+    "write_block_cycles",
+    "read_block_cycles",
+    "monitor_cycles",
+    "peak_depth"
+  ],
+  "omitted": "Per-cycle traces and large event histories stay in the original workspace. Only the first5/12 scalar CSV rows are archived.",
+  "parser_sha256": "440b5201df014f0ee684b867749289f66d3230ee1e23f39d0ae042e1343222cb",
+  "process_prefix_fields": [
+    "stall_cycles",
+    "monitor_cycles",
+    "process_interval_avg_cycles",
+    "process_interval_max_cycles",
+    "process_interval_min_cycles",
+    "process_latency_avg_cycles",
+    "process_latency_max_cycles",
+    "process_latency_min_cycles",
+    "start_wait_cycles",
+    "continue_wait_cycles",
+    "read_stall_cycles",
+    "write_stall_cycles"
+  ],
+  "scope": "Counters span all recorded RTL transactions, including startup and inactive cycles. Process intervals are invocation intervals, not pipeline-loop II. Stall categories can overlap; never sum them across processes.",
+  "source_format": "Vitis2026.1 df_fifo_monitor, df_process_monitor and nodf_module_monitor"
+}

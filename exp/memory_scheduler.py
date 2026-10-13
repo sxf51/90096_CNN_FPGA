@@ -221,10 +221,13 @@ class Lease:
 def scheduled_invoke(config, archive, kind, args, settings, cwd, logfile, timeout, telemetry_name=None):
     from run_exp import ROOT, invoke, utc, write_json
     from host_memory import MemoryMonitor
-    if telemetry_name not in {None, "package", "setup_paths", "impl_synth", "impl_route"}:
+    if telemetry_name not in {None, "package", "setup_paths", "impl_synth", "impl_route",
+                              "cosim_setup", "cosim_execute"}:
         raise ValueError("Unsupported memory telemetry phase")
     if telemetry_name in {"setup_paths", "impl_synth", "impl_route"} and kind != "impl":
         raise ValueError("Vivado report and staged phases require an implementation lease")
+    if telemetry_name in {"cosim_setup", "cosim_execute"} and kind != "cosim":
+        raise ValueError("Monitored simulation phases require a cosimulation lease")
     name = telemetry_name or kind
     scheduler = Scheduler(ROOT)
     event_path = archive / "scheduler_events.jsonl"

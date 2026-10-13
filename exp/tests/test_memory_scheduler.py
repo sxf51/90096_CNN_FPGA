@@ -89,6 +89,43 @@ class AdmissionTests(unittest.TestCase):
         self.assertIsNone(admission_reason(tasks, "csim", 8, parallel=True))
         self.assertIsNone(admission_reason([task("csim"), task("csynth")], "csynth", 8, parallel=True))
 
+    def test_monitored_cosim_phases_keep_heavy_lease_and_separate_evidence(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            archive = root / "archive"
+            archive.mkdir()
+            with (patch("run_exp.ROOT", root),
+                  patch("memory_scheduler.Path.is_file", return_value=True),
+                  patch("memory_scheduler.available_gib", return_value=15),
+                  patch("memory_scheduler.process_start", return_value="task"),
+                  patch("memory_scheduler.oom_count", return_value=0),
+                  patch("host_memory.MemoryMonitor", side_effect=lambda *a, **k: nullcontext()) as monitor,
+                  patch("run_exp.invoke", return_value=(0, 1)) as invoke):
+                for phase in ("cosim_setup", "cosim_execute"):
+                    self.assertEqual(scheduled_invoke(
+                        {"id": "C27"}, archive, "cosim", ["vitis-run"], root / "settings", root,
+                        root / (phase + ".log"), 21600, telemetry_name=phase), (0, 1))
+                    admission = json.loads((archive / (phase + "_admission.json")).read_text())
+                    self.assertEqual(admission["kind"], "cosim")
+                    self.assertEqual(admission["budget_gib"], BUDGETS["cosim"])
+                    self.assertEqual(admission["phase"], phase)
+            self.assertEqual(invoke.call_count, 2)
+            self.assertEqual([call.args[0].name for call in monitor.call_args_list],
+                             ["cosim_setup_host_memory.csv", "cosim_execute_host_memory.csv"])
+            self.assertEqual(json.loads(Scheduler(root).path.read_text())["tasks"], {})
+            events = [json.loads(line) for line in (archive / "scheduler_events.jsonl").read_text().splitlines()]
+            self.assertEqual([event["phase"] for event in events if event["event"] == "released"],
+                             ["cosim_setup", "cosim_execute"])
+
+    def test_monitored_cosim_phases_reject_light_leases_before_admission(self):
+        with patch.object(Scheduler, "acquire") as acquire:
+            for kind in ("csim", "csynth", "impl"):
+                for phase in ("cosim_setup", "cosim_execute"):
+                    with self.subTest(kind=kind, phase=phase), self.assertRaisesRegex(ValueError, "cosimulation lease"):
+                        scheduled_invoke({"id": "C27"}, Path("unused"), kind, [], Path("settings"),
+                                         Path("."), Path("unused.log"), 21600, telemetry_name=phase)
+            acquire.assert_not_called()
+
     def test_implementation_floor_is_strict_even_on_an_idle_host(self):
         self.assertIn("MemAvailable", admission_reason([], "impl", 13.438, parallel=True))
         self.assertIsNone(admission_reason([], "impl", 14.5, parallel=True))
