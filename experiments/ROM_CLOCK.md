@@ -1,12 +1,12 @@
 # ROM, clock, FIFO and T4 workstream
 
-Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T08:45:15+00:00.
+Plan: [docs/0005](../docs/0005-rom-clock-t4-plan.md). Updated 2026-10-13T08:48:16+00:00.
 
 The user-accepted F47/F48 deep-window design is the T8 mainline basis; W21 remains the independently routed integration fallback. ROM is an independent experiment. Set14 means the complete 13-image course-provided set. Final resource acceptance uses independent OOC routed timing/utilization; archived HLS statuses are unchanged. No board performance is inferred.
 
 ## Current state
 
-WS-G C35 strict RTL pass; C36 physical run active; WS-H C37/C38 independent sources committed. C35 strictly passes four exact RTL calls,zero parameter AXI on both skipped calls and unchanged102-file manifests:273025loaded/267022reused cycles. C36 staged5ns route now runs; inspect actual child threads and final five setup paths. C37 parameter-register and C38 balanced-tree paper plans and independent source copies are committed; run complete13-image quality/HLS after the prioritized C36 operation, inspect actual register stages, then plan matching four-call RTL and independent4.5ns routes under C35 per-call+1percent limits. W36 supplements actual one-thread failed W34 with a fresh corrected C17 four-thread4.5ns strategy comparison after WS-G; no4ns probe until a matching4.5ns point closes. W35 C28 standalone5ns route remains required before WS-I. WS-I runs last. C22 remains the verified fallback until matching new routing closes; no board result exists; F90/F91 remain cancelled.
+WS-G C35 strict RTL pass and C36 physical timing fail; WS-H C37/C38 screening active. C35 strictly passes four exact RTL calls,zero parameter AXI on both skipped calls and unchanged102-file manifests:273025loaded/267022reused cycles. C36 completes with observed4threads,feasible1032DSP/59891LUT/102084FF/109BRAM18K but fails5ns setup WNS-0.102/TNS-122.006; five final paths show Conv3 window backpressure-to-enable routing. C37 parameter-register and C38 balanced-tree complete13-image quality/HLS screening now runs concurrently; inspect actual register stages,then plan matching four-call RTL and independent4.5ns routes under C35 per-call+1percent limits. W36 supplements actual one-thread failed W34 with a fresh corrected C17 four-thread4.5ns strategy comparison after screening; no4ns probe until a matching4.5ns point closes. W35 C28 standalone5ns route remains required before WS-I. WS-I runs last. C22 remains the verified1.365115ms fallback; C35 reuse speed is conditional without closed matching routing. No board result exists; F90/F91 remain cancelled.
 
 | id | parent | operation | status | bit_exact | delta_psnr | HLS_cycles | HLS_DSP | HLS_LUT | rtl_cycles | rtl_acceptance_basis | route_clock_ns | route_feasible | rtl_cycles_x_route_clock_ms | rtl_hls_excess_pct | wsD_goal_met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -67,7 +67,7 @@ WS-G C35 strict RTL pass; C36 physical run active; WS-H C37/C38 independent sour
 | [C33](C33_reload_windows_sequence/C33.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C34](C34_reload_windows_cold/C34.md) | C17 | csim | csim_pass | True | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown | unknown |
 | [C35](C35_ws_cosim_C32/C35.md) | C32 | cosim | cosim_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | 273025 | original_verification_pass | unknown | unknown | unknown | 3.7762742787639247 | unknown |
-| [C36](C36_ws_impl_C32/C36.md) | C32 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | unknown | unknown | 5.0 | False | unknown | unknown | unknown |
+| [C36](C36_ws_impl_C32/C36.md) | C32 | impl | impl_complete | True | -0.07589037644656216 | 263090.0 | 1032.0 | 128868.0 | unknown | unknown | 5.0 | False | unknown | 3.7762742787639247 | unknown |
 
 Missing measurements are unknown. A frame time is shown only for independently closed/resource-feasible routing plus matching-parent measured RTL cycles.
 
@@ -80,8 +80,8 @@ User revision in docs/0005 section6.2 accepts F48 as the new mainline basis desp
 | --- | --- | --- | --- | --- |
 | [W35](W35_ws_impl_C28/W35.md) | C28 | impl | unlaunched_conditional | C31 strict acceptance complete; required C28 standalone5ns route runs after prioritized WS-G/WS-H and before WS-I, on the sole heavy slot |
 | [W36](W36_ws_impl_C17/W36.md) | C17 | impl | unlaunched_conditional | After prioritized C35/C36, supplement actual one-thread W34 with a fresh corrected four-thread4.5ns Performance_Explore run of frozen C17/C20-exact RTL; retain all timing/resource gates and observe actual child settings |
-| [C37](C37_t4_reload_paramreg/C37.md) | C32 | csim/csynth | unlaunched_conditional | Accepted C32/C35 parent; independent224-bit parameter-write register helper with one-cycle latency andII1; require13-image quality,HLS screening and actual datapath-register evidence |
-| [C38](C38_t4_reload_balanced/C38.md) | C32 | csim/csynth | unlaunched_conditional | Accepted C32/C35 parent; independent full34-bit nine-product balanced registered tree; preserve inverse/shift/quantization and require13-image quality/HLS before new four-call RTL |
+| [C37](C37_t4_reload_paramreg/C37.md) | C32 | csim/csynth | queued_or_running | Accepted C32/C35 parent; independent224-bit parameter-write register helper with one-cycle latency andII1; require13-image quality,HLS screening and actual datapath-register evidence |
+| [C38](C38_t4_reload_balanced/C38.md) | C32 | csim/csynth | queued_or_running | Accepted C32/C35 parent; independent full34-bit nine-product balanced registered tree; preserve inverse/shift/quantization and require13-image quality/HLS before new four-call RTL |
 
 These plans have no result row. In particular, unlaunched implementation is neither a timeout nor a timing failure.
 

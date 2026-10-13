@@ -213,7 +213,7 @@
   "hardware_scheduler": "one heavy task plus memory-bounded light jobs",
   "max_heavy_tasks": 1,
   "max_light_tasks": 3,
-  "next": "C35 strictly passes four exact RTL calls,zero parameter AXI on both skipped calls and unchanged102-file manifests:273025loaded/267022reused cycles. C36 staged5ns route now runs; inspect actual child threads and final five setup paths. C37 parameter-register and C38 balanced-tree paper plans and independent source copies are committed; run complete13-image quality/HLS after the prioritized C36 operation, inspect actual register stages, then plan matching four-call RTL and independent4.5ns routes under C35 per-call+1percent limits. W36 supplements actual one-thread failed W34 with a fresh corrected C17 four-thread4.5ns strategy comparison after WS-G; no4ns probe until a matching4.5ns point closes. W35 C28 standalone5ns route remains required before WS-I. WS-I runs last. C22 remains the verified fallback until matching new routing closes; no board result exists; F90/F91 remain cancelled.",
+  "next": "C35 strictly passes four exact RTL calls,zero parameter AXI on both skipped calls and unchanged102-file manifests:273025loaded/267022reused cycles. C36 completes with observed4threads,feasible1032DSP/59891LUT/102084FF/109BRAM18K but fails5ns setup WNS-0.102/TNS-122.006; five final paths show Conv3 window backpressure-to-enable routing. C37 parameter-register and C38 balanced-tree complete13-image quality/HLS screening now runs concurrently; inspect actual register stages,then plan matching four-call RTL and independent4.5ns routes under C35 per-call+1percent limits. W36 supplements actual one-thread failed W34 with a fresh corrected C17 four-thread4.5ns strategy comparison after screening; no4ns probe until a matching4.5ns point closes. W35 C28 standalone5ns route remains required before WS-I. WS-I runs last. C22 remains the verified1.365115ms fallback; C35 reuse speed is conditional without closed matching routing. No board result exists; F90/F91 remain cancelled.",
   "packing_pre_adder_verified": true,
   "pending_exploration_ids": [],
   "pending_final_verification_ids": [
@@ -225,8 +225,9 @@
   "resource_policy": "routed",
   "rom_clock_workstream": {
     "active_phase": {
-      "C36": "WS-G staged5ns default-strategy implementation running after strict C35 pass; sole heavy task, supervisor13146",
-      "WS-H-supervisor": "Supervisor50442 waits for C36 archive, screens independent C37/C38 concurrently, then runs corrected-thread W36; do not duplicate these jobs"
+      "C37": "WS-H independent parameter-register C/HLS screening running in supervisor50442",
+      "C38": "WS-H independent balanced-tree C/HLS screening running concurrently in supervisor50442",
+      "WS-H-supervisor": "Supervisor50442 screens C37/C38 concurrently after completed C36, then runs corrected-thread W36; do not duplicate these jobs"
     },
     "authorized_followups": {
       "WS-F-route": "Independent C28 route remains required; schedule after prioritized WS-G work",
@@ -332,18 +333,17 @@
       "time": "2026-10-12T10:19:41+00:00"
     },
     "local_exec_sessions": [
-      13146,
       50442
     ],
     "mainline_basis": "F47",
-    "next": "C35 strictly passes four exact RTL calls,zero parameter AXI on both skipped calls and unchanged102-file manifests:273025loaded/267022reused cycles. C36 staged5ns route now runs; inspect actual child threads and final five setup paths. C37 parameter-register and C38 balanced-tree paper plans and independent source copies are committed; run complete13-image quality/HLS after the prioritized C36 operation, inspect actual register stages, then plan matching four-call RTL and independent4.5ns routes under C35 per-call+1percent limits. W36 supplements actual one-thread failed W34 with a fresh corrected C17 four-thread4.5ns strategy comparison after WS-G; no4ns probe until a matching4.5ns point closes. W35 C28 standalone5ns route remains required before WS-I. WS-I runs last. C22 remains the verified fallback until matching new routing closes; no board result exists; F90/F91 remain cancelled.",
+    "next": "C35 strictly passes four exact RTL calls,zero parameter AXI on both skipped calls and unchanged102-file manifests:273025loaded/267022reused cycles. C36 completes with observed4threads,feasible1032DSP/59891LUT/102084FF/109BRAM18K but fails5ns setup WNS-0.102/TNS-122.006; five final paths show Conv3 window backpressure-to-enable routing. C37 parameter-register and C38 balanced-tree complete13-image quality/HLS screening now runs concurrently; inspect actual register stages,then plan matching four-call RTL and independent4.5ns routes under C35 per-call+1percent limits. W36 supplements actual one-thread failed W34 with a fresh corrected C17 four-thread4.5ns strategy comparison after screening; no4ns probe until a matching4.5ns point closes. W35 C28 standalone5ns route remains required before WS-I. WS-I runs last. C22 remains the verified1.365115ms fallback; C35 reuse speed is conditional without closed matching routing. No board result exists; F90/F91 remain cancelled.",
     "paused_waiter_ids": [],
     "pending_decisions": [
       "Board validation remains unavailable to the agent; F98 handoff is archived.",
       "T4 ROM is conditional on C15/new combination routed pressure; preserve runtime interfaces until that separate experiment is planned.",
       "C31 measured10.4066GiB four-call process-tree RSS; future cosim budget raised to11.5GiB without changing admission/protection policy. Review whether two/four-call classes should later be separated; use the conservative unified budget now."
     ],
-    "phase": "WS-G C35 strict RTL pass; C36 physical run active; WS-H C37/C38 independent sources committed",
+    "phase": "WS-G C35 strict RTL pass and C36 physical timing fail; WS-H C37/C38 screening active",
     "plan": "docs/0005-rom-clock-t4-plan.md",
     "planned_conditions": {
       "C15": "C14 mixed-precision changed-parameter RTL must pass before implementation; compare its frame product to W22",
@@ -392,9 +392,6 @@
     "resource_policy": "routed",
     "runtime_environment_evidence": "C18_ws_impl_C13/runtime_host_environment.csv",
     "session_jobs": {
-      "13146": [
-        "C36"
-      ],
       "50442": [
         "C37",
         "C38",
@@ -405,9 +402,7 @@
     "submitted_waiting_for_admission": [],
     "unlaunched_ids": [
       "W35",
-      "W36",
-      "C37",
-      "C38"
+      "W36"
     ],
     "user_cycle_revision": {
       "F48_two_percent_target": "diagnostic_only",
@@ -453,7 +448,7 @@
     }
   ],
   "skipped_conditional_plans": {},
-  "time": "2026-10-13T08:45:15+00:00",
+  "time": "2026-10-13T08:48:15+00:00",
   "weight_loading_workstream": {
     "T8_full_image_validation": "F96",
     "cancelled_plans": {
