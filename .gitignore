@@ -1,12 +1,31 @@
-# Vitis / HLS 自动生成的工作区与报告
-/workspace/
+# 默认排除工作区文件，但允许遍历目录以保留下面指定的报告
+/workspace/**
+!/workspace/**/
+/build/**
+!/build/**/
+
+# Vitis / HLS 状态、缓存与生成 HDL
+**/_ide/
+**/.autopilot/
+**/.cache/
+**/.debug/
+**/csim/build/
+**/syn/verilog/
+**/syn/vhdl/
+**/sim/verilog/
+**/sim/vhdl/
+**/impl/verilog/
+**/impl/vhdl/
 /.Xil/
 /.vitis_hls/
 /.vscode/
+/vitis_journal.py
+/compile_commands.json
 
 # 编译产物与仿真输出
 *.o
 *.obj
+*.d
 *.exe
 *.out
 *.log
@@ -21,5 +40,3 @@ __pycache__/
 # 操作系统临时文件
 .DS_Store
 Thumbs.db
-/project/
-/validation/

@@ -25,7 +25,8 @@
 | `test/tb_set14.cpp` | Set14 图像的 MSE、PSNR 评估；默认未启用 |
 | `test/set5/`、`test/set14/` | 输入图像、真值图像及参考数据 |
 | `script.py` | 创建 Vitis HLS 组件及配置 |
-| `workspace/` | Vitis 生成的工作区，已被 `.gitignore` 忽略 |
+| `workspace/` | Vitis 生成的工作区；选定报告和配置允许跟踪，其余产物忽略 |
+| `output/` | 重要实验结果的归档目录，按需创建 |
 
 ## 在 Vitis 中运行 C 仿真
 
@@ -44,9 +45,25 @@
 
 3. 脚本结束后关闭该命令行窗口，在 Vitis GUI 中将工作区设为项目的 `workspace/`，打开 `baseline` 组件，运行 **C Simulation**。
 
-配置文件位于 `workspace/baseline/hls_config.cfg`。目标器件为 `xck26-sfvc784-2LV-c`，目标时钟为 10 ns。C 仿真通过只表示功能结果得到验证；资源占用、时序和实际硬件性能需要另行运行 HLS 综合检查。
+配置文件位于 `workspace/baseline/hls_config.cfg`。目标器件为 `xck26-sfvc784-2LV-c`，目标时钟为 10 ns。C 仿真用于检查功能输出；当前测试只打印 MSE，未按误差阈值判失败，因此退出成功还需核对实际 MSE。资源占用、时序和硬件延迟估计需要另行运行 HLS 综合，实际性能需要实现及板端验证。
 
 默认入口 `test/csim.cpp` 调用 Conv1 和完整网络的测试。若要运行 Set14 测试，按文件中的提示启用 `tb_set14()`。测试程序通过相对路径读取 `./weights/` 和 `./set5/` 等数据；Vitis 组件配置已把这些目录加入测试文件。
+
+## 报告位置与 Git 保留
+
+当前 GUI 流程通常在 `workspace/baseline/baseline/` 下生成结果：
+
+| 相对该目录的路径 | 查看内容 |
+| --- | --- |
+| `hls/csim/report/srcnn_csim.log` | C 仿真结果、testbench 输出及 MSE |
+| `logs/hls_run_csim.log` | 工具在电脑上的运行耗时、内存和完整日志 |
+| `hls/syn/report/csynth.rpt`、`srcnn_csynth.rpt` | 硬件延迟、周期数、II、时序及资源估计 |
+| `hls/syn/report/*.xml` | 综合指标的机器可读版本 |
+| `hls/sim/report/srcnn_cosim.rpt` | C/RTL 协同仿真结果及 RTL 延迟 |
+
+`.gitignore` 保留上述报告、选定运行日志和 `hls_config.cfg`，并对 `build/` 下的相同报告结构生效；IDE 状态、缓存、生成 HDL、编译产物与波形仍被忽略。工具日志中的 `Total elapsed time` 是运行仿真或综合花的时间；综合报告中的 `Latency (cycles)` 才是硬件计算的周期估计，两者不能混用。
+
+**允许 Git 跟踪不等于自动保存。** `script.py` 仍会重建 `workspace/`，重要结果应先复制到 `output/<实验名>/`，附对应源码提交、工具版本和配置，再按需提交。详情见 [HLS 报告位置与 Git 保留规则](docs/0001-hls-reports.md)。
 
 ## 验证结果
 

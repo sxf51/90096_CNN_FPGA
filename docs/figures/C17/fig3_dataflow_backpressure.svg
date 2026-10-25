@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="740" viewBox="0 0 1300 740" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#1f2328">
+<title>C17: dataflow and FIFO backpressure</title>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5b6470"/></marker><pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#c84b4b" stroke-width="2" opacity="0.55"/></pattern></defs>
+<rect width="1300" height="740" fill="white"/>
+<text x="24.0" y="30.0" font-size="18" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">Figure 3 - dataflow_region: processes, FIFOs (depth x width) and measured blocking (C20, two RTL frames)</text>
+<text x="24.0" y="50.0" font-size="12" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">W / R = share of cycles the FIFO blocked a write / a read.  stall = share of cycles the process waited.</text>
+<rect x="50.0" y="125.0" width="122.0" height="54.0" rx="6" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1" opacity="1.0"/>
+<text x="111.0" y="144.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">read_input</text>
+<text x="111.0" y="173.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 66.9%</text>
+<rect x="262.0" y="125.0" width="122.0" height="54.0" rx="6" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1" opacity="1.0"/>
+<text x="323.0" y="144.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">online_pad1</text>
+<text x="323.0" y="173.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 72.9%</text>
+<rect x="474.0" y="125.0" width="122.0" height="54.0" rx="6" fill="#eaf1fb" stroke="#c9ced6" stroke-width="1" opacity="1.0"/>
+<text x="535.0" y="144.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">wino_windows</text>
+<text x="535.0" y="173.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 73.1%</text>
+<rect x="686.0" y="125.0" width="122.0" height="54.0" rx="6" fill="#fff1e3" stroke="#d9822b" stroke-width="2" opacity="1.0"/>
+<text x="747.0" y="144.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">wino_engine</text>
+<text x="747.0" y="158.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#d9822b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">576 DSP</text>
+<text x="747.0" y="173.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#3a9d5d" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 2.5%</text>
+<rect x="898.0" y="125.0" width="122.0" height="54.0" rx="6" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1" opacity="1.0"/>
+<text x="959.0" y="144.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">distribute_tiles</text>
+<text x="959.0" y="173.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 74.8%</text>
+<rect x="1110.0" y="125.0" width="122.0" height="54.0" rx="6" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1" opacity="1.0"/>
+<text x="1171.0" y="144.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">reorder_rows</text>
+<text x="1171.0" y="173.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 75.4%</text>
+<rect x="50.0" y="335.0" width="122.0" height="54.0" rx="6" fill="#fff1e3" stroke="#d9822b" stroke-width="2" opacity="1.0"/>
+<text x="111.0" y="354.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">conv2_stream</text>
+<text x="111.0" y="368.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#d9822b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">256 DSP</text>
+<text x="111.0" y="383.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#3a9d5d" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 3.2%</text>
+<rect x="262.0" y="335.0" width="122.0" height="54.0" rx="6" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1" opacity="1.0"/>
+<text x="323.0" y="354.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">online_pad3</text>
+<text x="323.0" y="383.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 75.3%</text>
+<rect x="474.0" y="335.0" width="122.0" height="54.0" rx="6" fill="#eaf1fb" stroke="#c9ced6" stroke-width="1" opacity="1.0"/>
+<text x="535.0" y="354.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">windows3</text>
+<text x="535.0" y="383.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 75.4%</text>
+<rect x="686.0" y="335.0" width="122.0" height="54.0" rx="6" fill="#fff1e3" stroke="#d9822b" stroke-width="2" opacity="1.0"/>
+<text x="747.0" y="354.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">engine3</text>
+<text x="747.0" y="368.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#d9822b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">200 DSP</text>
+<text x="747.0" y="383.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#3a9d5d" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 4.4%</text>
+<rect x="898.0" y="335.0" width="122.0" height="54.0" rx="6" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1" opacity="1.0"/>
+<text x="959.0" y="354.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">write_output</text>
+<text x="959.0" y="383.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 76.2%</text>
+<line x1="172.0" y1="152.0" x2="260.0" y2="152.0" stroke="#c84b4b" stroke-width="2.5" opacity="1.0" marker-end="url(#arrow)"/>
+<text x="217.0" y="133.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">raw</text>
+<text x="217.0" y="145.0" font-size="9.5" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">512 x 10 b</text>
+<text x="217.0" y="169.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">W 67%  R 0%</text>
+<line x1="384.0" y1="152.0" x2="472.0" y2="152.0" stroke="#c84b4b" stroke-width="2.5" opacity="1.0" marker-end="url(#arrow)"/>
+<text x="429.0" y="133.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">padded1</text>
+<text x="429.0" y="145.0" font-size="9.5" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">16 x 10 b</text>
+<text x="429.0" y="169.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">W 73%  R 0%</text>
+<line x1="596.0" y1="152.0" x2="684.0" y2="152.0" stroke="#c84b4b" stroke-width="2.5" opacity="1.0" marker-end="url(#arrow)"/>
+<text x="641.0" y="133.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">windows</text>
+<text x="641.0" y="145.0" font-size="9.5" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">32 x 1728 b</text>
+<text x="641.0" y="169.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">W 73%  R 0%</text>
+<line x1="808.0" y1="152.0" x2="896.0" y2="152.0" stroke="#c84b4b" stroke-width="2.5" opacity="1.0" marker-end="url(#arrow)"/>
+<text x="853.0" y="133.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">tiles</text>
+<text x="853.0" y="145.0" font-size="9.5" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">2 x 2560 b</text>
+<text x="853.0" y="169.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">W 0%  R 75%</text>
+<line x1="1020.0" y1="152.0" x2="1108.0" y2="152.0" stroke="#3a9d5d" stroke-width="2.5" opacity="1.0" marker-end="url(#arrow)"/>
+<text x="1065.0" y="133.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">top / bottom</text>
+<text x="1065.0" y="145.0" font-size="9.5" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">512 x 640 b</text>
+<text x="1065.0" y="169.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#3a9d5d" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">W 0%  R 3%</text>
+<path d="M 1171.0 179 L 1171.0 257.0 L 111.0 257.0 L 111.0 333" stroke="#c84b4b" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+<text x="171.0" y="249.0" font-size="10.5" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">features   4 x 640 b   W 73%  R 0%</text>
+<line x1="172.0" y1="362.0" x2="260.0" y2="362.0" stroke="#c84b4b" stroke-width="2.5" opacity="1.0" marker-end="url(#arrow)"/>
+<text x="217.0" y="343.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">features2</text>
+<text x="217.0" y="355.0" font-size="9.5" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">4 x 320 b</text>
+<text x="217.0" y="379.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">W 0%  R 75%</text>
+<line x1="384.0" y1="362.0" x2="472.0" y2="362.0" stroke="#c84b4b" stroke-width="2.5" opacity="1.0" marker-end="url(#arrow)"/>
+<text x="429.0" y="343.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">padded3</text>
+<text x="429.0" y="355.0" font-size="9.5" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">16 x 320 b</text>
+<text x="429.0" y="379.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">W 1%  R 74%</text>
+<line x1="596.0" y1="362.0" x2="684.0" y2="362.0" stroke="#3a9d5d" stroke-width="2.5" opacity="1.0" marker-end="url(#arrow)"/>
+<text x="641.0" y="343.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">windows0 / windows1</text>
+<text x="641.0" y="355.0" font-size="9.5" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">2 x 4000 b</text>
+<text x="641.0" y="379.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#3a9d5d" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">W 1%  R 1%</text>
+<line x1="808.0" y1="362.0" x2="896.0" y2="362.0" stroke="#c84b4b" stroke-width="2.5" opacity="1.0" marker-end="url(#arrow)"/>
+<text x="853.0" y="343.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">result</text>
+<text x="853.0" y="355.0" font-size="9.5" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">16 x 10 b</text>
+<text x="853.0" y="379.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">W 0%  R 76%</text>
+<rect x="50.0" y="530.0" width="122.0" height="54.0" rx="6" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1" opacity="1.0"/>
+<text x="111.0" y="549.0" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">read_params</text>
+<text x="111.0" y="563.0" font-size="9.5" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">AXI, transform, 3 outputs</text>
+<text x="111.0" y="578.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#3a9d5d" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">stall 0.0%</text>
+<line x1="172.0" y1="557.0" x2="1044.0" y2="557.0" stroke="#8a8f98" stroke-width="1.2" opacity="1.0" stroke-dasharray="5,4"/>
+<line x1="111.0" y1="557.0" x2="111.0" y2="391.0" stroke="#8a8f98" stroke-width="1.2" opacity="1.0" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+<text x="106.0" y="517.0" font-size="9.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0" transform="rotate(-90 106.0 517.0)">params2 16x10b R 2.9%</text>
+<line x1="747.0" y1="557.0" x2="747.0" y2="391.0" stroke="#8a8f98" stroke-width="1.2" opacity="1.0" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+<text x="742.0" y="517.0" font-size="9.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0" transform="rotate(-90 742.0 517.0)">params3 16x10b R 3.7%</text>
+<path d="M 1044 557.0 L 1044 303 L 747.0 303 L 747.0 181" stroke="#8a8f98" stroke-width="1.2" fill="none" marker-end="url(#arrow)" stroke-dasharray="5,4"/>
+<text x="1039.0" y="517.0" font-size="9.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0" transform="rotate(-90 1039 517.0)">params1 4x224b R 2.4%</text>
+<line x1="300.0" y1="586.0" x2="324.0" y2="586.0" stroke="#c84b4b" stroke-width="3" opacity="1.0"/>
+<text x="330.0" y="590.0" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">&gt;= 50%</text>
+<line x1="410.0" y1="586.0" x2="434.0" y2="586.0" stroke="#d9822b" stroke-width="3" opacity="1.0"/>
+<text x="440.0" y="590.0" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">5-50%</text>
+<line x1="520.0" y1="586.0" x2="544.0" y2="586.0" stroke="#3a9d5d" stroke-width="3" opacity="1.0"/>
+<text x="550.0" y="590.0" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">&lt; 5%</text>
+<rect x="300.0" y="608.0" width="950.0" height="92.0" rx="6" fill="#fbfbfc" stroke="#d7dbe0" stroke-width="1" opacity="1.0"/>
+<text x="314.0" y="630.0" font-size="12.5" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">windows FIFO depth 2 -&gt; 32  (C13/C14 -&gt; C17/C20)</text>
+<text x="314.0" y="652.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0"></text>
+<text x="450.0" y="652.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">depth</text>
+<text x="560.0" y="652.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">read-block cycles</text>
+<text x="750.0" y="652.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">wino fold cycles</text>
+<text x="940.0" y="652.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">frame cycles</text>
+<text x="1100.0" y="652.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">frame @ 5 ns</text>
+<text x="314.0" y="672.0" font-size="11.5" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">depth 2</text>
+<text x="450.0" y="672.0" font-size="11.5" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">2</text>
+<text x="560.0" y="672.0" font-size="11.5" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">58,166</text>
+<text x="750.0" y="672.0" font-size="11.5" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">291,234</text>
+<text x="940.0" y="672.0" font-size="11.5" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">300,632</text>
+<text x="1100.0" y="672.0" font-size="11.5" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">1.503 ms</text>
+<text x="314.0" y="690.0" font-size="11.5" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">depth 32</text>
+<text x="450.0" y="690.0" font-size="11.5" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">32</text>
+<text x="560.0" y="690.0" font-size="11.5" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">0</text>
+<text x="750.0" y="690.0" font-size="11.5" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">262,507</text>
+<text x="940.0" y="690.0" font-size="11.5" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">273,023</text>
+<text x="1100.0" y="690.0" font-size="11.5" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">1.365 ms</text>
+<text x="24.0" y="728.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">experiments/C20_ws_cosim_C17/profiling, C14_ws_cosim_C13/profiling, plain/C17_srcnn_plain.cpp</text>
+</svg>

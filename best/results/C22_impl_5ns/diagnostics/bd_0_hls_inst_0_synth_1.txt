@@ -1,0 +1,196 @@
+
+*** Running vivado
+    with args -log bd_0_hls_inst_0.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source bd_0_hls_inst_0.tcl
+
+INFO: [Common 17-3922] A valid Vivado Design Suite BASIC license has been detected. Your current license is active and will expire on 02-aug-2027.
+#-----------------------------------------------------------
+# Vivado v2026.1 (64-bit)
+# SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+# IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+# SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+# Start of session at: Tue Oct 13 09:20:42 2026
+# Process ID         : 119699
+# Current directory  : /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/verilog/project.runs/bd_0_hls_inst_0_synth_1
+# Command line       : vivado -log bd_0_hls_inst_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source bd_0_hls_inst_0.tcl
+# Log file           : /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/verilog/project.runs/bd_0_hls_inst_0_synth_1/bd_0_hls_inst_0.vds
+# Journal file       : /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/verilog/project.runs/bd_0_hls_inst_0_synth_1/vivado.jou
+# Running On         : Xiaoxin-Ubuntu
+# Platform           : Ubuntu
+# Operating System   : Ubuntu 22.04.5 LTS
+# Processor Detail   : AMD Ryzen 5 4600U with Radeon Graphics
+# CPU Frequency      : 3992.371 MHz
+# CPU Physical cores : 6
+# CPU Logical cores  : 12
+# Host memory        : 16101 MB
+# Swap memory        : 8589 MB
+# Total Virtual      : 24691 MB
+# Available Virtual  : 21923 MB
+#-----------------------------------------------------------
+
+****** Vivado v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Tue Oct 13 09:20:42 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source bd_0_hls_inst_0.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/lipuze/amdfpga/2026.1/data/ip'.
+source /home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/verilog/serial_synthesis.tcl
+EXP_VIVADO_THREADS general=1 synth=1
+Command: synth_design -top bd_0_hls_inst_0 -part xck26-sfvc784-2LV-c -directive sdx_optimization_effort_high -incremental_mode off -mode out_of_context
+INFO: [Vivado_Tcl 97-128] Directive used for synth_design is: sdx_optimization_effort_high
+Starting synth_design
+Attempting to get a license for feature 'Vivado_Synthesis' and/or device 'xck26'
+INFO: [Common 17-349] Got license for feature 'Vivado_Synthesis' and/or device 'xck26'
+INFO: [Device 21-403] Loading part xck26-sfvc784-2LV-c
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 1 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 119712
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2930.555 ; gain = 168.766 ; free physical = 6030 ; free virtual = 19069
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'bd_0_hls_inst_0' [/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/verilog/project.gen/sources_1/bd/bd_0/ip/bd_0_hls_inst_0/synth/bd_0_hls_inst_0.v:53]
+INFO: [Synth 8-6157] synthesizing module 'srcnn' [/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/verilog/project.gen/sources_1/bd/bd_0/ipshared/118e/hdl/verilog/srcnn.v:9]
+INFO: [Synth 8-6157] synthesizing module 'srcnn_dataflow_region' [/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/verilog/project.gen/sources_1/bd/bd_0/ipshared/118e/hdl/verilog/srcnn_dataflow_region.v:9]
+INFO: [Synth 8-6157] synthesizing module 'srcnn_read_input' [/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/verilog/project.gen/sources_1/bd/bd_0/ipshared/118e/hdl/verilog/srcnn_read_input.v:9]
+EXP_VIVADO_THREADS general=1 synth=1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 1 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 119712
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2930.555 ; gain = 168.766 ; free physical = 6030 ; free virtual = 19069
+INFO: [Synth 8-7071] port 'aclk' of module 'srcnn_fpext_32ns_64_2_no_dsp_1_ip' is unconnected for instance 'srcnn_fpext_32ns_64_2_no_dsp_1_ip_u' [/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/verilog/project.gen/sources_1/bd/bd_0/ipshared/118e/hdl/verilog/srcnn_fpext_32ns_64_2_no_dsp_1.v:32]
+Finished RTL Elaboration : Time (s): cpu = 00:00:26 ; elapsed = 00:00:28 . Memory (MB): peak = 3718.195 ; gain = 956.406 ; free physical = 5205 ; free virtual = 18255
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:27 ; elapsed = 00:00:30 . Memory (MB): peak = 3718.195 ; gain = 956.406 ; free physical = 5223 ; free virtual = 18274
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:27 ; elapsed = 00:00:30 . Memory (MB): peak = 3718.195 ; gain = 956.406 ; free physical = 5223 ; free virtual = 18274
+Netlist sorting complete. Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 3718.195 ; gain = 0.000 ; free physical = 5258 ; free virtual = 18309
+Netlist sorting complete. Time (s): cpu = 00:00:00.07 ; elapsed = 00:00:00.06 . Memory (MB): peak = 4029.250 ; gain = 0.000 ; free physical = 5037 ; free virtual = 18092
+Constraint Validation Runtime : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 4088.137 ; gain = 51.000 ; free physical = 4820 ; free virtual = 17875
+Finished Constraint Validation : Time (s): cpu = 00:01:04 ; elapsed = 00:01:07 . Memory (MB): peak = 4088.137 ; gain = 1326.348 ; free physical = 4098 ; free virtual = 17154
+Finished Loading Part and Timing Information : Time (s): cpu = 00:01:04 ; elapsed = 00:01:07 . Memory (MB): peak = 4088.137 ; gain = 1326.348 ; free physical = 4098 ; free virtual = 17154
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:01:04 ; elapsed = 00:01:07 . Memory (MB): peak = 4088.137 ; gain = 1326.348 ; free physical = 4098 ; free virtual = 17154
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:01:22 ; elapsed = 00:01:26 . Memory (MB): peak = 4088.137 ; gain = 1326.348 ; free physical = 4138 ; free virtual = 17205
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:03:21 ; elapsed = 00:03:42 . Memory (MB): peak = 4096.145 ; gain = 1334.355 ; free physical = 3800 ; free virtual = 16884
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:03:34 ; elapsed = 00:03:56 . Memory (MB): peak = 4482.312 ; gain = 1720.523 ; free physical = 2332 ; free virtual = 15445
+Finished Timing Optimization : Time (s): cpu = 00:05:03 ; elapsed = 00:05:26 . Memory (MB): peak = 5245.047 ; gain = 2483.258 ; free physical = 1585 ; free virtual = 14709
+Finished Technology Mapping : Time (s): cpu = 00:07:29 ; elapsed = 00:08:04 . Memory (MB): peak = 5272.410 ; gain = 2510.621 ; free physical = 548 ; free virtual = 13698
+Finished IO Insertion : Time (s): cpu = 00:08:26 ; elapsed = 00:09:01 . Memory (MB): peak = 5768.848 ; gain = 3007.059 ; free physical = 228 ; free virtual = 13277
+Finished Renaming Generated Instances : Time (s): cpu = 00:08:26 ; elapsed = 00:09:01 . Memory (MB): peak = 5768.848 ; gain = 3007.059 ; free physical = 229 ; free virtual = 13278
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:09:40 ; elapsed = 00:10:15 . Memory (MB): peak = 5897.793 ; gain = 3136.004 ; free physical = 172 ; free virtual = 13119
+Finished Renaming Generated Ports : Time (s): cpu = 00:09:43 ; elapsed = 00:10:18 . Memory (MB): peak = 5897.793 ; gain = 3136.004 ; free physical = 172 ; free virtual = 13119
+Finished Handling Custom Attributes : Time (s): cpu = 00:09:46 ; elapsed = 00:10:21 . Memory (MB): peak = 5897.793 ; gain = 3136.004 ; free physical = 172 ; free virtual = 13119
+Finished Renaming Generated Nets : Time (s): cpu = 00:09:47 ; elapsed = 00:10:23 . Memory (MB): peak = 5897.793 ; gain = 3136.004 ; free physical = 172 ; free virtual = 13119
+Finished Writing Synthesis Report : Time (s): cpu = 00:09:48 ; elapsed = 00:10:23 . Memory (MB): peak = 5897.793 ; gain = 3136.004 ; free physical = 176 ; free virtual = 13122
+Synthesis Optimization Runtime : Time (s): cpu = 00:09:22 ; elapsed = 00:10:00 . Memory (MB): peak = 5897.793 ; gain = 2766.062 ; free physical = 3504 ; free virtual = 16450
+Synthesis Optimization Complete : Time (s): cpu = 00:09:51 ; elapsed = 00:10:29 . Memory (MB): peak = 5897.793 ; gain = 3136.004 ; free physical = 3552 ; free virtual = 16449
+Netlist sorting complete. Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 5897.793 ; gain = 0.000 ; free physical = 3556 ; free virtual = 16453
+Netlist sorting complete. Time (s): cpu = 00:00:00.07 ; elapsed = 00:00:00.07 . Memory (MB): peak = 6231.852 ; gain = 0.000 ; free physical = 3132 ; free virtual = 16037
+synth_design: Time (s): cpu = 00:10:58 ; elapsed = 00:11:37 . Memory (MB): peak = 6231.887 ; gain = 4496.020 ; free physical = 3132 ; free virtual = 16036
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.38 ; elapsed = 00:00:00.4 . Memory (MB): peak = 6231.887 ; gain = 0.000 ; free physical = 3088 ; free virtual = 16040
+write_checkpoint: Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 6231.887 ; gain = 0.000 ; free physical = 3065 ; free virtual = 15993
+write_verilog: Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 6231.887 ; gain = 0.000 ; free physical = 2983 ; free virtual = 16001
+write_vhdl: Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 6231.887 ; gain = 0.000 ; free physical = 2905 ; free virtual = 16010
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | A'*B''      | 30     | 18     | -      | -      | 20     | 1    | 2    | -    | -    | -     | 0    | 0    | 
+|srcnn_mul_10s_10s_20_1_1 | (A*B'')'    | 30     | 18     | -      | -      | 20     | 0    | 2    | -    | -    | -     | 0    | 1    | 
+|srcnn_mul_10s_10s_20_1_1 | (A*B'')'    | 30     | 18     | -      | -      | 20     | 0    | 2    | -    | -    | -     | 0    | 1    | 
+|srcnn_mul_10s_10s_20_1_1 | (A*B'')'    | 30     | 18     | -      | -      | 20     | 0    | 2    | -    | -    | -     | 0    | 1    | 
+|srcnn_mul_10s_10s_20_1_1 | (A*B'')'    | 30     | 18     | -      | -      | 20     | 0    | 2    | -    | -    | -     | 0    | 1    | 
+|srcnn_mul_10s_10s_20_1_1 | (A*B'')'    | 30     | 18     | -      | -      | 20     | 0    | 2    | -    | -    | -     | 0    | 1    | 
+|srcnn_mul_10s_10s_20_1_1 | (A*B'')'    | 30     | 18     | -      | -      | 20     | 0    | 2    | -    | -    | -     | 0    | 1    | 
+|srcnn_mul_10s_10s_20_1_1 | (A*B'')'    | 30     | 18     | -      | -      | 20     | 0    | 2    | -    | -    | -     | 0    | 1    | 
+|srcnn_mul_10s_10s_20_1_1 | (A''*B)'    | 30     | 18     | -      | -      | 20     | 2    | 0    | -    | -    | -     | 0    | 1    | 
++-------------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+----------------+-------+
+|      |Cell            |Count  |
++------+----------------+-------+
+|1     |CARRY8          |   5954|
+|2     |DSP_ALU         |   1032|
+|3     |DSP_A_B_DATA    |   1032|
+|8     |DSP_C_DATA      |   1032|
+|9     |DSP_MULTIPLIER  |   1032|
+|10    |DSP_M_DATA      |   1032|
+|11    |DSP_OUTPUT      |   1032|
+|13    |DSP_PREADD      |   1032|
+|14    |DSP_PREADD_DATA |   1032|
+|15    |LUT1            |    627|
+|16    |LUT2            |  22698|
+|17    |LUT3            |  17778|
+|18    |LUT4            |   6475|
+|19    |LUT5            |   2069|
+|20    |LUT6            |   9204|
+|21    |MUXCY           |      8|
+|22    |MUXF7           |   2131|
+|23    |MUXF8           |     82|
+|24    |RAM16X1D        |      1|
+|25    |RAM32M          |      1|
+|26    |RAM32M16        |   1523|
+|27    |RAMB18E2        |     17|
+|30    |RAMB36E2        |     46|
+|36    |SRL16E          |    438|
+|37    |FDRE            | 100504|
+|38    |FDSE            |    129|
++------+----------------+-------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:09:48 ; elapsed = 00:10:23 . Memory (MB): peak = 5897.793 ; gain = 3136.004 ; free physical = 176 ; free virtual = 13122
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:09:22 ; elapsed = 00:10:00 . Memory (MB): peak = 5897.793 ; gain = 2766.062 ; free physical = 3504 ; free virtual = 16450
+Synthesis Optimization Complete : Time (s): cpu = 00:09:51 ; elapsed = 00:10:29 . Memory (MB): peak = 5897.793 ; gain = 3136.004 ; free physical = 3552 ; free virtual = 16449
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 5897.793 ; gain = 0.000 ; free physical = 3556 ; free virtual = 16453
+INFO: [Netlist 29-17] Analyzing 10732 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 8 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00.07 ; elapsed = 00:00:00.07 . Memory (MB): peak = 6231.852 ; gain = 0.000 ; free physical = 3132 ; free virtual = 16037
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 2559 instances were transformed.
+  (CARRY4) => CARRY8: 2 instances
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 1032 instances
+  RAM16X1D => RAM32X1D (RAMD32(x2)): 1 instance 
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 1 instance 
+  RAM32M16 => RAM32M16 (RAMD32(x14), RAMS32(x2)): 1523 instances
+
+Synth Design complete | Checksum: 3bf35dcf
+INFO: [Common 17-83] Releasing license: Vivado_Synthesis
+738 Infos, 2 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:10:58 ; elapsed = 00:11:37 . Memory (MB): peak = 6231.887 ; gain = 4496.020 ; free physical = 3132 ; free virtual = 16036
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 8408.658; main = 5352.280; forked = 3598.752
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 11432.211; main = 6231.855; forked = 5534.414
+INFO: [Coretcl 2-1174] Renamed 4369 cell refs.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.38 ; elapsed = 00:00:00.4 . Memory (MB): peak = 6231.887 ; gain = 0.000 ; free physical = 3088 ; free virtual = 16040
+INFO: [Common 17-1381] The checkpoint '/home/lipuze/amdprojects/90096_CNN_FPGA/workspace/exp_runs/C22/hls/impl/verilog/project.runs/bd_0_hls_inst_0_synth_1/bd_0_hls_inst_0.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 6231.887 ; gain = 0.000 ; free physical = 3065 ; free virtual = 15993
+INFO: [Vivado 12-24828] Executing command : report_utilization -file bd_0_hls_inst_0_utilization_synth.rpt -pb bd_0_hls_inst_0_utilization_synth.pb
+write_verilog: Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 6231.887 ; gain = 0.000 ; free physical = 2983 ; free virtual = 16001
+write_vhdl: Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 6231.887 ; gain = 0.000 ; free physical = 2905 ; free virtual = 16010
+INFO: [Common 17-206] Exiting Vivado at Tue Oct 13 09:33:17 2026...

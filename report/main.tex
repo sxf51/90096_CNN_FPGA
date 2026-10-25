@@ -1,0 +1,153 @@
+% Course report: Agent-Driven Design Space Exploration for HLS Acceleration of
+% SRCNN on the Kria KV260.  Converted from the Notion page of the same name.
+%
+% Build (any one of):
+%   tectonic main.tex                 (XeTeX engine, used for the checked build)
+%   latexmk -xelatex main.tex
+%   latexmk -pdf main.tex             (pdfLaTeX; needs the TeX Gyre fonts, standard in TeX Live / Overleaf)
+%
+% Layout: sections/ holds one file per chapter, figures/ the images, code/ the
+% two source listings reproduced in the appendices.  Comment out the appendix
+% \input / \lstinputlisting lines at the end to shorten the PDF.
+
+% Layout switch: \compacttrue gives the dense layout (10pt, 2 cm margins, smaller
+% figures); \compactfalse the roomier one (11pt, 2.4 cm margins).
+\newif\ifcompact
+\compacttrue
+\ifcompact\documentclass[10pt,a4paper]{article}\else\documentclass[11pt,a4paper]{article}\fi
+
+% ---------------------------------------------------------------- fonts
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp}
+  \usepackage{tgpagella}
+  \usepackage{tgheros}
+  \usepackage[scaled=0.85]{beramono}
+\else
+  \usepackage{fontspec}
+  \setmainfont{texgyrepagella}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,
+    ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+  \setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,
+    ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+  \setmonofont{lmmonolt10}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,
+    ItalicFont=*-oblique,BoldItalicFont=*-boldoblique,Scale=MatchLowercase]
+\fi
+
+% ---------------------------------------------------------------- packages
+\ifcompact\usepackage[a4paper,margin=2cm,top=2cm,bottom=2.2cm]{geometry}\else\usepackage[a4paper,margin=2.4cm]{geometry}\fi
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{pdflscape}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{titlesec}
+\ifcompact\titlespacing*{\section}{0pt}{1.6ex plus .4ex}{0.8ex}\titlespacing*{\subsection}{0pt}{1.2ex plus .3ex}{0.5ex}\titlespacing*{\subsubsection}{0pt}{1ex plus .2ex}{0.4ex}\setlength{\textfloatsep}{8pt plus 2pt}\setlength{\intextsep}{8pt plus 2pt}\setlength{\floatsep}{6pt}\renewcommand{\topfraction}{0.9}\renewcommand{\bottomfraction}{0.7}\renewcommand{\textfraction}{0.1}\renewcommand{\floatpagefraction}{0.8}\fi
+\usepackage{calc}
+\usepackage[hidelinks,unicode]{hyperref}
+% commands pandoc emits for the skill appendix
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\passthrough}[1]{#1}
+\providecommand{\real}[1]{#1}
+
+\graphicspath{{./}}
+\ifcompact\newcommand{\figscale}{0.78}\else\newcommand{\figscale}{1}\fi
+\newcommand{\figw}{\dimexpr\figscale\linewidth\relax}
+\newcommand{\figh}{\dimexpr\figscale\textheight\relax}
+\ifPDFTeX\pdfminorversion=7\else\special{pdf:minorversion 7}\fi
+\captionsetup{font=small,labelfont=bf,width=0.95\linewidth}
+\ifcompact\captionsetup{font=footnotesize,skip=4pt}\renewcommand{\arraystretch}{1.0}\fi
+\ifcompact\setlist{itemsep=0pt,topsep=2pt,parsep=0pt}\else\setlist{itemsep=2pt,topsep=4pt}\fi
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\urlstyle{tt}
+\makeatletter\g@addto@macro{\UrlBreaks}{\do\/\do\_\do\-\do\.}\makeatother
+\ifcompact\setlength{\parskip}{0pt}\else\setlength{\parskip}{0.35em}\fi
+\setlength{\emergencystretch}{2em}
+\setlength{\tabcolsep}{4pt}
+\ifcompact\else\renewcommand{\arraystretch}{1.12}\fi
+\pdfstringdefDisableCommands{\def\times{x}\def\rightarrow{->}}
+
+% ---------------------------------------------------------------- listings
+\definecolor{lstbg}{gray}{0.96}
+\definecolor{lstcomment}{rgb}{0.30,0.45,0.30}
+\definecolor{lstkw}{rgb}{0.10,0.20,0.60}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{lstbg},
+  commentstyle=\color{lstcomment},
+  keywordstyle=\color{lstkw},
+  frame=single, framerule=0pt, framesep=4pt,
+  breaklines=true, breakatwhitespace=true,
+  columns=fullflexible, keepspaces=true,
+  showstringspaces=false, tabsize=4,
+  captionpos=b, extendedchars=true,
+  numbers=none,
+  literate=
+    {·}{{$\cdot$}}1 {×}{{$\times$}}1 {→}{{$\rightarrow$}}1 {↔}{{$\leftrightarrow$}}1
+    {−}{{$-$}}1 {≤}{{$\le$}}1 {≥}{{$\ge$}}1 {ᵀ}{{\textsuperscript{T}}}1
+    {²}{{\textsuperscript{2}}}1 {½}{{\textonehalf}}1,
+}
+\lstdefinestyle{source}{
+  language=C++,
+  basicstyle=\ttfamily\scriptsize,
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=6pt, stepnumber=5, firstnumber=1,
+  morekeywords={ap_int,ap_uint,ap_fixed,hls,stream,constexpr,static_assert},
+}
+
+% ---------------------------------------------------------------- metadata
+\title{\textbf{Agent-Driven Design Space Exploration for HLS Acceleration of SRCNN on the Kria KV260}}
+\author{Xiufu Sun (1372750) \and Puze Li (1741640)}
+\date{October 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\clearpage
+
+\input{sections/01-introduction}
+\input{sections/02-baseline-and-algorithm-analysis}
+\input{sections/03-agent-driven-design-space-exploration}
+\input{sections/04-final-architecture}
+\input{sections/05-verification-deployment}
+\input{sections/06-discussion}
+\input{sections/07-conclusion}
+\input{sections/08-references}
+
+% ---------------------------------------------------------------- appendices
+\clearpage
+\appendix
+
+\clearpage
+\input{sections/A-evolution}
+
+\clearpage
+\section{The experiment-exploration skill}\label{app:skill}
+The agents worked under the project rules file (\texttt{AGENTS.md}, Figure~\ref{fig:1}) and the
+reusable skill reproduced below, which they load at the start of every session. It is the
+English edition of the skill as it stood at the end of the project (\texttt{SKILL.md} of
+\texttt{experiment-exploration-en}); the Chinese original is kept in sync with it. The
+templates and the graph-rendering script it refers to are distributed with the skill and are
+not reproduced here; its section numbers (1 to 9) correspond to B.1 to B.9 below.
+\input{sections/B-skill}
+
+\clearpage
+\section{Readable version of the selected design}\label{app:code-readable}
+Flattened version of C17 (\texttt{designs/\allowbreak winograd\_t4\_windows32\_v1}) with the compile-time
+macros substituted and the templates expanded, for reading and analysis only. C simulation and
+HLS synthesis of this version give the same outputs and the same synthesis results as the original
+(Section~\ref{sec:4}).
+\lstinputlisting[style=source]{code/C17_readable_srcnn.cpp}
+
+\end{document}

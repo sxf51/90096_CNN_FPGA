@@ -1,0 +1,44 @@
+% Generated from the Notion page by tools/notion2tex.py (see report/README.md).
+\section{Baseline and Algorithm Analysis}\label{sec:2}
+
+The algorithm consists of three convolutional layers:
+
+\begin{itemize}
+\item Conv1 -- Feature Extraction: The first layer applies 64 convolution kernels of size 9$\times$9 to extract local image features, followed by a ReLU activation function.
+\item Conv2 -- Nonlinear Mapping: The second layer uses 1$\times$1 convolutions to combine the extracted features and generate 32 feature maps, followed by another ReLU activation function.
+\item Conv3 -- Image Reconstruction: The final layer applies 5$\times$5 convolutions to reconstruct the output image. No activation function is applied after this layer.
+\end{itemize}
+
+\subsection{Feasibility of FPGA Acceleration}\label{sec:2.1}
+
+This structure is well suited for FPGA acceleration because it exhibits repetitive computation, parallelism, and data reuse. First, convolution requires a large number of multiply-accumulate (MAC) operations. For the 255$\times$255 input used in this project, the three layers require approximately 522 million MAC operations in the original computation. Second, different output channels and spatial positions can be computed independently, allowing multiple processing units to work in parallel. Loop unrolling can exploit this parallelism to increase the number of MAC operations executed per cycle. Third, convolution offers significant data reuse. The same weights are applied at multiple image positions, and input pixels contribute to multiple output features. By storing frequently accessed data on-chip, repeated external memory accesses can be reduced.
+
+Based on these characteristics, the baseline implementation uses several HLS optimization directives, listed in Table~\ref{tab:1}.
+
+\begin{table}[!htbp]
+\centering
+\footnotesize
+\caption{HLS directives used in the baseline implementation and their function.}
+\label{tab:1}
+\begin{tabularx}{\linewidth}{lY}
+\toprule
+HLS Directive & Function \\
+\midrule
+\texttt{PIPELINE} & Overlaps consecutive loop iterations \\
+\texttt{UNROLL} & Increases parallel computation across loop iterations \\
+\texttt{ARRAY\_PARTITION} & Enables parallel access \\
+\texttt{BIND\_STORAGE} & Specifies how on-chip storage resources are used \\
+\texttt{INTERFACE} & Defines the control interface and external memory connections \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Baseline deployment and validation on board}\label{sec:2.1.1}
+
+The first problem was storage capacity. The original HLS estimate required over 10,000 BRAMs, far exceeding the resources available on the board. So, we adopted tiling with a size of 16$\times$16, and added channel parallelism and pipelining. After optimization, the HLS-estimated BRAM usage dropped to 151, and the cycle count was reduced by about 30 times. The corresponding cost is an increase in MACs.
+
+The baseline was validated using 13 test images from the Set14 test dataset. The resulting MSE was \texttt{3.166 $\times$ 10\textsuperscript{-14}}. The average execution time on the board was approximately 2.238 seconds per frame, corresponding to a throughput of 0.447 frames per second (FPS).
+
+\subsubsection{Limitations of the Baseline}\label{sec:2.1.2}
+
+Despite the baseline verified the correctness of the algorithm on the FPGA, it still has limitations. First, the three convolutional layers execute sequentially. Although some inner loops achieved an initiation interval (II) of 1, the convolutional layers are still executed in sequence. We will consider introducing a streaming interface and task-level dataflow in subsequent work to reduce intermediate storage and allow computations of different convolutional layers to run concurrently. Second, Conv1 and Conv3 together account for approximately 82\% of the execution time, while the baseline uses only about 3.69\% of the available DSP resources. This indicates that more parallel computation can be designed for the first and third layers. Third, the baseline runs at a relatively low clock frequency. As long as the design continues to meet timing constraints, we can increase the clock frequency to further improve execution speed. Finally, reducing numerical precision and optimizing data representation will also improve resource efficiency and enable higher parallelism. We will follow this direction for subsequent optimization.

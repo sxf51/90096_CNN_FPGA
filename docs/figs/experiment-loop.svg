@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" font-family="PingFang SC, Noto Sans CJK SC, Helvetica Neue, Helvetica, Arial, sans-serif">
+<title>The experiment loop</title>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#6f7f7c"/></marker></defs>
+<rect width="1120" height="560" fill="#ffffff"/>
+<rect x="40" y="50" width="310" height="112" rx="6" fill="#fdf3e3" stroke="#b07a1f" stroke-width="1.6"/>
+<text x="56" y="78" font-size="16" font-weight="700" fill="#1f2d2c">Human: high-level plan</text>
+<text x="56" y="98" font-size="13" fill="#40514f">fixed contract, one metric,</text>
+<text x="56" y="118" font-size="13" fill="#40514f">three gates, directions to explore</text>
+<rect x="405" y="50" width="310" height="112" rx="6" fill="#e9f1f8" stroke="#3c6e9c" stroke-width="1.6"/>
+<text x="421" y="78" font-size="16" font-weight="700" fill="#1f2d2c">Agent: experiment card</text>
+<text x="421" y="98" font-size="13" fill="#40514f">bottleneck evidence, one hypothesis,</text>
+<text x="421" y="118" font-size="13" fill="#40514f">one control, one change, estimate;</text>
+<text x="421" y="138" font-size="13" fill="#40514f">committed to Git before any run</text>
+<rect x="770" y="50" width="310" height="112" rx="6" fill="#f3f4f4" stroke="#6f7f7c" stroke-width="1.6"/>
+<text x="786" y="78" font-size="16" font-weight="700" fill="#1f2d2c">Run over SSH</text>
+<text x="786" y="98" font-size="13" fill="#40514f">C simulation → HLS synthesis →</text>
+<text x="786" y="118" font-size="13" fill="#40514f">C/RTL co-simulation → place and route;</text>
+<text x="786" y="138" font-size="13" fill="#40514f">timeouts, one heavy job at a time</text>
+<rect x="770" y="300" width="310" height="112" rx="6" fill="#e9f1f8" stroke="#3c6e9c" stroke-width="1.6"/>
+<text x="786" y="328" font-size="16" font-weight="700" fill="#1f2d2c">Archive and registry</text>
+<text x="786" y="348" font-size="13" fill="#40514f">raw reports, parsed metrics,</text>
+<text x="786" y="368" font-size="13" fill="#40514f">interpretation, evidence level;</text>
+<text x="786" y="388" font-size="13" fill="#40514f">failures recorded the same way</text>
+<rect x="40" y="300" width="310" height="112" rx="6" fill="#fdf3e3" stroke="#b07a1f" stroke-width="1.6"/>
+<text x="56" y="328" font-size="16" font-weight="700" fill="#1f2d2c">Human review</text>
+<text x="56" y="348" font-size="13" fill="#40514f">every 10 to 20 experiments:</text>
+<text x="56" y="368" font-size="13" fill="#40514f">read interpretations, issue new plan,</text>
+<text x="56" y="388" font-size="13" fill="#40514f">change gates on calibration evidence</text>
+<rect x="770" y="462" width="310" height="64" rx="6" fill="#e9f1f8" stroke="#3c6e9c" stroke-width="1.6"/>
+<text x="786" y="490" font-size="16" font-weight="700" fill="#1f2d2c">Evolution graph</text>
+<text x="786" y="510" font-size="13" fill="#40514f">graph.json → SVG, one node per experiment</text>
+<path d="M560 300 L675 356 L560 412 L445 356 Z" fill="#ffffff" stroke="#1f2d2c" stroke-width="1.8"/>
+<text x="560" y="352" font-size="16" font-weight="700" fill="#1f2d2c" text-anchor="middle">Gates</text>
+<text x="560" y="372" font-size="13" fill="#40514f" text-anchor="middle">quality / screening / final</text>
+<path d="M350 106 L405 106" fill="none" stroke="#6f7f7c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M715 106 L770 106" fill="none" stroke="#6f7f7c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M925 162 L925 300" fill="none" stroke="#6f7f7c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M770 356 L675 356" fill="none" stroke="#6f7f7c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M560 300 L560 162" fill="none" stroke="#6f7f7c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="570" y="240" font-size="12.5" fill="#40514f" text-anchor="start">passes screening: next card</text>
+<path d="M445 356 L350 356" fill="none" stroke="#6f7f7c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="397" y="345" font-size="12.5" fill="#40514f" text-anchor="middle">batch of results</text>
+<path d="M195 300 L195 162" fill="none" stroke="#6f7f7c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="205" y="240" font-size="12.5" fill="#40514f" text-anchor="start">new plan, new gates</text>
+<path d="M925 412 L925 462" fill="none" stroke="#6f7f7c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="560" y="434" font-size="12.5" fill="#40514f" text-anchor="middle">fails: node kept, cause recorded</text>
+<rect x="40" y="524" width="16" height="12" rx="2" fill="#fdf3e3" stroke="#b07a1f"/>
+<text x="62" y="535" font-size="12.5" fill="#40514f">human</text>
+<rect x="120" y="524" width="16" height="12" rx="2" fill="#e9f1f8" stroke="#3c6e9c"/>
+<text x="142" y="535" font-size="12.5" fill="#40514f">agent</text>
+<rect x="200" y="524" width="16" height="12" rx="2" fill="#f3f4f4" stroke="#6f7f7c"/>
+<text x="222" y="535" font-size="12.5" fill="#40514f">tools</text>
+</svg>

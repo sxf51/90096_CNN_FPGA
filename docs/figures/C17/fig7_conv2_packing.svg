@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="760" viewBox="0 0 1180 760" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#1f2328">
+<title>C17: conv2 packed multiply</title>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5b6470"/></marker><pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#c84b4b" stroke-width="2" opacity="0.55"/></pattern></defs>
+<rect width="1180" height="760" fill="white"/>
+<text x="24.0" y="30.0" font-size="18" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">Figure 7 - conv2: one DSP48E2 multiply computes two output channels</text>
+<text x="24.0" y="50.0" font-size="12" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">packed = w0 x 2^18 + w1 (two signed 8-bit weights); product = packed x activation; the low 18 bits hold w1 x, the rest hold w0 x</text>
+<text x="24.0" y="111.0" font-size="12" text-anchor="start" font-weight="bold" fill="#d9822b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">packed weight</text>
+<text x="24.0" y="126.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">ap_int&lt;27&gt;</text>
+<rect x="370.0" y="90.0" width="198.0" height="34.0" rx="3" fill="#fbe3cc" stroke="#5b6470" stroke-width="1" opacity="1.0"/>
+<text x="469.0" y="111.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">w0 (8 bit + sign)</text>
+<text x="372.0" y="136.0" font-size="9" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">26</text>
+<text x="566.0" y="136.0" font-size="9" text-anchor="end" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">18</text>
+<text x="469.0" y="150.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">A port, bits 26..18</text>
+<rect x="568.0" y="90.0" width="220.0" height="34.0" rx="3" fill="white" stroke="#5b6470" stroke-width="1" opacity="1.0"/>
+<text x="678.0" y="111.0" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">10-bit gap: all 0 if w1 &gt;= 0, all 1 if w1 &lt; 0</text>
+<text x="570.0" y="136.0" font-size="9" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">17</text>
+<text x="786.0" y="136.0" font-size="9" text-anchor="end" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">8</text>
+<text x="678.0" y="150.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">sign extension of w1 (it is one integer)</text>
+<rect x="788.0" y="90.0" width="176.0" height="34.0" rx="3" fill="#fdf1e4" stroke="#5b6470" stroke-width="1" opacity="1.0"/>
+<text x="876.0" y="111.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">w1 (8 bit)</text>
+<text x="790.0" y="136.0" font-size="9" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">7</text>
+<text x="962.0" y="136.0" font-size="9" text-anchor="end" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">0</text>
+<text x="876.0" y="150.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">bits 7..0</text>
+<text x="24.0" y="201.0" font-size="12" text-anchor="start" font-weight="bold" fill="#d9822b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">activation</text>
+<text x="24.0" y="216.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">ap_int&lt;10&gt;</text>
+<rect x="744.0" y="180.0" width="220.0" height="34.0" rx="3" fill="#e3ecf7" stroke="#5b6470" stroke-width="1" opacity="1.0"/>
+<text x="854.0" y="201.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">x (10 bit, &gt;= 0 after ReLU)</text>
+<text x="746.0" y="226.0" font-size="9" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">9</text>
+<text x="962.0" y="226.0" font-size="9" text-anchor="end" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">0</text>
+<text x="854.0" y="240.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">B port</text>
+<text x="730.0" y="204.0" font-size="11.5" text-anchor="end" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">x   (DSP48E2 27 x 18 signed multiplier: A port = packed word, B port = x)</text>
+<text x="24.0" y="296.0" font-size="12" text-anchor="start" font-weight="bold" fill="#d9822b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">product</text>
+<text x="24.0" y="311.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">ap_int&lt;37&gt;</text>
+<rect x="150.0" y="275.0" width="418.0" height="34.0" rx="3" fill="#fbe3cc" stroke="#5b6470" stroke-width="1" opacity="1.0"/>
+<text x="359.0" y="296.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">high field = w0 x   (reads w0 x - 1 when w1 x &lt; 0)</text>
+<text x="152.0" y="321.0" font-size="9" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">36</text>
+<text x="566.0" y="321.0" font-size="9" text-anchor="end" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">18</text>
+<text x="359.0" y="335.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">19 bits, read as signed, then + borrow</text>
+<rect x="568.0" y="275.0" width="396.0" height="34.0" rx="3" fill="#fdf1e4" stroke="#5b6470" stroke-width="1" opacity="1.0"/>
+<text x="766.0" y="296.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">low field = w1 x, 18-bit two&#x27;s complement</text>
+<text x="570.0" y="321.0" font-size="9" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">17</text>
+<text x="962.0" y="321.0" font-size="9" text-anchor="end" font-weight="normal" fill="#5b6470" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">0</text>
+<text x="766.0" y="335.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">8 b x 10 b needs 17 bits + sign = 18 bits, so it never reaches bit 18</text>
+<path d="M 580 269 C 580 245, 430 245, 430 269" stroke="#c84b4b" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="458.0" y="241.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#c84b4b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">bit 17 = sign of w1 x; if 1, high field += 1 (borrow repair, fabric)</text>
+<rect x="24.0" y="370.0" width="1132.0" height="190.0" rx="6" fill="white" stroke="#d7dbe0" stroke-width="1" opacity="1.0"/>
+<text x="38.0" y="392.0" font-size="12.5" text-anchor="start" font-weight="bold" fill="#d9822b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">Worked example: w0 = 3, w1 = -5, x = 7   (expect w0 x = 21, w1 x = -35)</text>
+<text x="38.0" y="418.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">packed = 3 x 2^18 + (-5) = 786,427</text>
+<text x="368.0" y="418.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">000000010 | 1111111111 | 11111011</text>
+<text x="798.0" y="418.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">fields read 2, all ones, 251: w1 = -5 has already borrowed 1 from w0</text>
+<text x="38.0" y="444.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">product = 786,427 x 7 = 5,504,989</text>
+<text x="368.0" y="444.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">0000000000000010100 | 111111111111011101</text>
+<text x="798.0" y="444.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">high = 20, low = 262,109 unsigned</text>
+<text x="38.0" y="470.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">low field as 18-bit signed</text>
+<text x="368.0" y="470.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">bit 17 = 1  -&gt;  262,109 - 2^18 = -35</text>
+<text x="798.0" y="470.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">= w1 x, exact</text>
+<text x="38.0" y="496.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">high field repaired</text>
+<text x="368.0" y="496.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">20 + 1 = 21</text>
+<text x="798.0" y="496.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">= w0 x, exact</text>
+<text x="38.0" y="522.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">same with w1 = +5</text>
+<text x="368.0" y="522.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">000000011 | 0000000000 | 00000101  x 7 -&gt; high 21, low 35, bit 17 = 0</text>
+<text x="368.0" y="548.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">no borrow, nothing to repair</text>
+<rect x="24.0" y="580.0" width="640.0" height="150.0" rx="6" fill="white" stroke="#d7dbe0" stroke-width="1" opacity="1.0"/>
+<text x="38.0" y="602.0" font-size="12.5" text-anchor="start" font-weight="bold" fill="#d9822b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">Per cycle in continuous_c2_fold (II = 1, 4 cycles per pixel)</text>
+<text x="38.0" y="626.0" font-size="11.5" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">4 lanes x 64 input channels = 256 DSPs, each producing w0 x and w1 x -&gt; 512 products</text>
+<text x="38.0" y="648.0" font-size="11.5" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">per lane: two 64-input fabric adder trees (6 levels, 1 register each) -&gt; sum0, sum1</text>
+<text x="38.0" y="670.0" font-size="11.5" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">+ bias (x 2^8), truncate to 21 bits, ReLU, round half to even, saturate -&gt; two ap_int&lt;10&gt;</text>
+<text x="38.0" y="692.0" font-size="11.5" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">4 cycles x 4 lanes x 2 = 32 output channels; packing done once per frame at weight load (2,192 cycles)</text>
+<rect x="690.0" y="580.0" width="466.0" height="150.0" rx="6" fill="white" stroke="#d7dbe0" stroke-width="1" opacity="1.0"/>
+<text x="704.0" y="602.0" font-size="12.5" text-anchor="start" font-weight="bold" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">Measured PE alternatives (4 ns target, II = 1)</text>
+<text x="704.0" y="626.0" font-size="11" text-anchor="start" font-weight="bold" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">variant</text>
+<text x="950.0" y="626.0" font-size="11" text-anchor="start" font-weight="bold" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">DSP / pair</text>
+<text x="1030.0" y="626.0" font-size="11" text-anchor="start" font-weight="bold" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">LUT</text>
+<text x="1085.0" y="626.0" font-size="11" text-anchor="start" font-weight="bold" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">exact?</text>
+<text x="704.0" y="650.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">direct 10 b x 10 b, two DSPs (P02)</text>
+<text x="950.0" y="650.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">2</text>
+<text x="1030.0" y="650.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">-</text>
+<text x="1085.0" y="650.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">yes</text>
+<text x="704.0" y="672.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">signed-8 pair, gap 18 (P01)</text>
+<text x="950.0" y="672.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">1</text>
+<text x="1030.0" y="672.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">132</text>
+<text x="1085.0" y="672.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">yes (2^24)</text>
+<text x="704.0" y="694.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">exact-10 residual pair (P07)</text>
+<text x="950.0" y="694.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">1</text>
+<text x="1030.0" y="694.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">454</text>
+<text x="1085.0" y="694.0" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2328" font-family="SF Mono, Menlo, Consolas, monospace" opacity="1.0">yes</text>
+<text x="24.0" y="748.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5b6470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" opacity="1.0">plain/C17_srcnn_plain.cpp (conv2_stream); experiments/P01, P02, P07; C13/C17 csynth: conv2_stream 256 DSP</text>
+</svg>

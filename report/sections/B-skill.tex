@@ -1,0 +1,466 @@
+% Generated from SKILL.md by tools/build_skill_appendix.py; do not edit by hand.
+English edition of the \passthrough{\lstinline!experiment-exploration!}
+skill; keep the two in sync.
+
+This approach comes from the SRCNN FPGA optimization in
+\passthrough{\lstinline!\~/School/Hardware/remote/90096\_CNN\_FPGA!}:
+170+ experiments, each traceable to its experiment card, raw reports,
+and commit. Scripts and templates live in this skill's directory
+(\passthrough{\lstinline!scripts/!},
+\passthrough{\lstinline!templates/!}).
+
+Division of labor with other skills:
+
+\begin{itemize}
+\tightlist
+\item
+  This skill covers the phase where you don't yet know which approach
+  works. Experiment code lives on experiment branches and in independent
+  copies, never on the mainline; once an approach is chosen, implement
+  it properly following
+  \passthrough{\lstinline!production-engineering!}.
+\item
+  For experiments on n08 / n09, follow
+  \passthrough{\lstinline!lab-gpu-servers!} for connecting, picking
+  GPUs, and moving data.
+\end{itemize}
+
+\subsection{Before starting: write the exploration
+plan}
+
+Create an exploration plan under \passthrough{\lstinline!docs/!} from
+the template
+\passthrough{\lstinline!templates/plan.md!}.
+Fill in the following before the first experiment:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Problem and invariant contract}: what must not change
+  (interfaces, data formats, numeric precision, test set). If these
+  change, it is no longer the same problem.
+\item
+  \textbf{A single primary metric}: one number compares every approach,
+  with the conversion formula fixed in writing
+  (e.g.~\passthrough{\lstinline!ms/image = cycles × clock period (ns) / 10\^6!}).
+  Numbers measured on different bases are not ranked together; when they
+  must appear side by side, label the basis.
+\item
+  \textbf{Gates}, in three kinds:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Quality gate: how correct the result must be (e.g.~\(\Delta\)PSNR
+    \(\ge\) \$-\$0.1 dB, bit-exact against the reference);
+  \item
+    Screening gate: whether it is worth taking to the next level of
+    verification;
+  \item
+    Final gate: whether it can be declared ``feasible''. Only approaches
+    that pass the final gate enter the ranking.
+  \end{itemize}
+\item
+  \textbf{Evidence levels}: list your domain's evidence from weakest to
+  strongest, e.g.~``paper estimate \textless{} local / unit experiment
+  \textless{} simulation \textless{} synthesis estimate \textless{}
+  implementation \textless{} hardware measurement''. Tag every
+  conclusion with the level it has reached; never present lower-level
+  evidence as higher-level.
+\item
+  \textbf{Numbering scheme}: series prefixes by direction (e.g.~E for
+  baseline and sweeps, P / W / G for individual optimization directions,
+  C for combinations, F for the mainline); IDs are never reused; reserve
+  a separate range for replays (e.g.~100 and above).
+\item
+  \textbf{Budget and stop rules}: timeout per run; maximum time on any
+  one problem (e.g.~45 minutes), after which you stop and record;
+  concurrency and memory rules for the machines.
+\item
+  \textbf{Protected artifacts}: baseline source, data, reference
+  outputs. Record their sha256 before starting and verify again at
+  wrap-up.
+\item
+  \textbf{User decisions}: record them in the plan with dates. When a
+  new decision supersedes an old rule, keep the old rule as history;
+  don't rewrite it.
+\end{enumerate}
+
+\subsection{Lifecycle of one
+experiment}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.28}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.72}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Step
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What to do
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1. Assign an ID & Confirm it is unused. Completed IDs are never reused;
+a rerun after a fix also gets a new ID, linked back with a
+\passthrough{\lstinline!retry!} relation \\
+2. Write and commit the experiment card &
+\passthrough{\lstinline!templates/experiment.json!}:
+purpose, control experiment, \textbf{the only thing changed} relative to
+the control, conditions held fixed, paper estimate and its basis, how it
+will be judged, and what each possible outcome leads to next.
+\textbf{Commit first, then run} \\
+3. Run in isolation & Copy an independent design or codebase from the
+control; don't touch files of completed experiments; no concurrent runs
+in the same working directory; every run has a timeout and a log \\
+4. Archive & \passthrough{\lstinline!experiments/<id>\_<short-name>/!}:
+a copy of the card, raw logs, raw reports, parsed metrics, a one-page
+note (result, deviation from the estimate, conclusion), plus the source
+commit and tool versions \\
+5. Register & The registry \passthrough{\lstinline!results.csv!} is
+appended by the parsing script, never by hand; leave unmeasured values
+blank, not 0; failures, timeouts, and invalid configurations get a row
+too \\
+6. Record & Append an entry to \passthrough{\lstinline!LOG.md!}; update
+the current state in \passthrough{\lstinline!PROGRESS.md!} \\
+7. Commit & One commit per experiment, message starting with the ID,
+e.g.~\passthrough{\lstinline!F25 nested\_weight\_loader!} \\
+8. Update the evolution graph & Add the node and relations to
+\passthrough{\lstinline!graph.json!} and regenerate the SVGs (section
+6) \\
+\end{longtable}
+
+Completed experiments are immutable: to reproduce one, assign a new ID,
+copy the archived design, and rerun it with the recorded commands.
+
+\subsection{When proposing an
+optimization}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Find the bottleneck first, with evidence}: a specific line
+  from a report or profile, e.g.~``the 2.822 ns global critical path
+  sits on the 15-bit address multiply in Conv1 weight loading''. No
+  experiment is opened on an evidence-free ``this should be faster''.
+\item
+  \textbf{State a testable hypothesis}: ``Changing X should move the
+  metric from a to b, because \ldots; the likely cost is \ldots{}''.
+\item
+  \textbf{Pick a control and change only this one thing}: name the
+  control experiment and write the difference in the card's
+  \passthrough{\lstinline!changes!}. Change several factors at once and
+  you can't tell which one mattered.
+\item
+  \textbf{Commit the paper estimate first}: write the estimate and its
+  basis into the card and commit before running, so it can't be revised
+  after the fact.
+\item
+  \textbf{Compare the measurement with the estimate}: when they differ a
+  lot, first explain why (where the estimate went wrong), then decide
+  the next step.
+\item
+  \textbf{Turn the conclusion into a next step}: adopt as the new
+  baseline, keep as a branch, or stop, and say why.
+\item
+  \textbf{Update the evolution graph}.
+\end{enumerate}
+
+Rules of judgment:
+
+\begin{itemize}
+\tightlist
+\item
+  Measure the baseline and fix the numeric contract before optimizing.
+\item
+  Sweep one parameter dimension at a time, round by round; don't change
+  every parameter at once.
+\item
+  Local results (a unit, a single layer, a small kernel) don't
+  extrapolate to the whole system.
+\item
+  Gains from two approaches don't simply add up; a combination must be
+  measured on its own.
+\item
+  The fastest point that fails a gate stays out of the ranking, e.g.~a
+  combination with the lowest latency but three times the LUT budget.
+\item
+  Failure is a result: keep the node and state the cause. Distinguish
+  ``configuration didn't take effect'' (invalid: fix and retry) from
+  ``valid but below the bar'' (a conclusion).
+\item
+  A tool ``exiting successfully'' doesn't mean the result is correct;
+  check the actual metrics.
+\item
+  When one problem hits its budget, stop, record the current state, and
+  switch direction or ask the user.
+\end{itemize}
+
+\subsection{File layout}
+
+\begin{lstlisting}
+docs/NNNN-<topic>.md            exploration plan; conclusions written at wrap-up
+exp/configs/<id>.json           experiment cards (committed before running)
+experiments/
+  PROGRESS.md                   resume entry point: current state, what's running, next steps, how to resume
+  LOG.md                        append-only event log
+  results.csv                   registry (script-generated)
+  graph.json                    evolution graph data: hand-written ideas and relations
+  evolution/                    generated .svg / .mmd (don't edit by hand)
+  <id>_<short-name>/            per-experiment archive
+\end{lstlisting}
+
+\passthrough{\lstinline!PROGRESS.md!} template:
+\passthrough{\lstinline!templates/PROGRESS.md!}.
+
+\subsection{Registry and log}
+
+\textbf{\passthrough{\lstinline!results.csv!}}: one row per experiment,
+with at least these columns:
+
+\passthrough{\lstinline!id, time, series, control, changes, status, <primary metric>, <gate-related metrics>, evidence\_level, git\_commit, archive, notes!}
+
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!status!} uses the same values as the evolution
+  graph:
+  \passthrough{\lstinline!pass / warn / fail / invalid / timeout / planned / analysis / partial!}.
+\item
+  Predictions stay in the experiment card, never in the registry; the
+  registry holds measurements only.
+\item
+  If a registered result turns out to be wrong, append a correction
+  event to LOG.md and fix it in a new experiment; don't rewrite the
+  original reports and logs.
+\end{itemize}
+
+\textbf{\passthrough{\lstinline!LOG.md!}} is append-only, one line per
+entry, with UTC time and IDs:
+
+\begin{lstlisting}
+- 2026-10-10T16:52:16Z: E023/E024/E025 invalid: syn.directive silently ignored by the tool. Now generating directives from the schema and rejecting unknown options; retried as E028/E029/E032.
+\end{lstlisting}
+
+\subsection{Experiment evolution graph (SVG directed
+graph)}
+
+The evolution graph answers three questions: \textbf{what each
+experiment builds on, why it was adjusted that way, and how its result
+led to the next experiment}. Update it when a new optimization direction
+opens, when a phase wraps up, and when reporting to the user.
+
+\textbf{Data}: \passthrough{\lstinline!experiments/graph.json!}.
+Hand-write a one-line idea for each experiment and where it came from.
+Example:
+\passthrough{\lstinline!templates/graph.example.json!};
+rendered result:
+\passthrough{\lstinline!templates/example-evolution/overview.svg!}.
+
+\begin{lstlisting}
+{ "id": "F25", "title": "Disable load-loop flattening", "group": "mainline", "status": "warn",
+  "idea": "One change only: LOOP_FLATTEN off", "metric": 2.64, "problem": "Timing warning at 2.5 ns",
+  "parents": ["F24"] }
+\end{lstlisting}
+
+\textbf{Generate} (requires Node and dagre 0.8.x; see the header of the
+script):
+
+\begin{lstlisting}[language=bash]
+node <this skill>/scripts/evolution_graph.cjs experiments/graph.json --all \
+     --results experiments/results.csv --metric-column latency_ms
+node <this skill>/scripts/evolution_graph.cjs experiments/graph.json --all \
+     --results experiments/results.csv --metric-column latency_ms --check
+\end{lstlisting}
+
+\passthrough{\lstinline!--all!} produces the overview
+\passthrough{\lstinline!overview.svg!} plus one graph per route
+(\passthrough{\lstinline!group!}); route graphs draw direct sources from
+outside the route as grey dashed boxes.
+\passthrough{\lstinline!--check!} writes nothing; it only checks the
+data rules, node overlap, and whether the generated files are stale.
+
+\textbf{Node statuses}:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+status
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Requirement
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\passthrough{\lstinline!pass!} & Passed the current stage, with a
+comparable metric & Must have a metric; may add
+\passthrough{\lstinline!"selected": true!} to mark the current choice
+(\(\star\), bold border) \\
+\passthrough{\lstinline!warn!} & Passed with warnings (e.g.~timing
+warnings) & Must have a metric; put the warning in
+\passthrough{\lstinline!problem!} \\
+\passthrough{\lstinline!fail!} & Below the bar, or failed & Must have a
+one-line \passthrough{\lstinline!problem!}; any metric is shown only in
+grey \\
+\passthrough{\lstinline!invalid!} & Invalid configuration (didn't take
+effect); faded & Must have \passthrough{\lstinline!problem!} \\
+\passthrough{\lstinline!timeout!} & Timed out or interrupted; faded &
+Must have \passthrough{\lstinline!problem!} \\
+\passthrough{\lstinline!planned!} & Planned, not run; dashed border &
+Must not have a metric \\
+\passthrough{\lstinline!analysis!} & Software analysis or numeric study
+& --- \\
+\passthrough{\lstinline!partial!} & Local experiment (unit, single
+layer), no whole-system metric & Don't invent a whole-system metric \\
+\end{longtable}
+
+\textbf{Relations} (solid lines are design evolution; dashed lines are
+evidence and verification):
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+kind & Meaning & Line \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\passthrough{\lstinline!source!} & Design or parameter baseline
+(default) & solid \\
+\passthrough{\lstinline!retry!} & Retry after a fix & solid \\
+\passthrough{\lstinline!integrate!} & Integrates an existing module &
+solid \\
+\passthrough{\lstinline!reference!} & Numeric basis or inspiration &
+dashed \\
+\passthrough{\lstinline!control!} & Control & dashed \\
+\passthrough{\lstinline!verify!} & Verification of the same design &
+dashed \\
+\passthrough{\lstinline!replay!} & Reproduction & dashed \\
+\end{longtable}
+
+\textbf{Drawing rules}:
+
+\begin{itemize}
+\tightlist
+\item
+  Exactly one node per experiment; relations are dependencies between
+  ideas, not Git commit history; no cycles.
+\item
+  An experiment normally links to one primary source; link several only
+  when integrating, or when bringing in a key numeric basis.
+\item
+  Keep failed nodes, with a specific one-line problem such as ``LUT
+  248,797, 3\(\times\) over budget'', not just ``failed''.
+\item
+  Put only the primary metric on a node; resources, accuracy, and other
+  details go in the experiment record.
+\item
+  The registry is the source of truth for metrics: cross-check with
+  \passthrough{\lstinline!--results!}, and fix
+  \passthrough{\lstinline!graph.json!} when they disagree.
+\item
+  Once there are many experiments (dozens or more), split them into
+  routes by \passthrough{\lstinline!group!} and keep only the trunk in
+  the overview; if needed, use route-level summary nodes there.
+\end{itemize}
+
+\textbf{Accompanying text}: in the exploration plan or a separate
+document, write one paragraph per route answering the three questions
+above, and embed the matching SVG. Readers look at the overview first,
+then at each route for detail.
+
+\subsection{Resuming and handover}
+
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!PROGRESS.md!} is the resume entry point:
+  current branch and baseline, completed IDs, running jobs (machine,
+  process, log path), to-dos, user decisions in force, and resume steps.
+  Update it at the end of every experiment.
+\item
+  Check processes before resuming: remote jobs may have finished or may
+  still be running. For finished jobs, only collect results
+  (collect-only) and don't relaunch them; never start a second copy of a
+  job that is still running.
+\item
+  The handover document states which conclusions have reached which
+  evidence level, what hasn't been verified yet, and the candidates for
+  the next step with reasons.
+\end{itemize}
+
+\subsection{Reporting}
+
+Every report uses a table; write \passthrough{\lstinline!unknown!} for
+anything not measured:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+ID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What changed vs.~control
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Primary metric
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Gate results
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Evidence level
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Status
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Conclusion / next step
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\end{longtable}
+
+Also state:
+
+\begin{itemize}
+\tightlist
+\item
+  the currently selected approach, and why it is the one;
+\item
+  deviations from the paper estimates;
+\item
+  items that haven't reached the final gate yet;
+\item
+  the path to the evolution graph.
+\end{itemize}
+
+\subsection{Subagents and models}
+
+Subagents default to Sonnet; for the setting and the precedence order,
+see section 7 of \passthrough{\lstinline!production-engineering!}.
+
+\begin{itemize}
+\tightlist
+\item
+  Good fits for Sonnet subagents: running an experiment from its
+  committed experiment card, checking remote jobs and collecting
+  results, parsing reports and appending to the registry, generating and
+  checking the evolution graph, searching past experiments and logs.
+\item
+  Pass \passthrough{\lstinline!model: "opus"!} explicitly for: finding
+  bottleneck evidence in reports, writing hypotheses and paper
+  estimates, explaining gaps between estimates and measurements,
+  verifying any claim that something passes the final gate.
+\end{itemize}

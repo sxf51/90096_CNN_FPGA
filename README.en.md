@@ -25,7 +25,8 @@ All convolutions have stride 1. Conv1 and Conv3 replicate the nearest edge pixel
 | `test/tb_set14.cpp` | Set14 MSE and PSNR evaluation; disabled by default |
 | `test/set5/`, `test/set14/` | Input images, ground truth, and reference data |
 | `script.py` | Creates and configures the Vitis HLS component |
-| `workspace/` | Generated Vitis workspace, excluded by `.gitignore` |
+| `workspace/` | Generated Vitis workspace; selected reports and config can be tracked, other artifacts are ignored |
+| `output/` | Archive for important experiment results, created as needed |
 
 ## Run C simulation in Vitis
 
@@ -42,9 +43,25 @@ All convolutions have stride 1. Conv1 and Conv3 replicate the nearest edge pixel
 
 3. After the script finishes, open Vitis GUI with the root `workspace/` as its workspace, select the `baseline` component, and run **C Simulation**.
 
-The generated configuration is `workspace/baseline/hls_config.cfg`. The target part is `xck26-sfvc784-2LV-c` and the target clock is 10 ns. Passing C simulation verifies functional output; run HLS synthesis separately to assess area, timing, and estimated hardware latency.
+The generated configuration is `workspace/baseline/hls_config.cfg`. The target part is `xck26-sfvc784-2LV-c` and the target clock is 10 ns. C simulation checks functional output, but the current tests only print MSE without enforcing a tolerance: check the actual MSE even when the process exits successfully. Run HLS synthesis separately to estimate area, timing, and hardware latency; implementation and board measurements are needed to validate actual performance.
 
 The default `test/csim.cpp` entry runs Conv1 and full-network tests. Enable `tb_set14()` there to run the Set14 evaluation. The testbench reads `./weights/` and `./set5/` by relative path; the Vitis component includes those directories as test files.
+
+## Reports and Git
+
+The current GUI flow usually writes results under `workspace/baseline/baseline/`:
+
+| Path relative to that directory | Contents |
+| --- | --- |
+| `hls/csim/report/srcnn_csim.log` | C-simulation result, testbench output, and MSE |
+| `logs/hls_run_csim.log` | Tool runtime on the host, memory use, and full log |
+| `hls/syn/report/csynth.rpt`, `srcnn_csynth.rpt` | Estimated hardware latency, cycles, II, timing, and resources |
+| `hls/syn/report/*.xml` | Machine-readable synthesis metrics |
+| `hls/sim/report/srcnn_cosim.rpt` | C/RTL co-simulation result and RTL latency |
+
+`.gitignore` allows these reports, selected run logs, and `hls_config.cfg` to be tracked, including the same report layout under `build/`. IDE state, caches, generated HDL, build products, and waveforms remain ignored. `Total elapsed time` in a tool log measures how long simulation or synthesis took on the host; `Latency (cycles)` in a synthesis report estimates hardware computation. They are different measurements.
+
+**Allowing Git to track a file does not save it automatically.** `script.py` still recreates `workspace/`. Copy important results to `output/<experiment>/`, record the source commit, tool version, and configuration, then commit the selected files as needed. See [HLS report locations and retention rules](docs/0001-hls-reports.md) (Chinese).
 
 ## Current validation
 

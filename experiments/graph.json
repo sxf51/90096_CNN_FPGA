@@ -1,0 +1,782 @@
+{
+  "title": "SRCNN on KV260: experiment evolution",
+  "subtitle": "Condensed from 231 registered experiments (results.csv). Only turning points are drawn; every ID links to experiments/<ID>_*/. Numbers are ms/frame; the evidence level is stated on each node.",
+  "metric": {
+    "unit": "ms/frame",
+    "decimals": 2,
+    "better": "lower",
+    "note": "ms/frame = cycles x clock period. HLS = HLS estimated cycles x target clock; RTL x routed = C/RTL co-simulation cycles x an independently closed post-route clock. No value is a board measurement."
+  },
+  "groups": {
+    "baseline": "Phase 1a: baseline, precision, directives",
+    "stream": "Phase 1b: streaming architecture and parameter sweep",
+    "branches": "Phase 2: architecture branches (packing, Winograd, scatter, tiling, DDR, combination)",
+    "mainline": "Phase 2: continuous direct-convolution mainline",
+    "physical": "Phase 3: physical verification and route calibration",
+    "winograd": "Phase 3: Winograd T8 with private parameters",
+    "t4": "Phase 4: ROM, clock and T4 workstream"
+  },
+  "experiments": [
+    {
+      "id": "E000",
+      "title": "Original float baseline",
+      "group": "baseline",
+      "status": "fail",
+      "idea": "Measure the untouched golden source before changing anything",
+      "metric": 19601.14,
+      "metric_text": "HLS 19,601 ms",
+      "problem": "BRAM18K 11,064 needed, device has 288: full 23.8 MiB feature maps cannot stay on chip",
+      "parents": []
+    },
+    {
+      "id": "E010",
+      "title": "Per-layer range and bit-width scan",
+      "group": "baseline",
+      "status": "analysis",
+      "idea": "Scan 16/12/10/8-bit fixed point on all 13 Set14 images (numpy fake-quant)",
+      "metric_text": "10-bit: dPSNR -0.0695 dB",
+      "parents": [
+        {
+          "id": "E000",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "E017",
+      "title": "ap_fixed reference, 10-bit",
+      "group": "baseline",
+      "status": "analysis",
+      "idea": "Real ap_fixed loading, layer-boundary rounding and saturation; becomes the bit-exact reference",
+      "metric_text": "C sim: bit-exact reference",
+      "parents": [
+        {
+          "id": "E010",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "E065",
+      "title": "Conv2-only 8-bit weights",
+      "group": "baseline",
+      "status": "analysis",
+      "idea": "Mixed precision point: only Conv2 weights and bias to signed 8-bit",
+      "metric_text": "13 images: dPSNR -0.0759 dB",
+      "parents": [
+        {
+          "id": "E017",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "E023",
+      "title": "Directives only: pipeline inner loop",
+      "group": "baseline",
+      "status": "invalid",
+      "idea": "Keep the structure, add pipelining directives",
+      "problem": "Configuration keys silently ignored by the tool; result identical to E000",
+      "parents": [
+        "E000"
+      ]
+    },
+    {
+      "id": "E029",
+      "title": "Directives (valid retry)",
+      "group": "baseline",
+      "status": "fail",
+      "idea": "Generate directives from the schema, reject unknown keys",
+      "metric": 3811.22,
+      "metric_text": "HLS 3,811 ms",
+      "problem": "BRAM18K 11,114: directives alone cannot fix whole-image storage",
+      "parents": [
+        {
+          "id": "E023",
+          "kind": "retry"
+        }
+      ]
+    },
+    {
+      "id": "E033",
+      "title": "10-bit streaming network, T=32",
+      "group": "stream",
+      "status": "fail",
+      "idea": "Line buffers and stream connections remove the full intermediate feature maps",
+      "metric": 123.54,
+      "metric_text": "HLS 123.5 ms",
+      "problem": "LUT 136,868: narrow multiplications fell into LUTs, only 9 DSP used",
+      "parents": [
+        "E000",
+        {
+          "id": "E017",
+          "kind": "reference"
+        },
+        {
+          "id": "E029",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "E047",
+      "title": "Force products onto DSP",
+      "group": "stream",
+      "status": "fail",
+      "idea": "One change: bind the 251 products per cycle to DSP48",
+      "metric": 29.14,
+      "metric_text": "HLS 29.1 ms",
+      "problem": "251 DSP as planned, but LUT 89,341 exceeds the cap",
+      "parents": [
+        "E033"
+      ]
+    },
+    {
+      "id": "E039",
+      "title": "Weights in LUTRAM",
+      "group": "stream",
+      "status": "warn",
+      "idea": "One change: weight storage from BRAM to LUTRAM",
+      "metric": 29.83,
+      "metric_text": "HLS 29.8 ms, 44,530 LUT",
+      "problem": "First resource-feasible point; HLS timing warning",
+      "parents": [
+        "E047"
+      ]
+    },
+    {
+      "id": "E043",
+      "title": "Fastest point of the sweep",
+      "group": "stream",
+      "status": "warn",
+      "idea": "One axis per step: T, unroll split, weight storage, clock",
+      "metric": 6.94,
+      "metric_text": "HLS 6.94 ms",
+      "problem": "HLS timing warning; phase-1 selected point",
+      "parents": [
+        "E039"
+      ]
+    },
+    {
+      "id": "E070",
+      "title": "First Vivado route",
+      "group": "stream",
+      "status": "fail",
+      "idea": "Route the first feasible point at the 10 ns target",
+      "metric_text": "routed: timing not met",
+      "parents": [
+        {
+          "id": "E039",
+          "kind": "verify"
+        }
+      ],
+      "problem": "WNS -1.277 ns: an unregistered 8-deep DSP cascade. First calibration point: clock 1.5x worse than HLS, LUT 0.46x"
+    },
+    {
+      "id": "P01",
+      "title": "Packing PE: two 8-bit products per DSP",
+      "group": "branches",
+      "status": "partial",
+      "idea": "27-bit packed multiply, gap 18, signed-low borrow repair",
+      "metric_text": "PE only: 1 DSP per pair, exact",
+      "parents": [
+        {
+          "id": "E043",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "P12",
+      "title": "Packing in the whole network",
+      "group": "branches",
+      "status": "fail",
+      "idea": "Pair output channels so one DSP does two multiplications",
+      "metric": 5.42,
+      "metric_text": "HLS 5.42 ms",
+      "problem": "DSP halved, but decoding and selectors need 292,053 LUT",
+      "parents": [
+        "E043",
+        {
+          "id": "P01",
+          "kind": "integrate"
+        }
+      ]
+    },
+    {
+      "id": "W01",
+      "title": "Winograd PE F(2x2,3x3)",
+      "group": "branches",
+      "status": "partial",
+      "idea": "Exact integer transforms; inverse divides by 4 exactly",
+      "metric_text": "PE only: exact",
+      "parents": [
+        {
+          "id": "E043",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "W07",
+      "title": "Winograd Conv1 in the network",
+      "group": "branches",
+      "status": "warn",
+      "idea": "Nine 3x3 pieces of the 9x9 kernel, conditional tile scan",
+      "metric": 22.89,
+      "metric_text": "HLS 22.9 ms",
+      "problem": "5.7 M Conv1 cycles: the conditional tile branch is taken at every position",
+      "parents": [
+        "E043",
+        {
+          "id": "W01",
+          "kind": "integrate"
+        }
+      ]
+    },
+    {
+      "id": "W10",
+      "title": "Continuous Winograd",
+      "group": "branches",
+      "status": "warn",
+      "idea": "Replace the conditional scan with a fixed-tile continuous pipeline",
+      "metric": 7.55,
+      "metric_text": "HLS 7.55 ms",
+      "problem": "T16 only; the T8 variant W09 needs 135,496 LUT",
+      "parents": [
+        "W07"
+      ]
+    },
+    {
+      "id": "W18",
+      "title": "Winograd with narrow raw-weight bank",
+      "group": "branches",
+      "status": "warn",
+      "idea": "Keep only the transformed banks the MAC engines read",
+      "metric": 4.23,
+      "metric_text": "HLS 4.23 ms",
+      "problem": "HLS timing warning; still slower than continuous direct convolution",
+      "parents": [
+        "W10"
+      ]
+    },
+    {
+      "id": "G03",
+      "title": "Scatter with merged edge kernels",
+      "group": "branches",
+      "status": "warn",
+      "idea": "Replace gather by channel-reduced scatter of partial sums",
+      "metric": 44.14,
+      "metric_text": "HLS 44.1 ms",
+      "problem": "Slower than the gather control G01 (29.8 ms); direction closed",
+      "parents": [
+        {
+          "id": "E043",
+          "kind": "control"
+        }
+      ]
+    },
+    {
+      "id": "S01",
+      "title": "Intermediate maps in DDR",
+      "group": "branches",
+      "status": "invalid",
+      "idea": "Expose the two scratch arrays through m_axi",
+      "problem": "Global ports were not exported; tool still synthesized on-chip storage",
+      "parents": [
+        "E043"
+      ]
+    },
+    {
+      "id": "S03",
+      "title": "Output-tile fusion B=8..64",
+      "group": "branches",
+      "status": "fail",
+      "idea": "Fuse Conv1/Conv2 per output tile to shrink buffers",
+      "metric": 228.04,
+      "metric_text": "HLS 130 to 228 ms",
+      "problem": "Recomputed halos cost more cycles than the buffers save",
+      "parents": [
+        "E043"
+      ]
+    },
+    {
+      "id": "C11",
+      "title": "Winograd + packing combined",
+      "group": "branches",
+      "status": "fail",
+      "idea": "Stack the two DSP-saving routes",
+      "metric": 1.08,
+      "metric_text": "HLS 1.08 ms",
+      "problem": "LUT 248,797 / FF 307,525: far over the device; gains do not add",
+      "parents": [
+        {
+          "id": "W18",
+          "kind": "integrate"
+        },
+        {
+          "id": "P12",
+          "kind": "integrate"
+        }
+      ]
+    },
+    {
+      "id": "F08",
+      "title": "Continuous direct convolution",
+      "group": "mainline",
+      "status": "warn",
+      "idea": "Separate window generation from MAC engines; one II=1 pixel/fold loop",
+      "metric": 4.19,
+      "metric_text": "HLS 4.19 ms",
+      "problem": "7,013 of 13,268 Conv3 LUT are multiplexers for the held window",
+      "parents": [
+        "E043"
+      ]
+    },
+    {
+      "id": "F13",
+      "title": "Rotate the held window",
+      "group": "mainline",
+      "status": "warn",
+      "idea": "Rotate channels instead of dynamic selection",
+      "metric": 4.19,
+      "metric_text": "HLS 4.19 ms",
+      "problem": "Cycles unchanged; LUT/FF variants F14/F15 exceed budget",
+      "parents": [
+        "F08"
+      ]
+    },
+    {
+      "id": "F20",
+      "title": "Exact IEEE output encoder",
+      "group": "mainline",
+      "status": "partial",
+      "idea": "Build the float output bit pattern directly: 0 DSP, 242 LUT",
+      "metric_text": "PE only: bit-exact, 0 DSP",
+      "parents": [
+        {
+          "id": "F08",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "F23",
+      "title": "Encoder in the network, 3 ns target",
+      "group": "mainline",
+      "status": "warn",
+      "idea": "Replace only output decoding",
+      "metric": 2.96,
+      "metric_text": "HLS 2.96 ms",
+      "problem": "Global path 2.822 ns is the Conv1 weight loader's address multiplier",
+      "parents": [
+        "F13",
+        {
+          "id": "F20",
+          "kind": "integrate"
+        }
+      ]
+    },
+    {
+      "id": "F24",
+      "title": "Affine weight-load indexing",
+      "group": "mainline",
+      "status": "warn",
+      "idea": "Remove the multiplier from the load address",
+      "metric": 2.83,
+      "metric_text": "HLS 2.83 ms",
+      "problem": "Critical path moves to a 2.699 ns flattened-loop counter",
+      "parents": [
+        "F23"
+      ]
+    },
+    {
+      "id": "F25",
+      "title": "LOOP_FLATTEN off in the loader",
+      "group": "mainline",
+      "status": "warn",
+      "idea": "Only one directive changed",
+      "metric": 2.64,
+      "metric_text": "HLS 2.64 ms",
+      "problem": "HLS timing warning at 2.5 ns",
+      "parents": [
+        "F24"
+      ]
+    },
+    {
+      "id": "F28",
+      "title": "Private parameter banks",
+      "group": "mainline",
+      "status": "warn",
+      "idea": "46 % of F25 LUT sat outside the dataflow region in weight banks and muxes; one AXI reader streams parameters into per-layer private banks",
+      "metric": 2.62,
+      "metric_text": "HLS 2.62 ms",
+      "problem": "HLS estimate only; needs RTL and routing",
+      "parents": [
+        "F25"
+      ]
+    },
+    {
+      "id": "F81",
+      "title": "Implement F25",
+      "group": "physical",
+      "status": "fail",
+      "idea": "First place-and-route of the mainline",
+      "problem": "Kernel OOM on the 15 GiB host: Vivado worker processes exceeded memory",
+      "parents": [
+        {
+          "id": "F25",
+          "kind": "verify"
+        }
+      ]
+    },
+    {
+      "id": "F82",
+      "title": "RTL co-simulation of F25",
+      "group": "physical",
+      "status": "pass",
+      "idea": "Two frames, finite FIFOs, deadlock detection",
+      "metric_text": "RTL 1,068,183 cycles, bit-exact",
+      "parents": [
+        {
+          "id": "F25",
+          "kind": "verify"
+        }
+      ]
+    },
+    {
+      "id": "F92",
+      "title": "Implement F25, single-thread retry",
+      "group": "physical",
+      "status": "pass",
+      "idea": "maxThreads=1 hook; routed at 5 ns, WNS +0.568",
+      "metric": 5.34,
+      "metric_text": "RTL x routed 5.34 ms",
+      "parents": [
+        {
+          "id": "F81",
+          "kind": "retry"
+        },
+        {
+          "id": "F82",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "F95",
+      "title": "Implement F28",
+      "group": "physical",
+      "status": "pass",
+      "idea": "Same flow on the private-bank design; routed at 5 ns",
+      "metric": 5.3,
+      "metric_text": "RTL x routed 5.30 ms",
+      "parents": [
+        {
+          "id": "F28",
+          "kind": "verify"
+        },
+        {
+          "id": "F92",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "CAL",
+      "title": "Route calibration (user decision)",
+      "group": "physical",
+      "status": "analysis",
+      "idea": "W21 HLS clock 2.43 ns vs 4.95 ns routed; routed LUT 0.46 to 0.66x HLS over 18 routes. Gates switch to post-route numbers (docs/0005)",
+      "metric_text": "analysis of F92/F95/F98",
+      "parents": [
+        {
+          "id": "F92",
+          "kind": "reference"
+        },
+        {
+          "id": "F95",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "W19",
+      "title": "Winograd T8 + streamed parameters",
+      "group": "winograd",
+      "status": "fail",
+      "idea": "Integrate the F28 parameter stream into the W18 Winograd design",
+      "metric": 1.75,
+      "metric_text": "HLS 1.75 ms",
+      "problem": "Narrowly misses the HLS LUT gate",
+      "parents": [
+        "W18",
+        {
+          "id": "F28",
+          "kind": "integrate"
+        }
+      ]
+    },
+    {
+      "id": "W21",
+      "title": "Sub-kernel cache layout",
+      "group": "winograd",
+      "status": "warn",
+      "idea": "One change in the parameter transformer: cache indexed by sub-kernel",
+      "metric": 1.75,
+      "metric_text": "HLS 1.75 ms",
+      "problem": "Passes HLS gates narrowly; needs RTL and routing",
+      "parents": [
+        "W19"
+      ]
+    },
+    {
+      "id": "F97",
+      "title": "RTL co-simulation of W21",
+      "group": "winograd",
+      "status": "pass",
+      "idea": "Changed parameters, two frames; windows FIFO stalls 45,974 cycles",
+      "metric_text": "RTL 558,758 cycles, bit-exact",
+      "parents": [
+        {
+          "id": "W21",
+          "kind": "verify"
+        }
+      ]
+    },
+    {
+      "id": "W32",
+      "title": "Implement W21 at 4.5 ns",
+      "group": "winograd",
+      "status": "pass",
+      "idea": "Same RTL, Performance_Explore; WNS +0.144",
+      "metric": 2.51,
+      "metric_text": "RTL x routed 2.51 ms",
+      "parents": [
+        {
+          "id": "W21",
+          "kind": "verify"
+        },
+        {
+          "id": "F97",
+          "kind": "reference"
+        },
+        {
+          "id": "CAL",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "W24",
+      "title": "Constant weights in ROM",
+      "group": "winograd",
+      "status": "pass",
+      "idea": "Fix the trained parameters at compile time; no AXI reader",
+      "metric": 2.49,
+      "metric_text": "RTL x routed 2.49 ms (W33, 4.5 ns), 630 DSP",
+      "parents": [
+        "W19"
+      ]
+    },
+    {
+      "id": "F47",
+      "title": "Window FIFO 2 -> 16",
+      "group": "winograd",
+      "status": "pass",
+      "idea": "Only the transformed-window FIFO depth, after F97's stall evidence",
+      "metric_text": "RTL 535,771 cycles (F48)",
+      "parents": [
+        "W21",
+        {
+          "id": "F97",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "C16",
+      "title": "Deep windows + FRP folds",
+      "group": "winograd",
+      "status": "pass",
+      "idea": "Combine F47's FIFO basis with W27's free-running pipelines",
+      "metric": 2.41,
+      "metric_text": "RTL x routed 2.41 ms (C21, 4.5 ns)",
+      "parents": [
+        "F47",
+        {
+          "id": "W24",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "C13",
+      "title": "T4 with pre-packed Conv2",
+      "group": "t4",
+      "status": "warn",
+      "idea": "Fold T=4; Conv2 uses E065's 8-bit weights packed two per DSP once per frame",
+      "metric": 1.05,
+      "metric_text": "HLS 1.05 ms, 1,032 DSP",
+      "problem": "HLS LUT 127,966 is over the old 70% HLS gate but inside the routed screen",
+      "parents": [
+        "W21",
+        {
+          "id": "E065",
+          "kind": "reference"
+        },
+        {
+          "id": "P01",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "C18",
+      "title": "Implement C13 at 5 ns",
+      "group": "t4",
+      "status": "pass",
+      "idea": "RTL 300,632 cycles (C14); routed LUT 58,529, WNS +0.047; user asked for this route first",
+      "metric": 1.5,
+      "metric_text": "RTL x routed 1.50 ms",
+      "parents": [
+        {
+          "id": "C13",
+          "kind": "verify"
+        }
+      ]
+    },
+    {
+      "id": "C17",
+      "title": "C13 + 32-entry window FIFO",
+      "group": "t4",
+      "status": "warn",
+      "idea": "Only the FIFO depth, reusing F47's evidence at T4",
+      "metric": 1.05,
+      "metric_text": "HLS 1.05 ms",
+      "problem": "HLS estimate; RTL and routing needed",
+      "parents": [
+        "C13",
+        {
+          "id": "F47",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "C22",
+      "title": "Implement C17 at 5 ns",
+      "group": "t4",
+      "status": "pass",
+      "selected": true,
+      "idea": "RTL 273,023 cycles (C20); routed at 5.0 ns, WNS +0.013",
+      "metric": 1.37,
+      "metric_text": "RTL x routed 1.365 ms",
+      "parents": [
+        {
+          "id": "C17",
+          "kind": "verify"
+        },
+        {
+          "id": "C18",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "W36",
+      "title": "Implement C17 at 4.5 ns",
+      "group": "t4",
+      "status": "fail",
+      "idea": "Same RTL, tighter clock",
+      "problem": "Setup fails: WNS -0.216 ns, worst paths are Winograd arithmetic with 8 to 11 logic levels",
+      "parents": [
+        {
+          "id": "C17",
+          "kind": "verify"
+        },
+        {
+          "id": "C22",
+          "kind": "reference"
+        }
+      ]
+    },
+    {
+      "id": "C23",
+      "title": "Gated parameter reload",
+      "group": "t4",
+      "status": "warn",
+      "idea": "Load parameters once, reuse across frames",
+      "metric": 1.05,
+      "metric_text": "HLS 1.05 ms",
+      "problem": "RTL (C27) showed a 4-byte parameter read on a call that should skip loading",
+      "parents": [
+        "C13"
+      ]
+    },
+    {
+      "id": "C28",
+      "title": "Reload guard fix",
+      "group": "t4",
+      "status": "pass",
+      "idea": "Stop HLS from hoisting a scalarized bias read",
+      "metric_text": "RTL (C31): four calls exact, zero skipped-call AXI",
+      "parents": [
+        {
+          "id": "C23",
+          "kind": "retry"
+        }
+      ]
+    },
+    {
+      "id": "C32",
+      "title": "C17 + guarded reload",
+      "group": "t4",
+      "status": "fail",
+      "idea": "Transplant only the reload interface into C17",
+      "metric": 1.05,
+      "metric_text": "RTL 273,025 cycles (C35)",
+      "problem": "Implementation C36 fails 5 ns setup: WNS -0.102",
+      "parents": [
+        "C17",
+        {
+          "id": "C28",
+          "kind": "integrate"
+        }
+      ]
+    },
+    {
+      "id": "C37",
+      "title": "Registered parameter packet",
+      "group": "t4",
+      "status": "fail",
+      "idea": "Add one 224-bit register stage between parameter FIFO and banks",
+      "metric_text": "RTL 273,025 cycles (C39)",
+      "problem": "Implementation C40 at 4.5 ns fails: WNS -0.278",
+      "parents": [
+        "C32"
+      ]
+    },
+    {
+      "id": "C38",
+      "title": "Balanced registered adder tree",
+      "group": "t4",
+      "status": "fail",
+      "idea": "Four registered fabric-add levels in the Winograd fold",
+      "problem": "HLS FF 248,672 exceeds the 230 k screen; stopped before RTL",
+      "parents": [
+        "C32"
+      ]
+    },
+    {
+      "id": "WSI",
+      "title": "System integration and board test",
+      "group": "t4",
+      "status": "planned",
+      "idea": "Wrap the verified C22 IP with DDR and driver; measure end-to-end on the KV260",
+      "parents": [
+        "C22"
+      ]
+    }
+  ]
+}
